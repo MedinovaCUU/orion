@@ -7080,24 +7080,24 @@ export const refaccionesImageEntries: RefaccionImageEntry[] = [
   },
   {
     code: 'E35080',
-    inferredDescription: 'A15-A25 - SAI SLC-1000 TWIN PRO',
+    inferredDescription: 'A15-A25 - SAI SLC-1000 TWIN PRO 2',
     variants: [
       {
-        fileName: 'E35080 - A15-A25 - SAI SLC-1000 TWIN PRO.png',
-        url: 'refacciones_catalogo_imagenes/E35080%20-%20A15-A25%20-%20SAI%20SLC-1000%20TWIN%20PRO.png',
-        label: 'A15-A25 - SAI SLC-1000 TWIN PRO',
+        fileName: 'E35080 - A15-A25 - SAI SLC-1000 TWIN PRO 2.png',
+        url: 'refacciones_catalogo_imagenes/E35080%20-%20A15-A25%20-%20SAI%20SLC-1000%20TWIN%20PRO%202.png',
+        label: 'A15-A25 - SAI SLC-1000 TWIN PRO 2',
         variant: 1,
       },
     ],
   },
   {
     code: 'E35081',
-    inferredDescription: 'BAX00 - SAI SLC-1500 TWIN PRO',
+    inferredDescription: 'BAX00 - SAI SLC-1500 TWIN PRO 2',
     variants: [
       {
-        fileName: 'E35081 - BAX00 - SAI SLC-1500 TWIN PRO.png',
-        url: 'refacciones_catalogo_imagenes/E35081%20-%20BAX00%20-%20SAI%20SLC-1500%20TWIN%20PRO.png',
-        label: 'BAX00 - SAI SLC-1500 TWIN PRO',
+        fileName: 'E35081 - BAX00 - SAI SLC-1500 TWIN PRO 2.png',
+        url: 'refacciones_catalogo_imagenes/E35081%20-%20BAX00%20-%20SAI%20SLC-1500%20TWIN%20PRO%202.png',
+        label: 'BAX00 - SAI SLC-1500 TWIN PRO 2',
         variant: 1,
       },
     ],
