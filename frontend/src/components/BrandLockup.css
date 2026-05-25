@@ -1,0 +1,107 @@
+.brand-lockup {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.brand-lockup__logo {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 12px 24px rgba(0, 0, 0, 0.24));
+}
+
+.brand-lockup__copy {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  min-width: 0;
+}
+
+.brand-lockup__eyebrow {
+  color: rgba(var(--brand-red-rgb), 0.72);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+}
+
+.brand-lockup__title {
+  font-family: var(--font-heading);
+  font-size: 1.1rem;
+  line-height: 1.16;
+}
+
+.brand-lockup__subtitle {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  line-height: 1.55;
+  max-width: 42rem;
+}
+
+.brand-lockup--auth,
+.brand-lockup--loading,
+.brand-lockup--public {
+  flex-direction: column;
+  text-align: center;
+}
+
+.brand-lockup--header {
+  gap: 1.35rem;
+}
+
+.brand-lockup--sidebar {
+  align-items: flex-start;
+  gap: 0.85rem;
+}
+
+.brand-lockup--auth .brand-lockup__logo--imagotipo,
+.brand-lockup--public .brand-lockup__logo--imagotipo,
+.brand-lockup--loading .brand-lockup__logo--imagotipo {
+  width: min(100%, 270px);
+}
+
+.brand-lockup--header .brand-lockup__logo--imagotipo {
+  width: clamp(188px, 22vw, 268px);
+}
+
+.brand-lockup--sidebar .brand-lockup__logo--icono {
+  width: 56px;
+  height: 56px;
+}
+
+.brand-lockup--loading .brand-lockup__logo--imagotipo {
+  width: min(100%, 240px);
+}
+
+.brand-lockup--loading .brand-lockup__copy {
+  align-items: center;
+}
+
+.brand-lockup--auth .brand-lockup__copy,
+.brand-lockup--public .brand-lockup__copy {
+  align-items: center;
+  max-width: 32rem;
+}
+
+.brand-lockup--auth .brand-lockup__title,
+.brand-lockup--public .brand-lockup__title,
+.brand-lockup--loading .brand-lockup__title {
+  font-size: 1.28rem;
+}
+
+@media (max-width: 720px) {
+  .brand-lockup--header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .brand-lockup--header .brand-lockup__logo--imagotipo {
+    width: min(100%, 220px);
+  }
+
+  .brand-lockup__subtitle {
+    max-width: none;
+  }
+}

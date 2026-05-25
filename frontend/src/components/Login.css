@@ -1,80 +1,297 @@
 .login-container {
+  position: relative;
   min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 1rem;
+  padding: 1.5rem;
+  isolation: isolate;
+}
+
+.login-container::before,
+.login-container::after {
+  content: '';
+  position: absolute;
+  border-radius: 999px;
+  filter: blur(24px);
+  opacity: 0.8;
+  pointer-events: none;
+  z-index: -1;
+}
+
+.login-container::before {
+  width: min(36vw, 420px);
+  height: min(36vw, 420px);
+  top: 7%;
+  left: 7%;
+  background: rgba(var(--clinical-rgb), 0.14);
+}
+
+.login-container::after {
+  width: min(32vw, 360px);
+  height: min(32vw, 360px);
+  right: 8%;
+  bottom: 8%;
+  background: rgba(var(--veterinary-rgb), 0.12);
+}
+
+.login-container--public::after {
+  background: rgba(var(--environmental-rgb), 0.1);
 }
 
 .login-card {
   width: 100%;
-  max-width: 400px;
+  max-width: 440px;
+}
+
+.login-card--auth {
+  max-width: 460px;
+}
+
+.login-card--public {
+  max-width: 640px;
+}
+
+.public-ticket-card {
+  padding-top: 2.2rem;
+}
+
+.login-card .brand-lockup {
+  margin-bottom: 1.7rem;
+}
+
+.login-copy {
+  display: grid;
+  gap: 0.55rem;
+  margin-bottom: 1.75rem;
+  text-align: center;
+}
+
+.login-kicker {
+  color: rgba(var(--brand-red-rgb), 0.78);
+  font-size: 0.71rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
 }
 
 .login-title {
-  font-size: 1.5rem;
-  font-weight: 600;
-  margin-bottom: 0.5rem;
-  text-align: center;
+  font-size: clamp(1.72rem, 4vw, 2.15rem);
+  line-height: 1.08;
 }
 
 .login-subtitle {
   color: var(--text-secondary);
-  text-align: center;
-  font-size: 0.875rem;
-  margin-bottom: 2rem;
+  font-size: 0.95rem;
+  line-height: 1.68;
 }
 
 .login-form {
   display: flex;
   flex-direction: column;
-  gap: 1.25rem;
+  gap: 1.15rem;
 }
 
 .form-group {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 0.55rem;
 }
 
 .form-group label {
-  font-size: 0.875rem;
-  font-weight: 500;
-  color: var(--text-primary);
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
 }
 
 .login-btn {
-  margin-top: 0.5rem;
+  margin-top: 0.2rem;
 }
 
 .login-footer {
   margin-top: 1.5rem;
   text-align: center;
-  font-size: 0.875rem;
+  font-size: 0.9rem;
   color: var(--text-secondary);
 }
 
 .link-btn {
   background: none;
   border: none;
-  color: var(--accent-color);
+  color: rgba(var(--brand-red-rgb), 0.88);
   font-family: inherit;
   font-size: inherit;
+  font-weight: 700;
   cursor: pointer;
   margin-left: 0.5rem;
 }
 
 .link-btn:hover {
-  text-decoration: underline;
+  color: var(--text-primary);
 }
 
 .error-alert {
-  background-color: rgba(239, 68, 68, 0.1);
-  border: 1px solid var(--error-color);
-  color: #fca5a5;
-  padding: 0.75rem;
-  border-radius: 6px;
-  font-size: 0.875rem;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.35rem;
+  padding: 0.95rem 1rem;
+  border-radius: 18px;
+  background:
+    linear-gradient(180deg, rgba(var(--brand-red-rgb), 0.12), rgba(var(--brand-red-rgb), 0.05)),
+    rgba(255, 255, 255, 0.64);
+  border: 1px solid rgba(var(--brand-red-rgb), 0.24);
+  color: #8a2a35;
+  font-size: 0.9rem;
+  line-height: 1.55;
   text-align: center;
+}
+
+.public-access-button {
+  position: absolute;
+  top: clamp(1rem, 4vw, 1.8rem);
+  right: clamp(1rem, 4vw, 1.8rem);
+  z-index: 1;
+}
+
+.support-choice-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.9rem;
+}
+
+.support-choice {
+  --support-accent-rgb: var(--brand-red-rgb);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.45rem;
+  padding: 1.05rem 1.1rem;
+  border-radius: 22px;
+  border: 1px solid rgba(124, 136, 149, 0.16);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.88), rgba(243, 246, 249, 0.74)),
+    rgba(255, 255, 255, 0.44);
+  color: var(--text-primary);
+  cursor: pointer;
+  text-align: left;
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
+}
+
+.support-choice:hover {
+  transform: translateY(-1px);
+  border-color: rgba(124, 136, 149, 0.22);
+}
+
+.support-choice.is-active {
+  border-color: rgba(var(--support-accent-rgb), 0.32);
+  background:
+    radial-gradient(circle at top right, rgba(var(--support-accent-rgb), 0.14), transparent 50%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.94), rgba(244, 247, 250, 0.78)),
+    rgba(255, 255, 255, 0.52);
+  box-shadow: 0 18px 34px rgba(var(--support-accent-rgb), 0.08);
+}
+
+.support-choice--engineering {
+  --support-accent-rgb: var(--clinical-rgb);
+}
+
+.support-choice--applications {
+  --support-accent-rgb: var(--veterinary-rgb);
+}
+
+.support-choice__eyebrow {
+  color: rgba(var(--support-accent-rgb), 0.92);
+  font-size: 0.67rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.support-choice strong {
+  font-family: var(--font-heading);
+  font-size: 0.98rem;
+}
+
+.support-choice small {
+  color: var(--text-secondary);
+  font-size: 0.84rem;
+  line-height: 1.55;
+}
+
+.public-ticket-textarea {
+  min-height: 132px;
+}
+
+.public-ticket-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-top: 0.35rem;
+}
+
+.public-ticket-footnote {
+  max-width: 28rem;
+  color: var(--text-tertiary);
+  font-size: 0.82rem;
+  line-height: 1.65;
+}
+
+.public-ticket-success-card {
+  max-width: 620px;
+  text-align: center;
+}
+
+.public-ticket-success-copy {
+  display: grid;
+  gap: 0.7rem;
+  margin-top: 0.6rem;
+}
+
+.public-ticket-success-tag {
+  justify-self: center;
+  padding: 0.45rem 0.85rem;
+  border-radius: 999px;
+  border: 1px solid rgba(var(--success-rgb), 0.22);
+  background: rgba(var(--success-rgb), 0.1);
+  color: #257556;
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.public-ticket-success-note {
+  color: var(--text-primary);
+  font-size: 0.95rem;
+  line-height: 1.7;
+}
+
+@media (max-width: 720px) {
+  .login-container {
+    padding: 1rem;
+  }
+
+  .public-access-button {
+    position: static;
+    margin-bottom: 1rem;
+    width: 100%;
+  }
+
+  .support-choice-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .public-ticket-footer {
+    align-items: stretch;
+  }
+
+  .public-ticket-footnote {
+    max-width: none;
+  }
 }

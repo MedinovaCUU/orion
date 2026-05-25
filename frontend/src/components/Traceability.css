@@ -1,0 +1,3158 @@
+.traceability-shell {
+  --trace-bg: rgba(255, 255, 255, 0.74);
+  --trace-panel: rgba(247, 250, 252, 0.84);
+  --trace-panel-soft: rgba(242, 247, 250, 0.68);
+  --trace-border: rgba(var(--environmental-rgb), 0.18);
+  --trace-border-strong: rgba(var(--environmental-blue-rgb), 0.34);
+  --trace-text: var(--text-primary);
+  --trace-copy: rgba(23, 32, 43, 0.8);
+  --trace-copy-soft: rgba(93, 102, 116, 0.72);
+  --trace-glow: rgba(var(--environmental-rgb), 0.22);
+  --trace-red: #f1727d;
+  --trace-amber: #ffd178;
+  --trace-teal: #69dde0;
+  --trace-blue: #63aefe;
+  --trace-rotor-plate-start: rgba(255, 255, 255, 0.98);
+  --trace-rotor-plate-end: rgba(228, 235, 243, 0.78);
+  --trace-rotor-center-glow: rgba(var(--brand-red-rgb), 0.12);
+  --trace-rotor-segment-start: #f8fbfd;
+  --trace-rotor-segment-mid: #dde5ee;
+  --trace-rotor-segment-end: #c2ccd8;
+  --trace-rotor-segment-active-start: #fffaf9;
+  --trace-rotor-segment-active-mid: #efe1e4;
+  --trace-rotor-segment-active-end: #d3c7ce;
+  --trace-rotor-slot-start: rgba(255, 255, 255, 0.88);
+  --trace-rotor-slot-end: rgba(196, 206, 218, 0.48);
+  --trace-rotor-slot-active-start: #ff979e;
+  --trace-rotor-slot-active-end: #c92330;
+  --trace-rotor-hub-start: #ffffff;
+  --trace-rotor-hub-mid: #dce3ec;
+  --trace-rotor-hub-end: #bbc6d2;
+  --trace-rotor-core-start: #4a5563;
+  --trace-rotor-core-end: #242d37;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  color: var(--trace-text);
+}
+
+.traceability-shell::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  border-radius: 30px;
+  background:
+    linear-gradient(rgba(56, 234, 255, 0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(56, 234, 255, 0.045) 1px, transparent 1px),
+    radial-gradient(circle at 50% 0%, rgba(55, 240, 208, 0.18), transparent 34%),
+    radial-gradient(circle at 92% 15%, rgba(115, 186, 255, 0.14), transparent 22%),
+    radial-gradient(circle at 8% 84%, rgba(255, 91, 114, 0.14), transparent 20%);
+  background-size: 64px 64px, 64px 64px, auto, auto, auto;
+  opacity: 0.5;
+}
+
+.traceability-loading,
+.traceability-error {
+  padding: 2rem;
+  border-radius: 28px;
+  border: 1px solid rgba(var(--environmental-rgb), 0.18);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.9), rgba(240, 247, 250, 0.82)),
+    rgba(255, 255, 255, 0.44);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.48),
+    0 28px 60px rgba(104, 116, 133, 0.14);
+  color: var(--trace-copy);
+  font-size: 0.96rem;
+}
+
+.traceability-error {
+  border-color: rgba(255, 91, 114, 0.28);
+  color: #ffd8e0;
+}
+
+.traceability-source-strip {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.traceability-source-strip .traceability-source-card {
+  width: min(680px, 100%);
+}
+
+.traceability-hero,
+.traceability-panel,
+.traceability-stream-card {
+  position: relative;
+  overflow: hidden;
+}
+
+.traceability-hero::after,
+.traceability-panel::after,
+.traceability-stream-card::after {
+  content: '';
+  position: absolute;
+  inset: 1px;
+  pointer-events: none;
+  border-radius: inherit;
+  border: 1px solid rgba(255, 255, 255, 0.03);
+}
+
+.traceability-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1.45fr) minmax(320px, 0.72fr);
+  gap: 1.1rem;
+  padding: 1.65rem;
+  border-radius: 30px;
+  border: 1px solid var(--trace-border);
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.92), rgba(240, 247, 250, 0.78)),
+    var(--trace-bg);
+  box-shadow:
+    inset 0 0 0 1px rgba(63, 239, 255, 0.08),
+    0 26px 70px rgba(104, 116, 133, 0.14);
+}
+
+.traceability-hero::before,
+.traceability-panel::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(90deg, transparent 0%, rgba(71, 255, 231, 0.08) 50%, transparent 100%);
+  transform: translateX(-100%);
+  animation: traceability-scan 13s linear infinite;
+  opacity: 0.35;
+}
+
+.traceability-hero__copy {
+  min-width: 0;
+}
+
+.traceability-eyebrow,
+.traceability-panel__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: rgba(135, 246, 255, 0.84);
+  font-size: 0.76rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.traceability-eyebrow::before,
+.traceability-panel__eyebrow::before {
+  content: '';
+  width: 16px;
+  height: 1px;
+  background: currentColor;
+  box-shadow: 0 0 12px currentColor;
+}
+
+.traceability-hero h2 {
+  margin-top: 0.55rem;
+  font-size: clamp(2rem, 3.4vw, 3rem);
+  line-height: 0.98;
+  letter-spacing: -0.04em;
+  text-transform: uppercase;
+}
+
+.traceability-hero p {
+  margin-top: 0.85rem;
+  max-width: 780px;
+  color: var(--trace-copy);
+  line-height: 1.7;
+  font-size: 0.97rem;
+}
+
+.traceability-story {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.85rem;
+  margin-top: 1.25rem;
+}
+
+.traceability-story div {
+  min-height: 112px;
+  padding: 1rem 1rem 1.05rem;
+  border-radius: 20px;
+  border: 1px solid rgba(116, 218, 255, 0.14);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.82), rgba(241, 247, 250, 0.68));
+  color: var(--text-primary);
+  line-height: 1.58;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.38);
+}
+
+.traceability-source-card {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1.25rem;
+  border-radius: 24px;
+  border: 1px solid rgba(135, 246, 255, 0.2);
+  background:
+    radial-gradient(circle at center, rgba(68, 255, 221, 0.14), transparent 46%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.92), rgba(240, 247, 250, 0.82));
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.4),
+    0 18px 44px rgba(104, 116, 133, 0.12);
+}
+
+.traceability-source-badge {
+  display: inline-flex;
+  align-self: flex-start;
+  padding: 0.48rem 0.8rem;
+  border-radius: 999px;
+  border: 1px solid rgba(135, 246, 255, 0.22);
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.traceability-source-badge.structured {
+  color: #23796e;
+  background: rgba(55, 240, 208, 0.1);
+}
+
+.traceability-source-badge.payload {
+  color: #8e6921;
+  background: rgba(255, 209, 102, 0.12);
+  border-color: rgba(255, 209, 102, 0.22);
+}
+
+.traceability-source-badge.demo {
+  color: #1f8073;
+  background: rgba(55, 240, 208, 0.1);
+  border-color: rgba(55, 240, 208, 0.24);
+}
+
+.traceability-source-card__value {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.traceability-source-card__value strong {
+  font-family: var(--font-heading);
+  font-size: clamp(2.6rem, 4vw, 4rem);
+  line-height: 0.95;
+}
+
+.traceability-source-card__value span {
+  color: var(--trace-copy-soft);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-size: 0.72rem;
+}
+
+.traceability-source-card__meta {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+.traceability-source-card__meta div {
+  padding: 0.8rem 0.75rem;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.traceability-source-card__meta label {
+  display: block;
+  margin-bottom: 0.25rem;
+  color: var(--trace-copy-soft);
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.traceability-source-card__meta b {
+  font-family: var(--font-heading);
+  font-size: 1.18rem;
+}
+
+.traceability-command-deck {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(420px, 1.1fr) minmax(0, 1fr);
+  gap: 1rem;
+}
+
+.traceability-panel--solar {
+  background:
+    radial-gradient(circle at center, rgba(55, 240, 208, 0.08), transparent 42%),
+    linear-gradient(180deg, rgba(7, 15, 25, 0.96), rgba(4, 8, 14, 0.94));
+}
+
+.traceability-solar-layout {
+  display: grid;
+  grid-template-columns: minmax(480px, 1.25fr) minmax(320px, 0.75fr);
+  gap: 1.1rem;
+  align-items: stretch;
+}
+
+.traceability-solar-visual,
+.traceability-solar-side {
+  position: relative;
+  border-radius: 24px;
+  border: 1px solid rgba(117, 213, 255, 0.14);
+  background:
+    linear-gradient(180deg, rgba(8, 17, 28, 0.9), rgba(4, 9, 16, 0.9));
+  overflow: hidden;
+}
+
+.traceability-solar-visual {
+  min-height: 620px;
+  padding: 1rem;
+}
+
+.traceability-solar-visual::before,
+.traceability-solar-side::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(rgba(71, 255, 231, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(71, 255, 231, 0.04) 1px, transparent 1px);
+  background-size: 42px 42px;
+  opacity: 0.28;
+}
+
+.traceability-solar-svg {
+  width: 100%;
+  max-width: 620px;
+  display: block;
+  margin: 0 auto;
+  filter: drop-shadow(0 0 14px rgba(55, 240, 208, 0.1));
+}
+
+.traceability-solar-grid {
+  fill: none;
+  stroke: rgba(111, 190, 225, 0.12);
+  stroke-width: 1;
+  stroke-dasharray: 2 12;
+}
+
+.traceability-solar-core-ring {
+  fill: rgba(5, 14, 24, 0.66);
+  stroke: rgba(116, 255, 233, 0.18);
+  stroke-width: 1.5;
+}
+
+.traceability-solar-core-ring--soft {
+  fill: none;
+  stroke: rgba(116, 255, 233, 0.1);
+  stroke-dasharray: 4 10;
+}
+
+.traceability-solar-core-copy {
+  fill: rgba(182, 233, 243, 0.82);
+  font-size: 14px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+
+.traceability-solar-core-copy--sub {
+  font-size: 12px;
+  letter-spacing: 0.12em;
+}
+
+.traceability-solar-core-copy--tiny {
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  fill: rgba(150, 186, 211, 0.72);
+}
+
+.traceability-solar-core-value {
+  fill: #f6fbff;
+  font-family: var(--font-heading);
+  font-size: 42px;
+  font-weight: 700;
+}
+
+.traceability-solar-ray-group {
+  cursor: pointer;
+  transition: opacity 160ms ease;
+}
+
+.traceability-solar-ray-group:hover,
+.traceability-solar-ray-group.active {
+  opacity: 1;
+}
+
+.traceability-solar-ray-base {
+  stroke: rgba(255, 255, 255, 0.08);
+  stroke-width: 3;
+  stroke-linecap: round;
+}
+
+.traceability-solar-ray-core {
+  stroke-linecap: round;
+  filter: drop-shadow(0 0 8px currentColor);
+}
+
+.traceability-solar-ray-glow {
+  stroke-width: 10;
+  stroke-linecap: round;
+  opacity: 0.75;
+  filter: blur(1px);
+}
+
+.traceability-solar-ray-glow--critical {
+  stroke: rgba(255, 91, 114, 0.95);
+}
+
+.traceability-solar-ray-glow--warning {
+  stroke: rgba(255, 209, 102, 0.95);
+}
+
+.traceability-solar-ray-glow--healthy {
+  stroke: rgba(55, 240, 208, 0.95);
+}
+
+.traceability-solar-ray-glow--neutral {
+  stroke: rgba(125, 145, 180, 0.8);
+}
+
+.traceability-solar-tip {
+  stroke: rgba(255, 255, 255, 0.6);
+  stroke-width: 1.4;
+}
+
+.traceability-solar-tip.traceability-solar-ray-glow--critical {
+  fill: rgba(255, 91, 114, 0.95);
+}
+
+.traceability-solar-tip.traceability-solar-ray-glow--warning {
+  fill: rgba(255, 209, 102, 0.95);
+}
+
+.traceability-solar-tip.traceability-solar-ray-glow--healthy {
+  fill: rgba(55, 240, 208, 0.95);
+}
+
+.traceability-solar-tip.traceability-solar-ray-glow--neutral {
+  fill: rgba(125, 145, 180, 0.88);
+}
+
+.traceability-solar-label {
+  fill: rgba(208, 238, 248, 0.74);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+}
+
+.traceability-solar-caption {
+  margin-top: 0.35rem;
+  color: var(--trace-copy-soft);
+  font-size: 0.78rem;
+  letter-spacing: 0.02em;
+}
+
+.traceability-solar-tooltip {
+  position: absolute;
+  min-width: 210px;
+  max-width: 260px;
+  padding: 0.9rem 1rem;
+  transform: translate(-50%, -120%);
+  border-radius: 18px;
+  border: 1px solid rgba(117, 213, 255, 0.18);
+  background:
+    linear-gradient(180deg, rgba(7, 16, 26, 0.96), rgba(5, 10, 17, 0.96));
+  box-shadow:
+    0 18px 34px rgba(0, 0, 0, 0.38),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.03);
+  pointer-events: none;
+  z-index: 3;
+}
+
+.traceability-solar-tooltip span {
+  display: inline-flex;
+  margin-bottom: 0.35rem;
+  color: rgba(152, 229, 255, 0.86);
+  font-size: 0.7rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.traceability-solar-tooltip strong {
+  display: block;
+  font-size: 0.95rem;
+}
+
+.traceability-solar-tooltip p {
+  margin-top: 0.22rem;
+  color: var(--trace-copy);
+  font-size: 0.8rem;
+  line-height: 1.45;
+}
+
+.traceability-solar-tooltip__metrics {
+  display: flex;
+  gap: 0.8rem;
+  margin-top: 0.6rem;
+}
+
+.traceability-solar-tooltip__metrics b {
+  font-family: var(--font-heading);
+  font-size: 0.9rem;
+}
+
+.traceability-solar-side {
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.traceability-solar-side__hero {
+  padding: 1rem;
+  border-radius: 20px;
+  border: 1px solid rgba(117, 213, 255, 0.14);
+  background:
+    radial-gradient(circle at top right, rgba(55, 240, 208, 0.08), transparent 42%),
+    rgba(255, 255, 255, 0.03);
+}
+
+.traceability-solar-side__hero span {
+  display: inline-flex;
+  margin-bottom: 0.4rem;
+  color: rgba(155, 230, 255, 0.82);
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.traceability-solar-side__hero h4 {
+  font-size: 1.08rem;
+}
+
+.traceability-solar-side__hero p {
+  margin-top: 0.4rem;
+  color: var(--trace-copy);
+  font-size: 0.84rem;
+  line-height: 1.55;
+}
+
+.traceability-solar-side__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+.traceability-solar-side__grid div {
+  padding: 0.85rem 0.9rem;
+  border-radius: 18px;
+  border: 1px solid rgba(117, 213, 255, 0.12);
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.traceability-solar-side__grid label {
+  display: block;
+  margin-bottom: 0.25rem;
+  color: var(--trace-copy-soft);
+  font-size: 0.73rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.traceability-solar-side__grid strong {
+  font-family: var(--font-heading);
+  font-size: 1rem;
+}
+
+.traceability-solar-side__bars {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+}
+
+.traceability-solar-side__bars span {
+  display: block;
+  margin-bottom: 0.28rem;
+  color: var(--trace-copy);
+  font-size: 0.8rem;
+}
+
+.traceability-solar-mini-track {
+  height: 12px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(117, 213, 255, 0.1);
+  overflow: hidden;
+}
+
+.traceability-solar-mini-fill {
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, rgba(55, 240, 208, 0.35), rgba(55, 240, 208, 0.96));
+  box-shadow: 0 0 20px rgba(55, 240, 208, 0.18);
+}
+
+.traceability-solar-mini-fill--blue {
+  background: linear-gradient(90deg, rgba(115, 186, 255, 0.36), rgba(115, 186, 255, 0.96));
+  box-shadow: 0 0 20px rgba(115, 186, 255, 0.18);
+}
+
+.traceability-solar-mini-fill--amber {
+  background: linear-gradient(90deg, rgba(255, 209, 102, 0.3), rgba(255, 209, 102, 0.96));
+  box-shadow: 0 0 20px rgba(255, 209, 102, 0.16);
+}
+
+.traceability-solar-side__meta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  padding: 0.95rem;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(117, 213, 255, 0.1);
+}
+
+.traceability-solar-side__meta span {
+  color: var(--trace-copy);
+  font-size: 0.83rem;
+  line-height: 1.55;
+}
+
+.traceability-notice {
+  padding: 0.95rem 1.05rem;
+  border-radius: 18px;
+  border: 1px solid rgba(117, 213, 255, 0.16);
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--trace-copy);
+  line-height: 1.55;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.02);
+}
+
+.traceability-notice.demo {
+  border-color: rgba(55, 240, 208, 0.2);
+  background:
+    linear-gradient(90deg, rgba(55, 240, 208, 0.08), rgba(115, 186, 255, 0.04)),
+    rgba(255, 255, 255, 0.03);
+}
+
+.traceability-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  min-width: 0;
+  padding: 1.2rem;
+  border-radius: 28px;
+  border: 1px solid var(--trace-border);
+  background:
+    linear-gradient(180deg, rgba(8, 15, 24, 0.92), rgba(4, 8, 15, 0.92));
+  box-shadow:
+    inset 0 0 0 1px rgba(65, 226, 255, 0.05),
+    0 18px 44px rgba(0, 0, 0, 0.28);
+}
+
+.traceability-panel--hud {
+  min-height: 100%;
+}
+
+.traceability-panel--core {
+  padding: 1.35rem 1.4rem 1.45rem;
+  background:
+    radial-gradient(circle at center, rgba(55, 240, 208, 0.08), transparent 48%),
+    linear-gradient(180deg, rgba(7, 16, 26, 0.98), rgba(4, 9, 16, 0.95));
+}
+
+.traceability-panel--wide {
+  grid-column: span 2;
+}
+
+.traceability-panel__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.traceability-panel__header h3 {
+  margin-top: 0.5rem;
+  font-size: 1.25rem;
+  letter-spacing: -0.03em;
+}
+
+.traceability-panel__header p {
+  max-width: 420px;
+  color: var(--trace-copy-soft);
+  font-size: 0.88rem;
+  line-height: 1.68;
+}
+
+.traceability-kind-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.traceability-beam-row {
+  display: grid;
+  grid-template-columns: minmax(0, 150px) minmax(0, 1fr) auto;
+  gap: 0.8rem;
+  align-items: center;
+}
+
+.traceability-beam-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.traceability-beam-copy strong {
+  font-size: 0.94rem;
+}
+
+.traceability-beam-copy span {
+  color: var(--trace-copy-soft);
+  font-size: 0.78rem;
+}
+
+.traceability-beam-track {
+  position: relative;
+  height: 16px;
+  border-radius: 999px;
+  border: 1px solid rgba(129, 227, 255, 0.12);
+  background:
+    linear-gradient(90deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0.06));
+  overflow: hidden;
+}
+
+.traceability-beam-fill {
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.12), var(--beam-color));
+  box-shadow:
+    0 0 22px var(--beam-color),
+    inset 0 0 18px rgba(255, 255, 255, 0.14);
+}
+
+.traceability-beam-share {
+  min-width: 54px;
+  text-align: right;
+  color: var(--trace-copy);
+  font-size: 0.82rem;
+  font-family: var(--font-heading);
+}
+
+.traceability-method-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.75rem;
+  margin-top: auto;
+}
+
+.traceability-method-card {
+  padding: 0.9rem 0.8rem;
+  border-radius: 18px;
+  border: 1px solid rgba(117, 213, 255, 0.14);
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.traceability-method-card span {
+  display: block;
+  color: var(--trace-copy-soft);
+  font-size: 0.74rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.traceability-method-card strong {
+  display: block;
+  margin-top: 0.3rem;
+  font-size: 1.45rem;
+  font-family: var(--font-heading);
+}
+
+.traceability-method-card small {
+  display: block;
+  margin-top: 0.2rem;
+  color: var(--trace-copy);
+}
+
+.traceability-core-shell {
+  display: grid;
+  grid-template-columns: minmax(280px, 1fr) minmax(0, 1fr);
+  gap: 1rem;
+  align-items: center;
+}
+
+.traceability-core-svg {
+  width: 100%;
+  max-width: 360px;
+  margin: 0 auto;
+  display: block;
+  filter: drop-shadow(0 0 18px rgba(65, 255, 230, 0.16));
+}
+
+.traceability-core-grid {
+  fill: none;
+  stroke: rgba(115, 186, 255, 0.14);
+  stroke-width: 1;
+}
+
+.traceability-core-grid--soft {
+  stroke: rgba(115, 186, 255, 0.08);
+  stroke-dasharray: 3 7;
+}
+
+.traceability-core-axis {
+  stroke: rgba(135, 246, 255, 0.18);
+  stroke-width: 1;
+}
+
+.traceability-core-axis--soft {
+  stroke-dasharray: 5 10;
+}
+
+.traceability-core-track {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.08);
+  stroke-width: 10;
+  stroke-linecap: round;
+}
+
+.traceability-core-ring {
+  fill: none;
+  stroke-width: 10;
+  stroke-linecap: round;
+  filter: drop-shadow(0 0 7px currentColor);
+}
+
+.traceability-core-center {
+  fill: rgba(8, 18, 30, 0.9);
+  stroke: rgba(67, 246, 210, 0.38);
+  stroke-width: 1.5;
+}
+
+.traceability-core-score__label {
+  fill: rgba(180, 215, 236, 0.72);
+  font-size: 11px;
+  letter-spacing: 0.26em;
+}
+
+.traceability-core-score__value {
+  fill: #f5fbff;
+  font-size: 42px;
+  font-family: var(--font-heading);
+  font-weight: 700;
+}
+
+.traceability-core-rings {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.traceability-core-ring-row {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  gap: 0.75rem;
+  align-items: center;
+  padding: 0.8rem 0.9rem;
+  border-radius: 18px;
+  border: 1px solid rgba(117, 213, 255, 0.14);
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.traceability-core-ring-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  box-shadow: 0 0 14px currentColor;
+}
+
+.traceability-core-ring-copy {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.traceability-core-ring-copy strong {
+  font-size: 0.92rem;
+}
+
+.traceability-core-ring-copy span {
+  color: var(--trace-copy-soft);
+  font-size: 0.78rem;
+  line-height: 1.45;
+}
+
+.traceability-core-ring-row b {
+  font-family: var(--font-heading);
+  font-size: 0.98rem;
+}
+
+.traceability-alert-feed {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.traceability-alert-card {
+  padding: 0.9rem 0.95rem;
+  border-radius: 18px;
+  border: 1px solid rgba(117, 213, 255, 0.12);
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.traceability-alert-card span {
+  display: inline-flex;
+  margin-bottom: 0.35rem;
+  padding: 0.28rem 0.6rem;
+  border-radius: 999px;
+  font-size: 0.68rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.traceability-alert-card strong {
+  display: block;
+  margin-bottom: 0.25rem;
+  font-size: 0.98rem;
+}
+
+.traceability-alert-card p {
+  color: var(--trace-copy);
+  font-size: 0.84rem;
+  line-height: 1.58;
+}
+
+.traceability-alert-card--critical {
+  border-color: rgba(255, 91, 114, 0.2);
+  background: rgba(255, 91, 114, 0.08);
+}
+
+.traceability-alert-card--critical span {
+  background: rgba(255, 91, 114, 0.14);
+  color: #ffd7df;
+}
+
+.traceability-alert-card--warning {
+  border-color: rgba(255, 209, 102, 0.18);
+  background: rgba(255, 209, 102, 0.08);
+}
+
+.traceability-alert-card--warning span {
+  background: rgba(255, 209, 102, 0.14);
+  color: #fff0c7;
+}
+
+.traceability-alert-card--info span {
+  background: rgba(55, 240, 208, 0.14);
+  color: #c9fff5;
+}
+
+.traceability-filters {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr) minmax(220px, 280px);
+  gap: 1rem;
+  align-items: end;
+  padding: 1rem 1.1rem;
+  border-radius: 24px;
+  border: 1px solid rgba(117, 213, 255, 0.14);
+  background:
+    linear-gradient(180deg, rgba(8, 15, 24, 0.86), rgba(4, 8, 15, 0.76));
+}
+
+.traceability-filter-block {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+}
+
+.traceability-filter-block label,
+.traceability-select label {
+  color: rgba(150, 221, 255, 0.72);
+  font-size: 0.76rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.traceability-chip-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+}
+
+.traceability-shell .button-primary.chip {
+  padding-inline: 1rem;
+  border-radius: 999px;
+  background: linear-gradient(135deg, rgba(18, 53, 74, 0.96), rgba(8, 23, 35, 0.96));
+  border-color: rgba(117, 213, 255, 0.18);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.04),
+    0 10px 22px rgba(0, 0, 0, 0.22);
+}
+
+.traceability-shell .button-primary.inactive.chip {
+  background: rgba(255, 255, 255, 0.03);
+  border-color: rgba(117, 213, 255, 0.14);
+  color: var(--trace-copy-soft);
+}
+
+.traceability-shell .button-primary.inactive.chip:hover {
+  background: rgba(55, 240, 208, 0.08);
+  border-color: rgba(117, 213, 255, 0.24);
+}
+
+.traceability-select {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.traceability-shell .input-field {
+  background: rgba(4, 9, 15, 0.86);
+  border-color: rgba(117, 213, 255, 0.16);
+  color: var(--trace-text);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.02);
+}
+
+.traceability-shell .input-field:focus {
+  border-color: rgba(55, 240, 208, 0.48);
+  box-shadow: 0 0 0 3px rgba(55, 240, 208, 0.12), 0 0 26px rgba(55, 240, 208, 0.12);
+}
+
+.traceability-metric-grid {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.traceability-metric-card {
+  min-height: 150px;
+  padding: 1rem 1.05rem;
+  border-radius: 22px;
+  border: 1px solid rgba(117, 213, 255, 0.14);
+  background:
+    linear-gradient(180deg, rgba(9, 18, 28, 0.88), rgba(5, 10, 17, 0.9));
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.025),
+    0 14px 34px rgba(0, 0, 0, 0.22);
+}
+
+.traceability-metric-card span {
+  display: block;
+  color: rgba(159, 222, 255, 0.74);
+  font-size: 0.75rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.traceability-metric-card strong {
+  display: block;
+  margin-top: 0.55rem;
+  font-family: var(--font-heading);
+  font-size: clamp(1.7rem, 2vw, 2.4rem);
+  line-height: 1;
+}
+
+.traceability-metric-card small {
+  display: block;
+  margin-top: 0.85rem;
+  color: var(--trace-copy);
+  line-height: 1.55;
+}
+
+.traceability-metric-card--warning {
+  border-color: rgba(255, 209, 102, 0.18);
+  background:
+    linear-gradient(180deg, rgba(40, 30, 10, 0.64), rgba(14, 12, 8, 0.86));
+}
+
+.traceability-metric-card--critical {
+  border-color: rgba(255, 91, 114, 0.18);
+  background:
+    linear-gradient(180deg, rgba(37, 11, 17, 0.7), rgba(14, 7, 9, 0.9));
+}
+
+.traceability-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 1rem;
+}
+
+.traceability-grid--top {
+  align-items: stretch;
+}
+
+.traceability-stream-card {
+  padding: 1rem 1rem 0.9rem;
+  border-radius: 24px;
+  border: 1px solid rgba(117, 213, 255, 0.12);
+  background:
+    linear-gradient(180deg, rgba(8, 16, 26, 0.9), rgba(4, 9, 16, 0.86));
+}
+
+.traceability-stream-svg,
+.traceability-heatmap-svg,
+.traceability-sparkline {
+  width: 100%;
+  display: block;
+}
+
+.traceability-stream-grid {
+  stroke: rgba(111, 190, 225, 0.12);
+  stroke-dasharray: 4 10;
+}
+
+.traceability-stream-line {
+  fill: none;
+  stroke-width: 3;
+  stroke-linecap: round;
+}
+
+.traceability-stream-line--matched {
+  stroke: rgba(245, 247, 255, 0.86);
+}
+
+.traceability-stream-line--total {
+  stroke: rgba(55, 240, 208, 0.95);
+}
+
+.traceability-stream-axis {
+  stroke: rgba(111, 190, 225, 0.18);
+}
+
+.traceability-stream-label {
+  fill: rgba(167, 209, 231, 0.72);
+  font-size: 12px;
+}
+
+.traceability-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.7rem 1rem;
+  margin-top: 0.7rem;
+}
+
+.traceability-legend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  color: var(--trace-copy);
+  font-size: 0.8rem;
+}
+
+.traceability-legend i {
+  width: 13px;
+  height: 13px;
+  border-radius: 999px;
+  display: inline-block;
+}
+
+.traceability-legend-line {
+  width: 18px !important;
+  height: 3px !important;
+  border-radius: 999px !important;
+  background: rgba(255, 255, 255, 0.5);
+}
+
+.traceability-legend-line--matched {
+  background: rgba(245, 247, 255, 0.86);
+}
+
+.traceability-legend-line--total {
+  background: rgba(55, 240, 208, 0.95);
+}
+
+.traceability-client-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.traceability-client-row {
+  display: grid;
+  grid-template-columns: auto minmax(0, 180px) minmax(0, 1fr) auto;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.traceability-client-rank {
+  width: 36px;
+  height: 36px;
+  display: grid;
+  place-items: center;
+  border-radius: 12px;
+  border: 1px solid rgba(117, 213, 255, 0.16);
+  background: rgba(255, 255, 255, 0.03);
+  color: rgba(151, 226, 255, 0.88);
+  font-family: var(--font-heading);
+  font-size: 0.84rem;
+}
+
+.traceability-client-copy {
+  min-width: 0;
+}
+
+.traceability-client-copy strong {
+  display: block;
+  font-size: 0.94rem;
+  line-height: 1.35;
+}
+
+.traceability-client-copy span {
+  color: var(--trace-copy-soft);
+  font-size: 0.78rem;
+}
+
+.traceability-client-bar {
+  height: 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(117, 213, 255, 0.12);
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.traceability-client-bar__fill {
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, rgba(55, 240, 208, 0.35), rgba(115, 186, 255, 0.94));
+  box-shadow: 0 0 20px rgba(115, 186, 255, 0.22);
+}
+
+.traceability-client-share {
+  min-width: 46px;
+  text-align: right;
+  font-family: var(--font-heading);
+  font-size: 0.84rem;
+}
+
+.traceability-expiry-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.traceability-expiry-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(160px, 1.2fr) auto;
+  gap: 0.85rem;
+  align-items: center;
+}
+
+.traceability-expiry-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.18rem;
+}
+
+.traceability-expiry-meta strong {
+  font-size: 0.93rem;
+}
+
+.traceability-expiry-meta span,
+.traceability-empty-copy {
+  color: var(--trace-copy-soft);
+  font-size: 0.81rem;
+  line-height: 1.52;
+}
+
+.traceability-expiry-bar {
+  position: relative;
+  height: 12px;
+  border-radius: 999px;
+  background:
+    linear-gradient(90deg, rgba(255, 91, 114, 0.26) 0%, rgba(255, 209, 102, 0.26) 35%, rgba(55, 240, 208, 0.24) 100%);
+  box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.3);
+}
+
+.traceability-expiry-point {
+  position: absolute;
+  top: 50%;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.9);
+  transform: translate(-50%, -50%);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
+}
+
+.traceability-expiry-point--critical {
+  background: var(--trace-red);
+}
+
+.traceability-expiry-point--warning {
+  background: var(--trace-amber);
+}
+
+.traceability-expiry-point--healthy {
+  background: var(--trace-teal);
+}
+
+.traceability-expiry-point--neutral {
+  background: #8f96a6;
+}
+
+.traceability-expiry-days {
+  min-width: 96px;
+  text-align: right;
+  font-family: var(--font-heading);
+  font-size: 0.92rem;
+}
+
+.traceability-heatmap-shell {
+  padding-top: 0.15rem;
+  overflow: auto;
+}
+
+.traceability-heatmap-label {
+  fill: rgba(170, 214, 240, 0.74);
+  font-size: 12px;
+}
+
+.traceability-heatmap-row {
+  fill: rgba(240, 249, 255, 0.82);
+  font-size: 13px;
+}
+
+.traceability-heatmap-value {
+  fill: #fff;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.traceability-reference-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.traceability-reference-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  min-width: 0;
+  padding: 1rem;
+  border-radius: 22px;
+  border: 1px solid rgba(117, 213, 255, 0.16);
+  background:
+    linear-gradient(180deg, rgba(8, 17, 27, 0.92), rgba(5, 10, 17, 0.92));
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.03),
+    0 14px 30px rgba(0, 0, 0, 0.18);
+}
+
+.traceability-reference-card__header {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: flex-start;
+}
+
+.traceability-reference-card__header strong {
+  display: block;
+  margin-top: 0.28rem;
+  font-size: 1rem;
+  line-height: 1.35;
+}
+
+.traceability-reference-code {
+  display: inline-flex;
+  padding: 0.34rem 0.65rem;
+  border-radius: 999px;
+  border: 1px solid rgba(117, 213, 255, 0.16);
+  background: rgba(255, 255, 255, 0.03);
+  color: rgba(180, 241, 255, 0.86);
+  font-size: 0.74rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.traceability-reference-qty {
+  font-family: var(--font-heading);
+  font-size: 2rem;
+  line-height: 1;
+}
+
+.traceability-sparkline {
+  height: 78px;
+}
+
+.traceability-sparkline-path {
+  fill: none;
+  stroke: #f5f7ff;
+  stroke-width: 2.4;
+}
+
+.traceability-reference-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.traceability-reference-stats span {
+  display: inline-flex;
+  padding: 0.42rem 0.62rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(117, 213, 255, 0.08);
+  color: var(--trace-copy);
+  font-size: 0.76rem;
+}
+
+/* Orion visual identity: black, red, silver and white. */
+.traceability-shell {
+  --trace-bg: rgba(7, 7, 9, 0.94);
+  --trace-panel: rgba(15, 17, 21, 0.78);
+  --trace-panel-soft: rgba(255, 255, 255, 0.045);
+  --trace-border: rgba(192, 192, 192, 0.14);
+  --trace-border-strong: rgba(255, 255, 255, 0.28);
+  --trace-text: #ffffff;
+  --trace-copy: rgba(226, 228, 235, 0.78);
+  --trace-copy-soft: rgba(179, 184, 194, 0.72);
+  --trace-glow: rgba(186, 0, 13, 0.24);
+  --trace-red: #ba000d;
+  --trace-amber: #c0c0c0;
+  --trace-teal: #f4f6fb;
+  --trace-blue: #c0c0c0;
+}
+
+.traceability-shell::before {
+  background:
+    linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+    radial-gradient(circle at 14% 8%, rgba(186, 0, 13, 0.18), transparent 34%),
+    radial-gradient(circle at 78% 16%, rgba(192, 192, 192, 0.11), transparent 28%),
+    radial-gradient(circle at 94% 90%, rgba(186, 0, 13, 0.1), transparent 26%);
+}
+
+.traceability-loading,
+.traceability-error,
+.traceability-hero,
+.traceability-panel,
+.traceability-solar-visual,
+.traceability-solar-side,
+.traceability-stream-card,
+.traceability-filters,
+.traceability-source-card,
+.traceability-reference-card,
+.traceability-metric-card,
+.traceability-alert-card,
+.traceability-client-rank,
+.traceability-solar-side__hero,
+.traceability-solar-side__grid div,
+.traceability-solar-side__meta,
+.traceability-reference-code,
+.traceability-reference-stats span,
+.traceability-notice {
+  border-color: rgba(192, 192, 192, 0.12);
+}
+
+.traceability-hero,
+.traceability-panel,
+.traceability-stream-card,
+.traceability-solar-visual,
+.traceability-solar-side {
+  background:
+    radial-gradient(circle at 12% 0%, rgba(186, 0, 13, 0.08), transparent 32%),
+    radial-gradient(circle at 90% 15%, rgba(192, 192, 192, 0.055), transparent 30%),
+    linear-gradient(180deg, rgba(15, 17, 21, 0.9), rgba(6, 6, 8, 0.92));
+  box-shadow:
+    0 20px 48px rgba(0, 0, 0, 0.36),
+    inset 0 1px 0 rgba(255, 255, 255, 0.055);
+}
+
+.traceability-hero::before,
+.traceability-panel::before {
+  background:
+    linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.08) 44%, rgba(186, 0, 13, 0.09) 50%, transparent 100%);
+}
+
+.traceability-eyebrow,
+.traceability-panel__eyebrow,
+.traceability-filter-block label,
+.traceability-select label,
+.traceability-source-card__meta label,
+.traceability-solar-tooltip span,
+.traceability-solar-side__hero span,
+.traceability-metric-card span,
+.traceability-client-rank,
+.traceability-reference-code {
+  color: var(--text-secondary);
+}
+
+.traceability-hero h2,
+.traceability-panel__header h3,
+.traceability-core-score__value,
+.traceability-solar-core-value,
+.traceability-reference-qty,
+.traceability-source-card__value strong {
+  color: var(--text-primary);
+  text-shadow: 0 0 24px rgba(186, 0, 13, 0.14);
+}
+
+.traceability-story div,
+.traceability-source-card,
+.traceability-solar-side__hero,
+.traceability-method-card,
+.traceability-core-ring-row,
+.traceability-alert-card,
+.traceability-client-rank,
+.traceability-reference-card,
+.traceability-solar-side__grid div,
+.traceability-solar-side__meta {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.82), rgba(242, 247, 250, 0.68)),
+    rgba(255, 255, 255, 0.48);
+  border-color: rgba(124, 136, 149, 0.14);
+}
+
+.traceability-source-badge.structured,
+.traceability-source-badge.demo,
+.traceability-alert-card--info span {
+  color: var(--text-primary);
+  background: rgba(186, 0, 13, 0.1);
+  border-color: rgba(186, 0, 13, 0.22);
+}
+
+.traceability-source-badge.payload,
+.traceability-alert-card--warning span {
+  color: var(--text-primary);
+  background: rgba(192, 192, 192, 0.14);
+  border-color: rgba(192, 192, 192, 0.2);
+}
+
+.traceability-source-card {
+  background:
+    radial-gradient(circle at center, rgba(186, 0, 13, 0.14), transparent 46%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.92), rgba(240, 247, 250, 0.82));
+}
+
+.traceability-panel--solar,
+.traceability-panel--core {
+  background:
+    radial-gradient(circle at center, rgba(186, 0, 13, 0.1), transparent 44%),
+    radial-gradient(circle at 80% 0%, rgba(192, 192, 192, 0.07), transparent 34%),
+    linear-gradient(180deg, rgba(15, 17, 21, 0.96), rgba(7, 7, 9, 0.94));
+}
+
+.traceability-solar-visual::before,
+.traceability-solar-side::before {
+  background:
+    linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+}
+
+.traceability-solar-svg {
+  filter: drop-shadow(0 0 18px rgba(186, 0, 13, 0.14));
+}
+
+.traceability-solar-grid,
+.traceability-core-grid {
+  stroke: rgba(192, 192, 192, 0.14);
+}
+
+.traceability-solar-core-ring,
+.traceability-core-center {
+  stroke: rgba(255, 255, 255, 0.18);
+}
+
+.traceability-solar-core-ring--soft,
+.traceability-core-grid--soft {
+  stroke: rgba(192, 192, 192, 0.1);
+}
+
+.traceability-solar-core-copy,
+.traceability-core-score__label,
+.traceability-solar-label,
+.traceability-stream-label,
+.traceability-heatmap-label {
+  fill: rgba(226, 228, 235, 0.78);
+}
+
+.traceability-core-axis {
+  stroke: rgba(192, 192, 192, 0.16);
+}
+
+.traceability-core-track,
+.traceability-solar-ray-base {
+  stroke: rgba(255, 255, 255, 0.1);
+}
+
+.traceability-solar-ray-glow--critical,
+.traceability-expiry-point--critical {
+  stroke: rgba(186, 0, 13, 0.96);
+  background: #ba000d;
+}
+
+.traceability-solar-ray-glow--warning {
+  stroke: rgba(192, 192, 192, 0.88);
+}
+
+.traceability-solar-ray-glow--healthy {
+  stroke: rgba(244, 246, 251, 0.96);
+}
+
+.traceability-solar-ray-glow--neutral {
+  stroke: rgba(143, 150, 166, 0.78);
+}
+
+.traceability-solar-tip.traceability-solar-ray-glow--critical {
+  fill: rgba(186, 0, 13, 0.96);
+}
+
+.traceability-solar-tip.traceability-solar-ray-glow--warning {
+  fill: rgba(192, 192, 192, 0.92);
+}
+
+.traceability-solar-tip.traceability-solar-ray-glow--healthy {
+  fill: rgba(244, 246, 251, 0.96);
+}
+
+.traceability-solar-tooltip {
+  border-color: rgba(255, 255, 255, 0.14);
+  background:
+    radial-gradient(circle at top left, rgba(186, 0, 13, 0.12), transparent 38%),
+    linear-gradient(180deg, rgba(15, 17, 21, 0.96), rgba(7, 7, 9, 0.96));
+}
+
+.traceability-solar-mini-fill,
+.traceability-stream-line--total,
+.traceability-legend-line--total,
+.traceability-client-bar__fill {
+  background: linear-gradient(90deg, rgba(186, 0, 13, 0.34), rgba(244, 246, 251, 0.92));
+  stroke: rgba(244, 246, 251, 0.92);
+  box-shadow: 0 0 20px rgba(186, 0, 13, 0.18);
+}
+
+.traceability-solar-mini-fill--blue,
+.traceability-stream-line--matched,
+.traceability-legend-line--matched {
+  background: linear-gradient(90deg, rgba(192, 192, 192, 0.25), rgba(255, 255, 255, 0.92));
+  stroke: rgba(255, 255, 255, 0.86);
+  box-shadow: 0 0 18px rgba(255, 255, 255, 0.1);
+}
+
+.traceability-solar-mini-fill--amber {
+  background: linear-gradient(90deg, rgba(186, 0, 13, 0.42), rgba(192, 192, 192, 0.86));
+  box-shadow: 0 0 18px rgba(186, 0, 13, 0.16);
+}
+
+.traceability-beam-track,
+.traceability-client-bar,
+.traceability-expiry-bar,
+.traceability-solar-mini-track {
+  border-color: rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.045);
+}
+
+.traceability-beam-fill {
+  background: linear-gradient(90deg, rgba(186, 0, 13, 0.32), var(--beam-color));
+  box-shadow:
+    0 0 18px rgba(186, 0, 13, 0.14),
+    inset 0 0 18px rgba(255, 255, 255, 0.12);
+}
+
+.traceability-shell .button-primary.chip {
+  background: linear-gradient(135deg, rgba(153, 0, 0, 0.92), rgba(94, 0, 0, 0.92));
+  border-color: rgba(255, 255, 255, 0.12);
+  box-shadow:
+    0 8px 18px rgba(186, 0, 13, 0.22),
+    inset 0 1px 0 rgba(255, 255, 255, 0.16);
+}
+
+.traceability-shell .button-primary.inactive.chip {
+  background: rgba(255, 255, 255, 0.035);
+  border-color: rgba(255, 255, 255, 0.12);
+  color: rgba(226, 228, 235, 0.72);
+}
+
+.traceability-shell .button-primary.inactive.chip:hover {
+  background: rgba(186, 0, 13, 0.09);
+  border-color: rgba(186, 0, 13, 0.28);
+}
+
+.traceability-shell .input-field {
+  background: rgba(0, 0, 0, 0.42);
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+.traceability-shell .input-field:focus {
+  border-color: rgba(186, 0, 13, 0.58);
+  box-shadow: 0 0 0 3px rgba(186, 0, 13, 0.12), 0 0 26px rgba(186, 0, 13, 0.12);
+}
+
+.traceability-stream-grid,
+.traceability-stream-axis,
+.traceability-heatmap-label,
+.traceability-heatmap-row {
+  stroke: rgba(192, 192, 192, 0.12);
+  fill: rgba(226, 228, 235, 0.74);
+}
+
+.traceability-expiry-bar {
+  background:
+    linear-gradient(90deg, rgba(186, 0, 13, 0.34) 0%, rgba(192, 192, 192, 0.24) 42%, rgba(244, 246, 251, 0.2) 100%);
+}
+
+.traceability-expiry-point--warning {
+  background: #c0c0c0;
+}
+
+.traceability-expiry-point--healthy {
+  background: #f4f6fb;
+}
+
+.traceability-alert-card--critical {
+  border-color: rgba(186, 0, 13, 0.28);
+  background: rgba(186, 0, 13, 0.1);
+}
+
+.traceability-alert-card--critical span {
+  background: rgba(186, 0, 13, 0.18);
+  color: #ffd8dc;
+}
+
+.traceability-alert-card--warning {
+  border-color: rgba(192, 192, 192, 0.18);
+  background: rgba(192, 192, 192, 0.07);
+}
+
+.traceability-notice.demo {
+  border-color: rgba(186, 0, 13, 0.22);
+  background:
+    linear-gradient(90deg, rgba(186, 0, 13, 0.1), rgba(192, 192, 192, 0.04)),
+    rgba(255, 255, 255, 0.03);
+}
+
+/* Compact operator layout: keep controls and key signal above the fold. */
+.traceability-shell {
+  gap: 0.85rem;
+}
+
+.traceability-hero {
+  order: 1;
+  grid-template-columns: minmax(0, 1.45fr) minmax(260px, 0.5fr);
+  gap: 0.85rem;
+  padding: 1rem 1.05rem;
+  border-radius: 24px;
+}
+
+.traceability-notice {
+  order: 2;
+  padding: 0.75rem 0.9rem;
+}
+
+.traceability-control-console {
+  order: 3;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(410px, 0.82fr) minmax(240px, 0.46fr);
+  gap: 0.75rem;
+  align-items: stretch;
+  padding: 0.8rem;
+  border-radius: 24px;
+  border: 1px solid rgba(192, 192, 192, 0.12);
+  background:
+    radial-gradient(circle at 12% 0%, rgba(186, 0, 13, 0.12), transparent 34%),
+    linear-gradient(180deg, rgba(15, 17, 21, 0.84), rgba(5, 5, 7, 0.88));
+  box-shadow:
+    0 18px 42px rgba(0, 0, 0, 0.34),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.traceability-query-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.6rem;
+}
+
+.traceability-query-module,
+.traceability-query-readout,
+.traceability-view-readout {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.45rem;
+  min-width: 0;
+  padding: 0.68rem 0.72rem;
+  border-radius: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.018)),
+    rgba(8, 8, 11, 0.72);
+  overflow: hidden;
+}
+
+.traceability-query-module::before,
+.traceability-query-readout::before,
+.traceability-view-readout::before {
+  content: '';
+  position: absolute;
+  inset: auto 12px 0 12px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(186, 0, 13, 0.78), rgba(244, 246, 251, 0.72), transparent);
+  opacity: 0.55;
+}
+
+.traceability-query-module span,
+.traceability-query-readout span,
+.traceability-view-readout span {
+  color: rgba(226, 228, 235, 0.75);
+  font-size: 0.66rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.traceability-query-module .input-field {
+  min-height: 42px;
+  padding: 0.72rem 0.8rem;
+  border-radius: 14px;
+  font-size: 0.84rem;
+}
+
+.traceability-query-readout strong,
+.traceability-view-readout strong {
+  color: var(--text-primary);
+  font-family: var(--font-heading);
+  font-size: 1rem;
+  letter-spacing: -0.02em;
+}
+
+.traceability-query-readout p,
+.traceability-view-readout p {
+  color: var(--trace-copy);
+  font-size: 0.78rem;
+  line-height: 1.45;
+}
+
+.traceability-view-selector {
+  display: grid;
+  grid-template-columns: minmax(252px, 304px) minmax(0, 1fr);
+  gap: 1.2rem;
+  align-items: center;
+}
+
+.traceability-view-orb {
+  position: relative;
+  width: 296px;
+  height: 296px;
+  display: grid;
+  place-items: center;
+  isolation: isolate;
+}
+
+.traceability-view-orb::before,
+.traceability-view-orb::after {
+  content: '';
+  position: absolute;
+  pointer-events: none;
+}
+
+.traceability-view-orb::before {
+  inset: 12px;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 34% 28%, rgba(255, 255, 255, 0.96), rgba(255, 255, 255, 0.46) 32%, transparent 49%),
+    radial-gradient(circle at 50% 50%, rgba(230, 236, 244, 0.88) 0 54%, rgba(202, 213, 225, 0.22) 71%, transparent 74%);
+  border: 1px solid rgba(124, 136, 149, 0.12);
+  box-shadow:
+    0 22px 42px rgba(104, 116, 133, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.64);
+}
+
+.traceability-view-orb::after {
+  inset: 38px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.58);
+  box-shadow: inset 0 0 0 1px rgba(124, 136, 149, 0.06);
+  opacity: 0.94;
+}
+
+.traceability-view-orb__svg {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  filter: drop-shadow(0 12px 28px rgba(104, 116, 133, 0.12));
+}
+
+.traceability-view-ring {
+  fill: none;
+}
+
+.traceability-view-ring--plate {
+  stroke: none;
+  opacity: 0.96;
+}
+
+.traceability-view-ring--outer {
+  stroke: rgba(155, 167, 180, 0.24);
+  stroke-width: 1.15;
+}
+
+.traceability-view-ring--mid {
+  stroke: rgba(203, 213, 223, 0.56);
+  stroke-width: 0.95;
+}
+
+.traceability-view-ring--inner {
+  stroke: rgba(124, 136, 149, 0.18);
+  stroke-width: 0.9;
+  stroke-dasharray: 2 9;
+}
+
+.traceability-view-ring--accent {
+  fill: rgba(var(--brand-red-rgb), 0.56);
+  stroke: rgba(255, 255, 255, 0.74);
+  stroke-width: 0.8;
+  filter: drop-shadow(0 4px 8px rgba(var(--brand-red-rgb), 0.1));
+}
+
+.traceability-view-grid-ring {
+  fill: none;
+  stroke: rgba(var(--brand-red-rgb), 0.12);
+  stroke-width: 0.8;
+  stroke-dasharray: 2 9;
+}
+
+.traceability-view-divider {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.82);
+  stroke-width: 1.35;
+  stroke-linecap: round;
+  opacity: 0.95;
+}
+
+.traceability-view-segment {
+  cursor: pointer;
+  outline: none;
+  transition:
+    opacity 220ms ease,
+    transform 220ms ease;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+.traceability-view-segment__label-path {
+  fill: none;
+  stroke: none;
+}
+
+.traceability-view-segment__hit {
+  fill: transparent;
+  stroke: transparent;
+  pointer-events: all;
+}
+
+.traceability-view-segment__path {
+  stroke: rgba(255, 255, 255, 0.64);
+  stroke-width: 1;
+  transition:
+    stroke 180ms ease,
+    filter 180ms ease,
+    transform 180ms ease;
+  filter: drop-shadow(0 7px 14px rgba(104, 116, 133, 0.08));
+}
+
+.traceability-view-segment__slot {
+  opacity: 0.96;
+  stroke: rgba(124, 136, 149, 0.14);
+  stroke-width: 0.9;
+  transition:
+    opacity 180ms ease,
+    stroke 180ms ease,
+    transform 180ms ease;
+}
+
+.traceability-view-segment__label {
+  fill: rgba(88, 102, 119, 0.96);
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-anchor: middle;
+  dominant-baseline: middle;
+  transition:
+    fill 180ms ease,
+    text-shadow 180ms ease;
+}
+
+.traceability-view-segment:hover .traceability-view-segment__path,
+.traceability-view-segment.active .traceability-view-segment__path {
+  stroke: rgba(var(--brand-red-rgb), 0.24);
+  filter: drop-shadow(0 8px 18px rgba(var(--brand-red-rgb), 0.1));
+}
+
+.traceability-view-segment:not(.active) {
+  opacity: 0.96;
+}
+
+.traceability-view-segment:hover:not(.active) {
+  opacity: 0.99;
+}
+
+.traceability-view-segment.active .traceability-view-segment__slot {
+  opacity: 1;
+  stroke: rgba(var(--brand-red-rgb), 0.3);
+}
+
+.traceability-view-segment:hover .traceability-view-segment__slot {
+  opacity: 1;
+}
+
+.traceability-view-segment:hover:not(.active) .traceability-view-segment__label {
+  fill: var(--text-primary);
+}
+
+.traceability-view-segment.active .traceability-view-segment__label {
+  fill: rgba(110, 26, 33, 0.96);
+  text-shadow: none;
+}
+
+.traceability-view-hub-spoke {
+  fill: rgba(223, 229, 236, 0.88);
+  stroke: rgba(255, 255, 255, 0.7);
+  stroke-width: 0.8;
+  filter: drop-shadow(0 5px 10px rgba(104, 116, 133, 0.08));
+}
+
+.traceability-view-center--shell {
+  stroke: rgba(255, 255, 255, 0.78);
+  stroke-width: 1.05;
+  filter: drop-shadow(0 12px 20px rgba(104, 116, 133, 0.12));
+}
+
+.traceability-view-center--core {
+  stroke: rgba(255, 255, 255, 0.28);
+  stroke-width: 0.92;
+}
+
+.traceability-view-center--axle {
+  fill: rgba(244, 247, 251, 0.92);
+  stroke: rgba(108, 120, 136, 0.22);
+  stroke-width: 0.8;
+}
+
+.traceability-view-center__icon,
+.traceability-view-center__title,
+.traceability-view-center__meta {
+  text-anchor: middle;
+}
+
+.traceability-view-center__icon {
+  fill: #f7f9fc;
+  font-size: 23px;
+  font-weight: 700;
+}
+
+.traceability-view-center__title {
+  fill: rgba(35, 44, 56, 0.94);
+  font-size: 10.2px;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+}
+
+.traceability-view-center__meta {
+  fill: rgba(96, 106, 119, 0.82);
+  font-size: 7px;
+  letter-spacing: 0.08em;
+}
+
+.traceability-view-readout .button-primary.chip {
+  align-self: flex-start;
+  margin-top: 0.1rem;
+  padding: 0.55rem 0.72rem;
+  font-size: 0.68rem;
+}
+
+.traceability-panel--street-stock {
+  background:
+    radial-gradient(circle at 18% 18%, rgba(244, 246, 251, 0.09), transparent 28%),
+    radial-gradient(circle at 78% 0%, rgba(186, 0, 13, 0.12), transparent 34%),
+    linear-gradient(180deg, rgba(15, 17, 21, 0.94), rgba(6, 6, 8, 0.94));
+}
+
+.traceability-stock-grid {
+  display: grid;
+  grid-template-columns: minmax(300px, 0.8fr) minmax(0, 1.4fr);
+  gap: 1rem;
+  align-items: stretch;
+}
+
+.traceability-stock-overview {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1.15rem;
+  border-radius: 24px;
+  border: 1px solid rgba(124, 136, 149, 0.14);
+  background:
+    radial-gradient(circle at top right, rgba(var(--brand-red-rgb), 0.08), transparent 24%),
+    radial-gradient(circle at bottom left, rgba(var(--environmental-blue-rgb), 0.08), transparent 20%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.92), rgba(243, 247, 250, 0.8)),
+    rgba(255, 255, 255, 0.52);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.38),
+    0 18px 36px rgba(104, 116, 133, 0.1);
+}
+
+.traceability-stock-overview__eyebrow {
+  color: rgba(var(--brand-red-rgb), 0.7);
+  font-size: 0.7rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.traceability-stock-orb {
+  position: relative;
+  width: min(100%, 230px);
+  aspect-ratio: 1;
+  min-height: 0;
+  margin: 0 auto;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  border: 0;
+  background:
+    radial-gradient(circle at 50% 14%, rgba(255, 255, 255, 0.58), transparent 26%),
+    radial-gradient(circle at 85% 82%, rgba(var(--brand-red-rgb), 0.08), transparent 22%);
+  box-shadow: none;
+  overflow: visible;
+}
+
+.traceability-stock-orb::before,
+.traceability-stock-orb::after {
+  content: '';
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.traceability-stock-orb::before {
+  inset: 8px;
+  padding: 16px;
+  background: conic-gradient(
+    from -90deg,
+    rgba(var(--brand-red-rgb), 0.88) 0 var(--field-share),
+    rgba(205, 214, 224, 0.92) var(--field-share) 100%
+  );
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  box-shadow: 0 18px 34px rgba(var(--brand-red-rgb), 0.12);
+}
+
+.traceability-stock-orb::after {
+  inset: 24px;
+  border: 1px dashed rgba(124, 136, 149, 0.22);
+}
+
+.traceability-stock-orb__core {
+  position: relative;
+  z-index: 2;
+  width: 128px;
+  height: 128px;
+  display: grid;
+  place-items: center;
+  gap: 0.28rem;
+  text-align: center;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background:
+    radial-gradient(circle at 38% 20%, rgba(255, 255, 255, 0.12), transparent 32%),
+    linear-gradient(180deg, rgba(31, 38, 48, 0.96), rgba(15, 19, 26, 0.98));
+  box-shadow:
+    inset 0 10px 18px rgba(255, 255, 255, 0.04),
+    0 14px 28px rgba(32, 39, 50, 0.18);
+}
+
+.traceability-stock-orb__core span,
+.traceability-stock-summary span,
+.traceability-stock-ledger__section > span {
+  color: var(--text-secondary);
+  font-size: 0.66rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.traceability-stock-orb__core strong {
+  color: #f7f9fc;
+  font-family: var(--font-heading);
+  font-size: clamp(2.2rem, 3vw, 3rem);
+  line-height: 0.9;
+}
+
+.traceability-stock-orb__core small {
+  color: rgba(214, 222, 232, 0.82);
+  font-size: 0.78rem;
+}
+
+.traceability-stock-balance {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.6rem;
+}
+
+.traceability-stock-balance__item {
+  padding: 0.8rem 0.75rem;
+  border-radius: 18px;
+  border: 1px solid rgba(124, 136, 149, 0.12);
+  background: rgba(255, 255, 255, 0.76);
+}
+
+.traceability-stock-balance__item span {
+  display: block;
+  font-size: 0.66rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+}
+
+.traceability-stock-balance__item strong {
+  display: block;
+  margin-top: 0.34rem;
+  color: var(--text-primary);
+  font-family: var(--font-heading);
+  font-size: 1.18rem;
+}
+
+.traceability-stock-balance__item--field {
+  border-color: rgba(var(--brand-red-rgb), 0.16);
+}
+
+.traceability-stock-balance__item--warehouse {
+  border-color: rgba(124, 136, 149, 0.16);
+}
+
+.traceability-stock-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  min-width: 0;
+}
+
+.traceability-stock-summary {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+.traceability-stock-summary article {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 0.38rem;
+  min-height: 124px;
+  padding: 1rem 1rem 0.95rem;
+  border-radius: 20px;
+  border: 1px solid rgba(124, 136, 149, 0.14);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.9), rgba(242, 247, 250, 0.78)),
+    rgba(255, 255, 255, 0.48);
+}
+
+.traceability-stock-summary strong {
+  color: var(--text-primary);
+  font-family: var(--font-heading);
+  font-size: clamp(1.5rem, 2vw, 2.2rem);
+  line-height: 1;
+}
+
+.traceability-stock-summary small {
+  color: var(--trace-copy);
+  font-size: 0.78rem;
+  line-height: 1.4;
+}
+
+.traceability-stock-ledger {
+  display: grid;
+  grid-template-columns: minmax(260px, 0.75fr) minmax(360px, 1.25fr);
+  gap: 0.75rem;
+  min-width: 0;
+}
+
+.traceability-stock-ledger__section {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  padding: 0.7rem;
+  border-radius: 20px;
+  border: 1px solid rgba(124, 136, 149, 0.14);
+  background: rgba(255, 255, 255, 0.58);
+}
+
+.traceability-stock-holder,
+.traceability-stock-empty {
+  padding: 0.72rem;
+  border-radius: 16px;
+  border: 1px solid rgba(124, 136, 149, 0.14);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.82), rgba(242, 247, 250, 0.68)),
+    rgba(255, 255, 255, 0.48);
+}
+
+.traceability-stock-holder--warehouse {
+  border-color: rgba(244, 246, 251, 0.16);
+}
+
+.traceability-stock-holder--field {
+  border-color: rgba(186, 0, 13, 0.18);
+}
+
+.traceability-stock-holder__head {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.8rem;
+  align-items: baseline;
+}
+
+.traceability-stock-holder__head strong {
+  color: var(--text-primary);
+  font-size: 0.92rem;
+  line-height: 1.3;
+}
+
+.traceability-stock-holder__head span {
+  color: var(--text-secondary);
+  font-family: var(--font-heading);
+  font-size: 0.9rem;
+  white-space: nowrap;
+}
+
+.traceability-stock-holder__bar {
+  height: 10px;
+  margin-top: 0.55rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.055);
+  overflow: hidden;
+}
+
+.traceability-stock-holder__bar div {
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, rgba(186, 0, 13, 0.86), rgba(244, 246, 251, 0.92));
+  box-shadow: 0 0 20px rgba(186, 0, 13, 0.22);
+}
+
+.traceability-stock-holder--warehouse .traceability-stock-holder__bar div {
+  background: linear-gradient(90deg, rgba(120, 124, 134, 0.76), rgba(244, 246, 251, 0.9));
+  box-shadow: 0 0 18px rgba(244, 246, 251, 0.12);
+}
+
+.traceability-stock-holder__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-top: 0.55rem;
+}
+
+.traceability-stock-holder__meta span {
+  display: inline-flex;
+  padding: 0.28rem 0.44rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.055);
+  color: rgba(226, 228, 235, 0.78);
+  font-size: 0.68rem;
+}
+
+.traceability-stock-empty {
+  color: var(--trace-copy-soft);
+  font-size: 0.78rem;
+  line-height: 1.48;
+}
+
+.traceability-filters {
+  order: 4;
+  grid-template-columns: minmax(260px, 0.9fr) minmax(340px, 1.25fr) minmax(180px, 240px);
+  gap: 0.7rem;
+  padding: 0.75rem 0.85rem;
+  border-radius: 20px;
+}
+
+.traceability-metric-grid {
+  order: 5;
+  grid-template-columns: repeat(6, minmax(118px, 1fr));
+  gap: 0.65rem;
+}
+
+.traceability-panel--solar {
+  order: 6;
+}
+
+.traceability-command-deck {
+  order: 7;
+  grid-template-columns: minmax(240px, 0.8fr) minmax(360px, 1fr) minmax(240px, 0.8fr);
+  gap: 0.75rem;
+  align-items: start;
+}
+
+.traceability-grid--top {
+  order: 6;
+  grid-template-columns: minmax(0, 1fr);
+  align-items: start;
+}
+
+.traceability-grid:not(.traceability-grid--top) {
+  order: 6;
+  grid-template-columns: minmax(0, 1fr);
+  align-items: start;
+}
+
+.traceability-grid--top .traceability-panel--wide,
+.traceability-grid:not(.traceability-grid--top) .traceability-panel--wide {
+  grid-column: auto;
+}
+
+.traceability-view-block {
+  display: none;
+}
+
+.traceability-view-block.is-active {
+  display: flex;
+}
+
+.traceability-hero h2 {
+  margin-top: 0.4rem;
+  font-size: clamp(1.55rem, 2.35vw, 2.25rem);
+  line-height: 1;
+}
+
+.traceability-hero p {
+  margin-top: 0.5rem;
+  max-width: 980px;
+  font-size: 0.88rem;
+  line-height: 1.48;
+}
+
+.traceability-story {
+  gap: 0.55rem;
+  margin-top: 0.75rem;
+}
+
+.traceability-story div {
+  min-height: auto;
+  padding: 0.65rem 0.7rem;
+  border-radius: 16px;
+  font-size: 0.78rem;
+  line-height: 1.42;
+}
+
+.traceability-source-card {
+  gap: 0.65rem;
+  padding: 0.85rem;
+  border-radius: 20px;
+}
+
+.traceability-source-badge {
+  padding: 0.34rem 0.58rem;
+  font-size: 0.64rem;
+  letter-spacing: 0.1em;
+}
+
+.traceability-source-card__value strong {
+  font-size: clamp(2rem, 2.8vw, 2.75rem);
+}
+
+.traceability-source-card__value span {
+  font-size: 0.66rem;
+}
+
+.traceability-source-card__meta {
+  gap: 0.45rem;
+}
+
+.traceability-source-card__meta div {
+  padding: 0.52rem 0.55rem;
+  border-radius: 13px;
+}
+
+.traceability-source-card__meta label {
+  font-size: 0.62rem;
+  letter-spacing: 0.08em;
+}
+
+.traceability-source-card__meta b {
+  font-size: 1rem;
+}
+
+.traceability-panel {
+  gap: 0.75rem;
+  padding: 0.95rem;
+  border-radius: 24px;
+}
+
+.traceability-panel--core {
+  padding: 1rem;
+}
+
+.traceability-panel__header {
+  gap: 0.75rem;
+}
+
+.traceability-panel__header h3 {
+  margin-top: 0.35rem;
+  font-size: 1.08rem;
+}
+
+.traceability-panel__header p {
+  max-width: 360px;
+  font-size: 0.8rem;
+  line-height: 1.5;
+}
+
+.traceability-solar-layout {
+  grid-template-columns: minmax(420px, 1fr) minmax(300px, 0.55fr);
+  gap: 0.75rem;
+}
+
+.traceability-solar-visual {
+  min-height: 500px;
+  padding: 0.65rem;
+}
+
+.traceability-solar-svg {
+  max-width: 500px;
+}
+
+.traceability-solar-side {
+  gap: 0.7rem;
+  padding: 0.75rem;
+}
+
+.traceability-solar-side__hero {
+  padding: 0.75rem;
+  border-radius: 16px;
+}
+
+.traceability-solar-side__hero h4 {
+  font-size: 1rem;
+}
+
+.traceability-solar-side__hero p {
+  font-size: 0.78rem;
+  line-height: 1.42;
+}
+
+.traceability-solar-side__grid {
+  gap: 0.5rem;
+}
+
+.traceability-solar-side__grid div,
+.traceability-method-card,
+.traceability-core-ring-row,
+.traceability-alert-card {
+  padding: 0.65rem 0.7rem;
+  border-radius: 15px;
+}
+
+.traceability-solar-side__bars {
+  gap: 0.55rem;
+}
+
+.traceability-solar-side__meta {
+  gap: 0.4rem;
+  padding: 0.7rem;
+  border-radius: 15px;
+}
+
+.traceability-solar-side__meta span {
+  font-size: 0.76rem;
+  line-height: 1.42;
+}
+
+.traceability-metric-card {
+  min-height: 108px;
+  padding: 0.75rem;
+  border-radius: 18px;
+}
+
+.traceability-metric-card span {
+  font-size: 0.65rem;
+  letter-spacing: 0.12em;
+}
+
+.traceability-metric-card strong {
+  margin-top: 0.4rem;
+  font-size: clamp(1.35rem, 1.55vw, 1.95rem);
+}
+
+.traceability-metric-card small {
+  margin-top: 0.5rem;
+  font-size: 0.74rem;
+  line-height: 1.38;
+}
+
+.traceability-stream-card {
+  padding: 0.75rem 0.75rem 0.65rem;
+  border-radius: 20px;
+}
+
+.traceability-client-stack,
+.traceability-expiry-list,
+.traceability-alert-feed,
+.traceability-kind-stack {
+  gap: 0.55rem;
+}
+
+.traceability-client-row {
+  grid-template-columns: auto minmax(0, 150px) minmax(0, 1fr) auto;
+  gap: 0.55rem;
+}
+
+.traceability-client-rank {
+  width: 30px;
+  height: 30px;
+  border-radius: 10px;
+}
+
+.traceability-expiry-row {
+  grid-template-columns: minmax(0, 1fr) minmax(130px, 0.8fr) auto;
+  gap: 0.55rem;
+}
+
+.traceability-heatmap-shell {
+  max-height: 330px;
+  padding-top: 0;
+}
+
+.traceability-reference-grid {
+  gap: 0.65rem;
+}
+
+.traceability-reference-card {
+  gap: 0.6rem;
+  padding: 0.75rem;
+  border-radius: 18px;
+}
+
+.traceability-sparkline {
+  height: 62px;
+}
+
+.traceability-reference-qty {
+  font-size: 1.55rem;
+}
+
+@keyframes traceability-scan {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+/* Light silver harmonization for the traceability module. */
+.traceability-shell {
+  --trace-bg: rgba(255, 255, 255, 0.74);
+  --trace-panel: rgba(247, 250, 252, 0.84);
+  --trace-panel-soft: rgba(242, 247, 250, 0.7);
+  --trace-border: rgba(var(--environmental-blue-rgb), 0.16);
+  --trace-border-strong: rgba(var(--environmental-blue-rgb), 0.28);
+  --trace-text: var(--text-primary);
+  --trace-copy: rgba(23, 32, 43, 0.8);
+  --trace-copy-soft: rgba(93, 102, 116, 0.72);
+  --trace-glow: rgba(var(--environmental-rgb), 0.18);
+  --trace-red: var(--brand-red-soft);
+  --trace-amber: var(--warning-color);
+  --trace-teal: var(--environmental);
+  --trace-blue: var(--environmental-blue);
+}
+
+.traceability-shell::before {
+  background:
+    linear-gradient(rgba(110, 151, 188, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(110, 151, 188, 0.05) 1px, transparent 1px),
+    radial-gradient(circle at 14% 8%, rgba(var(--brand-red-rgb), 0.12), transparent 28%),
+    radial-gradient(circle at 78% 16%, rgba(var(--environmental-rgb), 0.12), transparent 26%),
+    radial-gradient(circle at 94% 90%, rgba(var(--environmental-blue-rgb), 0.1), transparent 24%);
+}
+
+.traceability-loading,
+.traceability-error,
+.traceability-hero,
+.traceability-panel,
+.traceability-solar-visual,
+.traceability-solar-side,
+.traceability-stream-card,
+.traceability-filters,
+.traceability-source-card,
+.traceability-reference-card,
+.traceability-metric-card,
+.traceability-alert-card,
+.traceability-client-rank,
+.traceability-solar-side__hero,
+.traceability-solar-side__grid div,
+.traceability-solar-side__meta,
+.traceability-reference-code,
+.traceability-reference-stats span,
+.traceability-notice,
+.traceability-query-module,
+.traceability-query-readout,
+.traceability-view-readout,
+.traceability-stock-summary article,
+.traceability-stock-ledger__section,
+.traceability-stock-holder,
+.traceability-stock-empty {
+  border-color: rgba(124, 136, 149, 0.14);
+}
+
+.traceability-hero,
+.traceability-panel,
+.traceability-stream-card,
+.traceability-solar-visual,
+.traceability-solar-side,
+.traceability-filters,
+.traceability-query-module,
+.traceability-query-readout,
+.traceability-view-readout {
+  background:
+    radial-gradient(circle at top right, rgba(var(--environmental-rgb), 0.12), transparent 32%),
+    radial-gradient(circle at bottom left, rgba(var(--environmental-blue-rgb), 0.1), transparent 24%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.92), rgba(242, 247, 250, 0.8)),
+    rgba(255, 255, 255, 0.56);
+  box-shadow:
+    0 22px 48px rgba(104, 116, 133, 0.14),
+    inset 0 1px 0 rgba(255, 255, 255, 0.4);
+}
+
+.traceability-panel--solar,
+.traceability-panel--core {
+  background:
+    radial-gradient(circle at top right, rgba(var(--environmental-rgb), 0.14), transparent 34%),
+    radial-gradient(circle at 12% 100%, rgba(var(--environmental-blue-rgb), 0.1), transparent 22%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.92), rgba(240, 247, 250, 0.82));
+}
+
+.traceability-story div,
+.traceability-source-card__meta div,
+.traceability-source-card,
+.traceability-solar-side__hero,
+.traceability-method-card,
+.traceability-core-ring-row,
+.traceability-alert-card,
+.traceability-client-rank,
+.traceability-reference-card,
+.traceability-solar-side__grid div,
+.traceability-solar-side__meta,
+.traceability-notice,
+.traceability-reference-code,
+.traceability-reference-stats span,
+.traceability-stock-summary article,
+.traceability-stock-ledger__section,
+.traceability-stock-holder,
+.traceability-stock-empty {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.9), rgba(244, 247, 250, 0.76)),
+    rgba(255, 255, 255, 0.48);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.36);
+}
+
+.traceability-eyebrow,
+.traceability-panel__eyebrow,
+.traceability-filter-block label,
+.traceability-select label,
+.traceability-source-card__meta label,
+.traceability-solar-tooltip span,
+.traceability-solar-side__hero span,
+.traceability-metric-card span,
+.traceability-client-rank,
+.traceability-reference-code {
+  color: rgba(84, 107, 126, 0.82);
+}
+
+.traceability-eyebrow::before,
+.traceability-panel__eyebrow::before {
+  box-shadow: none;
+}
+
+.traceability-hero h2,
+.traceability-panel__header h3,
+.traceability-core-score__value,
+.traceability-solar-core-value,
+.traceability-reference-qty,
+.traceability-source-card__value strong {
+  color: var(--text-primary);
+  text-shadow: none;
+}
+
+.traceability-source-badge.structured,
+.traceability-source-badge.demo,
+.traceability-alert-card--info span {
+  color: #227468;
+  background: rgba(var(--environmental-rgb), 0.12);
+  border-color: rgba(var(--environmental-rgb), 0.18);
+}
+
+.traceability-source-badge.payload,
+.traceability-alert-card--warning span {
+  color: #8e6921;
+  background: rgba(var(--warning-rgb), 0.14);
+  border-color: rgba(var(--warning-rgb), 0.2);
+}
+
+.traceability-shell .button-primary.chip {
+  background:
+    linear-gradient(135deg, rgba(var(--environmental-blue-rgb), 0.24), rgba(var(--environmental-rgb), 0.18)),
+    rgba(255, 255, 255, 0.82);
+  border-color: rgba(var(--environmental-blue-rgb), 0.18);
+  color: var(--text-primary);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.4),
+    0 12px 26px rgba(var(--environmental-blue-rgb), 0.08);
+}
+
+.traceability-shell .button-primary.inactive.chip {
+  background: rgba(255, 255, 255, 0.82);
+  border-color: rgba(124, 136, 149, 0.14);
+  color: var(--text-secondary);
+}
+
+.traceability-shell .button-primary.inactive.chip:hover {
+  background: rgba(var(--environmental-rgb), 0.1);
+  border-color: rgba(var(--environmental-rgb), 0.18);
+}
+
+.traceability-shell .input-field {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.9), rgba(244, 247, 250, 0.78)),
+    rgba(255, 255, 255, 0.5);
+  border-color: rgba(124, 136, 149, 0.16);
+  color: var(--text-primary);
+  box-shadow: none;
+}
+
+.traceability-shell .input-field:focus {
+  border-color: rgba(var(--environmental-blue-rgb), 0.34);
+  box-shadow: 0 0 0 1px rgba(var(--environmental-blue-rgb), 0.18), 0 0 0 6px rgba(var(--environmental-blue-rgb), 0.06);
+}
+
+.traceability-solar-tooltip {
+  border-color: rgba(124, 136, 149, 0.14);
+  background:
+    radial-gradient(circle at top left, rgba(var(--environmental-rgb), 0.14), transparent 38%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(241, 247, 250, 0.86));
+  box-shadow:
+    0 18px 34px rgba(104, 116, 133, 0.16),
+    inset 0 1px 0 rgba(255, 255, 255, 0.42);
+}
+
+.traceability-solar-tooltip strong,
+.traceability-solar-tooltip p {
+  color: var(--text-primary);
+}
+
+.traceability-notice.demo {
+  border-color: rgba(var(--environmental-rgb), 0.2);
+  background:
+    linear-gradient(90deg, rgba(var(--environmental-rgb), 0.08), rgba(var(--environmental-blue-rgb), 0.06)),
+    rgba(255, 255, 255, 0.48);
+}
+
+.traceability-panel--street-stock {
+  order: 6;
+  background:
+    radial-gradient(circle at top right, rgba(var(--environmental-rgb), 0.12), transparent 30%),
+    radial-gradient(circle at bottom left, rgba(var(--brand-red-rgb), 0.08), transparent 24%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.94), rgba(242, 247, 250, 0.82));
+}
+
+.traceability-metric-card {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.9), rgba(244, 247, 250, 0.78)),
+    rgba(255, 255, 255, 0.5);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.38),
+    0 18px 34px rgba(104, 116, 133, 0.1);
+}
+
+.traceability-metric-card--warning {
+  border-color: rgba(var(--warning-rgb), 0.24);
+  background:
+    linear-gradient(180deg, rgba(var(--warning-rgb), 0.16), rgba(255, 255, 255, 0.82)),
+    rgba(255, 255, 255, 0.5);
+}
+
+.traceability-metric-card--critical {
+  border-color: rgba(var(--brand-red-rgb), 0.22);
+  background:
+    linear-gradient(180deg, rgba(var(--brand-red-rgb), 0.14), rgba(255, 255, 255, 0.82)),
+    rgba(255, 255, 255, 0.5);
+}
+
+.traceability-view-orb::before {
+  background:
+    radial-gradient(circle at 34% 28%, rgba(255, 255, 255, 0.96), rgba(255, 255, 255, 0.46) 32%, transparent 49%),
+    radial-gradient(circle at 50% 50%, rgba(230, 236, 244, 0.88) 0 54%, rgba(202, 213, 225, 0.22) 71%, transparent 74%);
+  border: 1px solid rgba(124, 136, 149, 0.12);
+  box-shadow:
+    0 22px 42px rgba(104, 116, 133, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.64);
+}
+
+.traceability-view-orb::after {
+  border: 1px solid rgba(255, 255, 255, 0.58);
+  box-shadow: inset 0 0 0 1px rgba(124, 136, 149, 0.06);
+}
+
+.traceability-view-orb__svg {
+  filter: drop-shadow(0 12px 28px rgba(104, 116, 133, 0.12));
+}
+
+.traceability-view-ring--outer {
+  stroke: rgba(155, 167, 180, 0.24);
+}
+
+.traceability-view-ring--mid {
+  stroke: rgba(203, 213, 223, 0.56);
+}
+
+.traceability-view-ring--inner {
+  stroke: rgba(124, 136, 149, 0.18);
+}
+
+.traceability-view-divider {
+  stroke: rgba(255, 255, 255, 0.82);
+}
+
+.traceability-view-segment__path {
+  stroke: rgba(255, 255, 255, 0.64);
+}
+
+.traceability-view-segment__slot {
+  stroke: rgba(124, 136, 149, 0.14);
+}
+
+.traceability-view-segment__label {
+  fill: rgba(88, 102, 119, 0.96);
+}
+
+.traceability-view-segment:hover:not(.active) .traceability-view-segment__label {
+  fill: var(--text-primary);
+}
+
+.traceability-view-segment.active .traceability-view-segment__label {
+  fill: rgba(110, 26, 33, 0.96);
+}
+
+.traceability-view-hub-spoke {
+  fill: rgba(223, 229, 236, 0.88);
+  stroke: rgba(255, 255, 255, 0.7);
+}
+
+.traceability-view-center--shell {
+  stroke: rgba(255, 255, 255, 0.78);
+}
+
+.traceability-view-center--core {
+  stroke: rgba(255, 255, 255, 0.28);
+}
+
+.traceability-view-center--axle {
+  fill: rgba(244, 247, 251, 0.92);
+  stroke: rgba(108, 120, 136, 0.22);
+}
+
+.traceability-view-center__icon {
+  fill: #f7f9fc;
+}
+
+.traceability-view-center__title {
+  fill: rgba(35, 44, 56, 0.94);
+}
+
+.traceability-view-center__meta {
+  fill: rgba(96, 106, 119, 0.82);
+}
+
+.traceability-stock-orb {
+  border-color: rgba(var(--brand-red-rgb), 0.16);
+  background:
+    radial-gradient(circle at center, rgba(255, 255, 255, 0.14) 0 40%, transparent 41%),
+    linear-gradient(160deg, rgba(var(--brand-red-rgb), 0.98), rgba(196, 28, 41, 0.92));
+  box-shadow:
+    inset 0 0 46px rgba(255, 255, 255, 0.08),
+    0 24px 46px rgba(var(--brand-red-rgb), 0.16);
+}
+
+.traceability-stock-orb::before {
+  border-color: rgba(255, 255, 255, 0.22);
+}
+
+.traceability-stock-orb::after {
+  border-color: rgba(255, 255, 255, 0.18);
+  box-shadow:
+    0 0 24px rgba(var(--brand-red-rgb), 0.16),
+    inset 0 0 26px rgba(255, 255, 255, 0.06);
+}
+
+.traceability-stock-holder__bar {
+  background: rgba(124, 136, 149, 0.12);
+}
+
+.traceability-stock-holder__meta span {
+  background: rgba(255, 255, 255, 0.82);
+  color: var(--text-secondary);
+}
+
+.traceability-control-console {
+  border: 1px solid rgba(124, 136, 149, 0.14);
+  background:
+    radial-gradient(circle at top right, rgba(var(--environmental-rgb), 0.12), transparent 28%),
+    radial-gradient(circle at bottom left, rgba(var(--brand-red-rgb), 0.08), transparent 22%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.94), rgba(242, 247, 250, 0.82));
+  box-shadow:
+    0 20px 42px rgba(104, 116, 133, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.42);
+}
+
+.traceability-query-module,
+.traceability-query-readout,
+.traceability-view-readout {
+  border: 1px solid rgba(124, 136, 149, 0.14);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.92), rgba(244, 247, 250, 0.78)),
+    rgba(255, 255, 255, 0.52);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.36);
+}
+
+.traceability-query-module::before,
+.traceability-query-readout::before,
+.traceability-view-readout::before {
+  background: linear-gradient(90deg, transparent, rgba(var(--brand-red-rgb), 0.52), rgba(var(--environmental-blue-rgb), 0.42), transparent);
+  opacity: 0.42;
+}
+
+.traceability-query-module span,
+.traceability-query-readout span,
+.traceability-view-readout span {
+  color: rgba(84, 107, 126, 0.76);
+}
+
+.traceability-query-readout strong,
+.traceability-view-readout strong {
+  color: var(--text-primary);
+}
+
+.traceability-query-readout p,
+.traceability-view-readout p {
+  color: var(--text-secondary);
+}
+
+@media (max-width: 1180px) {
+  .traceability-story {
+    grid-template-columns: 1fr;
+  }
+
+  .traceability-control-console,
+  .traceability-command-deck {
+    grid-template-columns: 1fr;
+  }
+
+  .traceability-query-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .traceability-view-selector {
+    grid-template-columns: minmax(240px, 280px) minmax(0, 1fr);
+    justify-content: start;
+  }
+
+  .traceability-stock-grid,
+  .traceability-stock-ledger {
+    grid-template-columns: 1fr;
+  }
+
+  .traceability-solar-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .traceability-panel--wide {
+    grid-column: auto;
+  }
+
+  .traceability-grid,
+  .traceability-grid--top {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 1180px) {
+  .traceability-metric-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .traceability-reference-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 1080px) {
+  .traceability-hero,
+  .traceability-filters,
+  .traceability-view-selector,
+  .traceability-core-shell {
+    grid-template-columns: 1fr;
+  }
+
+  .traceability-panel__header {
+    flex-direction: column;
+  }
+
+  .traceability-panel__header p {
+    max-width: none;
+  }
+
+  .traceability-source-card__meta {
+    grid-template-columns: 1fr;
+  }
+
+  .traceability-solar-visual {
+    min-height: auto;
+  }
+}
+
+@media (max-width: 840px) {
+  .traceability-metric-grid,
+  .traceability-reference-grid,
+  .traceability-method-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .traceability-control-console {
+    padding: 0.65rem;
+  }
+
+  .traceability-filters {
+    padding: 0.95rem;
+  }
+
+  .traceability-view-orb {
+    width: 236px;
+    height: 236px;
+  }
+
+  .traceability-beam-row,
+  .traceability-client-row,
+  .traceability-expiry-row {
+    grid-template-columns: 1fr;
+  }
+
+  .traceability-beam-share,
+  .traceability-client-share,
+  .traceability-expiry-days {
+    text-align: left;
+  }
+
+  .traceability-solar-side__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .traceability-solar-tooltip {
+    display: none;
+  }
+}
