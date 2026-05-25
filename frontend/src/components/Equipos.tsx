@@ -616,7 +616,7 @@ export default function Equipos() {
                       }
                   }}
                 >
-                  {showServicios ? '^ Ocultar Servicios' : 'v Historial de Servicios'}
+                  {showServicios ? '△ Ocultar Servicios' : '▽ Historial de Servicios'}
                 </button>
                 <button 
                   className="button-primary" 
