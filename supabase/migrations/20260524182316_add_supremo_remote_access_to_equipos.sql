@@ -1,0 +1,4 @@
+ALTER TABLE public.equipos
+  ADD COLUMN IF NOT EXISTS supremo_id TEXT,
+  ADD COLUMN IF NOT EXISTS supremo_alias TEXT,
+  ADD COLUMN IF NOT EXISTS supremo_enabled BOOLEAN NOT NULL DEFAULT false;

@@ -11,6 +11,8 @@ lerna-debug.log*
 supabase/.temp
 supabase/.branches
 supabase/dump.sql
+supabase/functions/.env
+supabase/functions/.env.*
 
 # Frontend
 frontend/node_modules
@@ -19,6 +21,46 @@ frontend/dist-ssr
 frontend/*.local
 frontend/.env.local
 frontend/.env.*.local
+frontend/public/videos/A15_change_lamp.mp4
+frontend/public/sla-alerts/*.wav
+frontend/tmp-service-report-preview/
+frontend/scratch*.js
+frontend/scripts/
+frontend/seed_*.cjs
+frontend/seed_*.js
+frontend/update_users.cjs
+
+# Local project data and generated research assets
+/.venv/
+/A15-program data/
+/BA400-program data/
+/ai_docs/
+/planeaciones/
+/respaldo-servicios-*/
+/scripts/
+/catalog.json
+/equipment_index.json
+/ignored_files.json
+/eng.traineddata
+/spa.traineddata
+/extracted_lamp.txt
+/refacciones_spare_parts_2025_con_paginas.xlsx
+/inventario 3 de mayo del 2026.xlsx
+/listado_precios_productos.csv
+/Brand Elements | BioSystems Brand Centre.pdf
+/Copia de Logo_Orion_imagotipo.png
+/imagenes_refacciones/
+/Logo_Orion.png
+/Logo_Orion_ico.png
+/Logo_Orion_icono.png
+/orion v3.png
+/supremo_icon.png
+/*.mp3
+/*.xlsx
+/*.csv
+/*.pdf
+/*.af~lock~
+/~$*
 
 # Editor directories and files
 .vscode/*

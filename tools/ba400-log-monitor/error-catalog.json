@@ -1,0 +1,562 @@
+{
+  "0": {
+    "description": "Without Errors",
+    "section": "CPU"
+  },
+  "1": {
+    "description": "\u201cCPU Firmware Mismatch. Update from repository must be done\u201d",
+    "section": "CPU"
+  },
+  "2": {
+    "description": "\u201cDistributed Firmware Mismatch. Update from repository must be done\u201d",
+    "section": "CPU"
+  },
+  "3": {
+    "description": "FW Repository Error",
+    "section": "CPU"
+  },
+  "4": {
+    "description": "A400 FW Error (Checksums)",
+    "section": "CPU"
+  },
+  "5": {
+    "description": "A400 FW Execution Error",
+    "section": "CPU"
+  },
+  "6": {
+    "description": "\u201cManeuvers/Adjustments Mismatch. Update from repository must be done\u201d",
+    "section": "CPU"
+  },
+  "10": {
+    "description": "CAN Bus Error",
+    "section": "CPU"
+  },
+  "20": {
+    "description": "\u201cInstruction Rejected by a previous Error (Permanent or Self-recover like covers) (Stand by-Running)\u201d",
+    "section": "CPU"
+  },
+  "21": {
+    "description": "Instruction Aborted by an Error (Stand by-Running)",
+    "section": "CPU"
+  },
+  "22": {
+    "description": "Recover Failed",
+    "section": "CPU"
+  },
+  "28": {
+    "description": "\u201cImpossible to perform TEST/PTEST/WRUN; Wait to next Cycle\u201d",
+    "section": "CPU"
+  },
+  "34": {
+    "description": "\u201cImpossible to perform TEST/PTEST/WRUN; Already received one in the same cycle\u201d",
+    "section": "CPU"
+  },
+  "35": {
+    "description": "Error in Scheduler Table",
+    "section": "CPU"
+  },
+  "40": {
+    "description": "Instruction unknown or with wrong parameter",
+    "section": "CPU"
+  },
+  "41": {
+    "description": "Instruction Not Allowed on This State",
+    "section": "CPU"
+  },
+  "42": {
+    "description": "Instruction Not Allowed on This Instruction",
+    "section": "CPU"
+  },
+  "43": {
+    "description": "COMMAND script wrong",
+    "section": "CPU"
+  },
+  "45": {
+    "description": "LOADADJ Wrong",
+    "section": "CPU"
+  },
+  "61": {
+    "description": "ISE Time Out",
+    "section": "CPU"
+  },
+  "70": {
+    "description": "Main Cover opened while instrument is working",
+    "section": "CPU"
+  },
+  "99": {
+    "description": "Multiple Errors",
+    "section": "CPU"
+  },
+  "100": {
+    "description": "BR1 Vertical Home Error",
+    "section": "BR1,BR2,BM1,AG1,AG2"
+  },
+  "101": {
+    "description": "BR1 Horizontal Home Error",
+    "section": "BR1,BR2,BM1,AG1,AG2"
+  },
+  "102": {
+    "description": "BR1 Vertical step loss detected",
+    "section": "BR1,BR2,BM1,AG1,AG2"
+  },
+  "103": {
+    "description": "BR1 HOME Error in recovery state",
+    "section": "BR1,BR2,BM1,AG1,AG2"
+  },
+  "108": {
+    "description": "BR1 Board doesn't answer",
+    "section": "BR1,BR2,BM1,AG1,AG2"
+  },
+  "109": {
+    "description": "BR1 Board Reset",
+    "section": "BR1,BR2,BM1,AG1,AG2"
+  },
+  "110": {
+    "description": "BR2 Vertical Home Error",
+    "section": "BR1,BR2,BM1,AG1,AG2"
+  },
+  "111": {
+    "description": "BR2 Horizontal Home Error",
+    "section": "BR1,BR2,BM1,AG1,AG2"
+  },
+  "112": {
+    "description": "BR2 Vertical step loss detected",
+    "section": "BR1,BR2,BM1,AG1,AG2"
+  },
+  "113": {
+    "description": "BR2 HOME Error in recovery state",
+    "section": "BR1,BR2,BM1,AG1,AG2"
+  },
+  "118": {
+    "description": "BR2 Board doesn't answer",
+    "section": "BR1,BR2,BM1,AG1,AG2"
+  },
+  "119": {
+    "description": "BR2 Board Reset",
+    "section": "BR1,BR2,BM1,AG1,AG2"
+  },
+  "120": {
+    "description": "BM1 Vertical Home Error",
+    "section": "BR1,BR2,BM1,AG1,AG2"
+  },
+  "121": {
+    "description": "BM1 Horizontal Home Error",
+    "section": "BR1,BR2,BM1,AG1,AG2"
+  },
+  "122": {
+    "description": "BM1 Vertical step loss detected",
+    "section": "BR1,BR2,BM1,AG1,AG2"
+  },
+  "123": {
+    "description": "BM1 HOME Error in recovery state",
+    "section": "BR1,BR2,BM1,AG1,AG2"
+  },
+  "128": {
+    "description": "BM1 Board doesn't answer",
+    "section": "BR1,BR2,BM1,AG1,AG2"
+  },
+  "129": {
+    "description": "BM1 Board Reset",
+    "section": "BR1,BR2,BM1,AG1,AG2"
+  },
+  "130": {
+    "description": "AG1 Vertical Home Error",
+    "section": "BR1,BR2,BM1,AG1,AG2"
+  },
+  "131": {
+    "description": "AG1 Horizontal Home Error",
+    "section": "BR1,BR2,BM1,AG1,AG2"
+  },
+  "132": {
+    "description": "AG1 Vertical step loss detected",
+    "section": "BR1,BR2,BM1,AG1,AG2"
+  },
+  "133": {
+    "description": "AG1 HOME Error in recovery state",
+    "section": "BR1,BR2,BM1,AG1,AG2"
+  },
+  "138": {
+    "description": "AG1 Board doesn't answer",
+    "section": "BR1,BR2,BM1,AG1,AG2"
+  },
+  "139": {
+    "description": "AG1 Board Reset",
+    "section": "BR1,BR2,BM1,AG1,AG2"
+  },
+  "140": {
+    "description": "AG2 Vertical Home Error",
+    "section": "BR1,BR2,BM1,AG1,AG2"
+  },
+  "141": {
+    "description": "AG2 Horizontal Home Error",
+    "section": "BR1,BR2,BM1,AG1,AG2"
+  },
+  "142": {
+    "description": "AG2 Vertical step loss detected",
+    "section": "BR1,BR2,BM1,AG1,AG2"
+  },
+  "143": {
+    "description": "AG2 HOME Error in recovery state",
+    "section": "BR1,BR2,BM1,AG1,AG2"
+  },
+  "148": {
+    "description": "AG2 Board doesn't answer",
+    "section": "BR1,BR2,BM1,AG1,AG2"
+  },
+  "149": {
+    "description": "AG2 Board Res",
+    "section": "BR1,BR2,BM1,AG1,AG2"
+  },
+  "200": {
+    "description": "DR1 Freq. Detection system Error (Frequency Wrong)",
+    "section": "DR1,DR2,DM1"
+  },
+  "201": {
+    "description": "DR1 Probe Thermistor Error",
+    "section": "DR1,DR2,DM1"
+  },
+  "202": {
+    "description": "DR1 Probe Heater Error",
+    "section": "DR1,DR2,DM1"
+  },
+  "203": {
+    "description": "DR1 Collision Detected",
+    "section": "DR1,DR2,DM1"
+  },
+  "208": {
+    "description": "DR1 Board doesn\u2019t answer",
+    "section": "DR1,DR2,DM1"
+  },
+  "209": {
+    "description": "DR1 Board Reset",
+    "section": "DR1,DR2,DM1"
+  },
+  "210": {
+    "description": "DR2 Freq. Detection system Error (Frequency Wrong)",
+    "section": "DR1,DR2,DM1"
+  },
+  "211": {
+    "description": "DR2 Probe Thermistor Error",
+    "section": "DR1,DR2,DM1"
+  },
+  "212": {
+    "description": "DR2 Probe Heater Error",
+    "section": "DR1,DR2,DM1"
+  },
+  "213": {
+    "description": "DR2 Collision Detected",
+    "section": "DR1,DR2,DM1"
+  },
+  "218": {
+    "description": "DR2 Board doesn\u2019t answer",
+    "section": "DR1,DR2,DM1"
+  },
+  "219": {
+    "description": "DR2 Board Reset",
+    "section": "DR1,DR2,DM1"
+  },
+  "220": {
+    "description": "DM1 Freq. Detection system Error (Frequency Wrong)",
+    "section": "DR1,DR2,DM1"
+  },
+  "223": {
+    "description": "DM1 Collision Detected",
+    "section": "DR1,DR2,DM1"
+  },
+  "228": {
+    "description": "DM1 Board doesn\u2019t answer",
+    "section": "DR1,DR2,DM1"
+  },
+  "229": {
+    "description": "DM1 Board Reset",
+    "section": "DR1,DR2,DM1"
+  },
+  "300": {
+    "description": "RR1 Home Error",
+    "section": "RR1, RM1"
+  },
+  "301": {
+    "description": "RR1 Fridge Temperature Alarm",
+    "section": "RR1, RM1"
+  },
+  "302": {
+    "description": "RR1 Fridge Peltiers Error",
+    "section": "RR1, RM1"
+  },
+  "303": {
+    "description": "RR1 Fridge Fans Error",
+    "section": "RR1, RM1"
+  },
+  "305": {
+    "description": "RR1 Cover Opened",
+    "section": "RR1, RM1"
+  },
+  "310": {
+    "description": "RR1 Code Bar Reader Error",
+    "section": "RR1, RM1"
+  },
+  "311": {
+    "description": "RR1 Code Bar Reader Time Out Error",
+    "section": "RR1, RM1"
+  },
+  "348": {
+    "description": "RR1 Board doesn't answer",
+    "section": "RR1, RM1"
+  },
+  "349": {
+    "description": "RR1 Board Reset",
+    "section": "RR1, RM1"
+  },
+  "350": {
+    "description": "RR1 Home Error",
+    "section": "RR1, RM1"
+  },
+  "355": {
+    "description": "RM1 Cover Opened",
+    "section": "RR1, RM1"
+  },
+  "360": {
+    "description": "RM1 Code Bar Reader Error",
+    "section": "RR1, RM1"
+  },
+  "361": {
+    "description": "RM1 Code Bar Reader Time Out Error",
+    "section": "RR1, RM1"
+  },
+  "398": {
+    "description": "RM1 Board doesn't answer",
+    "section": "RR1, RM1"
+  },
+  "399": {
+    "description": "RM1 Board Reset",
+    "section": "RR1, RM1"
+  },
+  "500": {
+    "description": "Rotor Home Error",
+    "section": "GLF"
+  },
+  "501": {
+    "description": "Rotor Encoder Error",
+    "section": "GLF"
+  },
+  "502": {
+    "description": "Rotor Safety Stop: Washing Station Down",
+    "section": "GLF"
+  },
+  "503": {
+    "description": "Photometrics Cover Opened",
+    "section": "GLF"
+  },
+  "504": {
+    "description": "Washing Station Collision",
+    "section": "GLF"
+  },
+  "510": {
+    "description": "Photometrics Temperature Alarm",
+    "section": "GLF"
+  },
+  "511": {
+    "description": "Photometrics Peltiers Error",
+    "section": "GLF"
+  },
+  "512": {
+    "description": "Photometrics Fans Error",
+    "section": "GLF"
+  },
+  "520": {
+    "description": "Washing Station Home Error",
+    "section": "GLF"
+  },
+  "530": {
+    "description": "Photometric Board not detected",
+    "section": "GLF"
+  },
+  "550": {
+    "description": "Methacrylate Rotor Missing",
+    "section": "GLF"
+  },
+  "598": {
+    "description": "GLF Board doesn\u2019t answer",
+    "section": "GLF"
+  },
+  "599": {
+    "description": "GLF Board Reset",
+    "section": "GLF"
+  },
+  "600": {
+    "description": "Washing Station Pump Home Error",
+    "section": "SFX"
+  },
+  "610": {
+    "description": "Washing Station Heater Temperature Alarm",
+    "section": "SFX"
+  },
+  "611": {
+    "description": "Washing Station Heater Error",
+    "section": "SFX"
+  },
+  "620": {
+    "description": "Waste Tank Sensor Impossible Value",
+    "section": "SFX"
+  },
+  "621": {
+    "description": "Too much time to empty Waste Tank",
+    "section": "SFX"
+  },
+  "630": {
+    "description": "Water Tank Sensor Impossible Value",
+    "section": "SFX"
+  },
+  "631": {
+    "description": "Too much time to fill Water Tank",
+    "section": "SFX"
+  },
+  "640": {
+    "description": "High Contamination Waste Gauge electronics error",
+    "section": "SFX"
+  },
+  "650": {
+    "description": "Washing Solution Gauge electronics error",
+    "section": "SFX"
+  },
+  "660": {
+    "description": "Error detected in B1",
+    "section": "SFX"
+  },
+  "661": {
+    "description": "Error detected in B2",
+    "section": "SFX"
+  },
+  "662": {
+    "description": "Error detected in B3",
+    "section": "SFX"
+  },
+  "663": {
+    "description": "Error detected in B4",
+    "section": "SFX"
+  },
+  "664": {
+    "description": "Error detected in B5",
+    "section": "SFX"
+  },
+  "665": {
+    "description": "Error detected in B6",
+    "section": "SFX"
+  },
+  "666": {
+    "description": "Error detected in B7",
+    "section": "SFX"
+  },
+  "667": {
+    "description": "Error detected in B8",
+    "section": "SFX"
+  },
+  "668": {
+    "description": "Error detected in B9",
+    "section": "SFX"
+  },
+  "669": {
+    "description": "Error detected in B10",
+    "section": "SFX"
+  },
+  "670": {
+    "description": "Error detected in GE1",
+    "section": "SFX"
+  },
+  "671": {
+    "description": "Error detected in EV1",
+    "section": "SFX"
+  },
+  "672": {
+    "description": "Error detected in EV2",
+    "section": "SFX"
+  },
+  "673": {
+    "description": "Error detected in EV3",
+    "section": "SFX"
+  },
+  "698": {
+    "description": "SF1 Board doesn't answer",
+    "section": "SFX"
+  },
+  "699": {
+    "description": "SF1 Board Reset",
+    "section": "SFX"
+  },
+  "700": {
+    "description": "Sample Pump Home Error",
+    "section": "JEX"
+  },
+  "701": {
+    "description": "Reagent 1 Pump Home Error",
+    "section": "JEX"
+  },
+  "702": {
+    "description": "Reagent 2 Pump Home Error",
+    "section": "JEX"
+  },
+  "710": {
+    "description": "Clot Detector Hardware Error",
+    "section": "JEX"
+  },
+  "711": {
+    "description": "Sample Fluidics Obstructed",
+    "section": "JEX"
+  },
+  "720": {
+    "description": "Error detected in B1",
+    "section": "JEX"
+  },
+  "721": {
+    "description": "Error detected in B2",
+    "section": "JEX"
+  },
+  "722": {
+    "description": "Error detected in B3",
+    "section": "JEX"
+  },
+  "723": {
+    "description": "Error detected in B4",
+    "section": "JEX"
+  },
+  "724": {
+    "description": "Error detected in EV1",
+    "section": "JEX"
+  },
+  "725": {
+    "description": "Error detected in EV2",
+    "section": "JEX"
+  },
+  "726": {
+    "description": "Error detected in EV3",
+    "section": "JEX"
+  },
+  "727": {
+    "description": "Error detected in EV4",
+    "section": "JEX"
+  },
+  "728": {
+    "description": "Error detected in EV5",
+    "section": "JEX"
+  },
+  "729": {
+    "description": "Error detected in EV6",
+    "section": "JEX"
+  },
+  "730": {
+    "description": "Error detected in EV7",
+    "section": "JEX"
+  },
+  "731": {
+    "description": "Error detected in EV8",
+    "section": "JEX"
+  },
+  "798": {
+    "description": "JE1 Board doesn\u2019t answer",
+    "section": "JEX"
+  },
+  "799": {
+    "description": "JE1 Board Reset",
+    "section": "JEX"
+  }
+}

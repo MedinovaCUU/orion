@@ -1,0 +1,241 @@
+.tutoriales-shell {
+  position: relative;
+  margin-top: 1rem;
+}
+
+.tutoriales-shell::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  border-radius: 30px;
+  background:
+    radial-gradient(circle at 12% 12%, rgba(var(--clinical-rgb), 0.12), transparent 24%),
+    radial-gradient(circle at 84% 18%, rgba(var(--bioprocess-rgb), 0.11), transparent 26%),
+    radial-gradient(circle at 80% 90%, rgba(var(--veterinary-rgb), 0.08), transparent 22%);
+  opacity: 0.86;
+}
+
+.tutoriales-card-shell {
+  background:
+    radial-gradient(circle at top right, rgba(var(--clinical-rgb), 0.08), transparent 28%),
+    radial-gradient(circle at 0% 100%, rgba(var(--bioprocess-rgb), 0.08), transparent 24%),
+    linear-gradient(160deg, rgba(255, 255, 255, 0.9), rgba(242, 246, 250, 0.74)),
+    rgba(255, 255, 255, 0.56);
+}
+
+.tutoriales-intro {
+  margin-bottom: 1.5rem;
+}
+
+.tutoriales-intro h3 {
+  margin-bottom: 0.85rem;
+}
+
+.tutoriales-intro p {
+  color: var(--text-secondary);
+  max-width: 52rem;
+}
+
+.tutoriales-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 1rem;
+}
+
+.tutoriales-item {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  border-radius: 24px;
+  border: 1px solid var(--surface-outline);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.94), rgba(244, 247, 250, 0.82)),
+    rgba(255, 255, 255, 0.54);
+  cursor: pointer;
+  transition:
+    transform 0.24s ease,
+    box-shadow 0.24s ease,
+    border-color 0.24s ease;
+  box-shadow: var(--surface-shadow);
+}
+
+.tutoriales-item::after {
+  content: '';
+  position: absolute;
+  inset: 1px;
+  border-radius: inherit;
+  pointer-events: none;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+}
+
+.tutoriales-item:hover {
+  transform: translateY(-4px);
+  border-color: rgba(var(--clinical-rgb), 0.24);
+  box-shadow: var(--surface-shadow-strong);
+}
+
+.tutoriales-item__hero {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 0.95rem;
+  min-height: 238px;
+  padding: 1.15rem 1.1rem 1rem;
+  border-bottom: 1px solid rgba(124, 136, 149, 0.12);
+  background:
+    radial-gradient(circle at top right, rgba(var(--clinical-rgb), 0.14), transparent 38%),
+    radial-gradient(circle at bottom left, rgba(var(--bioprocess-rgb), 0.12), transparent 34%),
+    linear-gradient(165deg, rgba(255, 255, 255, 0.96), rgba(243, 247, 250, 0.84)),
+    rgba(255, 255, 255, 0.62);
+}
+
+.tutoriales-item__hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(140deg, rgba(255, 255, 255, 0.32), transparent 32%),
+    radial-gradient(circle at 88% 12%, rgba(var(--veterinary-rgb), 0.08), transparent 18%);
+}
+
+.tutoriales-item__top,
+.tutoriales-item__copy,
+.tutoriales-item__stats,
+.tutoriales-item__footer {
+  position: relative;
+  z-index: 1;
+}
+
+.tutoriales-item__top {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.75rem;
+  align-items: flex-start;
+}
+
+.tutoriales-item__eyebrow {
+  font-size: 0.72rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(var(--brand-red-rgb), 0.7);
+}
+
+.tutoriales-item__severity {
+  display: inline-flex;
+  align-items: center;
+  min-height: 32px;
+  padding: 0.28rem 0.72rem;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  border: 1px solid transparent;
+}
+
+.tutoriales-item__severity--critico {
+  color: #8e2430;
+  background: linear-gradient(180deg, rgba(var(--brand-red-rgb), 0.18), rgba(var(--brand-red-rgb), 0.1));
+  border-color: rgba(var(--brand-red-rgb), 0.22);
+}
+
+.tutoriales-item__severity--alto {
+  color: #96501b;
+  background: linear-gradient(180deg, rgba(var(--clinical-rgb), 0.18), rgba(var(--bioprocess-rgb), 0.12));
+  border-color: rgba(var(--clinical-rgb), 0.2);
+}
+
+.tutoriales-item__severity--medio {
+  color: #4d6785;
+  background: linear-gradient(180deg, rgba(var(--environmental-blue-rgb), 0.16), rgba(var(--veterinary-rgb), 0.1));
+  border-color: rgba(var(--environmental-blue-rgb), 0.18);
+}
+
+.tutoriales-item__severity--bajo {
+  color: #2d7a5c;
+  background: linear-gradient(180deg, rgba(var(--food-rgb), 0.17), rgba(var(--environmental-rgb), 0.1));
+  border-color: rgba(var(--food-rgb), 0.18);
+}
+
+.tutoriales-item__title {
+  display: block;
+  margin-bottom: 0.68rem;
+  color: var(--text-primary);
+  font-family: var(--font-heading);
+  font-size: 1.05rem;
+  line-height: 1.35;
+}
+
+.tutoriales-item__description {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  line-height: 1.62;
+}
+
+.tutoriales-item__stats {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.65rem;
+}
+
+.tutoriales-item__stat {
+  padding: 0.78rem 0.82rem;
+  border-radius: 16px;
+  border: 1px solid rgba(124, 136, 149, 0.12);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.88), rgba(244, 247, 250, 0.72)),
+    rgba(255, 255, 255, 0.42);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.34);
+}
+
+.tutoriales-item__stat-label {
+  font-size: 0.68rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+}
+
+.tutoriales-item__stat-value {
+  margin-top: 0.32rem;
+  color: var(--text-primary);
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+.tutoriales-item__assist {
+  color: var(--text-tertiary);
+  font-size: 0.82rem;
+}
+
+.tutoriales-item__footer {
+  padding: 0.9rem 1rem 1rem;
+}
+
+.tutoriales-item__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+
+.tutoriales-item__tag {
+  padding: 0.24rem 0.58rem;
+  border-radius: 999px;
+  border: 1px solid rgba(124, 136, 149, 0.14);
+  background: rgba(255, 255, 255, 0.8);
+  color: var(--text-secondary);
+  font-size: 0.73rem;
+}
+
+@media (max-width: 720px) {
+  .tutoriales-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .tutoriales-item__hero {
+    min-height: 216px;
+  }
+}

@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { supabase } from '../supabaseClient';
+import { getValidatedSession, supabase } from '../supabaseClient';
 import { useNavigate } from 'react-router-dom';
 import './Login.css';
+import BrandLockup from './BrandLockup';
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -13,9 +14,21 @@ export default function Login() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      if (session) navigate('/dashboard');
-    });
+    let cancelled = false;
+
+    const syncSession = async () => {
+      const session = await getValidatedSession();
+
+      if (!cancelled && session) {
+        navigate('/dashboard');
+      }
+    };
+
+    void syncSession();
+
+    return () => {
+      cancelled = true;
+    };
   }, [navigate]);
 
   const handleAuth = async (e: React.FormEvent) => {
@@ -41,14 +54,23 @@ export default function Login() {
   };
 
   return (
-    <div className="login-container">
-      <div className="card login-card">
-        <h2 className="login-title">
-          {isSignUp ? 'Crear una cuenta' : 'Iniciar sesión'}
-        </h2>
-        <p className="login-subtitle">
-          Sistema de Tickets y Soporte Biosystems
-        </p>
+    <div className="login-container login-container--auth">
+      <div className="card login-card login-card--auth">
+        <BrandLockup
+          variant="auth"
+          eyebrow="BioSystems"
+          title={isSignUp ? 'Alta de usuario Orion' : 'Acceso Orion'}
+          subtitle="Plataforma operativa para soporte técnico, planeación de servicio y trazabilidad."
+        />
+        <div className="login-copy">
+          <span className="login-kicker">{isSignUp ? 'Configuración inicial' : 'Acceso del personal'}</span>
+          <h2 className="login-title">
+            {isSignUp ? 'Crear una cuenta' : 'Iniciar sesión'}
+          </h2>
+          <p className="login-subtitle">
+            Consola de tickets, reportes, inventario, trazabilidad y soporte de campo.
+          </p>
+        </div>
 
         {errorMsg && <div className="error-alert">{errorMsg}</div>}
 
