@@ -24,6 +24,11 @@ frontend/.env.*.local
 frontend/public/videos/A15_change_lamp.mp4
 frontend/public/sla-alerts/*.wav
 frontend/tmp-service-report-preview/
+frontend/scratch*.js
+frontend/scripts/
+frontend/seed_*.cjs
+frontend/seed_*.js
+frontend/update_users.cjs
 
 # Local project data and generated research assets
 /.venv/
