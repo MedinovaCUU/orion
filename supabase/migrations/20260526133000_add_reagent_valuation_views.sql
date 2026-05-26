@@ -267,10 +267,14 @@ values
   ('23512', 'BAX00', 'PROTEIN URINE BAX00', 'PROTEIN URINE', '4x20 mL', 266, 240, 210, 'Hoja1'),
   ('12501', 'AX5', 'PROTEIN URINE AX5', 'PROTEIN URINE', '5x50 mL', 833, 800, 720, 'Hoja1');
 
+drop view if exists public.v_equipment_reagent_consumption_summary;
+drop view if exists public.v_equipment_reagent_consumption_detail;
+
 create or replace view public.v_equipment_reagent_consumption_detail as
 with aggregated as (
   select
     crh.numero_serie,
+    crh.bucket_month,
     coalesce(nullif(crh.modelo, ''), case
       when crh.numero_serie like '834%' then 'BA400'
       when crh.numero_serie like '832%' then 'BA200'
@@ -300,6 +304,7 @@ with aggregated as (
   from public.consumo_reactivos_hora crh
   group by
     crh.numero_serie,
+    crh.bucket_month,
     coalesce(nullif(crh.modelo, ''), case
       when crh.numero_serie like '834%' then 'BA400'
       when crh.numero_serie like '832%' then 'BA200'
@@ -374,6 +379,7 @@ resolved as (
 priced as (
   select
     resolved.numero_serie,
+    resolved.bucket_month,
     resolved.modelo,
     resolved.modelo_familia,
     resolved.test_name,
@@ -416,6 +422,7 @@ priced as (
 )
 select
   numero_serie,
+  bucket_month,
   modelo,
   modelo_familia,
   test_name,
@@ -456,6 +463,7 @@ from priced;
 create or replace view public.v_equipment_reagent_consumption_summary as
 select
   numero_serie,
+  bucket_month,
   max(modelo) as modelo,
   max(modelo_familia) as modelo_familia,
   sum(pruebas_registradas) as pruebas_registradas,
@@ -479,4 +487,4 @@ select
   min(first_event_at) as first_event_at,
   max(last_event_at) as last_event_at
 from public.v_equipment_reagent_consumption_detail
-group by numero_serie;
+group by numero_serie, bucket_month;

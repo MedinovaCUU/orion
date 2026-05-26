@@ -510,6 +510,17 @@ html.equipment-monitor__body-scroll-lock {
   border-top: 1px solid rgba(124, 136, 149, 0.12);
 }
 
+.equipment-monitor__section-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.equipment-monitor__section-head .button-primary.chip {
+  white-space: nowrap;
+}
+
 .equipment-monitor__focus-kpis {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -562,6 +573,47 @@ html.equipment-monitor__body-scroll-lock {
 .equipment-monitor__consumption-list {
   display: grid;
   gap: 0.8rem;
+}
+
+.equipment-monitor__monthly-history {
+  display: grid;
+  gap: 0.7rem;
+}
+
+.equipment-monitor__monthly-history-list {
+  display: grid;
+  gap: 0.7rem;
+}
+
+.equipment-monitor__monthly-history-card {
+  appearance: none;
+  width: 100%;
+  padding: 0.9rem 0.95rem;
+  border-radius: 18px;
+  border: 1px solid rgba(124, 136, 149, 0.12);
+  background: rgba(255, 255, 255, 0.64);
+  color: inherit;
+  display: grid;
+  gap: 0.28rem;
+  text-align: left;
+  cursor: pointer;
+  transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease, background 0.22s ease;
+}
+
+.equipment-monitor__monthly-history-card small {
+  color: var(--text-secondary);
+}
+
+.equipment-monitor__monthly-history-card:hover {
+  transform: translateY(-1px);
+  border-color: rgba(var(--brand-red-rgb), 0.2);
+  box-shadow: 0 12px 28px rgba(104, 116, 133, 0.1);
+}
+
+.equipment-monitor__monthly-history-card--selected {
+  border-color: rgba(var(--brand-red-rgb), 0.28);
+  background: linear-gradient(180deg, rgba(var(--brand-red-rgb), 0.08), rgba(255, 255, 255, 0.78));
+  box-shadow: 0 12px 28px rgba(104, 116, 133, 0.1);
 }
 
 .equipment-monitor__consumption-card {
@@ -710,6 +762,11 @@ html.equipment-monitor__body-scroll-lock {
 @media (max-width: 720px) {
   .equipment-monitor__map-stage {
     min-height: 28rem;
+  }
+
+  .equipment-monitor__section-head {
+    flex-direction: column;
+    align-items: flex-start;
   }
 
   .equipment-monitor__focus-meta {

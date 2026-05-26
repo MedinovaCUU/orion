@@ -126,6 +126,7 @@ interface RotorSummaryRow {
 
 interface ReagentConsumptionSummaryRow {
   numero_serie: string;
+  bucket_month: string;
   modelo: string | null;
   modelo_familia: string | null;
   pruebas_registradas: NumericLike;
@@ -152,6 +153,7 @@ interface ReagentConsumptionSummaryRow {
 
 interface ReagentConsumptionDetailRow {
   numero_serie: string;
+  bucket_month: string;
   modelo: string | null;
   modelo_familia: string | null;
   test_name: string;
@@ -234,6 +236,7 @@ interface MonitoringEquipment {
   telemetry: SupplySnapshotRow | null;
   rotorSummary: RotorSummaryRow | null;
   reagentSummary: ReagentConsumptionSummaryRow | null;
+  reagentSummaries: ReagentConsumptionSummaryRow[];
   searchText: string;
 }
 
@@ -246,6 +249,10 @@ const MAP_ZOOM_MIN = 1;
 const MAP_ZOOM_MAX = 7;
 const MAP_ZOOM_STEP = 0.25;
 const SUPREMO_LAUNCH_TIMEOUT_MS = 1800;
+const CURRENT_REAGENT_BUCKET_MONTH = (() => {
+  const now = new Date();
+  return `${now.getFullYear()}${String(now.getMonth() + 1).padStart(2, '0')}`;
+})();
 
 const STATUS_PRIORITY: Record<EquipmentHealthStatus, number> = {
   ok: 1,
@@ -355,6 +362,8 @@ const clampPercent = (value: number) => clampValue(value, 0.8, 99.2);
 const roundMapPercent = (value: number) => Math.round(value * 1000) / 1000;
 const roundZoom = (value: number) => Math.round(value * 100) / 100;
 
+const compareBucketMonthDesc = (left: string, right: string) => right.localeCompare(left, 'es-MX');
+
 const compareErrorsDesc = (left: EquipmentErrorRow, right: EquipmentErrorRow) => {
   const timeDiff = new Date(getEventTimestamp(right)).getTime() - new Date(getEventTimestamp(left)).getTime();
   if (timeDiff !== 0) {
@@ -416,18 +425,47 @@ const buildRotorIndex = (rows: RotorSummaryRow[]) => {
 };
 
 const buildReagentSummaryIndex = (rows: ReagentConsumptionSummaryRow[]) => {
-  const indexed = new Map<string, ReagentConsumptionSummaryRow>();
+  const indexed = new Map<string, ReagentConsumptionSummaryRow[]>();
 
   rows.forEach((row) => {
     const normalizedSerial = normalizeSerial(row.numero_serie);
-    if (!normalizedSerial || indexed.has(normalizedSerial)) {
+    if (!normalizedSerial) {
       return;
     }
 
-    indexed.set(normalizedSerial, row);
+    const current = indexed.get(normalizedSerial) || [];
+    current.push(row);
+    indexed.set(normalizedSerial, current);
+  });
+
+  indexed.forEach((serialRows) => {
+    serialRows.sort((left, right) => {
+      const bucketDiff = compareBucketMonthDesc(left.bucket_month || '', right.bucket_month || '');
+      if (bucketDiff !== 0) {
+        return bucketDiff;
+      }
+
+      return new Date(right.last_event_at || 0).getTime() - new Date(left.last_event_at || 0).getTime();
+    });
   });
 
   return indexed;
+};
+
+const formatBucketMonth = (bucketMonth?: string | null) => {
+  if (!bucketMonth || bucketMonth.length !== 6) {
+    return 'Sin dato';
+  }
+
+  const year = Number.parseInt(bucketMonth.slice(0, 4), 10);
+  const month = Number.parseInt(bucketMonth.slice(4, 6), 10) - 1;
+  const date = new Date(year, month, 1);
+
+  if (Number.isNaN(date.getTime())) {
+    return 'Sin dato';
+  }
+
+  return new Intl.DateTimeFormat('es-MX', { month: 'long', year: 'numeric' }).format(date);
 };
 
 const buildCurrentErrorStateIndex = (rows: CurrentEquipmentErrorStateRow[]) => {
@@ -532,7 +570,9 @@ const buildEquipmentList = (snapshot: MonitoringSnapshot): MonitoringEquipment[]
       const recentErrors = errorState?.recentRows || [];
       const telemetry = normalizedSerial ? supplyIndex.get(normalizedSerial) || null : null;
       const rotorSummary = normalizedSerial ? rotorIndex.get(normalizedSerial) || null : null;
-      const reagentSummary = normalizedSerial ? reagentSummaryIndex.get(normalizedSerial) || null : null;
+      const reagentSummaries = normalizedSerial ? reagentSummaryIndex.get(normalizedSerial) || [] : [];
+      const reagentSummary =
+        reagentSummaries.find((row) => row.bucket_month === CURRENT_REAGENT_BUCKET_MONTH) || null;
       const normalizedState = mapPoint?.normalizedState || equipment.estado || null;
       const model =
         equipment.modelo ||
@@ -575,25 +615,10 @@ const buildEquipmentList = (snapshot: MonitoringSnapshot): MonitoringEquipment[]
         telemetry,
         rotorSummary,
         reagentSummary,
+        reagentSummaries,
         searchText,
       };
     });
-};
-
-const formatRotorBucket = (bucketMonth?: string | null) => {
-  if (!bucketMonth || bucketMonth.length !== 6) {
-    return 'Sin dato';
-  }
-
-  const year = Number.parseInt(bucketMonth.slice(0, 4), 10);
-  const month = Number.parseInt(bucketMonth.slice(4, 6), 10) - 1;
-  const date = new Date(year, month, 1);
-
-  if (Number.isNaN(date.getTime())) {
-    return 'Sin dato';
-  }
-
-  return new Intl.DateTimeFormat('es-MX', { month: 'long', year: 'numeric' }).format(date);
 };
 
 const renderElectrodeState = (label: string, value?: string | null) => (
@@ -681,6 +706,8 @@ export default function EquipmentMonitoring() {
   const [selectedReagentRows, setSelectedReagentRows] = useState<ReagentConsumptionDetailRow[]>([]);
   const [loadingReagentRows, setLoadingReagentRows] = useState(false);
   const [reagentLoadError, setReagentLoadError] = useState<string | null>(null);
+  const [isReagentDetailCollapsed, setIsReagentDetailCollapsed] = useState(false);
+  const [selectedReagentBucketMonth, setSelectedReagentBucketMonth] = useState(CURRENT_REAGENT_BUCKET_MONTH);
 
   const deferredSearch = useDeferredValue(search.trim().toLowerCase());
 
@@ -762,7 +789,7 @@ export default function EquipmentMonitoring() {
         supabase
           .from('v_equipment_reagent_consumption_summary')
           .select(
-            'numero_serie,modelo,modelo_familia,pruebas_registradas,muestras_paciente,blancos,calibraciones,controles,pruebas_distintas,pruebas_distintas_con_precio,pruebas_distintas_sin_precio,pruebas_con_precio,pruebas_sin_precio,valor_estimado_total_sin_iva,valor_estimado_total_con_iva,valor_estimado_pacientes_sin_iva,valor_estimado_pacientes_con_iva,valor_estimado_total_sin_iva_min,valor_estimado_total_sin_iva_max,valor_estimado_total_con_iva_min,valor_estimado_total_con_iva_max,first_event_at,last_event_at',
+            'numero_serie,bucket_month,modelo,modelo_familia,pruebas_registradas,muestras_paciente,blancos,calibraciones,controles,pruebas_distintas,pruebas_distintas_con_precio,pruebas_distintas_sin_precio,pruebas_con_precio,pruebas_sin_precio,valor_estimado_total_sin_iva,valor_estimado_total_con_iva,valor_estimado_pacientes_sin_iva,valor_estimado_pacientes_con_iva,valor_estimado_total_sin_iva_min,valor_estimado_total_sin_iva_max,valor_estimado_total_con_iva_min,valor_estimado_total_con_iva_max,first_event_at,last_event_at',
           )
           .range(0, 1999),
         supabase
@@ -1014,9 +1041,102 @@ export default function EquipmentMonitoring() {
   const selectedEquipmentHasManualOverride = selectedEquipment ? effectiveOverrideMap.has(selectedEquipment.id) : false;
 
   useEffect(() => {
+    setSelectedReagentBucketMonth(CURRENT_REAGENT_BUCKET_MONTH);
+    setIsReagentDetailCollapsed(false);
+  }, [selectedEquipment?.id]);
+
+  const selectedReagentSummary = useMemo(() => {
+    if (!selectedEquipment) {
+      return null;
+    }
+
+    return selectedEquipment.reagentSummaries.find((row) => row.bucket_month === selectedReagentBucketMonth) || null;
+  }, [selectedEquipment, selectedReagentBucketMonth]);
+
+  const selectedReagentMonthRows = useMemo(() => {
+    if (!selectedEquipment) {
+      return [];
+    }
+
+    const rows = [...selectedEquipment.reagentSummaries];
+    if (rows.some((row) => row.bucket_month === CURRENT_REAGENT_BUCKET_MONTH)) {
+      return rows;
+    }
+
+    return [
+      {
+        numero_serie: selectedEquipment.serial,
+        bucket_month: CURRENT_REAGENT_BUCKET_MONTH,
+        modelo: selectedEquipment.model,
+        modelo_familia: rows[0]?.modelo_familia || null,
+        pruebas_registradas: 0,
+        muestras_paciente: 0,
+        blancos: 0,
+        calibraciones: 0,
+        controles: 0,
+        pruebas_distintas: 0,
+        pruebas_distintas_con_precio: 0,
+        pruebas_distintas_sin_precio: 0,
+        pruebas_con_precio: 0,
+        pruebas_sin_precio: 0,
+        valor_estimado_total_sin_iva: 0,
+        valor_estimado_total_con_iva: 0,
+        valor_estimado_pacientes_sin_iva: 0,
+        valor_estimado_pacientes_con_iva: 0,
+        valor_estimado_total_sin_iva_min: 0,
+        valor_estimado_total_sin_iva_max: 0,
+        valor_estimado_total_con_iva_min: 0,
+        valor_estimado_total_con_iva_max: 0,
+        first_event_at: null,
+        last_event_at: null,
+      } satisfies ReagentConsumptionSummaryRow,
+      ...rows,
+    ];
+  }, [selectedEquipment]);
+
+  const selectedReagentSummaryDisplay = useMemo(() => {
+    if (selectedReagentSummary) {
+      return selectedReagentSummary;
+    }
+
+    if (!selectedEquipment?.reagentSummaries.length || selectedReagentBucketMonth !== CURRENT_REAGENT_BUCKET_MONTH) {
+      return null;
+    }
+
+    const latestKnownRow = selectedEquipment.reagentSummaries[0];
+    return {
+      numero_serie: selectedEquipment.serial,
+      bucket_month: selectedReagentBucketMonth,
+      modelo: selectedEquipment.model || latestKnownRow.modelo,
+      modelo_familia: latestKnownRow.modelo_familia,
+      pruebas_registradas: 0,
+      muestras_paciente: 0,
+      blancos: 0,
+      calibraciones: 0,
+      controles: 0,
+      pruebas_distintas: 0,
+      pruebas_distintas_con_precio: 0,
+      pruebas_distintas_sin_precio: 0,
+      pruebas_con_precio: 0,
+      pruebas_sin_precio: 0,
+      valor_estimado_total_sin_iva: 0,
+      valor_estimado_total_con_iva: 0,
+      valor_estimado_pacientes_sin_iva: 0,
+      valor_estimado_pacientes_con_iva: 0,
+      valor_estimado_total_sin_iva_min: 0,
+      valor_estimado_total_sin_iva_max: 0,
+      valor_estimado_total_con_iva_min: 0,
+      valor_estimado_total_con_iva_max: 0,
+      first_event_at: null,
+      last_event_at: null,
+    } satisfies ReagentConsumptionSummaryRow;
+  }, [selectedEquipment, selectedReagentBucketMonth, selectedReagentSummary]);
+  const hasSelectedReagentMonthData = Boolean(selectedReagentSummary);
+
+  useEffect(() => {
     let cancelled = false;
 
-    if (!selectedEquipment?.serial) {
+    if (!selectedEquipment?.serial || !selectedReagentSummary || !selectedReagentBucketMonth) {
       setSelectedReagentRows([]);
       setLoadingReagentRows(false);
       setReagentLoadError(null);
@@ -1032,9 +1152,10 @@ export default function EquipmentMonitoring() {
       const { data, error } = await supabase
         .from('v_equipment_reagent_consumption_detail')
         .select(
-          'numero_serie,modelo,modelo_familia,test_name,test_name_normalizado,descripcion_catalogo_normalizada,reactivo_codigo_referencia,reactivo_descripcion_referencia,presentacion_referencia,rendimiento_referencia,rendimiento_total,rendimiento_util,rendimiento_util_seguro,presentaciones_catalogo,match_source,tiene_precio,pruebas_registradas,muestras_paciente,blancos,calibraciones,controles,first_event_at,last_event_at,costo_prueba_referencia_con_iva,valor_estimado_total_con_iva,valor_estimado_pacientes_con_iva,valor_estimado_total_con_iva_min,valor_estimado_total_con_iva_max',
+          'numero_serie,bucket_month,modelo,modelo_familia,test_name,test_name_normalizado,descripcion_catalogo_normalizada,reactivo_codigo_referencia,reactivo_descripcion_referencia,presentacion_referencia,rendimiento_referencia,rendimiento_total,rendimiento_util,rendimiento_util_seguro,presentaciones_catalogo,match_source,tiene_precio,pruebas_registradas,muestras_paciente,blancos,calibraciones,controles,first_event_at,last_event_at,costo_prueba_referencia_con_iva,valor_estimado_total_con_iva,valor_estimado_pacientes_con_iva,valor_estimado_total_con_iva_min,valor_estimado_total_con_iva_max',
         )
         .eq('numero_serie', selectedEquipment.serial)
+        .eq('bucket_month', selectedReagentBucketMonth)
         .order('pruebas_registradas', { ascending: false })
         .order('test_name', { ascending: true })
         .range(0, 199);
@@ -1057,7 +1178,7 @@ export default function EquipmentMonitoring() {
     return () => {
       cancelled = true;
     };
-  }, [selectedEquipment?.serial, snapshot?.refreshedAt]);
+  }, [selectedEquipment?.serial, selectedReagentBucketMonth, selectedReagentSummary, snapshot?.refreshedAt]);
 
   const summary = useMemo(() => {
     const fatal = equipments.filter((equipment) => equipment.status === 'fatal').length;
@@ -1087,8 +1208,6 @@ export default function EquipmentMonitoring() {
     () => equipments.filter((equipment) => !equipment.mapPoint).slice(0, 8),
     [equipments],
   );
-
-  const selectedReagentSummary = selectedEquipment?.reagentSummary || null;
 
   const selectedReagentRowsSorted = useMemo(() => {
     return [...selectedReagentRows].sort((left, right) => {
@@ -1793,43 +1912,93 @@ export default function EquipmentMonitoring() {
               </div>
 
               <div className="equipment-monitor__focus-section">
-                <h4>Pruebas registradas</h4>
-                {selectedReagentSummary ? (
+                <div className="equipment-monitor__section-head">
+                  <h4>Pruebas registradas</h4>
+                  <button
+                    type="button"
+                    className={`button-primary chip ${isReagentDetailCollapsed ? 'inactive' : ''}`.trim()}
+                    onClick={() => setIsReagentDetailCollapsed((currentValue) => !currentValue)}
+                    disabled={!selectedReagentRowsSorted.length}
+                  >
+                    {isReagentDetailCollapsed ? 'Mostrar detalle' : 'Ocultar detalle'}
+                  </button>
+                </div>
+                {selectedReagentSummaryDisplay ? (
                   <>
+                    <p className="equipment-monitor__focus-location">
+                      Mes seleccionado: {formatBucketMonth(selectedReagentSummaryDisplay.bucket_month)}
+                      {selectedReagentSummaryDisplay.bucket_month === CURRENT_REAGENT_BUCKET_MONTH ? ' · corte actual' : ' · histórico'}
+                    </p>
                     <div className="equipment-monitor__focus-kpis">
                       <div className="equipment-monitor__focus-kpi">
                         <span>Pruebas totales</span>
-                        <strong>{formatInteger(selectedReagentSummary.pruebas_registradas)}</strong>
+                        <strong>{formatInteger(selectedReagentSummaryDisplay.pruebas_registradas)}</strong>
                       </div>
                       <div className="equipment-monitor__focus-kpi">
                         <span>Muestras de paciente</span>
-                        <strong>{formatInteger(selectedReagentSummary.muestras_paciente)}</strong>
+                        <strong>{formatInteger(selectedReagentSummaryDisplay.muestras_paciente)}</strong>
                       </div>
                       <div className="equipment-monitor__focus-kpi">
                         <span>Valor estimado</span>
-                        <strong>{formatCurrency(selectedReagentSummary.valor_estimado_total_con_iva)}</strong>
+                        <strong>{formatCurrency(selectedReagentSummaryDisplay.valor_estimado_total_con_iva)}</strong>
                       </div>
                       <div className="equipment-monitor__focus-kpi">
-                        <span>Último registro</span>
-                        <strong>{formatDateTime(selectedReagentSummary.last_event_at)}</strong>
+                        <span>Último registro del mes</span>
+                        <strong>{formatDateTime(selectedReagentSummaryDisplay.last_event_at)}</strong>
                       </div>
                     </div>
                     <p className="equipment-monitor__focus-location">
-                      {formatInteger(selectedReagentSummary.pruebas_distintas_con_precio)} pruebas con precio y{' '}
-                      {formatInteger(selectedReagentSummary.pruebas_distintas_sin_precio)} sin precio catalogado.
+                      {formatInteger(selectedReagentSummaryDisplay.pruebas_distintas_con_precio)} pruebas con precio y{' '}
+                      {formatInteger(selectedReagentSummaryDisplay.pruebas_distintas_sin_precio)} sin precio catalogado.
                     </p>
-                    {readNumericValue(selectedReagentSummary.valor_estimado_total_con_iva_min) > 0 &&
-                    readNumericValue(selectedReagentSummary.valor_estimado_total_con_iva_max) >
-                      readNumericValue(selectedReagentSummary.valor_estimado_total_con_iva_min) ? (
+                    {!hasSelectedReagentMonthData ? (
+                      <div className="equipment-monitor__empty-state">
+                        No hay actividad registrada para {formatBucketMonth(selectedReagentSummaryDisplay.bucket_month)}.
+                      </div>
+                    ) : null}
+                    {readNumericValue(selectedReagentSummaryDisplay.valor_estimado_total_con_iva_min) > 0 &&
+                    readNumericValue(selectedReagentSummaryDisplay.valor_estimado_total_con_iva_max) >
+                      readNumericValue(selectedReagentSummaryDisplay.valor_estimado_total_con_iva_min) ? (
                       <p className="equipment-monitor__focus-location">
-                        Rango estimado con IVA: {formatCurrency(selectedReagentSummary.valor_estimado_total_con_iva_min)} a{' '}
-                        {formatCurrency(selectedReagentSummary.valor_estimado_total_con_iva_max)}
+                        Rango estimado con IVA: {formatCurrency(selectedReagentSummaryDisplay.valor_estimado_total_con_iva_min)} a{' '}
+                        {formatCurrency(selectedReagentSummaryDisplay.valor_estimado_total_con_iva_max)}
                       </p>
+                    ) : null}
+                    {selectedReagentMonthRows.length ? (
+                      <div className="equipment-monitor__monthly-history">
+                        <strong>Meses disponibles</strong>
+                        <div className="equipment-monitor__monthly-history-list">
+                          {selectedReagentMonthRows.map((row) => (
+                            <button
+                              type="button"
+                              key={`${row.numero_serie}-${row.bucket_month}`}
+                              className={`equipment-monitor__monthly-history-card ${
+                                row.bucket_month === selectedReagentBucketMonth
+                                  ? 'equipment-monitor__monthly-history-card--selected'
+                                  : ''
+                              }`.trim()}
+                              onClick={() => setSelectedReagentBucketMonth(row.bucket_month)}
+                            >
+                              <div className="equipment-monitor__event-head">
+                                <strong>{formatBucketMonth(row.bucket_month)}</strong>
+                                <span>{formatCurrency(row.valor_estimado_total_con_iva)}</span>
+                              </div>
+                              <div className="equipment-monitor__consumption-metrics">
+                                <span>{formatInteger(row.pruebas_registradas)} pruebas</span>
+                                <span>{formatInteger(row.muestras_paciente)} pacientes</span>
+                                <span>{formatInteger(row.pruebas_distintas_con_precio)} con precio</span>
+                                <span>{formatInteger(row.pruebas_distintas_sin_precio)} sin precio</span>
+                              </div>
+                              <small>Último registro: {formatDateTime(row.last_event_at)}</small>
+                            </button>
+                          ))}
+                        </div>
+                      </div>
                     ) : null}
                   </>
                 ) : (
                   <div className="equipment-monitor__empty-state">
-                    Esta serie todavía no tiene resumen cargado en <code>v_equipment_reagent_consumption_summary</code>.
+                    Esta serie todavía no tiene consumo cargado en <code>v_equipment_reagent_consumption_summary</code>.
                   </div>
                 )}
 
@@ -1837,13 +2006,16 @@ export default function EquipmentMonitoring() {
                   <div className="equipment-monitor__empty-state">Cargando detalle de pruebas...</div>
                 ) : reagentLoadError ? (
                   <div className="equipment-monitor__empty-state">{reagentLoadError}</div>
-                ) : selectedReagentRowsSorted.length ? (
+                ) : selectedReagentRowsSorted.length && !isReagentDetailCollapsed ? (
                   <div className="equipment-monitor__consumption-list">
+                    <p className="equipment-monitor__focus-location">
+                      Desglose de {formatBucketMonth(selectedReagentBucketMonth)}. Las tarjetas marcadas como <strong>Sin precio</strong> son las que faltan por catalogar o corregir.
+                    </p>
                     {selectedReagentRowsSorted.map((row) => {
                       const hasPrice = Boolean(row.tiene_precio);
                       return (
                         <article
-                          key={`${row.numero_serie}-${row.test_name}`}
+                          key={`${row.numero_serie}-${row.bucket_month}-${row.test_name}`}
                           className={`equipment-monitor__consumption-card ${hasPrice ? '' : 'equipment-monitor__consumption-card--muted'}`.trim()}
                         >
                           <div className="equipment-monitor__event-head">
@@ -1875,10 +2047,13 @@ export default function EquipmentMonitoring() {
                       );
                     })}
                   </div>
-                ) : selectedReagentSummary ? (
+                ) : selectedReagentSummary && !isReagentDetailCollapsed ? (
                   <div className="equipment-monitor__empty-state">
-                    No hay filas detalladas para esta serie en <code>v_equipment_reagent_consumption_detail</code>.
+                    No hay filas detalladas para esta serie en {formatBucketMonth(selectedReagentBucketMonth)} dentro de{' '}
+                    <code>v_equipment_reagent_consumption_detail</code>.
                   </div>
+                ) : isReagentDetailCollapsed ? (
+                  <div className="equipment-monitor__empty-state">El detalle por prueba está oculto.</div>
                 ) : null}
               </div>
 
@@ -1910,7 +2085,7 @@ export default function EquipmentMonitoring() {
                 {selectedEquipment.rotorSummary ? (
                   <div className="equipment-monitor__rotor-card">
                     <strong>{selectedEquipment.rotorSummary.rotor_change_count} cambios</strong>
-                    <span>{formatRotorBucket(selectedEquipment.rotorSummary.bucket_month)}</span>
+                    <span>{formatBucketMonth(selectedEquipment.rotorSummary.bucket_month)}</span>
                     <small>Último cambio: {formatDateTime(selectedEquipment.rotorSummary.last_change_at)}</small>
                   </div>
                 ) : (
