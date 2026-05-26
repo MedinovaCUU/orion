@@ -7,7 +7,49 @@ if (!supabaseUrl || !supabaseAnonKey) {
   throw new Error('Supabase URL or Anon Key is missing from env variables.');
 }
 
-export const supabase = createClient(supabaseUrl, supabaseAnonKey);
+type StorageAdapter = {
+  getItem: (key: string) => string | null;
+  setItem: (key: string, value: string) => void;
+  removeItem: (key: string) => void;
+};
+
+const createMemoryStorage = (): StorageAdapter => {
+  const store = new Map<string, string>();
+
+  return {
+    getItem: (key) => store.get(key) ?? null,
+    setItem: (key, value) => {
+      store.set(key, value);
+    },
+    removeItem: (key) => {
+      store.delete(key);
+    },
+  };
+};
+
+const resolveSupabaseStorage = (): StorageAdapter => {
+  if (typeof window === 'undefined') {
+    return createMemoryStorage();
+  }
+
+  try {
+    const candidate = window.localStorage;
+    const probeKey = '__orion_supabase_storage_probe__';
+    candidate.setItem(probeKey, '1');
+    candidate.removeItem(probeKey);
+    return candidate;
+  } catch {
+    return createMemoryStorage();
+  }
+};
+
+const authStorage = resolveSupabaseStorage();
+
+export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
+  auth: {
+    storage: authStorage,
+  },
+});
 
 const INVALID_REFRESH_TOKEN_PATTERNS = [
   'invalid refresh token',
@@ -34,11 +76,26 @@ export const clearBrokenLocalSession = async () => {
   await supabase.auth.signOut({ scope: 'local' });
 };
 
+const withTimeout = async <T>(task: Promise<T>, timeoutMs = 5000): Promise<T | null> => {
+  return Promise.race<T | null>([
+    task,
+    new Promise<null>((resolve) => {
+      window.setTimeout(() => resolve(null), timeoutMs);
+    }),
+  ]);
+};
+
 export const getValidatedSession = async () => {
+  const sessionResult = await withTimeout(supabase.auth.getSession());
+
+  if (!sessionResult) {
+    return null;
+  }
+
   const {
     data: { session },
     error: sessionError,
-  } = await supabase.auth.getSession();
+  } = sessionResult;
 
   if (sessionError) {
     if (isRecoverableAuthStorageError(sessionError)) {
@@ -51,10 +108,16 @@ export const getValidatedSession = async () => {
     return null;
   }
 
+  const userResult = await withTimeout(supabase.auth.getUser());
+
+  if (!userResult) {
+    return null;
+  }
+
   const {
     data: { user },
     error: userError,
-  } = await supabase.auth.getUser();
+  } = userResult;
 
   if (userError) {
     if (isRecoverableAuthStorageError(userError)) {

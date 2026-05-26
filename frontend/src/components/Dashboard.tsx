@@ -13,6 +13,7 @@ const Inventario = lazy(() => import('./Inventario'));
 const Tutoriales = lazy(() => import('./Tutoriales'));
 const Equipos = lazy(() => import('./Equipos'));
 const PNO = lazy(() => import('./PNO'));
+const EquipmentMonitoring = lazy(() => import('../modules/equipment-monitoring/EquipmentMonitoring'));
 
 type DashboardTabKey =
   | 'tickets'
@@ -23,7 +24,8 @@ type DashboardTabKey =
   | 'inventario'
   | 'tutoriales'
   | 'pno'
-  | 'equipos';
+  | 'equipos'
+  | 'monitoreo';
 
 type DashboardTone = 'clinical' | 'environmental' | 'environmental-blue' | 'veterinary' | 'bioprocess' | 'food';
 
@@ -67,6 +69,7 @@ export default function Dashboard() {
     { key: 'tickets', label: 'Tickets', tone: 'clinical' },
     { key: 'servicios', label: 'Planeación', tone: 'environmental' },
     { key: 'asesoria', label: 'Asesoría', tone: 'veterinary', staffOnly: true, showBadge: true },
+    { key: 'monitoreo', label: 'Monitoreo', tone: 'environmental-blue', staffOnly: true },
     { key: 'trazabilidad', label: 'Trazabilidad', tone: 'environmental-blue' },
     { key: 'refacciones', label: 'Refacciones', tone: 'bioprocess' },
     { key: 'inventario', label: 'Inventario', tone: 'food' },
@@ -206,6 +209,7 @@ export default function Dashboard() {
           {activeTab === 'asesoria' && isStaffRole(userRole) && (
             <EscalatedAdvisory onNotificationCountChange={setAdvisoryUnreadCount} />
           )}
+          {activeTab === 'monitoreo' && isStaffRole(userRole) && <EquipmentMonitoring />}
           {activeTab === 'trazabilidad' && <Traceability />}
           {activeTab === 'refacciones' && <Refacciones />}
           {activeTab === 'inventario' && <Inventario />}

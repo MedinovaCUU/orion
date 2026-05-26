@@ -10,6 +10,7 @@ lerna-debug.log*
 # Supabase Local
 supabase/.temp
 supabase/.branches
+supabase/_local_archive
 supabase/dump.sql
 supabase/functions/.env
 supabase/functions/.env.*

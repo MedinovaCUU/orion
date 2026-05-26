@@ -129,40 +129,40 @@ export default function Equipos() {
   }, []);
 
   const resetServiciosState = () => {
-      serviciosRequestIdRef.current += 1;
-      setShowServicios(false);
-      setEquipoServicios([]);
-      setLoadingServicios(false);
+    serviciosRequestIdRef.current += 1;
+    setShowServicios(false);
+    setEquipoServicios([]);
+    setLoadingServicios(false);
   };
 
   const closeDetallesModal = () => {
-      setDetallesModalOpen(false);
-      setDetallesEquipo(null);
-      setSupremoDraft({
-        enabled: false,
-        supremoAlias: '',
-        supremoId: '',
-      });
-      setSupremoFeedback(null);
-      setSupremoModal(null);
-      resetServiciosState();
+    setDetallesModalOpen(false);
+    setDetallesEquipo(null);
+    setSupremoDraft({
+      enabled: false,
+      supremoAlias: '',
+      supremoId: '',
+    });
+    setSupremoFeedback(null);
+    setSupremoModal(null);
+    resetServiciosState();
   };
 
   const openDetallesModal = (equipo: any) => {
-      resetServiciosState();
-      setDetallesEquipo(equipo);
-      setSupremoDraft(getInitialSupremoDraft(equipo));
-      setSupremoFeedback(null);
-      setSupremoModal(null);
-      setDetallesModalOpen(true);
+    resetServiciosState();
+    setDetallesEquipo(equipo);
+    setSupremoDraft(getInitialSupremoDraft(equipo));
+    setSupremoFeedback(null);
+    setSupremoModal(null);
+    setDetallesModalOpen(true);
   };
 
   const fetchEquipoServicios = async (numero_serie: string) => {
-      const requestId = ++serviciosRequestIdRef.current;
-      setLoadingServicios(true);
-      const { data, error } = await supabase
-          .from('servicios_historial')
-          .select(`
+    const requestId = ++serviciosRequestIdRef.current;
+    setLoadingServicios(true);
+    const { data, error } = await supabase
+      .from('servicios_historial')
+      .select(`
               *,
               profiles (nombre_completo),
               servicios_refacciones (
@@ -170,25 +170,25 @@ export default function Equipos() {
                   refacciones_catalogo (descripcion, codigo_refaccion)
               )
           `)
-          .eq('no_serie', numero_serie)
-          .order('fecha_servicio', { ascending: false })
-          .order('creado_en', { ascending: false });
+      .eq('no_serie', numero_serie)
+      .order('fecha_servicio', { ascending: false })
+      .order('creado_en', { ascending: false });
 
-      if (requestId !== serviciosRequestIdRef.current) {
-          return;
-      }
-      
-      if (!error && data) {
-          const mappedData = data.map((d: any) => ({
-              ...d,
-              averias_catalogo: catalogoAverias.find(a => a.cda === d.cda) || null,
-              soluciones_catalogo: catalogoSoluciones.find(s => s.cds === d.cds) || null
-          }));
-          setEquipoServicios(mappedData);
-      }
-      if (error) console.error("Error fetching historial:", error);
-      
-      setLoadingServicios(false);
+    if (requestId !== serviciosRequestIdRef.current) {
+      return;
+    }
+
+    if (!error && data) {
+      const mappedData = data.map((d: any) => ({
+        ...d,
+        averias_catalogo: catalogoAverias.find(a => a.cda === d.cda) || null,
+        soluciones_catalogo: catalogoSoluciones.find(s => s.cds === d.cds) || null
+      }));
+      setEquipoServicios(mappedData);
+    }
+    if (error) console.error("Error fetching historial:", error);
+
+    setLoadingServicios(false);
   };
 
   async function fetchEquipos() {
@@ -197,7 +197,7 @@ export default function Equipos() {
       .from('equipos')
       .select('*, clientes(*), asigna:profiles!equipos_empleado_asignado_fkey(nombre_completo), retira:profiles!equipos_empleado_retira_fkey(nombre_completo)')
       .order('creado_en', { ascending: false });
-    
+
     if (data) {
       setEquipos(data);
     }
@@ -319,9 +319,9 @@ export default function Equipos() {
       </div>
 
       <div style={{ marginBottom: '2rem' }}>
-        <input 
-          type="text" 
-          placeholder="Buscar por número de serie o nombre del cliente..." 
+        <input
+          type="text"
+          placeholder="Buscar por número de serie o nombre del cliente..."
           className="input-field"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
@@ -338,342 +338,343 @@ export default function Equipos() {
             const remoteReady = Boolean(sanitizeSupremoId(String(eq.supremo_id || showroomPreset?.supremoId || '')));
 
             return (
-            <div 
-              key={eq.id} 
-              style={{ padding: '1.5rem', background: 'var(--bg-secondary)', borderRadius: '8px', border: '1px solid var(--border-color)', display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', gap: '1rem', cursor: 'pointer', transition: 'all 0.2s ease' }}
-              className="card-hover"
-              onClick={() => openDetallesModal(eq)}
-            >
-              <div>
-                <h4 style={{ margin: '0 0 0.5rem 0', color: 'var(--primary-color)' }}>{eq.clientes?.razon_social || 'Cliente sin registrar en base de datos'}</h4>
-                <p style={{ margin: '0', color: 'var(--text-secondary)' }}><strong>No. Serie:</strong> {eq.numero_serie} {eq.modelo ? `| Modelo: ${eq.modelo}` : ''}</p>
-                <div style={{ display: 'flex', gap: '2rem', marginTop: '1rem', fontSize: '0.9rem' }}>
-                  <span><strong>Fecha Inicio:</strong> {eq.fecha_inicio || 'N/D'}</span>
-                  {!eq.fecha_fin && <span><strong>Término de Servicio Estimado:</strong> {eq.termino_garantia || 'N/D'}</span>}
-                  {eq.fecha_fin && <span style={{ color: 'var(--error-color)' }}><strong>Terminó:</strong> {eq.fecha_fin}</span>}
+              <div
+                key={eq.id}
+                style={{ padding: '1.5rem', background: 'var(--bg-secondary)', borderRadius: '8px', border: '1px solid var(--border-color)', display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', gap: '1rem', cursor: 'pointer', transition: 'all 0.2s ease' }}
+                className="card-hover"
+                onClick={() => openDetallesModal(eq)}
+              >
+                <div>
+                  <h4 style={{ margin: '0 0 0.5rem 0', color: 'var(--primary-color)' }}>{eq.clientes?.razon_social || 'Cliente sin registrar en base de datos'}</h4>
+                  <p style={{ margin: '0', color: 'var(--text-secondary)' }}><strong>No. Serie:</strong> {eq.numero_serie} {eq.modelo ? `| Modelo: ${eq.modelo}` : ''}</p>
+                  <div style={{ display: 'flex', gap: '2rem', marginTop: '1rem', fontSize: '0.9rem' }}>
+                    <span><strong>Fecha Inicio:</strong> {eq.fecha_inicio || 'N/D'}</span>
+                    {!eq.fecha_fin && <span><strong>Término de Servicio Estimado:</strong> {eq.termino_garantia || 'N/D'}</span>}
+                    {eq.fecha_fin && <span style={{ color: 'var(--error-color)' }}><strong>Terminó:</strong> {eq.fecha_fin}</span>}
+                  </div>
+                </div>
+                <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', alignItems: 'flex-end', minWidth: '96px', gap: '0.85rem' }}>
+                  <div style={{ minHeight: '40px', display: 'flex', alignItems: 'flex-start', justifyContent: 'flex-end', width: '100%' }}>
+                    {remoteReady ? (
+                      <img
+                        src={SUPREMO_ICON_URL}
+                        alt="Supremo listo"
+                        style={{ width: '30px', height: '30px', objectFit: 'contain', filter: 'drop-shadow(0 10px 18px rgba(18,22,27,0.14))' }}
+                      />
+                    ) : null}
+                  </div>
+                  <button
+                    className={`button-primary ${eq.fecha_fin ? 'inactive' : ''}`}
+                    disabled={eq.fecha_fin ? true : false}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setSelectedEquipo(eq);
+                      setTerminarModalOpen(true);
+                    }}
+                  >
+                    {eq.fecha_fin ? 'Servicio Finalizado' : 'Terminar Servicio'}
+                  </button>
                 </div>
               </div>
-              <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', alignItems: 'flex-end', minWidth: '96px', gap: '0.85rem' }}>
-                <div style={{ minHeight: '40px', display: 'flex', alignItems: 'flex-start', justifyContent: 'flex-end', width: '100%' }}>
-                  {remoteReady ? (
-                    <img
-                      src={SUPREMO_ICON_URL}
-                      alt="Supremo listo"
-                      style={{ width: '30px', height: '30px', objectFit: 'contain', filter: 'drop-shadow(0 10px 18px rgba(18,22,27,0.14))' }}
-                    />
-                  ) : null}
-                </div>
-                <button 
-                  className={`button-primary ${eq.fecha_fin ? 'inactive' : ''}`}
-                  disabled={eq.fecha_fin ? true : false}
-                  onClick={(e) => { 
-                      e.stopPropagation(); 
-                      setSelectedEquipo(eq); 
-                      setTerminarModalOpen(true); 
-                  }}
-                >
-                  {eq.fecha_fin ? 'Servicio Finalizado' : 'Terminar Servicio'}
-                </button>
-              </div>
-            </div>
-          )})}
+            )
+          })}
           {filteredEquipos.length === 0 && <p>No se encontraron equipos que coincidan con "{searchQuery}".</p>}
         </div>
       )}
 
       {detallesModalOpen && detallesEquipo && createPortal(
-        <div 
+        <div
           style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(0,0,0,0.8)', display: 'flex', justifyContent: 'center', alignItems: 'center', zIndex: 1000, padding: '1rem', backdropFilter: 'blur(5px)' }}
           onClick={closeDetallesModal}
         >
-          <div 
-            className="card" 
+          <div
+            className="card"
             style={{ maxWidth: '650px', width: '100%', border: '1px solid var(--border-color)', maxHeight: '90vh', overflowY: 'auto' }}
             onClick={(e) => e.stopPropagation()}
           >
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1rem' }}>
-                <h3 style={{ color: 'var(--primary-color)' }}>Detalles Integrales del Equipo</h3>
-                <button 
-                    style={{ background: 'none', border: 'none', color: 'var(--text-secondary)', cursor: 'pointer', fontSize: '1.5rem' }} 
-                    onClick={closeDetallesModal}
-                >
-                    &times;
-                </button>
+              <h3 style={{ color: 'var(--primary-color)' }}>Detalles Integrales del Equipo</h3>
+              <button
+                style={{ background: 'none', border: 'none', color: 'var(--text-secondary)', cursor: 'pointer', fontSize: '1.5rem' }}
+                onClick={closeDetallesModal}
+              >
+                &times;
+              </button>
             </div>
-            
+
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem' }}>
-                <div>
-                    <h4 style={{ color: 'var(--text-secondary)', fontSize: '0.8rem', textTransform: 'uppercase', marginBottom: '0.3rem' }}>No. de Serie / Modelo</h4>
-                    <p style={{ fontWeight: '500', fontSize: '1.1rem', margin: '0' }}>{detallesEquipo.numero_serie}</p>
-                    <p style={{ fontSize: '0.85rem', color: 'var(--primary-color)', margin: '0' }}>{detallesEquipo.modelo ? `Modelo: ${detallesEquipo.modelo}` : 'Modelo Genérico'}</p>
-                </div>
-                <div>
-                    <h4 style={{ color: 'var(--text-secondary)', fontSize: '0.8rem', textTransform: 'uppercase', marginBottom: '0.3rem' }}>Cliente (Razón Social)</h4>
-                    <p style={{ fontWeight: '500' }}>{detallesEquipo.clientes?.razon_social || 'Desconocido / N.D.'}</p>
-                </div>
+              <div>
+                <h4 style={{ color: 'var(--text-secondary)', fontSize: '0.8rem', textTransform: 'uppercase', marginBottom: '0.3rem' }}>No. de Serie / Modelo</h4>
+                <p style={{ fontWeight: '500', fontSize: '1.1rem', margin: '0' }}>{detallesEquipo.numero_serie}</p>
+                <p style={{ fontSize: '0.85rem', color: 'var(--primary-color)', margin: '0' }}>{detallesEquipo.modelo ? `Modelo: ${detallesEquipo.modelo}` : 'Modelo Genérico'}</p>
+              </div>
+              <div>
+                <h4 style={{ color: 'var(--text-secondary)', fontSize: '0.8rem', textTransform: 'uppercase', marginBottom: '0.3rem' }}>Cliente (Razón Social)</h4>
+                <p style={{ fontWeight: '500' }}>{detallesEquipo.clientes?.razon_social || 'Desconocido / N.D.'}</p>
+              </div>
 
 
 
-                <div>
-                    <h4 style={{ color: 'var(--text-secondary)', fontSize: '0.8rem', textTransform: 'uppercase', marginBottom: '0.3rem' }}>Fecha de Instalación / Comienzo</h4>
-                    <p>{detallesEquipo.fecha_inicio || 'N.D.'}</p>
-                </div>
-                <div>
-                    <h4 style={{ color: 'var(--text-secondary)', fontSize: '0.8rem', textTransform: 'uppercase', marginBottom: '0.3rem' }}>Término de Servicio (Estimado)</h4>
-                    <p>{detallesEquipo.termino_garantia || 'N.D.'}</p>
-                </div>
+              <div>
+                <h4 style={{ color: 'var(--text-secondary)', fontSize: '0.8rem', textTransform: 'uppercase', marginBottom: '0.3rem' }}>Fecha de Instalación / Comienzo</h4>
+                <p>{detallesEquipo.fecha_inicio || 'N.D.'}</p>
+              </div>
+              <div>
+                <h4 style={{ color: 'var(--text-secondary)', fontSize: '0.8rem', textTransform: 'uppercase', marginBottom: '0.3rem' }}>Término de Servicio (Estimado)</h4>
+                <p>{detallesEquipo.termino_garantia || 'N.D.'}</p>
+              </div>
 
-                <div>
-                    <h4 style={{ color: 'var(--text-secondary)', fontSize: '0.8rem', textTransform: 'uppercase', marginBottom: '0.3rem' }}>Ingeniero que Instaló / Asignó</h4>
-                    <p style={{ color: 'var(--primary-color)' }}>{detallesEquipo.asigna?.nombre_completo || 'Administración Central'}</p>
-                </div>
-                <div>
-                    <h4 style={{ color: 'var(--text-secondary)', fontSize: '0.8rem', textTransform: 'uppercase', marginBottom: '0.3rem' }}>Ingeniero que Retiró</h4>
-                    <p style={{ color: 'var(--text-secondary)' }}>{detallesEquipo.retira?.nombre_completo || 'Vigente / N.D.'}</p>
-                </div>
+              <div>
+                <h4 style={{ color: 'var(--text-secondary)', fontSize: '0.8rem', textTransform: 'uppercase', marginBottom: '0.3rem' }}>Ingeniero que Instaló / Asignó</h4>
+                <p style={{ color: 'var(--primary-color)' }}>{detallesEquipo.asigna?.nombre_completo || 'Administración Central'}</p>
+              </div>
+              <div>
+                <h4 style={{ color: 'var(--text-secondary)', fontSize: '0.8rem', textTransform: 'uppercase', marginBottom: '0.3rem' }}>Ingeniero que Retiró</h4>
+                <p style={{ color: 'var(--text-secondary)' }}>{detallesEquipo.retira?.nombre_completo || 'Vigente / N.D.'}</p>
+              </div>
 
-                <div>
-                    <h4 style={{ color: 'var(--text-secondary)', fontSize: '0.8rem', textTransform: 'uppercase', marginBottom: '0.3rem' }}>Doc. de Asignación / Contrato</h4>
-                    <span style={{ 
-                        display: 'inline-block',
-                        padding: '0.2rem 0.6rem', 
-                        borderRadius: '4px',
-                        background: detallesEquipo.doc_asignacion ? 'var(--success-color)' : 'rgba(255,255,255,0.05)',
-                        color: detallesEquipo.doc_asignacion ? '#000' : 'var(--text-secondary)',
-                        fontSize: '0.8rem', fontWeight: '500' 
-                    }}>
-                        {detallesEquipo.doc_asignacion ? 'Documento Entregado' : 'No Registrado'}
-                    </span>
-                </div>
-                
-                <div>
-                    <h4 style={{ color: 'var(--text-secondary)', fontSize: '0.8rem', textTransform: 'uppercase', marginBottom: '0.3rem' }}>Estado y Fecha Fin</h4>
-                    {detallesEquipo.fecha_fin ? (
-                        <span style={{ color: 'var(--error-color)', fontWeight: 'bold' }}>Finalizado el {detallesEquipo.fecha_fin}</span>
-                    ) : (
-                        <span style={{ color: 'var(--success-color)' }}>Servicio Activo</span>
-                    )}
-                </div>
+              <div>
+                <h4 style={{ color: 'var(--text-secondary)', fontSize: '0.8rem', textTransform: 'uppercase', marginBottom: '0.3rem' }}>Doc. de Asignación / Contrato</h4>
+                <span style={{
+                  display: 'inline-block',
+                  padding: '0.2rem 0.6rem',
+                  borderRadius: '4px',
+                  background: detallesEquipo.doc_asignacion ? 'var(--success-color)' : 'rgba(255,255,255,0.05)',
+                  color: detallesEquipo.doc_asignacion ? '#000' : 'var(--text-secondary)',
+                  fontSize: '0.8rem', fontWeight: '500'
+                }}>
+                  {detallesEquipo.doc_asignacion ? 'Documento Entregado' : 'No Registrado'}
+                </span>
+              </div>
 
-                {detallesEquipo.fecha_fin && (
-                    <div style={{ gridColumn: '1 / -1' }}>
-                        <h4 style={{ color: 'var(--text-secondary)', fontSize: '0.8rem', textTransform: 'uppercase', marginBottom: '0.3rem' }}>Doc. Terminación de Servicio / Baja</h4>
-                        <span style={{ 
-                            display: 'inline-block',
-                            padding: '0.2rem 0.6rem', 
-                            borderRadius: '4px',
-                            background: detallesEquipo.doc_terminacion ? 'var(--primary-color)' : 'rgba(255,255,255,0.05)',
-                            color: '#fff',
-                            fontSize: '0.8rem', fontWeight: '500' 
-                        }}>
-                            {detallesEquipo.doc_terminacion ? 'Documento PDF Registrado' : 'No tiene acta / Faltante'}
-                        </span>
-                    </div>
+              <div>
+                <h4 style={{ color: 'var(--text-secondary)', fontSize: '0.8rem', textTransform: 'uppercase', marginBottom: '0.3rem' }}>Estado y Fecha Fin</h4>
+                {detallesEquipo.fecha_fin ? (
+                  <span style={{ color: 'var(--error-color)', fontWeight: 'bold' }}>Finalizado el {detallesEquipo.fecha_fin}</span>
+                ) : (
+                  <span style={{ color: 'var(--success-color)' }}>Servicio Activo</span>
                 )}
-            </div>
+              </div>
 
-            <div style={{ marginTop: '1.5rem', paddingTop: '1.5rem', borderTop: '1px solid var(--border-color)' }}>
-                <h4 style={{ color: 'var(--primary-color)', marginBottom: '1rem', fontSize: '1.1rem' }}>Ubicación Física del Equipo</h4>
-                <div style={{ display: 'grid', gridTemplateColumns: 'minmax(200px, 1fr) minmax(200px, 1fr)', gap: '1rem' }}>
-                    <div>
-                        <h4 style={{ color: 'var(--text-secondary)', fontSize: '0.8rem', textTransform: 'uppercase', marginBottom: '0.3rem' }}>País / Estado</h4>
-                        <p style={{ margin: 0, fontWeight: '500' }}>
-                           {detallesEquipo.pais || 'N.D.'} {detallesEquipo.estado ? `- ${detallesEquipo.estado}` : ''}
-                        </p>
-                    </div>
-                    <div>
-                        <h4 style={{ color: 'var(--text-secondary)', fontSize: '0.8rem', textTransform: 'uppercase', marginBottom: '0.3rem' }}>Ciudad / Municipio</h4>
-                        <p style={{ margin: 0, fontWeight: '500' }}>
-                           {detallesEquipo.ciudad || detallesEquipo.municipio ? `${detallesEquipo.ciudad || ''} ${detallesEquipo.municipio ? `(${detallesEquipo.municipio})` : ''}` : 'N.D.'}
-                        </p>
-                    </div>
-                    <div style={{ gridColumn: '1 / -1' }}>
-                        <h4 style={{ color: 'var(--text-secondary)', fontSize: '0.8rem', textTransform: 'uppercase', marginBottom: '0.3rem' }}>Dirección Completa</h4>
-                        <p style={{ margin: 0 }}>
-                           <span style={{ fontWeight: '500' }}>{detallesEquipo.direccion || 'Domicilio no registrado'}</span>
-                           {detallesEquipo.colonia && <span>, Col. {detallesEquipo.colonia}</span>}
-                           {detallesEquipo.codigo_postal && <span>, C.P. {detallesEquipo.codigo_postal}</span>}
-                        </p>
-                    </div>
+              {detallesEquipo.fecha_fin && (
+                <div style={{ gridColumn: '1 / -1' }}>
+                  <h4 style={{ color: 'var(--text-secondary)', fontSize: '0.8rem', textTransform: 'uppercase', marginBottom: '0.3rem' }}>Doc. Terminación de Servicio / Baja</h4>
+                  <span style={{
+                    display: 'inline-block',
+                    padding: '0.2rem 0.6rem',
+                    borderRadius: '4px',
+                    background: detallesEquipo.doc_terminacion ? 'var(--primary-color)' : 'rgba(255,255,255,0.05)',
+                    color: '#fff',
+                    fontSize: '0.8rem', fontWeight: '500'
+                  }}>
+                    {detallesEquipo.doc_terminacion ? 'Documento PDF Registrado' : 'No tiene acta / Faltante'}
+                  </span>
                 </div>
+              )}
             </div>
 
             <div style={{ marginTop: '1.5rem', paddingTop: '1.5rem', borderTop: '1px solid var(--border-color)' }}>
-                <h4 style={{ color: 'var(--primary-color)', marginBottom: '1rem', fontSize: '1.1rem' }}>Acceso Remoto Supremo</h4>
-                {(() => {
-                  const showroomPreset = getSupremoShowroomPreset(detallesEquipo.numero_serie);
-                  const normalizedSerial = normalizeSerialLookup(detallesEquipo.numero_serie);
+              <h4 style={{ color: 'var(--primary-color)', marginBottom: '1rem', fontSize: '1.1rem' }}>Ubicación Física del Equipo</h4>
+              <div style={{ display: 'grid', gridTemplateColumns: 'minmax(200px, 1fr) minmax(200px, 1fr)', gap: '1rem' }}>
+                <div>
+                  <h4 style={{ color: 'var(--text-secondary)', fontSize: '0.8rem', textTransform: 'uppercase', marginBottom: '0.3rem' }}>País / Estado</h4>
+                  <p style={{ margin: 0, fontWeight: '500' }}>
+                    {detallesEquipo.pais || 'N.D.'} {detallesEquipo.estado ? `- ${detallesEquipo.estado}` : ''}
+                  </p>
+                </div>
+                <div>
+                  <h4 style={{ color: 'var(--text-secondary)', fontSize: '0.8rem', textTransform: 'uppercase', marginBottom: '0.3rem' }}>Ciudad / Municipio</h4>
+                  <p style={{ margin: 0, fontWeight: '500' }}>
+                    {detallesEquipo.ciudad || detallesEquipo.municipio ? `${detallesEquipo.ciudad || ''} ${detallesEquipo.municipio ? `(${detallesEquipo.municipio})` : ''}` : 'N.D.'}
+                  </p>
+                </div>
+                <div style={{ gridColumn: '1 / -1' }}>
+                  <h4 style={{ color: 'var(--text-secondary)', fontSize: '0.8rem', textTransform: 'uppercase', marginBottom: '0.3rem' }}>Dirección Completa</h4>
+                  <p style={{ margin: 0 }}>
+                    <span style={{ fontWeight: '500' }}>{detallesEquipo.direccion || 'Domicilio no registrado'}</span>
+                    {detallesEquipo.colonia && <span>, Col. {detallesEquipo.colonia}</span>}
+                    {detallesEquipo.codigo_postal && <span>, C.P. {detallesEquipo.codigo_postal}</span>}
+                  </p>
+                </div>
+              </div>
+            </div>
 
-                  return (
-                    <>
-                      {showroomPreset && (
-                        <div style={{ marginBottom: '1rem', padding: '0.9rem 1rem', borderRadius: '10px', border: '1px solid rgba(255,255,255,0.08)', background: 'rgba(188,17,43,0.08)', color: 'var(--text-secondary)' }}>
-                          <strong style={{ color: 'var(--primary-color)' }}>{showroomPreset.alias}</strong>
-                          <span style={{ marginLeft: '0.45rem' }}>
-                            preset de showroom detectado para la serie {normalizedSerial}. ID sugerido: {showroomPreset.supremoId}
-                          </span>
-                        </div>
-                      )}
+            <div style={{ marginTop: '1.5rem', paddingTop: '1.5rem', borderTop: '1px solid var(--border-color)' }}>
+              <h4 style={{ color: 'var(--primary-color)', marginBottom: '1rem', fontSize: '1.1rem' }}>Acceso Remoto Supremo</h4>
+              {(() => {
+                const showroomPreset = getSupremoShowroomPreset(detallesEquipo.numero_serie);
+                const normalizedSerial = normalizeSerialLookup(detallesEquipo.numero_serie);
 
-                      <div style={{ display: 'grid', gridTemplateColumns: 'minmax(180px, 1fr) minmax(220px, 1fr)', gap: '1rem' }}>
-                          <div>
-                              <h4 style={{ color: 'var(--text-secondary)', fontSize: '0.8rem', textTransform: 'uppercase', marginBottom: '0.35rem' }}>Alias remoto</h4>
-                              <input
-                                type="text"
-                                className="input-field"
-                                value={supremoDraft.supremoAlias}
-                                placeholder="Ej. BA400 Showroom"
-                                onChange={(e) => setSupremoDraft((current) => ({ ...current, supremoAlias: e.target.value }))}
-                              />
-                          </div>
-                          <div>
-                              <h4 style={{ color: 'var(--text-secondary)', fontSize: '0.8rem', textTransform: 'uppercase', marginBottom: '0.35rem' }}>Supremo ID</h4>
-                              <input
-                                type="text"
-                                inputMode="numeric"
-                                className="input-field"
-                                value={supremoDraft.supremoId}
-                                placeholder="ID de 9 digitos"
-                                onChange={(e) =>
-                                  setSupremoDraft((current) => ({
-                                    ...current,
-                                    supremoId: sanitizeSupremoId(e.target.value),
-                                  }))
-                                }
-                              />
-                          </div>
+                return (
+                  <>
+                    {showroomPreset && (
+                      <div style={{ marginBottom: '1rem', padding: '0.9rem 1rem', borderRadius: '10px', border: '1px solid rgba(255,255,255,0.08)', background: 'rgba(188,17,43,0.08)', color: 'var(--text-secondary)' }}>
+                        <strong style={{ color: 'var(--primary-color)' }}>{showroomPreset.alias}</strong>
+                        <span style={{ marginLeft: '0.45rem' }}>
+                          preset de showroom detectado para la serie {normalizedSerial}. ID sugerido: {showroomPreset.supremoId}
+                        </span>
                       </div>
+                    )}
 
-                      <label style={{ display: 'flex', alignItems: 'center', gap: '0.7rem', marginTop: '1rem', color: 'var(--text-secondary)' }}>
-                          <input
-                            type="checkbox"
-                            checked={supremoDraft.enabled}
-                            onChange={(e) =>
-                              setSupremoDraft((current) => ({
-                                ...current,
-                                enabled: e.target.checked,
-                              }))
-                            }
-                          />
-                          Habilitar apertura remota desde Orion para este equipo
-                      </label>
-
-                      <p style={{ marginTop: '0.85rem', marginBottom: 0, color: 'var(--text-secondary)', fontSize: '0.88rem' }}>
-                        Si editas el ID o el alias, guarda antes de abrir la sesion para que la Edge Function use el dato correcto.
-                      </p>
-
-                      <p style={{ marginTop: '0.55rem', marginBottom: 0, color: 'var(--text-secondary)', fontSize: '0.88rem' }}>
-                        La apertura actual usa el cliente local de Supremo instalado en esta computadora.
-                      </p>
-
-                      {supremoFeedback && (
-                        <div
-                          style={{
-                            marginTop: '1rem',
-                            padding: '0.85rem 1rem',
-                            borderRadius: '10px',
-                            border: `1px solid ${supremoFeedback.tone === 'error' ? 'rgba(255,107,107,0.28)' : 'rgba(46,204,113,0.28)'}`,
-                            background: supremoFeedback.tone === 'error' ? 'rgba(255,107,107,0.08)' : 'rgba(46,204,113,0.10)',
-                            color: supremoFeedback.tone === 'error' ? 'var(--error-color)' : 'var(--success-color)',
-                            fontSize: '0.9rem',
-                          }}
-                        >
-                          {supremoFeedback.message}
-                        </div>
-                      )}
-
-                      <div style={{ marginTop: '1.25rem', display: 'flex', gap: '0.85rem', flexWrap: 'wrap' }}>
-                          <button
-                            className="button-primary"
-                            disabled={savingSupremoConfig}
-                            onClick={saveSupremoConfig}
-                          >
-                            {savingSupremoConfig ? 'Guardando...' : 'Guardar configuracion'}
-                          </button>
-                          <button
-                            className={`button-primary ${!supremoDraft.enabled || !sanitizeSupremoId(supremoDraft.supremoId) ? 'inactive' : ''}`}
-                            disabled={!supremoDraft.enabled || !sanitizeSupremoId(supremoDraft.supremoId) || launchingSupremo}
-                            onClick={launchSupremo}
-                          >
-                            {launchingSupremo ? 'Abriendo Supremo...' : 'Conectar con Supremo'}
-                          </button>
+                    <div style={{ display: 'grid', gridTemplateColumns: 'minmax(180px, 1fr) minmax(220px, 1fr)', gap: '1rem' }}>
+                      <div>
+                        <h4 style={{ color: 'var(--text-secondary)', fontSize: '0.8rem', textTransform: 'uppercase', marginBottom: '0.35rem' }}>Alias remoto</h4>
+                        <input
+                          type="text"
+                          className="input-field"
+                          value={supremoDraft.supremoAlias}
+                          placeholder="Ej. BA400 Showroom"
+                          onChange={(e) => setSupremoDraft((current) => ({ ...current, supremoAlias: e.target.value }))}
+                        />
                       </div>
-                    </>
-                  );
-                })()}
+                      <div>
+                        <h4 style={{ color: 'var(--text-secondary)', fontSize: '0.8rem', textTransform: 'uppercase', marginBottom: '0.35rem' }}>Supremo ID</h4>
+                        <input
+                          type="text"
+                          inputMode="numeric"
+                          className="input-field"
+                          value={supremoDraft.supremoId}
+                          placeholder="ID de 9 digitos"
+                          onChange={(e) =>
+                            setSupremoDraft((current) => ({
+                              ...current,
+                              supremoId: sanitizeSupremoId(e.target.value),
+                            }))
+                          }
+                        />
+                      </div>
+                    </div>
+
+                    <label style={{ display: 'flex', alignItems: 'center', gap: '0.7rem', marginTop: '1rem', color: 'var(--text-secondary)' }}>
+                      <input
+                        type="checkbox"
+                        checked={supremoDraft.enabled}
+                        onChange={(e) =>
+                          setSupremoDraft((current) => ({
+                            ...current,
+                            enabled: e.target.checked,
+                          }))
+                        }
+                      />
+                      Habilitar apertura remota desde Orion para este equipo
+                    </label>
+
+                    <p style={{ marginTop: '0.85rem', marginBottom: 0, color: 'var(--text-secondary)', fontSize: '0.88rem' }}>
+                      Si editas el ID o el alias, guarda antes de abrir la sesion para que la Edge Function use el dato correcto.
+                    </p>
+
+                    <p style={{ marginTop: '0.55rem', marginBottom: 0, color: 'var(--text-secondary)', fontSize: '0.88rem' }}>
+                      La apertura actual usa el cliente local de Supremo instalado en esta computadora.
+                    </p>
+
+                    {supremoFeedback && (
+                      <div
+                        style={{
+                          marginTop: '1rem',
+                          padding: '0.85rem 1rem',
+                          borderRadius: '10px',
+                          border: `1px solid ${supremoFeedback.tone === 'error' ? 'rgba(255,107,107,0.28)' : 'rgba(46,204,113,0.28)'}`,
+                          background: supremoFeedback.tone === 'error' ? 'rgba(255,107,107,0.08)' : 'rgba(46,204,113,0.10)',
+                          color: supremoFeedback.tone === 'error' ? 'var(--error-color)' : 'var(--success-color)',
+                          fontSize: '0.9rem',
+                        }}
+                      >
+                        {supremoFeedback.message}
+                      </div>
+                    )}
+
+                    <div style={{ marginTop: '1.25rem', display: 'flex', gap: '0.85rem', flexWrap: 'wrap' }}>
+                      <button
+                        className="button-primary"
+                        disabled={savingSupremoConfig}
+                        onClick={saveSupremoConfig}
+                      >
+                        {savingSupremoConfig ? 'Guardando...' : 'Guardar configuracion'}
+                      </button>
+                      <button
+                        className={`button-primary ${!supremoDraft.enabled || !sanitizeSupremoId(supremoDraft.supremoId) ? 'inactive' : ''}`}
+                        disabled={!supremoDraft.enabled || !sanitizeSupremoId(supremoDraft.supremoId) || launchingSupremo}
+                        onClick={launchSupremo}
+                      >
+                        {launchingSupremo ? 'Abriendo Supremo...' : 'Conectar con Supremo'}
+                      </button>
+                    </div>
+                  </>
+                );
+              })()}
             </div>
 
             <div style={{ marginTop: '2rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <button 
-                  className="button-primary" 
-                  style={{ background: 'var(--text-secondary)', color: 'var(--bg-color)', border: 'none' }}
-                  onClick={() => { 
-                      if (!showServicios) {
-                          setShowServicios(true);
-                          fetchEquipoServicios(detallesEquipo.numero_serie);
-                      } else {
-                          setShowServicios(false);
-                      }
-                  }}
-                >
-                  {showServicios ? '△ Ocultar Servicios' : '▽ Historial de Servicios'}
-                </button>
-                <button 
-                  className="button-primary" 
-                  onClick={closeDetallesModal}
-                >
-                  Cerrar Vista
-                </button>
+              <button
+                className="button-primary"
+                style={{ background: 'var(--text-secondary)', color: 'var(--bg-color)', border: 'none' }}
+                onClick={() => {
+                  if (!showServicios) {
+                    setShowServicios(true);
+                    fetchEquipoServicios(detallesEquipo.numero_serie);
+                  } else {
+                    setShowServicios(false);
+                  }
+                }}
+              >
+                {showServicios ? '△ Ocultar Servicios' : '▽ Historial de Servicios'}
+              </button>
+              <button
+                className="button-primary"
+                onClick={closeDetallesModal}
+              >
+                Cerrar Vista
+              </button>
             </div>
 
             {showServicios && (
-                <div style={{ marginTop: '1.5rem', borderTop: '1px solid var(--border-color)', paddingTop: '1.5rem' }}>
-                    <h4 style={{ color: 'var(--primary-color)', marginBottom: '1rem' }}>Desglose de Servicios Realizados</h4>
-                    {loadingServicios ? (
-                        <p>Cargando historial maestro...</p>
-                    ) : equipoServicios.length === 0 ? (
-                        <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem' }}>Este equipo no tiene actas ni historial de servicio registrado.</p>
-                    ) : (
-                        <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                            {equipoServicios.map(serv => (
-                                <div key={serv.id} style={{ background: 'rgba(255,255,255,0.03)', padding: '1rem', borderRadius: '8px', borderLeft: '4px solid var(--primary-color)' }}>
-                                    <div style={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', gap: '0.5rem', marginBottom: '0.5rem' }}>
-                                        <strong style={{ fontSize: '0.95rem' }}>
-                                            <span style={{ color: 'var(--primary-color)', marginRight: '0.5rem' }}>
-                                                {serv.ticket_id ? `# TKT-${serv.ticket_id.substring(0,8).toUpperCase()}` : (serv.id_legacy ? `# LEG-${serv.id_legacy}` : '# SRV-IND')}
-                                            </span>
-                                            | {serv.fecha_servicio || new Date(serv.creado_en).toLocaleDateString()}
-                                        </strong>
-                                        <span style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>Ingeniero Asignado: {serv.profiles?.nombre_completo || 'Sistema Histórico (Extendido)'}</span>
-                                    </div>
-                                    <p style={{ margin: '0.5rem 0', fontWeight: '500', fontSize: '0.9rem' }}>Motivo / Asunto: <span style={{ color: 'var(--text-secondary)', fontWeight: 'normal' }}>{serv.motivo}</span></p>
-                                    
-                                    <div style={{ display: 'grid', gridTemplateColumns: 'minmax(150px, 1fr) minmax(150px, 1fr)', gap: '1rem', marginTop: '1rem' }}>
-                                        <div>
-                                            <span style={{ fontSize: '0.8rem', color: 'var(--error-color)', display: 'block', fontWeight: 'bold' }}>Avería [CDA: {serv.cda}]</span>
-                                            <span style={{ fontSize: '0.85rem' }}>{serv.averias_catalogo ? serv.averias_catalogo.detalle_averia : 'Avería de Texto Libre'}</span>
-                                        </div>
-                                        <div>
-                                            <span style={{ fontSize: '0.8rem', color: 'var(--success-color)', display: 'block', fontWeight: 'bold' }}>Solución [CDS: {serv.cds}]</span>
-                                            <span style={{ fontSize: '0.85rem' }}>{serv.soluciones_catalogo ? serv.soluciones_catalogo.detalle_solucion : 'Solución de Texto Libre'}</span>
-                                        </div>
-                                    </div>
-
-                                    {serv.servicios_refacciones && serv.servicios_refacciones.length > 0 && (
-                                        <div style={{ marginTop: '1rem', background: 'rgba(0,0,0,0.3)', padding: '0.5rem', borderRadius: '4px' }}>
-                                            <strong style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', display: 'block', marginBottom: '0.3rem' }}>Refacciones Utilizadas:</strong>
-                                            <ul style={{ margin: 0, paddingLeft: '1.2rem', fontSize: '0.8rem' }}>
-                                                {serv.servicios_refacciones.map((sr: any, idx: number) => (
-                                                    <li key={idx}><strong>[{sr.refacciones_catalogo?.codigo_refaccion}]</strong> x{sr.cantidad} - {sr.refacciones_catalogo?.descripcion}</li>
-                                                ))}
-                                            </ul>
-                                        </div>
-                                    )}
-                                </div>
-                            ))}
+              <div style={{ marginTop: '1.5rem', borderTop: '1px solid var(--border-color)', paddingTop: '1.5rem' }}>
+                <h4 style={{ color: 'var(--primary-color)', marginBottom: '1rem' }}>Desglose de Servicios Realizados</h4>
+                {loadingServicios ? (
+                  <p>Cargando historial maestro...</p>
+                ) : equipoServicios.length === 0 ? (
+                  <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem' }}>Este equipo no tiene actas ni historial de servicio registrado.</p>
+                ) : (
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                    {equipoServicios.map(serv => (
+                      <div key={serv.id} style={{ background: 'rgba(255,255,255,0.03)', padding: '1rem', borderRadius: '8px', borderLeft: '4px solid var(--primary-color)' }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', gap: '0.5rem', marginBottom: '0.5rem' }}>
+                          <strong style={{ fontSize: '0.95rem' }}>
+                            <span style={{ color: 'var(--primary-color)', marginRight: '0.5rem' }}>
+                              {serv.ticket_id ? `# TKT-${serv.ticket_id.substring(0, 8).toUpperCase()}` : (serv.id_legacy ? `# LEG-${serv.id_legacy}` : '# SRV-IND')}
+                            </span>
+                            | {serv.fecha_servicio || new Date(serv.creado_en).toLocaleDateString()}
+                          </strong>
+                          <span style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>Ingeniero Asignado: {serv.profiles?.nombre_completo || 'Sistema Histórico (Extendido)'}</span>
                         </div>
-                    )}
-                </div>
+                        <p style={{ margin: '0.5rem 0', fontWeight: '500', fontSize: '0.9rem' }}>Motivo / Asunto: <span style={{ color: 'var(--text-secondary)', fontWeight: 'normal' }}>{serv.motivo}</span></p>
+
+                        <div style={{ display: 'grid', gridTemplateColumns: 'minmax(150px, 1fr) minmax(150px, 1fr)', gap: '1rem', marginTop: '1rem' }}>
+                          <div>
+                            <span style={{ fontSize: '0.8rem', color: 'var(--error-color)', display: 'block', fontWeight: 'bold' }}>Avería [CDA: {serv.cda}]</span>
+                            <span style={{ fontSize: '0.85rem' }}>{serv.averias_catalogo ? serv.averias_catalogo.detalle_averia : 'Avería de Texto Libre'}</span>
+                          </div>
+                          <div>
+                            <span style={{ fontSize: '0.8rem', color: 'var(--success-color)', display: 'block', fontWeight: 'bold' }}>Solución [CDS: {serv.cds}]</span>
+                            <span style={{ fontSize: '0.85rem' }}>{serv.soluciones_catalogo ? serv.soluciones_catalogo.detalle_solucion : 'Solución de Texto Libre'}</span>
+                          </div>
+                        </div>
+
+                        {serv.servicios_refacciones && serv.servicios_refacciones.length > 0 && (
+                          <div style={{ marginTop: '1rem', background: 'rgba(0,0,0,0.3)', padding: '0.5rem', borderRadius: '4px' }}>
+                            <strong style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', display: 'block', marginBottom: '0.3rem' }}>Refacciones Utilizadas:</strong>
+                            <ul style={{ margin: 0, paddingLeft: '1.2rem', fontSize: '0.8rem' }}>
+                              {serv.servicios_refacciones.map((sr: any, idx: number) => (
+                                <li key={idx}><strong>[{sr.refacciones_catalogo?.codigo_refaccion}]</strong> x{sr.cantidad} - {sr.refacciones_catalogo?.descripcion}</li>
+                              ))}
+                            </ul>
+                          </div>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
             )}
           </div>
         </div>,
@@ -728,99 +729,99 @@ export default function Equipos() {
       )}
 
       {terminarModalOpen && selectedEquipo && createPortal(
-        <div 
+        <div
           style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(0,0,0,0.7)', display: 'flex', justifyContent: 'center', alignItems: 'center', zIndex: 1000, padding: '1rem' }}
           onClick={() => { setTerminarModalOpen(false); setSelectedEquipo(null); setPdfFile(null); }}
         >
-          <div 
-            className="card" 
+          <div
+            className="card"
             style={{ maxWidth: '500px', width: '100%', border: '1px solid var(--border-color)' }}
             onClick={(e) => e.stopPropagation()}
           >
             <h3>Terminar Servicio</h3>
             <p><strong>N. Serie:</strong> {selectedEquipo.numero_serie}</p>
             <p><strong>Cliente:</strong> {selectedEquipo.clientes?.razon_social || 'Desconocido'}</p>
-            <hr style={{ margin: '1rem 0', borderColor: 'var(--border-color)' }}/>
-            
+            <hr style={{ margin: '1rem 0', borderColor: 'var(--border-color)' }} />
+
             <p style={{ marginBottom: '1.5rem', fontSize: '0.95rem' }}>Genera un formato prellenado para firma o sube manualmente el Acta de Terminación escaneada (PDF).</p>
-            
+
             <div style={{ display: 'flex', gap: '1rem', marginBottom: '2rem', flexDirection: 'column' }}>
-                <button 
-                    className="button-primary" 
-                    onClick={async () => {
-                        const doc = new jsPDF();
-                        doc.text("ACTA DE TERMINACION DE SERVICIO Y RETIRO DE EQUIPO", 20, 20);
-                        doc.text(`Fecha: ${new Date().toLocaleDateString()}`, 20, 30);
-                        doc.text(`Cliente: ${selectedEquipo.clientes?.razon_social || 'Desconocido'}`, 20, 40);
-                        doc.text(`Numero de Serie: ${selectedEquipo.numero_serie}`, 20, 50);
-                        doc.text(`Fecha Instalacion: ${selectedEquipo.fecha_inicio || 'N/D'}`, 20, 60);
-                        doc.text(`Firma del Cliente: _________________________`, 20, 100);
-                        doc.text(`Firma del Tecnico / Representante: _________________________`, 20, 130);
-                        doc.save(`Acta_Terminacion_${selectedEquipo.numero_serie}.pdf`);
-                    }}
-                >
-                    ⬇️ Descargar Formato Prellenado (PDF)
-                </button>
-                <label style={{ fontWeight: 'bold', marginTop: '1rem' }}>Subir PDF Finalizado:</label>
-                <input 
-                    type="file" 
-                    accept="application/pdf" 
-                    className="input-field"
-                    onChange={(e) => {
-                        if (e.target.files && e.target.files[0]) {
-                            setPdfFile(e.target.files[0]);
-                        }
-                    }} 
-                />
+              <button
+                className="button-primary"
+                onClick={async () => {
+                  const doc = new jsPDF();
+                  doc.text("ACTA DE TERMINACION DE SERVICIO Y RETIRO DE EQUIPO", 20, 20);
+                  doc.text(`Fecha: ${new Date().toLocaleDateString()}`, 20, 30);
+                  doc.text(`Cliente: ${selectedEquipo.clientes?.razon_social || 'Desconocido'}`, 20, 40);
+                  doc.text(`Numero de Serie: ${selectedEquipo.numero_serie}`, 20, 50);
+                  doc.text(`Fecha Instalacion: ${selectedEquipo.fecha_inicio || 'N/D'}`, 20, 60);
+                  doc.text(`Firma del Cliente: _________________________`, 20, 100);
+                  doc.text(`Firma del Tecnico / Representante: _________________________`, 20, 130);
+                  doc.save(`Acta_Terminacion_${selectedEquipo.numero_serie}.pdf`);
+                }}
+              >
+                ⬇️ Descargar Formato Prellenado (PDF)
+              </button>
+              <label style={{ fontWeight: 'bold', marginTop: '1rem' }}>Subir PDF Finalizado:</label>
+              <input
+                type="file"
+                accept="application/pdf"
+                className="input-field"
+                onChange={(e) => {
+                  if (e.target.files && e.target.files[0]) {
+                    setPdfFile(e.target.files[0]);
+                  }
+                }}
+              />
             </div>
 
             <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '1rem' }}>
-              <button 
-                  className="button-primary" 
-                  style={{ background: 'var(--bg-secondary)', color: 'var(--text-secondary)' }}
-                  onClick={() => { setTerminarModalOpen(false); setSelectedEquipo(null); setPdfFile(null); }}
+              <button
+                className="button-primary"
+                style={{ background: 'var(--bg-secondary)', color: 'var(--text-secondary)' }}
+                onClick={() => { setTerminarModalOpen(false); setSelectedEquipo(null); setPdfFile(null); }}
               >
-                  Cancelar
+                Cancelar
               </button>
-              <button 
-                  className="button-primary"
-                  disabled={!pdfFile || uploading}
-                  onClick={async () => {
-                     setUploading(true);
-                     const fileName = `terminacion_${selectedEquipo.numero_serie.replace(/\//g, '-')}_${Date.now()}.pdf`;
-                     
-                     // 1. Upload PDF
-                     const { error: uploadError } = await supabase.storage.from('documentos').upload(fileName, pdfFile!);
-                     if (uploadError) {
-                         alert('Error al subir el archivo a Supabase: ' + uploadError.message);
-                         setUploading(false);
-                         return;
-                     }
+              <button
+                className="button-primary"
+                disabled={!pdfFile || uploading}
+                onClick={async () => {
+                  setUploading(true);
+                  const fileName = `terminacion_${selectedEquipo.numero_serie.replace(/\//g, '-')}_${Date.now()}.pdf`;
 
-                     // 2. Fetch proper UUID for update
-                     const currentUserResp = await supabase.auth.getUser();
-                     const uid = currentUserResp.data.user?.id;
+                  // 1. Upload PDF
+                  const { error: uploadError } = await supabase.storage.from('documentos').upload(fileName, pdfFile!);
+                  if (uploadError) {
+                    alert('Error al subir el archivo a Supabase: ' + uploadError.message);
+                    setUploading(false);
+                    return;
+                  }
 
-                     // 3. Update Equipos Table
-                     const { error: dbError } = await supabase.from('equipos').update({
-                         doc_terminacion: true,
-                         fecha_fin: new Date().toISOString().split('T')[0],
-                         empleado_retira: uid
-                     }).eq('id', selectedEquipo.id);
+                  // 2. Fetch proper UUID for update
+                  const currentUserResp = await supabase.auth.getUser();
+                  const uid = currentUserResp.data.user?.id;
 
-                     if (dbError) {
-                         alert('Error al actualizar registro en base de datos: ' + dbError.message);
-                     } else {
-                         alert('¡Documento guardado y Servicio Terminado exitosamente!');
-                         setTerminarModalOpen(false);
-                         setSelectedEquipo(null);
-                         setPdfFile(null);
-                         fetchEquipos();
-                     }
-                     setUploading(false);
-                  }}
+                  // 3. Update Equipos Table
+                  const { error: dbError } = await supabase.from('equipos').update({
+                    doc_terminacion: true,
+                    fecha_fin: new Date().toISOString().split('T')[0],
+                    empleado_retira: uid
+                  }).eq('id', selectedEquipo.id);
+
+                  if (dbError) {
+                    alert('Error al actualizar registro en base de datos: ' + dbError.message);
+                  } else {
+                    alert('¡Documento guardado y Servicio Terminado exitosamente!');
+                    setTerminarModalOpen(false);
+                    setSelectedEquipo(null);
+                    setPdfFile(null);
+                    fetchEquipos();
+                  }
+                  setUploading(false);
+                }}
               >
-                  {uploading ? 'Procesando...' : 'Subir y Terminar'}
+                {uploading ? 'Procesando...' : 'Subir y Terminar'}
               </button>
             </div>
           </div>
