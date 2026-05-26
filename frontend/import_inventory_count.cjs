@@ -5,7 +5,7 @@ require('dotenv').config({ path: path.join(__dirname, '.env.local') });
 const { createClient } = require('@supabase/supabase-js');
 
 const LOCAL_SUPABASE_URL = 'http://127.0.0.1:54321';
-const LOCAL_SUPABASE_SECRET = 'sb_secret_N7UND0UgjKTVK-Uodkm0Hg_xSvEMPvz';
+const LOCAL_SUPABASE_SECRET = process.env.SUPABASE_SERVICE_ROLE_KEY || 'your-local-secret-here';
 const DEFAULT_FILE = path.join(__dirname, '..', 'inventario 3 de mayo del 2026.xlsx');
 const DEFAULT_COUNTED_BY = 'No indicado en archivo';
 const DEFAULT_CAPTURED_BY = 'Carga automatizada desde Excel';

@@ -1,0 +1,89 @@
+{
+  "monitorName": "ax00-log-monitor-mx",
+  "identity": {
+    "machineName": "${ENV:COMPUTERNAME}",
+    "equipmentSerial": "",
+    "equipmentModel": ""
+  },
+  "source": {
+    "mode": "latest-file-in-dir",
+    "path": "C:\\ProgramData\\BA400\\Log",
+    "pathCandidates": [
+      "C:\\ProgramData\\BA400\\Log",
+      "C:\\ProgramData\\BA200\\Log",
+      "C:\\ProgramData\\A15\\Log",
+      "C:\\ProgramData\\A25\\Log",
+      "C:\\ProgramData\\Y15\\Log",
+      "C:\\ProgramData\\Y25\\Log"
+    ],
+    "autoDiscover": true,
+    "discoveryRoots": [
+      "C:\\ProgramData",
+      "D:\\ProgramData",
+      "C:\\",
+      "D:\\"
+    ],
+    "discoveryMaxDepth": 5,
+    "discoveryMaxDirectories": 600,
+    "discoveryCooldownMs": 900000,
+    "discoveryPreferredDirNamePattern": "[Ll][Oo][Gg]|[Tt][Rr][Aa][Cc][Ee]",
+    "discoverySkipDirectoryNames": [
+      "Windows",
+      "Program Files",
+      "Program Files (x86)",
+      "Users",
+      "PerfLogs",
+      "Recovery",
+      "package cache"
+    ],
+    "fileNamePattern": "^TraceComm.*\\.[Ll][Aa][Xx]00$",
+    "encoding": "utf8",
+    "pollIntervalMs": 5000,
+    "startAtEndOnFirstSeen": true,
+    "startAtEndOnFileSwitch": false
+  },
+  "parser": {
+    "mode": "tracecomm",
+    "errorPattern": "E:\\((\\d+)\\)",
+    "uploadLinesWithoutCode": false,
+    "ignoreZeroErrors": true,
+    "dedupeActiveErrors": true,
+    "identityScanMaxBytes": 2097152,
+    "requireEquipmentSerial": true
+  },
+  "supabase": {
+    "url": "https://mzgrifkunevgestihlmh.supabase.co",
+    "apiKey": "sb_publishable_DxWLr-O7UkuHyX06vzdmAQ_LeUgtQFe",
+    "schema": "public",
+    "table": "monitoreo_errores_equipos",
+    "stateTable": "estado_errores_equipo_actual"
+  },
+  "upload": {
+    "dryRun": false,
+    "batchSize": 50,
+    "staticColumns": {},
+    "columnMap": {
+      "detected_at": "detected_at",
+      "numero_serie": "effective_equipment_serial",
+      "modelo": "effective_equipment_model",
+      "codigo_error": "primary_error_code",
+      "descripcion_error": "primary_error_description",
+      "seccion_error": "matched_error_descriptions.0.section",
+      "analizador_id": "analyzer_id",
+      "tipo_mensaje": "message_type",
+      "monitor_name": "monitor_name",
+      "machine_name": "machine_name",
+      "source_file": "source_file",
+      "source_basename": "source_basename",
+      "line_number": "line_number",
+      "byte_offset_start": "byte_offset_start",
+      "byte_offset_end": "byte_offset_end",
+      "raw_line": "raw_line",
+      "line_hash": "line_hash",
+      "payload": "payload"
+    }
+  },
+  "state": {
+    "path": "${CONFIG_DIR}\\state\\monitor-state-nacional.json"
+  }
+}

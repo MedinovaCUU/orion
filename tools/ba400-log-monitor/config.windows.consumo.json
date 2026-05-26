@@ -1,0 +1,60 @@
+{
+  "monitorName": "ax00-consumption-monitor-mx",
+  "identity": {
+    "machineName": "${ENV:COMPUTERNAME}",
+    "equipmentSerial": "",
+    "equipmentModel": "",
+    "requireEquipmentSerial": true
+  },
+  "source": {
+    "path": "C:\\ProgramData\\BA400\\LogConsum",
+    "pathCandidates": [
+      "C:\\ProgramData\\BA400\\LogConsum",
+      "C:\\ProgramData\\BA200\\LogConsum",
+      "C:\\ProgramData\\A15\\LogConsum",
+      "C:\\ProgramData\\A25\\LogConsum",
+      "C:\\ProgramData\\Y15\\LogConsum",
+      "C:\\ProgramData\\Y25\\LogConsum"
+    ],
+    "autoDiscover": true,
+    "discoveryRoots": [
+      "C:\\ProgramData",
+      "D:\\ProgramData",
+      "C:\\",
+      "D:\\"
+    ],
+    "discoveryMaxDepth": 5,
+    "discoveryMaxDirectories": 600,
+    "discoveryCooldownMs": 900000,
+    "discoveryPreferredDirNamePattern": "[Ll][Oo][Gg][Cc][Oo][Nn][Ss][Uu][Mm]|[Cc][Oo][Nn][Ss][Uu][Mm]",
+    "discoverySkipDirectoryNames": [
+      "Windows",
+      "Program Files",
+      "Program Files (x86)",
+      "Users",
+      "PerfLogs",
+      "Recovery",
+      "package cache"
+    ],
+    "encoding": "utf8",
+    "pollIntervalMs": 3600000,
+    "reagentPattern": "^.*_ReagentConsumption_\\d{6}\\.csv$",
+    "rotorPattern": "^.*_RotorConsumption_\\d{6}\\.csv$",
+    "resyncIntervalMs": 86400000
+  },
+  "supabase": {
+    "url": "https://mzgrifkunevgestihlmh.supabase.co",
+    "apiKey": "sb_publishable_DxWLr-O7UkuHyX06vzdmAQ_LeUgtQFe",
+    "schema": "public",
+    "reagentTable": "consumo_reactivos_hora",
+    "rotorTable": "consumo_rotores_mensual",
+    "equipmentStateTable": "estado_insumos_equipo_actual"
+  },
+  "upload": {
+    "dryRun": false,
+    "batchSize": 200
+  },
+  "state": {
+    "path": "${CONFIG_DIR}\\state\\consumption-monitor-state.json"
+  }
+}

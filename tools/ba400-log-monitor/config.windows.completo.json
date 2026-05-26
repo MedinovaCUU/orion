@@ -1,0 +1,21 @@
+{
+  "suiteName": "ax00-equipment-monitor-mx",
+  "restartDelayMs": 5000,
+  "logDir": "${CONFIG_DIR}\\logs",
+  "monitors": [
+    {
+      "name": "errores",
+      "enabled": true,
+      "script": "${SCRIPT_DIR}\\monitor.mjs",
+      "config": "${SCRIPT_DIR}\\config.windows.nacional.json",
+      "workingDirectory": "${SCRIPT_DIR}"
+    },
+    {
+      "name": "consumos",
+      "enabled": true,
+      "script": "${SCRIPT_DIR}\\consumption-monitor.mjs",
+      "config": "${SCRIPT_DIR}\\config.windows.consumo.json",
+      "workingDirectory": "${SCRIPT_DIR}"
+    }
+  ]
+}

@@ -6,10 +6,22 @@ import os from 'node:os';
 import path from 'node:path';
 import process from 'node:process';
 import { fileURLToPath } from 'node:url';
+import { discoverMatchingDirectories } from './source-discovery.mjs';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const TRANSIENT_FILE_ERROR_CODES = new Set(['EBUSY', 'EACCES', 'EPERM']);
+const EQUIPMENT_MODEL_RULES = [
+  { prefix: '83400', model: 'BA400' },
+  { prefix: '83200', model: 'BA200' },
+  { prefix: '83105', model: 'A15' },
+  { prefix: '83101', model: 'A25' },
+];
+const ERROR_TYPE_PRIORITY = {
+  fatal: 3,
+  warning: 2,
+  ok: 1,
+};
 
 function parseArgs(argv) {
   const args = {
@@ -48,6 +60,13 @@ function timestamp() {
 
 function log(message) {
   console.log(`[${timestamp()}] ${message}`);
+}
+
+function toLocalDateKey(date = new Date()) {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  return `${year}${month}${day}`;
 }
 
 function sleep(ms) {
@@ -102,6 +121,72 @@ function removeUndefinedProperties(record) {
   );
 }
 
+function inferEquipmentModelFromSerial(serial) {
+  const normalizedSerial = (serial || '').trim();
+  if (!normalizedSerial) {
+    return null;
+  }
+
+  const rule = EQUIPMENT_MODEL_RULES.find((candidate) => normalizedSerial.startsWith(candidate.prefix));
+  return rule?.model || null;
+}
+
+function extractPreferredTraceCommSerial(text) {
+  const asnMatches = [...String(text || '').matchAll(/(?:^|;)ASN:([^;\r\n]+)/gm)];
+  for (const match of asnMatches) {
+    const serial = (match[1] || '').trim();
+    if (serial) {
+      return {
+        serial,
+        model: inferEquipmentModelFromSerial(serial),
+        source: 'asn',
+      };
+    }
+  }
+
+  const snMatches = [...String(text || '').matchAll(/(?:^|;)SN:([^;\r\n]+)/gm)];
+  for (const match of snMatches) {
+    const serial = (match[1] || '').trim();
+    if (serial) {
+      return {
+        serial,
+        model: inferEquipmentModelFromSerial(serial),
+        source: 'sn',
+      };
+    }
+  }
+
+  return {
+    serial: '',
+    model: null,
+    source: null,
+  };
+}
+
+function normalizeCatalogErrorType(value) {
+  const normalized = String(value || '').trim().toLowerCase();
+  if (normalized === 'fatal' || normalized === 'warning' || normalized === 'ok') {
+    return normalized;
+  }
+  return null;
+}
+
+function resolveMessageTypeFromCatalog(errorCodes, catalog) {
+  let bestType = null;
+  let bestPriority = 0;
+
+  for (const code of errorCodes) {
+    const errorType = normalizeCatalogErrorType(catalog[code]?.error_type);
+    const priority = ERROR_TYPE_PRIORITY[errorType] || 0;
+    if (priority > bestPriority) {
+      bestType = errorType;
+      bestPriority = priority;
+    }
+  }
+
+  return bestType;
+}
+
 async function fileExists(filePath) {
   try {
     await fs.access(filePath);
@@ -115,14 +200,132 @@ async function loadState(filePath) {
   if (!(await fileExists(filePath))) {
     return {
       active_file: null,
+      source_directory: null,
+      source_directory_last_discovery_at: null,
       files: {},
     };
   }
 
-  return readJson(filePath);
+  const state = await readJson(filePath);
+  state.source_directory = state.source_directory || null;
+  state.source_directory_last_discovery_at = state.source_directory_last_discovery_at || null;
+  state.files = state.files || {};
+  return state;
 }
 
-async function resolveActiveFile(sourceConfig) {
+async function resolveSourceDirectory(sourceConfig, state) {
+  if (sourceConfig.mode === 'file') {
+    return path.dirname(path.resolve(sourceConfig.path));
+  }
+
+  if (sourceConfig.mode !== 'latest-file-in-dir') {
+    throw new Error(`Unsupported source mode: ${sourceConfig.mode}`);
+  }
+
+  const defaultPath = sourceConfig.path ? path.resolve(sourceConfig.path) : '';
+  const shouldDiscover = Boolean(sourceConfig.autoDiscover);
+
+  if (!shouldDiscover) {
+    return defaultPath;
+  }
+
+  const discoveryIntervalMs = Number(sourceConfig.discoveryCooldownMs || 600000);
+  const lastDiscoveryAt = state.source_directory_last_discovery_at
+    ? Date.parse(state.source_directory_last_discovery_at)
+    : 0;
+  const cachedDirectory = state.source_directory ? path.resolve(state.source_directory) : '';
+  const preferredPaths = [cachedDirectory, defaultPath, ...(sourceConfig.pathCandidates || [])].filter(Boolean);
+  const filePatterns = [sourceConfig.fileNamePattern || '.*'];
+
+  const now = Date.now();
+  const canRediscover = !lastDiscoveryAt || now - lastDiscoveryAt >= discoveryIntervalMs;
+  if (!canRediscover && cachedDirectory) {
+    const cachedCandidates = await discoverMatchingDirectories({
+      preferredPaths: [cachedDirectory],
+      roots: [],
+      filePatterns,
+      preferredDirNamePattern: sourceConfig.discoveryPreferredDirNamePattern,
+      maxDepth: 0,
+      maxDirectories: 1,
+      skipDirectoryNames: sourceConfig.discoverySkipDirectoryNames,
+    });
+
+    if (cachedCandidates.length) {
+      return cachedDirectory;
+    }
+  }
+
+  const discoveredCandidates = await discoverMatchingDirectories({
+    preferredPaths,
+    roots: sourceConfig.discoveryRoots || [],
+    filePatterns,
+    preferredDirNamePattern: sourceConfig.discoveryPreferredDirNamePattern,
+    maxDepth: sourceConfig.discoveryMaxDepth,
+    maxDirectories: sourceConfig.discoveryMaxDirectories,
+    skipDirectoryNames: sourceConfig.discoverySkipDirectoryNames,
+  });
+
+  state.source_directory_last_discovery_at = new Date(now).toISOString();
+
+  if (!discoveredCandidates.length) {
+    state.source_directory = null;
+    return null;
+  }
+
+  const discovered = rankErrorDirectoryCandidates(discoveredCandidates)[0];
+  const discoveredDirectory = discovered.directoryPath;
+  if (state.source_directory !== discoveredDirectory) {
+    log(`directorio de logs detectado automaticamente: ${discoveredDirectory}`);
+  }
+  state.source_directory = discoveredDirectory;
+  return discoveredDirectory;
+}
+
+function extractTraceDateKeyFromName(name) {
+  const match = String(name || '').match(/TraceComm(\d{8})/i);
+  return match ? match[1] : '';
+}
+
+function rankErrorDirectoryCandidates(candidates) {
+  const todayKey = toLocalDateKey();
+
+  return [...candidates].sort((left, right) => {
+    const leftDateKey = left.matchingFiles.reduce((best, file) => {
+      const current = extractTraceDateKeyFromName(file.basename);
+      return current > best ? current : best;
+    }, '');
+    const rightDateKey = right.matchingFiles.reduce((best, file) => {
+      const current = extractTraceDateKeyFromName(file.basename);
+      return current > best ? current : best;
+    }, '');
+
+    const leftHasToday = leftDateKey === todayKey;
+    const rightHasToday = rightDateKey === todayKey;
+    if (Number(rightHasToday) !== Number(leftHasToday)) {
+      return Number(rightHasToday) - Number(leftHasToday);
+    }
+
+    if (rightDateKey !== leftDateKey) {
+      return rightDateKey.localeCompare(leftDateKey);
+    }
+
+    if (right.latestFileMtimeMs !== left.latestFileMtimeMs) {
+      return right.latestFileMtimeMs - left.latestFileMtimeMs;
+    }
+
+    if (right.totalMatchingFiles !== left.totalMatchingFiles) {
+      return right.totalMatchingFiles - left.totalMatchingFiles;
+    }
+
+    if (Number(right.preferredMatch) !== Number(left.preferredMatch)) {
+      return Number(right.preferredMatch) - Number(left.preferredMatch);
+    }
+
+    return left.directoryPath.length - right.directoryPath.length;
+  });
+}
+
+async function resolveActiveFile(sourceConfig, directoryOverride) {
   if (sourceConfig.mode === 'file') {
     return path.resolve(sourceConfig.path);
   }
@@ -131,7 +334,7 @@ async function resolveActiveFile(sourceConfig) {
     throw new Error(`Unsupported source mode: ${sourceConfig.mode}`);
   }
 
-  const directoryPath = path.resolve(sourceConfig.path);
+  const directoryPath = directoryOverride ? path.resolve(directoryOverride) : path.resolve(sourceConfig.path);
   const fileNamePattern = new RegExp(sourceConfig.fileNamePattern || '.*');
   const dirents = await fs.readdir(directoryPath, { withFileTypes: true });
   const candidates = [];
@@ -186,7 +389,9 @@ function getOrCreateFileState(state, filePath) {
       pending_fragment: '',
       pending_fragment_offset: 0,
       detected_equipment_serial: '',
+      detected_equipment_model: '',
       tracecomm_active_error_signature: '',
+      tracecomm_last_reported_state_signature: '',
       initialized: false,
     };
   }
@@ -232,6 +437,43 @@ async function readIncrementalChunk(filePath, startOffset, endOffset) {
   return Buffer.alloc(0);
 }
 
+async function readTextSlice(filePath, startOffset, endOffset, encoding) {
+  const buffer = await readIncrementalChunk(filePath, startOffset, endOffset);
+  return buffer.toString(encoding || 'utf8');
+}
+
+function extractTraceCommIdentity(text) {
+  return extractPreferredTraceCommSerial(text);
+}
+
+async function bootstrapTraceCommIdentity(filePath, stats, fileState, config) {
+  if (fileState.detected_equipment_serial) {
+    return;
+  }
+
+  const maxBytes = Number(config.parser.identityScanMaxBytes || 1024 * 1024);
+  const slices = [];
+  const headEnd = Math.min(stats.size, maxBytes);
+
+  if (headEnd > 0) {
+    slices.push(await readTextSlice(filePath, 0, headEnd, config.source.encoding));
+  }
+
+  if (stats.size > maxBytes) {
+    const tailStart = Math.max(0, stats.size - maxBytes);
+    slices.push(await readTextSlice(filePath, tailStart, stats.size, config.source.encoding));
+  }
+
+  for (const slice of slices) {
+    const identity = extractTraceCommIdentity(slice);
+    if (identity.serial) {
+      fileState.detected_equipment_serial = identity.serial;
+      fileState.detected_equipment_model = identity.model || '';
+      return;
+    }
+  }
+}
+
 function parseErrorCodes(line, pattern) {
   const codes = [];
   const regex = new RegExp(pattern.source, pattern.flags);
@@ -246,17 +488,24 @@ function parseErrorCodes(line, pattern) {
 }
 
 function parseTraceCommLine(line, fileState, parserConfig) {
-  const serialMatches = line.matchAll(/(?:^|;)(?:ASN|SN):([^;]+)/g);
-  for (const match of serialMatches) {
-    const serial = (match[1] || '').trim();
+  const preferredIdentity = extractPreferredTraceCommSerial(line);
+  if (preferredIdentity.serial && (preferredIdentity.source === 'asn' || !fileState.detected_equipment_serial)) {
+    fileState.detected_equipment_serial = preferredIdentity.serial;
+    fileState.detected_equipment_model = preferredIdentity.model || '';
+  } else if (!fileState.detected_equipment_serial) {
+    const snMatch = String(line || '').match(/(?:^|;)SN:([^;\r\n]+)/);
+    const serial = (snMatch?.[1] || '').trim();
     if (serial) {
       fileState.detected_equipment_serial = serial;
+      fileState.detected_equipment_model = inferEquipmentModelFromSerial(serial) || '';
     }
   }
 
   const messageMatch = line.match(/(?:<<|>>)\s+([A-Z0-9]+);([A-Z0-9]+);/);
   const analyzerId = messageMatch?.[1] || null;
   const messageType = messageMatch?.[2] || null;
+  const isAnsErrLine = messageType === 'ANSERR';
+  const declaredErrorCount = isAnsErrLine ? Number.parseInt(line.match(/(?:^|;)N:(\d+)(?=;|$)/)?.[1] || '', 10) : null;
 
   const allErrorCodes = [];
   for (const match of line.matchAll(/(?:^|;)E:(\d+)(?=;|$)/g)) {
@@ -267,9 +516,18 @@ function parseTraceCommLine(line, fileState, parserConfig) {
     new Set(allErrorCodes.filter((code) => !parserConfig.ignoreZeroErrors || code !== '0')),
   );
   const hasExplicitZeroOnly = allErrorCodes.length > 0 && nonZeroErrorCodes.length === 0;
+  const hasExplicitClear = hasExplicitZeroOnly || (isAnsErrLine && declaredErrorCount === 0);
+  let stateTransition = null;
 
-  if (hasExplicitZeroOnly) {
+  if (hasExplicitClear) {
     fileState.tracecomm_active_error_signature = '';
+    if (fileState.tracecomm_last_reported_state_signature !== 'ok') {
+      fileState.tracecomm_last_reported_state_signature = 'ok';
+      stateTransition = {
+        status: 'ok',
+        errorCodes: [],
+      };
+    }
   }
 
   if (!nonZeroErrorCodes.length) {
@@ -280,10 +538,20 @@ function parseTraceCommLine(line, fileState, parserConfig) {
         analyzer_id: analyzerId,
         message_type: messageType,
       },
+      stateTransition,
     };
   }
 
   const signature = nonZeroErrorCodes.join(',');
+  const stateSignature = `active:${signature}`;
+  if (fileState.tracecomm_last_reported_state_signature !== stateSignature) {
+    fileState.tracecomm_last_reported_state_signature = stateSignature;
+    stateTransition = {
+      status: 'active',
+      errorCodes: nonZeroErrorCodes,
+    };
+  }
+
   if (parserConfig.dedupeActiveErrors && fileState.tracecomm_active_error_signature === signature) {
     return {
       shouldUpload: false,
@@ -292,6 +560,7 @@ function parseTraceCommLine(line, fileState, parserConfig) {
         analyzer_id: analyzerId,
         message_type: messageType,
       },
+      stateTransition,
     };
   }
 
@@ -304,13 +573,32 @@ function parseTraceCommLine(line, fileState, parserConfig) {
       analyzer_id: analyzerId,
       message_type: messageType,
     },
+    stateTransition,
   };
+}
+
+function buildMatchedDescriptions(errorCodes, catalog) {
+  return errorCodes.map((code) => ({
+    code,
+    description: catalog[code]?.description || null,
+    section: catalog[code]?.section || null,
+    error_type: normalizeCatalogErrorType(catalog[code]?.error_type),
+  }));
+}
+
+function resolveCurrentStateStatus(errorCodes, catalog) {
+  if (!errorCodes.length) {
+    return 'ok';
+  }
+
+  return resolveMessageTypeFromCatalog(errorCodes, catalog) || 'warning';
 }
 
 function buildEvent({
   monitorName,
   machineName,
-  equipmentSerial,
+  configuredEquipmentSerial,
+  effectiveEquipmentSerial,
   sourceFile,
   lineNumber,
   byteOffsetStart,
@@ -324,13 +612,16 @@ function buildEvent({
     code,
     description: catalog[code]?.description || null,
     section: catalog[code]?.section || null,
+    error_type: normalizeCatalogErrorType(catalog[code]?.error_type),
   }));
+  const catalogMessageType = resolveMessageTypeFromCatalog(errorCodes, catalog);
 
   const payload = {
     monitor_name: monitorName,
     machine_name: machineName,
-    configured_equipment_serial: equipmentSerial || null,
-    effective_equipment_serial: equipmentSerial || machineName,
+    configured_equipment_serial: configuredEquipmentSerial || null,
+    effective_equipment_serial: effectiveEquipmentSerial || null,
+    effective_equipment_model: metadata?.equipment_model || null,
     source_file: sourceFile,
     source_basename: path.basename(sourceFile),
     line_number: lineNumber,
@@ -343,7 +634,8 @@ function buildEvent({
     matched_error_descriptions: matchedDescriptions,
     detected_at: new Date().toISOString(),
     analyzer_id: metadata?.analyzer_id || null,
-    message_type: metadata?.message_type || null,
+    protocol_message_type: metadata?.message_type || null,
+    message_type: catalogMessageType,
   };
 
   payload.line_hash = crypto
@@ -356,6 +648,70 @@ function buildEvent({
   };
 
   return payload;
+}
+
+function buildCurrentErrorStateRow({
+  monitorName,
+  machineName,
+  configuredEquipmentSerial,
+  effectiveEquipmentSerial,
+  sourceFile,
+  lineNumber,
+  rawLine,
+  errorCodes,
+  catalog,
+  metadata,
+  stateStatus,
+}) {
+  const matchedDescriptions = buildMatchedDescriptions(errorCodes, catalog);
+  const resolvedStatus = stateStatus === 'ok' ? 'ok' : resolveCurrentStateStatus(errorCodes, catalog);
+  const detectedAt = new Date().toISOString();
+  const sourceBasename = path.basename(sourceFile);
+
+  return removeUndefinedProperties({
+    numero_serie: effectiveEquipmentSerial,
+    modelo: metadata?.equipment_model || null,
+    monitor_name: monitorName,
+    machine_name: machineName || null,
+    analizador_id: metadata?.analyzer_id || null,
+    estado_actual: resolvedStatus,
+    tipo_mensaje: resolvedStatus,
+    codigos_error: errorCodes,
+    errores_activos: matchedDescriptions.map((item) => ({
+      codigo_error: item.code,
+      descripcion_error: item.description,
+      seccion_error: item.section,
+      tipo_mensaje: item.error_type || resolvedStatus,
+    })),
+    error_principal_codigo: errorCodes[0] || null,
+    error_principal_descripcion: matchedDescriptions[0]?.description || null,
+    error_principal_seccion: matchedDescriptions[0]?.section || null,
+    activo_desde: resolvedStatus === 'ok' ? null : detectedAt,
+    last_event_at: detectedAt,
+    resolved_at: resolvedStatus === 'ok' ? detectedAt : null,
+    source_file: sourceFile,
+    source_basename: sourceBasename,
+    line_number: lineNumber,
+    raw_line: rawLine,
+    payload: {
+      monitor_name: monitorName,
+      machine_name: machineName || null,
+      configured_equipment_serial: configuredEquipmentSerial || null,
+      effective_equipment_serial: effectiveEquipmentSerial || null,
+      effective_equipment_model: metadata?.equipment_model || null,
+      source_file: sourceFile,
+      source_basename: sourceBasename,
+      line_number: lineNumber,
+      raw_line: rawLine,
+      error_codes: errorCodes,
+      matched_error_descriptions: matchedDescriptions,
+      detected_at: detectedAt,
+      analyzer_id: metadata?.analyzer_id || null,
+      protocol_message_type: metadata?.message_type || null,
+      estado_actual: resolvedStatus,
+    },
+    updated_at: detectedAt,
+  });
 }
 
 function mapEventToRow(event, uploadConfig) {
@@ -414,6 +770,40 @@ async function uploadBatch(rows, config) {
   log(`insertadas ${rows.length} filas en ${config.supabase.table}`);
 }
 
+async function upsertBatch(rows, config, tableName, onConflictColumns) {
+  if (!rows.length || !tableName) {
+    return;
+  }
+
+  if (config.upload.dryRun) {
+    log(`dryRun activo: ${rows.length} filas preparadas para upsert en ${tableName}`);
+    console.log(JSON.stringify(rows, null, 2));
+    return;
+  }
+
+  const endpoint = new URL(`/rest/v1/${tableName}`, config.supabase.url);
+  endpoint.searchParams.set('on_conflict', onConflictColumns.join(','));
+
+  const response = await fetch(endpoint, {
+    method: 'POST',
+    headers: {
+      apikey: config.supabase.apiKey,
+      Authorization: `Bearer ${config.supabase.apiKey}`,
+      'Content-Type': 'application/json',
+      Prefer: 'resolution=merge-duplicates,return=minimal',
+      'Content-Profile': config.supabase.schema || 'public',
+    },
+    body: JSON.stringify(rows),
+  });
+
+  if (!response.ok) {
+    const details = await response.text();
+    throw new Error(`Supabase upsert failed for ${tableName} (${response.status}): ${details}`);
+  }
+
+  log(`upsertadas ${rows.length} filas en ${tableName}`);
+}
+
 async function uploadEvents(events, config) {
   if (!events.length) {
     return;
@@ -428,11 +818,38 @@ async function uploadEvents(events, config) {
   }
 }
 
+async function uploadCurrentStates(rows, config) {
+  if (!rows.length || !config.supabase.stateTable) {
+    return;
+  }
+
+  const dedupedRows = Array.from(
+    rows.reduce((indexed, row) => {
+      indexed.set(row.numero_serie, row);
+      return indexed;
+    }, new Map()).values(),
+  );
+  const batchSize = Number(config.upload.batchSize || 50);
+
+  for (let index = 0; index < dedupedRows.length; index += batchSize) {
+    const batch = dedupedRows.slice(index, index + batchSize);
+    await upsertBatch(batch, config, config.supabase.stateTable, ['numero_serie']);
+  }
+}
+
 async function pollOnce(config, state, catalog, compiledPattern) {
-  const activeFile = await resolveActiveFile(config.source);
+  const sourceDirectory = await resolveSourceDirectory(config.source, state);
+  if (config.source.mode === 'latest-file-in-dir' && !sourceDirectory) {
+    log('sin directorio candidato para logs de error');
+    await writeJson(config.state.path, state);
+    return;
+  }
+
+  const activeFile = await resolveActiveFile(config.source, sourceDirectory);
 
   if (!activeFile) {
     log('sin archivo candidato en el origen configurado');
+    await writeJson(config.state.path, state);
     return;
   }
 
@@ -442,6 +859,10 @@ async function pollOnce(config, state, catalog, compiledPattern) {
   const switchedFile = state.active_file && state.active_file !== activeFile;
 
   state.active_file = activeFile;
+
+  if (config.parser.mode === 'tracecomm') {
+    await bootstrapTraceCommIdentity(activeFile, stats, fileState, config);
+  }
 
   if (isFirstTimeSeeingFile) {
     fileState.initialized = true;
@@ -485,6 +906,7 @@ async function pollOnce(config, state, catalog, compiledPattern) {
   const rawLines = combinedText.split(/\r?\n/);
   const pendingFragment = endsWithNewline ? '' : rawLines.pop() || '';
   const events = [];
+  const currentStateRows = [];
   let processedBytes = fileState.pending_fragment
     ? fileState.pending_fragment_offset
     : startOffset;
@@ -504,18 +926,52 @@ async function pollOnce(config, state, catalog, compiledPattern) {
     let errorCodes = [];
     let shouldUpload = config.parser.uploadLinesWithoutCode;
     let metadata = {};
+    let stateTransition = null;
 
     if (config.parser.mode === 'tracecomm') {
       const parsed = parseTraceCommLine(line, fileState, config.parser);
       errorCodes = parsed.errorCodes;
       shouldUpload = parsed.shouldUpload || (config.parser.uploadLinesWithoutCode && errorCodes.length === 0);
       metadata = parsed.metadata;
+      stateTransition = parsed.stateTransition;
     } else {
       errorCodes = parseErrorCodes(line, compiledPattern);
       shouldUpload = errorCodes.length > 0 || config.parser.uploadLinesWithoutCode;
     }
 
+    const configuredEquipmentSerial = config.identity.equipmentSerial || '';
+    const effectiveEquipmentSerial = configuredEquipmentSerial || fileState.detected_equipment_serial || '';
+    const effectiveEquipmentModel =
+      config.identity.equipmentModel ||
+      fileState.detected_equipment_model ||
+      inferEquipmentModelFromSerial(config.identity.equipmentSerial || fileState.detected_equipment_serial || '');
+
+    if (stateTransition && (!config.parser.requireEquipmentSerial || effectiveEquipmentSerial)) {
+      currentStateRows.push(
+        buildCurrentErrorStateRow({
+          monitorName: config.monitorName,
+          machineName: config.identity.machineName,
+          configuredEquipmentSerial,
+          effectiveEquipmentSerial,
+          sourceFile: activeFile,
+          lineNumber: fileState.line_number,
+          rawLine: line,
+          errorCodes: stateTransition.errorCodes,
+          catalog,
+          metadata: {
+            ...metadata,
+            equipment_model: effectiveEquipmentModel,
+          },
+          stateStatus: stateTransition.status,
+        }),
+      );
+    }
+
     if (!shouldUpload) {
+      continue;
+    }
+
+    if (config.parser.requireEquipmentSerial && !effectiveEquipmentSerial) {
       continue;
     }
 
@@ -523,7 +979,8 @@ async function pollOnce(config, state, catalog, compiledPattern) {
       buildEvent({
         monitorName: config.monitorName,
         machineName: config.identity.machineName,
-        equipmentSerial: config.identity.equipmentSerial || fileState.detected_equipment_serial || '',
+        configuredEquipmentSerial,
+        effectiveEquipmentSerial,
         sourceFile: activeFile,
         lineNumber: fileState.line_number,
         byteOffsetStart: lineStart,
@@ -531,7 +988,10 @@ async function pollOnce(config, state, catalog, compiledPattern) {
         rawLine: line,
         errorCodes,
         catalog,
-        metadata,
+        metadata: {
+          ...metadata,
+          equipment_model: effectiveEquipmentModel,
+        },
       }),
     );
   }
@@ -548,6 +1008,10 @@ async function pollOnce(config, state, catalog, compiledPattern) {
     log(`detectados ${events.length} eventos nuevos en ${path.basename(activeFile)}`);
     await uploadEvents(events, config);
   }
+
+  if (currentStateRows.length) {
+    await uploadCurrentStates(currentStateRows, config);
+  }
 }
 
 function normalizeConfig(rawConfig, options = {}) {
@@ -559,15 +1023,25 @@ function normalizeConfig(rawConfig, options = {}) {
     identity: {
       machineName: expandedConfig.identity?.machineName || os.hostname(),
       equipmentSerial: expandedConfig.identity?.equipmentSerial || '',
+      equipmentModel: expandedConfig.identity?.equipmentModel || '',
     },
     source: {
       mode: expandedConfig.source?.mode || 'file',
       path: expandedConfig.source?.path || '',
+      pathCandidates: expandedConfig.source?.pathCandidates || [],
       fileNamePattern: expandedConfig.source?.fileNamePattern || '.*',
       encoding: expandedConfig.source?.encoding || 'utf8',
       pollIntervalMs: Number(expandedConfig.source?.pollIntervalMs || 5000),
       startAtEndOnFirstSeen: Boolean(expandedConfig.source?.startAtEndOnFirstSeen),
       startAtEndOnFileSwitch: Boolean(expandedConfig.source?.startAtEndOnFileSwitch),
+      autoDiscover: expandedConfig.source?.autoDiscover !== false,
+      discoveryRoots: expandedConfig.source?.discoveryRoots || [],
+      discoveryMaxDepth: Number(expandedConfig.source?.discoveryMaxDepth || 5),
+      discoveryMaxDirectories: Number(expandedConfig.source?.discoveryMaxDirectories || 500),
+      discoveryCooldownMs: Number(expandedConfig.source?.discoveryCooldownMs || 600000),
+      discoveryPreferredDirNamePattern:
+        expandedConfig.source?.discoveryPreferredDirNamePattern || '[Ll][Oo][Gg]|[Tt][Rr][Aa][Cc][Ee]',
+      discoverySkipDirectoryNames: expandedConfig.source?.discoverySkipDirectoryNames || [],
     },
     parser: {
       mode: expandedConfig.parser?.mode || 'pattern',
@@ -575,12 +1049,15 @@ function normalizeConfig(rawConfig, options = {}) {
       uploadLinesWithoutCode: Boolean(expandedConfig.parser?.uploadLinesWithoutCode),
       ignoreZeroErrors: expandedConfig.parser?.ignoreZeroErrors !== false,
       dedupeActiveErrors: expandedConfig.parser?.dedupeActiveErrors !== false,
+      identityScanMaxBytes: Number(expandedConfig.parser?.identityScanMaxBytes || 1024 * 1024),
+      requireEquipmentSerial: expandedConfig.parser?.requireEquipmentSerial !== false,
     },
     supabase: {
       url: expandedConfig.supabase?.url || '',
       apiKey: expandedConfig.supabase?.apiKey || expandedConfig.supabase?.anonKey || '',
       schema: expandedConfig.supabase?.schema || 'public',
       table: expandedConfig.supabase?.table || '',
+      stateTable: expandedConfig.supabase?.stateTable || '',
     },
     upload: {
       dryRun: expandedConfig.upload?.dryRun !== false,

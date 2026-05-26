@@ -1,562 +1,896 @@
 {
   "0": {
     "description": "Without Errors",
-    "section": "CPU"
+    "section": "CPU",
+    "error_type": "Ok",
+    "more_data_available": "No"
   },
   "1": {
-    "description": "\u201cCPU Firmware Mismatch. Update from repository must be done\u201d",
-    "section": "CPU"
+    "description": "CPU Firmware Mismatch. Update from repository must be done",
+    "section": "CPU",
+    "error_type": "Fatal",
+    "more_data_available": "No"
   },
   "2": {
-    "description": "\u201cDistributed Firmware Mismatch. Update from repository must be done\u201d",
-    "section": "CPU"
+    "description": "Distributed Firmware Mismatch. Update from repository must be done",
+    "section": "CPU",
+    "error_type": "Warning",
+    "more_data_available": "No"
   },
   "3": {
     "description": "FW Repository Error",
-    "section": "CPU"
+    "section": "CPU",
+    "error_type": "Warning",
+    "more_data_available": "No"
   },
   "4": {
     "description": "A400 FW Error (Checksums)",
-    "section": "CPU"
+    "section": "CPU",
+    "error_type": "Fatal",
+    "more_data_available": "Yes"
   },
   "5": {
     "description": "A400 FW Execution Error",
-    "section": "CPU"
+    "section": "CPU",
+    "error_type": "Fatal",
+    "more_data_available": "Yes"
   },
   "6": {
-    "description": "\u201cManeuvers/Adjustments Mismatch. Update from repository must be done\u201d",
-    "section": "CPU"
+    "description": "Maneuvers/Adjustments Mismatch. Update from repository must be done",
+    "section": "CPU",
+    "error_type": "Fatal",
+    "more_data_available": "Yes"
   },
   "10": {
     "description": "CAN Bus Error",
-    "section": "CPU"
+    "section": "CPU",
+    "error_type": "Fatal",
+    "more_data_available": "Yes"
   },
   "20": {
-    "description": "\u201cInstruction Rejected by a previous Error (Permanent or Self-recover like covers) (Stand by-Running)\u201d",
-    "section": "CPU"
+    "description": "Instruction Rejected by a previous Error (Permanent or Self-recover like covers) (Stand by-Running)",
+    "section": "CPU",
+    "error_type": "Fatal",
+    "more_data_available": "Yes"
   },
   "21": {
     "description": "Instruction Aborted by an Error (Stand by-Running)",
-    "section": "CPU"
+    "section": "CPU",
+    "error_type": "Fatal",
+    "more_data_available": "Yes"
   },
   "22": {
-    "description": "Recover Failed",
-    "section": "CPU"
+    "description": "Recover Failed.",
+    "section": "CPU",
+    "error_type": "Fatal",
+    "more_data_available": "Yes"
   },
   "28": {
-    "description": "\u201cImpossible to perform TEST/PTEST/WRUN; Wait to next Cycle\u201d",
-    "section": "CPU"
+    "description": "Impossible to perform TEST/PTEST/WRUN; Wait to next Cycle",
+    "section": "CPU",
+    "error_type": "Warning",
+    "more_data_available": "No"
   },
   "34": {
-    "description": "\u201cImpossible to perform TEST/PTEST/WRUN; Already received one in the same cycle\u201d",
-    "section": "CPU"
+    "description": "Impossible to perform TEST/PTEST/WRUN; Already received one in the same cycle",
+    "section": "CPU",
+    "error_type": "Warning",
+    "more_data_available": "No"
   },
   "35": {
-    "description": "Error in Scheduler Table",
-    "section": "CPU"
+    "description": "Error in Scheduller Table",
+    "section": "CPU",
+    "error_type": "Fatal",
+    "more_data_available": "No"
   },
   "40": {
     "description": "Instruction unknown or with wrong parameter",
-    "section": "CPU"
+    "section": "CPU",
+    "error_type": "Warning",
+    "more_data_available": "No"
   },
   "41": {
     "description": "Instruction Not Allowed on This State",
-    "section": "CPU"
+    "section": "CPU",
+    "error_type": "Fatal",
+    "more_data_available": "No"
   },
   "42": {
     "description": "Instruction Not Allowed on This Instruction",
-    "section": "CPU"
+    "section": "CPU",
+    "error_type": "Fatal",
+    "more_data_available": "No"
   },
   "43": {
     "description": "COMMAND script wrong",
-    "section": "CPU"
+    "section": "CPU",
+    "error_type": "Warning",
+    "more_data_available": "No"
   },
   "45": {
     "description": "LOADADJ Wrong",
-    "section": "CPU"
+    "section": "CPU",
+    "error_type": "Warning",
+    "more_data_available": "No"
   },
   "61": {
     "description": "ISE Time Out",
-    "section": "CPU"
+    "section": "CPU",
+    "error_type": "Fatal",
+    "more_data_available": "No"
   },
   "70": {
-    "description": "Main Cover opened while instrument is working",
-    "section": "CPU"
+    "description": "Main Cover opened while instrument working",
+    "section": "CPU",
+    "error_type": "Fatal",
+    "more_data_available": "No"
   },
   "99": {
     "description": "Multiple Errors",
-    "section": "CPU"
+    "section": "CPU",
+    "error_type": "Fatal",
+    "more_data_available": "Yes"
   },
   "100": {
     "description": "BR1 Vertical Home Error",
-    "section": "BR1,BR2,BM1,AG1,AG2"
+    "section": "BR1,BR2,BM1,AG1,AG2",
+    "error_type": "Fatal",
+    "more_data_available": "No"
   },
   "101": {
     "description": "BR1 Horizontal Home Error",
-    "section": "BR1,BR2,BM1,AG1,AG2"
+    "section": "BR1,BR2,BM1,AG1,AG2",
+    "error_type": "Fatal",
+    "more_data_available": "No"
   },
   "102": {
     "description": "BR1 Vertical step loss detected",
-    "section": "BR1,BR2,BM1,AG1,AG2"
+    "section": "BR1,BR2,BM1,AG1,AG2",
+    "error_type": "Fatal",
+    "more_data_available": "No"
   },
   "103": {
-    "description": "BR1 HOME Error in recovery state",
-    "section": "BR1,BR2,BM1,AG1,AG2"
+    "description": "BR1 Error de HOME al intentar recuperarse",
+    "section": "BR1,BR2,BM1,AG1,AG2",
+    "error_type": "Fatal",
+    "more_data_available": "No"
   },
   "108": {
     "description": "BR1 Board doesn't answer",
-    "section": "BR1,BR2,BM1,AG1,AG2"
+    "section": "BR1,BR2,BM1,AG1,AG2",
+    "error_type": "Fatal",
+    "more_data_available": "No"
   },
   "109": {
-    "description": "BR1 Board Reset",
-    "section": "BR1,BR2,BM1,AG1,AG2"
+    "description": "BR1 Reset",
+    "section": "BR1,BR2,BM1,AG1,AG2",
+    "error_type": "Fatal",
+    "more_data_available": "No"
   },
   "110": {
     "description": "BR2 Vertical Home Error",
-    "section": "BR1,BR2,BM1,AG1,AG2"
+    "section": "BR1,BR2,BM1,AG1,AG2",
+    "error_type": "Fatal",
+    "more_data_available": "No"
   },
   "111": {
     "description": "BR2 Horizontal Home Error",
-    "section": "BR1,BR2,BM1,AG1,AG2"
+    "section": "BR1,BR2,BM1,AG1,AG2",
+    "error_type": "Fatal",
+    "more_data_available": "No"
   },
   "112": {
     "description": "BR2 Vertical step loss detected",
-    "section": "BR1,BR2,BM1,AG1,AG2"
+    "section": "BR1,BR2,BM1,AG1,AG2",
+    "error_type": "Fatal",
+    "more_data_available": "No"
   },
   "113": {
-    "description": "BR2 HOME Error in recovery state",
-    "section": "BR1,BR2,BM1,AG1,AG2"
+    "description": "BR2 Error de HOME al intentar recuperarse",
+    "section": "BR1,BR2,BM1,AG1,AG2",
+    "error_type": "Fatal",
+    "more_data_available": "No"
   },
   "118": {
     "description": "BR2 Board doesn't answer",
-    "section": "BR1,BR2,BM1,AG1,AG2"
+    "section": "BR1,BR2,BM1,AG1,AG2",
+    "error_type": "Fatal",
+    "more_data_available": "No"
   },
   "119": {
-    "description": "BR2 Board Reset",
-    "section": "BR1,BR2,BM1,AG1,AG2"
+    "description": "BR2 Reset",
+    "section": "BR1,BR2,BM1,AG1,AG2",
+    "error_type": "Fatal",
+    "more_data_available": "No"
   },
   "120": {
     "description": "BM1 Vertical Home Error",
-    "section": "BR1,BR2,BM1,AG1,AG2"
+    "section": "BR1,BR2,BM1,AG1,AG2",
+    "error_type": "Fatal",
+    "more_data_available": "No"
   },
   "121": {
     "description": "BM1 Horizontal Home Error",
-    "section": "BR1,BR2,BM1,AG1,AG2"
+    "section": "BR1,BR2,BM1,AG1,AG2",
+    "error_type": "Fatal",
+    "more_data_available": "No"
   },
   "122": {
     "description": "BM1 Vertical step loss detected",
-    "section": "BR1,BR2,BM1,AG1,AG2"
+    "section": "BR1,BR2,BM1,AG1,AG2",
+    "error_type": "Fatal",
+    "more_data_available": "No"
   },
   "123": {
-    "description": "BM1 HOME Error in recovery state",
-    "section": "BR1,BR2,BM1,AG1,AG2"
+    "description": "BM1 Error de HOME al intentar recuperarse",
+    "section": "BR1,BR2,BM1,AG1,AG2",
+    "error_type": "Fatal",
+    "more_data_available": "No"
   },
   "128": {
     "description": "BM1 Board doesn't answer",
-    "section": "BR1,BR2,BM1,AG1,AG2"
+    "section": "BR1,BR2,BM1,AG1,AG2",
+    "error_type": "Fatal",
+    "more_data_available": "No"
   },
   "129": {
-    "description": "BM1 Board Reset",
-    "section": "BR1,BR2,BM1,AG1,AG2"
+    "description": "BM1 Reset",
+    "section": "BR1,BR2,BM1,AG1,AG2",
+    "error_type": "Fatal",
+    "more_data_available": "No"
   },
   "130": {
     "description": "AG1 Vertical Home Error",
-    "section": "BR1,BR2,BM1,AG1,AG2"
+    "section": "BR1,BR2,BM1,AG1,AG2",
+    "error_type": "Fatal",
+    "more_data_available": "No"
   },
   "131": {
     "description": "AG1 Horizontal Home Error",
-    "section": "BR1,BR2,BM1,AG1,AG2"
+    "section": "BR1,BR2,BM1,AG1,AG2",
+    "error_type": "Fatal",
+    "more_data_available": "No"
   },
   "132": {
     "description": "AG1 Vertical step loss detected",
-    "section": "BR1,BR2,BM1,AG1,AG2"
+    "section": "BR1,BR2,BM1,AG1,AG2",
+    "error_type": "Fatal",
+    "more_data_available": "No"
   },
   "133": {
-    "description": "AG1 HOME Error in recovery state",
-    "section": "BR1,BR2,BM1,AG1,AG2"
+    "description": "AG1 Error de HOME al intentar recuperarse",
+    "section": "BR1,BR2,BM1,AG1,AG2",
+    "error_type": "Fatal",
+    "more_data_available": "No"
   },
   "138": {
     "description": "AG1 Board doesn't answer",
-    "section": "BR1,BR2,BM1,AG1,AG2"
+    "section": "BR1,BR2,BM1,AG1,AG2",
+    "error_type": "Fatal",
+    "more_data_available": "No"
   },
   "139": {
-    "description": "AG1 Board Reset",
-    "section": "BR1,BR2,BM1,AG1,AG2"
+    "description": "AG1 Reset",
+    "section": "BR1,BR2,BM1,AG1,AG2",
+    "error_type": "Fatal",
+    "more_data_available": "No"
   },
   "140": {
     "description": "AG2 Vertical Home Error",
-    "section": "BR1,BR2,BM1,AG1,AG2"
+    "section": "BR1,BR2,BM1,AG1,AG2",
+    "error_type": "Fatal",
+    "more_data_available": "No"
   },
   "141": {
     "description": "AG2 Horizontal Home Error",
-    "section": "BR1,BR2,BM1,AG1,AG2"
+    "section": "BR1,BR2,BM1,AG1,AG2",
+    "error_type": "Fatal",
+    "more_data_available": "No"
   },
   "142": {
     "description": "AG2 Vertical step loss detected",
-    "section": "BR1,BR2,BM1,AG1,AG2"
+    "section": "BR1,BR2,BM1,AG1,AG2",
+    "error_type": "Fatal",
+    "more_data_available": "No"
   },
   "143": {
-    "description": "AG2 HOME Error in recovery state",
-    "section": "BR1,BR2,BM1,AG1,AG2"
+    "description": "AG2 Error de HOME al intentar recuperarse",
+    "section": "BR1,BR2,BM1,AG1,AG2",
+    "error_type": "Fatal",
+    "more_data_available": "No"
   },
   "148": {
     "description": "AG2 Board doesn't answer",
-    "section": "BR1,BR2,BM1,AG1,AG2"
+    "section": "BR1,BR2,BM1,AG1,AG2",
+    "error_type": "Fatal",
+    "more_data_available": "No"
   },
   "149": {
-    "description": "AG2 Board Res",
-    "section": "BR1,BR2,BM1,AG1,AG2"
+    "description": "AG2 Reset",
+    "section": "BR1,BR2,BM1,AG1,AG2",
+    "error_type": "Fatal",
+    "more_data_available": "No"
   },
   "200": {
-    "description": "DR1 Freq. Detection system Error (Frequency Wrong)",
-    "section": "DR1,DR2,DM1"
+    "description": "DR1 Freq Detection system Error (Frequency Wrong)",
+    "section": "DR1,DR2,DM1",
+    "error_type": "Fatal",
+    "more_data_available": "Yes"
   },
   "201": {
     "description": "DR1 Probe Thermistor Error",
-    "section": "DR1,DR2,DM1"
+    "section": "DR1,DR2,DM1",
+    "error_type": "Fatal",
+    "more_data_available": "Yes"
   },
   "202": {
     "description": "DR1 Probe Heater Error",
-    "section": "DR1,DR2,DM1"
+    "section": "DR1,DR2,DM1",
+    "error_type": "Fatal",
+    "more_data_available": "Yes"
   },
   "203": {
     "description": "DR1 Collision Detected",
-    "section": "DR1,DR2,DM1"
+    "section": "DR1,DR2,DM1",
+    "error_type": "Fatal",
+    "more_data_available": "No"
   },
   "208": {
-    "description": "DR1 Board doesn\u2019t answer",
-    "section": "DR1,DR2,DM1"
+    "description": "DR1 Board doesn't answer",
+    "section": "DR1,DR2,DM1",
+    "error_type": "Fatal",
+    "more_data_available": "No"
   },
   "209": {
-    "description": "DR1 Board Reset",
-    "section": "DR1,DR2,DM1"
+    "description": "DR1 Reset",
+    "section": "DR1,DR2,DM1",
+    "error_type": "Fatal",
+    "more_data_available": "No"
   },
   "210": {
-    "description": "DR2 Freq. Detection system Error (Frequency Wrong)",
-    "section": "DR1,DR2,DM1"
+    "description": "DR2 Freq Detection system Error (Frequency Wrong)",
+    "section": "DR1,DR2,DM1",
+    "error_type": "Fatal",
+    "more_data_available": "Yes"
   },
   "211": {
     "description": "DR2 Probe Thermistor Error",
-    "section": "DR1,DR2,DM1"
+    "section": "DR1,DR2,DM1",
+    "error_type": "Fatal",
+    "more_data_available": "Yes"
   },
   "212": {
     "description": "DR2 Probe Heater Error",
-    "section": "DR1,DR2,DM1"
+    "section": "DR1,DR2,DM1",
+    "error_type": "Fatal",
+    "more_data_available": "Yes"
   },
   "213": {
     "description": "DR2 Collision Detected",
-    "section": "DR1,DR2,DM1"
+    "section": "DR1,DR2,DM1",
+    "error_type": "Fatal",
+    "more_data_available": "No"
   },
   "218": {
-    "description": "DR2 Board doesn\u2019t answer",
-    "section": "DR1,DR2,DM1"
+    "description": "DR2 Board doesn't answer",
+    "section": "DR1,DR2,DM1",
+    "error_type": "Fatal",
+    "more_data_available": "No"
   },
   "219": {
-    "description": "DR2 Board Reset",
-    "section": "DR1,DR2,DM1"
+    "description": "DR2 Reset",
+    "section": "DR1,DR2,DM1",
+    "error_type": "Fatal",
+    "more_data_available": "No"
   },
   "220": {
-    "description": "DM1 Freq. Detection system Error (Frequency Wrong)",
-    "section": "DR1,DR2,DM1"
+    "description": "DM1 Freq Detection system Error (Frequency Wrong)",
+    "section": "DR1,DR2,DM1",
+    "error_type": "Fatal",
+    "more_data_available": "Yes"
   },
   "223": {
     "description": "DM1 Collision Detected",
-    "section": "DR1,DR2,DM1"
+    "section": "DR1,DR2,DM1",
+    "error_type": "Fatal",
+    "more_data_available": "No"
   },
   "228": {
-    "description": "DM1 Board doesn\u2019t answer",
-    "section": "DR1,DR2,DM1"
+    "description": "DM1 Board doesn't answer",
+    "section": "DR1,DR2,DM1",
+    "error_type": "Fatal",
+    "more_data_available": "No"
   },
   "229": {
-    "description": "DM1 Board Reset",
-    "section": "DR1,DR2,DM1"
+    "description": "DM1 Reset",
+    "section": "DR1,DR2,DM1",
+    "error_type": "Fatal",
+    "more_data_available": "No"
   },
   "300": {
     "description": "RR1 Home Error",
-    "section": "RR1, RM1"
+    "section": "RR1, RM1",
+    "error_type": "Fatal",
+    "more_data_available": "No"
   },
   "301": {
     "description": "RR1 Fridge Temperature Alarm",
-    "section": "RR1, RM1"
+    "section": "RR1, RM1",
+    "error_type": "Warning",
+    "more_data_available": "Yes"
   },
   "302": {
     "description": "RR1 Fridge Peltiers Error",
-    "section": "RR1, RM1"
+    "section": "RR1, RM1",
+    "error_type": "Warning",
+    "more_data_available": "Yes"
   },
   "303": {
     "description": "RR1 Fridge Fans Error",
-    "section": "RR1, RM1"
+    "section": "RR1, RM1",
+    "error_type": "Warning",
+    "more_data_available": "Yes"
   },
   "305": {
     "description": "RR1 Cover Opened",
-    "section": "RR1, RM1"
+    "section": "RR1, RM1",
+    "error_type": "Fatal",
+    "more_data_available": "No"
   },
   "310": {
     "description": "RR1 Code Bar Reader Error",
-    "section": "RR1, RM1"
+    "section": "RR1, RM1",
+    "error_type": "Warning",
+    "more_data_available": "Yes"
   },
   "311": {
     "description": "RR1 Code Bar Reader Time Out Error",
-    "section": "RR1, RM1"
+    "section": "RR1, RM1",
+    "error_type": "Warning",
+    "more_data_available": "Yes"
   },
   "348": {
     "description": "RR1 Board doesn't answer",
-    "section": "RR1, RM1"
+    "section": "RR1, RM1",
+    "error_type": "Fatal",
+    "more_data_available": "No"
   },
   "349": {
-    "description": "RR1 Board Reset",
-    "section": "RR1, RM1"
+    "description": "RR1 Reset",
+    "section": "RR1, RM1",
+    "error_type": "Fatal",
+    "more_data_available": "No"
   },
   "350": {
-    "description": "RR1 Home Error",
-    "section": "RR1, RM1"
+    "description": "RM1 Home Error",
+    "section": "RR1, RM1",
+    "error_type": "Fatal",
+    "more_data_available": "No"
   },
   "355": {
     "description": "RM1 Cover Opened",
-    "section": "RR1, RM1"
+    "section": "RR1, RM1",
+    "error_type": "Fatal",
+    "more_data_available": "No"
   },
   "360": {
     "description": "RM1 Code Bar Reader Error",
-    "section": "RR1, RM1"
+    "section": "RR1, RM1",
+    "error_type": "Warning",
+    "more_data_available": "Yes"
   },
   "361": {
     "description": "RM1 Code Bar Reader Time Out Error",
-    "section": "RR1, RM1"
+    "section": "RR1, RM1",
+    "error_type": "Warning",
+    "more_data_available": "Yes"
   },
   "398": {
     "description": "RM1 Board doesn't answer",
-    "section": "RR1, RM1"
+    "section": "RR1, RM1",
+    "error_type": "Fatal",
+    "more_data_available": "No"
   },
   "399": {
-    "description": "RM1 Board Reset",
-    "section": "RR1, RM1"
+    "description": "RM1 Reset",
+    "section": "RR1, RM1",
+    "error_type": "Fatal",
+    "more_data_available": "No"
   },
   "500": {
     "description": "Rotor Home Error",
-    "section": "GLF"
+    "section": "GLF",
+    "error_type": "Fatal",
+    "more_data_available": "No"
   },
   "501": {
     "description": "Rotor Encoder Error",
-    "section": "GLF"
+    "section": "GLF",
+    "error_type": "Fatal",
+    "more_data_available": "Yes"
   },
   "502": {
     "description": "Rotor Safety Stop: Washing Station Down",
-    "section": "GLF"
+    "section": "GLF",
+    "error_type": "Fatal",
+    "more_data_available": "Yes"
   },
   "503": {
     "description": "Photometrics Cover Opened",
-    "section": "GLF"
+    "section": "GLF",
+    "error_type": "Fatal",
+    "more_data_available": "No"
   },
   "504": {
     "description": "Washing Station Collision",
-    "section": "GLF"
+    "section": "GLF",
+    "error_type": "Fatal",
+    "more_data_available": "No"
   },
   "510": {
     "description": "Photometrics Temperature Alarm",
-    "section": "GLF"
+    "section": "GLF",
+    "error_type": "Warning",
+    "more_data_available": "Yes"
   },
   "511": {
     "description": "Photometrics Peltiers Error",
-    "section": "GLF"
+    "section": "GLF",
+    "error_type": "Warning",
+    "more_data_available": "Yes"
   },
   "512": {
     "description": "Photometrics Fans Error",
-    "section": "GLF"
+    "section": "GLF",
+    "error_type": "Warning",
+    "more_data_available": "Yes"
   },
   "520": {
     "description": "Washing Station Home Error",
-    "section": "GLF"
+    "section": "GLF",
+    "error_type": "Fatal",
+    "more_data_available": "No"
   },
   "530": {
     "description": "Photometric Board not detected",
-    "section": "GLF"
+    "section": "GLF",
+    "error_type": "Fatal",
+    "more_data_available": "No"
+  },
+  "540": {
+    "description": "Photometric Overflow Board not Detected",
+    "section": "GLF",
+    "error_type": "Warning",
+    "more_data_available": "No"
+  },
+  "541": {
+    "description": "Photometric Rotor Overflow Detected",
+    "section": "GLF",
+    "error_type": "Warning",
+    "more_data_available": "No"
   },
   "550": {
-    "description": "Methacrylate Rotor Missing",
-    "section": "GLF"
+    "description": "Metacrilate Rotor Missing",
+    "section": "GLF",
+    "error_type": "Warning",
+    "more_data_available": "No"
+  },
+  "551": {
+    "description": "Metacrilate Rotor Full after FLIGHT",
+    "section": "GLF",
+    "error_type": "Warning",
+    "more_data_available": "No"
+  },
+  "552": {
+    "description": "Metacrilate Rotor Full after RUNNING",
+    "section": "GLF",
+    "error_type": "Warning",
+    "more_data_available": "No"
+  },
+  "553": {
+    "description": "Photometic Self-centered error",
+    "section": "GLF",
+    "error_type": "Warning",
+    "more_data_available": "No"
+  },
+  "560": {
+    "description": "Error TimeOut During FLIGHT",
+    "section": "GLF",
+    "error_type": "Warning",
+    "more_data_available": "No"
   },
   "598": {
-    "description": "GLF Board doesn\u2019t answer",
-    "section": "GLF"
+    "description": "GLF Board doesn't answer",
+    "section": "GLF",
+    "error_type": "Fatal",
+    "more_data_available": "No"
   },
   "599": {
-    "description": "GLF Board Reset",
-    "section": "GLF"
+    "description": "Reset Placa",
+    "section": "GLF",
+    "error_type": "Fatal",
+    "more_data_available": "No"
   },
   "600": {
     "description": "Washing Station Pump Home Error",
-    "section": "SFX"
+    "section": "SFX",
+    "error_type": "Fatal",
+    "more_data_available": "No"
   },
   "610": {
     "description": "Washing Station Heater Temperature Alarm",
-    "section": "SFX"
+    "section": "SFX",
+    "error_type": "Warning",
+    "more_data_available": "Yes"
   },
   "611": {
     "description": "Washing Station Heater Error",
-    "section": "SFX"
+    "section": "SFX",
+    "error_type": "Warning",
+    "more_data_available": "Yes"
+  },
+  "612": {
+    "description": "Error del driver de motor",
+    "section": "SFX",
+    "error_type": "Warning",
+    "more_data_available": "No"
   },
   "620": {
     "description": "Waste Tank Sensor Impossible Value",
-    "section": "SFX"
+    "section": "SFX",
+    "error_type": "Warning",
+    "more_data_available": "Yes"
   },
   "621": {
     "description": "Too much time to empty Waste Tank",
-    "section": "SFX"
+    "section": "SFX",
+    "error_type": "Warning",
+    "more_data_available": "No"
+  },
+  "622": {
+    "description": "Waste Tank Sensor not detected",
+    "section": "SFX",
+    "error_type": "Warning",
+    "more_data_available": "No"
   },
   "630": {
     "description": "Water Tank Sensor Impossible Value",
-    "section": "SFX"
+    "section": "SFX",
+    "error_type": "Warning",
+    "more_data_available": "Yes"
   },
   "631": {
     "description": "Too much time to fill Water Tank",
-    "section": "SFX"
+    "section": "SFX",
+    "error_type": "Warning",
+    "more_data_available": "No"
+  },
+  "632": {
+    "description": "Water Tank Sensor not detected",
+    "section": "SFX",
+    "error_type": "Warning",
+    "more_data_available": "No"
   },
   "640": {
     "description": "High Contamination Waste Gauge electronics error",
-    "section": "SFX"
+    "section": "SFX",
+    "error_type": "Warning",
+    "more_data_available": "No"
   },
   "650": {
     "description": "Washing Solution Gauge electronics error",
-    "section": "SFX"
+    "section": "SFX",
+    "error_type": "Warning",
+    "more_data_available": "No"
   },
   "660": {
     "description": "Error detected in B1",
-    "section": "SFX"
+    "section": "SFX",
+    "error_type": "Warning",
+    "more_data_available": "Yes"
   },
   "661": {
     "description": "Error detected in B2",
-    "section": "SFX"
+    "section": "SFX",
+    "error_type": "Warning",
+    "more_data_available": "Yes"
   },
   "662": {
     "description": "Error detected in B3",
-    "section": "SFX"
+    "section": "SFX",
+    "error_type": "Warning",
+    "more_data_available": "Yes"
   },
   "663": {
     "description": "Error detected in B4",
-    "section": "SFX"
+    "section": "SFX",
+    "error_type": "Warning",
+    "more_data_available": "Yes"
   },
   "664": {
     "description": "Error detected in B5",
-    "section": "SFX"
+    "section": "SFX",
+    "error_type": "Warning",
+    "more_data_available": "Yes"
   },
   "665": {
     "description": "Error detected in B6",
-    "section": "SFX"
+    "section": "SFX",
+    "error_type": "Warning",
+    "more_data_available": "Yes"
   },
   "666": {
     "description": "Error detected in B7",
-    "section": "SFX"
+    "section": "SFX",
+    "error_type": "Warning",
+    "more_data_available": "Yes"
   },
   "667": {
     "description": "Error detected in B8",
-    "section": "SFX"
+    "section": "SFX",
+    "error_type": "Warning",
+    "more_data_available": "Yes"
   },
   "668": {
     "description": "Error detected in B9",
-    "section": "SFX"
+    "section": "SFX",
+    "error_type": "Warning",
+    "more_data_available": "Yes"
   },
   "669": {
     "description": "Error detected in B10",
-    "section": "SFX"
+    "section": "SFX",
+    "error_type": "Warning",
+    "more_data_available": "Yes"
   },
   "670": {
     "description": "Error detected in GE1",
-    "section": "SFX"
+    "section": "SFX",
+    "error_type": "Warning",
+    "more_data_available": "Yes"
   },
   "671": {
     "description": "Error detected in EV1",
-    "section": "SFX"
+    "section": "SFX",
+    "error_type": "Warning",
+    "more_data_available": "Yes"
   },
   "672": {
     "description": "Error detected in EV2",
-    "section": "SFX"
+    "section": "SFX",
+    "error_type": "Warning",
+    "more_data_available": "Yes"
   },
   "673": {
     "description": "Error detected in EV3",
-    "section": "SFX"
+    "section": "SFX",
+    "error_type": "Warning",
+    "more_data_available": "Yes"
   },
   "698": {
     "description": "SF1 Board doesn't answer",
-    "section": "SFX"
+    "section": "SFX",
+    "error_type": "Fatal",
+    "more_data_available": "No"
   },
   "699": {
-    "description": "SF1 Board Reset",
-    "section": "SFX"
+    "description": "Reset Placa",
+    "section": "SFX",
+    "error_type": "Fatal",
+    "more_data_available": "No"
   },
   "700": {
     "description": "Sample Pump Home Error",
-    "section": "JEX"
+    "section": "JEX",
+    "error_type": "Fatal",
+    "more_data_available": "No"
   },
   "701": {
     "description": "Reagent 1 Pump Home Error",
-    "section": "JEX"
+    "section": "JEX",
+    "error_type": "Fatal",
+    "more_data_available": "No"
   },
   "702": {
     "description": "Reagent 2 Pump Home Error",
-    "section": "JEX"
+    "section": "JEX",
+    "error_type": "Fatal",
+    "more_data_available": "No"
   },
   "710": {
     "description": "Clot Detector Hardware Error",
-    "section": "JEX"
+    "section": "JEX",
+    "error_type": "Warning",
+    "more_data_available": "Yes"
   },
   "711": {
     "description": "Sample Fluidics Obstructed",
-    "section": "JEX"
+    "section": "JEX",
+    "error_type": "Warning",
+    "more_data_available": "No"
   },
   "720": {
     "description": "Error detected in B1",
-    "section": "JEX"
+    "section": "JEX",
+    "error_type": "Warning",
+    "more_data_available": "Yes"
   },
   "721": {
     "description": "Error detected in B2",
-    "section": "JEX"
+    "section": "JEX",
+    "error_type": "Warning",
+    "more_data_available": "Yes"
   },
   "722": {
     "description": "Error detected in B3",
-    "section": "JEX"
+    "section": "JEX",
+    "error_type": "Warning",
+    "more_data_available": "Yes"
   },
   "723": {
     "description": "Error detected in B4",
-    "section": "JEX"
+    "section": "JEX",
+    "error_type": "Warning",
+    "more_data_available": "Yes"
   },
   "724": {
     "description": "Error detected in EV1",
-    "section": "JEX"
+    "section": "JEX",
+    "error_type": "Warning",
+    "more_data_available": "Yes"
   },
   "725": {
     "description": "Error detected in EV2",
-    "section": "JEX"
+    "section": "JEX",
+    "error_type": "Warning",
+    "more_data_available": "Yes"
   },
   "726": {
     "description": "Error detected in EV3",
-    "section": "JEX"
+    "section": "JEX",
+    "error_type": "Warning",
+    "more_data_available": "Yes"
   },
   "727": {
     "description": "Error detected in EV4",
-    "section": "JEX"
+    "section": "JEX",
+    "error_type": "Warning",
+    "more_data_available": "Yes"
   },
   "728": {
     "description": "Error detected in EV5",
-    "section": "JEX"
+    "section": "JEX",
+    "error_type": "Warning",
+    "more_data_available": "Yes"
   },
   "729": {
     "description": "Error detected in EV6",
-    "section": "JEX"
+    "section": "JEX",
+    "error_type": "Warning",
+    "more_data_available": "Yes"
   },
   "730": {
     "description": "Error detected in EV7",
-    "section": "JEX"
+    "section": "JEX",
+    "error_type": "Warning",
+    "more_data_available": "Yes"
   },
   "731": {
     "description": "Error detected in EV8",
-    "section": "JEX"
+    "section": "JEX",
+    "error_type": "Warning",
+    "more_data_available": "Yes"
   },
   "798": {
-    "description": "JE1 Board doesn\u2019t answer",
-    "section": "JEX"
+    "description": "JE1 Board doesn't answer",
+    "section": "JEX",
+    "error_type": "Fatal",
+    "more_data_available": "No"
   },
   "799": {
-    "description": "JE1 Board Reset",
-    "section": "JEX"
+    "description": "Reset Placa",
+    "section": "JEX",
+    "error_type": "Fatal",
+    "more_data_available": "No"
   }
 }
