@@ -14,6 +14,7 @@ const Tutoriales = lazy(() => import('./Tutoriales'));
 const Equipos = lazy(() => import('./Equipos'));
 const PNO = lazy(() => import('./PNO'));
 const EquipmentMonitoring = lazy(() => import('../modules/equipment-monitoring/EquipmentMonitoring'));
+const DEFAULT_DASHBOARD_TAB: DashboardTabKey = 'tickets';
 
 type DashboardTabKey =
   | 'tickets'
@@ -67,7 +68,7 @@ interface DashboardProps {
 
 export default function Dashboard({ session }: DashboardProps) {
   const navigate = useNavigate();
-  const [activeTab, setActiveTab] = useState<DashboardTabKey>('tickets');
+  const [activeTab, setActiveTab] = useState<DashboardTabKey>(DEFAULT_DASHBOARD_TAB);
   const [authReady, setAuthReady] = useState(false);
   const [userRole, setUserRole] = useState<string | null>(null);
   const [advisoryUnreadCount, setAdvisoryUnreadCount] = useState(0);
@@ -85,6 +86,27 @@ export default function Dashboard({ session }: DashboardProps) {
     { key: 'pno', label: 'PNO', tone: 'veterinary' },
     { key: 'equipos', label: 'Equipos', tone: 'food', adminOnly: true },
   ];
+  const activeTabIsVisible = navigationItems.some((item) => {
+    if (item.key !== activeTab) {
+      return false;
+    }
+
+    if (item.staffOnly && !isStaffRole(userRole)) {
+      return false;
+    }
+
+    if (item.adminOnly && userRole !== 'admin') {
+      return false;
+    }
+
+    return true;
+  });
+
+  useEffect(() => {
+    if (!activeTabIsVisible) {
+      setActiveTab(DEFAULT_DASHBOARD_TAB);
+    }
+  }, [activeTabIsVisible]);
 
   useEffect(() => {
     let mounted = true;
@@ -102,19 +124,23 @@ export default function Dashboard({ session }: DashboardProps) {
     }
 
     async function fetchRoleAndUnread() {
-      const { data, error } = await supabase.from('profiles').select('rol').eq('id', userId).single();
+      const { data, error } = await supabase.from('profiles').select('rol').eq('id', userId).maybeSingle();
       if (!mounted) {
         return;
       }
 
-      if (error || !data) {
-        setUserRole(null);
-        setAdvisoryUnreadCount(0);
+      if (error) {
+        console.error('No se pudo refrescar el rol del usuario en Dashboard.', error);
         setAuthReady(true);
         return;
       }
 
-      setUserRole(data.rol ?? null);
+      if (!data?.rol) {
+        setAuthReady(true);
+        return;
+      }
+
+      setUserRole(data.rol);
 
       if (!isStaffRole(data.rol)) {
         setAdvisoryUnreadCount(0);

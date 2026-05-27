@@ -428,32 +428,32 @@ export const getFalconTicketSla = (
 export const getFalconSlaTone = (severity: TicketSlaSeverity) => {
   if (severity === 'breached') {
     return {
-      background: 'rgba(127, 29, 29, 0.3)',
-      border: 'rgba(248, 113, 113, 0.62)',
-      color: '#ffe4e6',
+      background: 'rgba(255, 40, 70, 0.08)',
+      border: 'rgba(255, 40, 70, 0.3)',
+      color: 'var(--brand-red-ink)',
     };
   }
 
   if (severity === 'critical') {
     return {
-      background: 'rgba(225, 29, 72, 0.2)',
-      border: 'rgba(244, 63, 94, 0.55)',
-      color: '#ffe4ea',
+      background: 'rgba(225, 29, 72, 0.06)',
+      border: 'rgba(244, 63, 94, 0.25)',
+      color: '#9f1239',
     };
   }
 
   if (severity === 'warning') {
     return {
-      background: 'rgba(250, 204, 21, 0.18)',
-      border: 'rgba(250, 204, 21, 0.42)',
-      color: '#fff3b0',
+      background: 'rgba(250, 204, 21, 0.1)',
+      border: 'rgba(250, 204, 21, 0.35)',
+      color: '#854d0e',
     };
   }
 
   return {
-    background: 'rgba(34, 197, 94, 0.12)',
+    background: 'rgba(34, 197, 94, 0.08)',
     border: 'rgba(74, 222, 128, 0.3)',
-    color: '#d8ffe7',
+    color: '#166534',
   };
 };
 

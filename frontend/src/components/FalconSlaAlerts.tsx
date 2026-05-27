@@ -246,9 +246,9 @@ export default function FalconSlaAlerts({ contextLabel, entries }: FalconSlaAler
     setQueue((current) =>
       activeNotification
         ? current.filter(
-            (item) =>
-              item.ticketId !== activeNotification.ticketId || item.thresholdKey !== activeNotification.thresholdKey,
-          )
+          (item) =>
+            item.ticketId !== activeNotification.ticketId || item.thresholdKey !== activeNotification.thresholdKey,
+        )
         : current,
     );
   });
@@ -649,25 +649,27 @@ export default function FalconSlaAlerts({ contextLabel, entries }: FalconSlaAler
           className="falcon-sla-overlay__card"
           style={{
             borderColor: activeTone.border,
-            background: `linear-gradient(180deg, ${activeTone.background}, rgba(10, 14, 22, 0.96))`,
-            color: activeTone.color,
+            background: `linear-gradient(180deg, ${activeTone.background}, var(--bg-card-strong))`,
+            boxShadow: 'var(--surface-shadow-strong)',
+            backdropFilter: 'blur(24px)',
+            WebkitBackdropFilter: 'blur(24px)',
           }}
         >
-          <div className="falcon-sla-overlay__eyebrow">
+          <div className="falcon-sla-overlay__eyebrow" style={{ color: 'var(--text-tertiary)' }}>
             <span>{activeNotification.contextLabel}</span>
-            <span>{thresholdLabel}</span>
+            <span style={{ color: activeTone.color, fontWeight: 600 }}>{thresholdLabel}</span>
           </div>
-          <h2>Alerta crítica de ticket Falcon</h2>
-          <div className="falcon-sla-overlay__timer">{activeEntry.sla.countdownLabel}</div>
-          <div className="falcon-sla-overlay__meta">
+          <h2 style={{ color: 'var(--text-primary)' }}>Alerta crítica de ticket Falcon</h2>
+          <div className="falcon-sla-overlay__timer" style={{ color: activeTone.color }}>{activeEntry.sla.countdownLabel}</div>
+          <div className="falcon-sla-overlay__meta" style={{ color: 'var(--text-secondary)' }}>
             <span>{activeEntry.asunto}</span>
             <span>Serie {serialLabel}</span>
             <span>{locationLabel}</span>
             <span>Vence {dueLabel}</span>
           </div>
-          <p className="falcon-sla-overlay__action">{actionLabel}</p>
+          <p className="falcon-sla-overlay__action" style={{ color: 'var(--text-primary)', fontWeight: 500 }}>{actionLabel}</p>
           <div className="falcon-sla-overlay__footer">
-            <span>{activeEntry.sla.scopeLabel}</span>
+            <span style={{ color: activeTone.color, fontSize: '0.85rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em' }}>{activeEntry.sla.scopeLabel}</span>
             <button type="button" className="falcon-sla-overlay__button" onClick={dismissActive}>
               Entendido
             </button>
@@ -680,21 +682,23 @@ export default function FalconSlaAlerts({ contextLabel, entries }: FalconSlaAler
         role="status"
         style={{
           borderColor: activeTone.border,
-          background: `linear-gradient(180deg, ${activeTone.background}, rgba(13, 18, 28, 0.96))`,
-          color: activeTone.color,
+          background: `linear-gradient(180deg, ${activeTone.background}, var(--bg-card-strong))`,
+          boxShadow: 'var(--surface-shadow)',
+          backdropFilter: 'blur(18px)',
+          WebkitBackdropFilter: 'blur(18px)',
         }}
       >
-        <div className="falcon-sla-toast__eyebrow">
+        <div className="falcon-sla-toast__eyebrow" style={{ color: 'var(--text-tertiary)' }}>
           <span>{activeNotification.contextLabel}</span>
-          <span>{thresholdLabel}</span>
+          <span style={{ color: activeTone.color, fontWeight: 600 }}>{thresholdLabel}</span>
         </div>
-        <strong>{activeEntry.asunto}</strong>
-        <p>{activeEntry.sla.statusLabel}</p>
-        <small>
+        <strong style={{ color: 'var(--text-primary)' }}>{activeEntry.asunto}</strong>
+        <p style={{ color: activeTone.color, fontWeight: 500, fontSize: '0.9rem' }}>{activeEntry.sla.statusLabel}</p>
+        <small style={{ color: 'var(--text-secondary)' }}>
           Serie {serialLabel} · {locationLabel} · vence {dueLabel}
         </small>
         <div className="falcon-sla-toast__footer">
-          <span>{actionLabel}</span>
+          <span style={{ color: 'var(--text-primary)', fontSize: '0.85rem' }}>{actionLabel}</span>
           <button type="button" className="falcon-sla-toast__button" onClick={dismissActive}>
             Cerrar
           </button>

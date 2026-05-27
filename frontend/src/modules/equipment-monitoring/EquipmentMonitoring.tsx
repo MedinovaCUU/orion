@@ -1799,27 +1799,33 @@ export default function EquipmentMonitoring() {
         <aside className="equipment-monitor__focus-panel">
           {selectedEquipment ? (
             <>
-              <div className={`equipment-monitor__status-pill equipment-monitor__status-pill--${selectedEquipment.status}`}>
-                {selectedEquipment.status === 'fatal'
-                  ? 'Fatal'
-                  : selectedEquipment.status === 'warning'
-                    ? 'Warning'
-                    : 'Operativo'}
-              </div>
-              <h3>{selectedEquipment.clientName}</h3>
-              <p className="equipment-monitor__focus-subtitle">
-                {selectedEquipment.serial} · {selectedEquipment.model}
-              </p>
-              <div className="equipment-monitor__focus-actions">
-                <button
-                  type="button"
-                  className={`button-primary ${isSupremoLaunchEnabled() ? '' : 'inactive'}`.trim()}
-                  onClick={() => void launchSupremo()}
-                  disabled={launchingSupremo || !isSupremoLaunchEnabled()}
-                >
-                  <img src={SUPREMO_ICON_URL} alt="" className="equipment-monitor__focus-action-icon" />
-                  {launchingSupremo ? 'Abriendo Supremo...' : 'Conectar con Supremo'}
-                </button>
+              <div className="equipment-monitor__focus-top">
+                <div className="equipment-monitor__focus-identity">
+                  <div className={`equipment-monitor__status-pill equipment-monitor__status-pill--${selectedEquipment.status}`}>
+                    {selectedEquipment.status === 'fatal'
+                      ? 'Fatal'
+                      : selectedEquipment.status === 'warning'
+                        ? 'Warning'
+                        : 'Operativo'}
+                  </div>
+                  <div className="equipment-monitor__focus-title-block">
+                    <h3>{selectedEquipment.clientName}</h3>
+                    <p className="equipment-monitor__focus-subtitle">
+                      {selectedEquipment.serial} · {selectedEquipment.model}
+                    </p>
+                  </div>
+                </div>
+                <div className="equipment-monitor__focus-actions">
+                  <button
+                    type="button"
+                    className={`button-primary ${isSupremoLaunchEnabled() ? '' : 'inactive'}`.trim()}
+                    onClick={() => void launchSupremo()}
+                    disabled={launchingSupremo || !isSupremoLaunchEnabled()}
+                  >
+                    <img src={SUPREMO_ICON_URL} alt="" className="equipment-monitor__focus-action-icon" />
+                    {launchingSupremo ? 'Abriendo Supremo...' : 'Conectar con Supremo'}
+                  </button>
+                </div>
               </div>
               {supremoFeedback ? (
                 <p
