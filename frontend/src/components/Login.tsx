@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { getValidatedSession, supabase } from '../supabaseClient';
-import { useNavigate } from 'react-router-dom';
+import React, { useState } from 'react';
+import { supabase } from '../supabaseClient';
 import './Login.css';
 import BrandLockup from './BrandLockup';
 
@@ -11,26 +10,6 @@ export default function Login() {
   const [errorMsg, setErrorMsg] = useState('');
   const [isSignUp, setIsSignUp] = useState(false);
   
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    let cancelled = false;
-
-    const syncSession = async () => {
-      const session = await getValidatedSession();
-
-      if (!cancelled && session) {
-        navigate('/dashboard');
-      }
-    };
-
-    void syncSession();
-
-    return () => {
-      cancelled = true;
-    };
-  }, [navigate]);
-
   const handleAuth = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
@@ -44,7 +23,6 @@ export default function Login() {
       } else {
         const { error } = await supabase.auth.signInWithPassword({ email, password });
         if (error) setErrorMsg(error.message);
-        else navigate('/dashboard');
       }
     } catch (err) {
       setErrorMsg('Ocurrió un error inesperado');

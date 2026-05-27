@@ -1,5 +1,5 @@
 import { Suspense, lazy, useEffect, useState } from 'react';
-import { getValidatedSession, supabase } from '../supabaseClient';
+import { supabase } from '../supabaseClient';
 import { useNavigate } from 'react-router-dom';
 import BrandLockup from './BrandLockup';
 import './Dashboard.css';
@@ -57,7 +57,15 @@ const DashboardPanelFallback = () => (
   </div>
 );
 
-export default function Dashboard() {
+interface DashboardProps {
+  session: {
+    user?: {
+      id?: string;
+    };
+  } | null;
+}
+
+export default function Dashboard({ session }: DashboardProps) {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState<DashboardTabKey>('tickets');
   const [authReady, setAuthReady] = useState(false);
@@ -80,58 +88,49 @@ export default function Dashboard() {
 
   useEffect(() => {
     let mounted = true;
+    const userId = session?.user?.id ?? null;
 
-    async function verifySession() {
-      const session = await getValidatedSession();
+    setAuthReady(false);
 
-      if (!mounted) {
-        return false;
-      }
-
-      if (!session) {
-        navigate('/login', { replace: true });
-        return false;
-      }
-
+    if (!userId) {
+      setUserRole(null);
+      setAdvisoryUnreadCount(0);
       setAuthReady(true);
-      return true;
+      return () => {
+        mounted = false;
+      };
     }
 
     async function fetchRoleAndUnread() {
-      const isAuthenticated = await verifySession();
-      if (!isAuthenticated || !mounted) {
+      const { data, error } = await supabase.from('profiles').select('rol').eq('id', userId).single();
+      if (!mounted) {
         return;
       }
 
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
-
-      if (!user || !mounted) {
-        navigate('/login', { replace: true });
+      if (error || !data) {
+        setUserRole(null);
+        setAdvisoryUnreadCount(0);
+        setAuthReady(true);
         return;
       }
 
-      const { data } = await supabase.from('profiles').select('rol').eq('id', user.id).single();
-      if (!mounted || !data) {
-        return;
-      }
-
-      setUserRole(data.rol);
+      setUserRole(data.rol ?? null);
 
       if (!isStaffRole(data.rol)) {
         setAdvisoryUnreadCount(0);
+        setAuthReady(true);
         return;
       }
 
       const { count } = await supabase
         .from('asesorias_escaladas_destinatarios')
         .select('id', { count: 'exact', head: true })
-        .eq('destinatario_id', user.id)
+        .eq('destinatario_id', userId)
         .is('leida_en', null);
 
       if (mounted) {
         setAdvisoryUnreadCount(count || 0);
+        setAuthReady(true);
       }
     }
 
@@ -145,7 +144,7 @@ export default function Dashboard() {
       mounted = false;
       window.clearInterval(timer);
     };
-  }, [navigate]);
+  }, [session?.user?.id]);
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
