@@ -1,1 +1,0 @@
-var e=`/orion/`,t=t=>`${e}${t.replace(/^\/+/,``)}`;export{t};
