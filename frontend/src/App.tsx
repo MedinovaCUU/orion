@@ -7,6 +7,15 @@ const Login = lazy(() => import('./components/Login'));
 const Dashboard = lazy(() => import('./components/Dashboard'));
 const PublicTicketForm = lazy(() => import('./components/PublicTicketForm'));
 
+const routerBasename = (() => {
+  const baseUrl = import.meta.env.BASE_URL || '/';
+  if (baseUrl === '/') {
+    return '/';
+  }
+
+  return baseUrl.replace(/\/+$/, '');
+})();
+
 const AppLoadingFallback = () => (
   <div
     style={{
@@ -51,14 +60,15 @@ function App() {
         return;
       }
 
-      if (event === 'INITIAL_SESSION') {
-        return;
-      }
-
       if (!nextSession) {
         setSession(null);
         setLoading(false);
         return;
+      }
+
+      if (event === 'INITIAL_SESSION' || event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') {
+        setSession(nextSession);
+        setLoading(false);
       }
 
       const validatedSession = await getValidatedSession();
@@ -66,7 +76,7 @@ function App() {
         return;
       }
 
-      setSession(validatedSession);
+      setSession(validatedSession ?? nextSession);
       setLoading(false);
     });
 
@@ -81,7 +91,7 @@ function App() {
   }
 
   return (
-    <Router basename={import.meta.env.BASE_URL}>
+    <Router basename={routerBasename}>
       <Suspense fallback={<AppLoadingFallback />}>
         <Routes>
           <Route 
@@ -94,7 +104,7 @@ function App() {
           />
           <Route 
             path="/dashboard" 
-            element={session ? <Dashboard /> : <Navigate to="/login" replace />} 
+            element={session ? <Dashboard session={session} /> : <Navigate to="/login" replace />} 
           />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>

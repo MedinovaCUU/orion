@@ -1,5 +1,5 @@
 import { Suspense, lazy, useEffect, useState } from 'react';
-import { getValidatedSession, supabase } from '../supabaseClient';
+import { supabase } from '../supabaseClient';
 import { useNavigate } from 'react-router-dom';
 import BrandLockup from './BrandLockup';
 import './Dashboard.css';
@@ -14,6 +14,7 @@ const Tutoriales = lazy(() => import('./Tutoriales'));
 const Equipos = lazy(() => import('./Equipos'));
 const PNO = lazy(() => import('./PNO'));
 const EquipmentMonitoring = lazy(() => import('../modules/equipment-monitoring/EquipmentMonitoring'));
+const DEFAULT_DASHBOARD_TAB: DashboardTabKey = 'tickets';
 
 type DashboardTabKey =
   | 'tickets'
@@ -57,9 +58,17 @@ const DashboardPanelFallback = () => (
   </div>
 );
 
-export default function Dashboard() {
+interface DashboardProps {
+  session: {
+    user?: {
+      id?: string;
+    };
+  } | null;
+}
+
+export default function Dashboard({ session }: DashboardProps) {
   const navigate = useNavigate();
-  const [activeTab, setActiveTab] = useState<DashboardTabKey>('tickets');
+  const [activeTab, setActiveTab] = useState<DashboardTabKey>(DEFAULT_DASHBOARD_TAB);
   const [authReady, setAuthReady] = useState(false);
   const [userRole, setUserRole] = useState<string | null>(null);
   const [advisoryUnreadCount, setAdvisoryUnreadCount] = useState(0);
@@ -77,43 +86,57 @@ export default function Dashboard() {
     { key: 'pno', label: 'PNO', tone: 'veterinary' },
     { key: 'equipos', label: 'Equipos', tone: 'food', adminOnly: true },
   ];
+  const activeTabIsVisible = navigationItems.some((item) => {
+    if (item.key !== activeTab) {
+      return false;
+    }
+
+    if (item.staffOnly && !isStaffRole(userRole)) {
+      return false;
+    }
+
+    if (item.adminOnly && userRole !== 'admin') {
+      return false;
+    }
+
+    return true;
+  });
+
+  useEffect(() => {
+    if (!activeTabIsVisible) {
+      setActiveTab(DEFAULT_DASHBOARD_TAB);
+    }
+  }, [activeTabIsVisible]);
 
   useEffect(() => {
     let mounted = true;
+    const userId = session?.user?.id ?? null;
 
-    async function verifySession() {
-      const session = await getValidatedSession();
+    setAuthReady(false);
 
-      if (!mounted) {
-        return false;
-      }
-
-      if (!session) {
-        navigate('/login', { replace: true });
-        return false;
-      }
-
+    if (!userId) {
+      setUserRole(null);
+      setAdvisoryUnreadCount(0);
       setAuthReady(true);
-      return true;
+      return () => {
+        mounted = false;
+      };
     }
 
     async function fetchRoleAndUnread() {
-      const isAuthenticated = await verifySession();
-      if (!isAuthenticated || !mounted) {
+      const { data, error } = await supabase.from('profiles').select('rol').eq('id', userId).maybeSingle();
+      if (!mounted) {
         return;
       }
 
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
-
-      if (!user || !mounted) {
-        navigate('/login', { replace: true });
+      if (error) {
+        console.error('No se pudo refrescar el rol del usuario en Dashboard.', error);
+        setAuthReady(true);
         return;
       }
 
-      const { data } = await supabase.from('profiles').select('rol').eq('id', user.id).single();
-      if (!mounted || !data) {
+      if (!data?.rol) {
+        setAuthReady(true);
         return;
       }
 
@@ -121,17 +144,19 @@ export default function Dashboard() {
 
       if (!isStaffRole(data.rol)) {
         setAdvisoryUnreadCount(0);
+        setAuthReady(true);
         return;
       }
 
       const { count } = await supabase
         .from('asesorias_escaladas_destinatarios')
         .select('id', { count: 'exact', head: true })
-        .eq('destinatario_id', user.id)
+        .eq('destinatario_id', userId)
         .is('leida_en', null);
 
       if (mounted) {
         setAdvisoryUnreadCount(count || 0);
+        setAuthReady(true);
       }
     }
 
@@ -145,7 +170,7 @@ export default function Dashboard() {
       mounted = false;
       window.clearInterval(timer);
     };
-  }, [navigate]);
+  }, [session?.user?.id]);
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
