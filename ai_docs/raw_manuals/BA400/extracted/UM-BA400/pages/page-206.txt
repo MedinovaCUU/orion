@@ -1,0 +1,48 @@
+Manual usuario 
+ 
+ 
+ 
+Manual usuario 
+ 
+ 
+ 
+206
+206
+Biosystems
+Biosystems
+15.2.2. Punto final bireactiva
+Este modo de funcionamiento se utiliza, por ejemplo, cuando la estabilidad del 
+reactivo de trabajo es muy corta, de esta manera es el analizador que prepara el 
+reactivo de trabajo en cada preparación.
+En este modo de cálculo se realiza una única lectura y la reacción empieza cuando 
+se dispensa el segundo reactivo. 
+Primero se dispensa el reactivo A, en el ciclo 31 se dispensa la muestra, en el si­
+guiente ciclo se agita, en el ciclo 66 se dispensa el reactivo B, se agita y empieza 
+la reacción. Una vez alcanza el equilibrio se realiza la lectura, L1. El cambio de la 
+absorbancia es directamente proporcional a la concentración de los analitos.
+RA
+S
+L1
+Time (Cycles)
+ABS
+END POINT − BiReagent
+RB
+1
+31
+66
+Ilustración 129 
+Representación del método de cálculo punto final bireactivo
+El cálculo de la absorbancia puede ser monocromática o bicromática. 
+Cuando la reacción es monocromática la medición se realiza en el tiempo de L1 
+a una sola longitud de onda.
+A=ABS L1
+principal 
+(3)
+Cuando la reacción es bicromática, se realizan dos lecturas en el tiempo L1. Cada 
+una de las lecturas se realizada a una longitud de onda diferente. La absorbancia 
+es la diferencia entre las dos longitudes de onda.
+A=ABS L1
+principal−ABS L1
+referencia
+ 
+(4)

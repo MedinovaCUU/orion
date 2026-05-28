@@ -1,0 +1,9 @@
+68
+Manual de servicio
+Los instrumentos con refrigerador de reactivos tienen la opción para este fin.
+Proceso de ajuste.
+1. Seleccionar el tipo de ajuste que se desea realizar: Ajuste de bandeja (XYZ) del rack de diá-
+metro pediátrico o del rack de reactivo.
+2. Pulsar el botón Ajustar.
+3. Desactivar la opción: Ajustar con el útil
+4. Seleccionar el número de rack para empezar el proceso de ajuste. Por defecto se empieza por el número 1.

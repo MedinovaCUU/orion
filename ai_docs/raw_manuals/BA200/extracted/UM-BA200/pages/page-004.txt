@@ -1,0 +1,81 @@
+Manual usuario 
+ 
+ 
+ 
+Manual usuario 
+ 
+ 
+ 
+4
+Biosystems
+Biosystems
+Identificación
+ 
+UDI-DI básico 
+8435287191BA20000000GX
+ 
+Código manual TEUS00055-06-ESP
+ 
+Dirección del fabricante 
+BIOSYSTEMS
+ 
+ 
+c/Costa Brava 30, 
+08030 Barcelona
+SPAIN
+http://www.biosystems.es
+Registro de cambios
+Versión del 
+manual 
+Fecha de la 
+revisión
+Versión de 
+software
+Modificación
+7.0
+Junio 2021
+V5.7
+Modificación de los capítulos: 
+4.16, 10.3.1.3, 10.3.3.2, 10.7, 11
+6.0
+Julio 2020
+V5.4
+Añadidos los capítulos: Marcas 
+comerciales, Derechos de autor 
+Descargo de responsabilidad
+Modificación de los capítulos: 
+10.3.3, 10.5.3, 10.7
+5.0
+Enero 2020
+V5.3.1
+Modificación de los capítulos: 
+4.15, 9.1, 10.3.1.6, 10.4, 10.11
+4.0
+Enero 2019
+V5.2
+Modificación de los capítulos: 
+10.3.9, 10.4, 10.5.1, 10.5.5, 10.7, 
+10.9.3, 10.11, 14.2.7
+Añadido capítulo: 10.2.10
+3.0
+Marzo 2018
+V5.1.4
+Modificados los capítulos: 4.12, 
+10.3.5, 18
+Añadido capítulo: 10.9.8, 10.9.9, 
+10.9.10
+2.0
+Marzo 2017
+V4.0.2
+Modificados los capítulos:
+10.3.1.3, 10.4.3, 10.6.4,10.8, 
+10.12
+Añadido capítulo: 10.5.2
+1.0
+ Noviembre 
+2016
+V4.0
+Versión inicial
+Los cambios en comparación con versiones anteriores se resaltan con barras verti­
+cales de color amarillo en el margen del documento.
+NOTE

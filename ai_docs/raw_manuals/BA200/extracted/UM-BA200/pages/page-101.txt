@@ -1,0 +1,34 @@
+101
+101
+Los valores ya vienen introducidos por defecto en alguna de las técnicas.
+Si algún resultado de una réplica de un test se marca con la alarma de sustrato 
+consumido, y si el software y la prueba se han configurado para realiza la repeti­
+ción automática, se envía una repetición automática reducida para esta petición 
+(y repiten todos los replicados).
+Ilustración 60 
+Pantalla parámetros técnicas, rangos de referencia
+ 
+Rangos de referencia 
+Indica los rangos de normalidad de referencia para la población. Si hay valores 
+introducidos en los campos, se muestran en la pantalla de resultados y en el 
+informe de paciente, conjuntamente con el resultado de concentración.
+Rango de 
+referencia
+Descripción
+Genérico
+En estos campos se introducen unos rangos comunes 
+para toda la población.
+Detallado
+En esta tabla se entran los rangos específicos por sexo 
+y/o por edad.
+Introduzca en cada fila, el sexo, el rango de edad y los 
+valores de normalidad.
+ 
+Rangos de pánico 
+Introduzca los valores para los cuáles un resultado es patológico. Los valores 
+introducidos tienen que cumplir con las siguientes condiciones:
+Mínimo pánico < Mínimo normalidad< Máximo normalidad< Máximo pánico
+10.3.2. Técnicas calculadas
+Pantalla donde se programan las técnicas calculadas. El resultado de las técnicas 
+calculadas se obtiene aplicando una fórmula con las concentraciones de varias 
+técnicas estándar realizadas previamente.

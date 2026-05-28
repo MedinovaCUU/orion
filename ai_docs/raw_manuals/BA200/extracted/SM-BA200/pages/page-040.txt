@@ -1,0 +1,50 @@
+3.7. Conjunto de fluidos
+Todo los elementos fluídicos están montados en una plancha localizada en la parte izquierda del analizador.
+Para facilitar la identificación y seguimiento del esquema fluídico, la selección del color de los tubos ha seguido el 
+siguiente criterio:
+• 
+Azul: Tubos con agua destilada
+• 
+Rojo: Tubos con residuos
+• 
+Verde: Tubos con solución de lavado
+1
+7
+4
+8
+2
+3
+5
+6
+9
+10
+11
+12
+14 15
+16
+17
+18
+13
+Ilustración 3.21 
+Conjunto del sistema fluídico
+Referencias de la Ilustración 3.21
+1 – Calefactor tubos estación de lavado
+2 – Bomba SF1-B1F
+3 – Bomba SF1-B2F
+4 – Bomba SF1-B3F
+5 – Bomba SF1-B4F
+6 – Bomba SF1-B5F
+7 – Conjunto bomba de pistones estación lavado
+8 – Placa CIIM00064- control sistema fluídico
+9 – Bomba SF1-B6F
+10 – Bomba SF1-B7F
+11 – Bomba SF1-B8F
+12 – Bomba SF1-B9F
+13 – Ventilador
+14 – Entrada de agua de red
+15 – Salida de residuos baja contaminación
+16 – Entrada de agua de depósito
+17 – Electroválvula SF1-E1F
+18 – Electroválvula JE1-E2F
+Manual de servicio
+40

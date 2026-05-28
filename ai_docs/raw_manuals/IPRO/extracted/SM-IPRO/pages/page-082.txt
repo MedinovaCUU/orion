@@ -1,0 +1,14 @@
+82
+Manual de servicio
+CÓDIGO
+DESCRIPCIÓN
+PC11555
+Placa indicador frontal
+AC17417
+Placa sensor Reed
+AC17415
+Sensor de racks
+AC11527
+Retén bomba dispensación
+ME14670 
+Manifold

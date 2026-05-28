@@ -1,0 +1,30 @@
+{
+  "manufacturer": "Biosystems",
+  "equipment": "BA400",
+  "aliases": [],
+  "document_type": "service_manual",
+  "language": "Spanish",
+  "source_pdf": "/Users/ricardomontanezmiranda/Documents/BioSys Diagnostico/data/manuals/BA400/source/SM-BA400.pdf",
+  "source_filename": "SM-BA400.pdf",
+  "source_sha256": "57842fde16ce1804bd8e9a676c605d720aa061da7c7447afcd7f86e10fa7d75d",
+  "page_count": 303,
+  "pdf_metadata": {
+    "format": "PDF 1.4",
+    "title": "",
+    "author": "",
+    "subject": "",
+    "keywords": "",
+    "creator": "Adobe InDesign 15.0 (Windows)",
+    "producer": "Adobe PDF Library 15.0",
+    "creationDate": "D:20200217125856+01'00'",
+    "modDate": "D:20200217130005+01'00'",
+    "trapped": "",
+    "encryption": null
+  },
+  "title_lines": [
+    "Manual",
+    "de servicio",
+    "Espa\u00f1ol"
+  ],
+  "manual_code": "TESE000012-09-ESP"
+}

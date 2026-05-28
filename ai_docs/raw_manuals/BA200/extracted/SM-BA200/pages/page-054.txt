@@ -1,0 +1,81 @@
+54
+Conector
+Función
+Pin
+CN8
+Conexión USB tipo A para 
+memoria Flash
+Pin 1: 5 V
+Pin 2: USB+
+Pin 3: USB-
+Pin 4: GND
+CN10
+Conexión USB tipo B principal
+Pin 1: 5 V
+Pin 2: USB+
+Pin 3: USB-
+Pin 4: GND
+CN22
+Conexión USB tipo B auxiliar
+Pin 1: 5 V
+Pin 2: USB+
+Pin 3: USB-
+Pin 4: GND
+CN19
+Ventilador general
+Pin 1: 24 V
+Pin 2: Activación
+CN20
+Ventilador general (no se usa)
+Pin 1: 24 V
+Pin 2: Activación
+CN21
+Ventilador general (no se usa)
+Pin 1: 24 V
+Pin 2: Activación
+CN4
+Conector JTAG
+Test point
+Función
+TP1
+5 V
+TP17
+GND ISE
+TP18
+Canal serie trasmisión ISE
+TP19
+Canal serie recepción ISE
+TP26
+GND canal serie
+TP27
+Señal USB + auxiliar
+TP28
+Señal USB - auxiliar
+TP29
+Señal USB +
+TP31
+Señal USB -
+TP33
+Canal serie trasmisión USB
+TP34
+Canal serie recepción USB
+TP38
+3.3 V
+TP40
+24 V
+TP41
+GND
+TP42
+CAN_H (Señal en el bus)
+TP43
+CAN_H
+TP44
+CAN_L (Señal en el bus)
+TP45
+CAN_L
+TP48
+5 V
+TP49
+3.3 V
+TP50
+GND

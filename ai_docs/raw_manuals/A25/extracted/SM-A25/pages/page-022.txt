@@ -1,0 +1,27 @@
+22
+Service manual
+X
+Z
+Y
+4
+6
+3
+2
+7
+8
+5
+1
+Figure 3.1 
+1 – X guide
+2 – X carriage
+3 – Y carriage
+4 – Z carriage
+5 – Cable carrier chain
+6 – Teflon dispensing tube
+7 – Electrical hoses
+8 – Y carriage chain support cover
+Reference of Figure 3.1
+3.2.1.1.  X guide
+This consists of an aluminium profile (1) which holds the steel rails (2) on which the X carriage runs. The photodetec­
+tor (3) indicates the position of the start of the movement of the X carriage. The motor (7) operates the belt of the X 
+carriage by means of the pulley (6). The pulley (4), fitted on the bearing (5), returns the belt operated by the motor.

@@ -1,0 +1,43 @@
+199
+199
+ 
+ 
+Inyecte suficiente calibrador A en el canal de los electrodos de K+ y Li+ hasta que 
+el líquido llene el canal.
+ 
+ 
+Cubra los dos extremos del canal (los dos lados de los electrodos de K+ y de Li+) 
+con cinta adhesiva para sostener el calibrador A en su lugar.
+ 
+ 
+Inserte los electrodos K+ y Li+ en una bolsa sellada.
+ 
+Kit de reactivos 
+Retire el kit de reactivos del analizador y deséchelo.
+ Tubos de la bomba peristáltica Retire todos los tubos de los fluidos y enjuáguelos con agua purificada. Utilice la 
+jeringa con la punta de tamaño medio.
+ 
+Tubos delgados 
+Enjuague los tubos delgados con agua purificada. Utilice la jeringa con la punta 
+de tamaño pequeño.
+Ilustración 121 
+Botella para el lavado del ISE
+13.3.2.5. Reactivación del módulo ISE
+• 
+Saque todos los electrodos de las bolsas selladas.
+• 
+Retire la cinta de los electrodos de K+ y Li+ y seque la superficie del electrodo.
+• 
+Si es necesario, sumerja el electrodo de referencia en agua tibia hasta que se 
+disuelva la posible acumulación de sal del canal del orificio del electrodo.
+• 
+Instale los electrodos en el módulo ISE.
+• 
+Conecte el kit de reactivos de nuevo en el módulo ISE.
+• 
+Encienda la alimentación del módulo ISE.
+• 
+Realice los pasos indicados en el apartado 4.13
+13.3.3. Periodicidad del mantenimiento
+A continuación se muestra la periodicidad de cambio de los elementos del módulo 
+ISE.

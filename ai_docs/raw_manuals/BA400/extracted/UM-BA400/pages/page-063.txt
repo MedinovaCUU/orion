@@ -1,0 +1,34 @@
+63
+63
+de códigos de barras para identificar automáticamente las muestras colocadas en 
+el rotor.
+Ilustración 34 
+Rotor de muestras
+ 
+Posiciones en rotor entero Hay en total 135 posiciones dividas en tres coronas. Las dos coronas externas 
+disponen de 45 posiciones cada una y la corona interna es de 45 posiciones. 
+Únicamente en las dos coronas externas se puede leer el código de barras de las 
+muestras.
+ Posiciones en rotor segmentado 
+El rotor segmentado está compuesto de 9 segmentos con 14 posiciones. Las 
+posiciones del 1 al 9 se pueden leer los códigos de barras de las muestras.
+ 
+Tubos 
+Dimensiones de los tubos:
+• 
+Diámetro mínimo: ∅12 mm
+• 
+Diámetro máximo: ∅16 mm
+• 
+Altura mínima: 70 mm
+• 
+Altura máxima: 100 mm
+ 
+Pocillos pediátricos Para insertar los pocillos pediátricos en las posiciones se suministra un accesorio 
+conjuntamente con el analizador. 
+8.3. Rotor de reactivos
+El rotor de reactivos consiste en un tambor extraíble para posicionar los reactivos. 
+Todos los reactivos están refrigerados. El rotor dispone de un lector de código de 
+barras para identificar las botellas de reactivos. 
+El disco tiene una estructura circular con 2 coronas concéntricas de posiciones 
+para colocar las botellas de reactivo.

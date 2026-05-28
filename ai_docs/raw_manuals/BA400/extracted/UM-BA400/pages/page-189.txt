@@ -1,0 +1,26 @@
+189
+189
+Ilustración 122 
+Ventana visualización copa ISE
+ 
+Limpieza de los tubos del 
+modulo ISE
+ 
+Para evitar posibles obstrucciones del tubo de residuos del módulo ISE debido 
+a muestras mal coaguladas, siga los pasos siguientes para realizar la limpieza del 
+tubo de residuos:
+1. Retire del alojamiento de la bomba peristáltica el tubo de residuos del módulo 
+ISE.
+2. Separe la pieza amarilla en forma de L de la parte inferior del módulo.
+3. Utilice lejía comercial. Verifique que tenga una concentración de hipoclorito 
+sódico entre un 5 % y 6 %.
+4. Rellene una jeringa con 5 mL de lejía y conéctela en el conector en forma de 
+L retirado previamente.
+5. Impulse despacio la jeringa para rellenar el tubo de residuos con la lejía. Deje 
+actuar durante 6 minutos la lejía en el interior del tubo. 
+6. Saque la jeringa del conector en L y rellénela con agua destilada.
+7. Vuelva a introducir la jeringa en el conector en L para enjuagar el circuito de 
+residuos.
+8. Saque la jeringa del conector en L y enchufe el conector en L al módulo 
+9. Vuelva a introducir el tubo de residuos en la bomba peristáltica
+10. Realice un par de cebados de CAL A.

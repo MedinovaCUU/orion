@@ -1,0 +1,52 @@
+87
+87
+ 
+Tamaño de paquetes 
+de Host Query
+ 
+Número de especímenes enviados en un mismo mensaje de Query por espéci­
+men cuando se usa el protocolo de ASTM.
+ 
+Tiempo máximo para enviar 
+un mensaje de reintento
+ 
+Configuración del tiempo máximo durante el cual se reintenta enviar un mensa­
+je a LIS cuando no se recibe respuesta.
+ Tiempo máximo de espera del 
+LIS
+ 
+Configuración del tiempo máximo de espera para recibir un mensaje de acepta­
+ción o confirmación de LIS. Transcurrido este tiempo se modifica el estado de 
+LIS (LED en rojo) indicando que hay problemas en la comunicación que debe 
+solucionar.
+ 
+Delimitadores 
+Introduzca los delimitadores que se usarán en la transmisión y recepción de los 
+mensajes.
+Ilustración 50 
+Configuración del protocolo LIS
+10.2.7. Mapeado del LIS
+Pantalla para configurar los nombres que se usarán en las peticiones de LIS.
+Se deben configurar los nombres de los siguientes elementos: técnicas, técnicas 
+ISE, técnicas calculadas, técnicas externas, tipos de muestra y unidades. 
+Atención: Las peticiones de LIS con nombres de técnicas o tipo de muestra que no 
+hayan sido introducidos en esta pantalla son rechazadas por el analizador. 
+En la Ilustración 51 se muestra una tabla con diferentes columnas: 
+• 
+En la primera columna muestra el tipo del elemento, puede ser alguno de 
+estos tipos:
+• 
+Técnica calculada
+• 
+Técnica estándar
+• 
+Técnica ISE
+• 
+Unidades
+• 
+Tipo de muestra
+• 
+Técnica externa
+• 
+La segunda columna muestra el nombre del elemento tal como aparece en el 
+analizador.

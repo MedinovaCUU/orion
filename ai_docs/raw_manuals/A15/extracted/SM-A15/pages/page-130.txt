@@ -1,0 +1,14 @@
+131
+1. Coloque la nueva placa
+2. Siga los pasos en órden inverso
+3. Realice unos ciclos de estress con el programa de servicio para verificar que se ha realizado correc-
+tamente el montaje
+1
+Ilustración 6.35 Desmontaje placa interconexión
+6.5.2. PC13386 - Placa del microprocesador / PC13383 - Placa DC/DC 
+Desmontaje:
+1. Abatir la tapa trasera de la electrónica.
+2. Desconectar todas las mangueras de la placa.
+3. Extraer los tornillos (2) o (3) en función de la placa que se quiera retirar
+Montaje:
+1. Al instalar de nuevo la placa, volver a conectar cuidadosamente todos los conec to res.

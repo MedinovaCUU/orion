@@ -1,0 +1,52 @@
+66
+LEDs
+Función (Condición de encendido) modelo Y200
+LD3
+LED de 600 nm
+LD4
+LED de 560 nm
+LD5
+LED de 750 nm
+LD6
+LED de 420 nm
+LD7
+LED de 505 nm
+LD8
+LED de 635 nm
+LD9
+LED de 405 nm
+LD10
+LED de 520 nm
+LD11
+LED de 43 nm
+LD12
+Indicador del decodificador de I2C
+4.8. Placa rotor - CIIM00052
+La revisión mínima para el funcionamiento en el BA200 es la CIIM00052-02
+Placa ubicada en el conjuntos rotor de muestras y reactivos. 
+Elementos de la placa
+ 
+• 
+Microcontrolador (U5) 
+• 
+Detector de tapa (U3)
+• 
+Control de los ventiladores ubicados en la estructura (U3 y U6)
+• 
+Motor del rotor (U8)
+• 
+Detección de inicio del rotor (U3)
+• 
+Comunicación con el lector de código de barras (U3 y U4)
+• 
+Alimentación de la nevera independiente (U16)
+• 
+Segundo microcontrolador para controlar la nevera(U13)
+• 
+Driver desempañador de la ventana de lectura (U10 y U17)
+• 
+Termistor para controlar la nevera.
+• 
+Control de las peltiers de la nevera (U9 y U11)
+• 
+Ventiladores de las peltiers de la nevera (U9 y U11), son controlados por los mismos drivers que las peltiers

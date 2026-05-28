@@ -1,0 +1,50 @@
+Si la obturación es debida a restos de muestra, es necesario realizar la maniobra de limpieza una vez eliminada la 
+obturación. 
+Si la obturación es muy recurrente, incremente la frecuencia de uso de la solución de limpieza.
+Después de cualquier obturación, es importante comprobar que los resultados de las calibraciones son estables. 
+Podrían quedar restos de muestra en la membrana que afectaran al resultado.
+9.3.4. Limpiar con un hisopo los orificios y contactos metálicos de los electrodos y del módu­
+lo ISE
+Los electrodos tienen en su interior soluciones salinas con una alta concentración. A veces restos de líquido de los 
+calibradores se secan y dejan restos de sales invisibles en los contactos o en el orificio, los cuales pueden causar un 
+cortocircuito o interferir en las lecturas.
+Apague el analizador y extraiga los electrodos, limpie el contacto metálico y el orificio de la membrana con un paño 
+humedecido con agua destilada en cada uno de los electrodos. Asegúrese que la zona está completamente seca antes 
+de reinstalar los electrodos.
+9.3.5. Limpiar la copa de restos de muestra
+Una vez a la semana, limpie la copa con un hisopo empañado con agua destilada para evitar que se pueda obstruir 
+el orificio de entrada de la copa del módulo ISE.
+9.3.6. Márgenes de aceptación de las calibraciones
+A continuación se muestran los márgenes de aceptación para la calibración de los electrodos y para la calibración 
+de la bomba peristáltica:
+Electrodo
+Margen de la calibración
+Li+ 
+47-64 mV/dec
+Na+ 
+52-64 mV/dec
+K+ 
+52-64 mV/dec
+Cl- 
+40-55 mV/dec
+Los resultados de la calibración pueden disminuir gradualmente con el tiempo a medida que los electrodos enve­
+jecen. Una variación repentina no responde a un comportamiento esperado. Si esto ocurre, verifique el estado del 
+módulo (tubos, electrodos, pack de reactivos) antes de proseguir con las medidas.
+Bomba peristáltica
+Margen de la calibración
+Bomba residuos
+Bomba Cal A
+1500 -3000 
+Bomba Cal B
+1500- 3000
+Detector de burbujas
+Margen de la calibración
+BBC A
+Número de pasos para mover 75 uL de CAL A
+BBC L
+Número de pasos para detectar el aire
+BBC M
+Delta entre el valor de A y L. Tiene que ser 
+superior a 90
+Manual de servicio
+226

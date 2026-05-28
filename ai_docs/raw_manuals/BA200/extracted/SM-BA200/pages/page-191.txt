@@ -1,0 +1,25 @@
+6
+7
+8
+9
+Ilustración 8.80 
+Cambio sensor de temperatura
+8.15.4. AC17308 - Doble detector de inicio
+Herramientas: Allen 2.5
+Desmontaje:
+1. Desatornille los tornillos (12) que sujetan la placa con el doble fotodetector.
+2. Desconecte los 2 conectores (10) y (11) . Véase Ilustración 8.81
+Montaje:
+1. Cambie el fotodetector de colisión.
+2. Coloque los tornillos (12) para sujetar el doble fotodetector.
+3. Coloque los 2 cables (10) y (11) según la tabla siguiente:
+Placa CIIM00068
+Placa doble fotodetector
+Placa CIIM00050
+Placa control de fotometría
+CN1
+CN10
+CN2
+CN4
+4. Verifique su funcionamiento con el programa de servicio.
+191

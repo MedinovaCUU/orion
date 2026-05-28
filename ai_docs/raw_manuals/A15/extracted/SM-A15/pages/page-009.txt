@@ -1,0 +1,30 @@
+Manual de servicio
+10
+Símbolo
+Descripción 
+Fecha de caducidad
+Código de lote
+Número de catálogo
+Límite de temperatura
+Fabricante
+Irritante
+Precaución, posible derrame de productos químicos o biológicos
+Etiqueta de embalaje. Mantener vertical. No tumbar
+Etiqueta de embalaje. Frágil
+Etiqueta de embalaje. No se puede mojar
+Precauciones de seguridad
+Símbolo
+Descripción 
+Prevención de riesgo eléctrico
+Para reducir el riesgo de descargas eléctricas. No quitar ninguna de las carcasas 
+del analizador. No hay ninguna intervención del usuario que requiera acceder a 
+las piezas del interior del equipo. Cuando sea preciso diríjase a su servicio de 
+asistencia técnica.
+BIOHAZARD
+Prevención de riesgo biológico por manipulación de muestras
+La manipulación inapropiada de las muestras, controles y calibradores puede causar 
+una infección biológica. No toque las muestras, mezclas ni residuos con las manos. 
+Use guantes y vestimenta de protección cuando sea necesario.
+En caso que las muestras entren en contacto con la piel, lave inmediatamente con 
+abundante agua y consulte con un médico. Se recomienda que siga las buenas 
+prácticas de laboratorio.

@@ -1,0 +1,75 @@
+171
+ 
+ 
+ 
+Poder crear perfiles de técnicas calculadas
+ 
+ 
+ 
+Poder guardar en histórico los resultados out
+ 
+ 
+ 
+Poder realizar el cálculo del diferencial bicromático y tiempo fijo bi-
+cromático
+Tabla de compatibilidades Y15
+Usua. Y15 
+4.6.1 
+4.7 
+4.8.3 
+4.9.1 
+5.0 
+5.2 
+5.4
+firmware 
+3.70 
+ 
+x 
+x 
+x 
+x 
+x 
+x
+4.12 
+ 
+x 
+x 
+x 
+x 
+x 
+x
+5.10 
+ 
+x 
+x 
+x 
+x 
+x 
+x
+6.02 
+ 
+ 
+ 
+ 
+ 
+ 
+x
+6.16 
+ 
+ 
+ 
+ 
+ 
+ 
+x 
+x
+6.19 
+ 
+ 
+ 
+ 
+ 
+ 
+x 
+x
+Se recomienda instalar siempre la última versión de firmware existente.

@@ -1,0 +1,39 @@
+63
+Tipo de placa
+Descripción placa
+Código identificación
+Posición selector
+Placa sistema 
+fluídico
+Sistema fluídico
+SF1
+1111
+Placa jeringas
+Jeringas
+JE1
+0100
+Cada una de las placas anteriores incorpora un microprocesador. Para poder identificar rápidamente el estado del 
+microprocesador, incorporan un led indicador de estado. La información de parpadeo del led es la siguiente:
+Estado
+Descripción
+Parpadeo muy rápido 
+(ráfaga)
+Arranque de la placa. Al cabo de unos segundos pasa al parpadeo lento.
+Parpadeo rápido
+Placa en modo monitor.
+Parpadeo lento
+Placa dispone de firmware y está funcionando correctamente.
+Parpadeo muy rápido. Sin 
+ninguna secuencia periódica
+Proceso de actualización del firmware.
+No parpadeo
+Placa sin alimentación o averiada.
+NOTE
+El chasis del analizador y con ello todas las partes metálicas están únicamente conectadas a la toma 
+de tierra del enchufe. Es la toma para la seguridad eléctrica. 
+La referencia negativa o GND del circuito eléctrico está aislado del chasis. Para medir las tensiones 
+con un multímetro o osciloscopio, colocar la referencia del instrumento en los “test points” marcados 
+como GND de cada placa o en la toma de referencia del conector CAN.
+4.1. Fuentes y placa Entrada-AC - CIIM00056
+Ilustración 4.1 
+Serigrafía de la placa Entrada-AC

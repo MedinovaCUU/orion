@@ -1,0 +1,22 @@
+Lista de recambios
+Código
+Conjunto
+Representación 
+Descripción
+AC17278
+BA200 - Puerta frontal
+AC17375
+Y200 - Puerta frontal
+AC17279
+Conjunto tapas laterales
+AC16546
+Agarraderas tapa trasera
+AC17280
+Pistón tapa general
+AC17281
+Carcasa frontal
+AC17282
+Pata (4)
+AC16553
+Filtro y conector de red
+235

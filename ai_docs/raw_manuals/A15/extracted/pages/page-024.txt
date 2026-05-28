@@ -1,0 +1,24 @@
+25
+20
+19
+18
+17
+16
+15
+21
+Ilustración 3.3. Eje Z
+3.3. Sistema de dosificación
+La bomba dosificadora realiza la dosificación de las preparaciones a través de la punta termostatizada. La punta 
+se lava interna y externa mente en la estación de lavado. La bandeja de racks permite posicionar las muestras a 
+analizar y los reactivos necesarios. El nivel de los contenedores de agua destilada y de residuos es controlado por 
+el analizador por capacidad.
+3.3.1. Bomba dosificadora
+El cuerpo de plástico (23) une los diferentes elementos que constituyen la bomba. La cámara fluídica (22) que forma 
+el manifold de metacrilato transparente permite observar el flujo de líquido a través de la bomba. El soporte fija el 
+retén (31). El pistón cerámico (32) realiza las dosificaciones desplazando un cierto volumen de líquido dentro de la 
+cáma ra (30). El pistón está adherido al soporte que se desplaza alternativamente por la rota ción del husillo (33), 
+fijado al eje del motor (35). La barrera solidaria al soporte del pistón, obstruye el fotodetector (27) cuan do el pistón 
+alcanza su posición de ini cio. El rodamiento axial (34) evita cualquier desplazamiento longitudinal del eje del motor 
+para una mayor precisión de dispensación. La electroválvula de 3 vías (36) permite conectar la cámara de la bomba 
+con el contenedor de agua destilada o bien con la punta termostatizada. El tubo de teflón (24) conecta la cámara con 
+la electroválvula. Está conectado a cada uno de estos elementos mediante racors.

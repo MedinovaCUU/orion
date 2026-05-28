@@ -1,0 +1,20 @@
+107
+• 
+Operator, is the user with a lower level of access to the application. He can only do working sessions, re­
+ports of current and historical results, and validate quality control results. In the screens of programming of 
+techniques and contaminations, he can look up programming values, but he can not modify any parameter. 
+He can not delete results or alarms. This user has total access to the rack and profile programming and to 
+the analyser’s configuration (except for changes of filters). He can change his own password.
+• 
+Supervisor, is the user with a medium access level. This user has got the same privileges as the operator 
+user’s and, in addition, he has got permissions to modify the programming of techniques in the calibration 
+parameters and the control values. He can create a restricted number of new techniques, that is defined at 
+the moment of creating such user and that it is a default setting of 5. He can also modify the programming 
+of contaminations and change the analyser’s filters. He can change his own password.
+• 
+Administrator, is the user with total access to the analyser’s functions. He can create new users -as much 
+at supervisor as at operator level-, eliminate or modify users. When creating supervisor users, he has to 
+indicate the maximum number of new techniques that can create. He can activate or deactivate Work 
+Without Passwords (option within the Configuration menu). He can also activate/deactivate the working 
+without cover detection (this option is useful for the technical service to make verifications without needing 
+to let the cover down). This option activates solely when the passwords are active.

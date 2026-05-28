@@ -1,0 +1,17 @@
+106
+Service manual
+5.7. 
+User’s program 
+In this section, the service options in the user program will be described. These options are intended to con­
+figure the user’s access level. 
+Each section explains how to manage and create different levels of access to the user program of the analyser. 
+When the program is installed for the first time, there is not a created user and access to the program is complete.
+5.7.1. 
+Configuration of the level of access to the analyser 
+To activate the option of level of access to the analyser, the first time you should enter as administrator, whose 
+values are: 
+Name of user: admin 
+access key: a25 
+with this screen, the application with the operation by passwords is configured. 
+The first time that the program is activated, it forces the user to change the initial password. 
+It is possible to create three types of user with different access levels:

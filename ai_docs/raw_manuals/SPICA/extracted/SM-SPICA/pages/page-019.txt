@@ -1,0 +1,24 @@
+19
+USUARIO
+Manual de Usuario BioSystems SPICA | Versión 2.8 - Agosto 2024
+Manual de Usuario BioSystems SPICA
+3. DESCRIPCIÓN
+3.1 Descripción de los componentes
+1. Cubierta principal
+La cubierta principal protege la superficie de trabajo del analizador. Abra está cubierta para acceder al 
+rotor de reacción. Para garantizar el funcionamiento seguro del analizador, esta cubierta debe mantenerse 
+cerrada. Tiene un detector de cubierta abierta o cerrada. El analizador dejará de funcionar si no está en 
+modo de espera.
+2. Recipientes de residuos, agua purificada y solución de lavado
+El analizador tiene 3 contenedores para almacenar solución de lavado, residuos y agua destilada. Todos los 
+contenedores están situados y accesibles en la parte delantera del analizador.
+a) SOLUCION DE LAVADO. Su capacidad es de 1L. Su peso detecta el nivel del contenedor.
+b) RESIDUOS: La capacidad de este contenedor es de 3L. Su peso determina el nivel del mismo.
+c) AGUA DESTILADA: La capacidad es de 3L. Su peso detecta el nivel del contenedor.
+3. Cubierta del rotor de muestras y reactivos 
+La cubierta da acceso a las muestras y al rotor de reactivos. La tapa tiene un detector que permite 
+al analizador detectar la presencia de la puerta. 
+Los diferentes componentes del analizador SPICA, están marcados y numerados en las siguientes figuras:
+1
+2
+3

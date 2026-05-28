@@ -1,0 +1,32 @@
+Código
+Descripción del recambio
+AC17226
+Conjunto rotor de reacción
+8.13.1. AC16617 - Centrador rotor
+Herramientas: Llave allen de 1.5 y Loctite 243
+Desmontaje:
+1. Desatornille el espárrago (1) del centrador rotor. Ver Ilustración 8.76
+2. Tire hacía arriba el centrador rotor para desmontarlo. 
+Montaje:
+1. Sustituya el espárrago (1) por uno de nuevo. No lo aproveche.
+2. Ponga un poco de loctite 243 (fijatornillos) en la rosca del espárrago (1).
+3. Coloque el espárrago en su posición en el centrador rotor (2).
+4. Oriente el centrador rotor (2) por el lado del espárrago con la ranura del eje (3).
+5. Apriete el espárrago (1) 
+1
+ 
+2
+3
+Ilustración 8.76 
+Montaje y desmontaje centrador rotor
+8.13.2. AC17216 - Detector de tapa 
+Herramientas: Loctite 454
+Desmontaje:
+1. Presionar con un destornillador por el agujero (4) hasta que el detector (5) se desprenda.
+2. Limpie los restos de cola que queden en el agujero.
+3. Desconecte el cable de la placa electrónica.
+Montaje:
+1. Ponga un poco de loctite 454 en el lateral del detector. Inserte el detector por el agujero y presiónelo hasta el final. 
+2. Conecte el cable en la placa electrónica.
+3. Verifique su funcionamiento con el programa de servicio.
+219

@@ -1,0 +1,26 @@
+5. Seleccione el fichero de firmware correspondiente a la versión de software. Ruta c:\Program Files (x86)\BA400\
+Firmware\
+6. Pulse le botón de actualización del firmware.
+7. El proceso tarda unos minutos. 
+8. Al finalizar, cierre la aplicación.
+9.1.3. Actualización de un parche (Patch)
+No todas las versiones de software tienen parche a instalar. Cuando la documentación indique que hay un parche, 
+entonces siga los pasos para instalar el parche:
+1. Instale la Version o actualización.
+2. Instale el parche. Ejecute el programa vx.x.x_Patch1.exe, las x indican la versión a instalar.
+9.1.4. Revertir a una versión anterior
+Si por cualquier razón tiene que volver a la versión anterior del software, siga los pasos siguientes:
+1. Desinstale la versión del BA400. Abra el programa de desinstalación de windows. Ruta: MI PC/Panel de control/
+Programas y características
+2. Seleccione BA400
+3. Desinstale.
+4. Instale la versión de software previa siguiendo los pasos desde el inicio de esta guía.
+5. Ejecute la aplicación BA400.exe
+6. Al iniciar la aplicación recupera la versión anterior de la base de datos. Automáticamente aparecerá una ventana 
+para seleccionar el archivo de la base de datos anterior. Seleccione dicho archivo y pulse aceptar.
+9.1.5. Resolución de posibles problemas en la instalación
+El motor de la base de datos SQLServer no se instala correctamente:
+1. Verifique que sólo haya una única versión del motor de base de datos SQL Server y que la versión sea la correcta.
+2. Verifique que los programas del SQLServer instalados sea como los mostrados en la Ilustración 9.1.
+Manual de servicio
+254

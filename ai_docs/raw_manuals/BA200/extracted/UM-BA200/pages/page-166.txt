@@ -1,0 +1,44 @@
+Manual usuario 
+ 
+ 
+ 
+Manual usuario 
+ 
+ 
+ 
+166
+166
+Biosystems
+Biosystems
+ 
+ 
+Pulse el botón para iniciar el proceso de acondicionamiento. Dicho proceso 
+tarda unos minutos.
+10.9.3. Linea base
+Utilidad para realizar la línea de base de manera manual. 
+En la pantalla aparece la información de la última vez que se ha realizado la línea 
+de base.
+ 
+ 
+Seleccione este botón para realizar el proceso de línea de base. La realización de 
+la línea de base es exactamente la misma que la realizada durante el inicio del 
+analizador (warm-up). 
+Ilustración 109 
+Pantalla para realizar manualmente la línia de base.
+10.9.4. Utilidades del módulo ISE
+Para realizar el mantenimiento del módulo ISE, vaya al menú de utilidades y escoja 
+la opción de utilidades ISE.
+Este menú lanza las acciones para realizar el mantenimiento del módulo ISE.
+Puede realizar las siguientes utilidades:
+• 
+Calibrar
+• 
+Instalar un kit de reactivos
+• 
+Instalar los electrodos
+• 
+Desactivar el módulo para una larga duración
+• 
+Cambiar los tubos de las bombas peristálticas
+• 
+Activar las preparaciones ISE

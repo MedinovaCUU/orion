@@ -1,0 +1,54 @@
+—  11  —
+2.2.5. - Programming
+Programming the system is done by indicating the quantity of microlytes that must be suctioned. This will vary in each 
+particular case. The appliance has several points where this value can be programmed. For instance, each test stored 
+contains a volume of the sample to be suctioned.
+2.2.6. - Adjustment
+The nominal flow of the pump is 110 μL per revolution. However, the accuracy of this parameter depends on the tolerance 
+of the length and diameter of the aspiration tube, with a deviation in the nominal value that varies depending on the 
+degree of aging, for which reason the pump must be adjusted from time to time. The adjustment process is explained in 
+section 3.2.3. - Aspiration system adjustment
+2.3. - Thermostatation system
+2.3.1. - Elements comprising it
+Figure 2.7 is a diagram of the thermostatation system that consists of the following elements:
+• 
+One cuvette holder (1).
+• 
+One temperature sensor (2).
+• 
+One temperature sensor amplifier (3).
+• 
+The a/d converter in the microcontroller (4) and the part of the programme that controls the thermostatation process.
+• 
+The Peltier cell power control circuit (5). 
+• 
+One Peltier cell (6).
+• 
+One dissipator (7).
+• 
+One fan (8).
+2.3.2. - Description of the system
+The cuvette with the reaction mixture to be 
+thermostatted is placed in the cuvette holder (1) 
+with which it is thermally in contact. The cuvette 
+holder is inserted in the optical support and in 
+contact with one of the side of the Peltier cell (6). 
+The other side of the cell is in contact with the 
+dissipator (7). The Peltier pumps heat from one 
+side to the other, depending on the direction of the 
+current. The power control circuit (5) is in charge 
+of making that current circulate in the adequate 
+sense inside the Cell, in order to heat or cool 
+depending on the microcontroller instructions. 
+In the heating process, heat is pumped from the 
+atmosphere (taken from the dissipator) to the 
+cuvette holder and on cooling the opposite occurs. 
+The radiator has a fan to assist in evacuating the 
+heat. The temperature sensor (2) measures the 
+cuvette holder temperature and, through the 
+amplifier, (3) this is read by the microcontroller 
+(4). This contains the thermostatation programme 
+and depending on the programmed temperature 
+and value read, it activates the power control (5) 
+heating or cooling as required.
+Figure 2.7

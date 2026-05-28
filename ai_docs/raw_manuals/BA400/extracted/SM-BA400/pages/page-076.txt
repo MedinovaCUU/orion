@@ -1,0 +1,47 @@
+Manual de servicio
+76
+Test point
+Función
+TP19
+Detección colisión punta
+LEDs
+Función (Condición de encendido)
+LD1
+Estado CPU
+LD2
+Detección colisión
+LD3
+Estado detección muestra
+4.5.1. Ajuste de la detección de nivel
+Material necesario para realizar el ajuste:
+• 
+Destornillador de precisión de plástico de punta plana. Trimming tool de la marca Bourns o similar.
+Es obligatorio utilizar un destornillador de plástico para no perturbar la señal de detección mientras gira el poten­
+ciómetro. Nunca usar un destornillador metálico, influye en la señal. 
+El estado del led LD3 indica el ajuste de la frecuencia de detección. El proceso se tiene que realizar cuando el ana­
+lizador está en stand-by y la punta correctamente cebada.
+Si el led parpadea o está apagado indica que la frecuencia de detección no está ajustada. 
+A medida que se acerca a la frecuencia de ajuste el parpadeo del led irá aumentando hasta quedar totalmente encen­
+dido una vez se alcance la frecuencia de detección objetivo.
+La frecuencia de detección para la punta de muestras es de: 2M Hz
+La frecuencia de detección para la punta de reactivos es de: 1M Hz
+Pasos a seguir para realizar el ajuste:
+1. Encienda el analizador 
+2. Quite la tapa de la punta que quiera ajustar
+3. Coloque el destornillador de plástico en el potenciómetro (P1). Asegúrese que la punta está correctamente 
+cebada y sin tocar ningún líquido. 
+4. Gire suavemente el potenciómetro en el sentido en que la frecuencia de parpadeo del led LD3 vaya aumentando 
+hasta que no parpadee.
+5. En caso de que la frecuencia disminuya, cambie el sentido de giro del potenciómetro.
+Posibles problemas durante el ajuste de la detección de la punta:
+Problema de detección
+Solución
+No se consigue un parpadeo estable en 
+el led LD3 de ajuste
+Verifique que la malla de protección del cable está bien prensada al 
+pin del conector. Verifique que el cable no tiene ningún pinzamiento.
+Verifique que el cable de detección de la punta está firmemente unido 
+a la placa mediante una brida.
+Verifique que los tornillos, tuercas y piezas que sujetan el muelle de 
+detección de colisión están bien apretados y no tienen movimientos.
+Verifique que la punta está bien cebada.

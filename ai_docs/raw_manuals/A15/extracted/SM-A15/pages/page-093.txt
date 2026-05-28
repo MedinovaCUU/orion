@@ -1,0 +1,26 @@
+94
+Manual de servicio
+5.4.3. Lavado del sistema de dosificación
+Pulsando el botón Lavar, el analizador lava el sistema de dosificación interna y exter namente. Para realizar 
+esta operación el brazo manipulador se desplaza hasta la esta ción de lavado. El técnico puede elegir realizar 
+el lavado con agua destilada o con so lución de lavado. En este último caso, el analizador solicita al técnico que 
+coloque una botella de solución de lavado en lugar del contenedor de agua destilada o bien que llene éste con 
+solución de lavado. Una vez realizado el lavado, el analizador le solicita que vuelva a colocar el contenedor 
+con agua destilada. Finalmente, el analizador ceba el sistema con agua destilada. 
+5.4.4. Cambio de la lámpara
+Al entrar a la pantalla se puede elegir entre: Cambio o Verificación de la lámpara. Cuando se instala una lámpara 
+nueva debe usarse esta utilidad para notificar al anali zador el cambio de lámpara y optimizar la luminosidad 
+del sistema fotométrico. La lámpara debe substituirse con el anali zador apagado (Sleeping). Si el analizador 
+está en modo test, el programa lo apaga automáticamente. Nunca debe tocarse la lámpara con los dedos. 
+Una vez instalada la nueva lámpara y colocadas las tapas de la óptica y del rotor, acceder a la utilidad de 
+cambio de lámpara y pulsar el botón Test. El programa pone en marcha el analizador, comprueba la intensidad 
+luminosa del siste ma óptico, apaga el analizador y a continuación solicita al técnico que extraiga de nue vo el 
+portalámparas y que lo vuelva a colocar girándolo 180° alrededor del eje de la lámpara. Si la temperatura del 
+portalámparas es elevada, esperar a que se enfríe o utilizar unas pinzas para mani pularlo. El programa pone 
+en marcha de nuevo el analizador, vuelve a medir la intensidad luminosa del sistema óptico, compara la inten-
+sidad de luz en las dos posiciones posibles y elige la de mayor luminosidad. Si es la actual, indica al técnico 
+que el test ya ha sido completado. Si, por el contrario, la posición óptima era la ante rior, el programa apaga 
+el analizador y vuelve a solicitar al técnico que extraiga el portalámparas y que lo vuelva a colocar girándolo 
+180° alrededor del eje de la lám pa ra, retornando la lampara a su posición inicial. Si la opción seleccionada al 
+principio era la de Verificar la Lámpara, el proceso es el mismo pero sin apagar el analizador al principio, ya 
+que no es necesario que el técnico cambie la lámpara.

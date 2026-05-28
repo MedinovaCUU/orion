@@ -1,0 +1,20 @@
+Manual de servicio
+110
+10
+8
+9
+Ilustración 6.6 Desmontaje pistón
+6.2. Brazo manipulador
+6.2.1. MO13351 - Motor X
+Desmontaje:
+1. Extraer la carcasa superior. Ver capítulo 6.1.5
+2. Extraer la placa de interconexión. Ver capitulo 6.5.1
+3. Quitar los 4 tornillos (1) que sujetan el motor (2)
+4. Quitar el motor X
+Montaje:
+1. Colocar el nuevo motor X
+2. Colocar los 4 tornillos (1) para sujetar el motor sin apretar
+3. Ajustar el piñón del motor con la cremallera y luego apretar los 4 tornillos (1)
+4. Vuelva a colocar la placa de interconexión y la carcasa
+5. Realice unos ciclos de estress con el programa de servicio para verificar que se ha realizado correc-
+tamente el montaje

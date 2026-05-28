@@ -1,0 +1,10 @@
+103
+5.4.8. 
+Change the rotor type
+In this screen the type of rotor is introduced. Each rotor comes labelled with a letter in its top part. Select in 
+this screen the type of rotor to use. For rotors marked with A letter, only select the letter. For the rotors marked 
+with other letters, select OTHERS and then introduce the light path that will come it within the box of rotors or 
+of the distributor. 
+5.5. 
+Register
+This enables the management of past adjustments, tests, incidences, repairs and maintenance of the instrument.

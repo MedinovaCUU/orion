@@ -1,0 +1,49 @@
+Manual de servicio
+62
+4. Elementos electrónicos
+La electrónica que controla el analizador está distribuida en 14 placas independientes. Cada placa controla un sub­
+conjunto del analizador. El método de transmisión de la información entre las placas se realiza a través de un bus 
+de comunicaciones, el bus utilizado es el CAN. 
+Hay 2 placas más que sirven para realizar la interconexión del bus CAN. 
+Hay placas que realizan la misma función y que están repetidas, como por ejemplo las placas que controlan el 
+brazo. Para que la comunicación de la información a través del bus, llegue a la placa apropiada, ésta debe tener un 
+identificador único dentro del analizador. Para ello cada placa dispone de unos conmutadores (switch) para poder 
+seleccionar el identificador de la placa.
+A continuación se indica el código asignado a cada placa:
+Tipo de placa
+Descripción placa
+Código identificación
+Posición selector
+Placas brazos
+Brazo muestra 1
+BM1
+1000
+Brazo reactivo 1
+BR1
+0000
+Brazo reactivo 2
+BR2
+0100
+Brazo agitador 1
+AG1
+0010
+Brazo agitador 2
+AG2
+1010
+Placas detección
+Detección muestra 1
+DM1
+0110
+Detección reactivo 1
+DR1
+1110
+Detección reactivo 2
+DR2
+0001
+Placas rotores
+Rotor muestra 1
+RM1
+0101
+Rotor reactivo 1
+RR1
+0011

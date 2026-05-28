@@ -1,0 +1,18 @@
+51
+9
+8
+7
+Ilustración 4.13.  Desmontaje placa de detectores Reed o ventiladores
+4.8.  AC17415 - Sensor de racks
+Desmontaje:
+1. Quitar todos los racks y estación de lavado
+2. Quitar los 4 tornillos (10) que sujetan la chapa superior
+3. Quitar la chapa superior, vaya con cuidado con los sensores de detección de la punta
+4. Quitar los 9 tornillos (1) de la chapa inferior 
+5. Levantar la chapa inferior (12)
+6. Desconectar el conector aéreo del sensor averiado
+7. Quitar el sensor del rack (13). Está compuesto por 2 detectores, el frontal y el posterior
+Montaje:
+1. Seguir los pasos del desmontaje en sentido inverso para cada una de los elementos
+10
+Ilustración 4.14.  Desmontaje sensor de racks

@@ -1,0 +1,30 @@
+19
+20
+22
+21
+23
+Ilustración 3.49 
+Calefactor de la estación de lavado
+Referencias de la Ilustración 3.49 y Ilustración 3.50
+19 – Calefactor
+20 – Conectores para los tubos de la estación de lavado
+21 – Sensor de protección térmico
+22 – Sensor de temperatura
+23 – Aislante
+24 – Check valve de la bomba de pistones
+25 – Cámara del pistón
+26 – Pistones
+27 – Soporte de los pistone
+28 – Abrazadera 
+29 – Sensor de inicio
+30 – Motor
+24
+26
+27
+28
+29
+30
+25
+Ilustración 3.50 
+Bomba de pistones
+59

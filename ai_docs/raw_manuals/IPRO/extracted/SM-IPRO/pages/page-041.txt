@@ -1,0 +1,24 @@
+41
+•Operador, este usuario tiene acceso restringido al programa. Únicamente puede realizar los test y 
+ejecutar las utilidades. No puede realizar ningún ajuste ni cargar ningún fichero previamente guardado 
+de ajustes, ni cambiar la versión del firmware del procesador.
+Desde el menú de usuarios se puede crear, eliminar y cambiar de usuario. La opción de modificar la 
+contraseña, es cada usuario que se puede modificar su propia contraseña.
+3.6  MONITOR 
+Estas funciones permiten la comunicación de bajo nivel con el procesador para cargar nue­vas versiones 
+del programa del microprocesador (firmware) en la memoria flash del procesador o bien para restaurar 
+valores de ajuste por defecto. 
+El firmware del procesador reside en una memoria permanente de tipo flash. El cambio de este pro­
+grama puede realizarse a través del ordenador sin necesidad de cambiar el chip de memoria. 
+Para cargar la nueva versión debe pulsarse el botón Iniciar, previamente indicar dónde está ubicado 
+el progra­ma mediante el botón Abrir.
+A partir de la versión 3.0.2, antes de cargar el nuevo firmware, el programa comprueba que el fichero 
+este correcto. Si está correcto lo envía directamente al procesador. Si da un mensaje de error, avisar 
+al servicio técnico para que reponga el fichero corrupto. 
+Primero borra el contenido actual de la memoria flash y luego carga automáticamente el nuevo pro­
+grama. Esta operación puede durar algunos minutos.
+Una vez realizado el cambio, el procesador se reiniciará con la nueva versión de programa. Mientras 
+se realiza el proceso de copia la pantalla indica el tanto por ciento de carga realizada. 
+Existe la opción de Restaurar Ajustes por Defecto, seleccionando la opción y pulsando Iniciar.
+Si en algún caso el técnico desea que el procesador entre en modo monitor (por ejemplo porque el 
+procesador no responde por haber cargado mal el firmware), puede hacerlo apagando el procesador,

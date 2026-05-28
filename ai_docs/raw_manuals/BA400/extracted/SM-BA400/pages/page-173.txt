@@ -1,0 +1,45 @@
+8.8.4. 
+AC17220 - Cambio placa de control del desgasificador
+16
+15
+17
+18
+Desmontaje:
+1. Quite los 4 cables (15), (16), (17) y (18) de la placa del desgasificador.
+2. Quite la placa de su alojamiento
+Montaje:
+1. Coloque la nueva placa en su posición
+2. Conecte cada cable de la siguiente manera:
+Conector
+Identificación
+Cable
+Posición
+CN2 (15)
+Conector de 3 pines
+ASMB784 o 
+ASMB1392
+Conmutador de vacío
+CN3 (17)
+Conector de 2 pines
+ASMB873
+Bomba de membrana
+CN4 (18)
+Conector de 2 pines
+Conexión electroválvula
+CN5 (16)
+Conector de 2 pines
+Alimentación placa
+8.8.5. 
+Explicación de la programación del conmutador de vacío
+1. Conectar el analizador. 
+ 
+) Véase Ilustración 8.33
+2. Presionar el botón azul durante 3 s. Display muestra: FO (Paso 1)
+3. Presionar el botón (UP). Display muestra: FI (Paso 2)
+4. Presionar botón azul, visualizar HYS o OVI. Seleccionar: HYS (Paso 3)
+5. Presionar botón azul y seleccionar: I_P (Paso 4)
+6. Presionar botón azul y ajustar con (UP, DOWN) a 63.0 ((Paso 5)
+7. Presionar botón azul.
+8. Seleccionar: H_I ((Paso 6))
+9. Ajustar con botón (UP, DOWN) a 13.0 (Paso 7)
+173

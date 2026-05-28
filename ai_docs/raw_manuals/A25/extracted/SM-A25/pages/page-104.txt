@@ -1,0 +1,17 @@
+104
+Service manual
+5.5.1. 
+Introducing the analyzer serial number
+The technician can enter the analyzer serial number so that it appears on printed service reports. If an entered 
+serial number is changed, the service records are reinitiated. In this case, the technician can store all the pre­
+vious data in a file.
+The technician can enter his name so that it appears on the printed service reports.
+5.5.2. 
+Service Reports
+The program can display and print various service reports. The printed reports contain the analyzer serial 
+number and the name of the current technician.
+Reports are stored organised by: Adjustments, Tests, Utilities, Monitor and Summary of actions and tasks 
+carried out.
+In all cases, it is possible to select the actions carried out within a range of dates chosen by the technician.
+The technician can enter short descriptions of the incidences that may happen in the analyzer and the repairs 
+and maintenance operations that may be performed to the instrument in the Observations box.

@@ -1,0 +1,49 @@
+17
+USUARIO
+Manual de Usuario BioSystems SPICA | Versión 2.8 - Agosto 2024
+Manual de Usuario BioSystems SPICA
+2. INSTALACIÓN
+2.7. Conexión a la red y puesta en marcha
+Conexión a tierra
+El analizador se conecta al conector de tierra directamente desde la toma de alimentación principal. 
+Compruebe que la conexión a tierra del enchufe está correctamente conectada a la conexión a tierra 
+principal del edificio.
+Tomas de corriente
+Los cables de alimentación se suministran con el analizador. Compruebe que haya al menos cuatro 
+enchufes de pared.
+Sistema de alimentación ininterrumpida (SAI)
+Se recomienda el uso de una fuente de alimentación ininterrumpida (SAI) para encender el sistema de 
+forma segura. Un SAI protege el sistema contra micro cortes o fluctuaciones en la red eléctrica.
+Los requisitos mínimos para seleccionar el SAI son:
+2.8. Comunicaciones con analizador SPICA
+Para interactuar con el analizador SPICA, debes conectar un dispositivo:
+• Computadora • Tableta • Teléfono móvil
+A. Red inalámbrica:
+Para conectarse al dispositivo por primera vez debe enlazar su dispositivo con la WiFi del SPICA (frecuencia 
+de banda de 5 Ghz):
+Red WiFi: SPICA + SN (Ex: SPICA125 para SN 83100 00125). 
+Contraseña: 12345678
+Después, puedes empezar a trabajar con tu dispositivo con el analizador SPICA.
+Por favor, introduzca en su navegador de Chrome la IP 172.24.1.1
+B. Red Ethernet:
+Con su dispositivo conectado a través de Wi-Fi, puede conocer la dirección IP del analizador, si el analizador 
+está conectado a la misma Ethernet en su red local. Por favor, vaya a:
+Inicio> Menu > Utilidades > Estado de red
+Con esta IP, puedes conectarse con cualquier dispositivo que comparta la misma red local.
+VOLTAJE
+115 V — 240 VA
+50 Hz — 60 Hz
+CAPACIDAD
+mínimo 15 minutos
+CORRIENTE
+6 A
+POTENCIA
+1.5 KW
+Las sobretensiones y o perturbaciones en la red eléctrica pueden provocar 
+una pérdida de funciones y una parada del equipo sin que ello suponga 
+un riesgo para el usuario. En este caso, será necesario reiniciar el equipo. 
+Es responsabilidad del cliente asegurar el correcto suministro de la red 
+eléctrica colocando un SAI, estabilizador de tensión o similar, si fuera 
+necesario, para asegurar el normal funcionamiento del equipo.
+CONSEJO: LOS CLIENTES DEBEN UTILIZAR UN CABLE ETHERNET PROTECTOR CAT 5
+ATENCIÓN

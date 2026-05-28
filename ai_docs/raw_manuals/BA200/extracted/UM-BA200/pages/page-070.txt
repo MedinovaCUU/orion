@@ -1,0 +1,32 @@
+Manual usuario 
+ 
+ 
+ 
+Manual usuario 
+ 
+ 
+ 
+70
+70
+Biosystems
+Biosystems
+8.9. Módulo ISE (opcional)
+El módulo lector de iones ISE es un módulo opcional que sirve para la determi­
+nación de la concentración de los iones Na+, K+, Cl- y Li+ en las muestras de 
+suero, plasma y orina.
+Ilustración 36 
+Esquema del módulo ISE
+Las mediciones se realizan mediante electrodos selectivos de iones. La Ilustración 
+36 muestra un diagrama del sistema de medida. La explicación más detallada del 
+proceso de cálculo lo puede encontrar en el capítulo 15.5.
+La temperatura ambiente de la sala donde esté ubicado el analizador con el mó­
+dulo lector de iones ISE instalado no debería variar más de ±4 ºC ni ser superior 
+a los 30 ºC.
+El módulo lector de iones funciona en paralelo juntamente con las determinaciones 
+de bioquímica. 
+Cuando en la lista de programación de pacientes está programada la determinación 
+de iones, el brazo de dosificado de la muestra es el encargado de suministrar la 
+muestra al módulo de iones. Entonces es el módulo que realiza la determinación 
+de la concentración de los iones y suministra los resultados al programa.
+El módulo de iones requiere una calibración a dos puntos para su correcto fun­
+cionamiento. Esta calibración se realiza automáticamente cada 4h y no requiere la

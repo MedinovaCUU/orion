@@ -1,0 +1,17 @@
+3
+1
+4
+2
+5
+Ilustración 8.20 
+Desmontaje desgasificador
+8.8. 
+Instalación del módulo ISE
+El módulo ISE es opcional. Si quiere incorporar a un analizador el módulo ISE, siga las siguientes instrucciones:
+El contenido del recambio es el siguiente:
+Componente
+Descripción
+ 
+Fuente de alimentación y cableado
+Interruptor
+137

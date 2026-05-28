@@ -1,0 +1,18 @@
+121
+18
+19
+20
+21
+Ilustración 6.19 Engrase del husillo y montaje cuerpo bomba
+6.3.4. ME13367 - Bomba de residuos
+Desmontaje:
+1. Extraer la carcasa superior. Ver 6.1.5
+2. Extraer los tubos de conexión de la bomba y el conector 
+3. Extraer los 3 tornillos (20) de sujeción de la bomba
+4. Extraer la bomba (18)
+Montaje:
+1. Sustituya la bomba por una nueva
+2. Si el analizador no dispone de la chapa de soporte (19), colóquela en su posición con los tornillos
+3. Coloque los 3 tornillos (20) de sujeción de la bomba
+4. Conecte los tubos a la bomba
+5. Verifique el funcionamiento de la estación de lavado con el programa de servicio

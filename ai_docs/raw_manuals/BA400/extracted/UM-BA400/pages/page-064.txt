@@ -1,0 +1,34 @@
+Manual usuario 
+ 
+ 
+ 
+Manual usuario 
+ 
+ 
+ 
+64
+64
+Biosystems
+Biosystems
+Ilustración 35 
+Rotor de reactivos
+ 
+Posiciones 
+Hay un total de 88 posiciones dividas en dos coronas. En ambas coronas se 
+puede leer los códigos de barras de las botellas.
+ 
+Botellas 
+Se pueden colocar 2 tipos de botella, los volúmenes de las botellas son:
+• 
+60 mL, únicamente se pueden posicionar en la corona interna.
+• 
+20 mL, se puede posicionar tanto en la corona interna como en la externa.
+ 
+Refrigeración El sistema de refrigeración lleva una alimentación independiente del analiza­
+dor, con lo cual se puede apagar el analizador y dejar funcionando el sistema de 
+refrigeración.
+8.4. Rotor de reacciones
+El rotor de reacciones consiste en un canal termostatado donde se coloca un rotor 
+de plástico con calidad óptica que permite la transmisión de la luz UV.
+Ilustración 36 
+Rotor de reacción

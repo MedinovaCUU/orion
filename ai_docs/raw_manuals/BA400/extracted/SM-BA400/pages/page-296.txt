@@ -1,0 +1,67 @@
+MÓDULO ISE (opcional)
+Tipo de muestra
+Suero, Plasma u Orina
+Tipo de electrodos
+Na+, K+, Cl-. Li+ (opcional)
+Tipo medición
+ISE directo
+Volumen de muestra
+Suero: 100 mL 
+Orina: 200 mL
+REQUERIMIENTOS AMBIENTALES
+Temperatura ambiente
+10 °C a 35 °C
+10 °C a 30 °C (con módulo ISE)
+Humedad relativa
+< 85 % sin condensación
+Altura máxima
+< 2 500 m
+Grado de polución
+2
+Temperatura de transporte y almacenamiento
+0 °C a 40 °C
+Humedad de transporte y almacenamiento
+< 85 % sin condensación
+DIMENSIONES Y PESO
+Dimensiones (Ancho, profundo y alto)
+1200 mm x 720 mm x 1258 mm
+Peso
+210 Kg
+REQUERIMIENTOS ELÉCTRICOS
+Tensión de red
+115 V a 230 V ±10% Vac
+Frecuencia de red
+50 Hz o 60 Hz
+Potencia eléctrica
+500 VA
+REQUERIMIENTOS FLUÍDICOS
+Entrada de agua
+Por depósito externo o por toma de red directa
+Tipo de agua
+Purificada tipo II (NCCLS)
+Consumo de agua
+< 14 L/h
+Depósito de residuos de alta contaminación
+Interno de 5 L
+Depósito de solución de lavado
+Interno de 5 L 
+REQUISITOS MÍNIMOS DEL ORDENADOR
+Sistema operativo
+Windows® 7 64 bits (x64)
+Windows® 10 64 bits (x64)
+CPU
+Equivalente a Intel Core i3 @3.10 GHz o superior
+Memoria RAM
+4 Gbytes
+Disco duro
+40 Gbytes o superior
+Lector de DVD
+Sí
+Monitor VGA
+Resolución mínima 1 200 x 800
+Conector canal serie
+USB
+El nivel de aislamiento del canal de comunicaciones es reforzado (el aislamiento del canal de comunicaciones 
+del ordenador ha de ser también reforzado)(1)
+Manual de servicio
+296

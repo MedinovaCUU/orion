@@ -1,0 +1,7 @@
+Para actualizar el resto de instrumentos, realice los pasos siguientes:
+1. Desmonte las electroválvulas del equipo
+2. Quite las checkvalves (1) de las electroválvulas.
+3. Coloque el conector de salida (2) a la electroválvula. Asegúrese de que no pierde agua una vez colocado.
+1
+Ilustración 8.111 Visualización de las checkvalves a la salida de las electroválvulas
+217

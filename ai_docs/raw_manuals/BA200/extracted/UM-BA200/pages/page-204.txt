@@ -1,0 +1,32 @@
+Manual usuario 
+ 
+ 
+ 
+Manual usuario 
+ 
+ 
+ 
+204
+204
+Biosystems
+Biosystems
+CPU
+Equivalente a Intel Core 
+i3 @3.10 GHz o superior
+Memoria RAM
+4 Gbytes
+Disco duro
+40 Gbytes o superior
+Lector de DVD
+Sí
+Monitor
+Resolución mínima 1200 x 800
+Conector canal serie
+USB
+El nivel de aislamiento del canal de comunicaciones es reforzado (el 
+aislamiento del canal de comunicaciones del ordenador ha de ser también 
+reforzado)(1)
+(1) Se entiende como aislamiento reforzado aquel que asegura una protección 
+igual o superior al doble del proporcionado por el aislamiento principal. 
+Aislamiento principal es aquel cuyo fallo podría causar un riesgo de choque 
+eléctrico (UNE EN 61010-1:2010).

@@ -1,0 +1,57 @@
+36
+Service manual
+1 – Methacrylate rotor
+2 – Heating channel
+3 – Thermal insulation of the heating channel
+4 – Peltier cells
+5 – Radiators
+6 – Thermal insulation bushes
+7 – Rotor fastening screw
+8 – Rotor centerer
+9 – Thermal insulation of the gear support
+10 – Gear support
+11 – Start photodetector
+12 – Rotor shaft
+13 – Bearings
+14 – Rotor pulley
+15 – Geared belt
+16 – Motor support
+17 – Motor spacer
+18 – Motor
+19 – Motor pulley
+20 – Photometric system support cover
+21 – Leakproof seal
+22 – Lower photometric system support cover
+23 – Photodiode grill centerer
+24 – Photometric system board
+25 – Photodiode spacer
+26 – Rotor grill
+27 – Temperature probe
+28 – Thermal insulation of probe
+29 – Cover detector
+30 – Earth connection
+31 – Drainage tubes
+32 – Columns
+Reference Figure 3.14 and Figure 3.15
+3.2.4.2.  Lighting system
+The aluminium body (1) is the structure that supports all the components of the lighting system. The lamp holder (2), 
+fastened to the body by means of the fastening system (4), keeps the halogen lamp (3) in position without the need for 
+adjustments. The filter wheel (5) has 10 positions for optical filters. Position 0 must always be taken up by a covered 
+filter (8). The other positions can be taken up by an interferential filter (9) or by other covered filters. No position in 
+the wheel must be left unoccupied. Each filter is fitted on a filter holder (6) and fastened to it by the nut (7). The filter 
+holders can be dismounted from the wheel by simply pulling on them. The cover (25) allows easy access to the filter 
+wheel. The filter wheel is fastened to the shaft (10). This shaft can be turned by the direct action of the motor (13). 
+Its end is guided by the bearing (11). The photodetector (12) indicates the start position of the wheel. The light from 
+the lamp, limited by the diaphragm (15), passes through the collimating lens (16) fastened to its support (14) by the 
+nut (17). The light passes through the filter wheel, which selects the desired wavelength, and passes through the 
+lenses (19) and (23) and the slot (22), which adapt the form of the light beam to the geometry of the rotor wells. These 
+lenses are mounted on their respective supports (18) and (21) and are fastened by parts (20) and (24), respectively. 
+The system body is laterally closed by the covers (26) and the fan (27) keeps it at a desired temperature. The lighting 
+system is fixed to the rotor and, by the bracket (28), to the base of the analyzer.
+1
+2
+4
+25
+5
+13
+Figure 3.16

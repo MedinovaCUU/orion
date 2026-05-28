@@ -1,0 +1,23 @@
+Manual de servicio
+162
+6.6.6. 
+Changing the Rack Detection Board
+Removing the rack detection board
+1. Remove the front casing.
+2. Disassemble the rack tray. See chapter 6.3.8
+3. Disconnect the electrical hose from the rack detection board.
+4. Remove the board by loosening the screws (7) and moving it downwards.
+Mounting the rack detection board
+Follow the steps in reverse order
+7
+Figure 6.73 
+6.6.7. 
+Changing the photometric system board
+Disassembling the photometric board
+1. Remove the screws (8) from the photometric system support cover.
+2. Slightly move the support cover towards the center of the rotor and remove it from its housing.
+3. Disconnect the flat band from the photometric system board.
+4. Remove the 2 screws (9) that hold the board on the support plate
+Mounting the communications board
+1. Follow the steps in reverse order
+2. Insert the support cover back into its housing, taking care that the flat band does not fold.

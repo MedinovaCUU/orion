@@ -1,0 +1,49 @@
+67
+67
+El sistema óptico físicamente está ubicado en el rotor de reacción debajo de la 
+estación de lavado. 
+ 
+Longitudes de onda 340 nm, 405 nm, 505 nm, 535 nm, 560 nm, 600 nm, 635 nm, 670 nm
+ 
+Rango de medida De -0.2 A a 3.5 A
+ 
+Resolución 0.0001 A
+El sistema automáticamente realiza un blanco de cubeta de todo el rotor al iniciar 
+el analizador. Esta absorbancia del blanco de cubeta sirve para corregir las medidas 
+de absorbancia de la reacción. Cuando el pocillo entra en la estación de lavado, 
+se vuelve a leer para verificar que está en óptimas condiciones, si este valor supera 
+un límite preestablecido se descarta el pocillo.
+8.5. Estación de lavado
+La estación de lavado consiste en un conjunto de varias etapas colocado encima 
+del rotor de reacciones.
+Ciclos de la estación de lavado
+• 
+Ciclo 1: Aspiración de los residuos de alta contaminación y dispensación de 
+solución de lavado.
+• 
+Ciclo 2: Aspiración y dispensación de solución de lavado.
+• 
+Ciclo 3: Cubeta en remojo con solución de lavado.
+• 
+Ciclo 4: Aspiración de la solución de lavado y dispensación de agua purificada.
+• 
+Ciclos 5 y 6: Aspiración y dispensación de agua purificada.
+• 
+Ciclo 7: Cubeta en remojo con agua.
+• 
+Ciclo 8: Comprobación óptica de la cubeta.
+• 
+Ciclo 9: Aspiración del agua purificada.
+• 
+Ciclo 10: Secado.
+El agua purificada para el aclarado está termostatizada para no interferir en la 
+temperatura del rotor.
+Cuando se realiza el último aclarado también se realiza la lectura óptica de la cubeta 
+del rotor. En caso de estar rayado o en malas condiciones esta cubeta se descarta 
+y no se usa para realizar reacciones.
+Cuando hay un número elevado de cubetas descartadas el programa avisa de la 
+necesidad de sustituir el rotor de plástico.
+8.6. Brazo de agitación
+El analizador dispone de un brazo para la agitación de la reacción. Este brazo tiene 
+una pequeña pala que gira en el interior de las cubetas de reacción para favorecer 
+la mezcla e iniciar correctamente la reacción.

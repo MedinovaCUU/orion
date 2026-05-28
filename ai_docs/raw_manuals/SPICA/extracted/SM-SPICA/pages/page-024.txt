@@ -1,0 +1,44 @@
+24
+USUARIO
+Manual de Usuario BioSystems SPICA | Versión 2.8 - Agosto 2024
+Manual de Usuario BioSystems SPICA
+5. PROCEDIMIENTOS DE MEDICIÓN
+5.2 Cálculo de las absorbancias
+EL analizador puede hacer diferentes pruebas de concentración. El usuario puede seguir el flujo de trabajo 
+para definir y configurar las muestras a analizar, colocar las muestras y los reactivos en el instrumento 
+y ejecutar y ver el resultado. En continuación se muestra en detalle cada uno de los modos de análisis 
+ejecutados por el analizador, con una interpretación gráfica de los puntos de dispensación y lectura y 
+el cálculo realizado para obtener la absorbancia. Cada uno de los modos de análisis anteriores puede 
+ser ascendente o descendente. Si el análisis es ascendente, la evolución de la absorbancia aumenta 
+dependiendo del tiempo. Tiene una forma ascendente. Si la prueba es descendente, la evolución de la 
+absorbancia disminuye dependiendo del tiempo. Tiene una forma descendente. Para obtener valores 
+positivos de absorbancia con estos métodos de cálculo, el resultado se multiplica por -1.
+1. PUNTO FINAL MONO-REACTIVO
+En las reacciones finales, una vez iniciadas, la reacción dura hasta que se equilibra, y entonces el valor de 
+absorbancia permanece estable. La lectura de la absorbancia se programa en este punto.
+Primero se dispensa el reactivo A y la muestra se dispensa en el tiempo t1; se agita y comienza la reacción. 
+Una vez que se equilibra, se toma la lectura, L1. El cambio en la absorbancia es directamente proporcional 
+a la concentración del analito. 
+Representación del método de cálculo del punto final mono-reactivo: La lectura de la absorbancia puede 
+hacerse a una longitud de onda (monocromática) o a dos longitudes de onda (bicromática). Las lecturas 
+bicromáticas se utilizan normalmente para eliminar la influencia de la cubeta en la lectura de la absorbancia. 
+Si la reacción es monocromática, la medición se realiza en el tiempo L1 a una longitud de onda.
+Si la reacción es bicromática, se hacen dos lecturas en el tiempo L1. Cada una de las lecturas se hace con 
+una longitud de onda diferente. La absorbancia es la diferencia entre las dos longitudes de onda.
+A = ABS
+λprincipal
+L1
+A = ABS
+λprincipal
+L1
+A = ABS
+-
+λreferencia
+L1
+ABS
+PUNTO FINAL Mono-Reactivo
+Tiempo (ciclos)
+RA + S
+L1
+1 3
+5

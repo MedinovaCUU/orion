@@ -1,0 +1,31 @@
+71
+de la bomba. Proceder tal como se indica en el capítulo correspondiente al cambio de motor de la 
+bomba peristáltica del manual de servicio.
+5.6  CAMBIAR EL RETÉN DE LA BOMBA DOSIFICADORA
+Consultar el número de pasos efectuados por la bomba de pistón cerámico. Cuando haya llegado a 
+20000 millones de pasos o 2 años de funcionamiento proceder al cambio del retén según el manual 
+de servicio.
+5.7  REALIZACIÓN DE LOS TESTS DEL PROGRAMA DE SERVICIO
+Antes de la realización de los test básicos para la comprobación del procesador, son necesarios unos 
+puntos previos:
+• 
+Actualizar la versión de servicio y de firmware. Leer el documento adjunto «Guía rápida» 
+incluído en el dvd, dónde explica los cambios realizados a la versión. Realizar los nuevos 
+ajustes si lo indica dicho documento.
+• 
+Realizar los ajustes del brazo manipulador.
+• 
+Realizar el test de Z de portaobjetos. Comprobar en diferentes posiciones de portaobjetos y en 
+los dos racks la punta no toca los portaobjetos. Comprobar tipos de portaobjetos diferentes.
+ATENCIÓN
+Cuando se tenga que cambiar una placa cpu (PC14688, «Microprocessor Board»), por fallo de algún 
+dispositivo de la placa, para no perder la información de los ajustes y número de ciclos de cada ele­
+mento, proceder de la siguiente manera:
+• Arrancar el procesador con la placa anómala. Gravar en un fichero los valores de ajuste y número 
+de ciclos. Utilizar el programa de Servicio en el menú «Utilidades/Leer y cargar Ajustes y Ciclos», 
+presionar el botón «Leer Ajustes» y automáticamente pedirá si se quiere guardar en un fichero. Dar un 
+nombre de fichero y aceptar.
+• Cambiar la placa cpu por una de nueva.
+• Inicializar la máquina e ir al mismo menú anterior. Pulsar el botón «Cargar ajustes». El programa 
+pedirá un nombre de fichero. Seleccionar el anterior fichero y aceptar. De esta manera se han cargado 
+los nuevos valores de ajuste y los ciclos de los elementos.

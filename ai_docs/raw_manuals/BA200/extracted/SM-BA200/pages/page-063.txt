@@ -1,0 +1,82 @@
+Manual de servicio
+63
+Conector
+Función
+Pin
+CN7
+Encoder rotor
+Pin 1: GND
+Pin 2: Encoder canal C
+Pin 3: Encoder canal A
+Pin 4: 5 V
+Pîn 5: Encoder canal B
+CN8
+Detección inicio rotor
+Pin 1: Detección
+Pin 2: GND
+Pin 3: 5V
+CN9
+Motor estación lavado
+Pin 1: Coil 1
+Pin 2: Coil 1
+Pin 3: Coil 2
+Pin 4: Coil 2
+CN10
+Detección inicio estación lavado
+Pin 1: Detección
+Pin 2: GND
+Pin 3: 5V
+CN11
+Sensor temperatura punta
+Pin 1: sensor
+Pin 2: GND
+CN12
+Ventilador
+Pin 1: Activación
+Pin 2: Diagnóstico detección
+Pin 3: GND
+CN13
+Ventilador
+Pin 1: Activación
+Pin 2: Diagnóstico detección
+Pin 3: GND
+CN14
+Ventilador
+Pin 1: Activación
+Pin 2: Diagnóstico detección
+Pin 3: GND
+CN15
+Ventilador
+Pin 1: Activación
+Pin 2: Diagnóstico detección
+Pin 3: GND
+CN16
+Peltier
+Pin 2: Activación peltier
+Pin 3: Activación peltier
+CN17
+Peltier
+Pin 2: Activación peltier
+Pin 3: Activación peltier
+CN18
+Detección desboradamiento 
+estación de lavado
+Pin 1: 5V
+Pin 2: Activación
+Pin 3: detección
+Pin 5: 
+Pin 4: GND
+Test point
+Función
+TP1
+24 V
+TP2
+GND
+TP3
+CAN_H (Señal en el bus)
+TP4
+CAN_L (Señal en el bus)
+TP5
+GND
+TP6
+GND

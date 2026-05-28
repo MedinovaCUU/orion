@@ -1,0 +1,20 @@
+36
+Manual de servicio
+3.3.14  Test de detección de la tapa
+Este test permite verificar el funcionamiento del microrruptor de detección de tapa abierta o cerrada. 
+Pulsar el botón Test y abrir y cerrar la tapa para comprobar el dispositivo.
+3.3.15  Test del canal de comunicaciones PC-Procesador
+Al pulsar el botón Test, el ordenador intenta establecer comunicación con el procesador. El programa 
+indica al técnico si ésta ha sido posible o no.
+El Técnico puede seleccionar Configuración Automática o Manual. En este último caso puede definir 
+el Puerto y la Velocidad.
+3.3.16  Estresamiento global
+Este test permite reproducir continuamente ciclos de trabajo del procesador análogos a los que realiza 
+durante las preparaciones . Es ne­cesario que el sistema dosi­ficador esté cebado para que el pistón no 
+trabaje en seco. Se han de retirar todos los racks del área de trabajo. Este test puede realizarse sin las 
+tapas y sin las carcasas del procesador. El técnico puede programar el número de ciclos que desea 
+realizar. En cualquier momento puede cancelarse el test.
+Una vez lanzado el test, la pantalla periódicamente informa del estado actual del proceso. Si durante el 
+proceso ocurre algún error, el test finaliza y en la pantalla aparece un mensaje indicando el elemento 
+que ha ocasionado el error. 
+Se pueden realizar estresamientos parciales de elementos del procesador. Los siguientes elementos se

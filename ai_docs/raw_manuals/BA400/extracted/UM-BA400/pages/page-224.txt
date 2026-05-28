@@ -1,0 +1,74 @@
+Manual usuario 
+ 
+ 
+ 
+Manual usuario 
+ 
+ 
+ 
+224
+224
+Biosystems
+Biosystems
+17. Árbol de menús
+Para poder acceder a las diferentes opciones del programa, éste está estructurado 
+a base de menús. Para facilitar la navegación por el sistema, sólo hay dos niveles 
+de menús. El menú principal tiene las siguientes opciones:
+Menú principal
+Descripción
+Configuración 
+Menú para acceder a las diferentes opciones de 
+configuración del programa.
+Programación
+Menú para acceder a las diversas opciones de 
+programación que permite el programa.
+Sesión de trabajo
+Menú para acceder a la creación de la sesión actual.
+Estado actual
+Menú para acceder a las opciones del estado actual de 
+la sesión de trabajo.
+Históricos
+Menú para acceder a visualizar el histórico de 
+resultados y alarmas.
+Utilidades
+Menú para acceder a las diferentes utilidades del 
+programa.
+Ayuda
+Menú para acceder a la información del sistema.
+Salir
+Menú para acceder a la salida de la aplicación.
+A continuación se muestras las opciones de los submenús:
+Menú
+Submenú
+Descripción
+Configuración
+General
+Selección de las diferentes 
+opciones generales del 
+programa
+Idioma
+Selección del idioma
+Informes
+Configuración de los informes 
+de paciente
+Orden de técnicas en 
+informes
+Configuración del órden de 
+las técnicas para el informe de 
+paciente
+Código de barras
+Configuración de las diferentes 
+opciones del código de barras
+Configuración LIS
+Configuración de las opciones 
+para las comunicaciones con el 
+LIS
+Mapeo para LIS
+Configuración del mapeo de las 
+técnicas con el LIS
+Usuarios
+Configuración de los diferentes 
+usuarios
+Cambiar usuario
+Opción para cambiar de 
+usuario

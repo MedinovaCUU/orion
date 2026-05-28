@@ -1,0 +1,13 @@
+SERVICIO
+Manual de Usuario BioSystems SPICA
+57
+Manual de Usuario BioSystems SPICA | Versión 2.8 - Agosto 2024
+6. COMO ACEDER A LOS SUBSISTEMAS
+Paso 7 - Puedes quitar el resto de las láminas de metal de la cubierta
+Paso 8 – Retirar la cubierta trasera y desconectar los ventiladores
+Paso 9 – Abra la puerta de la fluídica en caso necesario (después de retirar el tornillo de fijación)
+Ahora puedes acceder a todas las partes internas del analizador SPICA de BioSystems. Por lo general, sólo 
+tendrás que quitar parcialmente las cubiertas para acceder a la reparación o para hacer el mantenimiento 
+del analizador.
+Si necesita ayuda para reemplazar cualquier subsistema de BioSystems SPICA, no dude en contactar con 
+el servicio de atención al cliente de BioSystems.

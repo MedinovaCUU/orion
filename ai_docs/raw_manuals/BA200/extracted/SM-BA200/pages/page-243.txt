@@ -1,0 +1,37 @@
+Lista de recambios
+Código
+Conjunto
+Representación 
+Descripción
+AC16621
+Rotor lectura
+Conjutno ventiladores termostatización 
+rotor reacción (3 hilos)
+AC16622
+Rotor lectura
+Conjunto peltiers del rotor de reacciones
+AC16575
+Rotor lectura
+Columna soporte rotor reacción
+AC17239
+rotor de 
+reactivos y 
+muestras
+Motor rotor de reactivos/muestras
+AC16624
+rotor de 
+reactivos y 
+muestras
+Correa dentada rotor reactivos
+AC16625
+rotor de 
+reactivos y 
+muestras
+Lector código de barras
+AC16626
+rotor de 
+reactivos y 
+muestras
+Conjunto ventiladores nevera (3 hilos) 
+(4 unidades)
+243

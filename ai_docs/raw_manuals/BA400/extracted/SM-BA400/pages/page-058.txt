@@ -1,0 +1,42 @@
+) Véase el capítulo AII para saber a partir de que números de serie se ha implementado.
+1
+2
+3
+4
+5
+6
+9
+10
+7
+8
+17
+16
+15
+14
+13
+18
+12
+11
+Ilustración 3.48 
+Subconjunto fluídico BA400v2
+Referencias de la Ilustración 3.48
+1 – Bomba SF1-B9
+2 – Bomba SF1-B8
+3 – Bomba SF1-B7
+4 – Bomba SF1-B6
+5 – Bomba SF1-B10
+6 – Bomba SF1-B3
+7 – Bomba SF1-B2
+8 – Bomba SF1-B1
+9 – Bomba SF1-B5
+10 – Bomba SF1-B4
+11 – Electroválvula SF1-EV2
+12 – Electroválvula SF1-EV1
+13 – Check valve de las bombas de pistones
+14 – Calefactor de la estación de lavado
+15 – Bomba de pistones de la estación de lavado
+16 – Placa SF1 - control del sistema fluídico. CIIM00053-03
+17 – Placa JE1 - control de las Jeringas. CIIM00054
+18 – Placa transparente de protección
+Manual de servicio
+58

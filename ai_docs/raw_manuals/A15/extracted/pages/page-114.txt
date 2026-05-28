@@ -1,0 +1,17 @@
+115
+13
+14
+Ilustración 6.11 Desmontaje manguera brazo
+6.2.6. AC13356 - Conjunto punta de termostatización
+Desmontaje:
+1. Extraer la carcasa del brazo. Ver capítulo 6.1.1
+2. Extraer la punta inferior
+3. Extraer el tubo de la parte superior de la placa
+4. Extraer los 3 tornillos (15), extraer también las tuercas por el otro lado y la chapa de protección
+5. Extraer la placa punta
+Montaje racor o manguera:
+1. Sustituir la placa por una nueva
+2. Siga los pasos en órden inverso
+3. Verifique el movimiento en el eje Z sea suave y sin impedimientos
+4. Realice unos ciclos de estress con el programa de servicio para verificar que se ha realizado correc-
+tamente el montaje

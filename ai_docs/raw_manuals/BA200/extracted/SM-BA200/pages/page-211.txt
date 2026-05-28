@@ -1,0 +1,15 @@
+3
+4
+Ilustración 8.101 Desmontaje filtros de entrada
+8.16.3. AC17304 Filtro de la estación de lavado
+Herramientas: 
+Desmontaje del filtro:
+1. Quite la tapa trasera
+2. Estire el filtro hacía afuera para sacarlo de su alojamiento
+3. Saque los tubos de ambos extremos. Presione las lengüetas del conector para liberar el tubo
+Montaje del filtro:
+1. Cambie el filtro por uno nuevo.
+2. La colocación de los filtros va según la Ilustración 8.102. La dirección de circulación del filtro superior va de 
+izquierda a derecha y la dirección del filtro inferior de derecha a izquierda.
+3. Coloque los tubos en cada extremo. Presione el tubo hasta realizar tope y luego estire hacía fuera.
+211

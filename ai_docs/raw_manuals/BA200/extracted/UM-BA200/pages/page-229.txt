@@ -1,0 +1,62 @@
+229
+229
+Menú
+Submenú
+Descripción
+Utilidades
+Cambiar Rotor de 
+Reacciones
+Menú para acceder al cambio 
+de rotor
+Acondicionar 
+analizador
+Menú para acceder a la opción 
+de acondicionar el analizador
+Utilidades ISE
+Menú para acceder a las 
+diferentes utilidades del ISE
+Utilidades LIS
+Menú para acceder a las 
+diferentes utilidades del LIS
+Crear ReportSAT
+Creación de un informe de 
+reportSAT
+Cargar ResportSAT
+Carga de un informe de 
+ReportSAT generado 
+previamente
+Crear punto de 
+restauración con los 
+datos actuales
+Opción de cópia de seguridad
+Restaurar Datos 
+previos
+Cargar de un fichero de 
+copia de seguridad generado 
+previamente
+Auditoría
+Visualizador del audit trail
+Menú
+Submenú
+Descripción
+Ayuda
+Manual de Usuario
+Acceso directo al manual de 
+usuario
+Información del 
+analizador
+Acceso a la información del 
+número de serie
+Acerca de
+Acceso a la versión del 
+programa
+Menú
+Submenú
+Descripción
+Salir
+Con Apagado
+Opción de salir apagando el 
+analizador
+Sin Apagado
+Opción de salir sin apagar el 
+analizador

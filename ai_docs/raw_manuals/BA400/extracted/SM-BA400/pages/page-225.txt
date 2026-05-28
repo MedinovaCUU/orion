@@ -1,0 +1,18 @@
+25
+26
+Ilustración 8.82 
+Desmontaje varilla detección desbordamiento
+8.13.8. AC17334 - Conjunto estación de lavado
+Modificación de la estació de lavado. Véase capítulo AII para saber a partir de que número de serie se ha implementado.
+Herramientas: Allen 2.5
+Desmontaje:
+1. Desmonte el conjunto de la estación de lavado. Quite tornillo (70)
+2. Desconecte de la placa el cable de la varilla de detección de desbordamiento.
+3. Desmonte las 5 puntas de aspiración (71), quitando los 5 tornillos (72)
+Montaje:
+1. Sustituya el conjunto estacion de lavado por uno nuevo
+2. Coloque las 5 puntas (71) con sus tornillos (72) en el nuevo conjunto
+3. Conecte a la placa el cable de la varilla de detección de desbordamiento
+En caso de instalar este conjunto en un modelo de analizador BA400v1 entonces desmonte la varilla de detección 
+de desbordamiento ya que este modelo no dispone de la electrónica apropiada para conectar el sensor.
+225

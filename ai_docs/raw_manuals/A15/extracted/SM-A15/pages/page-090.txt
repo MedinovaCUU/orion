@@ -1,0 +1,35 @@
+91
+5.3.11. Estresamiento global del analizador
+Este test permite reproducir continuamente ciclos de trabajo del analizador análogos a los que realiza durante 
+la preparación y lectura de reacciones en una rutina de trabajo normal, pero dispensando en la estación de 
+lavado en lugar de en el rotor. Es ne cesario que el sistema dosi ficador esté cebado para que el pistón no 
+trabaje en seco. Se han de retirar todos los racks de la bandeja de racks. Este test puede realizarse sin las 
+tapas y sin las carcasas del analizador. El técnico puede programar el número de ciclos que desea realizar (1 
+ciclo = 15 segundos). En cualquier momento puede cancelarse el test.
+Una vez lanzado el test, la pantalla periódicamente informa del estado actual del proceso. Si durante el pro-
+ceso ocurre algún error, el test finaliza y en la pantalla aparece un mensaje indicando el elemento que ha 
+ocasionado el error. 
+Se pueden realizar estresamientos parciales de elementos del analizador. Los siguientes elementos se pueden 
+estresar parcialmente:
+• 
+Eje X
+• 
+Eje Y
+• 
+Eje Z
+• 
+Rotor de reacciones
+• 
+Tambor de filtros
+• 
+Bomba dosificadora
+• 
+Bomba de membrana
+• 
+Electroválvula de 3 vías
+5.3.12. Util de fotometría
+Esta opción se usa conjuntametne con el útil de fotometría (AC15222). Sirve para automatizar las lecturas de 
+los filtros neutros del útil de fotometría.
+Para usar el útil siga las siguientes pasos:
+• 
+Encienda el analizador.

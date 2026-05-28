@@ -1,0 +1,96 @@
+183
+183
+Tipo de 
+alarma
+Alarma/Error
+Causa del problema
+Solución propuesta
+Aire en muestra 
+y/o calibrador
+Insuficiente volumen de muestra.
+Verifique que hay suficiente volumen 
+en la muestra. 
+Verifique que la punta no esté 
+parcialmente obstruida. 
+Pérdida de fluido
+Determine la fuga del fluido.
+Llame al servicio técnico
+Muestra no posicionada
+Los electrodos no están 
+correctamente sellados. Quite los 
+electrodos. Inspeccione el anillo 
+sellador y vuelva a instalar.
+Cambie los tubos de la bombas 
+peristálticas.
+Tubos de las bombas obstruidas
+Cambie los tubos de las bombas
+Copa de admisión de la muestra 
+sucia
+Limpie la copa con un bastoncillo de 
+algodón y agua purificada.
+Fibrina o restos de sales obstruyen 
+la trayectoria del flujo de los 
+electrodos
+Use el procedimiento de limpieza
+Quite los electrodos y límpielos o 
+cámbielos. Reinstale los electrodos y 
+recalibre
+Detector de burbujas estropeado
+Avise al servicio técnico
+No funciona la bomba de residuos 
+Avise al servicio técnico
+Alarmas de 
+la pantalla de 
+resultados
+Contaminación 
+de determinación 
+en la muestra de 
+proteína en suero 
+sobre la proteína 
+en orina
+Nivel de concentración muy 
+elevado en el suero en comparación 
+con la orina.
+Separar las muestras de suero y orina 
+para que no se realicen seguidas.
+Abs principal > 
+Límite Abs Blanco
+Este mensaje aparecerá para 
+técnicas programadas como punto 
+final crecientes bicromáticas. 
+Este resultado indica el estado del 
+reactivo. 
+Revise el estado del reactivo, puede 
+estar deteriorado: puede ser debido a 
+que se ha superado la caducidad del 
+reactivo o a una mala conservación 
+del mismo.
+Abs Reactivo de 
+Trabajo > Límite 
+Abs Blanco
+Este mensaje aparecerá para 
+técnicas programadas como 
+diferenciales crecientes. 
+Este resultado indica el estado del 
+reactivo.
+Revise el estado del reactivo, puede 
+estar deteriorado: puede ser debido a 
+que se ha superado la caducidad del 
+reactivo o a una mala conservación 
+del mismo.
+Abs Blanco Inicial 
+> Límite Abs 
+Blanco
+Este mensaje aparecerá para 
+técnicas programadas como 
+cinéticas o tiempo fijo crecientes. 
+El valor de la Abs del blanco inicial 
+no se utiliza para el cálculo de la 
+concentración. 
+Este resultado indica el estado del 
+reactivo.
+Revise el estado del reactivo, puede 
+estar deteriorado: puede ser debido a 
+que se ha superado la caducidad del 
+reactivo o a una mala conservación 
+del mismo.

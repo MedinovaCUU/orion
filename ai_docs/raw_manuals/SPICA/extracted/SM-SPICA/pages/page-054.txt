@@ -1,0 +1,46 @@
+SERVICIO
+Manual de Usuario BioSystems SPICA
+54
+Manual de Usuario BioSystems SPICA | Versión 2.8 - Agosto 2024
+5. MANTENIMIENTO Y LIMPIEZA
+5.1 Actividades y frecuencia de mantenimiento 
+MANTENIMIENTO CADA SEIS MESES 
+• Desempolve las placas electrónica y los ventiladores.
+• Revise las conexiones fluídicas internas y revise las posibles fugas.
+• Limpie las botellas de agua destilada y residuos de baja concentración.
+• Limpia el exterior del brazo de pipeteo, el agitador y la punta de la estación de lavado (si su modelo tiene 
+estación de lavado) con agua destilada y posteriormente con alcohol.
+• Limpie la ventana del lector de códigos de barras si su modelo tiene un lector de código de barras. 
+MANTENIMIENTO ANUAL
+• Cambie la membrana desgasificadora si su modelo tiene desgasificador.
+• Limpia los filtros dentro de las botellas de solución de lavado y agua destilada.
+• Compruebe la bomba de pistón de la estación de lavado (compruebe si hay fugas y engrase los cojinetes).
+• Revisa los brazos (comprueba la tensión y el desgaste de los cinturones).
+• Comprueba la fricción de los agitadores en el rotor de reacción.
+• Comprueba el desgaste y la tensión de los cinturones en el rotor de muestras y reactivos y en el rotor de reacción.
+• Compruebe la posición y el sensor de los reactivos y muestras bajo la cubierta del rotor y la cubierta del 
+rotor de reacción.
+• Compruebe el ajuste y la posición del rotor de muestras y reactivos.
+• Comprueba la rotación de los ventiladores y espolvoréalos, limpia los filtros.
+• Compruebe que la nivelación del analizador es correcta.
+MANTENIMIENTO BIANUAL
+• Cambie las correas de transmisión vertical de los brazos.
+• Cambie la nevera de Peltier. 
+5.2 Limpieza 
+Material y herramientas necesarias para limpiar el aparato:
+• Un contenedor de aerosol de aire seco o un soplador de aire.
+• Llave Torx T20 con una longitud mínima de 40 mm. 
+5.3 Proceso de verificación del analizador
+Se trata de un proceso estándar para verificar el correcto funcionamiento del instrumento después de 
+realizar una intervención. Este proceso puede aplicarse a las siguientes operaciones:
+• Recepción del instrumento (en el laboratorio, antes de la instalación)
+• Mantenimiento
+• Después de una reparación
+El objetivo es normalizar el proceso de verificación y los criterios de aceptación.
+Proceso de la verificación
+Utilizar una plantilla entregada por BioSystems para hacer todos los cálculos de los resultados. Si no tiene 
+esta plantilla, póngase en contacto con el servicio de atención al cliente de BioSystems.
+Utilice el material indicado en esta plantilla para hacer esta verificación.
+Ejecute la sesión siguiendo las instrucciones de la plantilla.
+Los valores del coeficiente de variación y todos los resultados de la concentración deben estar entre el 
+rango de control indicado en la plantilla.

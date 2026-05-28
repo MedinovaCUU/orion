@@ -1,0 +1,64 @@
+103
+103
+números y los operadores. El programa verifica si la fórmula entrada es correcta 
+y lo indica con uno de los iconos siguientes:
+ 
+ 
+Este icono indica que la fórmula se ha introducido correctamente y sin errores.
+ 
+ 
+Este icono indica que en la fórmula hay errores. Modifique la fórmula hasta que 
+este icono desaparezca.
+ 
+ 
+Borra el último carácter introducido.
+ 
+ 
+Borra toda la fórmula introducida.
+10.3.3. Contaminaciones
+ 
+CAUTION
+ 
+Cuando hay contaminaciones entre reactivos programadas, la velocidad de pro­
+ceso disminuye.
+Verifique la programación de las contaminaciones con el agente distribuidor de los 
+reactivos para asegurar que los valores han sido actualizados con los últimos cambios. 
+Desde esta pantalla se programan las contaminaciones entre reactivos en las puntas 
+y las contaminaciones de cubeta del rotor de reacciones.
+ 
+)
+Véase Ilustración 63 y Ilustración 64
+En la columna de la izquierda se muestra la lista con todas las posibles técnicas 
+contaminantes. En rojo están marcadas aquellas técnicas que ya tienen programada 
+la contaminación. 
+Seleccione una técnica y luego pulse alguno de los siguientes iconos:
+ 
+ 
+Pulse este icono cuando quiera editar las técnicas contaminadas a la técnica 
+seleccionada. 
+ 
+ 
+Elimina la programación de las técnicas contaminadas y de cubeta.
+ 
+ 
+Pulse este icono cuando quiera imprimir el listado de todas las parejas de 
+contaminaciones.
+10.3.3.1. Resumen contaminaciones
+ 
+ 
+Al pulsar este icono se abre una ventana auxiliar donde se puede ver un resumen 
+de todas las parejas de contaminaciones y del conjunto de técnicas que contami­
+nan a las cubetas de reacción. 
+ 
+)
+Véase Ilustración 62
+En el apartado de las contaminaciones, se muestra la contaminaciones en punta 
+programadas. La primera columna muestra las técnicas contaminantes, la segunda 
+columna muestra las técnicas contaminadas y en la tercera columna muestra la 
+solución de lavado programada. Si desea revisar las contaminaciones programadas, 
+puede ordenar las técnicas alfabéticamente por la columna de las técnicas contami­
+nantes o por la columna de las técnicas contaminadas. Para ello pulse la cabecera 
+de una columna o de la otra. A cada pulsación de la cabecera, primero se ordenará 
+en orden creciente y luego en orden decreciente.
+En el apartado de las cubetas, se muestra la contaminaciones en cubetas programa­
+das. La primera columna muestra las técnicas contaminantes, la segunda columna

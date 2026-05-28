@@ -1,0 +1,52 @@
+Manual usuario 
+ 
+ 
+ 
+Manual usuario 
+ 
+ 
+ 
+120
+120
+Biosystems
+Biosystems
+Ilustración 79 
+Pantalla selección de técnicas
+En esta pantalla se muestran todas las técnicas asociadas a un tipo de muestra. 
+Las técnicas están agrupadas por grupos funcionales: técnicas estándar, técnicas 
+calculadas, técnicas ISE, técnicas externas y perfiles.
+Código de colores del estado de la selección de las técnicas.
+Código 
+de 
+colores
+Nombre
+Descripción
+Seleccionada
+Técnica seleccionada
+Borrada
+Técnica a borrar. Cuando se acepte, 
+esta técnica se eliminará de la sesión de 
+trabajo conjuntamente con los blancos y 
+calibradores asociados.
+Seleccionada para 
+ejecución
+Técnica que ya está en uso. Está técnica no 
+se puede borrar de la sesión de trabajo.
+Selec. con diferente 
+prioridad
+Paciente que tiene técnicas seleccionadas 
+normales y urgentes.
+Control parcialmente 
+seleccionado
+Técnica creada con más de un control y se 
+ha eliminado uno de los controles una vez 
+creada la sesión de trabajo.
+No seleccionada
+Técnica no seleccionada
+Se pueden agregar nuevas técnicas a una sesión de trabajo que tenga muestras y 
+reactivos posicionados. Para ello seleccionar el paciente al que quiere agregar técnicas 
+y pulsar el botón de técnicas. El programa informará al usuario de si quiere agregar 
+nuevas técnicas, en caso afirmativo entonces se abre la pantalla de la Ilustración 
+79. También puede añadir muestras o técnicas a sesiones de trabajo ya iniciadas. 
+Una vez introducidas las técnicas para un paciente, la información se muestra en 
+la lista de la Ilustración 77.

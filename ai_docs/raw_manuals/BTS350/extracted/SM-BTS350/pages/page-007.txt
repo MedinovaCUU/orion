@@ -1,0 +1,25 @@
+—  7  —
+1. - Introduction
+This semi-automatic analyzer BTS-350 is a laboratory instrument for performing biochemical and turbidimetric analyses 
+for in vitro diagnostics.
+This semi-automatic analyzer Y-350 is a laboratory instrument for performing chemical analysis specially for oenology.
+Its compact design and the small number of components of which it is comprised allow for easy maintenance. The computer-
+based design has made it possible to eliminate mechanical adjustments in the optical system, simplifying installation and 
+reducing maintenance. The use of easy-to-integrate, modern electronic components reduces the possibilities of failure 
+and allows for the elimination of all electronic adjustments. A powerful programme allows for adjusting the different 
+magnitudes handled by the equipment, using reference patterns or instruments and making corrections through software 
+by numerical calculation.
+At internal level, it has a new lighting system based on LEDs, guaranteeing the semi-automatic analyser a long life and 
+very low maintenance.
+The ergonomics of the housing have also been considered. The considerable height at which the Teflon tube emerges to 
+suction the samples facilitates the use of the primary tubes.
+The design of the power supply system is based on batteries, to preventing the loss of readings in the event of power cuts 
+in the electric mains, and in the event of the laboratory not having a reliable electricity supply. This power supply system 
+is an optional component.
+The instrument electronics have been located in one plate, thereby allowing the printed circuit to be changed quickly and 
+easily, in the event of a failure. Those circuits can be sent to the factory for repair.
+This semi-automatic analyser is equipped with a large number of checking programmes to facilitate diagnosis and failure 
+searches.
+This manual has been designed not merely as a maintenance and repair guide for the equipment, but also as a document 
+for training the Technical Assistance Service staff. The running principles as well as the electronic circuits are explained in 
+order to obtain a global view of the instrument.

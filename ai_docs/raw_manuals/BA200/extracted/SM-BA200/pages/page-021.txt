@@ -1,0 +1,45 @@
+21
+El brazo de pipeteo realiza la aspiración del reactivo y muestra y en un ciclo posterior realiza la aspiración y dispen­
+sación del reactivo 2 sólo para aquellas determinaciones bireactivas. 
+El brazo dispone de su estación de lavado para limpiar la punta por dentro y por fuera.
+El brazo dispone de una punta con un sistema automático de detección de nivel. La punta desciende hasta alcanzar 
+el nivel de reactivo o muestra y aspira el volumen programado. De esta manera se evita descender demasiado la punta 
+en el interior del líquido y se simplifica la limpieza exterior de la punta.
+También incorpora un sistema de detección de colisión vertical para detectar choques de la punta y evitar que se 
+estropee.
+La dispensación y aspiración de la punta se realiza mediante una bomba cerámica. Está bomba está ubicada en el 
+interior del analizador.
+Los volúmenes que puede dispensar el sistema son los siguientes:
+• 
+Volumen de muestras: de 2 μL hasta 40 μL
+• 
+Volumen de reactivos R1: de 90 μL hasta 300 μL 
+• 
+Volumen de reactivos R2: de 10 μL hasta 100 μL
+La bomba incorpora un detector de coágulo. Cuando la punta se obstruye en el momento de la aspiración de la 
+muestra, el detector de coágulo se activa y a través del programa de usuario da un aviso. La obstrucción puede venir 
+debido a restos de fibrina o a restos de coágulo que estén presentes en la muestra de suero.
+2.8. Módulo ISE (opcional)
+El módulo de iones ISE es un módulo opcional que sirve para la determinación de los iones Na+, K+, Cl- y Li+ en 
+las muestras de suero y orina.
+El módulo de iones es totalmente autónomo y funciona en paralelo juntamente con las determinaciones de bioquímica. 
+Cuando está programada en la lista la realización de iones ISE en los pacientes, el brazo de pipeteo dispensa la 
+muestra en el módulo de iones.
+El módulo dispone de un kit totalmente sellado que contiene los calibradores. Este kit es un accesorio y se accede 
+a su alojamiento desde la parte frontal del analizador.
+2.9. Modo de funcionamiento del software de usuario
+El analizador lleva a cabo los análisis paciente a paciente y permite la introducción continua de muestras. El control 
+del analizador se realiza desde un ordenador personal dedicado, en permanente co­mu­nicación con el instrumento. 
+El programa de aplicación, instalado en el ordenador, mantiene al usuario constantemente informado del estado 
+del analizador y del progreso de los análisis. A medida que van obteniéndose resultados, el orde­na­dor los muestra 
+inmediatamente al usuario.
+Cuando se inicia una Sesión de Trabajo, el ana­li­zador propone la realización de los blancos, calibra­dores y controles 
+programados para los procedimientos de medida que debe llevar a cabo. El usuario puede escoger realizar o no los 
+blancos y los calibrado­res. Si no los realiza, el analizador utiliza los últimos datos disponibles. Los controles tam­
+bién pueden activarse o no. Durante una sesión, mientras el analizador está trabajando, el usuario puede introducir 
+nuevas muestras a analizar, normales o urgentes. Cada vez que se añade una nueva muestra, el analizador propone 
+automáti­ca­mente los posibles nuevos blancos, calibradores o controles que sea necesario realizar. Se debe reiniciar 
+la sesión en cada jornada de trabajo.
+El analizador determina las concentraciones de los analitos a partir de medidas de absorbancia óptica. Para la medida 
+de la concentración de un cierto analito en una muestra, el analizador pipetea un volumen determinado de reactivo 
+y muestra, lo termostatiza dentro de la misma punta y lo dispensa en el rotor de reacciones.

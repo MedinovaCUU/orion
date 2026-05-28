@@ -1,0 +1,23 @@
+Manual usuario 
+ 
+ 
+ 
+Manual usuario 
+ 
+ 
+ 
+44
+44
+Biosystems
+Biosystems
+• 
+Active la opción de Protección basada en la nube
+• 
+Desactive las demás opciones
+ 
+)
+Véase Ilustración 22
+Ilustración 21 
+Pantalla de seguridad windows defender
+Ilustración 22 
+Pantalla configuración de antivirus

@@ -1,0 +1,165 @@
+Service manual
+194
+ 
+ 
+ 
+Cancel samples patient and test 
+ 
+ 
+ 
+Delete blanks and standards
+ 
+ 
+ 
+Improve the downcounting time
+ 
+ 
+ 
+Possibility to save test in a file
+ 
+ 
+ 
+Improve turbidimetry test
+ 
+ 
+ 
+Start running automaticaly after doing a New rotor 
+ 
+ 
+ 
+New Button in monitor screen shows the preparation/well
+ 
+ 
+ 
+Read patient code with barcode reader
+ 
+ 
+ 
+Corrections
+ 13/09/05 
+3.1.1 
+Calculated test
+ 
+ 
+ 
+New programming test options:
+ 
+ 
+ 
+Decreasing calibrations curve 
+ 
+ 
+ 
+ 
+ 
+Reactive blank with saline solution
+ 
+ 
+ 
+New type of sample: Whole blood
+ 20/03/06 
+3.2.0 
+Correction of Run Time errors
+ 
+ 
+ 
+Improve the Base Line execution (repetion when it fails)
+ 26/06/06 
+3.2.2 
+New button in the tools menu, reset the historical base line
+ 
+ 
+ 
+Fix the options of the initial and final wash. Delete the menu to cho­
+ose the parameter of initial and final wash. 
+ 14/11/06 
+3.3.0 
+Improve and optimitation of the execution times of the application. 
+Corrected the application errors that showed the message «not res­
+pond»
+ 21/03/07 
+3.3.2 
+Added the Korean language. Correction of Run Time errors.
+ 14/06/07 
+4.0.0 
+Added the Romanian and indonesian languages
+ 
+ 
+ 
+Added the substrate depletion control function in kinetic test
+ 
+ 
+ 
+Added the  prozone control function in turbidimetric test
+ 
+ 
+ 
+Added the correlation of result per test with other analysers
+ 
+ 
+ 
+Added graphical representation of results
+ 
+ 
+ 
+Change the reagent Blank use in calibration factor calculation
+ 
+ 
+ 
+Added a new patient results report
+ 
+ 
+ 
+Added a new document explaining the Remarks messages
+ 17/07/09 
+4.1 
+New function of LIMS online communication.
+ 
+ 
+ 
+New function of the calibration plot: when a concnetration value is out 
+of the plot it can repeat with a postdilution factor.
+ 27/08/09 
+4.1.1 
+Correction to run the calibrator of Hb total test.
+ 14/05/10 
+4.5 
+Improved the management of bireagent test with reading time of 900s
+ 
+ 
+ 
+New option to share positions in the rack of reagents with different 
+test.
+ 
+ 
+ 
+Displaying the kinetic curve of calibrators.
+ 
+ 
+ 
+Add new test in samples with AutoNumber identifier.
+ 1/10/10 
+4.5.2 
+Correction of Magnesium Xylidil test. Added new contamination pro­
+gramation. Added new calculated test.
+ 
+1/8/11 
+4.6 
+New test to HbA1C.
+ 
+ 
+ 
+Change of the type name of the test from PLM to SEM and from CSF 
+to LIQ.
+ 
+ 
+ 
+Shows the regression line and the regression coefficient in the test 
+with calibration curve and linear regression.
+ 19/3/12 
+4.7 
+Possibility of positioning tubes and pediatric wells in the same rack.
+ 
+ 
+ 
+New functionality of automatic calibration curve by dilluciones from a

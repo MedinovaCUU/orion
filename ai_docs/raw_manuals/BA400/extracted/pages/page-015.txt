@@ -1,0 +1,45 @@
+15
+Both 60 mL and 20 mL bottles can be placed in the inner ring.
+The rotor is refrigerated, and the mean temperature inside it is below 8degrees C. The fridge has an independent 
+power supply system with its own switch so that when the analyser is switched off, the fridge can continue to operate.
+2.3. Reaction rotor
+The reaction rotor has 120 positions and a cover. The whole assembly is refrigerated.
+The rotor is a single part made of PMMA and has 120 positions. The sample and reagent mixture reactions are 
+performed on it. Different optical readings are taken during the reaction. The PMMA material filters UV radiation.
+The rotor is maintained at a stable temperature of 37 degrees C by a Peltier-based thermostatting system.
+The reaction volumes range is from 200 μL to 600 μL.
+Each arm dispenses in a different position from the rotor. The dispensing positions are:
+• 
+Cycle 1: R1 dispensation
+• 
+Cycle 31: S dispensation (sample)
+• 
+Cycle 32: R1+S stirring
+• 
+Cycle 33: Initiation of photometric readings
+• 
+Cycle 66: R2 dispensation and stirring of reagent 2
+• 
+Cycle 100: End of the reading processes
+• 
+Cycles 101 –111: Elimination of the completed reaction and cleaning of the sample well in the wash station.
+2.4. Optical system
+The optical system is located in the reaction rotor, below the wash station. 
+It is formed by a set of leds, filters, beam splitters, the reaction rotor and two photodiodes. 
+There is one principal reading diode and a reference photodiode that enables the correction of perturbations gener­
+ated in the light source
+The analyser has 8 wavelengths: 340, 405, 505, 535, 560, 600, 635, 670
+The measuring range is from -0.2 Abs to 3.5 Abs.
+The measuring resolution is 0.0001 Abs.
+The system automatically performs a blank on the cuvette before dispensing the reagent. This blank absorbance 
+value is used to correct the absorbance values measured in the cuvette. 
+If this value exceeds a preestablished limit, the cuvette is discarded.
+2.5. Wash station
+The wash station consists of an assembly with 7 tips located above the reaction rotor.
+Each tip has a specific function and corresponds to a different execution cycle:
+• 
+Cycle 1: Suction of the high contamination waste and dispensing of the washing solution
+• 
+Cycle 2: Suctioning and dispensing of the washing solution
+• 
+Cycle 3: Washing solution rest phase

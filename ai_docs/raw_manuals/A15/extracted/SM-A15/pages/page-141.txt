@@ -1,0 +1,50 @@
+Manual de servicio
+142
+Mantenimiento anual
+3
+Compruebe el retén de la bomba dosifica do ra. Veri fique que no haya pérdidas y que no 
+se producen burbujas.
+4
+Limpie los filtros del contenedor de agua destilada
+5
+Limpie la estación de lavado
+6
+Desmonte y limpie la punta. Compruebe su estado.
+7
+Revise el brazo (Verifique el desgaste de la correa y su tensión)
+8
+Revise el sistema de detección y protección de choque de la punta
+9
+Verifique el estado del canal calefactor
+10
+Verifique el juego entre los engranajes en el canal calefactor
+11
+Limpie los filtros, rendija y el fotodiodo
+12
+Revise la colocación y el detector de las tapa general y la tapa de reacción
+13
+Revise que la tapa general se sostenga correctamente y no se caiga.
+14
+Realice los test con el programa de servicio
+WARNING
+Después de realizar cualquier operación de mantenimiento asegúrese de que todos los 
+elementos que hayan sido sustituidos o desmontados se han montado correctamente.
+7.2. Cuidado y limpieza
+7.2.1. Cuidado general del analizador
+1. No usar nunca detergentes ni productos abrasivos para la limpieza de la superficie del analizador. Usar 
+únicamente un paño humedecido con agua y jabón neutro.
+2. Si se vierte o salpica algun reactivo o un producto corrosivo sobre el aparato, limpiarlo inmediatamen-
+te con un paño húmedo y agua. Si es necesario, protegerse las ma nos con guantes de laboratorio 
+adecuados.
+3. Todos los elementos del analizador poseen conductos de drenaje al exterior para facilitar la eliminación 
+de cualquier líquido vertido y evitar la inundación del aparato. En el caso de que suceda un vertido im-
+portante, es necesario limpiar el líquido derramado sobre la mesa a través de los conductos de drenaje 
+y el analizador adecua damente.
+4. Cuando no se esté utilizando, cerrar la tapa principal del analizador para protegerlo del polvo.
+7.2.2. Limpieza del sistema óptico
+Es necesario limpiar periódicamente los componentes del sistema óptico para mante nerlos libres de polvo 
+y suciedad. Estos componentes son la lámpara, los filtros y el fotodiodo. El material necesario recomen-
+dado es el siguiente: 
+• 
+Papel especial para la limpieza de componentes ópticos (papel no abrasivo y que no desprende resi-
+duos sólidos)

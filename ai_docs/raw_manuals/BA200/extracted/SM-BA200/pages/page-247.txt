@@ -1,0 +1,37 @@
+Lista de recambios
+Código
+Conjunto
+Representación 
+Descripción
+AC17221
+Peso con filtro (5)
+AC17222
+Brazo
+Tubo de teflón con griper (3 conjuntos)
+AC17223
+Brazo
+Cables para los brazos (3)
+AC17295
+Brazo
+Conjunto brazo de la punta
+AC17296
+Brazo
+Conjunto brazo del agitador
+AC17297
+Rotor de 
+reacciones
+Conjunto rotor de reacción
+AC17231
+Tubos azul, rojo, verde (5 m)
+AC17232
+Rotor de 
+reacciones
+Tubos de la estación de lavado
+AC17233
+ 
+ 
+ 
+ 
+ 
+Conexiones fluídicas (20)
+247

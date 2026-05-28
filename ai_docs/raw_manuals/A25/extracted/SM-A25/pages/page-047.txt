@@ -1,0 +1,74 @@
+47
+Connector
+Function
+Pins
+J32
+Y axis home
+1 - Home
+2 - GND
+3 - Vdc
+J33
+Ceramic pump home
+1 - Home
+2 - GND
+3 - Vdc
+J34
+Rack decoding board connection (CIIM00010)
+1 - Detector 1
+2 - Detector 2
+.
+.
+24 - Detector 24
+25 - GND
+26 - Vdc
+J35
+Photometric board connection (CIIM00009)
+1 - 12 V
+2 - GND
+3 - DVALID
+4 - DCLK
+5 - DOUT
+6 - DXMIT
+7 - RANGE2
+8 - RANGE1 
+9 - RANGE0
+10 - TEST
+11 - CONV
+12 - GND
+13 - CLKAD
+14 - GND
+15 - GND
+16 - Vdc
+J36
+LED board connection (CIIM000011)
+1 - GND
+2 - LED
+3 - LED
+4 - Vdc
+J99
+Fan
+1 - 12V
+2 - GND
+J39
+Connection of I2C bus to the racks board (CIIM00010)
+1- 5V
+2- SDA 
+3- SCK
+4- GND
+J40
+Connection of I2C bus to the power supply board 
+(CIIM0007)
+1 - 5V
+2 - SDA
+3 - CLK
+4 - GND
+J41
+Connection to the photodetectors of probe detection.
+1 - 5V
+2 - GND
+3 - White
+4 - Green
+5 - 5V
+6 - GND
+7 - White
+8 - Green

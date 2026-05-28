@@ -1,0 +1,72 @@
+-----------------------------------------------------------------------------------
+CURRENT ADJUSTMENTS A15
+Date 15/05/2026 10:30:04 a.m.
+-----------------------------------------------------------------------------------
+Serial Number = 831055847
+Firmware = A15 User V6.50                  
+A15 Configuration checksum value = 0x4926
+A15 Configuration checksum size = 988
+Rotor Temperature = 37.56
+Prove Temperature = 35.5
+System Liquid Scale Sensivity = 107
+Waste Scale Sensivity = 114
+Level Detection Improved Rack = 1
+Sensitivity: (Tube Rack) = 30
+Sensitivity: (Pediatric Rack) = 44
+Sensitivity: (Reagent Rack) = 9
+X - Origin = 35
+Y - Origin = 241
+Z - Origin = 430
+X - Washing Station = 365
+Y - Washing Station = 71
+Z - Washing Station = 540
+X - Reactions Rotor = 74
+Y - Reactions Rotor = 1026
+Z - Reactions Rotor = 600
+Tray XYZ- Pediatric Rack
+X1 (Rack1, 2, 3, 4) = 2722, 2172, 1621, 1063
+X2 (Rack1, 2, 3, 4) = 2679, 2122, 1578, 1022
+Y1 (Rack1, 2, 3, 4) = 82, 86, 87, 87
+Y2 (Rack1, 2, 3, 4) = 1436, 1434, 1434, 1435
+Z1 (Rack1, 2, 3, 4) = 744, 738, 742, 744
+Z2 (Rack1, 2, 3, 4) = 720, 714, 718, 717
+Z Relation Pediatric-Tube = 433
+Tray XYZ- Reagent Rack
+X1 (Rack1, 2, 3, 4) = 2457, 1913, 1364, 814
+X2 (Rack1, 2, 3, 4) = 2430, 1883, 1339, 791
+Y1 (Rack1, 2, 3, 4) = 99, 106, 92, 100
+Y2 (Rack1, 2, 3, 4) = 1438, 1443, 1436, 1438
+Z1 (Rack1, 2, 3, 4) = 1206, 1200, 1203, 1206
+Z2 (Rack1, 2, 3, 4) = 1177, 1172, 1171, 1175
+Rotor Position correction regarding to the dispensation point = 101
+Rotor Position correction regarding to the optical system = -3
+Filters wheel correction = 0
+Filter 0 = 0 (nm)	IT = 10.2 (ms)	Ref. IT = 9.7 (ms)
+Filter 1 = 340 (nm)	IT = 340 (ms)	Ref. IT = 340 (ms)
+Filter 2 = 405 (nm)	IT = 74.8 (ms)	Ref. IT = 74.8 (ms)
+Filter 3 = 505 (nm)	IT = 77.8 (ms)	Ref. IT = 77.3 (ms)
+Filter 4 = 535 (nm)	IT = 60.9 (ms)	Ref. IT = 60.4 (ms)
+Filter 5 = 560 (nm)	IT = 74.8 (ms)	Ref. IT = 74.8 (ms)
+Filter 6 = 600 (nm)	IT = 100.9 (ms)	Ref. IT = 100.9 (ms)
+Filter 7 = 635 (nm)	IT = 70.7 (ms)	Ref. IT = 70.7 (ms)
+Filter 8 = 670 (nm)	IT = 101.9 (ms)	Ref. IT = 101.9 (ms)
+Filter 9 = 0 (nm)	IT = 10.2 (ms)	Ref. IT = 9.7 (ms)
+X - axis = 205351 (x1000 steps)
+Y - axis = 132229 (x1000 steps)
+Z - axis = 271427 (x1000 steps)
+Reaction Rotor = 9456 (x10000 steps)
+Filter Wheel = 9349 (x100 steps)
+Dispensing Pump = 231687 (x10000 steps)
+Membrane pumps = 1330 (Commutation)
+3-way electrovalve = 186146 (Commutation)
+Lamp = 0  (Hours)
+Biochemical preparation = 26388  (Cicles)
+Turbidimetry preparation = 223  (Cicles)
+Bireagent Biochemical preparation = 3088  (Cicles)
+Bireagent Turbidimetry preparation = 70  (Cicles)
+Predilution = 0  (Cicles)
+Start/End Washings = 1743  (Cicles)
+WS Washings = 2047  (Cicles)
+H2O Washings = 566  (Cicles)
+New Rotor = 375 (Rotors)
+Contaminations detected = 77 Contaminations detected

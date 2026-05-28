@@ -1,0 +1,13 @@
+SERVICIO
+Manual de Usuario BioSystems SPICA
+53
+Manual de Usuario BioSystems SPICA | Versión 2.8 - Agosto 2024
+4. MANUAL ROBOT
+El robot manual es una herramienta para facilitar el ajustar y comprobar las funcionalidades del 
+analizador. Esta parte de la aplicación nos permite revisar el diseño completo del analizador y hacer 
+comandos individuales.
+Inicio > Utilidades > Robot manual 
+ANTES DE USAR ESTA HERRAMIENTA SE RECOMIENDA 
+COMPLETAR UNA ENTRENAMIENTO ESTÁNDAR PARA 
+OPERAR EL BIOSYSTEMS SPICA.
+NOTA

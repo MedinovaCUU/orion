@@ -1,0 +1,26 @@
+Manual usuario 
+ 
+ 
+ 
+Manual usuario 
+ 
+ 
+ 
+20
+20
+Biosystems
+Biosystems
+Unidades
+Definición
+s
+Segundo
+VA
+Voltamperio
+V
+Voltio
+W
+Vatio
+μL
+Microlitro
+μm
+Micrómetro

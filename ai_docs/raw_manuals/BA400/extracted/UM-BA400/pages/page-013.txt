@@ -1,0 +1,42 @@
+13
+13
+El software y el manual se desarrollaron exclusivamente para el BA400 y para 
+aplicaciones de diagnóstico in vitro como se especifica en las instrucciones de uso.
+Ninguna parte de este documento puede reproducirse, almacenarse, recuperarse o 
+transmitirse de ninguna forma ni por ningún medio sin el consentimiento previo 
+por escrito de Biosystems, S.A. La información, documentos y gráficos relacionados 
+publicados en este documento (llamado “Información”) son propiedad exclusiva 
+de Biosystems, S.A.
+El permiso para utilizar la información se otorga a condición de que:
+• 
+El aviso de copyright aparezca en todas las copias
+• 
+El uso de la información está relacionado con el uso de los productos Biosys­
+tems, S.A o por personal capacitado por Biosystems, S.A. o para uso exclusivo 
+informativo
+• 
+La información no se modifica de ninguna manera
+• 
+Ningún gráfico se utiliza por separado del texto adjunto.
+El usuario asume toda la responsabilidad y todos los riesgos derivados del uso de 
+la información. Se han tomado todas las medidas necesarias para garantizar que 
+la información contenida en el presente manual sea correcta en el momento de 
+su publicación, pero puede incluir imprecisiones técnicas o errores tipográficos.
+Biosystems, S.A. se reserva el derecho a introducir los cambios que sean necesarios 
+sin previo aviso, como parte integrante del desarrollo continuo del producto. 
+Descargo de responsabilidad
+Todas los ejemplos (impresiones, gráficos, capturas de pantallas, etc.) son solo para 
+fines informativos e ilustrativos y no se utilizará para evaluaciones clínicas o de 
+mantenimiento. Datos mostrados en salidas de impresión y en pantallas no reflejan 
+los nombres reales de los pacientes ni los resultados de las pruebas.
+Las actualizaciones de la información se pueden proporcionar en papel o formato 
+electrónico. Consulte siempre los últimos documentos para obtener la información 
+más reciente.
+Las actualizaciones incrementales de los manuales pueden causar cambios en el 
+numeración de la tabla de contenidos o en la numeración de las páginas.
+Ninguna parte de este medio puede ser reproducida, almacenada, recuperada o 
+transmitido en cualquier forma o por cualquier medio sin el previo escrito permiso 
+de Biosystems.
+Asistencia técnica y solicitud de componentes
+Contacte con Biosystems, S.A. o su distribuidor habitual para solicitar informa­
+ción sobre:

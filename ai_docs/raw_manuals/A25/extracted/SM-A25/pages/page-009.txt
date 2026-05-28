@@ -1,0 +1,22 @@
+9
+Symbol
+Description 
+Serial number
+Expiry date
+Batch code
+Catalogue number
+Temperature limit
+Manufacturer
+Irritant
+Caution, Possible biological and chemical spill
+Fragile, symbol used on the packaging
+Keep upright, symbol used on the packaging
+Keep dry, symbol used on the packaging
+Safety precautions
+Symbol
+Description 
+Preventing electric shock
+To prevent the risk of electrocution. Do not remove any of the 
+analyser housing elements. No user intervention makes it 
+necessary to access the parts inside the equipment. If necessary, 
+contact the technical assistance service.

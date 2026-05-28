@@ -1,0 +1,15 @@
+161
+6.6.5. 
+PC11862 - Communications board
+Removing the communications board
+1. Remove the left rear cover. Remove the screws (4)
+2. Disconnect the cable from the board.
+3. Unscrew the cover plate. Remove the screws (6)
+4. Remove the 4 screws (5) that hold the communication board in the support plate.
+Mounting the communications board
+1. Follow the steps in reverse order
+4
+Figure 6.71 
+5
+6
+Figure 6.72

@@ -1,0 +1,19 @@
+90
+Service manual
+the temperature measured is within the tolerated error margins and stores this value for the test result reports.
+5.3.2. 
+Photometry tests
+This screen contains a set of tests to check the functioning of the optical system. The tests are classified under 
+different tabs. First of all, the base line and darkness count tests must be made in order to be able to carry out 
+the remaining tests. To perform these tests, the analyzer must be initialised. 
+The optical system has a photodiode that generates an electrical current proportionate to the light intensity on 
+it.   time. An AD converter converts the accumulated load into a digital value called count number, between 0 
+and 1048576. During normal functioning, the analyzer automatically adjusts the integration time for each filter 
+when the analysis begins and after initialisation. When the first photometry test is performed, the integration 
+times are also automatically adjusted. These times are adjusted in such a way that the count number of the 
+base line for each wavelength is as near as possible to 950000. In this way, the dynamic range of the detection 
+system is adapted to the light intensity present at each wavelength. The filter wheel has 10 positions. Position 
+0 must always contain a covered filter so that the analyzer can perform the darkness adjustment. Positions 1 
+to 9 can be used for optical filters. 
+5.3.2.1. Base line and integration times
+When this test is run for the first time, the analyzer fills the first 3 rotor wells with distilled water. The analyzer

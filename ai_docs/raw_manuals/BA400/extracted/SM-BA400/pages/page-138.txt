@@ -1,0 +1,77 @@
+Mantenimiento Semestral
+Explicación en el ma­
+nual. Capítulo:
+5
+Limpie el polvo de los ventiladores, de los detectores de inicio y de las 
+placas electrónicas
+ 7.2.7
+6
+Revise las conexiones fluídicas internas y que ninguna pierda líquido
+7
+Limpie los contenedores interiores de agua destilada y residuos de baja 
+contaminación
+ 7.2.3
+8
+Limpie externamente las puntas de los brazos, los agitadores y las puntas 
+de la estación de lavado
+ 7.2.4
+9
+Limpie la ventana del lector del código de barras
+ 7.2.5
+Operaciones para realizar el servicio técnico.
+Mantenimiento Anual
+Explicación en el ma­
+nual. Capítulo:
+1
+Cambie los tubos de teflón del módulo ISE
+ 8.6
+2
+Cambie la membrana del desgasificador
+ 8.8.2
+3
+Cambie el filtro de agua y solución de lavado de la estación de lavado
+ 8.14.1
+4
+Revise la bomba de pistones de la estación de lavado (verifique que no 
+fuga y engrase los rodamientos)
+ 8.7.1
+5
+Revise los 5 brazos y de la estación de lavado (Verifique el desgaste de las 
+correas y su tensión)
+6
+Revise el sistema antichoque de los brazos y de la estación de lavado
+7
+Revise el rozamiento de los agitadores en el rotor de reacciones
+8
+Revise el desgaste de las correas y su tensión de los rotores de muestras, 
+reactivos y reacciones
+9
+Revise la colocación y el detector de las tapas de reactivos, de muestras y 
+de reacción
+10
+Revise el encaje y colocación de los rotores de muestras y reactivos
+11
+Revise el giro de los ventiladores
+12
+Revise que la nivelación del analizador sea correcta
+13
+Revise que la tapa general se sostenga correctamente y no se caiga.
+14
+Sustituya los filtros de los ventiladores frontales
+Ver manual de usuario, 
+capítulo 14.2.8
+Mantenimiento bianual
+Explicación en el ma­
+nual. Capítulo:
+1
+Cambie las correas de transmisión vertical de los brazos de pipeteo, de los 
+agitadores y de la estación de lavado
+ 8.9.7 y 8.13.10
+2
+Cambie las peltiers de la nevera
+ 8.11.7
+WARNING
+Después de realizar cualquier operación de mantenimiento asegúrese de que todos los elementos 
+que hayan sido sustituidos o desmontados se han montado correctamente.
+Manual de servicio
+138

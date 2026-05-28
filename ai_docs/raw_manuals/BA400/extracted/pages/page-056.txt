@@ -1,0 +1,83 @@
+56
+Connector
+Function
+Pin
+CN6
+Distilled water bottle level detection sensor 
+Pin 1: GND
+Pin 2: Bottom sensor
+Pin 3: GND
+Pin 4: Top sensor
+CN7
+High contamination waste bottle scales signal
+Pin 1: GND
+Pin 2: Signal 1
+Pin 3: Signal 2
+Pin 4: 3.3 V
+CN8
+Wash station scales signal
+Pin 1: GND
+Pin 2: Signal 1
+Pin 3: Signal 2
+Pin 4: 3.3 V
+CN9
+B4 pump
+Pin 1: 24 V
+Pin 2: Activation signal
+CN10
+B7 pump
+Pin 1: 24 V
+Pin 2: Activation signal
+CN11
+B6 pump
+Pin 1: 24 V
+Pin 2: Activation signal
+CN12
+B5 pump
+Pin 1: 24 V
+Pin 2: Activation signal
+CN13
+GE1 wash station dispensation electro valve 
+assembly
+Pin 1: 24 V
+Pin 2: Activation signal
+Pin 3: 24 V
+Pin 4: Activation signal
+Pin 5: 24 V
+Pin 6: Activation signal
+Pin 7: 24 V
+Pin 8: Activation signal
+Pin 9: 24 V
+Pin 10: Activation signal
+CN14
+B10 pump
+Pin 1: 24 V
+Pin 2: Activation signal
+CN15
+B9 pump
+Pin 1: 24 V
+Pin 2: Activation signal
+CN16
+B8 pump
+Pin 1: 24 V
+Pin 2: Activation signal
+CN17
+Wash station water thermostatting
+Pin 1: Output 1
+Pin 2: Output 2
+CN18
+Wash station thermistor
+Pin 1: 3.3 V
+Pin 2: sensor signal
+CN19
+B1 pump
+Pin 1: 24 V
+Pin 2: Activation signal
+CN20
+B2 pump
+Pin 1: 24 V
+Pin 2: Activation signal
+CN21
+B3 pump
+Pin 1: 24 V
+Pin 2: Activation signal

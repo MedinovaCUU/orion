@@ -1,0 +1,45 @@
+2. Verifique que la tapa principal se sostiene correctamente cuando está totalmente abierta, y al cerrarla no cae 
+bruscamente.
+3. Verifique el estado de los “bumpers” (topes de goma para proteger de la colisión la tapa principal), en caso de 
+pérdida o de claro deterioro, sustitúyalos.
+7.3.5. Revisión del módulo ISE
+1. Limpie la entrada de muestra por el orificio del módulo ISE.
+2. Verifique que los tubos no están obstruidos.
+7.3.6. Proceso de verificación del analizador
+Este es un proceso estándar para verificar el funcionamiento correcto del instrumento después de realizar una in­
+tervención.
+Este proceso se puede aplicar a las siguientes operaciones:
+• 
+Recepción de instrumentos (en la oficina, antes de la instalación)
+• 
+Mantenimiento
+• 
+Después de una reparación
+El objetivo es estandarizar el proceso de verificación y los criterios de aceptación.
+El tiempo de duración del proceso es: 1,5 horas.
+Tiempo extra para analizadores con módulo ISE: 10 minutos
+7.3.6.1. Material necesario
+Use reactivos y controles de Biosystems o códigos equivalentes, use siempre nuevos calibradores y controles recons­
+tituidos.
+Código
+Descripción
+21503/23503 
+Glucosa 50 ml
+21531/23531 
+AST-GOT 50 + 20mL
+21518/23518 
+Fósforo 50 + 20mL
+18011/18044 
+Calibrador bovino / humano 5 ml
+18009/18043 
+Suero de control bovino / humano I 5 ml
+18010/18042 
+Suero de control bovino / humano II 5 ml
+Pipeta de 100-1000 µm (calibrada)
+Puntas de pipeta desechables
+Agua destilada tipo II
+Use una plantilla de Excel para hacer todo el cálculo de los resultados: Results verification.xlsx
+Solicite al departamento de servicio técnico para obtener el archivo de Excel
+7.3.6.2. Proceso de verificación
+1. Utilice una versión de software superior a v5.2.3
+115

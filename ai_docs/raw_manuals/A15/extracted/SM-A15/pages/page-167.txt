@@ -1,0 +1,113 @@
+Manual de servicio
+168
+ 
+ 
+ 
+Muestra la recta de regresión y el coeficiente de correlacion en las 
+técnicas con curvas de calibración y regresión lineal.
+ 19/3/12 
+4.7 
+Posibilidad de posicionar tubos y pocillos pediátricos en un mismo 
+rack.
+ 
+ 
+ 
+Nueva funcionalidad de realización automática de la curva de calibra-
+ción por dilluciones a partir de un único calibrador.
+ 
+7/9/12 
+4.7.1 
+Corección de bugs
+ 29/1/15 
+4.8.2 
+Nueva pantalla de ordenación de técnicas
+ 
+ 
+ 
+Mejora en la búsqueda de la pantalla de históricos
+ 
+ 
+ 
+En la pantalla de nueva muestra se pueden introducir el número de 
+replicados 
+ 12/3/15 
+4.8.3 
+Incorporació de nuevas técnicas
+ 15/7/15 
+4.9.1 
+Mejora en la detección de la prozona
+ 22/12/15 
+4.9.3 
+Corrección de bugs
+ 2/11/17 
+5.2 
+Software necesario para intrumentos con nevera
+ 
+ 
+ 
+Poder realizar carga contínua de muetras sin pulsar el botón pausa
+ 
+ 
+ 
+Nueva alarma de sustrato consumido con método de cálculo de punto 
+final
+ 
+ 
+ 
+Mejora en la selección de diluyente en las prediluciones
+ 
+ 
+ 
+Nuevas técnicas calculadas con parámetros externos
+ 
+7/6/18 
+5.2.4 
+Nuevas metódicas
+ 18/7/19 
+5.4 
+Nueva opción para realizar autopausa al finalizar la lista de trabajo.
+ 
+ 
+ 
+Poder crear técnicas calculadas de calculadas
+ 
+ 
+ 
+Añadir un mensaje de aviso al finalizar el rotor avisando de que lo 
+saque del equipo
+ 
+ 
+ 
+Poder seleccionar el orden en que se muestran los pacientes/muestras 
+en la pantalla de resultados
+ 
+ 
+ 
+Poder crear perfiles de técnicas calculadas
+ 
+ 
+ 
+Poder guardar en histórico los resultados out
+ 
+ 
+ 
+Poder realizar el cálculo del diferencial bicromático y tiempo fijo bi-
+cromático
+ 
+ 
+ 
+Poder realizar técnicas de absorbancia
+Cambios en las versiones del firmware
+Fecha 
+Versiones 
+Cambios  
+ 04/04/06 2.90 Primera versión
+ 26/05/06 2.92 Mejoras en la generación del patrón del encoder 
+ 30/11/06 
+3.10 
+Para evitar las salpicaduras en la dispensación de las prediluciones, se ha 
+reducido la velocidad de dispensación.
+ 
+ 
+ 
+El ajuste de sensibilidad se ha separado en 3 ajustes, uno para cada tipo

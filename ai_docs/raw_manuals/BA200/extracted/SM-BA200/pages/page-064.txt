@@ -1,0 +1,46 @@
+64
+Test point
+Función
+TP14
+12 V aislados
+TP16
+3.3 V
+TP17
+5 V
+TP18
+24 V
+TP19
+GND
+TP27
+Tensión referencia motor rotor
+TP28
+Tensión paso driver motor
+TP40
+Tensión referencia motor estación lavado
+TP41
+Tensión paso driver motor
+TP51
+Temperatura rotor
+LEDs
+Función (Condición de encendido)
+LD1
+Activación 3.3 V
+LD2
+Arranque CPU
+LD3
+Detección reposo estación lavado
+LD4
+Detección inicio rotor
+LD5
+Detección inicio estación lavado
+4.7. Placa lecturas fotométricas - CIIM00051
+Placa ubicada debajo del banco óptico en el conjunto del rotor de reacción. En la placa van directamente soldados 
+los leds para cada longitud de onda y los dos fotodetectores. 
+Desde esta placa se controla el encendido y apagado de cada led. Los led se controlan a través de una fuente de 
+corriente (U2, U8, U9 y T13) y la selección del encendido del led se realizada a través de un decodificador (U11).
+Las lecturas se realizan a través de dos fotodiodos (el fotodiodo principal y el de referencia) que son leídos por un 
+conversor integrador de doble rampa (U1, U4, U5 y U6).
+Todas las señales de control son enviadas a la placa de control de fotometría (CIIM00050) a través de un canal I2C 
+(U7)
+Ilustración 4.40 
+Serigrafía de la placa de lecturas fotométricas

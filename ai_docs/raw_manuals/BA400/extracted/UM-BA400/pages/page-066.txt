@@ -1,0 +1,46 @@
+Manual usuario 
+ 
+ 
+ 
+Manual usuario 
+ 
+ 
+ 
+66
+66
+Biosystems
+Biosystems
+• 
+Ciclos 5 y 6: Aspiración y dispensación de agua purificada.
+• 
+Ciclo 7: Cubeta en remojo con agua.
+• 
+Ciclo 8: Comprobación óptica de la cubeta.
+• 
+Ciclo 9: Aspiración del agua purificada.
+• 
+Ciclos 10: Secado.
+El agua purificada para el aclarado está termostatizado para no interferir en la 
+temperatura del rotor.
+Cuando se realiza el último aclarado también se realiza la lectura óptica de la cubeta 
+del rotor. En caso de estar rayado o en malas condiciones esta cubeta se descarta 
+y no se usa para realizar reacciones.
+Cuando hay un número elevado de cubetas descartadas el programa avisa de la 
+necesidad de sustituir el rotor de metacrilato.
+8.7. Brazo de agitación
+El analizador dispone de dos brazos para la agitación. Estos brazos tienen una 
+pequeña pala que gira en el interior de las cubetas de reacción para favorecer la 
+mezcla e iniciar correctamente la reacción. 
+Ilustración 37 
+Brazo agitador
+ 
+Ciclos Los ciclos en qué actúan cada uno de los brazos 
+• 
+Ciclo 32: Agitador 1.
+• 
+Ciclo 66: Agitador 2.
+Una vez se ha agitado la mezcla el brazo agitador gira hasta la estación de lavado 
+para limpiar la paleta.
+8.8. Brazo de dosificado
+El analizador dispone de 3 brazos independientes para el dosificado de las muestras 
+y reactivos.

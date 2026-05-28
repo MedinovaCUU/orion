@@ -1,0 +1,55 @@
+73
+73
+Icono
+Nombre
+Descripción 
+Query por espécimen
+Botón que abre la pantalla auxiliar 
+para realizar la petición de órdenes por 
+espécimen (tubo de muestras posicionado 
+en el rotor de muestras con identificador de 
+código de barras)
+ 
+) Véase capítulo 10.5.5
+Añadir órdenes 
+Download Orders
+Botón que se activa cuando hay órdenes 
+recibidas de LIS pendientes de añadir a la 
+sesión de trabajo
+Tabla 4 Descripción de los botones para la comunicación con el LIS
+9.1.4. Listado de botones de acciones
+La lista de los botones que realizan acciones en el analizador. En cada instante 
+se activan únicamente los botones apropiados a la acción que está realizando el 
+analizador.
+Icono
+Nombre
+Descripción 
+Conectar
+Botón de conexión del programa con el 
+analizador
+Iniciar analizador
+Botón de inicio del analizador
+Shut down
+Botón de parada y apagado del analizador
+Confirmación cambio 
+de botella
+Botón para confirmar que se ha realizado el 
+cambio de la botella de solución de lavado 
+o para anular la alarma de la botella de 
+residuos de alta contaminación
+Recuperar el 
+analizador
+Botón para recuperar el analizador después 
+de una parada por error
+Anular alarma sonora
+Botón para anular la alarma sonora, dicho 
+botón se activa cuando aparece una alarma
+Iniciar sesión
+Botón para iniciar la sesión de trabajo. 
+También sirve para reanudar la sesión de 
+trabajo cuando se ha realizado una pausa
+Pausar sesión
+Botón para realizar una pausa de la sesión 
+de trabajo. Únicamente aparece cuando la 
+sesión se ha iniciado. Aparece en la misma 
+posición que el botón iniciar sesión

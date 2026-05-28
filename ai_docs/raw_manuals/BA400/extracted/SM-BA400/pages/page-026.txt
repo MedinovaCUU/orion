@@ -1,0 +1,44 @@
+3. Elementos mecánicos
+Mecánicamente el analizador tiene una estructura tubular donde están sujetos los diferentes subconjuntos y las carcasas.
+Los subconjuntos que componen el analizador son los siguientes:
+• 
+Rotor de muestras
+• 
+Rotor de reactivos
+• 
+Rotor de reacción
+• 
+Brazos de pipeteo
+• 
+Brazos agitadores
+• 
+Estación de lavado
+• 
+Sistema de dosificación
+• 
+Sistema fluídico
+• 
+Módulo ISE (opcional)
+• 
+Desgasificador
+3.1. Rotor de muestras
+En el rotor de muestras es donde se posicionan los tubos con la muestra de suero del paciente y los pocillos pediá­
+tricos con los calibradores y controles. El rotor (3) consta de 3 coronas. Los tubos de mayor diámetro (16 mm) se 
+colocan directamente en los agujeros. Para los tubos de diámetro menor o para los pocillos pediátricos se tiene que 
+usar unos adaptadores (2) para fijarlos correctamente. 
+1
+2
+3
+4
+5
+6
+7
+Ilustración 3.1 
+Conjunto rotor de muestras
+El rotor (3) tiene una posición única una vez se ha insertado en su alojamiento (4). Para ello tiene un centrador (6) 
+que lo guía. Una vez insertado, el rotor no se puede extraer porque queda bloqueado mediante una bola (7). Para 
+liberar el rotor de la base se tiene que pulsar el botón (5). 
+El vaso del rotor (9) está sujeto en el soporte del conjunto rotor (10). El rotor (3) se une al centrador rotor y este a 
+través de un eje a la polea (14). La correa (13) trasmite el movimiento del motor (11) a todo el conjunto.
+Manual de servicio
+26

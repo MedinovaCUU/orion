@@ -1,0 +1,51 @@
+Manual de servicio
+98
+Ilustración 4.27 
+Serigrafía de la placa detección
+Conector
+Función
+Pin
+CN1
+Conexión con las varillas
+Pin 1: Detección nivel 1
+Pin 2: Inyección señal 1
+Pin 3: Detección nivel 2
+Pin 4: Inyección señal 2
+CN3
+Conexión 
+Pin 1: 5V
+Pin 2: Activación 
+detección
+Pin 3: Nivel 1
+Pin 4: Nivel 2
+Pin 5: GND
+LEDs
+Función (Condición de encendido)
+LD1
+Detección nivel 1
+LD2
+Detección nivel 2
+LD3
+Oscilación
+Test point
+Función
+TP1
+5V
+TP2
+3V3
+TP3
+GND
+TP4
+Señal de activación
+TP5
+Señal de detección nivel 1
+TP6
+Señal de detección nivel 2
+TP7
+Oscilación nivel 1
+TP8
+Oscilación nivel 2
+4.12. Placa control desgasificador - CIIM00074
+El desgasificador está controlado por la placa CIIM0074. Está placa mide la presión de vacío a través del U3. Cuan­
+do la presión baja de un cierto límite se activa autónomamente la bomba para realizar el vacío en la membrana del 
+desgasificador.

@@ -1,0 +1,24 @@
+8.4. 
+Desmontaje brazo de pipeteo
+1. Quite la tapa superior.
+ 
+) Véase capítulo 8.1.7
+2. Desenchufe el conector CAN (2) del brazo y desenchufe el griper. Quite los 2 tornillos del pasamuros (3). 
+Ver Ilustración 8.15
+3. Desatornille los 3 tornillos (1) que sujetan al brazo
+4. Desenchufe el conector del bus CAN de la placa CIIM00048.
+5. Quite el brazo
+1
+2
+3
+Ilustración 8.15 
+Desmontaje brazo
+8.5. 
+Desmontaje rotor de reactivos
+1. Quite la tapa superior
+ 
+) Véase capítulo 8.1.7
+2. Desenchufe los conectores de la placa CIIM00052: ventiladores generales (1), alimentación de la nevera (2), 
+bus CAN(3) y ventiladores de la nevera (4) y tubo de desagüe. Véase Ilustración 8.16
+3. Desatornille los 4 tornillos (5) y tuercas inferiores que sujetan el conjunto rotor a la base. Véase Ilustración 8.17
+133

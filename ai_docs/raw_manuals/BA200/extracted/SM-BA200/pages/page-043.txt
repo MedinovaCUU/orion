@@ -1,0 +1,29 @@
+1
+5
+4
+6
+2
+3
+7
+9
+8
+10
+11
+Ilustración 3.23 
+Conjunto electrónica
+Referencias de la Ilustración 3.23
+1 – Fuente alimentación nevera
+2 – Fuente alimentación electrónica general
+3 – Placa distribución CIIM00047
+4 – Placa CPU CIIM00046
+5 – Fuente alimentación control nevera
+6 – Fuente alimentación módulo ISE (opcional)
+7 – Filtro de entrada de red
+8 – Interruptor principal
+9 – Interruptor de la nevera
+10 – Interruptor del módulo ISE (opcional)
+11 – Interruptor general y enchufe
+3.9. Estructura 
+Cada subconjunto del analizador se sujeta a la chapa base que es la referencia para el posicionamiento mecánico. Los 
+subconjuntos del rotor de muestras y reactivos, rotor de reacciones, el brazo de pipeteo y el agitador se atornillan 
+43

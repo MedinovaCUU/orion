@@ -1,0 +1,77 @@
+6.3. Descripción de los menús
+La tabla siguiente muestra el contenido de cada uno de los menús del programa
+Nombre Menú
+Descripción
+Configuración
+Se accede a las diferentes opciones de configuración del programa
+• 
+General
+• 
+Idioma
+• 
+Código de barras
+• 
+Usuarios
+Ajustes/Test
+Se accede a las diferentes opciones para ajustar y verificar los diferentes subconjuntos del 
+analizador
+• 
+Posicionamiento
+• 
+Fotometría
+• 
+Nivel de las botellas
+• 
+Motores, válvulas y bombas
+• 
+Termostatización
+• 
+Detección de colisión
+• 
+Código de barras
+• 
+Módulo ISE
+• 
+Modo estrés
+Históricos
+Se accede a las opciones de informes
+• 
+Informes históricos
+Utilidades
+Se accede al conjunto de utilidades: 
+• 
+Modo demostración 
+• 
+Información del analizador
+• 
+Información nevera
+• 
+Actualización del analizador
+• 
+Cambiar rotor de reacciones
+• 
+Crear ReportSAT
+Salir
+Opciones de salida
+• 
+Con Apagado
+• 
+Sin Apagado
+Ayuda
+Opciones de ayuda
+• 
+Manuales
+• 
+Acerca de
+6.4. Configuración
+6.4.1. Analizador
+Permite la configuración de las siguientes opciones:
+Selección de entrada de agua: Seleccione el modo de entrada de agua en el analizador. La entrada de agua puede 
+venir por dos vías diferentes y excluyentes entre ellas:
+• 
+Agua de depósito
+• 
+Agua de red
+Desactivar alarma sonora: Marque está opción cuando no quiera que suene el zumbador al aparecer una alarma.
+Manual de servicio
+108

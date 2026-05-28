@@ -1,0 +1,65 @@
+Service Manual
+43
+4.4. Tip detection board - CIIM00049
+Board located in the upper part of the sample and reagent arms. These boards control the following elements, 
+through a micro controller (U10):
+• 
+Fluid detection system
+• 
+Tip collision sensor
+• 
+The heating element and temperature sensor only in the reagent tips.
+• 
+Protection against ESD in the tip.
+DR1
+PROBE
+TEMPERATURE
+SENSOR
+PROBE
+RESISTANCE
+PROBE
+DETECTOR
+CIIM00049
+PLMA00330
+PLMA00329
+PLMA00328
+DM1
+TP
+HP
+DN
+TP
+HP
+DN
+CAN BUS
++tº
++tº
+1
+2
+CN2
+CON2
+CN2
+CON2
+1
+2
+CN4
+CON3
+CN4
+CON3
+1
+2
+3
+1
+2
+CN1
+CN1
+1
+2
+3
+4
+5
+CN3
+CN3
+1
+2
+Figure 4.10 
+Tip board connections

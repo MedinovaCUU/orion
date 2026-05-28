@@ -1,0 +1,54 @@
+8
+USUARIO
+Manual de Usuario BioSystems SPICA | Versión 2.8 - Agosto 2024
+Manual de Usuario BioSystems SPICA
+NOTA
+Este equipo se ha sometido a los ensayos oportunos y ha demostrado que 
+cumple los límites de un dispositivo digital Clase B, con arreglo al apartado 15 
+de las Normas FCC. Estos límites se han diseñado a fin de ofrecer la protección 
+adecuada frente a interferencias perjudiciales en una instalación residencial. Este 
+equipo genera, utiliza y puede irradiar energía de radiofrecuencia, por lo que, si no 
+se instala ni se utiliza siguiendo las instrucciones, puede causar interferencias 
+perjudiciales a las comunicaciones de radio. No obstante, no existe ninguna 
+garantía de que no se produzcan interferencias en determinadas instalaciones. Si 
+este equipo causa interferencias perjudiciales en receptores de radio o televisión, 
+lo cual se puede determinar encendiendo y apagando el equipo, el usuario puede 
+intentar corregirlas poniendo en práctica una o más de las siguientes medidas:
+• Reorientar o cambiar la ubicación de la antena receptora.
+• Aumentar la separación entre el equipo y el receptor.
+• Conectar el equipo a una toma de corriente distinta a la del receptor.
+• Solicitar la ayuda de su distribuidor o de un técnico de radio/televisión 
+ experimentado.
+DECLARACIÓN DE MODIFICACIÓN
+Los cambios o modificaciones que no hayan sido expresamente aprobadas
+por la parte responsable del cumplimiento podrían anular la autorización del
+usuario para utilizar el equipo.
+1. INTRODUCCIÓN
+1.1 Avisos y advertencias
+OPERACIONES DE SEGURIDAD DESPUÉS DEL MANTENIMIENTO
+Para proceder con seguridad y dejar el instrumento en un estado seguro durante 
+las operaciones de mantenimiento, siga los pasos descritos en el manual de 
+usuario de cada una de las operaciones. Asegúrese de volver a colocar los 
+diferentes elementos de protección que ha retirado, así como de no dejar ningún 
+elemento de limpieza en el instrumento.
+OPERACIONES QUE PUEDEN COMPROMETER LA SEGURIDAD DEL EQUIPO
+Cualquier negligencia de uso indebido, condiciones de red eléctrica no toleradas, 
+condiciones ambientales o de ubicación inadecuadas, etc.) así como la 
+manipulación interna del analizador por personal no autorizado por BioSystems 
+o el uso de consumibles y piezas de repuesto no originales (rotores, fusibles, etc.) 
+pueden comprometer la protección asegurada por el analizador.
+PREVENCIÓN AL FINAL DE LA VIDA ÚTIL DEL ANALIZADOR
+Al final de la vida útil del analizador, la eliminación del producto debe realizarse 
+de acuerdo con la legislación ambiental vigente en cada país. En los estados 
+miembros de la UE, se aplicarán los términos de la directiva WEEE sobre 
+aparatos eléctricos y electrónicos. Es decir, cuando finaliza la vida útil del 
+aparato, se convierte en residuo y debe separarse de la basura doméstica para 
+su correcto reciclaje. Para ello, contacte con el distribuidor para que el producto 
+sea debidamente reciclado. Utilice guantes para manipular cualquier parte 
+del analizador que haya estado en contacto con material biológico: puntas, 
+recipientes, tubos, etc. Elimine este material de acuerdo con la legislación 
+vigente para la eliminación de desechos biológicos peligrosos de su gobierno 
+nacional o local.
+ 
+Símbolos | Precauciones de seguridad | Abreviaturas y unidades 
+ATENCIÓN

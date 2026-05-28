@@ -1,0 +1,61 @@
+Nombre del laboratorio:
+Modelo de analizador:
+Nombre del responsable técnico:
+Número de serie:
+Fecha de instalación:
+Pasos Acciones del servicio técnico
+Realizado
+1
+Ubicación/Fijación analizador/Nivelación
+2
+Instalación de los contenedores de residuos alta contaminación y solución de lavado
+3
+Preparación de la solución de lavado
+4
+Conexión de agua purificada
+5
+Conexión de los residuos de baja contaminación
+6
+Instalación de los rotores de muestras y reactivos
+7
+Instalación del rotor de reacciones
+8
+Conexión a la red eléctrica
+9
+Conexión del cable de comunicaciones al ordenador
+10
+Instalación del programa de usuario en el ordenador
+11
+Configurar programas en segundo plano.
+CONFIGURACIÓN DE LA CIBERSEGURIDAD
+12
+Creación de usuarios del ordenador
+13
+Configurar los permisos de usuario de la aplicación
+14
+Activar y configurar el antivirus del sistema operativo
+15
+Ejecutar el antivirus antes de realizar la instalación de la aplicación
+16
+No instalar ningún programa adicional
+17
+Configurar la actualización de las versiones de windows
+18
+Sistema con conexión a un host (solo para comunicaciones con el LIS)
+19
+Configuraión de un sistema VPN (solo para comunicaciones con el LIS)
+20
+Inicialización del analizador.
+21
+Verificar que cada una de las bombas funciona correctamente. Lavado interno de las 
+puntas. Lavado externo de las puntas y agitadores. En caso necesario verificarlo con 
+el programa de servicio.
+22
+Instalación de los electrodos y pack de reactivos del módulo ISE 
+23
+Verificar el numero de serie del analizador para aquellas unidades que llevan ajustes o 
+especificacines especiales. Anotar sólo en el caso de que aplique
+Firma y fecha del servicio técnico
+Firma y fecha del cliente
+Hoja de Registro de 
+instalación

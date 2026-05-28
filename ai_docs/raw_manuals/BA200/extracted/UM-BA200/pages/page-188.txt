@@ -1,0 +1,50 @@
+Manual usuario 
+ 
+ 
+ 
+Manual usuario 
+ 
+ 
+ 
+188
+188
+Biosystems
+Biosystems
+13.2. Limpieza del analizador
+13.2.1. Limpieza general de los compartimientos
+Use un paño húmedo con jabón neutro para limpiar las superficies del analizador 
+y los compartimientos interior del rotor.
+13.2.2. Vaciado y limpieza de la botella de residuos de alta contaminación
+El contenedor de residuos de alta contaminación viene con un racor de conexión 
+rápida. 
+1. Presione el racor de conexión rápida del tapón y retire del analizador el con­
+tenedor.
+2. Desenrosque el tapón del contenedor.
+3. Vacíe el contenedor.
+4. Enrosque el tapón al contenedor, inserte el tubo con la conexión rápida y 
+coloque el contenedor en su alojamiento dentro del analizador.
+Asegúrese de que el racor de conexión rápida se ha insertado correctamente en el 
+tapón del contenedor. Para verificarlo, en el momento de insertar el racor se tiene 
+que oír un “clic”. En caso contrario indicaría que no se ha insertado correctamente.
+Deshágase de los residuos de acuerdo con la legislación vigente para la eliminación 
+de residuos biológicos peligrosos de su gobierno nacional o local.
+Manipule con cuidado el contenedor de residuos de alta contaminación. Utilice 
+guantes y vestimenta de protección al manipular el contenedor.
+13.2.3. Limpieza del rotor de muestras y reactivos
+En caso de derrame dentro del alojamiento del rotor en el momento de manipular 
+las muestras o reactivos proceder de la siguiente manera:
+1. Apague el analizador.
+2. Utilice guantes y vestimenta de protección al proceder a limpiar los derrames.
+3. Saque el rotor de muestras y reactivos.
+4. Limpie con un trapo humedecido el derrame.
+13.2.4. Limpieza del agua de condensación en el rotor de reactivos
+En el rotor de muestras y reactivos al estar siempre conectado y refrigerado se puede 
+formar condensación. Para ello existe un orificio de drenaje para vaciar el agua a 
+causa de una condensación excesiva. Si detecta que los reactivos no están suficien­
+temente refrigerados, limpie con un paño el exceso de agua de la condensación.
+NOTE
+NOTE
+BIOHAZARD
+BIOHAZARD
+BIOHAZARD
+BIOHAZARD

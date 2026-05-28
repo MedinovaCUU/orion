@@ -1,0 +1,39 @@
+74
+Service manual
+5. 
+Service program
+The service program is used for the adjustment, checking and maintenance of the different components of the 
+analyzer. It is not supplied with the instrument, it is supplied to authorised technical services only. The personal 
+of the Technical Service must install it on the user’s computer in order to carry out the service requirements. 
+Once the tasks have finalised, the program must be uninstalled. To install the program, follow the instructions 
+on the installation CD ROM called Service. The original password for using this program is A25. The password 
+can be changed from the service program itself. If the service personnel forget the password, the original pass­
+word can be reinstalled by deleting the hidden file code.a25 from the application directory and relaunching the 
+program. Once the password has been introduced, the analyzer serial number is given and the name of the 
+operator is requested (by default Operator1). Press the Accept button and the main program appears. The 
+different functions of the service program are classified in the following categories:
+• 
+Adjustments: These make it possible to make different parameter adjustments required for the correct 
+functioning of the analyzer.
+• 
+Tests: Tests for checking the functionality of the a­na­ly­zer.
+• 
+Utilities: Different technical utilities, such as, for example, washing or priming the dispensing sys­tem or 
+changing an optical filter. 
+• 
+Registers:This enables the management of past adjustments, tests, incidences, repairs and maintenance 
+of the instrument.
+• 
+Monitor: These enable the low level communication with the analyzer to load new versions of the program 
+in the flash memory of the analyzer (firmware) or to consult the internal parameters of the instrument.
+An emergency stop button (STOP on a red background) will be accessible at all times, and when pressed, it 
+switches off the analyzer and closes the application quickly.
+5.1. 
+Initialising the analyser
+To initialise the analyser in service mode, first launch the A25 Service application. The program first of all re­
+quests a user or technician ID to be used in the program. Depending on the type of user identified, access to 
+the different parts of the program will be allowed or denied. The following screen appears:
+For full access, enter the following codes:
+Name (login): SAT
+Password: A25
+Once the user has been identified correctly, the service program starts to initialise the analyser.

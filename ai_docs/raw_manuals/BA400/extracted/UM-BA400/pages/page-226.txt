@@ -1,0 +1,88 @@
+Manual usuario 
+ 
+ 
+ 
+Manual usuario 
+ 
+ 
+ 
+226
+226
+Biosystems
+Biosystems
+Menú
+Submenú
+Descripción
+Estado actual
+Monitor
+Menú para acceder a la 
+información actual de la sesión
+Resultados Sesión de 
+trabajo
+Menú para acceder a visualizar 
+los resultados actuales
+Menú
+Submenú
+Descripción
+Históricos
+Resultados de 
+paciente
+Menú para acceder al histórico 
+de resultados de los pacientes
+Resultados Blancos y 
+Calibradores
+Menú para acceder al histórico 
+de resultados de los blancos y 
+calibradores
+Resultados QC
+Menú para acceder al histórico 
+de resultados de controles
+Resultados 
+acumulados QC
+Menú para acceder al histórico 
+de resultados del acumulado de 
+controles
+Resultados ISE
+Menú para acceder al histórico 
+de resultados de la calibración 
+de los ISE
+Histórico Alarmas del 
+analizador
+Menú para acceder al histórico 
+de alarmas
+Menú
+Submenú
+Descripción
+Utilidades
+Cambiar Rotor de 
+Reacciones
+Menú para acceder al cambio 
+de rotor
+Acondicionar 
+analizador
+Menú para acceder a la opción 
+de acondicionar el analizador
+Utilidades ISE
+Menú para acceder a las 
+diferentes utilidades del ISE
+Utilidades LIS
+Menú para acceder a las 
+diferentes utilidades del LIS
+Crear ReportSAT
+Creación de un informe de 
+reportSAT
+Cargar ResportSAT
+Carga de un informe de 
+ReportSAT generado 
+previamente
+Crear punto de 
+restauración con los 
+datos actuales
+Opción de copia de seguridad
+Restaurar Datos 
+previos
+Cargar de un fichero de 
+copia de seguridad generado 
+previamente
+Auditoría
+Visualizador del audit trail

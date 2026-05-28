@@ -1,0 +1,41 @@
+References of figures 3.16 and 3.17
+1 – Manifold with electro valves
+2 – Board with led lamp
+3 – Pressure sensor
+4 – Sample pump
+5 – Reagent 1 pump
+6 – Reagent 2 pump
+7 – Output connection fitting
+8 – 3 mm sample piston
+9 – 8 mm reagent piston
+10 – Retaining element
+11 – Piston support
+12 – Pump spindle
+13 – Pump motor
+3.7. Structure 
+Each of the analyser's subassemblies is attached to the structure (1). The sample rotor, reagent rotor, reaction rotor, 
+sample arm, reagent arm and stirring arm subsassemblies are attached at the top. The pump and fluidic subassemblies 
+are attached at the bottonm right-hand side. The electronics and power supplies are located on the top left-hand side. 
+The ISE module (2) is located in the centre, at the top, and the ISE module reagent kit (6) is located in the bottom 
+central part. See Figure 3.18.
+The washing solution bottles (5) and high contamination waste bottles (4) are located in the bottom central part. 
+The volume in the bottles is determining by weighing. Below each bottle is a weighing scale (7).
+The general fans (12), (13) are fastened directly to the structure. The fan (3) is attached to the front panel.
+The wash stations for each tip and stirrer (10) are attached directly to the structure. The evacuation tubes are con­
+nected directly to the low contamination waste bottle. The distilled water bottles (14) and low contamination waste 
+bottles (15) can be accessed from the rear bottom part. Double buoy sensors are used to detect the maximum and 
+minimum levels of each container.
+The main switch is located at the bottom right-hand side (16), and the partial switches at the side (11).
+The external fluidic connections are located at the bottom left-hand side (17).
+Figure 3.18 
+Front view of structure
+9
+4
+6
+1
+3
+5
+2
+8
+7
+29

@@ -1,0 +1,46 @@
+Manual usuario 
+ 
+ 
+ 
+Manual usuario 
+ 
+ 
+ 
+168
+168
+Biosystems
+Biosystems
+Ilustración 110 
+Pantalla utilidades del módulo ISE
+10.9.5. Utilidades LIS
+Desde esta pantalla se permite realizar algunas acciones para resolver posibles proble­
+mas causados por funcionamiento incorrecto del programa LIS. Esta funcionalidad 
+solo se activa cuando la comunicación LIS se encuentra activada.
+ Eliminar las ordenes pendientes 
+de LIS
+ 
+Borra las ordenes recibidas desde el LIS no ejecutadas y que quedan pendientes. 
+El programa LIS debe siempre enviar cancelaciones de las ordenes enviadas al 
+BA200 cuando finalmente decide no realizarlas. En caso de mal funcionamiento 
+del LIS o las comunicaciones, existe esta herramienta auxiliar en el BA200 que 
+permite eliminar ordenes de LIS. La eliminación de ordenes de LIS de esta forma 
+se reporta al LIS enviado un mensaje de orden cancelada, de esta forma el LIS 
+puede registrar usuario y fecha en la que se realiza esta acción. 
+No se recomienda el uso intensivo de esta utilidad. Formalmente, siempre debe ser 
+el sistema LIS quien distribuye las ordenes entre los intrumentos del laboratorio 
+e informe de las cancelaciones a cada instrumento.
+Los motivos por los cuales el LIS decide cancelar ordenes en el BA200 pueden ser: 
+los tubos de muestra no llegan al instrumento, existen alarmas del instrumento que 
+impiden que realice el trabajo y se decide enviar las ordenes a otro instrumento.
+Esta acción únicamente está disponible cuando el analizador está en modo STAND-
+BY y las comunicaciones del LIS estén activadas y sin errores.
+ 
+Eliminar las colas de 
+almacenamiento interno
+ 
+Borrar la cola de mensajes pendientes de subir al sistema central LIS. Cuando 
+hay algún problema de comunicaciones con el LIS los mensajes se pueden acu­
+mular en la cola a la espera de restablecer las comunicaciones. En caso de que el 
+usuario ya no le interese el envío de estos mensajes se pueden borrar desde esta 
+opción.
+NOTE

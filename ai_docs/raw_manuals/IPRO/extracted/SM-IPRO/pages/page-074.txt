@@ -1,0 +1,25 @@
+74
+Manual de servicio
+REQUISITOS ELÉCTRICOS
+• 
+Tensión de entrada 115 VAC - 230 VAC, 50/60 Hz
+• 
+Potencia 150 VA
+• 
+Categoría de la instalación eléctrica (categoría de sobrevoltaje) II
+• 
+La toma de red tiene que ser homologada según norma UNE EN 61010-1, con toma de tierra 
+y el cable con una sección mínima de 1.5mm2.
+ 
+ 
+CONDICIONES AMBIENTALES
+• 
+Uso interior
+• 
+Altitud < 2500 m
+• 
+Temperatura 10°C - 35°C
+• 
+Humedad relativa < 75%
+• 
+Grado de polución 2

@@ -1,0 +1,49 @@
+Service Manual 
+14
+2. General description of the analyser
+In mechanical terms, the analyser is divided up into subassemblies. Each subassembly has its own electronic board 
+for controlling the individual subassembly elements. 
+All the subassemblies are electrically connected by the CAN bus cable. The CAN bus cable contains the power wires 
+and the wires that transmit information between the boards.
+A list of the subassemblies is given below:
+• 
+Sample rotor
+• 
+Reagent rotor
+• 
+Reaction rotor
+• 
+Pipetting arm
+• 
+Stirring arm
+• 
+Wash station
+• 
+Dispensing pumps
+• 
+Fluidic system
+• 
+Washing solution and high contamination waste bottles
+• 
+Electrical and communication connections
+• 
+ISE module (optional)
+2.1. Sample rotor
+The sample rotor is comprised of a drum for positioning the samples, a cover and a barcode reader. 
+The drum has a circular structure with 3 concentric rings in which the tubes or sample wells are placed.
+Each of the 3 rings has 45 positions for tubes with diameters of between 12 and 16 mm and heights of up to 100 mm
+The barcode reader can only read the primary tubes with codes located in the two outer rings. 
+The accessories box has some adapters for insertion in each of the positions in the event that they must contain 
+sample wells instead of primary tubes.
+The positioning of the serum in the rings is not really relevant but the following positioning is recommended:
+Calibration serums, controls and special solutions (such as washing and dilution solutions) should be placed in the 
+innermost ring, in sample wells. Samples should be placed in the two outer rings in primary tubes so that they can 
+be read by the barcode reader.
+2.2. Reagent rotor
+The reagent rotor is comprised of a drum for positioning the samples, a cover and a barcode reader. The whole as­
+sembly is refrigerated.
+The drum has a circular structure with 2 concentric rings with positions for inserting the reagent bottles.
+Each ring has 44 positions.
+The barcode reader can read the codes of the bottles positioned in both rings. 
+There are 2 types of bottle: some have a capacity of 60 mL and others have a capacity of 20 mL.
+The 20 mL bottles can only be placed in the outer ring.

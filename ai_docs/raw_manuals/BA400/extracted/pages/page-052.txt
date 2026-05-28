@@ -1,0 +1,34 @@
+52
+Figure 4.16 
+Rotor board silk printing
+Connector
+Function
+Pin
+CN1
+CAN bus connection 
+Pin 1: 24V
+Pin 2: GND
+Pin 3: NC
+Pin 4: CAN_H
+Pin 5: CAN_L
+CN2
+Separate fridge power supply
+Pin 1: 24 V Fridge
+Pin 2: GND Fridge
+CN3
+Demister
+Pin 1: 24 V
+Pin 2: Activation
+CN4
+Barcode reader
+Pin 1: Activation/deactivation
+Pin 2: Reading channel 1
+Pin 3: Transmission1
+Pin 4: GND
+Pin 6: Reading channel 2
+Pin 9: Reading shot
+Pin 10: Transmission2
+CN6
+General fan
+Pin 1: 24 V
+Pin 2: GND

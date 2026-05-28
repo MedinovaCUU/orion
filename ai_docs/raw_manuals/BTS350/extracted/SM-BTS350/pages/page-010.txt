@@ -1,0 +1,34 @@
+—  10  —
+Service manual
+2.2.3. - Physical description
+The suctioning tube (figures 2.6 and 2.7) is placed on the cuvette-holder tray. The suctioning tube (1) penetrates the 
+housing through a rubber part (2) that serves as a guide. This tube is fixed to the cuvette (3) by an input fitting (4). On 
+leaving the cuvette, it is connected to the dosing tube (5) through the output fitting (6). The dosing tube is housed in the 
+peristaltic pump (7) and is finally connected to the waste output fitting (8).
+The waste bottle (9) (Figure 2.6) is connected to the fitting (10) at the rear part of the appliance by the silicone tube (11).
+2.2.4. - Control parameters
+Three parameters control the suctioning function, and they must be programmed to obtain the expected performance 
+characteristics. To adjust it, see section 3.2.3. - Aspiration system adjustment
+• 
+Sample volume. This is the number of pump steps that allows the volume of the sample to be suctioned to be adjusted.
+• 
+Pump retard. The number of seconds the pump will wait from the time the suctioning process finishes to the time 
+when it is activated again to position the sample.
+• 
+Positioning. This is also the number of pump steps that determines the conveyance of the sample to the cuvette, 
+ensuring that it remains in the correct position to be read.
+Figure 2.4 
+Figure 2.5 
+Figure 2.6 
+3
+1
+2
+1
+4
+5
+6
+7
+8
+9
+10
+11

@@ -1,0 +1,24 @@
+8.9.1. 
+AC16587 - Cámara superior y AC16585 - Retén y junta tórica
+7
+8
+Herramientas: Llave allen 2.5 mm y 3 mm
+Desmontaje: 
+1. Quite los 4 tornillo (7).
+2. Desmonte el conjunto cámara superior de la bomba. (8)
+3. Quite los 4 tornillos (1).
+4. Quite el soporte retén (2), el retén (3), el supresor burbujas (4) y la junta tórica (5) de la cámara superior (6).
+Montaje: 
+1. Sustituya la pieza defectuosa (cámara o retén)
+2. Limpie con papel secante el soporte retén (2). Lubrique el soporte retén (2) y el retén (3) con solución de lavado 
+para facilitar el montaje. 
+3. Inserte con cuidado el retén (3) en el soporte retén (2) presionando uniformemente el retén sin que se deformen 
+los muelles internos. Ayúdese de alguna pieza plana para presionar el retén.
+4. Verifique que el retén está bien nivelado con el soporte retén.
+5. Coloque en el orden inverso de la Ilustración 8.30 cada uno de los elementos. Verifique que todos están bien 
+colocados concéntricamente.
+6. Coloque los 4 tornillos (1) para sujetar firmemente el conjunto retén en la cámara.
+7. Humedezca con solución de lavado la cabeza del pistón y el interior del retén.
+8. Inserte con cuidado la cámara y retén en el pistón.
+9. Coloque los 4 tornillos (7) para sujetar la cámara a la bomba.
+145

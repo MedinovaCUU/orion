@@ -1,0 +1,18 @@
+Manual de servicio
+140
+15
+16
+Ilustración 6.50 
+17
+1
+2
+3
+4
+Ilustración 6.51 
+6.6.3. AC17319 - Sensor de temperatura del refrigerador
+Desmontaje:
+1. Proceder como en el capítulo 6.6.2 anterior hasta el punto 13
+Montaje:
+1. Volver a montar el sensor de temperatura habiendo colocado previamente cierta cantidad de silicona 
+térmica.
+2. Volver a montar todo el conjunto sioguiendo los pasos realizados en orden inverso.

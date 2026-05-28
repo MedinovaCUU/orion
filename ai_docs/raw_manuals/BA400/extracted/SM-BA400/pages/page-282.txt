@@ -1,0 +1,26 @@
+Lista de recambios
+Código
+Representación 
+Descripción
+AC16792
+Recambio filtro de entrada (5 µm)
+AC17098
+Filtro aniónico de nitratos
+AC16815
+Conjunto completo rotor de reactivos
+AC17094
+Conjunto desgasificador
+AC17092
+Membrana de recambio del desgasificador
+AC17220
+Placa del desgasificador
+AC17341
+Placa del nuevo control del desgasificador (Nuevo 
+modelo, ver AII para saber el número de série a 
+partir de su implementación)
+AC17221
+Peso con filtro (5)
+AC17222
+Tubo de teflón con griper (3 conjuntos)
+Manual de servicio
+282

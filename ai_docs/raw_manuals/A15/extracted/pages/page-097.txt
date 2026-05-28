@@ -1,0 +1,15 @@
+98
+Manual de servicio
+5.4.8. Configurar el tipo de rotor
+En esta pantalla se introduce el tipo de rotor. Cada rotor viene marcado con una letra en su parte superior. 
+Seleccionar en dicha pantalla el tipo de rotor a utilizar. Para los rotores marcados con una A, únicamente se 
+selecciona dicha letra. Para los rotores marcados con otras letras, seleccionar OTROS y luego introducir el 
+paso de luz que lo localizará dentro de la caja de rotores o directamente del distribuidor.
+5.5. Registro
+Varias funciones permiten la gestión del histórico de ajustes, tests, incidencias, re para cio nes y operaciones 
+de mate ni mento.
+5.5.1. Introducción del número de serie del analizador
+El técnico puede introducir el número de serie del analizador para que aparezca en los informes de servicio 
+impresos. Si se cambia un número de serie introducido anterior mente, los históricos de servicio se reinician. 
+En este caso el técnico puede guardar todos los datos anteriores en un fichero.
+El técnico puede introducir su nombre para que aparezca en los informes de servicio impresos.

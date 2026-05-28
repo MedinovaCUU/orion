@@ -1,0 +1,42 @@
+26
+USUARIO
+Manual de Usuario BioSystems SPICA | Versión 2.8 - Agosto 2024
+Manual de Usuario BioSystems SPICA
+5. PROCEDIMIENTOS DE MEDICIÓN
+5.2 Cálculo de las absorbancias
+La siguiente fórmula se aplica para calcular la absorbancia:
+4. TIEMPO FIJO MONO-REACTIVO
+En las pruebas programadas con el método de cálculo de tiempo fijo, la velocidad de reacción es 
+directamente proporcional al sustrato consumido. A medida que se consume el sustrato, la velocidad de 
+reacción se reduce, lo que provoca un cambio en la absorbancia. Así, en un intervalo de tiempo fijo el 
+cambio en la concentración del sustrato es directamente proporcional a la concentración inicial. En este 
+modo de cálculo, se toman dos lecturas y la absorbancia resultante es la diferencia entre ambas lecturas.
+A = ABS
+λprincipal
+L2
+ABS
+-
+*
+λprincipal
+L1
+V + V + V
+V + V 
+M R1 R2
+M R1
+ABS
+DIFERENCIAL
+Tiempo (ciclos)
+RA + S
+L1
+L2
+1 18 3
+5
+RB
+ABS
+TIEMPO FIJO Mono-Reactivo
+Tiempo (ciclos)
+RA + S
+L1
+L2
+1 2 3
+5

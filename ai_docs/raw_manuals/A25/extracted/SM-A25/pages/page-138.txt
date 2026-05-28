@@ -1,0 +1,18 @@
+Manual de servicio
+138
+Mounting
+1. Replace new tray
+2. Connect the cables and tubes from the rear. See chapter 6.3.6 to know how to connect the tubes
+3. Install the 8 screws (42)
+4. Readjust sensitivity of level detection with service program
+42
+Figure 6.35 
+6.3.9. 
+TU11533 - Set of liquid system bottle tubes
+Disassembly
+1. Take out the fridge and front cover
+2. Remove the connection of the tubes of the bottles (43), (44), (45)
+Mounting
+1. Replace the tube set
+2. Connect the tubes. See chapter 6.3.1 and 6.3.6 to know how to connect the tubes
+3. Check that the tubes are well connected

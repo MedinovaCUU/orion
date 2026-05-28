@@ -1,0 +1,186 @@
+Manual de servicio
+88
+CIIM00052
+CAN BUS
+ROTOR
+DETECTOR
+ROTOR
+MOTOR
+A-PLMA00337
+PLMA00345
+TEMPERATURE
+SENSOR
+FAN3
+FAN4
+PELTIER
+BRANCH2
+FRIDGE
+FAN
+FAN1
+FAN2
+PELTIER
+BRANCH1
+COVER 
+DETECTOR
+A-PLMA00335
+FAN
+FAN
+HEATER
+FA FRIDGE
+PLMA00338
+FRIDGE SUPPLY
+CN4
+FRIDGE
+FAN
+FRIDGE
+FAN
+FRIDGE
+FAN
+CAN BUS
+B-PLMA00332
+B-PLMA00333
+B-PLMA00334
+THERMISTOR
+DEFOGGER
+A-PLMA00336
+BARCODE
+READER
+BARCODE
+READER
+ROTOR HOME
+ROTOR
+CIIM00052-A : REAGENTS
+CIIM00052-B : SAMPLE
+COOLER
+POWER
+SUPPLY
+ROTOR COVER
+ROTOR COVER
+PELTIERS
+BRANCH2
+PELTIERS
+BRANCH2
+P.FAN4
+P.FAN3
+P.FAN2
+P.FAN1
+THERMISTOR
+DEFOGGER
+ROTOR
+ROTOR
+HOME
+CTRL COOLER SUPPLY
+FRIDGE CTRL SUPPLY
+CTRL COOLER
+SUPPLY
+RR1, RM1
+ISOLATED
+ROTOR
+CN15
+1
+2
+3
+CN26
+1
+2
+3
+4
+5
+CN8
+1
+2
+1
+2
+3
+4
+5
+6
+CN16
+1
+2
+CN7
+1
+2
+CN9
+1
+2
+3
+4
+CN19
+1
+2
+3
+1
+2
+RS-232 -BAR CODE READING
+5
+9
+4
+8
+3
+7
+2
+6
+1
+1
+6
+2
+5
+4
+CN2
+1
+2
+CN16
+1
+2
+3
+CN13
+1
+2
+CN14
+1
+2
+3
+CN31
+1
+2
+3
+4
+1
+2
+CN6
+1
+2
++tº
+1
+2
+CN12
+1
+2
+CN3
+1
+2
+CN11
+1
+2
+3
+Ilustración 4.20 
+Conexiones de la placa control de rotores versión 2
+4.9. Placa control de fluidos – CIIM00053
+Esta placa está ubicada en la parte superior de la zona de fluidos.
+La placa a través de un microcontrolador (U10) controla los siguientes elementos:
+• 
+Driver de los agitadores (U18)
+• 
+Acondicionamiento de las señales de las balanzas (U5 y U6) para la solución de lavado y residuos de alta con­
+taminación
+• 
+Acondicionamiento de las boyas de las botellas internas de agua y residuos
+• 
+Driver para el calentador del agua de la estación de lavado (U1)
+• 
+Sensor de temperatura para controlar la termostatización del agua de la estación de lavado
+• 
+Driver del motor de la dispensación del agua de la estación de lavado
+• 
+Detección de inicio de la dispensación del agua de la estación de lavado

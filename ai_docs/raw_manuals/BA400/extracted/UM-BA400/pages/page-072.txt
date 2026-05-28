@@ -1,0 +1,56 @@
+Manual usuario 
+ 
+ 
+ 
+Manual usuario 
+ 
+ 
+ 
+72
+72
+Biosystems
+Biosystems
+Icono
+Descripción del icono
+Acceso a la pantalla del control de calidad
+Acceso a la pantalla del acumulado del control de calidad
+Acceso a la pantalla para la generación de información para el 
+servicio técnico
+Acceso a información sobre funcionalidad adicional disponible en 
+algunas pantallas
+Realización del reset de la sesión de trabajo
+Indica el tiempo total estimado al iniciar la sesión y el tiempo restante 
+durante la ejecución de la sesión
+Tabla 3 Descripción de los botones de acceso rápido
+9.1.3. Listado de botones relacionados con la comunicación con LIS
+Botones que aparecen en la barra horizontal e indican las acciones principales que se 
+pueden realizar con una aplicación LIS y el estado de las comunicaciones con LIS
+ 
+)
+Véase capítulo 16 para ver los detalles del funcionamiento de las comunicaciones LIS.
+Icono
+Nombre
+Descripción 
+Estado LIS
+Conexión con LIS desactivada
+Estado LIS
+Conexión con LIS establecida y 
+funcionando
+Estado LIS
+Conexión con LIS establecida, pero LIS no 
+responde correctamente al resto de acciones. 
+Para solucionarlo: revise conexión física, 
+compruebe que la configuración del 
+protocolo de comunicaciones de bajo 
+nivel con LIS es el correcto, compruebe 
+el funcionamiento de LIS (tiempos de 
+respuesta, envío de mensajes de formato 
+correcto, flujo de mensajes correcto, etc) 
+Estado LIS
+Conexión con LIS establecida y 
+funcionando, pero la entrega de los 
+mensajes se retrasa y puede saturar la cola de 
+mensajes (revise el funcionamiento de LIS)
+Query All 
+Botón para realizar una petición de todas las 
+órdenes de LIS pendientes

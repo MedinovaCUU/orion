@@ -1,0 +1,24 @@
+37
+pueden estresar parcialmente:
+• 
+Eje X
+• 
+Eje Y
+• 
+Eje Z
+• 
+Bomba dosificadora
+• 
+Bombas peristáltica
+• 
+Electroválvula de 3 vías(punta)
+• 
+Electroválvula de 3 vías
+3.4  UTILIDADES 
+El programa contiene varias utilidades técnicas. Estas utilidades también son accesi­bles desde el 
+programa de usuario. 
+3.4.1  Cebado del sistema fluídico/Lavado de circuitos
+Al pulsar el botón Test, el procesador llena los conductos del sistema de dosificación y de la estación 
+de lavado con agua destilada. Para rea­lizar esta operación el brazo manipulador se desplaza hasta la 
+estación de lavado. El técnico puede seleccionar si desea cebar el sistema de dosificación, el sistema 
+de lavado o ambos.

@@ -1,0 +1,24 @@
+55
+Onces is configured and connected the cable, switch on the analyser. In this moment will appear in the HyperTerminal 
+screen information about the analysers mode and the different executes states. In the initializate mode, the analyser 
+do an internal checking for each element, if someone has any error then in the screen will show the element that fails. 
+The following lines shows an exemple of the instructions during an initialization, (this information could change with 
+the improvements of the firmware) :
+BioSystems S.A. 2007
+Monitor Firmware A25 v3.0
+ - Forced Monitor?: No
+ - Monitor Mode?: No
+ - Checking User Firmware: Found Firmware
+ Checksum Ok
+ - Launching User Firmware!
+[A25V2]
+ BIOSYSTEMS A25 [FRIDGE] 
+Firmware initialization 
+ Firmware Version: A25 User V3.30 
+ Serial Number: 831013000
+ FLASH functions transferred to RAM
+ Interrupt Vectors transferred to RAM
+ Interrupts enabled
+ Checking firmware integrity
+ Checking program checksum:
+ Checksum correct! Program Checksum=0xA585 Size=450664

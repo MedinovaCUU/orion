@@ -1,0 +1,33 @@
+Service manual
+50
+TP36V - 36 V voltage
+TP12 - 12V digitals
+TP12-AN - 12 V analogic
+TPGND - GND
+TPLAMP-HIGH - 12V lamp
+TPLAMP-LOW - GND lamp
+TP5V - 5V
+TP5V-GND - 5V GND
+Diode LED:
+LD1 - Show 12V lamp activate
+LD2 - Show 12V analogics activate
+LD3 - Show 36V activate
+LD4 - Show 5V activate
+4.4. 
+Needle Board (CIIM00008)
+This board conditions the thermistor signal associated with the thermostatation of the needle, the preamplification of 
+the level detection signal and the Z home. It receives, from the needle-fan unit associated with thermostatation, the 
+Peltier cell, the thermistor and the level signal detected by the needle itself.
+Two sets of cables leave this needle and join this board with the CIIM00006-01 board (specifically with the J29 and 
+J27 connectors) for its J1 and J2 connectors.
+Connector
+Function
+Pins
+J1
+CPU board connection (CIIM00006)
+1 - Fan control
+2 - Home Z
+3 - Thermistor
+4 - Sensor level
+5 - GND
+6 - 12V

@@ -1,0 +1,34 @@
+{
+  "manufacturer": "Biosystems",
+  "equipment": "BTS350",
+  "aliases": [],
+  "document_type": "service_manual",
+  "language": "English",
+  "source_pdf": "/Users/ricardomontanezmiranda/Documents/BioSys Diagnostico/data/manuals/BTS350/SM-BTS350.pdf",
+  "source_filename": "SM-BTS350.pdf",
+  "source_sha256": "c55ada9633a441df4904986952cd3a485ae79c2340c13a4c9cba19fa6a656e86",
+  "page_count": 49,
+  "pdf_metadata": {
+    "format": "PDF 1.7",
+    "title": "MS-BTS-350-EN.pdf - ServiceManual-0010 - (189) - 09/04/2025 9:15:35",
+    "author": "Biosystems",
+    "subject": "MS-BTS-350-EN.pdf - ServiceManual-0010 - (189) - 09/04/2025 9:15:35",
+    "keywords": "",
+    "creator": "Biosystems",
+    "producer": "Biosystems",
+    "creationDate": "D:20260330204433+02'00'",
+    "modDate": "D:20260330204433+02'00'",
+    "trapped": "",
+    "encryption": null
+  },
+  "title_lines": [
+    "Service",
+    "manual",
+    "English",
+    "BTS-350"
+  ],
+  "manual_version": "3.0",
+  "change_description": "Add information about Y-350",
+  "revision_date": "February 2017",
+  "manual_code": "TESE000010-03-ING"
+}

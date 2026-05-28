@@ -1,0 +1,19 @@
+Manual de servicio
+126
+11
+Ilustración 6.26 Colocación de las peltiers en el canal calefactor
+6.4.5. MO13372 - Motor del rotor
+Desmontaje:
+1. Extraer la carcasa superior. Ver 6.1.5
+2. Extraer el conjunto rotor. Ver capitulo 6.4.1
+3. Extraer los 4 tornillos (12) que sujetan la tapa superior del rotor
+4. Extraer las 2 tuercas (13) que sujetan al motor
+5. Separar del canal calefactor el conjunto motor (14)
+6. Extraer los 4 tornillos (15) para separar el motor (16) del distanciador
+Montaje
+1. Montar en orden inverso al desmontaje
+2. Antes de apretar las tuercas (13) ajustar el juego entre el engranaje y el piñón. 
+3. Apretar las tuercas
+4. Verificar el movimiento del engranaje con el piñón. Para verificar el movimiento, hacer girar lentamente 
+toda una vuelta de la corona y verificar que en ningún momento se engancha la corona con el piñón. 
+También verificar que no quede muy holgado la corona respecto al piñón.

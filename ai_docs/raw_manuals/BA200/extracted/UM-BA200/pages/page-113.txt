@@ -1,0 +1,29 @@
+113
+113
+10.3.8. Módulo ISE
+Pantalla donde se programan los parámetros del módulo ISE. El módulo de medida 
+de iones es opcional. El módulo puede medir 4 iones diferentes: Na+, K+, Cl- y 
+Li+, ya programados por defecto. No se pueden borrar ni crear nuevos. El usuario 
+supervisor puede modificar los siguientes parámetros:
+ 
+Nombre 
+Nombre de la técnica, este nombre servirá para identificar a la técnica en el 
+programa. La longitud máxima es de 16 caracteres.
+ 
+Nombre corto 
+Nombre reducido de hasta 8 caracteres para utilizar en determinadas pantallas 
+dentro de la aplicación.
+ 
+Tipo de muestra 
+Seleccione qué tipo de muestra se usará.
+ 
+Técnica ISE disponible 
+Seleccione esta opción para que se visualice la técnica de Litio en la pantalla de 
+selección de muestras. (opción solo disponible para el Li+) 
+ 
+Nombre del informe 
+Nombre de la técnica que aparecerá en el informe por paciente. Si no hay 
+ningún nombre entrado en este campo en el informe de paciente aparecerá el 
+nombre de la técnica.
+Ilustración 72 
+Pantalla de programación de los parámetros ISE

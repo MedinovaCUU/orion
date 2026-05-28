@@ -1,0 +1,25 @@
+SERVICIO
+Manual de Usuario BioSystems SPICA
+48
+Manual de Usuario BioSystems SPICA | Versión 2.8 - Agosto 2024
+1. ELEMENTOS DE HARDWARE
+1.5 Brazo Agitador
+Las partes del ensamblaje del movimiento de elevación y rotación son las mismas que el ensamblaje del 
+brazo dosificador. La única diferencia entre la estructura del brazo dosificador y el agitador es la posición 
+del sensor de arranque (Fig.3)
+El sensor se coloca en la parte superior del brazo dosificador, mientras que se coloca en la parte inferior del 
+agitador. Una paleta plana forma el agitador. La paleta está pegada al eje del motor de corriente continua. 
+El motor está unido a la pieza de cabeza apoyada por un adaptador (Fig.4)
+1.6 Ensamblaje de la bomba de dispensación
+El ensamblaje de la bomba de cerámica se usa para succionar y dispensar las muestras y los reactivos. 
+Está formado por una unidad motriz con un pistón de cerámica, un conjunto de colectores y una bomba de 
+diafragma (Fig.5). La salida del colector es un tubo de teflón conectado a la bomba de dispensación por 
+una placa de interconexión. Las entradas están formadas por un tubo para la succión de agua destilada y 
+otro para la succión de la solución de lavado. Las electroválvulas pueden ser conmutadas para seleccionar 
+aire, solución de lavado o agua destilada. La bomba de diafragma se utiliza para lavar el interior del circuito 
+de dispensación con agua destilada o solución de lavado, dependiendo de la función de selección de 
+las electroválvulas. En la cámara fluida de la bomba, el colector tiene sensores de presión (opcional) que 
+detectan si la punta de la muestra está bloqueada.
+(Fig.3)
+(Fig.5)
+(Fig.4)

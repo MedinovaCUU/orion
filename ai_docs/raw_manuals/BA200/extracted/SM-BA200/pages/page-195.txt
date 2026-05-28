@@ -1,0 +1,27 @@
+8.15.7. AC17309 - Varilla detección desbordamiento
+Herramientas: Allen 1.5
+Desmontaje varilla detección :
+1. Desatornille el espárrago (26).
+2. Quite la varilla (25) de detección. 
+3. Desconecte el cable de la placa, quite los pins del conector para facilitar el paso por la pieza de plástico donde 
+pasan todos los tubos
+Montaje varilla detección :
+1. Desmonte los pins del conector. Pase por el orificio número 11, los 2 cables del conector.
+2. Coloque los pines en el conector y conecte en la placa CIIM0069 del conjunto del rotor de lecturas.
+3. Coloque la varilla (25) por el orificio y sujétela con el espárrago (26).
+25
+26
+Ilustración 8.85 
+Desmontaje varilla detección desbordamiento
+8.15.8. AC17334 - Conjunto estación de lavado
+Modificación de la estació de lavado. Véase capítulo AII para saber a partir de que número de serie se ha implementado.
+Herramientas: Allen 2.5
+Desmontaje:
+1. Desmonte el conjunto de la estación de lavado. Quite tornillo (70)
+2. Desconecte de la placa el cable de la varilla de detección de desbordamiento.
+3. Desmonte las 5 puntas de aspiración (71), quitando los 5 tornillos (72)
+Montaje:
+1. Sustituya el conjunto estacion de lavado por uno nuevo
+2. Coloque las 5 puntas (71) con sus tornillos (72) en el nuevo conjunto
+3. Conecte a la placa el cable de la varilla de detección de desbordamiento
+195

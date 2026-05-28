@@ -1,0 +1,45 @@
+12
+USUARIO
+Manual de Usuario BioSystems SPICA | Versión 2.8 - Agosto 2024
+Manual de Usuario BioSystems SPICA
+POSICIONAR EL EQUIPO DE FORMA QUE SEA FÁCIL ACCEDER AL 
+INTERRUPTOR TRASERO Y BASE DE TOMA DE CORRIENTE.
+DEJAR UN ESPACIO DE AL MENOS 10 CM DETRÁS DEL ANALIZADOR 
+PARA QUE EL AIRE CIRCULE POR LA ENTRADA DEL VENTILADOR.
+Haga una comprobación visual para asegurarse de que ninguno de los elementos ha sufrido ningún daño 
+aparente durante el transporte.
+Los elementos que el usuario encontrará al desembalar el analizador se enumeran a continuación.
+1. Analizador
+2. Guía Rápida de Instalación
+3. Hoja de Certificado de Análisis (Certificado de Liberación del Instrumento)
+4. Caja de accesorios (suministradas en la misma caja que el analizador)
+2.2. Ubicación
+Instale el analizador en un espacio interior. Este ocupa un espacio mínimo de 100 x 62 x 65 cm (ancho x 
+profundidad x altura).
+CONDICIONES AMBIENTALES 
+El aire acondicionado
+Es aconsejable que el analizador se instale en una habitación con aire acondicionado para asegurar que 
+las condiciones de temperatura y humedad se mantengan estables. El analizador no debe estar frente al 
+flujo de aire directo del aire acondicionado.
+Emisión de calor
+Máximo de 1706 BTU/h
+Temperatura
+La temperatura en el área donde se instala el analizador debe estar dentro del rango de 10°C a 35°C. 
+Es importante recordar que los cambios de temperatura durante el funcionamiento deben ser menores de 
+2° C/h.
+Humedad
+La humedad relativa del aire en la habitación donde se instale el analizador debe ser inferior al 85%, sin 
+condensación.
+Iluminación
+No coloque el analizador debajo de fuentes de luz potentes. Mantenga la iluminación lo más estable posible 
+y asegúrese de que ninguna luz intermitente caiga directamente sobre el analizador. También debe evitarse 
+la luz solar directa.
+La radiación electromagnética
+Asegúrese de que el analizador no esté cerca de ninguna fuente de radiación electromagnética (como 
+motores, aparatos de centrifugado, teléfonos móviles) o fuentes de calor.
+Nivelación
+Mueva el analizador a su ubicación definitiva empujándolo suavemente.
+Una vez que esté en la posición final, desenrosque los cuatro pies ajustables si necesita nivelarlo.
+2. INSTALACIÓN
+2.1 Generalidades
+ATENCIÓN

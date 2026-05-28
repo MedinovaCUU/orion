@@ -1,0 +1,23 @@
+82
+Service manual
+which points each of the filters is positioned when optical readings are taken when the analysis is carried out, 
+with the coordinate of the positioning of the filter 0 currently programd in the analyzer. If necessary, the technician 
+can move the reading points over the graph jointly using two buttons. The optimum reading point is that which 
+globally maximises the light intensity for all the filters. At all times, the screen shows the current coordinate 
+of the filter 0 and the last coordinate stored, as additional information for the technician. When the position is 
+satisfactory, the current coordinate of the positioning of the filter 0 can be stored by pressing the Store button. 
+Pressing the Cancel button keeps the last stored value and the current value is not stored.
+5.2.6. 
+Adjustment of the level control scales
+This screen makes it possible to set the level control scales with the empty waste and distilled water containers 
+(0% capacity) and when they are full (100% capacity). The maximum capacity of the containers is approximately 
+3L. The technician must choose whether he wishes to set the distilled water or waste container scales, with the 
+corresponding container full or empty. According to the requested adjustment, the corresponding container, full 
+or empty, must be placed in position and the Adjust button pressed. Based on the settings made, the analyzer 
+automatically adjusts the scales. On pressing the Store button, the analyzer saves the new values of the adjust­
+ed parameters. Pressing the Cancel button keeps the last stored values and the current values are not stored.
+5.2.7. 
+Adjustment of the level detection sensitivity
+This screen allows fitting the sensitivity of the capa­city level detection system of the probe. The pediatric rack 
+is a rack with 15mm diameter with the adapter tubes and the pediatric wells inserted.
+In order to make the adjustment, first of all you have to select a rack and place on it the following configuration

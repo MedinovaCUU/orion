@@ -1,0 +1,81 @@
+45
+Connector
+Function
+Pins
+J1
+Motor Z 
+1 - coil 1
+2 - coil 1
+3 - coil 2
+4 - coil 2
+J2
+Motor Y 
+1 - coil 1
+2 - coil 1
+3 - coil 2
+4 - coil 2
+J4
+Motor X shaft
+1 - coil 1
+2 - coil 1
+3 - coil 2
+4 - coil 2
+J5
+Pump Motor
+1 - coil 1
+2 - coil 1
+3 - coil 2
+4 - coil 2
+J6
+Filter Drum Motor
+1 - coil 1
+2 - coil 1
+3 - coil 2
+4 - coil 2
+J7
+Rotor Motor
+1 - coil 1
+2 - coil 1
+3 - coil 2
+4 - coil 2
+J8
+Diaphragm inlet Pump
+1 - motor
+2 - motor
+J11
+Diaphagm outlet pump
+1 - motor
+2 - motor
+J9
+3-way electrovalve
+1 - coil 1
+2 - coil 1
+J10
+3-way electrovalve 
+1 - coil 1
+2 - coil 1
+J12
+3-way electrovalve 
+1 - coil 1
+2 - coil 1
+J13
+2-way electrovalve 
+1 - coil 1
+2 - coil 1
+J15
+The signal enabling level detection by the analyzer 
+needle is injected into the racks tray through this con­
+nector.
+1- Faston
+J16
+36V voltage 
+1 - 36V
+2 - GND
+J17
+12V voltage 
+1 - GND
+2 - 12 V analogical
+3 - GND
+4 - 12 V peltier
+5 - GND
+6 - 12 V valves

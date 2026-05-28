@@ -1,0 +1,37 @@
+105
+5.5.3. 
+Language change
+This makes it possible to choose the language used in the service program.
+5.5.4. 
+Users
+Two types of user can be created with different access levels:
+• 
+SAT. This user has full access to the programme. This user has permission to create and/or delete other 
+users. 
+• 
+User. This user has restricted access to the programme. This user can only perform the tests and run the 
+utilities. He/she can not make any adjustments or load any previously saved adjustments files or change 
+the firmware version of the analyser.
+From the Users menu, it is possible to create, delete and change users. The Change password option is for 
+each user to change his own password.
+5.6. 
+Monitor 
+These enable the low level communication with the analyzer to load new versions of the program in the flash 
+memory of the analyzer (firmware) or to restore the default adjustment parameters. 
+The firmware of the analyzer resides in a permanent flash memory. The change of this program can be made 
+through the computer without the need for changing the memory chip. 
+To load the new version, press the Start button, previously indicating where the program is located using the 
+Open button. 
+From version 3.0.2, before loading a new firmware, the program checks that the file is correct. If is so, the 
+program sends it directly to the analyzer. If there is an error message, please contact the Technical Service to 
+replace/recover the corrupt file
+First of all, the current content of the flash memory is deleted and then the new program is loaded. This oper­
+ation may take several minutes.
+Once the program has changed, the analyzer is restarted with the new version of the program. While the copy 
+process is being performed, the screen indicates the percentage completed. 
+There is also the option to Restore Default Adjustments, selecting the option and pressing Start.
+If the technician wants the analyzer to enter monitor mode (e.g. because the analyzer does not respond be­
+cause the firmware was incorrectly loaded, he may do so by shutting down the analyzer, pressing the Force 
+Monitor button and then rebooting. 
+Once the new programme has been loaded or the default adjustments have been restored, exit the monitor by 
+pressing the Close button.

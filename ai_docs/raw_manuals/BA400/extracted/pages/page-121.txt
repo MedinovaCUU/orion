@@ -1,0 +1,15 @@
+LIST OF SPARES PARTS
+Code
+Representation 
+Description
+AC16624
+Reagent rotor cogged belt
+AC16625
+Barcode reader
+AC16626
+Refrigerator fan assembly (3 wires)
+AC16627
+Refrigerator peltier assembly
+AC16628
+Barcode window heater
+121

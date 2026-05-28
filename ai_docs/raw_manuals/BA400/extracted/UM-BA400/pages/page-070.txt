@@ -1,0 +1,71 @@
+Manual usuario 
+ 
+ 
+ 
+Manual usuario 
+ 
+ 
+ 
+70
+70
+Biosystems
+Biosystems
+9. 
+Descripción del software
+9.1. Identificación de las partes del programa
+En la Ilustración 40 se muestra las principales áreas del programa. Estas partes 
+son comunes a todo el programa y siempre visibles.
+1
+3
+4
+5
+6
+2
+1 – 
+1 – Barra de menús
+Barra de menús
+2 – 
+2 – Tiempo total de sesión de 
+Tiempo total de sesión de 
+trabajo actual estimado
+trabajo actual estimado
+3 – 
+3 – Botones de acceso rápido
+Botones de acceso rápido
+4 – 
+4 – Botones de acciones
+Botones de acciones
+5 – 
+5 – Ventana principal
+Ventana principal
+6 – 
+6 – Barra informativa
+Barra informativa
+Ilustración 40 
+Pantalla formato
+ 
+)
+Véase Instalación del software en el manual de instalación
+ 
+Barra de menús 
+Se accede a los menús del programa.
+ 
+Tiempo total 
+Indica el tiempo total de la sesión en curso.
+ 
+Botones de acceso rápido 
+Botones de acceso rápido a los diferentes menús.
+ 
+Botones de acciones 
+Botones de actuación sobre el funcionamiento del analizador.
+ 
+Ventana principal 
+Zona principal donde se muestra el área de trabajo.
+ 
+Barra informativa 
+Zona del programa que muestra los mensajes informativos y de error. Tam­
+bién indica los estado del analizador: WARM-UP, STAND-BY, RUNNING, 
+SAMPLE&STOP.
+9.1.1. Listado de botones más comunes
+En la Tabla 2 se muestran los principales botones y su significado que van apare­
+ciendo repetidamente en el programa.

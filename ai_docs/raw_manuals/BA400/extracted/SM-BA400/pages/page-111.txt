@@ -1,0 +1,31 @@
+• 
+ID Externo: Si el código de barras incorpora más información que el identificador de paciente, seleccione el 
+inicio y final del identificador de paciente. 
+• 
+Tipo Muestra: Si el código incorpora la información del tipo de muestras, seleccione la opción del tipo de 
+muestras, el inicio y final dentro del código y cómo el laboratorio codifica cada tipo de muestra. 
+6.4.5. Usuarios
+En la Ilustración 6.7 se muestra la pantalla de creación y mantenimiento de los usuarios.
+Pulse en el icono de nuevo para acceder a la creación de nuevos usuarios. Se activan los campos para introducir los 
+datos del usuario.
+• 
+ID usuario: Introduzca un nombre para identificar al usuario en la aplicación.
+• 
+Nombre: Introduzca el nombre del usuario.
+• 
+Apellido: Introduzca el apellido del usuario.
+• 
+Contraseña: Introduzca una contraseña 
+• 
+Confirmación contraseña: Introduzca otra vez la misma contraseña para confirmar que se ha introducido 
+correctamente.
+Pulse grabar para guardar el usuario o deshacer para descartar el usuario o los cambios.
+Ilustración 6.7 
+Pantalla de creación de usuarios
+6.5. Ajuste / Test
+6.5.1. Ajuste posicionamiento
+Desde este menú se accede a las pantallas del ajuste de las posiciones de los diferentes elementos mecánicos del 
+analizador, tales como los brazos, rotores, etc
+Hay algún elemento que para ajustarlo totalmente es necesario realizar un ajuste mecánico y el ajuste con el pro­
+grama de servicio.
+111

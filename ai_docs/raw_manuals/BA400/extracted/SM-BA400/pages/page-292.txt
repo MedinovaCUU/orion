@@ -1,0 +1,146 @@
+DR1,DR2,DM1
+Code
+Description
+210
+DR2 Freq Detection system Error (Frequency 
+Wrong)
+211
+DR2 Probe Thermistor Error
+212
+DR2 Probe Heater Error
+213
+DR2 Collision Detected
+218
+DR2 Board doesn’t answer
+219
+DR2 Board Reset
+220
+DM1 Freq Detection system Error 
+(Frequency Wrong)
+223
+DM1 Collision Detected
+228
+DM1 Board doesn’t answer
+229
+DM1 Board Reset
+RR1, RM1
+Code
+Description
+300
+RR1 Home Error
+301
+RR1 Fridge Temperature Alarm
+302
+RR1 Fridge Peltiers Error
+303
+RR1 Fridge Fans Error
+305
+RR1 Cover Opened
+310
+RR1 Code Bar Reader Error 
+311
+RR1 Code Bar Reader Time Out Error
+348
+RR1 Board doesn't answer
+349
+RR1 Board Reset
+350
+RM1 Home Error
+355
+RM1 Cover Opened
+360
+RM1 Code Bar Reader Error 
+361
+RM1 Code Bar Reader Time Out Error
+398
+RM1 Board doesn't answer
+399
+RM1 Board Reset
+GLF
+Code
+Description
+500
+Rotor Home Error
+501
+Rotor Encoder Error
+502
+Rotor Safety Stop: Washing Station Down
+503
+Photometrics Cover Opened
+504
+Washing Station Collision
+510
+Photometrics Temperature Alarm
+GLF
+Code
+Description
+511
+Photometrics Peltiers Error
+512
+Photometrics Fans Error
+520
+Washing Station Home Error
+530
+Photometric Board not detected
+550
+Metacrilate Rotor Missing
+598
+GLF Board doesn’t answer
+599
+GLF Board Reset
+SFX
+Code
+Description
+600
+Washing Station Pump Home Error
+610
+Washing Station Heater Temperature Alarm
+611
+Washing Station Heater Error
+620
+Waste Tank Sensor Impossible Value
+621
+Too much time to empty Waste Tank
+630
+Water Tank Sensor Impossible Value
+631
+Too much time to fill Water Tank
+640
+High Contamination Waste Gauge 
+electronics error
+650
+Washing Solution Gauge electronics error
+660
+Error detected in B1
+661
+Error detected in B2
+662
+Error detected in B3
+663
+Error detected in B4
+664
+Error detected in B5
+665
+Error detected in B6
+666
+Error detected in B7
+667
+Error detected in B8
+668
+Error detected in B9
+669
+Error detected in B10
+670
+Error detected in GE1
+671
+Error detected in EV1
+672
+Error detected in EV2
+673
+Error detected in EV3
+698
+SF1 Board doesn't answer
+699
+SF1 Board Reset
+Manual de servicio
+292

@@ -1,0 +1,18 @@
+139
+45
+44
+43
+Figure 6.36 
+6.4. 
+Reaction and reading rotor
+6.4.1. 
+AC14707 - Reaction rotor assembly
+Disassembly
+1. Take out the fridge cover and the front cover
+2. Remove the 4 screws (1) and (2) that hold the assembly
+3. Disconnect cables
+Mounting
+1. Replace the assembly
+2. Connect all cables.
+3. Place the 4 screws (1) and (2)
+4. Perform positioning, photometry, and thermostatization adjustments

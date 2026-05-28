@@ -1,0 +1,50 @@
+Manual de servicio
+18
+2. Descripción general del analizador
+Mecánicamente el analizador está dividido en subconjuntos. Cada subconjunto incorpora su placa electrónica para 
+el control de los elementos individuales del subconjunto. 
+Todos los subconjuntos están conectados eléctricamente por el cable del bus CAN. El bus CAN incorpora los cables 
+de alimentación y los de transmisión de información entre placas.
+La relación de los subconjuntos es la siguiente:
+• 
+Rotor de muestras y reactivos
+• 
+Rotor de reacciones
+• 
+Brazo de pipeteo
+• 
+Brazo de agitación
+• 
+Estación de lavado
+• 
+Bomba de dispensación 
+• 
+Sistema fluídico
+• 
+Conjunto desgasificador
+• 
+Botellas de solución de lavado y residuos de alta contaminación
+• 
+Conexiones eléctricas y de comunicaciones
+• 
+Módulo ISE (opcional)
+2.1. Rotor de muestras y reactivos
+El rotor de muestras consiste en un tambor para posicionar las muestras y los reactivos, de una tapa y de un lector 
+de códigos de barra. 
+El tambor tiene una estructura circular con 2 coronas concéntricas donde se puede posicionar los tubos o pocillos 
+pediátricos de las muestras y los reactivos.
+Cada una de las 2 coronas dispone de 44 posiciones en las que se pueden posicionar tanto las muestras como los 
+reactivos.
+Los tubos de muestra admisibles son de diámetros entre 12 y 16 mm y altura entre 75 mm y 100 mm.
+Hay 2 tipos de botella de reactivo, las que tienen una capacidad de 60 mL y las que tienen una capacidad de 20 mL.
+En la corona externa únicamente se pueden colocar las botellas de 20 mL, En la corona interna se pueden colocar 
+tanto las botellas de 60 como las de 20 mL.
+El rotor está refrigerado, la temperatura media en el interior del rotor está por debajo de los 12 °C (medidos a una 
+temperatura ambiente de 25 °C). La nevera lleva un sistema de alimentación independiente con su propio interruptor 
+para que cuando se apague el analizador la nevera pueda seguir funcionando.
+El lector de códigos de barras lee los tubos primarios de las muestras y los reactivos independientemente de la corona 
+que estén situados.
+La caja de accesorios contiene los adaptadores para insertar en cada una de las posiciones para poder colocar los tubos 
+primarios, también hay otros adaptadores para poder posicionar los pocillos pediátricos en vez de tubos primarios.
+2.2. Rotor de reacciones
+El rotor de reacciones consiste en un rotor con 120 posiciones y una tapa. Todo el conjunto está termostatado.

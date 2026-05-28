@@ -1,0 +1,42 @@
+91
+91
+10.3.1. Técnicas
+ 
+CAUTION
+ 
+Verifique la programación de los parámetros de las técnicas con los valores de las 
+instrucciones de uso (IFU) para cada reactivo. 
+Desde esta opción del programa podrá crear, modificar, eliminar y listar las técnicas 
+y sus parámetros.
+Ilustración 54 
+Pantalla creación de técnicas
+La pantalla está divida en dos partes, en la parte de la izquierda hay una lista de 
+todas las técnicas y en la parte de la derecha se muestran los diferentes parámetros 
+con sus valores. Los parámetros están agrupados en varias pestañas: general, pro­
+cedimiento, calibración y blanco, control de calidad y opciones.
+Pulse sobre el nombre de la pestaña para acceder a cada grupo de parámetros.
+ 
+ 
+Pulse el icono para crear una técnica nueva. Para indicar que los campos se pue­
+den editar, el color de fondo cambiará a blanco. Algunos parámetros aparecerán 
+con valores por defecto.
+ 
+ 
+Para editar los parámetros de una técnica ya introducida, seleccione previamente 
+de la lista de las técnicas el nombre de la técnica a modificar y pulse el icono. 
+También se pueden editar los parámetros de la técnica realizando doble clic 
+directamente sobre el nombre de la técnica en la lista de técnicas.
+ 
+ 
+Seleccione el nombre de la técnica y pulse el icono. El programa pedirá confir­
+mación antes de proceder a la eliminación. Sólo se permite eliminar las técnicas 
+que ha creado el usuario (el icono de la técnica es de color amarillo). Las técni­
+cas originales (el icono es de color azul) no se pueden eliminar.
+ 
+ 
+Pulse el icono para abrir una pantalla auxiliar, la cual permite anular técnicas y 
+ordenarlas. La ordenación i/o anulación de las técnicas se aplica en la pantalla de 
+selección de técnicas.
+ 
+)
+Véase capítulo 10.3.1.1

@@ -1,0 +1,58 @@
+Manual usuario 
+ 
+ 
+ 
+Manual usuario 
+ 
+ 
+ 
+190
+190
+Biosystems
+Biosystems
+13.3. Mantenimiento
+13.3.1. Cambio del rotor de reacciones
+El analizador automáticamente realiza una lectura óptica antes de usar cada 
+cubeta del rotor para determinar su estado. Si la lectura sobrepasa unos niveles 
+determinados se descarta la cubeta y no se utiliza. El programa avisa de las cubetas 
+descartadas. Si repetidamente aparecen varias cubetas descartadas se aconseja el 
+cambio del rotor de reacciones. 
+ 
+NOTE
+NOTE
+ 
+Se aconseja como mínimo cambiar cada semana el rotor de reacciones.
+Pasos a seguir para el cambio del rotor
+1. Ir al menú de utilidades y ejecutar la opción de cambio de rotor. Pulse el botón 
+de elevar la estación de lavado para poder retirar la tapa del rotor.
+2. Quite la tapa del rotor de reacciones. Vaya con cuidado en no tocar con la 
+tapa las puntas de la estación de lavado.
+3. Desenrosque el tornillo central que sujeta el rotor.
+4. Quite el rotor. Manipúlelo con guantes y protección.
+5. Trate el rotor como material con riesgo biológico.
+6. Coja un nuevo rotor de la caja de accesorios.
+7. Inserte el rotor en su alojamiento.
+8. Enrosque el tornillo hasta el final.
+9. Ponga la tapa del rotor de reacciones.
+10. Pulse de botón de finalizar en la opción de cambio de rotor del programa de 
+usuario.
+13.3.2. Mantenimiento del módulo ISE
+13.3.2.1. Cambio de electrodos
+ 
+Electrodo de referencia 
+El electrodo de referencia está sumergido con una solución de KCL saturado. 
+Si la concentración del electrodo de referencia disminuye por debajo de 3.0 M 
+(molar), el módulo de medición ISE puede dar resultados erróneos. El electrodo 
+de referencia contiene una pequeña esfera de color rojo en el depósito, que nor­
+malmente se encuentra en la parte superior de la solución de llenado. Si la esfera 
+comienza a hundirse, el electrodo de referencia debe ser reemplazado. 
+Desembale el electrodo de referencia. Retire el hilo marcado con una etiqueta 
+amarilla (guarde el hilo por si en el futuro necesita apagar el módulo y conservar 
+el electrodo una larga temporada). Asegúrese de que no hay sales acumuladas en 
+los extremos del canal de medida.
+ 
+Resto de electrodos 
+Desembale el nuevo electrodo. Retire la cinta adhesiva que protege el canal 
+fluídico. Verifique que la junta de goma que se encuentra en el orificio no ha sal­
+tado. En caso de no haber la junta de goma, colóquela de nuevo en su posición. 
+En cada caja de recambio encontrará un par de juntas por si pierde alguna.

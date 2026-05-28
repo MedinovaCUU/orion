@@ -1,0 +1,62 @@
+155
+155
+• 
+Valores del último acumulado: para cada técnica, si existen acumulados 
+previos para el control seleccionado, muestra los valores de media, desviación 
+estándar (SD) y rango de valores admisibles del último acumulado; en caso 
+contrario, las celdas correspondientes se muestran vacías. Con el tic se selec­
+ciona/deselecciona la técnica para acumulación (se carga/descarga de la tabla 
+de Datos a acumular).
+• 
+Datos a acumular: únicamente para las técnicas seleccionadas en la tabla 
+anterior, muestra el cálculo de los valores que se acumularán:
+Parámetro
+Cómo se calcula
+n
+Número total de valores que se acumularán
+Media
+Media estadística de los resultados.
+Media=
+∑
+i=1
+n
+X i
+n
+SD
+Desviación estándar de los resultados:
+SD=
+∑
+i=1
+n
+xi−Media
+2
+n−1
+CV
+Coeficiente de variación de los resultados:
+CV =
+SD
+Media⋅100
+Rangos
+Rango de valores admisibles:
+Rango=Media±Criteriode rechazo⋅SD
+Si el modo de cálculo de la técnica es estadístico, los resultados utilizados para 
+calcular los valores objetivo no se incluyen en el grupo de valores a acumular.
+Seleccione una técnica en esta tabla para abrir la pantalla de Resultados de control 
+de calidad, mostrando el detalle del grupo de resultados a acumular.
+ 
+)
+Véase capítulo 10.8.3
+ 
+ 
+Icono que indica que en el grupo de resultados a acumular hay una o más series 
+con alarmas de validación. Este icono se muestra a la derecha de la media.
+ 
+ 
+Ejecuta el proceso de acumulación de los resultados de control de las técnicas 
+seleccionadas. Si para el control seleccionado se acumulan todas las técnicas, el 
+control es descargado de la lista de controles. 
+10.8.4.2. Resultados acumulados
+Pantalla que permite la revisión del histórico de resultados acumulados por técnica 
+y control. 
+También permite modificar los valores objetivo definidos para una técnica y control, 
+asignándoles los últimos valores estadísticos acumulados.

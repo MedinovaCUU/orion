@@ -1,0 +1,19 @@
+6.5.5.3. Ajuste de la termostatización de la punta
+La punta de aspiración, pipetea los reactivos de la nevera. Antes de dispensar el reactivo en el rotor este se termos­
+tatiza a una temperatura más próxima a la del rotor. Desde esta pantalla se pueden modificar valores de ajuste de la 
+termostatización.
+ 
+) Véase Ilustración 6.22
+En la pantalla se muestran unos valores de temperatura de consigna por defecto. Estos valores no se tienen que 
+modificar, únicamente cambie estos valores por recomendación del fabricante. 
+En caso de necesitar modificar algún valor, pulse el botón edición y modifique el valor. Pulse el botón guardar.
+Ilustración 6.22 
+Pantalla ajuste de la termostatización de la punta
+6.5.6. Detección de desbordamiento en rotor
+Desde esta pantalla permite realizar la verificación del desbordamiento en el rotor de lecturas. La detección de des­
+bordamiento del rotor se realiza mediante la medida de sensibilidad de una varilla situada en la estación de lavado.
+Ilustración 6.23 
+Pantalla ajuste detección desbordamiento
+Manualmente vacíe o llene el pocillo situado en la posición de la varilla de la estación de lavado. 
+Manual de servicio
+100

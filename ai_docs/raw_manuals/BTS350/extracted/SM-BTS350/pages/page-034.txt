@@ -1,0 +1,60 @@
+—  34  —
+5.4. - Cleaning the lenses
+• 
+Dismantle the top housing of the semi-automatic analyzer. 
+• 
+Dismantle the optical bench cover. Be careful when unscrewing and screwing the optical bench cover, as the plastic 
+material does not allow this operation to be performed several times. After performing it several times, the screw 
+thread will become worn. Warning Be careful when dismantling the optical bench cover that the mirrors and 
+beamsplitter are not caught on the cover when it is lifted.
+• 
+Remove the lens holder and lenses.
+• 
+Clean them as indicated in section 5.2.
+• 
+Reassemble the lenses in their holders and the latter on the optical bench. When reassembling the cover, be careful to 
+keep all the mirrors and beamsplitters in their place. They must not be interchanged.
+5.5. - Cleaning the photodiodes
+• 
+Dismantle the electronic board.
+• 
+Dismantle the optical bench of the electronic board.
+• 
+Clean the photodiodes as indicated in section 5.2.
+• 
+Reassemble the optical bench and electronic plate.
+5.6. - Cleaning the aspiration system
+• 
+It is necessary to clean the SUCTIONING CIRCUIT properly after each series of measurements and at the end of 
+the day.
+• 
+On finishing a series of measurements, wash the suctioning circuit with abundant distilled water.
+• 
+At the end of the working day, wash thoroughly with a detergent solution such as the one provided with the instrument. 
+Lastly, rinse with distilled water and empty the circuit by performing wash cycles with air.
+• 
+Finally, to maximise the life of the peristaltic pump tube, it is advisable to take it out from its mounting, so that it 
+remains loose and without tension. On starting a new work session, re-insert it in its place.
+• 
+If the outside end of the suction tube has deteriorated, a few millimetres may be cut making a perpendicular and clean 
+cut. We recommend using a cutter, not scissors, to prevent the tube from being nipped. In this case, the POSITIONING 
+parameter must be readjusted.
+• 
+Replace tubing by a new one in case of deterioration. Always use original spares.
+5.7. - Cleaning the flow cuvette
+Cleanliness of both the outside and the inside of the flow-cuvette is very important. Proceed as follows:
+To clean the inside, proceed as described in section 5.6.
+To clean the outside, use alcohol and then dry with a soft paper (section 5.2). 
+5.8. - General cleaning of the instrument
+It is important to prevent dust from building up inside the instrument that could affect the optical system. Carefully 
+remove all dust from the inside of the instrument.
+5.9. - Dismantle the top housing
+To remove the top housing, proceed as follows: 
+• 
+Turn the semi-automatic analyzer. 
+• 
+Unscrew the 8 torx screws.
+• 
+Separate the top housing carefully from the rest of the appliance.
+5.10. - Dismantle the electronic board
+To access the electronic board, proceed as follows:

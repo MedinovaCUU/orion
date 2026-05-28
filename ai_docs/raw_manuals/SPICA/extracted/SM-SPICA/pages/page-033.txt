@@ -1,0 +1,48 @@
+33
+USUARIO
+Manual de Usuario BioSystems SPICA | Versión 2.8 - Agosto 2024
+Manual de Usuario BioSystems SPICA
+6. MANTENIMIENTO
+6.2 Limpieza del analizador 
+Asegúrese de que el conector rápido se inserte correctamente en la tapa del contenedor. Para ello, al 
+insertar el accesorio, deberías oír un “clic”. Si no, significa que no ha sido insertado correctamente.
+Deshágase de los residuos según la legislación del gobierno nacional o local aplicable.
+Maneje el contenedor de residuos de alta contaminación con cuidado. Use guantes y ropa protectora al 
+manipular el contenedor. 
+LIMPIAR EL ROTOR DE REATIVOS Y MUESTRAS 
+En caso de derrames dentro de la carcasa del rotor al manipular las muestras o los reactivos, proceda de la 
+siguiente manera:
+• 
+Apaga el analizador.
+• 
+Use guantes y ropa protectora cuando limpie los derrames. 
+• 
+Retire todos los racks del analizador a mano.
+• 
+Limpiar la sustancia derramada con un paño húmedo.
+LIMPIAR LA VENTANA DEL LECTOR DE CÓDIGO DE BARRAS 
+• 
+Apagar el analizador.
+• 
+Abrir la puerta de reactivos y muestras, y sacar uno por uno los racks. 
+• 
+ Limpiar la ventana interior con un paño húmedo. 
+LLENANDO LA BOTELLA DE SOLUCIÓN DE LAVADO
+• 
+Presionar el conector rápido de la tapa y saque el recipiente del analizador. 
+• 
+Desenroscar la tapa del frasco de solución de lavado.
+• 
+Llenar la botella con 1 L de agua purificada.
+• 
+Añadir 5 ml de la solución de lavado concentrada (código AC16434.). Tenga cuidado al manipular el 
+frasco de la solución de lavado concentrada para evitar que el contenido se salpique o se derrame. Use 
+guantes y ropa protectora cuando los manipule. 
+• 
+Enroscar la tapa con el tubo y colocar en su alojamiento dentro del analizador. Conectar el conector 
+rápido en la tapa y asegurar de que la botella encaja en su sitio.
+• 
+El sistema se cebará automáticamente.
+PARA LIMPIAR LAS CUBIERTAS DE SPICA Y LAS PARTES 
+VISIBLES, USE UNA SOLUCIÓN DE AGUA Y JABÓN SUAVE.
+NOTA

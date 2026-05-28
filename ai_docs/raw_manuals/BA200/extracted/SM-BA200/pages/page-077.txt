@@ -1,0 +1,60 @@
+Manual de servicio
+77
+Conector
+Función
+Pin
+CN3
+Conexión 
+Pin 1: 5V
+Pin 2: Activación 
+detección
+Pin 3: Nivel 1
+Pin 4: Nivel 2
+Pin 5: GND
+LEDs
+Función (Condición de encendido)
+LD1
+Detección nivel 1
+LD2
+Detección nivel 2
+LD3
+Oscilación
+Test point
+Función
+TP1
+5V
+TP2
+3V3
+TP3
+GND
+TP4
+Señal de activación
+TP5
+Señal de detección nivel 1
+TP6
+Señal de detección nivel 2
+TP7
+Oscilación nivel 1
+TP8
+Oscilación nivel 2
+4.11. Carga del firmware
+El proceso de carga del firmware se realiza a través del programa de servicio.
+ 
+) Véase capitulo 6.6.4 Actualización del firmware.
+Se distribuirá un único fichero, el cuál contendrá todos los firmwares individuales de cada una de las placas. El pro­
+ceso consiste en enviar primero el fichero a la placa principal, la CPU, y lo guarda en una memoria flash, llamada 
+repositorio. Una vez se ha verificado que el fichero enviado es correcto, el programa de servicio pregunta al usuario 
+la confirmación del inicio del proceso de la actualización del firmware de la placa CPU. Una vez la placa CPU se 
+ha actualizado, verifica la compatibilidad de las versiones de cada una de las placas con las del repositorio. En caso 
+de haber alguna placa con una versión no compatible con la del repositorio actualiza el firmware de dicha placa.
+Mientras se transmite el fichero del firmware con el programa de servicio, el led de estado del analizador parpadeará 
+cambiando de color.
+Todos los ajustes del analizador están guardados en la memoria de la placa CPU. En el momento de inicializar el 
+analizador, se produce un envío de los ajustes necesarios para cada una de las placas.
+NOTE
+Como medida de precaución es conveniente antes de realizar una intervención al analizador, reali­
+zar una cópia de seguridad de los ajustes.
+ 
+) Véase capitulo 6.6.3 Guardar y recuperar ajustes.
+Cuando el servicio técnico tenga que realizar una reparación y cambiar alguna placa, entonces el técnico inicializa 
+el programa de servicio para que acepte el proceso de actualización del firmware y de los ajustes para la nueva placa.

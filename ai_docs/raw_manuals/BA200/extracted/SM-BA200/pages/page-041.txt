@@ -1,0 +1,31 @@
+La entrada de agua al analizador se puede realizar de dos maneras:
+• 
+Por un sistema de agua de red a presión
+• 
+Por un contenedor externo de gran capacidad
+En el programa de usuario es donde se realizará la selección de la entrada de agua. En el primer caso el programa 
+activará la electroválvula (17) y llenará el depósito intermedio de agua destilada.
+En el segundo caso, el programa activará la electroválvula (18) y la bomba (11), para aspirar el agua del depósito 
+externo. 
+El nivel del depósito interior de agua destilada está controlado por un sistema detección de nivel que indicará al 
+programa cuando el depósito está lleno o vacío. 
+Internamente también hay el depósito de residuos de baja contaminación. Igualmente el nivel de este depósito está 
+controlado por un sistema de detección de nivel. 
+Cuando el sistema comprueba que el depósito está lleno, el programa activa la bomba (12) para vaciarlo al exterior.
+Sistema de pipeteo
+La punta de muestra y reactivo está conectada directamente a la bomba cerámica.
+ 
+) Véase capítulo 3.5 sobre la bomba cerámica.
+El lavado externo de la punta y del agitador se realiza con agua destilada y es impulsada con las bombas de membrana 
+(9) y (10) respectivamente. 
+21
+25
+24
+26
+22
+23
+19
+20
+Ilustración 3.22 
+Conjunto bomba de pistones
+41

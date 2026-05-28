@@ -1,0 +1,32 @@
+69
+69
+Ilustración 35 
+Brazo de dosificado
+8.8. Contenedores de residuos, agua purificada y solución 
+de lavado
+ 
+ El analizador dispone de 4 contenedores para almacenar los residuos, el agua 
+purificada y la solución de lavado. Todos los contenedores están situados en el 
+interior del analizador. 
+ Residuos de alta contaminación Se accede a este contenedor desde la parte frontal del analizador. La capacidad 
+de este contenedor es de 2.4 L. Tiene una autonomía para 20 h de funciona­
+miento. La determinación del nivel del contenedor se realiza por pesada.
+ 
+Solución de lavado Se accede desde la parte frontal del analizador. La capacidad es de 2.4 L. La 
+detección del nivel del contenedor se realiza por pesada. Tiene una autonomía 
+de unas 8 h.
+ Residuos de baja contaminación El contenedor de residuos de baja contaminación está ubicado en el interior del 
+analizador y no es accesible por el usuario. El vaciado del contenedor es automá­
+tico. Los residuos salen por la conexión de la parte trasera del analizador. 
+ 
+)
+Véase Conexión del tubo de residuos en el capítulo 4.5
+ 
+Agua purificada El contenedor de agua purificada está ubicado en el interior del analizador y no 
+es accesible por el usuario. El llenado y vaciado del contenedor es automático. 
+La entrada de agua purificada proviene del exterior del analizador. Puede venir 
+directo de una toma de agua purificada o de un contenedor exterior de mayor 
+capacidad. 
+ 
+)
+Véase Conexión de agua purificada en el 4.4.

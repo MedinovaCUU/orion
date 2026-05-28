@@ -1,0 +1,23 @@
+181
+List of accessories
+Code
+Representation 
+Description
+AC12223
+Allen key 2 mm
+AC12224
+Allen key 2.5 mm
+FI11488
+Filters of the system fluid container (2)
+BO11487
+System liquid container with cap
+BO11523
+Wash solution container with cap
+BO11489
+Waste container with cap and fitting
+AC14565
+Tubes for buoy wash solution bottle
+BO15206
+Bottle cap for liquid system (10)
+AC17367
+Fuse set 3.15 A (F315L250V)

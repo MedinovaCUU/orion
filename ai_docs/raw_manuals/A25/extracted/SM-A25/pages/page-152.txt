@@ -1,0 +1,21 @@
+Manual de servicio
+152
+3. Place the cold plate with its insulation.
+4. Install the 4 screws (6)
+5. Place the refrigerator temperature sensor
+6. Install the rack tray and housings
+7. Check refrigerator operation
+7
+6
+Figure 6.56 
+6.5.4. 
+AC14720 - Refrigerator fan
+Disassembly
+1. Follow the steps to disassemble the refrigerator body. See chapter 6.1.2
+2. Remove the rack tray. See chapter 6.3.8
+3. Remove the temperature sensor. See chapter 6.5.2
+4. Remove the 6 screws (8) that hold the protection plate
+5. Remove the protection plate (9) with the fans
+6. Remove the 4 screws that hold the failed fan
+Mounting
+1. Follow the steps in reverse order

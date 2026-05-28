@@ -1,0 +1,48 @@
+37
+37
+4.12. Instalación del programa de usuario en el ordenador
+El programa de usuario debe utilizarse en un ordenador personal PC compatible 
+con los siguiente requisitos mínimos:
+• 
+Sistema operativo: Windows® 7 (x64), Windows® 10 (x64)
+• 
+CPU: Equivalente a Intel Core i3 @3.10 GHz o superior
+• 
+Memoria RAM: 4 Gbytes 
+• 
+40 Gbytes libres de disco duro
+• 
+Lector de DVD
+• 
+Monitor SVGA, resolución mínima de 1 200 x 800
+• 
+Conector de canal serie USB
+Asegúrese de que no tenga ninguna versión del programa Microsoft SQL server 
+instalada previamente en el ordenador. Para verificarlo abra el siguiente programa 
+desde Inicio: 
+Panel de control\Todos los elementos de Panel de control\Programas y características
+Y verifique que no tenga ninguna entrada con el nombre de: Microsoft SQL server
+Instale el programa ejecutando los siguientes pasos:
+1. Inserte el disco en el lector de DVD del ordenador.
+2. Pulse Inicio, seleccione Ejecutar y escriba: 
+3. D:\setup\setup.exe, o el nombre de la unidad de DVD
+4. Siga los pasos que vaya indicando el programa de instalación.
+5. El programa de instalación instala el programa de la aplicación, el gestor de la 
+base de datos y el driver del controlador USB automáticamente sin necesidad 
+de la intervención del usuario. 
+6. La instalación del gestor de base de datos es un proceso largo, espere hasta 
+que termine la instalación.
+7. Configure la visualización del sistema operativo:
+• 
+Seleccione Todas las configuraciones
+• 
+Seleccione Sistema
+• 
+Seleccione Pantalla
+• 
+Seleccione Resolución 1200 x 800
+• 
+Seleccione Escala y distribución: 100 %
+ 
+)
+Véase Ilustración 14

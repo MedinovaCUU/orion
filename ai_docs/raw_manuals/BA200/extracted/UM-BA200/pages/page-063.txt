@@ -1,0 +1,35 @@
+63
+63
+8. 
+Descripción del analizador
+A continuación se detallan cada una de las partes del analizador.
+Las principales partes del analizador son:
+• 
+Cubiertas y tapas
+• 
+Rotor de muestras y reactivos
+• 
+Rotor de reacciones
+• 
+Brazo de dosificado
+• 
+Brazo de agitación
+• 
+Estación de lavado
+• 
+Módulo ISE (Opcional
+• 
+Conexiones eléctricas y de comunicaciones
+• 
+Conexiones de fluidos
+• 
+Botellas de solución de lavado y residuos de alta contaminación
+8.1. Cubiertas y tapas
+La siguiente figura muestra las diferentes cubiertas y tapas del analizador
+1
+2
+3
+4
+5
+Ilustración 31 
+Tapas

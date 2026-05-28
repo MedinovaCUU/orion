@@ -1,0 +1,25 @@
+2
+7
+3
+5
+6
+4
+Ilustración 8.11 
+Desmontaje brazo BA400v2
+Desmontaje del brazo en un equipo con las modificacines del BA400v2
+1. Quite los 3 tornillos (2) que sujetan el conjunto brazo. Utilice un destornillador con alargo para acceder a los 
+tornillos.
+2. Desenchufe el conector CAN (6) y desenrosque el tubo de la interconexión (7) de la pieza de interconexión (4) 
+3. Quite los 2 tornillos (3) que sujetan a la pieza (5) que guía el cable del brazo y la sujeta en la chapa base.
+4. Puede retirar el conjunto brazo entero
+8.3. 
+Desmontaje rotor de reactivos
+1. Quite la tapa superior
+ 
+) Véase capítulo 8.1.6
+2. Desenchufe los 5 ventiladores que están conectados a la placa CIIM00052
+3. Desenchufe los dos cable CAN que están conectados a la placa CIIM00052
+4. Quite el brazo de Reactivo 2, para dejar espacio suficiente al momento de quitar el rotor.
+ 
+) Véase capítulo 8.2
+155

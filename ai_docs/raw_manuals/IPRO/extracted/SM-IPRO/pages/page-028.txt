@@ -1,0 +1,14 @@
+28
+Manual de servicio
+3. En el menu Dispositivo-Cambiar DTM, seleccionar el puerto COM correspondiente.
+4. Pulsar al botón de conectar 
+5. Verificar que se ha abierto el puerto USB correctamente observando el símbolo de estado situado 
+en la parte inferior izquierda del programa. (Nota: Aunque ese símbolo es un punto de partida, 
+no significa que se haya conectado con el lector. Solo que se ha abierto el USB correspondiente.)
+6. Acceder en la opción de DIAGNOSIS del programa tal y como indica la siguiente figura. En esta 
+pantalla podemos establecer comunicación con el lector y activar el dispositivo para realizar la 
+lectura del código de configuracion. Para ello: 
+• 
+Pulsar el botón de VERSION y observar que el lector responde con la versión y la fecha.
+• 
+Pulsar el botón START SINGLE DECODE para activar el lector.

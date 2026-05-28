@@ -1,0 +1,29 @@
+Lista de recambios
+Código
+Representación 
+Descripción
+AC16597
+ 
+Muelle puntas estación lavado (4)
+AC17309
+Detector de desbordamiento
+AC17334
+Conjunto estación de lavado sin puntas de 
+aspiración
+AC16598
+Correa movimiento vertical
+AC16599
+Correa movimiento polar
+AC16600
+Motor brazo, rotor de reacciones y estación de 
+lavado
+AC17291
+Motor de continua y pala del agitador
+AC16805
+Cable de los motores para los agitadores (2)
+AC16603
+Punta muestra
+AC16604
+Punta reactivos
+Manual de servicio
+276

@@ -1,0 +1,8 @@
+35
+brazo en la posición indicada y realizará la comprobación de si detecta líquido o no, dependiendo de 
+si el tubo está lleno o vacío.
+Repetir el test tantas veces como el usuario crea necesario. 
+3.3.13  Test de los sensores de control de nivel
+Esta pantalla permite comprobar el funcionamiento de los sensores de los contenedores de líquido de 
+sistema (PBS) , de solución de lavado y de residuos. El técnico debe seleccionar qué sensor desea 
+verificar . Pulsando el botón Test la pantalla in­dica si el contenedor está lleno o vacío.

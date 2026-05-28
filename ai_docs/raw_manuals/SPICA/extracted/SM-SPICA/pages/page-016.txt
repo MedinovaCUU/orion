@@ -1,0 +1,32 @@
+16
+USUARIO
+Manual de Usuario BioSystems SPICA | Versión 2.8 - Agosto 2024
+Manual de Usuario BioSystems SPICA
+2. INSTALACIÓN
+2.7. Conexión a la red y puesta en marcha
+Requisitos eléctricos
+Es muy importante conectar el analizador a un sistema eléctrico apropiado. Debe ser lo más exclusivo 
+posible, y debe tener una conexión a tierra. 
+Cable de la red eléctrica: Utilice el cable de enchufe de red suministrado en la caja de accesorios. El uso 
+de un cable no suministrado por el fabricante puede suponer un problema de seguridad.
+Tensión de alimentación: 115 V o 230 V
+Frecuencia de suministro: 50 Hz o 60 Hz
+Potencia: 450 VA
+El analizador sólo funciona automáticamente con la tensión de red especificada en la etiqueta del aparato.
+El selector de voltaje está ubicado en un área donde el operador no debe tener acceso; por lo tanto, solo el 
+fabricante o su servicio técnico pueden realizar la selección de voltaje. 
+Trabajar fuera del rango de tensión podría provocar un mal funcionamiento del equipo y causar daños en el 
+mismo. La categoría de la instalación eléctrica debe ser II (categoría de sobretensión).
+Fusible: La caja de accesorios contiene un juego de fusibles de repuesto. 
+Las características son: FAST BLOW FUSE 6A 5x20mm CRYSTAL
+El fusible se encuentra en el interruptor principal trasero:
+ 
+Cambiando los fusibles: Retire la cubierta protectora y reemplace ambos fusibles por los que se suministran 
+en la caja de accesorios. Cambie siempre ambos fusibles al mismo tiempo.
+Es aconsejable utilizar una fuente de energía ininterrumpida (SAI) para proteger el analizador. Las 
+características recomendadas son:
+Modelo: SAI continuo (on-line) | Potencia: 1,5 KW | Capacidad de la batería: Más de 15 min. Conexión 
+eléctrica: Proceda de la siguiente manera:
+• Asegúrate de que el interruptor general de la parte trasera está en la posición de desconexión (O). 
+• Conecte el cable de red en primer lugar al aparato y en segundo lugar a la red. 
+• Ponga el interruptor general en la posición de conectado (I).

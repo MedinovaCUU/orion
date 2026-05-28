@@ -1,0 +1,18 @@
+Ilustración 6.29 
+Pantalla para la actualización del firmware
+Pulse este botón para realizar la lectura de los ajustes memorizados en el analizador. Una vez leídos, el programa da 
+la posibilidad de guardar los ajustes en un archivo.
+Al pulsar este botón permite leer los ajustes de un archivo previamente memorizado.
+Pulse este botón para actualizar los ajustes en el analizador. previamente se pueden leer los ajustes de un archivo.
+Pulse este botón para restaurar los valores iniciales de los ajustes. Tenga en cuenta que una vez restaurados los valores 
+iniciales tendrá que volver a reajustar todo el analizador.
+6.6.3.2. Actualización del firmware
+Desde esta pantalla se permite realizar la actualización del firmware del analizador. En la parte superior de la pantalla 
+se muestra la versión del firwmare actual. Para realizar este proceso el analizador tiene que estar en “sleeping”. Si no 
+lo está apague y vuelva a encender el analizador.
+Pulse este botón para poner el analizador en modo sleeping. Para realizar el poceso de carga de firmware es necesario 
+que el analizador esté en modo sleeping.
+Pulse este botón para seleccionar el fichero de firmware que quiera instalar.
+Pulse este botón para enviar el fichero de firmware al analizador. Este proceso se realiza automáticamente hasta que 
+finaliza. 
+131

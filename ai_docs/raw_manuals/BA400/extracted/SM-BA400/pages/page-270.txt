@@ -1,0 +1,26 @@
+Lista de recambios
+Código
+Representación 
+Descripción
+AC16552
+Ruedas
+AC16553
+Filtro y conector de red
+AC16554
+Conjunto interruptores
+AC17283
+Placa CPU
+AC16556
+Placa Distribución
+AC16557
+Placa Brazo
+AC16558
+Placa Punta
+AC16559
+Placa Control Fotometría
+AC16560
+Placa fotometría modelo BA400
+AC17362
+Placa fotometría modelo Y400
+Manual de servicio
+270

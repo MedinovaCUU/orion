@@ -1,0 +1,61 @@
+Manual usuario 
+ 
+ 
+ 
+Manual usuario 
+ 
+ 
+ 
+34
+34
+Biosystems
+Biosystems
+Enganche cada etiqueta en las botellas de reactivo suministradas o en los tubos 
+según la tabla anterior. Cuando el lector de códigos de barras lea el rotor de reacti­
+vos y encuentre una botella auxiliar, el programa le pedirá que asocie a esa botella 
+un reactivo de la lista.
+4.9. Instalación del rotor de reacciones
+1. Inicialice el analizador y use la utilidad de cambio de rotor del programa de 
+usuario.
+ 
+)
+Véase cómo iniciar el programa en el apartado 10.1
+ 
+)
+Véase utilidades, cambio de rotor en el apartado 10.9.1
+2. Una vez la estación de lavado esté en su punto más elevado, quite la tapa del 
+rotor de reacción.
+3. Extraiga el tornillo fijador del rotor.
+4. Coja un rotor de la caja de accesorios.
+5. Introduzca el rotor de metacrilato en el rotor de reacción, procurando no tocar 
+con el rotor las puntas de la estación de lavado.
+6. La posición del rotor es única y debe encajar correctamente en el soporte. 
+7. Atornille el tornillo fijador del rotor hasta su tope.
+8. Coloque la tapa del rotor en su alojamiento. Tiene una posición única.
+9. Finalice la operación de cambio de rotor con el programa de usuario.
+4.10. Conexión a la red eléctrica y puesta en marcha
+Es muy importante conectar el analizador y el ordenador a un sistema eléctrico 
+adecuado. Debe ser lo más exclusivo posible y es absolutamente imprescindible 
+la conexión a tierra. El analizador y el ordenador deben tener la misma conexión 
+a tierra.
+ 
+Cable toma de red 
+Utilice el cable de toma de red suministrado en la caja de accesorios. La utiliza­
+ción de un cable no suministrado por el fabricante puede suponer un problema 
+de seguridad.
+ 
+Tensión de alimentación 
+115 V a 230 V ±10% Vac
+ 
+Frecuencia de alimentación 
+50 Hz o 60 Hz
+ 
+Potencia 
+500 VA
+El analizador se adapta automáticamente a la tensión de la red eléctrica, sin tener 
+que seleccionar manualmente la tensión. Trabajar fuera del margen de tensiones 
+puede ocasionar un funcionamiento incorrecto del equipo y éste puede sufrir da­
+ños. La categoría de la instalación eléctrica debe ser II (categoría de sobrevoltaje)
+ 
+Fusible En la caja de accesorios viene un conjunto de fusibles de repuesto. Las caracte­
+rísticas son:

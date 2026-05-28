@@ -1,0 +1,30 @@
+135
+28
+Figure 6.31 
+Dismantling of diaphragm pumps
+6.3.6. 
+Diaphragm pump connections
+Reference
+LS/ Waste
+Connection
+29
+System liquid 
+circuit
+Connection of the system liquid bottle to the diaphragm 
+pump
+31
+Connection of the diaphragm pump to the solenoid valve
+33
+Connecting the solenoid valve to the washing station
+36
+Restrictor (AC11536) of the washing station
+35
+Connection between the restrictor and the washing station
+32
+Waste circuit
+Connection of waste from the washing station to the 
+diaphragm pump
+30
+Connecting the pump to the waste bottle
+34
+Washing station overflow connection

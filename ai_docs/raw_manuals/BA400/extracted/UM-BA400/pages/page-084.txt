@@ -1,0 +1,66 @@
+Manual usuario 
+ 
+ 
+ 
+Manual usuario 
+ 
+ 
+ 
+84
+84
+Biosystems
+Biosystems
+Ilustración 52 
+Configuración de las comunicaciones del LIS
+10.2.6.3. Configuración del protocolo
+Pantalla para configurar los parámetros necesarios para los protocolos de comuni­
+caciones con LIS a bajo nivel
+ 
+Nombre del protocolo 
+Seleccione el tipo de protocolo que quiera usar en las comunicaciones: HL7 o 
+ASTM.
+ 
+Código de página para las 
+transmisiones
+ 
+Seleccione el tipo de codificación de los mensajes que se transmitirán entre 
+analizador y LIS. Se aplica en la transmisión y recepción de los mensajes. Debe 
+configurar el código de página usado por su sistema LIS.
+ 
+Identificador del servidor 
+Identificador que usa la aplicación de LIS.
+ 
+Proveedor del servidor 
+Nombre del proveedor de la aplicación de LIS.
+ Identificador del instrumento 
+Nombre que identifica el instrumento, dicho campo se transmite en cada 
+mensaje.
+ 
+Proveedor del instrumento 
+Nombre del proveedor del instrumento.
+ 
+Cumple IHE Seleccione esta opción cuando la transmisión de los mensajes siga estrictamente 
+la norma IHE de comunicaciones.
+ 
+Tamaño de paquetes de Host 
+Query
+ 
+Número de especímenes enviados en un mismo mensaje de Query por espéci­
+men cuando se usa el protocolo de ASTM.
+ 
+Tiempo máximo para enviar 
+un mensaje de reintento
+ 
+Configuración del tiempo máximo durante el cual se reintenta enviar un mensa­
+je a LIS cuando no se recibe respuesta.
+ Tiempo máximo de espera del 
+LIS
+ 
+Configuración del tiempo máximo de espera para recibir un mensaje de acepta­
+ción o confirmación de LIS. Transcurrido este tiempo se modifica el estado de 
+LIS (LED en rojo) indicando que hay problemas en la comunicación que debe 
+solucionar.
+ 
+Delimitadores 
+Introduzca los delimitadores que se usarán en la transmisión y recepción de los 
+mensajes.

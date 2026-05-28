@@ -1,0 +1,23 @@
+LIST OF SPARES PARTS
+Code
+Representation 
+Description
+AC16562
+Reagent rotor board
+AC16563
+Fluid board
+AC16564
+Syringe board
+AC16565
+Photobarrier board
+AC16634
+AC input board
+AC16566
+Led Manifold Board
+AC16567
+320 W power supply
+AC16569
+35 W power supply
+AC16570
+Load cell
+115

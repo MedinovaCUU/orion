@@ -1,0 +1,272 @@
+93
+PUMP
+ALTERNATIVE
+SUPPLY
+FA SF1
+PUMP
+PUMP
+SF1-GE1
+PUMP
+CIIM00053
+CAN BUS
+WASHING 
+STATION
+DETECTOR
+WASHING 
+STATION
+MOTOR
+SF1
+HOME WPUMP
+SF1-WPUMP
+SF1-B1
+PUMP
+PUMP
+PUMP
+5xEV
+PUMP
+PUMP
+PUMP
+PUMP
+SENSOR WATER
+SENSOR WASTE
+HCW
+WS
+THERMISTOR
+TEMPERATURE
+SENSOR
+SF1-HEATER
+HEATER
+PLMA00256
+THERMAL FUSE
+WS
+HIGH CONCENTRATION WASTE
+WASTE SENSOR
+WATER SENSOR
+PUMP
+SF1-E2
+DC MOTOR
+PLMA00302
+DC MOTOR
+PLMA00303
+EV
+SF1-EV3
+CAN BUS
+THERMAL PROT.
+ST1
+ST2
+E1
+E2
+B1
+B2
+B3
+B4
+GE1
+SF1-B2
+SF1-B3
+SF1-B4
+SF1-B5
+SF1-B6
+SF1-B7
+SF1-B8
+SF1-B9
+SF1-B10
+SF1-B1
+B5
+B6
+B7
+B8
+B9
+B10
+HCW
+WS
+THERMISTOR
+HEATER
+THERMAL
+PROT.
+ST1
+ST2
+E3
+24V
+24V
+FAN WPUMP
+FLUIDOS
+CN10
+1
+2
+CN28
+1
+2
+1
+2
+1
+6
+2
+5
+4
+CN20
+1
+2
+CN6
+1
+2
+3
+4
+CN2
+1
+2
+1
+2
+CN5
+1
+2
+3
+4
+CN18
+1
+2
+CN12
+1
+2
+1
+2
+CN29
+1
+2
+CN14
+1
+2
+1
+2
+CN8
+1
+2
+3
+4
+1
+2
+1
+2
+CN19
+1
+2
+1
+2
+1
+2
+1
+2
+3
+4
+5
+6
+CN16
+1
+2
+CN17
+1
+2
+CN3
+1
+2
+3
+4
+5
+1
+2
++tº
+1
+2
+1
+2
+CN7
+1
+2
+3
+4
+1
+2
+CN1
+1
+2
+CN11
+1
+2
+CN23
+1
+2
+CN30
+1
+2
+1
+2
+CN27
+1
+2
+3
+CN26
+1
+2
+3
+4
+CN9
+1
+2
+CN21
+1
+2
+1
+2
+1
+2
+CN15
+1
+2
+CN4
+1
+2
+1
+2
+CN24
+1
+2
+CN22
+1
+2
+1
+2
+1
+2
+CN13
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+1
+2
+Ilustración 4.23 
+Conexiones de la placa de fluidos versión 3
+4.10. Placa control de jeringas - CIIM00054
+Esta placa está ubicada en la parte superior de la zona de fluidos.
+La placa a través de un microcontrolador (U1) controla los siguientes elementos:
+• 
+Sensor de presión del circuito de muestras (detector de coágulo)
+• 
+Alimentación del led del manifold
+• 
+Driver del motor de dispensación de la muestra
+• 
+Detector de inicio de la dispensación de la muestra
+• 
+Driver del motor de dispensación del reactivo 1
+• 
+Detector de inicio de la dispensación del reactivo 1
+• 
+Driver del motor de dispensación del reactivo 2
+• 
+Detector de inicio de la dispensación del reactivo 2

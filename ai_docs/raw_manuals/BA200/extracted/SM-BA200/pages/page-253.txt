@@ -1,0 +1,137 @@
+AIII. 
+Listado de códi­
+gos de error
+CPU
+Code
+Description
+0
+Without Errors
+1
+“CPU Firmware Mismatch. 
+Update from repository must be done”
+2
+“Distributed Firmware Mismatch. 
+Update from repository must be done”
+3
+FW Repository Error 
+4
+FW Error (Checksums)
+5
+FW Execution Error
+6
+“Maneuvers/Adjustments Mismatch. 
+Update from repository must be done”
+10
+CAN Bus Error
+20
+“Instruction Rejected by a previous Error 
+(Permanent or Self-recover like covers) (Stand 
+by-Running)”
+21
+Instruction Aborted by an Error (Stand by-
+Running)
+22
+Recover Failed. 
+28
+“Impossible to perform TEST/PTEST/
+WRUN; 
+Wait to next Cycle”
+34
+“Impossible to perform TEST/PTEST/
+WRUN; 
+Already received one in the same cycle”
+35
+Error in Scheduler Table
+40
+Instruction unknown or with wrong 
+parameter
+41
+Instruction Not Allowed on This State
+42
+Instruction Not Allowed on This Instruction
+43
+COMMAND script wrong
+45
+LOADADJ Wrong
+61
+ISE Time Out
+70
+Main Cover opened while instrument is 
+working
+99
+Multiple Errors
+BR1, AG1
+Code
+Description
+100
+BR1 Vertical Home Error
+BR1, AG1
+Code
+Description
+101
+BR1 Horizontal Home Error
+102
+BR1 Vertical step loss detected
+103
+BR1 HOME Error in recovery state
+108
+BR1 Board doesn't answer
+109
+BR1 Board Reset
+130
+AG1 Vertical Home Error
+131
+AG1 Horizontal Home Error
+132
+AG1 Vertical step loss detected
+133
+AG1 HOME Error in recovery state
+138
+AG1 Board doesn't answer
+139
+AG1 Board Reset
+DR1
+Code
+Description
+200
+DR1 Freq Detection system Error (Frequency 
+Wrong)
+201
+DR1 Probe Thermistor Error
+202
+DR1 Probe Heater Error
+203
+DR1 Collision Detected
+208
+DR1 Board doesn’t answer
+209
+DR1 Board Reset
+RR1
+Code
+Description
+300
+RR1 Home Error
+301
+RR1 Fridge Temperature Alarm
+302
+RR1 Fridge Peltiers Error
+303
+RR1 Fridge Fans Error
+305
+RR1 Cover Opened
+310
+RR1 Code Bar Reader Error 
+311
+RR1 Code Bar Reader Time Out Error
+348
+RR1 Board doesn't answer
+GLF
+Code
+Description
+500
+Rotor Home Error
+501
+Rotor Encoder Error
+502
+Rotor Safety Stop: Washing Station Down
+253

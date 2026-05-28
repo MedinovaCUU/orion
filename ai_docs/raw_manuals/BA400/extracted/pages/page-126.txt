@@ -1,0 +1,105 @@
+AIII. 
+Adjustment margin tables
+Adjustment margins:
+Parameter
+Minimum
+Maximum
+Reading reference position - Well 1
+7 860
+7 905
+Washing solution tare 0
+-5
+5
+Washing solution tare 50
+40
+60
+Washing solution tare 100
+95
+105
+Washing solution tare 150
+100
+150
+Waste tare 0
+-5
+5
+Waste tare 50
+40
+60
+Waste tare 100
+95
+105
+Waste tare 150
+100
+150
+Thermal adjustment of reaction rotor
+37,0
+39,0
+Thermal adjustment of wash station
+44,0
+50,0
+Thermal adjustment of reagent tip 1
+50,0
+55,0
+Thermal adjustment of reagent tip 2
+50,0
+55,0
+Thermal test on reaction rotor
+36.8
+37,2
+Thermal test on wash station
+45,0
+50,0
+Thermal test on reagent tip 1
+30,0
+35,0
+Thermal test on reagent tip 2
+30,0
+35,0
+Led 1 intensity reference value
+6 000
+25 000
+Led 2 intensity reference value
+14 000
+30 000
+Led 3 intensity reference value
+12 000
+30 000
+Led 4 intensity reference value
+4 000
+30 000
+Led 5 intensity reference value
+3 000
+15 000
+Led 6 intensity reference value
+6 000
+25 000
+Led 7 intensity reference value
+6 000
+20 000
+Led 8 intensity reference value
+4 000
+15 000
+Photometry margins:
+Parameter
+Minimum
+Maximum
+Dark current
+3 300
+4 500
+Number of counts of main photodiode
+Minimum
+Maximum
+Wavelength 340
+600 000
+950 000
+Wavelength 405
+850 000
+950 000
+Wavelength 505
+850 000
+950 000
+Wavelength 535
+850 000
+950 000
+Service Manual
+126

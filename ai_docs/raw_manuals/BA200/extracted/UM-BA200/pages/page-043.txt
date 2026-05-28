@@ -1,0 +1,9 @@
+43
+43
+Ilustración 18 
+Actualización del flash
+4.12.2.2. Actualizaciones de java
+1. Acceda a Inicio, Panel de control
+2. Acceda al icono de Java
+3. Acceda a la pestaña de Actualización y deseleccione la opción de Comprobar 
+actualizaciones automáticamente.

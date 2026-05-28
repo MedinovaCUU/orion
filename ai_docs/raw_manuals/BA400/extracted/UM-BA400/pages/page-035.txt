@@ -1,0 +1,43 @@
+35
+35
+Fusible
+Modelo
+Código recambio
+10A
+5SF10L250V
+AC16747
+1
+Ilustración 12 
+Localización del fusible
+El fusible está localizado en el interruptor principal trasero (1). 
+ 
+Cambio de fusibles 
+Quite la tapa de protección (1) y sustituya los dos fusibles por los que vienen en 
+la caja de accesorios. Siempre sustituya los dos fusible a la vez.
+ 
+)
+Véase Ilustración 12.
+1
+2
+3
+4
+Ilustración 13 
+Interruptores del analizador
+1 – 
+1 – Interruptor 
+Interruptor analizador
+analizador
+2 – 
+2 – Interruptor nevera
+Interruptor nevera
+3 – 
+3 – Interruptor módulo ISE
+Interruptor módulo ISE
+4 – 
+4 – Interruptor principal
+Interruptor principal
+Se aconseja la utilización de un sistema de alimentación ininterrumpida (SAI) 
+para proteger al analizador y al ordenador. Las características recomendadas son:
+ 
+Modelo 
+SAI continuo (on-line)

@@ -1,0 +1,11 @@
+39
+GUÍA DE 
+INSTALACIÓN
+Manual de Usuario BioSystems SPICA | Versión 2.8 - Agosto 2024
+Manual de Usuario BioSystems SPICA
+En este documento se proporciona información sobre la preparación previa del 
+emplazamiento y sobre el lugar donde se instalará el analizador, así como información 
+sobre los requisitos previos necesarios para su correcta instalación y funcionamiento. El 
+cliente es responsable de la preparación del lugar de instalación, según las instrucciones 
+establecidas en este documento, y de cumplir con los requisitos relacionados con el 
+suministro de electricidad y agua.

@@ -1,0 +1,53 @@
+—  43  —
+Service manual
+Code
+ Description
+CA15100
+Top housing
+CA15101
+Lower 
+housing
+AC15102
+Tray
+ZO15103
+Printer 
+support
+CA15104
+Cuvette lid
+AC15105
+Light guide
+AC15106
+Guide tube
+TE15109
+Keyboard 
+support
+AC15112
+Rubber legs
+AC15113
+Waste output 
+fitting
+Code
+ Description
+PC15114
+Display
+TE15115
+Keyboard
+IM15116
+Printer
+ME15117
+Peristaltic 
+pump
+MO15120
+Fan
+CE15121
+Peltier
+AC15122
+Temperature 
+sensor
+AC15123
+Radiator
+AC15094
+tool for 
+temperature 
+with cuvette 
+V.3. - List of common spares parts for BTS-350 and Y-350

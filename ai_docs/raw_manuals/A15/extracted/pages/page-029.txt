@@ -1,0 +1,28 @@
+Manual de servicio
+30
+3.4.2. Sistema de iluminación
+El cuerpo de aluminio (2) es la estructura que soporta todos los elementos del sistema de iluminación. El portalám-
+paras (23), fijado al cuerpo mediante el sistema de fijación (24), mantiene la lámpara halógena (25) en su posición 
+sin necesidad de ajustes. El tambor de filtros (26) presenta 10 posiciones para filtros ópticos. La posición 0 siempre 
+debe estar ocupada por un filtro tapado. Las otras posiciones pueden estar ocupadas por un filtro interferencial (27) 
+o por otros filtros tapados. Ninguna posi ción del tambor debe estar libre. Cada filtro va montado sobre un portafiltros 
+(28) y fijado a éste mediante la tuerca (29). Los portafiltros pueden desmontarse del tambor simplemente tirando de 
+ellos. La tapa (30) permite acceder fácilmente al tambor de filtros. El tambor de filtros está fijado sobre eje (31). Este 
+eje puede girar por la acción directa del motor (32). Su extremo está guiado por el roda miento (34). El fotodetector 
+(35) indica la posición de inicio del tambor. La luz de la lámpara, limitada por el diafragma (36). La luz atraviesa el 
+tambor de filtros, que selecciona la longitud de onda deseada y la rendija (37) que adecúan la forma del haz de luz 
+a la geometría de los pocillos del rotor.
+1
+3
+2
+8
+9
+22
+11
+13
+12
+16
+17
+19
+20
+Ilustración 3.9. Conjunto rotor de reacciones

@@ -1,0 +1,92 @@
+Manual usuario 
+ 
+ 
+ 
+Manual usuario 
+ 
+ 
+ 
+182
+182
+Biosystems
+Biosystems
+Tipo de 
+alarma
+Alarma/Error
+Causa del problema
+Solución propuesta
+Electrodo mal colocado
+Revise la colocación de los electrodos
+Tubo de la bomba de residuos mal 
+colocada
+Revise la colocación de los tubos de 
+la bomba peristáltica de residuos
+Alarma en el Kit 
+de reactivos 
+Kit de reactivos no instalado
+Instale el kit de reactivos 
+Conector del kit de reactivos mal 
+colocado
+Revise el conector del kit de 
+reactivos.
+Aviso del Kit de 
+reactivos caducado
+Ha caducado el kit de reactivos
+Cambie el kit de reactivos
+Aviso de 
+finalización del 
+calibrador A o B 
+del kit de reactivos
+Ha finalizado el calibrador A o B.
+Cambie el kit de reactivos
+Aviso de un 
+electrodo ha 
+caducado
+Uno de los electrodos ha caducado
+Cambie el electrodo caducado.
+Aviso de que 
+un electrodo 
+ha superado el 
+número de usos
+Uno de los electrodos ha superado 
+el número de usos previsto para su 
+correcto funcionamiento
+Cambie el electrodo.
+Error en la 
+dispensación de 
+muestra
+Insuficiente muestra dispensada 
+en el lector del módulo ISE o 
+detección de burbujas 
+Verifique el volumen de la muestra y 
+repita la muestra.
+Valor de la 
+pendiente 
+inferior al límite 
+establecido
+Desalineamiento de los electrodos
+Quite los electrodos. Inspeccione el 
+anillo sellador (O-ring)
+Vuelva a instalar los electrodos.
+Finalizado las soluciones 
+calibradoras
+Reemplace el kit de reactivos
+Fin de la vida de los electrodos
+Reemplace los electrodos
+Burbujas de aire en el electrodo de 
+referencia
+Quite el electrodo. Dele unos 
+golpecitos para eliminar las burbujas 
+de aire. Vuelva a instalar el electrodo. 
+Recalibre
+Deriva de un 
+electrodo
+Puede ocurrir cuando el electrodo 
+es nuevo o el calibrador A se acaba 
+de instalar. 
+Si el electrodo es nuevo, 
+inicialmente puede derivar mientras 
+se rehidrata durante 15 minutos.
+Purga el calibrador A y recalibre
+Fin de vida del electrodo 
+Reemplace el electrodo.

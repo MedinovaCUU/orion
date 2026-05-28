@@ -1,0 +1,67 @@
+Manual usuario 
+ 
+ 
+ 
+Manual usuario 
+ 
+ 
+ 
+138
+138
+Biosystems
+Biosystems
+Código de 
+colores
+Nombre
+Descripción de la identificación de las 
+botellas
+No utilizado
+Reactivo posicionado pero no usado en la 
+sesión de trabajo
+Error lectura 
+cód.
+Error en la lectura del código de barras
+Desconocido
+Botella posicionada pero no identificada
+Seleccionado
+Botella seleccionada
+Esta pantalla es solo para consulta de estados y no permite realizar modificaciones 
+de posición de muestras ni solucionar las alarmas de volumen, para ello debe utilizar 
+la pantalla de Posición de rotor de muestras y reactivos
+ 
+)
+Véase apartado 10.5.3
+10.6.4. Estado rotor de reacciones
+Pantalla de información del estado de cada uno de las cubetas de reacción. Co­
+rresponde a la pestaña de reacciones de la pantalla monitor.
+El usuario puede pulsar sobre cualquier cubeta para ver la información detallada 
+del contenido de la cubeta o de la preparación que contiene. También permite 
+acceder a la curva de reacción cuando la cubeta contiene una preparación. 
+Hay un código de colores para identificar el estado de cada cubeta.
+Código de 
+colores
+Nombre
+Descripción de la identificación del 
+estado de las cubetas del rotor de 
+reacciones
+Lavado
+Cubeta en estado de lavado
+No Utilizado
+Cubeta sin usar. Vacía
+R1+muestra
+Dispensado R1 y muestra
+R1+muestra+R2
+Dispensado R1, muestra y R2
+Dilución de la 
+muestra
+Cubeta con dilución de la muestra
+Acabado
+Cubeta con la reacción finalizada
+Contaminado
+Cubeta contaminada. Cuando se 
+dispensa una técnica contaminante 
+en la cubeta, ésta se marca como 
+contaminada. En la siguente vuelta del 
+rotor no usará dicha cubeta y entrará 
+en el proceso de limpieza para ser 
+usada en la próxima vuelta del rotor.

@@ -1,0 +1,43 @@
+25
+25
+3. 
+Identificación de los componentes 
+principales
+Las partes principales constituyentes del analizador aparecen identificadas y nu­
+meradas en las siguientes figuras y sus listas asociadas:
+3
+7
+5
+4
+6
+1
+2
+8
+Ilustración 1 
+Componentes principales
+1 – 
+1 – Tapa general
+Tapa general
+2 – 
+2 – Rotor de reactivos y muestras
+Rotor de reactivos y muestras
+3 – 
+3 – Puerta de acceso a las botellas y 
+Puerta de acceso a las botellas y 
+módulo ISE
+módulo ISE
+4 – 
+4 – Tapa del rotor de reacciones
+Tapa del rotor de reacciones
+5 – 
+5 – Brazo agitador 
+Brazo agitador 
+6 – 
+6 – Brazo de dispensación
+Brazo de dispensación
+7 – 
+7 – Estación de lavado
+Estación de lavado
+8 – 
+8 – Interruptores
+Interruptores

@@ -1,0 +1,64 @@
+7 – Bolas de anclaje del rotor
+8 – Aislante
+9 – Separador peltier
+10 – Peltier
+11 – Radiador
+12 – Ventilador
+Referencias de la ilustración 3.4 y 3.5 :
+1 – Tapa rotor de reactivos
+2 – Botellas de reactivos de 60 mL y 20 mL
+3 – Rotor de reactivos
+4 – Conjunto rotor
+5 – Pulsador anchaje rotor
+6 – Posicionador rotor
+8
+9
+10
+11
+12
+Ilustración 3.5 
+Corte del rotor de reactivos
+3.3. Nuevo diseño del soporte del lector del código de barras
+Tanto para el rotor de reactivos como para el rotor de muestras se ha homologado una segunda referencia de lector 
+de código de barras. Para ello ha sido necesario modificar las piezas de soporte del lector. 
+Estos cambios se han aplicado a partir del número de serie:
+ 
+) Véase el capítulo AII para saber a partir de que números de serie se ha implementado.
+Las dos referencias de lector de códigos de barra son:
+• 
+Microscan MS3
+• 
+Opticon NLB1000
+A continuación se indica las diferentes posiciones de las chapas de soporte en función del tipo de lector y del rotor
+Tipo de lector
+Modelo de 
+rotor
+Pieza ( Ilustración 3.6 
+y Ilustración 3.7)
+Posición de montaje
+Microscan
+Reactivos y 
+Muestras
+Pieza Nº 1
+Posición 13 ( Ilustración 3.10)
+Pieza Nº 2
+Posición 9 y 10 ( Ilustración 3.8)
+Marcado como MIC
+Pieza Nº 6
+Añadir esta pieza para sujetar el lector. Posición 
+única ( Ilustración 3.6)
+Opticon
+Reactivos
+Pieza Nº 1
+Posición 13 ( Ilustración 3.10)
+Pieza Nº 2
+Posición 12 ( Ilustración 3.9)
+Marcado como M
+Opticon
+Muestras
+Pieza Nº 1
+Posición 14 ( Ilustración 3.10)
+Pieza Nº 2
+Posición 11 ( Ilustración 3.9)
+Marcado como R
+29

@@ -1,0 +1,25 @@
+Para que la membrana funcione correctamente se tiene que realizar el vacío con una bomba de membrana (4) y un 
+circuito de control (1) para monitorizar la presión del vacío.
+La salida de la bomba de membrana (4) pasa por una válvula antiretorno (3) y se conecta a través de una T al tubo 
+de salida de los residuos de baja contaminación.
+3.14. Nuevo modelo de control del desgasificador
+Cambio en el control del desgasificador. 
+ 
+) Véase el capítulo AII para saber a partir de que números de serie se ha implementado.
+Ha cambiado la placa de control del sistema con la electroválvula y las conexiones.
+10
+11
+12
+13
+14
+15
+Ilustración 3.53 
+Nuevo sistema de control del desgasdificador
+Referencias de la Ilustración 3.53
+10 – Conexiones para el vacío
+11 – Electroválvula de control
+12 – Nueva placa de control del desgasificador
+13 – Conexión del tubo de vacío al sensor de la placa
+14 – Primer tubo de conexión de vacío a la membrana 
+15 – Segundo tubo de conexión de vacío a la membrana 
+61

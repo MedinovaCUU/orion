@@ -1,0 +1,53 @@
+12
+13
+14
+15
+11
+16
+Ilustración 3.25 
+Vista de los depósitos internos
+Referencias de la Ilustración 3.24 y Ilustración 3.25
+1 – Filtro de particulas
+2 – Tubos de aspiración de la estación de lavado
+3 – Tubos de dispensación de la estación de lavado
+4 – Válvula antiretorno
+5 – Punto de interconxión del bus CAN y tubo de dispensación para 
+el brazo
+6 – Botella de solución de lavado
+7 – Botella de residuos de alta contaminación
+8 – Modulo ISE
+9 – Motor del modulo ISE
+10 – Kit de reactivos del módulo ISE
+11 – Estructura
+12 – Filtro de particulas para la solución de lavado
+13 – Filtro de particulas para el agua destilada
+14 – Botella de residuos de baja contaminación
+15 – Botella de agua destilada
+16 – Ventiladores
+Referencias de la Ilustración 3.26 y Ilustración 3.27
+17 – Aspiración de agua para la entrada del desgasificador
+18 – Aspiración agua bomba de pistones (para la estación de lavado)
+19 – Aspiración agua bomba de pistones (para la estación de lavado)
+20 – Aspiración agua bomba de pistones (para la estación de lavado)
+21 – Aspiración para el lavado externo de la punta
+22 – Aspiración para el lavado externo del agitador
+23 – Varilla larga de detección de nivel (detecta nivel vacio)
+24 – Abertura del depósito para no presurizarlo con filtro de partícu­
+las
+25 – Varilla corta de detección de nivel (detecta nivel lleno)
+26 – Placa electrónica para la detección de nivel
+27 – Depósito de agua destilada
+28 – Salida líquido de la bomba del desgasificador
+29 – Salida de la estación de lavado externa del agitador
+30 – Salida bomba aspiración estacion de lavado
+31 – Salida bomba aspiración estacion de lavado
+32 – Salida bomba aspiración estacion de lavado
+33 – Salida bomba aspiración estacion de lavado
+34 – Desagüe del rotor de lecturas
+35 – Conexión a la bomba para el vaciado del depó­
+sito
+36 – Placa electrónica para la detección de nivel
+37 – Desagüe del rotor de muestras y reactivos
+38 – Salida de la estación de lavado externa del brazo
+39 – Depósito residuos baja contaminación
+45

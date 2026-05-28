@@ -1,0 +1,20 @@
+95
+5.3.3. 
+Level control scales test
+This screen makes it possible to check the functioning of the level control scales of the waste, distilled water 
+and the washing solution extern bottle containers. On pressing the Test button, the screen shows the level of 
+liquid measured by the analyzer. The external bottle container only indicates full (100%) or empty (0%).
+5.3.4. 
+Racks and covers detection test
+This test makes it possible to check the functioning of the different detectors incorporated in the analyzer.
+• 
+Open detector of the general cover of the analyzer.
+• 
+Rotor cover presence detector.
+• 
+Racks identification detectors
+• 
+Fridge detectors. Fridge condition (switch on, switch off), fridge sensor temperature and condition of the 
+fridge cover.
+The technician can manipulate the corresponding components, for example, open and close the cover of the 
+analyzer and the screen shows the state of the detectors in each case.

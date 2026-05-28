@@ -1,0 +1,16 @@
+4
+5
+Ilustración 8.19 
+Desmontaje bomba cerámica
+8.7. 
+Desmontaje conjunto desgasificador
+1. Quite la carcas lateral izquierda
+ 
+) Véase capítulo 8.1.2
+2. Desenchufe el conector de alimentación de la placa electrónica.
+3. Desconecte el tubo de entrada de agua (1), salida de agua (5) y el tubo de salida de residuos (4). Véase Ilustra­
+ción 8.20
+4. Desatornille los 4 tornillos (2) que sujetan el conjunto desgasificador a la estructura. 
+5. Quite el conjunto desgasificador (3).
+Manual de servicio
+136

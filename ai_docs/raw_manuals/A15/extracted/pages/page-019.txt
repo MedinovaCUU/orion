@@ -1,0 +1,21 @@
+Manual de servicio
+20
+1
+1
+2
+3
+Desbloquear el mecanismo del brazo quitando 
+el tornillo (1).
+Desbloquear los mecanismos del brazo 
+quitando las espumas (1), (2) y (3).
+2.4. Modificaciones del analizador para analizar analitos en heces
+El analizdor A15 y A15C se pueden convertir en un analizador para realizar determinaciones de analitos en heces.
+La principal diferencia para medir analitos en heces, es el tubo primario que contiene la muestra. Es un tubo especial 
+que sirve para la recolección de la muestra y para realizar el pretratamiento.
+Para utilizar este tubo primario es necesario realizar las siguientes modificaciones al equipo:
+• 
+Cambio de punta para poder perforar el sellado, opérculo, del tubo de heces
+• 
+Instalar la versión de Firmware v6.16 o superior
+• 
+Instalar el software de usuario A15 STL. Se ha incorporado un nuevo modelo de tipo de tubo.

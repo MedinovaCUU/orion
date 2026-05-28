@@ -1,0 +1,64 @@
+225
+225
+Descripción 
+Causa
+Desconocimiento del tipo 
+de muestra o técnica del 
+paciente
+La técnica o el tipo de muestra cancelada no 
+existe en el BA200. 
+La técnica o tipos de muestra 
+a cancelar ha finalizado
+La ejecución de la técnica o tipo de muestra a 
+cancelar ya ha finalizado (los resultados ya se 
+han obtenido)
+Debido a petición de repeticiones
+Descripción 
+Causa
+Petición del LIS de 
+repetición no permitida
+La configuración del modo de repetición en el 
+analizador ha sido seleccionada únicamente en 
+BA200.
+Petición del LIS de repetición 
+de un control interno de QC
+No está permitida la petición de repeticiones 
+de controles internos desde el LIS.
+Petición del LIS de 
+repetición de una técnica o 
+tipo de muestra incorrecta.
+La petición de repeticiones para técnicas 
+calculadas o técnicas externas no está 
+permitida.
+Petición del LIS de repetición 
+para un identificador de 
+espécimen diferente.
+La petición de repetición después de recibir un 
+resultado se ha solicitado para un identificador 
+de espécimen diferente.
+Debido al contenido del campo incorrecto
+Descripción 
+Causa
+Técnica o tipo de muestra 
+desconocido
+Los campos identificador de técnica 
+y de tipo de muestra son conocidos 
+por el BA200, pero la técnica no se ha 
+programado para el tipo de muestra.
+Petición de un control interno 
+para una técnica o tipo de muestra 
+erróneo.
+Se ha solicitado un control interno para 
+una técnica calculada o para una técnica 
+externa.
+Se ha solicitado un control interno 
+para una técnica normal o ISE y los 
+parámetros del control de calidad no 
+están programados en el BA200.
+Técnica calculada necesita más de 
+un tipo de muestra
+La técnica calculada está formada por 
+técnicas con diferente tipo de muestra.
+Espécimen duplicado
+El mismo identificador de espécimen se 
+ha enviado para diferentes pacientes

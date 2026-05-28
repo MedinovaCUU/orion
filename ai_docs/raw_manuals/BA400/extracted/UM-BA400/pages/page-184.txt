@@ -1,0 +1,70 @@
+Manual usuario 
+ 
+ 
+ 
+Manual usuario 
+ 
+ 
+ 
+184
+184
+Biosystems
+Biosystems
+13. Mantenimiento y limpieza
+13.1. Acciones de mantenimiento y periodicidad
+La tabla siguiente enumera las acciones de mantenimiento y la frecuencia con que 
+deben realizarse. 
+Acciones al iniciar el día
+1
+Rellene la botella de solución de lavado
+2
+Inicialice el analizador. Realice el warm-up con el programa
+3
+Realice 2 ciclos de acondicionamiento
+4
+Verifique la temperatura del rotor de reacciones y del rotor de reactivos
+5
+Verifique el volumen de los reactivos
+6
+Realice una calibración de las bombas peristálticas del módulo ISE
+7
+Realice una calibración de los electrodos ISE
+Acciones al finalizar el día
+1
+Realice el lavado del canal del modulo ISE con solución de lavado
+2
+Apague el analizador realizando el Shut-down con el programa
+3
+Vacíe la botella de residuos de alta contaminación
+4
+Retire los calibradores, controles y muestras del rotor de muestras
+Acciones a realizar semanalmente
+1
+Cambie el rotor de reacciones
+2
+Limpie la superficie de trabajo
+3
+Limpie el interior del vaso del rotor de reactivos
+4
+Limpie el interior del vaso del rotor de muestras
+5
+Limpie las palas de los agitadores con un paño empapado con solución 
+de lavado
+6
+Verifique la capacidad del pack de reactivos del módulo ISE, en caso de 
+agotarse cámbielo
+7
+Enjuague con agua destilada los tubos de residuos del módulo ISE
+8
+Calibre el detector de burbujas del módulo ISE
+9
+Limpie la copa de entrada del módulo ISE con un hisopo de algodón
+10
+Limpie los filtros de los ventiladores frontales
+ 
+NOTE
+NOTE
+ 
+Después de realizar cualquier operación de mantenimiento asegúrese de que 
+el instrumento quede en las condiciones correctas de instalación para su 
+funcionamiento.

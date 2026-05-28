@@ -1,0 +1,38 @@
+34
+Type of board
+Description of board
+Identification code
+Selector position
+Fluidic system 
+board
+Fluidic system
+SF1
+1111
+Syringe board
+Syringes
+JE1
+0100
+Each of the above boards has a microprocessor. To rapidly identify the microprocessor status, they have a built-in 
+state indicator led. The information provided by the flashing of the led is the following:
+Status
+Description
+Rapid flashing (burst)
+Board start-up. After a few seconds, the flashing changes to slow.
+Rapid flashing 
+Board in monitor mode.
+Slow flashing
+Board has firmware and is operating correctly.
+Very rapid flashing. With 
+no regular sequence
+Firmware update process.
+Not flashing
+Board not supplied with power or damaged.
+NOTE
+The analyser chassis, and all its metallic parts are only connected to the socket ground wire. This is 
+the electrical safety wire. 
+The negative reference or GND of the electrical circuit is isolated from the chassis. To measure the 
+voltages with a multimeter or an oscillocope, place the instrument reference at the “test points” 
+marked GND in each board or the CAN connector reference connection.
+Figure 4.21 
+Sources and input-AC board - CIIM00056
+Figure 4.1 Silkscreen printing of input-AC board

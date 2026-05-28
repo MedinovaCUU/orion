@@ -1,0 +1,28 @@
+AI. Lista de accesorios y recambios
+En caso de deterioro de alguno de los componentes del analizador o si precisa alguno de los materiales fungibles, 
+utilice siempre material original BioSystems. 
+En la tabla siguiente aparece el listado de los componentes que pueden ser necesarios. Para su adquisición, contacte 
+con el distribuidor habitual y pida cada elemento con su correspondiente código. 
+Lista de accesorios
+Código
+Representación
+Descripción 
+AC17274
+DVD Programa de Usuario y servicio modelo BA200
+AC17361
+DVD Programa de Usuario y servicio modelo Y200
+AC11 485
+“Reaction Rotor”, rotor de reacciones (10)
+AC10 770
+“Sample wells”, pocillos muestra (1 000)
+AC16 434
+Botella de solución de lavado concentrada 500 mL
+AC17201
+Botella de solución de lavado ácida
+AC17205
+Botella de solución de lavado alcalina
+AC16 360
+Adaptador abierto para tubos primarios (90)
+AC17268
+Adaptador para tubos (44)
+229

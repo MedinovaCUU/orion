@@ -1,0 +1,39 @@
+2. Atornille el conjunto al soporte del brazo con los tornillos (20). Fíjese en la colocación del adaptador al soporte 
+según la Ilustración 8.42.
+3. Conecte el cable del motor.
+4. Verifique que el movimiento de la paleta es completamente axial y uniforme.
+5. Verifique y/o ajuste la paleta en las diferentes posiciones del brazo agitador. Siga las instrucciones del manual 
+de servicio capítulo 6.6.1.3
+17
+18
+19
+20
+Ilustración 8.42 
+Montaje motor y paleta agitadora
+8.12. Recambios conjunto fluídica
+AC17284
+AC17287
+AC16582
+AC16580
+AC16571
+AC17097
+ 
+Código
+Descripción
+AC17284
+Placa fluidos
+AC17287
+Calefactor 
+estación de 
+lavado
+AC16582
+Bomba 
+aspiración
+AC16580
+Válvula 
+entrada agua
+AC16571
+Ventilador 
+general
+Manual de servicio
+160

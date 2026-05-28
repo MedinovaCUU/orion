@@ -1,0 +1,96 @@
+Manual usuario 
+ 
+ 
+ 
+Manual usuario 
+ 
+ 
+ 
+196
+196
+Biosystems
+Biosystems
+Paso
+Acción 
+Repeti­
+ciones 
+Descripción
+3
+Purgar A
+3
+4
+Instalar 
+pack de 
+limpieza
+1
+Retire el kit de reactivos y coloque en su lugar 
+el pack de limpieza lleno de agua purificada. El 
+pack consta de la base, de 3 tubos y la botella. 
+Estos elementos los encontrará en el código de 
+limpieza AC16752.
+ 
+)
+ Véase Ilustración 125 como instalar el pack de 
+limpieza.
+5
+Purgar A
+3
+6
+Purgar B
+3
+7
+Cebar A
+20
+Ejecuta estas acciones para lavar bien con agua 
+purificada todo el circuito fluídico.
+8
+Cebar B
+20
+9
+Manteni­
+miento
+1
+Acción para vaciar el canal de los electrodos y 
+poder desinstalarlos sin dañar el módulo.
+10
+Desac­
+tivación 
+módulo 
+ISE
+1
+Acción para indicar al programa que el módulo 
+ha sido desconectado.
+Apague la alimentación del módulo ISE.
+Quite todos los electrodos del módulo, incluso el de referencia. Protéjalos de la 
+siguiente manera:
+ 
+Electrodos de Na+ y Cl- 
+Ponga cada electrodo individualmente en una bolsa sellada.
+ 
+Electrodo de referencia 
+Vuelva a insertar en el orificio del electrodo de referencia el hilo marcado con 
+una etiqueta amarilla, y entonces póngalo en una bolsa individual sellada.
+ 
+Electrodos de K+ y Li+ 
+Aspire una pequeña cantidad del calibrador A dispensado en un pocillo pediá­
+trico realizado en el primer paso.
+ 
+ 
+Inyecte suficiente calibrador A en el canal de los electrodos de K+ y Li+ hasta que 
+el líquido llene el canal.
+ 
+ 
+Cubra los dos extremos del canal (los dos lados de los electrodos de K+ y de Li+) 
+con cinta adhesiva para sostener el calibrador A en su lugar.
+ 
+ 
+Inserte los electrodos K+ y Li+ en una bolsa sellada.
+ 
+Kit de reactivos 
+Retire el kit de reactivos del analizador y deséchelo.
+ Tubos de la bomba peristáltica Retire todos los tubos de los fluidos y enjuáguelos con agua purificada. Utilice la 
+jeringa con la punta de tamaño medio.
+ 
+Tubos delgados 
+Enjuague los tubos delgados con agua purificada. Utilice la jeringa con la punta 
+de tamaño pequeño.

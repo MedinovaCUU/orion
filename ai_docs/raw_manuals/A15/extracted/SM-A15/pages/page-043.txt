@@ -1,0 +1,37 @@
+Manual de servicio
+44
+Conector
+Función
+Pins
+J3
+Conexión motor Z
+J4
+Conexión placa 
+CPU(CIIM00026)
+1 - bobina 2 Motor Y
+2 - VCC
+3 - bobina 2 Motor Y
+4 - GND
+5 - bobina 1 Motor Y
+6 - encoder
+7 - bobina 1 Motor Y
+8 - home motor x
+9 - bobina 2 Motor Y
+10 - home motor X
+11- bobina 2 Motor Z
+12 - GND
+J5
+Conexión placa 
+CPU(CIIM00026)
+1 - bobina 2 motor X
+2 - bobina 2 motor X
+3 - bobina 1 motor X
+4 - bobina 2 motor Z
+5 - bobina 2 motor Z
+6 - bobina 1 motor z
+4.7. Placa de comunicaciones (CIIM00019)
+Permite la comunicación con el exterior del analizador, a través de un canal USB o un canal RS232. Incluye 
+además una canal auxiliar RS232 para la monitorización de funciones del analizador durante su ejecución.
+CN1 - Conector USB
+P1 - Conector RS232 principal
+P2 - Concector RS232 auxiliar

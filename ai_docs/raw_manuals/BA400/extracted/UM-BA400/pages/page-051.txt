@@ -1,0 +1,48 @@
+51
+51
+4.12.3.11. Configuración de un sistema VPN
+Para aquellos sistemas que sea necesario la privacidad de los datos durante las 
+comunicaciones con el host utilice active en el sistema windows el VPN (Virtual 
+Private Network) para realizar las comunicaciones encriptadas con el host.
+Siga los pasos siguientes:
+• 
+Seleccione Todas las configuraciones
+• 
+Seleccione Red e internet
+• 
+Seleccione VPN
+• 
+Seleccione Agregar una conexión VPN y configure las opciones de la configu­
+ración según los datos del administrador de sistemas o del proveedor de VPN.
+4.13. Instalación del módulo ISE (Opcional)
+ 
+Instalación de los electrodos Una vez abierta la tapa frontal, se accede directamente al módulo ISE. Ver Ilus­
+tración 30 
+1. Apague la alimentación del módulo ISE con el interruptor.
+2. Desenrosque con la mano los 3 tornillos (1), y retire la tapa (2) para acceder 
+al compartimento para la colocación de los electrodos.
+3. Desembale cada uno de los electrodos. Asegúrese que tiene el anillo sellador 
+(O-ring) colocado. Seque con cuidado los restos de líquido.
+4. Primero coloque el electrodo de referencia. Retire el hilo identificado con una 
+etire el hilo identificado con una 
+etiqueta que está insertado en el canal de circulación del electrodo. Verifique 
+etiqueta que está insertado en el canal de circulación del electrodo. Verifique 
+que no hay restos de sales en el canal. Guarde el hilo con la etiqueta por si 
+que no hay restos de sales en el canal. Guarde el hilo con la etiqueta por si 
+quiere desinstalar el electrodo. 
+quiere desinstalar el electrodo. 
+5. Para insertar el electrodo de referencia, presione hacía abajo la pestaña de 
+color amarillo (3) e inserte el electrodo hasta el final, luego suelte la pestaña.
+6. Inserte el resto de electrodos según las posiciones indicadas en la Ilustración 
+31 Asegúrese que tienen el anillo sellador (O-ring) colocado correctamente. 
+Asegúrese que tienen el anillo sellador (O-ring) colocado correctamente. 
+Seque con cuidado los restos de líquido.
+Seque con cuidado los restos de líquido.
+7. Cada electrodo tiene una posición única para evitar errores de colocación. 
+8. En caso de no disponer del electrodo de Li+, introduzca en su lugar un electrodo 
+vacío (está marcado con una línea de puntos), para que haya continuidad en 
+el canal por donde pasa la muestra.
+9. Suelte el botón amarillo para que presione todos los electrodos y tenga buena 
+comunicación fluídica. 
+10. Para asegurar que los electrodos están bien colocados presiónelos frontalmente 
+hasta oír un clic o haya un asentamiento de los mismos.

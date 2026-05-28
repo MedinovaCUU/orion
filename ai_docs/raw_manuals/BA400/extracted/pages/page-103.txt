@@ -1,0 +1,18 @@
+Figure 8.41 
+Movements required to take the rotor out of the analyser
+8.5. Dismantling the reaction rotor
+1. Remove the top cover.
+)
+) See chapter 8.1.6
+2. Unplug the CAN cable.
+3. Remove the stirrer 2 arm
+)
+) See chapter 8.2
+4. Remove the sample rotor
+)
+) See chapter 8.4
+5. Loosen the 5 screws shown in Figure 8.11
+6. Take the rotor assembly out of the analyser 
+Figure 8.42 
+Reaction rotor anchoring screws
+103

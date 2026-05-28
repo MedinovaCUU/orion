@@ -1,0 +1,56 @@
+37
+USUARIO
+Manual de Usuario BioSystems SPICA | Versión 2.8 - Agosto 2024
+Manual de Usuario BioSystems SPICA
+10. ESPECIFICACIONES TÉCNICAS
+SISTEMA ÓPTICO 
+ROTOR DE REACCIÓN
+180 mL 
+440 mL 
+120 
+Metacrilato UV de calidad óptica
+Seco
+Programable en relación con la dispensación de RA
+37 °C 
+±0.2 °C 
+±0.1 °C 
+1 
+LED + Filtro HCF de revestimiento duradero
+8 mínimo
+10 nm ± 2 nm 
+± 2 nm 
+-0.2 A to 3.5 A 
+0.0001 
+Fotodiodo principal + fotodiodo de referencia
+Volumen mínimo
+Volumen máximo de reacción
+Número de cubetas 
+Material de la cubeta 
+Tipo de incubación
+Temperatura de incubación
+Precisión de la temperatura
+Estabilidad de temperatura
+Agitadores
+Fuente de luz
+No. de longitudes de onda
+Longitudes de onda
+El ancho de banda del filtro
+Precisión de la longitud de onda
+Rango fotométrico
+Resolución interna
+Detector
+Ref.83100:
+280-340-405-420–505–520–560–600–620-635-750 nm 
+Ref.83100BQ
+340-405-480–505–535–560–600–635–670-750 nm
+Tiempo de dispensación 
+para el segundo reactivo
+CV < 1% at 0.1 ABS
+CV < 0.1% at 2 ABS 
+DIMENSIONES Y PESO 
+100 x 62 x 65cm
+75 Kg 
+Dimensiones (Anchura, profundidad y altura)
+Peso
+Precisión de la medición 
+(para 340 nm, 405 nm e 505 nm)

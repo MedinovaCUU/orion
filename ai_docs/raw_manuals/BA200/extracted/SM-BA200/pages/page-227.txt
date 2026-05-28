@@ -1,0 +1,47 @@
+9.3.7. Errores de deriva y ruido
+La pendiente baja es generalmente el resultado de la pérdida de sensibilidad de un electrodo con el tiempo a pesar 
+de que podría ser debido a otras causas. El error de ruido indica la inestabilidad de los valores de una solución dada 
+durante un análisis. La deriva indica que el analizador no está observando valores estables entre las mediciones de 
+las soluciones de calibración.
+Para solucionar el problema, primero pasar la solución de limpieza diaria un par de veces para eliminar los residuos 
+de proteínas acumuladas en el canal fluídico. Si no se elimina el problema observado, asegúrese de que el man­
+tenimiento de rutina se ha realizado, por ejemplo, la sustitución del electrodo de referencia, junta tórica, etc, Si 
+continua sin funcionar, reemplace el electrodo dudoso y pruebe si resuelve el problema. Si no, el causante puede 
+ser la contaminación por sales.
+En todos los electrodos de iones específicos, existe la posibilidad de que la sal reseca o la humedad proporcionen una 
+vía de fuga eléctrica que puede dar como resultado errores, incluyendo la “deriva”, “ruido” o valores de pendiente 
+incorrectos. La señal eléctrica procedente de los electrodos ISE es extremadamente pequeña y cualquier interferencia 
+con estas señales dará lugar a errores. Drante el uso operativo del analizador, pequeñas cantidades de las soluciones 
+de calibración pueden filtrarse dejando caminos de humedad o residuos de sal que pueden no ser visibles a simple 
+vista. La humedad o residuos de sal son conductores de la electricidad y pueden proporcionar cortocirtcuitos de los 
+electrodos que interfieren con la medición.
+Para eliminar estos cortocircuitos que provocan los errores de la señal, limpie los caminos de humedad o de residuos 
+de sal. La mejor manera de hacer la limpieza es apagar el módulo ISE del analizador, retirar todos los electrodos del 
+analizador y limpiar cada contacto con una toalla de papel húmeda y dejándolos secar. El siguiente paso es limpiar 
+la zona donde los electrodos hacen contacto con el módulo ISE de los restos de humedad o residuos de sal con otra 
+toalla de papel húmeda. Seque los contactos con una toalla de papel seco. Cuando esté seguro de que todo está bien 
+seco, vuelva a instalar todos los electrodos y vuelva a probar.
+También verifique los contactos de los electrodos. Asegúrese de que los contactos están limpios. Si están sucios o 
+corroídos, límpielos suavemente con una goma de lápiz, (con cuidado de no quitar la capa fina de oro). Los contactos 
+en el módulo se aprietan con un resorte. Asegúrese de que los resortes están funcionando correctamente y que los 
+contactos entran y salen correctamente. 
+Otra fuente potencial de errores de “ruido”, se relaciona con el canal fluidico. Cuando la bomba peristaltica se detiene, 
+se supone que el fluido también se detiene. El “ruido” se produce cuando la solución sigue en movimiento mien­
+tras se realiza la medición de la muestra o el calibrador. El error “ruido en el Cal A” se produce cuando el Módulo 
+ISE lee mientras el calibrador A está presente. Lo que realmente ocurre es que el Módulo ISE toma seis lecturas en 
+rápida sucesión. Entonces el módulo de ISE calcula el promedio de las seis lecturas. Si una de las lecturas tiene una 
+diferencia de 0.7mV por encima o por debajo de la media, entonces indicará un error de “ruido”.
+Esto puede ocurrir debido a un pequeño problema de flujo y el Calibrador A se mueve cuando la lectura se lleva a 
+cabo. Debe asegurarse de que todos los electrodos estén correctamente colocados y las juntas tóricas estén presentes. 
+Una prueba rápida para verificar es dispensar Cal A en la Copa de la muestra y observar si la solución se mantiene 
+dentro de la copa. Si se vacía lentamente, entonces hay una pequeña fuga. Asegúrese de que los tubos de la bomba 
+han sido sustituidos como parte del programa de mantenimientos de rutina.
+El ruido también puede ocurrir si el electrodo de referencia supera los seis meses de vida. Asegúrese de que los man­
+tenimiento se realizan cuando sea necesario.
+Por supuesto, si un electrodo está dando continuamente errores de ruido, simplemente sustituir el electrodo.
+“Deriva en Cal A” se produce después de un análisis de muestra. Después de cada análisis de muestra, se coloca delante 
+de los electrodos calibrador A y se toma una lectura. A continuación se compara el resultado obtenido de la lectura 
+previa del calibrador A. Si el cambio supera el límite establecido por el fabricante, se obtiene un error de “deriva”. 
+Par solucionar el problema, actuar de manera similar al procedimiento antes indicado con los errores de “ruido”.
+Sin embargo, en ambos casos, intente ejecutar un ciclo de limpieza y re-calibración como primer paso.
+227

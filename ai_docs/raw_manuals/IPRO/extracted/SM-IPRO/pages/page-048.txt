@@ -1,0 +1,24 @@
+48
+Manual de servicio
+4.5.  AC17421 - Placa CPU / AC17420 - Placa Alimentación / AC17405 - 
+Placa comunicaciones
+Desmontaje placa CPU:
+1. Quitar la tapa trasera. Ver Ilustración 4.3
+2. Desconectar todos los cables de la placa CPU
+3. Quitar los 4 tornillos (1) 
+4. Quitar la placa CPU (2)
+Desmontaje placa de alimentación:
+1. Quitar la tapa trasera. Ver Ilustración 4.3
+2. Desconectar todos los cables de la placa de alimentación
+3. Quitar los 4 tornillos (3) 
+4. Quitar la placa de alimentación (4)
+Desmontaje placa de comunicaciones:
+1. Quitar la tapa trasera. Ver Ilustración 4.3
+2. Desconectar los cables de la placa de comunicaciones
+3. Quitar las 4 tuercas (5) 
+4. Quitar la placa de comunicaciones (6)
+Montaje:
+1. Seguir los pasos del desmontaje en sentido inverso para cada una de las placas
+2
+1
+Ilustración 4.9.  Desmontaje placa CPU

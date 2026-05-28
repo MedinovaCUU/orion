@@ -1,0 +1,32 @@
+Acción 
+Descripción 
+Activación 
+electrodos
+Utilice esta acción para activar y memorizar en el 
+programa los electrodos. Sirve para llevar el cómputo 
+del consumo de los electrodos y dar un aviso de la 
+finalización de los mismos.
+Activación 
+preparaciones ISE
+Utilice está acción para indicar al programa que ha 
+instalado un módulo ISE.
+6.5.9. Estrés
+La verificación de estrés es una verificación que simula el ciclo de trabajo normal del analizador. Pero en vez de 
+pipetear sueros y reactivos, el analizador mueve los brazos y las bombas pero sin pipetear líquidos. 
+Pasos para programar el estrés
+1. Seleccione la duración del estrés en número de ciclos.
+2. Seleccione si quiere un estrés global o parcial.
+3. Pulse el botón de ajuste para iniciar el estrés
+4. Durante la ejecución del estrés aparece una barra de estado indicando la duración del estrés.
+5. Una vez ha finalizado el estrés, en el apartado de resultados muestra la siguiente información:
+a) Tipo de estrés
+b) Número total de ciclos y tiempo total de la duración del estrés
+c) Número de ciclos completados
+d) Número de reinicios y ciclo en que se ha producido el reinicio. Sirve para verificar si ha habido un corte 
+de suministro eléctrico en estrés con duraciones muy largas.
+e) Número de errores y descripción del error. Cada ciertos ciclos el analizador realiza una verificación interna 
+para detectar si hay algún problema en el funcionamiento del analizador. Por ejemplo cuenta el número 
+de pasos en cada motor para verificar que no haya pérdida de pasos. En caso de encontrar algún problema 
+lo muestra en la casilla de los errores.
+Manual de servicio
+128

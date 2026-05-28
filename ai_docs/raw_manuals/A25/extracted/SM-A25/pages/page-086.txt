@@ -1,0 +1,12 @@
+86
+Service manual
+5.3.1.5. Z axis secu­ri­ty systems test
+The Z axis of the operating arm has an encoder to detect if there have been missed steps as a result of a col­
+lision with the needle. In the case of a power failure, a mechanical system automatically raises the needle. On 
+selecting the corresponding options, the analyzer checks the functioning of each of these devices.
+5.3.1.6. Maximum Z verification test
+This test checks that the needle does not collide with the bottles on the rack tray. Select the rack type (reagent, 
+paediatric, 30 mm or 15 mm), the position of the rack on the tray and the position of the bottle or well on the rack.
+Press the Start button to move to the selected position and check if the needle collides with the bottle or well 
+or if there is space between the needle and the bottle. 
+Repeat the process in the positions required by the user.

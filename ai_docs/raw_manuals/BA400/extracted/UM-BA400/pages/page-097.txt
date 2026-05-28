@@ -1,0 +1,44 @@
+97
+97
+Ilustración 62 
+Pantalla parámetros técnicas, opciones
+ 
+Límite absorbancia blanco 
+Valor límite que se establece para comparar con el resultado de la absorbancia 
+del blanco. Sirve para verificar el estado del reactivo.
+ 
+Límite blanco cinético 
+Introduzca el valor límite de blanco cinético correcto. Sólo aplica a las técnicas 
+con modo de cálculo cinético.
+ 
+Límite de linealidad 
+Introduzca el valor para el cuál el reactivo ya no es lineal. Si el valor de con­
+centración es superior a este valor entonces el programa muestra un mensaje 
+de aviso y si está activada en la programación se lanza automáticamente una 
+repetición.
+ 
+Límite de detección 
+Introduzca el valor para el cuál el reactivo no detecta valor. Si el valor de con­
+centración es inferior a este valor entonces el programa muestra un mensaje 
+de aviso y si está activada en la programación se lanza automáticamente una 
+repetición.
+ 
+Límites de factor 
+Margen superior e inferior para verificar que el factor de la calibración es 
+correcto.
+ 
+Rango de repetición 
+El analizador repite la muestra automáticamente si el valor de la concentración 
+está dentro del rango. Este rango sirve para realizar una confirmación del resul­
+tado de forma automática.
+En función de los valores programados en esta pantalla, y si estánestán programadas 
+las repeticiones automáticasautomáticasautomáticas (véase 10.3.1.3 y 10.2.1.1) , 
+se ejecutaran la repeticiones mediante predilución, concentración de la muestra o 
+manteniéndosemanteniéndose las mismas condiciones de ejecución”
+ 
+Efecto prozona 
+El llamado efecto prozona puede ocurrir en técnicas basadas en el principio 
+de la formación de complejos antígeno-anticuerpo (aglutinación). Este efecto 
+generalmente se detecta en muestras con un alto contenido de antígeno. El 
+excedente de antígeno invierte la dirección de la reacción y puede causar medi­
+das incorrectas de las muestras. Para detectar dicho efecto se tiene que activar la

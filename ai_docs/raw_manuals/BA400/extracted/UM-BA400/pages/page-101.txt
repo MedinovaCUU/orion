@@ -1,0 +1,42 @@
+101
+101
+ 
+ 
+Pulse este icono cuando quiera editar las técnicas contaminadas a la técnica 
+seleccionada. 
+ 
+ 
+Elimina la programación de las técnicas contaminadas y de cubeta.
+ 
+ 
+Pulse este icono cuando quiera imprimir el listado de todas las parejas de 
+contaminaciones.
+10.3.3.1. Resumen contaminaciones
+ 
+ 
+Al pulsar este icono se abre una ventana auxiliar donde se puede ver un resumen 
+de todas las parejas de contaminaciones y del conjunto de técnicas que contami­
+nan a las cubetas de reacción. 
+ 
+)
+Véase Ilustración 65
+En el apartado de las contaminaciones, se muestra la contaminaciones en punta 
+programadas. La primera columna muestra las técnicas contaminantes, la segunda 
+columna muestra las técnicas contaminadas y en la tercera columna muestra la 
+solución de lavado programada. Si desea revisar las contaminaciones programadas, 
+puede ordenar las técnicas alfabéticamente por la columna de las técnicas contami­
+nantes o por la columna de las técnicas contaminadas. Para ello pulse la cabecera 
+de una columna o de la otra. A cada pulsación de la cabecera, primero se ordenará 
+en orden creciente y luego en orden decreciente.
+En el apartado de las cubetas, se muestra la contaminaciones en cubetas programa­
+das. La primera columna muestra las técnicas contaminantes, la segunda columna 
+muestra las técnicas contaminadas y las siguiente columnas la solución de lavado 
+a utilizar y el numero de lavados a realizar para evitar la contaminación.
+Ilustración 65 
+Pantalla resumen de las contaminaciones
+10.3.3.2. Contaminaciones de punta
+Para eliminar la contaminación entre reactivos en las puntas dosificadoras, el pro­
+grama primero ordena las técnicas a realizar por paciente para que no se dosifiquen 
+de forma consecutiva. 
+Para cada reactivo contaminante, el programa permite editar el procedimiento de 
+limpieza de la punta. Se pueden programar los siguientes campos:

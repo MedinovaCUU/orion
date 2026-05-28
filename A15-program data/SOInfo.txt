@@ -1,0 +1,11 @@
+OS = Windows Vista (Version 6.2) Build 9200 ()
+LCID OS = 3082
+LCID Conf Regional = 2058
+Sep. Decimales = .
+Sep. Miles = ,
+Sep. Fechas = /
+Formato Fechas = dd/MM/yyyy
+Sep. Tiempo = :
+Formato Tiempo = hh:mm:ss tt
+Formato AM = a.m.
+Formato PM = p.m.

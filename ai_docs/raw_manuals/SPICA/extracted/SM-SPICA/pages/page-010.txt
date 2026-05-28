@@ -1,0 +1,47 @@
+10
+USUARIO
+Manual de Usuario BioSystems SPICA | Versión 2.8 - Agosto 2024
+Manual de Usuario BioSystems SPICA
+1. INTRODUCCIÓN
+1.2 Acuerdo de licencia de usuario final 
+Este Acuerdo de Licencia de Usuario Final (“EULA”) es un acuerdo legal entre usted y BioSystems, S.A.
+Este acuerdo del EULA rige la adquisición y el uso del software de SPICA (“Software”) directamente de 
+BioSystems, S.A., o indirectamente a través de un revendedor o distribuidor autorizado de BioSystems, S.A. 
+(un “Revendedor”).
+Si está aceptando este acuerdo del EULA en nombre de una empresa u otra entidad legal, usted declara 
+que tiene la autoridad para obligar a dicha entidad y a sus afiliados a cumplir estos términos y condiciones. 
+Si no tiene dicha autoridad o si no está de acuerdo con los términos y condiciones de este acuerdo del 
+EULA, no instale ni utilice el Software, y no debe aceptar este acuerdo del EULA.
+Este acuerdo de EULA se aplicará únicamente al software suministrado por BioSystems, S.A., 
+independientemente de que se haga referencia o se describa otro software en el presente documento. 
+Los términos también se aplican a todas las actualizaciones, suplementos, servicios basados en Internet 
+y servicios de soporte del Software de BioSystems, S.A., a menos que otros términos acompañen a esos 
+artículos en la entrega. En caso afirmativo, se aplicarán dichos términos.
+a) Concesión de licencias 
+BioSystems, S.A. le concede por la presente una licencia personal, intransferible y no exclusiva para utilizar 
+el software SPICA en sus dispositivos de acuerdo con los términos de este acuerdo EULA.
+No está permitido:
+b) Propiedad intelectual y titularidad
+El Software (y los derechos de autor y otros derechos de propiedad intelectual de cualquier naturaleza en 
+el Software, incluyendo cualquier modificación realizada en el mismo) son y seguirán siendo propiedad de 
+BioSystems, S.A.
+BioSystems, S.A. se reserva el derecho de conceder licencias de uso del Software a terceros.
+c) Terminación
+Este acuerdo de EULA es efectivo desde la fecha en que usted utiliza el Software por primera vez y 
+continuará hasta su finalización. Puede rescindirlo en cualquier momento mediante notificación por 
+escrito a BioSystems, S.A.
+También terminará inmediatamente si no cumple con cualquier término de este acuerdo del EULA. Tras 
+dicha terminación, las licencias otorgadas por este acuerdo EULA terminarán inmediatamente, y usted se 
+compromete a detener todo acceso y uso del Software. Las disposiciones que, por su naturaleza, continúen 
+y sobrevivan, sobrevivirán a cualquier terminación de este acuerdo del EULA.
+• Editar, alterar, modificar, adaptar, traducir o cambiar de otro modo la totalidad o cualquier parte 
+del Software, ni permitir que la totalidad o cualquier parte del Software se combine o se incorpore 
+en cualquier otro software, ni descompilar, desensamblar o realizar ingeniería inversa del Software o 
+intentar hacer cualquiera de estas cosas.
+• Reproducir, copiar, distribuir, revender o utilizar de cualquier otra forma el Software para cualquier 
+propósito comercial. 
+• Permitir a cualquier tercero utilizar el Software en nombre o en beneficio de cualquier tercero.
+• Usar el Software de cualquier manera que viole cualquier ley local, nacional o internacional aplicable. 
+• Alquilar, arrendar o prestar el Software.
+• Usar el Software para cualquier propósito que BioSystems, S.A. considere que es una violación de 
+este acuerdo del EULA.

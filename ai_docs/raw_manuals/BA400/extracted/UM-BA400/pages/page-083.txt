@@ -1,0 +1,30 @@
+83
+83
+Ilustración 51 
+Configuración de las opciones de LIS
+10.2.6.2. Configuración de las comunicaciones LIS
+Pantalla para configurar las comunicaciones con un sistema LIS.
+ Activación comunicaciones LIS 
+Permite activar o desactivar la comunicación con una aplicación LIS.
+ Tipo de transmisión de datos 
+La transmisión puede ser: 
+• 
+ASTM: TCPIP-Client, TCPIP-Server
+• 
+HL7: TCPIP-Client, TCPIP-Server, TCPIP-transitory connection
+ 
+Nombre del host 
+Únicamente rellene este campo cuando haya seleccionado en la opción de tipo 
+de transmisión de datos: TCPIP-Client. Introduzca la IP del ordenador donde 
+se ejecuta el LIS con el que se realizará la conexión.
+ 
+Puerto TCP 
+Número del puerto TCP-IP por el que se realiza la conexión con LIS
+Cuando se selecciona el tipo de transmisión TCPIP-Transitory Connection de 
+HL7, se requiere configurar 2 puertos distintos: puerto cliente y puerto servidor. 
+ 
+Puerto TCP del cliente 
+Número del puerto del cliente en una conexión TCP.
+ 
+Puerto TCP del servidor 
+Número del puerto del servidor en una conexión TCP.

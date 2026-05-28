@@ -1,0 +1,18 @@
+28
+29
+Ilustración 8.85 
+Cambio doble fotobarrera
+8.13.11. AC16618 - Motor elevación estación lavado / AC16619 - Correa vertical estación 
+lavado
+31
+30
+28
+29
+Ilustración 8.86 
+Cambio del motor de la estación de lavado
+Herramientas: Allen 2.5
+Desmontaje motor:
+1. Desconecte el cable del motor
+2. Desatornille los 4 tornillos (28) y (30) con sus arandelas de seguridad
+Manual de servicio
+228

@@ -1,0 +1,90 @@
+181
+181
+Tipo de 
+alarma
+Alarma/Error
+Causa del problema
+Solución propuesta
+Abs Blanco Inicial 
+> Límite Abs 
+Blanco
+Este mensaje aparecerá para 
+técnicas programadas como 
+cinéticas o tiempo fijo crecientes. 
+El valor de la Abs del blanco inicial 
+no se utiliza para el cálculo de la 
+concentración. 
+Este resultado indica el estado del 
+reactivo.
+Revise el estado del reactivo, puede 
+estar deteriorado: puede ser debido a 
+que se ha superado la caducidad del 
+reactivo o a una mala conservación 
+del mismo.
+Abs principal < 
+Límite Abs Blanco
+Este mensaje aparecerá para 
+técnicas programadas como punto 
+final decrecientes. 
+Este resultado indica el estado del 
+reactivo. 
+Revise el estado del reactivo, puede 
+estar deteriorado: puede ser debido a 
+que se ha superado la caducidad del 
+reactivo o a una mala conservación 
+del mismo.
+Abs Reactivo de 
+Trabajo < Límite 
+Abs Blanco
+Este mensaje aparecerá para 
+técnicas programadas como 
+diferenciales decrecientes. 
+Este resultado indica el estado del 
+reactivo. 
+Revise el estado del reactivo, puede 
+estar deteriorado: puede ser debido a 
+que se ha superado la caducidad del 
+reactivo o a una mala conservación 
+del mismo.
+Abs Blanco Inicial 
+< Límite Abs 
+Blanco
+Este mensaje aparecerá para 
+técnicas programadas como 
+cinéticas o tiempo fijo decrecientes. 
+El valor de la Abs del blanco inicial 
+no se utiliza para el cálculo de la 
+concentración. 
+Este resultado indica el estado del 
+reactivo.
+Revise el estado del reactivo, puede 
+estar deteriorado: puede ser debido a 
+que se ha superado la caducidad del 
+reactivo o a una mala conservación 
+del mismo.
+Blanco cinético 
+> Límite blanco 
+cinético
+Este mensaje aparecerá para 
+técnicas programadas como 
+Cinéticas y Tiempo Fijo. 
+Para las reacciones decrecientes, 
+el cálculo del blanco cinético se 
+convertirá en positivo, para poder 
+comparar correctamente con el 
+límite. Sirve para comprobar que el 
+blanco está correctamente realizado. 
+Repita el blanco.
+Curva incorrecta
+Para una curva de calibración 
+creciente: todos los puntos de 
+absorbancia tienen que estar en 
+orden creciente a medida que 
+aumenta la concentración 
+Para una curva de calibración 
+decreciente: todos los puntos de 
+absorbancia tienen que estar en 
+orden decreciente a medida que 
+aumenta la concentración
+Repita los diferentes puntos de la 
+curva de calibración.

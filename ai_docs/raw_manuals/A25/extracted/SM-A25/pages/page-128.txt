@@ -1,0 +1,43 @@
+Manual de servicio
+128
+6.3. 
+Dosing system
+The A25 analyzer has evolved throughout its useful life. Below are the spare parts to use, depending on the model 
+of dosing pump in your analyzer and the damaged part. 
+Pump
+Model 
+Damaged 
+Part
+Spare
+Parts
+Code
+Note
+AC13362
+Upper chamber failure.
+AC13362
+Upper chamber failure.
+AC13362
+ME13359
+AC15529
+Ceramic pump, motor or 
+electrovalve failure.
+Replace the entire dosing 
+pump, using the adaptation 
+kit.
+AC13362
+Upper chamber failure.
+ME13359
+Ceramic pump or motor 
+failure.
+ME14670
+Manifold or electrovalve 
+failure.
+Replace manifold and upper 
+chamber by an moulded 
+manifold.
+ME13359
+Ceramic pump or motor 
+failure.
+ME14670
+Manifold or electrovalve 
+failure.

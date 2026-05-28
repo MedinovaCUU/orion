@@ -1,0 +1,31 @@
+Manual usuario 
+ 
+ 
+ 
+Manual usuario 
+ 
+ 
+ 
+82
+82
+Biosystems
+Biosystems
+Ilustración 45 
+Pantalla configuración de los informes de paciente
+Hay dos tipos de diseño por defecto, uno en formato vertical y el otro en formato 
+horizontal.
+Puede crear tantos informes como quiera, al crear un informe introduzca el nombre 
+y seleccione el tipo de formato: horizontal o vertical.
+ 
+Plantilla por defecto Seleccione esta casilla para que el programa aplique el informe escogido de la lis­
+ta, sólo hay un informe horizontal y otro vertical con esta opción seleccionada.
+ 
+ 
+Pulse este botón para pasar en modo edición. Entrará en una pantalla que le 
+permitirá modificar el formato del cabecero de página, del pie de página. Tam­
+bién podrá introducir textos, elementos gráficos, iconos. 
+10.2.4. Ordenación de las técnicas
+Permite definir el orden en el que aparecerán las técnicas en el informe de paciente.
+Esta pantalla permite escoger el orden de las técnicas, técnicas calculadas y técnicas 
+externas. Al realizar el informe de paciente el orden de las técnicas aparece según 
+lo escogido.

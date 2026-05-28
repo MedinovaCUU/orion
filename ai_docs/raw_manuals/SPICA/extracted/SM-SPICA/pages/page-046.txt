@@ -1,0 +1,9 @@
+SERVICIO
+Manual de Usuario BioSystems SPICA
+46
+Manual de Usuario BioSystems SPICA | Versión 2.8 - Agosto 2024
+1. ELEMENTOS DE HARDWARE
+1.2 Rotor de reactivos
+El dispositivo de centrado del rotor está conectado a un eje con una polea en la base que transmite el 
+movimiento del motor a través de una correa y una polea.
+El disco codificador está unido a la polea. El fotosensor indica el inicio de la lectura del pozo.

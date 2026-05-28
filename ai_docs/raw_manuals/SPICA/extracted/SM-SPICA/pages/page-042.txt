@@ -1,0 +1,45 @@
+INSTALACIÓN
+42
+Manual de Usuario BioSystems SPICA
+Manual de Usuario BioSystems SPICA | Versión 2.8 - Agosto 2024
+4. REQUISITOS RELATIVOS A 
+LAS INSTALACIONES
+4.2 Requisitos fluídicos
+4.3 Condiciones Ambientales 
+Aire acondicionado: Es aconsejable que el analizador se instale en una sala con aire acondicionado 
+para asegurar que las condiciones de temperatura y humedad se mantengan estables. El analizador no 
+debe estar frente al flujo de aire directo del aire acondicionado. 
+Emisión de calor: Máximo de 1706 BTU/h
+Temperatura: La temperatura en el área donde se instala el analizador debe estar dentro del rango de 10° 
+C a 35° C. Es importante recordar que los cambios de temperatura durante el funcionamiento deben ser 
+menores de 2° C/h.
+Humedad: La humedad relativa del aire en la habitación donde se instale el analizador debe ser inferior 
+al 85%, sin condensación.
+Iluminación: No coloque el analizador debajo de fuentes de luz potentes. Mantenga la iluminación lo 
+más estable posible y asegúrese de que ninguna luz intermitente caiga directamente sobre el analizador. 
+También debe evitarse la luz solar directa.
+Radiación electromagnética: Asegúrese de que el analizador no esté cerca de ninguna fuente de 
+radiación electromagnética (como motores, aparatos de centrifugado, teléfonos móviles) o fuentes de calor.
+Nivelación: Mueve el analizador a su ubicación definitiva empujándolo suavemente.
+Una vez que esté en la posición final, desenrosque los cuatro pies ajustables si necesita nivelarlo.
+Para manejar los frascos con seguridad, retírelos de su posición y desconecte los 
+tubos presionando el conector rápido. Una vez llenas con agua destilada (con 
+agua destilada de tipo 2) o solución de lavado y/o los residuos se vacían, ponga las 
+botellas en su lugar y vuelva a conectar el conector rápido.
+Asegúrese de que el conector rápido se inserte correctamente en la tapa del 
+contenedor. Para ello, al insertar el accesorio, deberías oír un “clic”. Si no, significa 
+que no ha sido insertado correctamente.
+Preparando la solución de lavado:
+1. Desenrosque la tapa de la botella de solución de lavado.
+2. Llénelo con 1L de agua purificada.
+3. Añada 5 ml de la solución de lavado concentrada (código AC16434) y mezcle 
+suavemente. Tenga cuidado al manipular el frasco de la solución de lavado 
+concentrada para evitar que el contenido se salpique o se derrame. Use guantes 
+y ropa 
+protectora cuando los manipule.
+4. Enrosque la tapa, conecte los tubos y colóquela en su alojamiento dentro del 
+analizador
+PELIGRO
+BIOLÓGICO
+NOTA
+NOTA

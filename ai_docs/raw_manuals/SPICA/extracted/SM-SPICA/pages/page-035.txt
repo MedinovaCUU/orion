@@ -1,0 +1,35 @@
+35
+USUARIO
+Manual de Usuario BioSystems SPICA | Versión 2.8 - Agosto 2024
+Manual de Usuario BioSystems SPICA
+8. TRANSPORTE, MANIPULACIÓN 
+Y ALMACENAMIENTO 
+8.1 Transporte y reexpedición
+El analizador pesa 75 kg. El analizador tiene patas de plástico duro para ser movido en una superficie lisa 
+cuando sea necesario para acceder a la parte trasera.
+Si fuera necesario reenviar el analizador o trasladarlo con un vehículo de transporte, los brazos polares 
+deberán inmovilizarse y el analizador deberá permanecer en su embalaje original para asegurar que no sufra 
+ningún daño. Para volver a embalar el analizador, siga las instrucciones de la guía rápida de instalación, en 
+orden inverso.
+Utilice medios mecanizados (carretilla elevadora o gato elevador) para transportar el analizador empaquetado. 
+8.2 Manipulación y almacenamiento 
+Recuerde que es un instrumento de precisión y por lo tanto debe ser manejado con especial cuidado. 
+Si el analizador debe ser almacenado por largos períodos de tiempo, tenga en cuenta las siguientes 
+recomendaciones:
+• Vaciar la botella de residuos de alta contaminación, agua destilada y la botella de solución de lavado.
+• Deshágase del rotor de reacción.
+• Protege el analizador de polvo y agresiones ambientales, luz solar directa y humedad excesiva
+Condiciones ambientales para el almacenamiento: 
+Temperatura de almacenamiento 10 °C a 40 °C
+Condiciones de humedad durante el almacenamiento < 85% sin condensación
+9. GARANTÍA Y LICENCIA
+El analizador SPICA está diseñado para realizar análisis bioquímicos y turbidimétricos.
+Su funcionamiento está optimizado para la marca BioSystems Reagents. Para obtener información sobre 
+todos los procedimientos de medición disponibles, póngase en contacto con su distribuidor habitual.
+Cualquier uso inadecuado (caídas, negligencia, condiciones de la red eléctrica fuera de las tolerancias, 
+condiciones ambientales o de ubicación inadecuadas, etc.) así como cualquier manipulación del interior 
+del analizador por personas no autorizadas por BioSystems o que utilicen consumibles y piezas de repuesto 
+no originales (rotores, fusibles, etc.) invalidará la garantía.
+Contacte con su distribuidor para obtener información sobre:
+• Entrenamiento en el uso del analizador
+• Protocolo de solicitud de servicio postventa

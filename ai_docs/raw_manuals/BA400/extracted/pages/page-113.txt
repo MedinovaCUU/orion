@@ -1,0 +1,21 @@
+LIST OF SPARES PARTS
+Code
+Representation 
+Description
+AC16543
+ISE module cover
+AC1644
+Door assembly
+AC16545
+Lateral cover assembly
+AC16546
+Rear cover handles
+AC16547
+Reagent and sample rotor frame joint
+AC16549
+Hinger of general cover
+AC16550
+Front led frame
+AC16551
+Legs
+113

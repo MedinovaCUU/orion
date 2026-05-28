@@ -1,0 +1,72 @@
+Service manual
+46
+Connector
+Function
+Pins
+J18
+5V voltage 
+1 - Vcc
+2 - GND
+3 - Enable
+J19
+Weighting system for waste and system liquid bottles 
+1 - Vdc
+2 - GND
+3 - V+
+4 - V-
+5 - Vdc
+6 - GND
+7 - V+ 
+8 - V-
+J24
+Rotor connector
+1 - Vdc
+2 - Rotor cover
+3 - Home rotor
+4 - GND
+5 - Vdc home rotor
+6 - Filter wheel home
+7 - GND
+8 - Vdc Filter wheel home
+9 - Rotor thermostatation
+10 - GND
+11 - Analogic 12 V
+12 - GND
+J25
+Communications Board Connection (CIIM00019)
+1 - Vdc
+2 - GND
+3 - Tx0
+4 - GND
+5 - Rx0
+6 - GND
+7 - GND
+8 - Tx1
+9 - GND
+10 - Rx1
+J27
+Needle Peltier
+1 - peltier, red
+2 - peltier, black
+J28
+Rotor Peltier
+1 - peltier, red
+2 - peltier, black
+J29
+Needle Board Interconnection (CIIM00008)
+1 - GND
+2 - Home Z
+3 - Needle thermistor
+4 - Needle level detector
+5 - GND
+6 - 12 V
+J30
+Z axis encoder 
+1 - Encoder detector
+2 - GND
+3 - Vdc
+J31
+X axis home
+1 - Home
+2 - GND
+3 - Vdc

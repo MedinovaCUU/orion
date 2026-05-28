@@ -1,0 +1,59 @@
+199
+199
+14. Características técnicas
+14.1. Características generales
+Velocidad
+400 prep/h (sin electrolitos)
+Velocidad módulo ISE
+320 prep/h
+Principios de análisis
+Espectrofotometría, 
+turbidimetría.
+Módulo ISE: Potenciometría 
+(método de electrodo selectivo): 
+Na+, K+, Cl- (Li+ es opcional)
+Tipo analizador
+Acceso aleatorio 
+Carga continua de muestras
+14.2. Gestión de muestras 
+Capacidad del rotor de muestras
+135 
+Detector de código de barras
+Sí
+Número de muestras con código de barras
+90
+Tamaño de los tubos primarios 
+Diámetro de 12 mm a 16 mm 
+(altura máx. 100 mm)
+Pocillo pediátrico
+Pocillo pediátrico de diámetro 
+13.5 mm
+Tipo de muestra
+Serum, Plasma, Orina, sangre 
+total, cerebroespinal, semen y 
+liquidos biológicos
+Tipo de jeringa de la bomba de muestra
+Pistón cerámico de bajo 
+mantenimiento
+Diámetro del pistón
+3 mm
+Volumen de dosificado
+2 mL a 40 mL
+Resolución del dosificado
+0.1 mL
+Relación de predilución
+1:2 a 1:200
+Detección de nivel
+Sí
+Lavado de la punta
+Interior y exterior
+Detector de coágulo
+Sí
+Detector de colisión vertical
+Sí
+14.3. Gestión de reactivos
+Volumen botellas de reactivo
+20 mL, 60 mL
+Capacidad del rotor de reactivos
+88 (44 botellas de 20 mL o 
+60 mL + 44 botellas de 20 mL)

@@ -1,0 +1,51 @@
+Manual usuario 
+ 
+ 
+ 
+Manual usuario 
+ 
+ 
+ 
+54
+54
+Biosystems
+Biosystems
+5. Para insertar el electrodo de referencia, presione hacía abajo la pestaña de color 
+amarillo (3) y insértelo hasta el final, luego suelte la pestaña.
+6. Inserte el resto de electrodos según las posiciones indicadas en la Ilustración 
+29. Asegúrese que tienen el anillo sellador (O-ring) colocado correctamente. 
+Asegúrese que tienen el anillo sellador (O-ring) colocado correctamente. 
+Seque con cuidado los restos de líquido.
+Seque con cuidado los restos de líquido.
+7. Cada electrodo tiene una posición única para evitar errores de colocación. 
+8. En caso de no disponer del electrodo de Li+, introduzca en su lugar un electrodo 
+vacío (está marcado con una línea de puntos), para que haya continuidad en 
+el canal por donde pasa la muestra.
+9. Suelte el botón amarillo para que presione todos los electrodos y tenga buena 
+comunicación fluídica. 
+10. Para asegurar que los electrodos están bien colocados presiónelos frontalmente 
+hasta oír un clic o haya un asentamiento de los mismos.
+5
+6
+4
+Ilustración 30 
+Conexión de los tubos
+ 
+Instalación de los tubos 
+Inserte un tubo en cada bomba peristáltica. Para insertar el tubo en el cabezal de 
+la bomba peristáltica libere la presión del cabezal estirando hacía el lateral de la 
+abrazadera, véase Ilustración 30. 
+Cada tubo tiene dos etiquetas. Las etiquetas ayudan a orientar correctamente el 
+tubo en la bomba peristáltica. Tiene que coincidir la numeración de la etiqueta 
+de cada tubo con la numeración de la etiqueta de la bomba.
+• 
+Los tubos marcados con la W se instalarán en la bomba (6) y el orden de 
+colocación empezando por abajo es W1 y W2.
+• 
+Los tubos marcados con la B se instalarán en la bomba (5) y el orden de co­
+locación empezando por abajo es B2 y B1.
+• 
+Los tubos marcados con la A se instalarán en la bomba (4) y el orden de co­
+locación empezando abajo es A2 y A1.
+Tenga cuidado al conectar los tubos de la bomba de residuos (6) porque van conec­
+tados en sentido inverso a los tubos de la bomba para los calibradores A (4) y B (5).

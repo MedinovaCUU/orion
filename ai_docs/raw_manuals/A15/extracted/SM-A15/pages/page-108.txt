@@ -1,0 +1,13 @@
+109
+6
+7
+Ilustración 6.5 Desmontaje carcasa superior
+6.1.6. ME13377 - Cilindro hidroneumático de la bisagra
+Desmontaje:
+1. Extraer la carcasa superior. Ver capítulo 6.1.5
+2. Quitar los 2 tornillos (9) y (10) y la tuerca (8)
+3. Extraer el pistón
+Montaje:
+1. Coloque el nuevo pistón
+2. Siga los pasos en orden inverso
+3. Coloque la cúpula y verifique que se desliza con suavidad y en su posición superior no se cae

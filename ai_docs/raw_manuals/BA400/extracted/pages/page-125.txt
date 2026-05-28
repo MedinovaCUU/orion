@@ -1,0 +1,61 @@
+ISE MODULE (optional)
+Sample volume
+Serum: 100 mL 
+Urine: 200 mL
+ENVIRONMENTAL REQUIREMENTS
+Room temperature
+10° C to 35° C
+10° C to 30° C (with ISE module)
+Relative humidity
+< 85% with no condensation
+Maximum height
+< 2 500 m
+Contamination grade
+2
+Transportation and storage temperature
+0° C to 40° C
+Transportation and storage humidity
+< 85% with no condensation
+DIMENSIONS AND WEIGHT
+Dimensions (Width, depth and height)
+1200 mm x 720 mm x 1258 mm
+Weight
+210 kg
+ELECTRICITY REQUIREMENTS
+Mains voltage
+115 V to 230 V
+Network frequency
+50 Hz or 60 Hz
+Electric power
+500 VA
+FLUID REQUIREMENTS
+Water inlet
+Through external tank or through direct 
+connection
+Type of water
+Purified type II (NCCLS)
+Water consumption
+< 14 L/h
+High contamination waste tank
+Internal, 5 L
+Washing solution tank
+Internal, 5 L
+MINIMUM COMPUTER REQUIREMENTS
+Operating system
+Windows® 7 64 bit (x64)
+CPU
+Equivalent to Intel Core i3 @3.10 GHz or higher
+RAM memory
+4 Gbytes
+Hard disk
+40 Gbytes or more
+DVD player
+Yes
+VGA monitor
+Minimum resolution 1 024 x 768
+Serial channel connector
+USB
+COMPLIANCE WITH DIRECTIVES
+EC-IVD Directive
+98/79/EC
+125

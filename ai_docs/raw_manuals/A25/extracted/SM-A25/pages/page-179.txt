@@ -1,0 +1,25 @@
+179
+List of accessories
+Code
+Representation 
+Description
+BO11493
+50 mL bottle with cap(10 units)
+BO11494
+20 mL bottle with cap (10 units)
+AC11500
+Removable tip
+BO11524
+Bottle of concentrated system liquid (1 L)
+BO13416
+Bottle of concentrated wash solution (100 ml)
+FI11563
+340 nm filter sets
+FI11564
+405 nm filter set
+FI13821
+420 nm filter set
+FI18443
+430 nm filter set
+FI15242
+480 nm filter set

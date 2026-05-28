@@ -1,0 +1,151 @@
+Service manual
+176
+Main voltage measurement points
+CIIM00007 Power supply board
+TP1 - 5V
+5 V
+[4.9 - 5.1] V
+TP2 - 12V
+12 V
+[11.7 - 11.9] V
+TP3 - 12V
+12 V
+[11.8 - 12.2] V
+TP4 - 12V
+12 V
+[11.8 - 12.2] V
+TP5 - 12V
+12 V
+[11.8 - 12.2] V
+TP36 - 36V
+36 V
+[35 - 37] V
+CIIM0006 Microprocessor board
+Stress
+Mode
+StandBy
+Mode
+TP50
+Vref motor Z
+1.52 V
+[1.37 - 1.67] V
+720 mV
+TP51
+Vref motor Y
+1.43 V
+[1.29 - 1.57] V
+380 mV
+TP52
+Vref motor X
+1.52 V
+[1.37 - 1.67] V
+380 mV
+TP53
+Vref motor pump
+1.43 V
+[1.29 - 1.57] V
+380 mV
+TP54
+Vref motor filters
+1.43 V
+[1.29 - 1.57] V
+380 mV
+TP55
+Vref motor rotor
+1.43 V
+[1.29 - 1.57] V
+380 mV
+Main adjustment values of the analyzer
+Tolerances
+Operating arm positioning 
+X axis loss of steps
+Loss of steps
+[-3,3]
+Y axis loss of steps
+Loss of steps
+[-3,3]
+Z axis loss of steps
+Loss of steps
+[-3,3]
+Loss of steps rotor motor
+Loss of steps
+[-3,3]
+Loss of steps filter drum motor
+Loss of steps
+[-3,3]
+Loss of steps pump motor
+Loss of steps
+[-4,4]
+XY position adjustment
+X origin
+[5,30]
+AII. Adjustment margins tables
+Y origin
+[0,45]
+X washing station
+[1325,1360]
+Y washing station
+[0,35]
+X rotor
+[2855,2895]
+Y rotor
+[660,700]
+Self-centering of needle
+X Offset
+[-4,4]
+Y Offset
+[-4,4]
+Level control scales
+Water 0 L (0 D)
+[-3%,3%]
+Water 1.35 L (1 D)
+[35%,65%]
+Water 2.7 L (2 D)
+[95%,105%]
+Waste 0 L (0 D)
+[-3%,3%]
+Waste 1.35 L (1 D)
+[35%,65%]
+Waste 2.7 L (2 D)
+[95%,105%]
+Level detection sensitivity
+Paediatric rack 
+[25,120]
+13/15mm tube sample 
+rack 
+[25,120]
+Reagent rack outside 
+fridge
+[3,60]
+Reagent rack inside fridge
+[3,60]
+Positioning of the dispensing point
+Dispensing rotor
+[-10,30]
+Fine rotor X
+[2860,2897]
+Positioning of rotor in optic
+Positioning
+[-12,6]
+Filter wheel positioning
+Positioning
+[-6,0]
+Needle thermostatation
+Set point temperature 
+[35, 40]
+Rotor thermostatation
+Set point temperature
+[36.5, 38]
+Integration times
+F1 340 nm
+[30,70]
+F2 405 nm
+[6,26]
+F3 505 nm 
+F3 420 nm (Y25)
+[6,26]
+F4 535 nm
+F4 520 nm (Y25)
+[6,26]
+F5 560 nm
+[6,26]

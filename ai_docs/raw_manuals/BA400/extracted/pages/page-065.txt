@@ -1,0 +1,58 @@
+Service Manual 
+65
+HEAT EXCHANGER
+low cont waste
+H2O
+washing solution
+high cont waste
+SF1-B9
+Liquid
+suction
+high cont
+Dry
+suction
+Filling
+liquid
+WS
+WASHING ROTOR
+Liquid
+suction
+low cont
+Dry
+suction
+Fake
+Liquid
+suction
+low cont
+Liquid
+suction
+low cont
+Liquid
+suction
+low cont
+Liquid
+suction
+low cont
+Filling
+liquid
+WS
+Filling
+liquid
+H2O
+Filling
+liquid
+H2O
+HYDRAULIC BLOCK
+WASHING PUMP
+WASHING ROTOR SYSTEM
+Filling
+liquid
+H2O
+SF1-B10
+SF1-B6
+SF1-B7
+SF1-B8
+SF1-GE1
+Figure 5.2 Enlarged view of the fluidic diagram
+Low conc waste
+High conc waste

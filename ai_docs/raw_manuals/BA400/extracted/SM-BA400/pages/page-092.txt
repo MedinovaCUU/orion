@@ -1,0 +1,50 @@
+Manual de servicio
+92
+Test point
+Función
+TP6
+CAN_L (Señal en el bus)
+TP8
+Tensión DC agitadores
+TP9
+3.3 V
+TP11
+Tensión referencia driver motor
+TP12
+Paso motor
+TP13
+Selección de placa. Dirección 1
+LEDs
+Función (Condición de encendido)
+LD1
+Voltaje de 3.3 V
+LD2
+Activación calentador
+LD3
+Activación bomba 1
+LD4
+Activación bomba 2
+LD5
+Activación bomba 3
+LD6
+Activación electroválvula 1
+LD7
+Activación electroválvula 2
+LD8
+Activación electroválvula 3
+LD9
+Arranque microprocesador
+LD10
+Detección inicio motor
+4.9.1. Mejora de la placa de fluidos - CIIM00053-03
+Se ha realizado una mejora en los analizadores BA400 y se ha realizado un cambio en la placa de fluidos. Mejora 
+recogida en el BA400v2.
+ 
+) Véase el capítulo AII para saber a partir de que números de serie se ha implementado.
+Los cambios principales son:
+• 
+Se ha añadido un ventilador para refrigerar el driver de la bomba de pistones 
+• 
+Se ha añadido un neuvo conector CN4 para alimentar la placa del desgasificador
+Las demás conexiones son iguales a la versión anterior. 
+La versión de Firmware para esta placa de fluidos es compatible con las placas de las versiones anteriores.

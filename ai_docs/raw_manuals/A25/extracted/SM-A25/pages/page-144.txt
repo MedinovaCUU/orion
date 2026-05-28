@@ -1,0 +1,30 @@
+Manual de servicio
+144
+Belt Removal
+1. Take out the fridge cover and the front cover
+2. Disassemble the rotor assembly. See chapter 6.4.1
+3. Loosen the 4 screws holding the motor
+4. Move the motor and remove the belt
+Gear disassembly
+1. Take out the fridge cover and the front cover
+2. Disassemble the rotor assembly. See chapter 6.4.1
+3. Loosen the 4 screws holding the motor
+4. Move the motor and remove the belt
+5. Rotate the gear to locate the screws. Loosen the grub screw
+6. Repeat the process with the second grub screw
+7. Remove the gear
+Gear Mount
+1. Replace gear
+2. Exchange grub screw for new ones
+3. Direct the grub screw position with the flat face of the shaft.
+4. Tighten the two grub screw
+5. Follow the steps to mount the belt
+Belt and motor mount
+1. Place the belt in position by matching the teeth with the gear and motor pulley
+2. Put the nuts on the motor bolts loosely
+3. Tighten the belt to 35 N and tighten the screws
+4. Mount the assembly on the analyzer
+5. Verify motor mounting with service program
+14
+13
+Figure 6.42

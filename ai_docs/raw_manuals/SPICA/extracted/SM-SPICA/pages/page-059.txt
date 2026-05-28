@@ -1,0 +1,57 @@
+VERSIÓN 
+Manual de Usuario BioSystems SPICA
+59
+Manual de Usuario BioSystems SPICA | Versión 2.8 - Agosto 2024
+VERSIÓN
+ MANUAL
+2.0
+1.0
+FECHA DE 
+REVISIÓN
+Febrero 2022
+Febrero 2021
+CAMBIOS
+Manual del Usuario: 
+2.3. Instalar el agua destilada, la solución de lavado 
+y el contenedor de residuos, 3.1 Descripción de los 
+componentes y 5.4 Control de calidad interno
+Guía de Servicio: 
+2. Esquema Básico de Fluidez
+Version Inicial
+2.1
+2.2
+Marzo 2022
+Abril 2022
+Manual del Usuario: 
+1.1 Avisos y advertencias (normas FCC/ACMA)
+Manual del Usuario:
+1.3 Uso previsto, 3.1 Descripción de los 
+componentes y 5.4 Control de calidad Interno 
+Guía de Servicio: 
+1.2 Rotor de reactivos
+2.3
+2.4
+2.5
+Mayo 2022
+Mayo 2022
+Junio 2022
+Guía do Usuario: 
+1.1 Avisos y advertencias (normas FCC/ACMA) 
+Guía de Servicio: 
+1.3 Sistema de la estación de lavado (eliminado), 1.8 
+Ensamblaje del sistema de fluidos
+Guía do Usuario: 
+1.1 Avisos y advertencias (normas FCC/ACMA) 
+Guía do Usuario: 
+1.1 Avisos y advertencias(icono IVD + texto
+Logotipo Estándar ACMA + texto)
+1.3 Uso previsto (revisión total), 7.1 Pre-análisis y 
+preparación de soluciones de lavado/ soluciones 
+de lavado, 11. Especificaciones técnica: 
+Características Generales (velocidade), Gestión 
+de Muestras y Reactivos (volumen de las botellas 
+de reactivos), Sistema Óptico (longitudes de 
+onda) y Requisitos de Conexión Inalámbrica.
+Guía de Instalación: 
+1.1 Introduction (www.biosystems.global)
+3.4 Optional table

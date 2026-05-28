@@ -1,0 +1,23 @@
+LIST OF SPARES PARTS
+Code
+Representation 
+Description
+AC16571
+General fan (2 wires)
+AC16572
+Distilled water bottle with cap and buoys
+AC16573
+Low contamination waste bottle with cap and 
+buoys
+AC16574
+Tip wash station
+AC16575
+Reaction rotor support column
+AC16576
+Manifold assembly
+AC16577
+Wash station heater
+AC16578
+3-way electro valve
+Service Manual
+116

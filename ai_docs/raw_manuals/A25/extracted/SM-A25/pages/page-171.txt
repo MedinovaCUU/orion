@@ -1,0 +1,43 @@
+171
+Preventive maintenance 
+record
+Laboratory name:
+Analyzer Model:
+Serial number:
+Name of the technical manager:
+Instalation date:
+Steps Technical service actions
+Date performed
+1
+Clean electronic boards and fans from dust
+2
+Check fluidic connections from the pump to the probe and the connections 
+of the washing station, Check the tightness of the fittings and that none of 
+them leaks liquid.
+3
+Check the seal of the dosing pump. Verify that there are no leaks and that 
+no bubbles are produced.
+4
+Clean the filters in the distilled water container
+5
+Clean the washing station
+6
+Disassemble and clean the probe. Check their status.
+7
+Check the arm (Check the wear of the belts and their tension)
+8
+Check probe shock detection and protection system
+9
+Check the condition of the heating channel
+10
+Check belt and reaction rotor tension
+11
+Clean filters, slit and photodiode
+12
+ Check placement and detector of general cover and reaction cover
+13
+Check that the general cover is properly supported and does not
+14
+Carry out the tests with the service
+Signature and date operator
+Client's signature and date

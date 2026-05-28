@@ -1,0 +1,20 @@
+23
+Ilustración 8.76 
+Montaje retén 
+8.14.5. AC16594 - Pistón cerámico de reactivos+motor
+Herramientas: Llave allen de 2 y 3 y llave fija del 7, grasa bomba cerámica
+Desmontaje:
+1. Siga los pasos de desmontaje según el capítulo 8.14.2
+2. Desmonte el detector de inicio.
+3. Quite los 4 tornillos con las tuercas que sujetan el cuerpo de la bomba (24) con el motor.
+4. Extraiga la cuerpo bomba (24).
+Montaje:
+1. Sustituya la pieza defectuosa.
+2. Desenrosque el soporte pistón del husillo para engrasar la rosca.
+3. Engrase la guía del soporte pistón. Ponga suficiente grasa en el orificio del soporte por donde entra el husillo.
+4. Enrosque el soporte pistón con el husillo. Retire la grasa sobrante con un paño. 
+5. Coloque la cámara de la bomba. Alinee la ranura del soporte (26) con el sistema de antigiro del cuerpo (25).
+6. Coloque los tornillos y las tuercas para sujetar el cuerpo con el motor.
+7. Coloque el detector de inicio.
+8. Siga los pasos de montaje del manifold según el capítulo 8.14.2
+185

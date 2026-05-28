@@ -1,0 +1,26 @@
+Manual usuario 
+ 
+ 
+ 
+Manual usuario 
+ 
+ 
+ 
+88
+88
+Biosystems
+Biosystems
+• 
+La tercera columna muestra el nombre del elemento que se utiliza en la 
+comunicación con LIS (mensajes recibidos y enviados). Es imprescindible 
+editar estos nombres para ajustarlos a cada LIS. Cuando se instala aparecen 
+los mismos nombres que se usan en el analizador.
+Ilustración 51 
+Pantalla de configuración del mapeado del LIS
+ 
+Elementos mapeados LIS 
+Caja de selección que permite filtrar los elementos mostrados para cada uno de 
+los tipos.
+10.2.8. Usuarios
+Permite la creación, edición y borrado de los nombres de los usuarios que acceden 
+a la aplicación.

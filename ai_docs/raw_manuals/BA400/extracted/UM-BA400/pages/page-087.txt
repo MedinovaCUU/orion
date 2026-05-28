@@ -1,0 +1,31 @@
+87
+87
+ 
+Nivel 
+Introduzca el nivel que tendrá el usuario: supervisor o operador. El nivel de 
+supervisor únicamente se puede crear cuando se ha accedido como usuario 
+administrador.
+ 
+Nombre 
+Nombre del usuario.
+ 
+Apellido 
+Apellido del usuario.
+ 
+Contraseña 
+Introduzca una contraseña 
+ 
+Confirmación contraseña 
+Introduzca otra vez la misma contraseña para asegurar que se ha introducido 
+correctamente.
+Ilustración 55 
+Pantalla de creación de usuarios.
+10.2.9. Cambio de usuario
+Pantalla que permite realizar el cambio de usuario dentro de la aplicación sin tener 
+que salir y volver a entrar.
+10.2.10. 
+Mantenimiento tipos de muestra
+Pantalla que permite la personalización de los nombres de los tipos de muestras.
+Permite modificar tanto el código del tipo de muestra como la descripción.
+Tiene hasta 30 tipos de muestra diferentes que puede configurar según sus nece­
+sidades.

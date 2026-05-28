@@ -1,0 +1,25 @@
+4. Inserte en la chapa lateral el interruptor para el ISE (4). Ver Ilustración 8.21
+5. Instale la fuente de alimentación para el ISE (2). Atorníllela con los 2 tornillos (3).
+6. Conecte los cable de AC (1) en las clavijas inferiores del interruptor.
+7. Conecte el cable de AC (7) en las clavijas superiores del interruptor. El otro extremo conéctelo en la entrada 
+AC de la fuente de alimentación (6). Véase Ilustración 8.21
+8. Conecte el cable de alimentación del módulo a la salida de la fuente (5), este cable ya viene instalado en el 
+analizador. 
+9. Desmonte las tapas (9) y (11) sacando los tornillos (8) y (10). Véase Ilustración 8.23.
+10. Desmonte las bases de las balanzas (13) con los tornillos (12), y la pieza de sujeción (14). Véase Ilustración 8.24.
+11. Desmonte la chapa de sujeción (17) con los 4 tornillos (16). Desenchufe los tubos de solución de lavado y 
+residuos. Vaya con cuidado ya que la chapa (17) es grande. Véase Ilustración 8.25.
+12. Inserte el módulo (20) en el alojamiento entre los dos brazos. La parte trasera del módulo se sujeta con el tornillo 
+(19) en el punto (18). Véase Ilustración 8.25 y Ilustración 8.26.
+13. Vuelva a colocar la chapa (17) situando los tornillos (16). El módulo se sujeta a la chapa (17) con los tornillos 
+(23). Una vez situados correctamente todos los elementos, atornille fuertemente todos los tornillos. Coloque 
+los 3 motores del módulo en la chapa con los tornillos (22). Coloque las 2 bridas pasatubos (24) . Véase Ilus­
+tración 8.28.
+14. Monte los tubos de la siguiente manera: La bomba superior (25) van conectados los tubos marcados como A. 
+La bomba en la posición media (27) van conectados los tubos marcados como B. La bomba inferior (29) van 
+conectados los tubos marcados como W. El tubo de salida de W va conectado mediante una T (26) al tubo de 
+residuos de alta contaminación.
+15. Vuelva a montar todas las tapas y carcasas.
+16. Consulte en el manual de usuario en el capítulo de instalación del módulo ISE como conectar los diferentes 
+tubos, así como instalar los electrodos y el kit de calibradores.
+139

@@ -1,0 +1,23 @@
+29
+1
+2
+3
+7. Con el lector activado, presentar el siguiente código bidimensional para configurar el lector. Cuan­
+do el disposivo lea ese código, se apagaran los leds de iluminacion y el dispositivo guardará las 
+configuraciones contenidas en ese código.
+3.2.6  Ajuste de la posición en X e Y de lectura del código bidimensional de portaobjetos
+Normalmente no es necesario realizar un ajuste adicional de la posición de lectura de los códigos bidi­
+mensionales de los portaobjetos. Pero si despues de un cambio en el lector de códigos bidimensionales 
+se experimenta fallos recurrentes en las lecturas de los códigos de los portaobjetos, se recomienda 
+realizar ese ajuste.
+Es necesario tener instalado el software de control del lector SENSOR STUDIO (ver 3.2.5), y un 
+software de emulación de terminal (Telnet, Hyperterminal, PuTTy, etc).
+El preparador iPRO sólo cuenta con un único puerto de comunicaciones en el que se multiplexan el 
+canal de comunicaciones principal que conecta con el software, un segundo canal que conecta con el 
+lector de código bidimensional de portaobjetos, un tercer canal que conecta con el lector de código de 
+barras de muestras y reactivos y otro canal que conecta con el puerto de servicio. En el momento de 
+conectar el preparador, se puede comprobar en el administrador de dispositivos de Windows que se 
+generan 4 puertos COM. Aunque el número de COM es variable en función del PC, con el programa 
+de emulación de terminal se debe conectar al cuarto puerto asignado al instrumento.
+También será nescesario tener al menos un portaobjetos con código bidimensional posicionadao en 
+la primera posición del primer rack de portaobjetos.

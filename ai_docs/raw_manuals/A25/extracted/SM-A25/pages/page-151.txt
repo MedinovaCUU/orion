@@ -1,0 +1,26 @@
+151
+6.5.2. 
+AC14726 - Refrigerator temperature sensor
+Sensor removal
+1. Follow the steps to disassemble the refrigerator body. See chapter 6.1.2
+2. Remove the rack tray. See chapter 6.3.8
+3. Remove the sensor (5) from the base of the refrigerator
+Sensor mounting
+1. Replace sensor
+2. Replace the rack and housings
+3. Check the operation of the refrigerator temperature
+5
+4
+Figure 6.55 
+6.5.3. 
+CE14757 - Peltier refrigerator
+Dismantling of the peltier
+1. Follow the steps to disassemble the refrigerator body. See chapter 6.1.2
+2. Remove the rack tray. See chapter 6.3.8
+3. Remove the temperature sensor. See chapter 6.5.2
+4. Remove the cold plate, removing the 4 screws (6)
+5. Peltiers go in groups of 2
+6. Check which of the peltier assemblies (7) is the one that is faulty.
+Peltier mount
+1. Replace the broken peltier set
+2. Put a thin layer of silicone on each side of the peltier

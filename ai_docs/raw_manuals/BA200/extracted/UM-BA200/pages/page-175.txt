@@ -1,0 +1,24 @@
+175
+175
+Lista de accesorios
+Código
+Representación
+Descripción 
+AC16 362
+Botellas de reactivo de 60 mL (20)
+AC16 363
+Botellas de reactivo de 20 mL (20)
+AC16 364
+Botellas opaca de reactivo de 60 mL (20)
+AC16 365
+Botellas opaca de reactivo de 20 mL (20)
+AC17269
+Tubos de conexión para la botella de agua purificada (3 m)
+AC17270
+Tubo de conexión para los residuos (3 m)
+AC17271
+Botella de solución de lavado con tapón
+AC17272
+Botella de alta contaminación con tapón
+AC17273
+Tapón de la botella de solución de lavado

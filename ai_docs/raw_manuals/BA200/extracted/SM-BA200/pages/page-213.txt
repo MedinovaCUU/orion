@@ -1,0 +1,15 @@
+7
+8
+Ilustración 8.103 Desmontaje depósitos internos
+11
+10
+9
+Ilustración 8.104 Extracción de los depósitos
+12
+Ilustración 8.105 Desconexión de los tubos
+8.16.5. AC17302 Placa detección de nivel de los depósitos
+Herramientas: Allen 2.5
+Desmontaje de la placa:
+1. Desmonte el depósito al cual le falle la placa de detección de nivel. Véase capítulo 8.16.4
+2. Quite los 2 tornillos (15). 
+213

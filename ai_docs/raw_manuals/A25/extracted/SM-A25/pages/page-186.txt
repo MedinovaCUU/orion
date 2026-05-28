@@ -1,0 +1,24 @@
+Service manual
+186
+List of spare parts
+Code
+Representation 
+Description
+AC11539
+Waste bottle cap with connector
+TU11533
+System liquid bottles tubes set
+AC14706
+Rack tray
+AC14720
+Cooler fan (3)
+AC14726
+Refrigerator temperature sensor
+CE14757
+Peltier refrigerator
+AC14719
+Refrigerator cold plate gasket
+AC14723
+Refrigerator status LED
+AC14724
+Refrigerator lid detector

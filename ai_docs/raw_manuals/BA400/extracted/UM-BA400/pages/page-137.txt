@@ -1,0 +1,30 @@
+137
+137
+Ilustración 92 
+Pantalla monitor del módulo ISE
+10.6.7. Listado de las alarmas
+Pantalla donde muestra el detalle de todas las alarmas que van apareciendo durante 
+el funcionamiento del analizador.
+Cada alarma tiene la siguiente información:
+• 
+Tipo, indica la gravedad. Las alarmas graves pueden interrumpir el trabajo 
+del analizador.
+Iconos
+Descripción
+Icono de advertencia. Indica que ha ocurrido una alarma y necesita 
+la intervención del usuario. Este tipo de alarmas no interrumpe la 
+ejecución del trabajo del analizador
+Icono que indica que se ha solucionado la alarma
+Icono de alarma grave. Indica que ha ocurrido una alarma grave y 
+se interrumpe la ejecución del trabajo. Dependiendo del tipo de 
+alarma, por ejemplo detección de colisión de una de las puntas, 
+el usuario tendrá que pulsar el botón de recuperar el analizador 
+para solucionar la alarma.
+• 
+Fecha
+• 
+Hora
+• 
+Nombre de la alarma
+• 
+Descripción de la alarma

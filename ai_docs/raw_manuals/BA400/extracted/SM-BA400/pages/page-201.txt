@@ -1,0 +1,20 @@
+8.11.4. AC16630 - Detector de tapa del rotor de reactivos/ AC16657 - Detector tapa del rotor 
+de muestras
+3
+4
+Ilustración 8.57 
+Montaje detector de tapa
+Herramientas: Loctite 454
+Desmontaje:
+1. Presionar con un destornillador por el agujero (3) hasta que el detector (4) se desprenda.
+2. Limpie los restos de cola que queden en el agujero.
+3. Desconecte el cable de la placa electrónica.
+Desmontaje:
+1. Ponga un poco de loctite 454 en el lateral del detector. Inserte el detector por el agujero y presiónelo hasta el final. 
+2. Conecte el cable en la placa electrónica.
+8.11.5. AC16631 - Sensor de temperatura
+5
+ 
+6
+7
+201

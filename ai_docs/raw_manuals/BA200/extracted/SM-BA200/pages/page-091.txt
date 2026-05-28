@@ -1,0 +1,46 @@
+Brazo para las muestra y reactivos
+Posición de ajuste
+Descripción
+Posición ISE
+Ajuste del punto de dispensación en la entrada de muestra para el módulo ISE.
+Aparcamiento
+Ajuste del posicionamiento de la posición de aparcamiento del brazo.
+Z reactivo
+Ajuste de la profundidad para las botellas de reactivo. Este ajuste sirve para los 2 
+anillos del rotor.
+Brazo agitador
+Posición de ajuste
+Descripción
+Dispensación
+Ajuste del punto de agitación en el rotor de reacciones.
+Z Ref.
+Ajuste de la posición de referencia para el descenso de la punta en el rotor de 
+reacciones. Para facilitar el ajuste, la referencia es la superficie del rotor.
+ 
+) Véase Ilustración 6.12
+Lavado
+Ajuste del posicionamiento del agitador en la estación de lavado.
+Aparcamiento
+Ajuste del posicionamiento de la posición de aparcamiento del brazo.
+Ref. Polar
+Ajuste de la posición inicial. En este ajuste no se muestra ningún valor, es un ajuste 
+interno en el firmware. Para ajustar las diferentes posiciones de los agitadores, se tiene 
+que iniciar por este ajuste primero y luego seguir con los otros. 
+NOTE
+ Siempre que se realice este ajuste será neceario repetirlos ajustes de 
+dispensación, lavado y Aparcamiento
+Icono que aparece al seleccionar el brazo agitador. Al pulsarlo activa y desactiva la rotación del agitador. De esta 
+manera se puede verificar si el agitador roza en el rotor durante su funcionamiento.
+Ilustración 6.12 
+Punto de ajuste de Z ref.
+La tabla de acontinuación indica cada brazo a que pocillo se tiene que ajustar:
+Elemento
+Pocillo del rotor a 
+dispensar
+Óptica
+1
+Muestra y reactivo
+26
+Muestra diluida
+23
+91

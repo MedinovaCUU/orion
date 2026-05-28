@@ -1,0 +1,40 @@
+18
+USUARIO
+Manual de Usuario BioSystems SPICA | Versión 2.8 - Agosto 2024
+Manual de Usuario BioSystems SPICA
+No duplique ningún código de identificación del tubo de muestra 
+en el código de barras 
+durante la misma sesión. Las posiciones de los tubos de muestra 
+y de los frascos de reactivos deben mantenerse cuando la 
+verificación automática del código de barras no se utiliza antes a 
+partir de o durante la sesión de trabajo.
+2. INSTALACIÓN
+2.9. Primeros pasos para operar el analizador
+1. Llenar con la solución de lavado y agua destilada las botellas dedicadas de la parte frontal del analizador. 
+En caso de que el analizador funcione con entrada de agua, conectar los tubos de agua y de desecho.
+2. Conecte el cable de la red eléctrica al analizador.
+3. Instale un rotor de reacción. 
+4. Cierra todas las tapas. 
+5. Encienda el analizador. Espere hasta que oiga un pitido. El analizador se calentará para que esté listo 
+para funcionar.
+6. Seleccione una de las dos opciones de selección de entrada de agua, dependiendo de la instalación de 
+entrada de agua. (en caso de que el analizador utilice agua directamente de la red).
+7. Realice 5 cebados de fluidos para asegurarse de que el tanque de agua interno se llene y que el sistema 
+de fluidos esté correctamente cebado cuando encienda el analizador por primera vez.
+8. Rellene los campos de control y calibrador en la opción Configuración de la prueba, para las pruebas a 
+utilizar: 
+Inicio > 05. Configuración de Técnicas > Técnicas
+9. Solicite blancos de reactivo, calibradores, controles y muestras a tu lista de trabajo
+Inicio > 01. Añadir Muestras > Añadir Calibración
+2.10 Precauciones durante la operación
+Para mantener los reactivos refrigerados (si su analizador contiene un sistema de refrigeración) no apague 
+el analizador. Pasa al modo de reposo y deja el analizador en la posición de encendido.
+Asegúrese de que la tapa del rotor de muestras, reactivos y reacción estén encendidas mientras el aparato 
+esté funcionando. El analizador no realizará ninguna operación si falta alguna de estas cubiertas.
+En caso de que su analizador tenga un Lector de Códigos de Barras, asegúrese de que las etiquetas de los 
+códigos de barras de los tubos de muestra estén correctamente colocadas y centradas. DEBEN ESTAR 
+CORRECTAMENTE ALINEADAS EN EL TUBO. Si la etiqueta tiene un código de barras con sólo unos dígitos, 
+colóquelo a lo largo y centrado, sin colocarlo en la parte superior del tubo. Coloque el tubo de muestra con 
+la etiqueta del código de barras hacia afuera.
+El dispositivo debe estar instalado y ser manipulado a una distancia mínima del cuerpo humano de 20 cm.
+NOTA

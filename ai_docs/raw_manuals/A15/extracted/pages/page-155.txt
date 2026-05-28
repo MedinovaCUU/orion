@@ -1,0 +1,28 @@
+Manual de servicio
+156
+Lista de accesorios
+Código
+Representación
+Descripción 
+BO11493
+Frasco de 50 mL con tapón (10 unidades)
+BO11494
+Frasco de 20 mL con tapón (10 unidades)
+AC11500
+Punta desmontable
+AC17342
+Punta del A15 para heces
+BO11524
+Botella de líquido de sistema concentrado (1 L)
+BO13416
+Botella de solución de lavado concentrado (100 ml)
+FI11563
+Conjunto de filtro de 340 nm
+FI11564
+Conjunto de filtro de 405 nm
+FI13821
+Conjunto de filtro de 420 nm
+FI15242
+Conjunto de filtro de 480 nm
+FI11565
+Conjunto de filtro de 505 nm

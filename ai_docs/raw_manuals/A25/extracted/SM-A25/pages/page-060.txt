@@ -1,0 +1,4 @@
+Service manual
+60
+4.10. Boards interconnection 
+The following schematics shows the connection between boards and the differents elements has the analyser.

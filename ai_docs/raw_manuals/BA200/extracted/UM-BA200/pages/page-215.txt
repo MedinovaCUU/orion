@@ -1,0 +1,41 @@
+215
+215
+Para calcular la concentración en una curva no lineal se realiza el cálculo de la 
+función inversa de la curva de aproximación.
+CONC
+ABS
+Csample
+Ablank
+Asample
+C1
+C2
+C3
+C4
+C5
+Ilustración 131 
+ Curva de calibración no lineal
+15.4. Criterios de repetición
+Para activar las repeticiones automáticas se tienen que programar los siguientes 
+opciones del programa:
+Hay una opción general del programa para activar o desactivar todas las repeti­
+ciones automáticas:
+1. Seleccione el menú: Configuración/General/Sesión de trabajo
+2. Active la opción de: Realización automática de repeticiones
+Para cada técnica hay una opción individual para activar o desactivar las repeti­
+ciones automáticas.
+1. Seleccione la técnica que quiera configurar. Seleccione la pestaña de procedi­
+miento.
+2. Active el modo edición y active la opción repetición automática, configure los 
+parámetros de las diluciones.
+3. En la pestaña de opciones configure los valores de parámetros para las repeti­
+ciones.
+En la Ilustración 132 se muestran los criterios de repetición en función de los 
+parámetros programados.
+Criterio
+Tipo de repetición
+Resultado concentración < Límite de detección
+Repetición con 
+concentración de 
+muestra
+Resultado concentración > Límite de linealidad
+Repetición con dilución

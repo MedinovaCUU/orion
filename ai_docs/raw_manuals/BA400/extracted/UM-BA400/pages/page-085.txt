@@ -1,0 +1,15 @@
+85
+85
+Ilustración 53 
+Configuración del protocolo LIS
+10.2.7. Mapeado del LIS
+Pantalla para configurar los nombres que se usarán en las peticiones de LIS.
+Se deben configurar los nombres de los siguientes elementos: técnicas, técnicas 
+ISE, técnicas calculadas, técnicas externas, tipos de muestra y unidades. 
+Atención: Las peticiones de LIS con nombres de técnicas o tipo de muestra que no 
+hayan sido introducidos en esta pantalla son rechazadas por el analizador. 
+Ilustración 54 
+Pantalla de configuración del mapeado del LIS
+En la pantalla se muestra una tabla con diferentes columnas: 
+• 
+En la primera columna muestra el tipo del elemento:

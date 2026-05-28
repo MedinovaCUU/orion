@@ -1,0 +1,40 @@
+Manual de servicio
+78
+Ilustración 4.15 
+Serigrafía de la placa control de fotometría
+Conector
+Función
+Pin
+CN1
+Conexión del bus CAN 
+Pin 1: 24V
+Pin 2: GND
+Pin 3: NC
+Pin 4: CAN_H
+Pin 5: CAN_L
+CN3
+Detección tapa rotor
+Pin 1: 5V
+Pin 2: Detección tapa
+CN4
+Detección colisión estación 
+lavado
+Pin 1: GND
+Pin 2: Detección estación lavado
+Pin 3: GND
+Pin 4: Colisión estación lavado
+CN5
+Conexión placa fotometría
+CN6
+Motor rotor
+Pin 1: Coil 1
+Pin 2: Coil 1
+Pin 3: Coil 2
+Pin 4: Coil 2
+CN7
+Encoder rotor
+Pin 1: GND
+Pin 2: Encoder canal C
+Pin 3: Encoder canal A
+Pin 4: 5 V
+Pîn 5: Encoder canal B

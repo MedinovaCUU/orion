@@ -1,0 +1,26 @@
+LIST OF ACCESSORIES
+CODE
+REPRESENTATION
+DESCRIPTION 
+AC16 370
+Reagent rotor
+AC16 371
+Sample rotor
+AC11 486
+Reaction rotor set screw
+CA10 455
+European mains cable
+CA10 456
+American mains cable
+FI10 466
+Serial channel cable for connection to PC 
+FI14 226
+USB cable for connection to PC
+LIST OF ISE MODULE ACCESSORIES (OPTIONAL)
+CODE
+REPRESENTATION
+DESCRIPTION 
+ME5420
+Reagent pack
+Service Manual
+110

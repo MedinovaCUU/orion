@@ -1,0 +1,33 @@
+Service Manual
+8
+Persons for whom this manual is intended
+This manual is intended for professionals belonging to the technical service who perform preventive maintenance 
+tasks on and repair the BA400 analyser. These professionals will have received special training enabling them to 
+perform the above-described tasks.
+This manual describes the mechanical and electronic characteristics and service software to assist technicians in 
+performing maintenance and repair work. It also describes the steps for disassembling and changing the different 
+elements that comprise the analyser.
+Notices and warnings
+Representations of screens shown in this manual are for illustrative purposes only. The screens do not necessarily 
+reflect valid data.
+Explanation of the safety symbols located on the analyser or in this manual.
+Symbol
+Description 
+WARNING
+The symbol warns of operating risks that could cause personal 
+injury.
+BIOHAZARD
+The symbol warns of a potential biological hazard.
+CAUTION
+The symbols warns of potential damage to the system or unreliable 
+results.
+NOTE
+The symbol warns that the information requires your attention.
+Risk of electric shock.
+Explanations of the symbols used on the analyser labels and in the manual
+Symbol
+Description 
+This product is compliant with EC directive 98/79 on medical 
+devices for In Vitro Diagnostics.
+Medical device for In Vitro Diagnostics.
+Please consult the directions for use.

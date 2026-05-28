@@ -1,0 +1,47 @@
+Manual usuario 
+ 
+ 
+ 
+Manual usuario 
+ 
+ 
+ 
+14
+14
+Biosystems
+Biosystems
+• 
+Formación para la utilización del analizador
+• 
+Protocolo de Solicitud de Servicio Postventa
+• 
+Actualización del Programa de Usuario
+En la página web de Biosystems también encontrará más información sobre el 
+producto y consumibles:
+http://www.biosystems.es
+Si precisa de material fungible, y/o accesorios, utilice siempre material original 
+de BioSystems. En el apartado de consumibles y accesorios aparecen listados todos 
+los componentes que ocasionalmente pueden ser necesarios. Para su adquisición, 
+contacte con Biosystems, S.A. o su distribuidor habitual y pida cada elemento con 
+su descripción y su código correspondiente.
+A quién va dirigido este manual
+Este manual va dirigido a los profesionales del laboratorio clínico que usarán el 
+analizador BA400 para realizar determinaciones de concentración de analitos. 
+El presente manual describe las características y conceptos generales de funciona­
+miento del analizador BA400. Están detallados los procedimientos de instalación, 
+programación, ejecución y mantenimiento.
+Avisos y advertencias
+Explicación de los símbolos de seguridad que puede encontrar en el analizador o 
+en este manual.
+Símbolo
+Descripción 
+WARNING
+El símbolo le advierte de riesgos de operación que pueden causar lesiones 
+personales.
+BIOHAZARD
+El símbolo le advierte de un posible riesgo biológico.
+CAUTION
+El símbolo le advierte de un posible daño al sistema o de resultados poco 
+fiables.
+NOTE
+El símbolo le advierte que la información requiere su atención.

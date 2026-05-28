@@ -1,0 +1,8 @@
+42
+Manual de servicio
+pulsando el botón Forzar Monitor y luego encendiéndolo nuevamente. Si no se consigue a la primera 
+entrar en el modo Monitor, reintentarlo varias veces.
+En todo momento en la parte superior de la pantalla se indica si el procesador está en modo SERVICIO 
+o en modo MONITOR.
+Una vez realizada la carga del nuevo programa o la restauración de los ajustes por defecto se tiene que 
+salir de monitor para ello únicamente tiene que pulsar el botón Salir Monitor.

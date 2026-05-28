@@ -1,0 +1,46 @@
+221
+221
+16. Resumen de los escenarios del flujo de 
+trabajo con el LIS
+En este capítulo se describen los diferentes escenarios que definen la interacción 
+entre el BA200 i el software de gestión de la información de un laboratorio (LIS-
+Laboratory Information System). Detalla el intercambio de información entre 
+el analizador BA200 y el LIS, como por ejemplo la recepción de órdenes del 
+laboratorio para crear la lista de trabajo al analizador y el envío de resultados del 
+analizador hacía el LIS.
+El BA200 implementa dos tipos de flujo de mensajes o protocolos:
+• 
+El HL7 (Health Level 7) aplicado según la recomendación del IHE (Integrating 
+the Healthcare Enterprise)
+• 
+El ASTM (American Society for Testing and Materials)
+En este contexto la terminología usada para describir la transmisión de datos desde 
+el LIS hacía el analizador se llama descargar (download en inglés) y la transmisión 
+de datos desde el analizador hacía el LIS se llama subir (Upload en inglés). 
+El espécimen es el contenido de cada tubo de muestra de paciente o de control y 
+puede ser de alguno de los tipos admitidos (Suero, Orina, Sangre total, etc). Un 
+paciente puede tener dos especímenes diferentes, uno de suero y el otro de orina. 
+Al espécimen se le realizan las técnicas indicadas mediante una lista de trabajo.
+La transmisión entre el analizador y el sistema LIS se realiza a través de conexiones 
+TCP/IP. 
+• 
+La conexión TCP/IP para ASTM y HL7 se establece al iniciar el sistema y 
+se tiene que mantener permanentemente siempre y cuando el analizador esté 
+encendido. La comunicación soporta dos modos de configuración: establecer 
+el analizador cómo cliente o cómo servidor.
+• 
+EL HL7 también permite el modo transitory connection, el cuál establece dos 
+conexiones a la vez: Cuando el BA200 inicia una conversación se establece 
+una conexión de red (se abre un socket con una dirección IP y un puerto) y 
+todos los mensajes relacionados con la conversación son enviados y recibido 
+por el socket. 
+Y cuando el LIS quiere iniciar una conversación, otra conexión de red es 
+iniciada (se abre otro socket con una dirección IP y un puerto) y todos los 
+mensajes relacionados con esta conversación son enviados y recibido por este 
+otro socket.
+16.1. Query por espécimen e inicio automático
+Escenario en el cual se posicionan los tubos de muestra a analizar en el rotor del 
+analizador, se leen los códigos de barras de cada espécimen y se solicita al LIS las or­
+denes de trabajo para cada espécimen. El LIS envía la petición para cada espécimen.
+La sucesión de acciones es la siguiente:
+1. El usuario posiciona los tubos de cada espécimen en el rotor de muestras.

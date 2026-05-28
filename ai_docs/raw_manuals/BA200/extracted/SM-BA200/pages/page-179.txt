@@ -1,0 +1,28 @@
+31
+30
+29
+Ilustración 8.68 
+Desmontaje motor
+8.14. Recambios bomba cerámica
+AC16565
+AC17285
+AC16594
+AC17298
+AC16590
+Código
+Descripción del 
+recambio
+AC17298
+Manifold
+AC16590
+Retén pistón
+AC16594
+Pistón cerámico 
+reactivo + motor
+AC16565
+Placa detector 
+de inicio
+AC17285
+Placa led 
+manifold
+179

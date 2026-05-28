@@ -1,0 +1,35 @@
+84
+Manual de servicio
+mente pulsando el botón correspondiente. Una vez lleno, el técnico debe esperar unos minutos para que el 
+agua del rotor se termostatice. Debe medirse la temperatura dentro de los pocillos del rotor con un termómetro 
+cali brado a 37°C, a través del orificio de dispensación de la tapa del rotor. Un botón permite girar el rotor, en 
+incrementos de 15 pocillos, para cambiar el pocillo sobre el cual se realiza la medición. El programa muestra 
+la temperatura de consigna del control actual. Este parámetro puede ser distinto a 37°C. El técnico debe medir 
+con el termómetro calibrado la temperatura del agua en los pocillos e introducir esta tempera tura en la pantalla. 
+El programa indica si la temperatura medida está dentro de los márgenes de error tolerados y guarda este 
+valor para los informes de resultados de tests.
+5.3.7. Tests de fotometría
+Esta pantalla contiene un conjunto de tests para verificar el funcionamiento del sistema óptico. Los tests están 
+clasificados en diversas pestañas. Es necesario realizar prime ro los tests de línea base y de cuentas de oscu-
+ridad para poder llevar a cabo los tests restantes. Para realizar estos tests el analizador debe estar inicializado. 
+El sistema óptico incorpora un fotodiodo que genera una corriente eléctrica propor cional a la in ten sidad lumi-
+nosa que incide sobre él. La electrónica de detección integra la corriente del fotodiodo durante un deter minado 
+intervalo de tiempo llamado tiempo de integración. Un conversor AD convierte la carga acumulada en un valor 
+digital, llamado número de cuentas, entre 0 y 1048576. Durante su funcionamiento normal, el analizador ajus-
+ta automáticamente el tiempo de integración para cada filtro, al empe zar los análisis, después de realizar su 
+inicialización. Al ejecutar el primer test de foto metría, los tiempos de integración tambien se ajustan automá-
+ticamente. Estos tiempos se ajustan de for ma que el número de cuentas de la línea base, para cada longitud 
+de onda, sea lo más cercano posible a 950000. De esta manera, el rango diná mico del sistema de de tección 
+se adapta a la intensidad de luz presente a cada longitud de onda. El tambor de filtros tiene 10 posiciones. La 
+posición 0 siempre debe contener un filtro tapado para que el analizador pueda realizar el ajuste de oscuridad. 
+Las posiciones de la 1 a la 9 pueden ser utilizadas para filtros ópticos. 
+5.3.7.1. Linea base y tiempos de integración
+Al ejecutar el test por primera vez, el analizador llena los 3 primeros pocillos del rotor con agua desti lada. El 
+analizador ajusta automáticamente los tiempos de integración y realiza una línea base con cada uno de los 
+filtros disponibles, en cada uno de los 3 pocillos. El programa muestra los tiempos de integración actuales para 
+cada uno de los filtros y el promedio sobre los 3 pocillos de los números de cuentas obtenidos con cada uno de 
+los filtros. La pantalla muestra los avisos correspondientes en caso de anomalías. Puede también accederse 
+a una pantalla donde se permite variar manualmente los tiempos de integración para verificar su efecto sobre 
+los números de cuentas. Y a otra pantalla donde se permite asignar los tiempos de integración calculados 
+como tiempos de integración de referencia para cada uno de los filtros. Se recomienda pasar por esta pantalla 
+cuando hay un cambio físico de algún filtro o de la lámpara. Después de realizar este test, el analizador continúa

@@ -1,0 +1,26 @@
+Manual version 
+Revision date
+Change
+1.0
+ June 2012
+Initial version
+ 
+Manual code TESE000012-01-ING
+ 
+Manufacturer's address 
+BIOSYSTEMS
+ 
+ 
+c/Costa Brava 30, 
+ 
+ 
+08030 Barcelona
+ 
+ 
+SPAIN
+ 
+ 
+http://www.biosystems.es
+ 
+ 
+The BA400 analyser is compliant with European Union directive 98/79/EC

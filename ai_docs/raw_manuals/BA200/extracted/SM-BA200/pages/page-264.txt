@@ -1,0 +1,83 @@
+REGISTRO DE REACONDICIONAMIENTO 
+Nombre de la empresa:
+Número de serie:
+Fecha reacondicionamiento:
+PROCESO CAMBIO DE PIEZAS
+Piezas a cambiar
+Cambio de piezas
+Ok / No Ok
+Actualizar firmware y 
+software
+Ok / No Ok
+PROCESO VERIFICACIÓN/AJUSTE
+Verificación de la 
+termostatización de las 
+puntas de reactivo
+Ok / No Ok
+Verificación de la 
+termostatización del 
+rotor de reacciones
+Ok / No Ok
+Verificación de la 
+termostatización de la 
+estación de lavado
+Ok / No Ok
+Verificación de las 
+posiciones de los brazos
+Ok / No Ok
+Test de fotometría
+Ok / No Ok
+Cuentas de oscuridad
+Ok / No Ok
+Repetibilidad
+Ok / No Ok
+Estabilidad
+Ok / No Ok
+VERIFICACIÓN FUNCIONAL FINAL
+Verificación funcional 
+BA400
+Ok / No Ok
+Imprimir y guardar los 
+resultados
+Precisión para modelos 
+Y200
+Tolerancias CV(%)
+Valor
+Vino control blanco 
+Glucosa-Fructosa
+< 3
+Vino control negro 
+Glucosa-Fructosa
+< 3
+Vino control blanco A. 
+Acético
+< 5
+Vino control negro A. 
+Acético
+< 3
+Vino control blanco 
+Fosfate
+< 5
+Vino control negro 
+Fosfate
+< 3
+FINALIZACIÓN
+Acabado
+Colocar etiqueta de 
+equipo renovado
+Ok / No Ok
+Añadir caja completa de 
+accesorios
+Ok / No Ok
+Verificar embalaje
+Ok / No Ok
+Aceptación reacondicionamiento
+Reacondicionamiento 
+OK
+Disponible para la venta
+Ok / No Ok
+Firma:
+Realizado por:
+Página 1/1 
+ Rev 3.0 
+Fecha operativa: 17/2/20

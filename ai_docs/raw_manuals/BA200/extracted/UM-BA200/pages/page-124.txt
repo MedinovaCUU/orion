@@ -1,0 +1,31 @@
+Manual usuario 
+ 
+ 
+ 
+Manual usuario 
+ 
+ 
+ 
+124
+124
+Biosystems
+Biosystems
+Ilustración 80 
+Pantalla de entrada del valor para técnicas externa
+10.5.2. Entrada adicional de información de paciente
+Desde esta pantalla se realiza la introducción de los datos de paciente de las mues­
+tras que haya en la sesión en curso o de las muestras que hayan sido seleccionadas 
+desde la pantalla de históricos. Cuando se usa esta pantalla fuera de históricos, 
+es necesario que exista una sesión de trabajo creada, es decir, códigos de muestra 
+introducidos y técnicas solicitas a estas muestras
+La introducción de los datos de paciente se puede realizar en cualquier momento, 
+antes, durante o al finalizar la ejecución de la sesión de trabajo. De esta forma, 
+el usuario puede preparar una sesión e inmediatamente iniciar la ejecución de la 
+misma en el analizador y posteriormente introducir los datos adicionales.
+ 
+ 
+Al pulsar el icono, se abre una ventana emergente que contiene en la parte iz­
+quierda la lista de todas las muestras ordenadas por su identificador de paciente.
+Las muestras que han sido enviadas por LIS aparecen en la lista marcadas con una 
+etiqueta identificativa y color gris, para facilitar su identificación. Sus datos pueden 
+ser consultados pero se mantienen protegidos de modificación.

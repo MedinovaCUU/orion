@@ -1,0 +1,59 @@
+—  46  —
+Appendix VIII. - Technical specifications
+NOTICE
+The manufacturer declines all responsibilitiy for damages caused by incorrect use of 
+the instrument.
+Optical system
+Nominal range
+–0.2 to 3.5 A
+Nº of wavelengths
+8
+Wavelengths installed (BTS-350)
+340, 405, 505, 535, 560, 600, 635, 670
+Wavelengths installed (Y-350)
+280, 340, 405, 420, 505, 520, 560, 620, 635, 670, 750
+Free wavelength positions (BTS-350)
+2
+Band width of each wavelength
+10 ± 2 nm
+Wavelength error (1)
+± 2 nm
+Digital resolution
+0.0001 A for 2.0 A
+Screen resolution
+0.001 A
+Baseline stability:
+better than 0.001A in 60 minutes
+Accuracy of the measurement (1)
+CV ≤ 1% at 0.1 A 
+CV ≤ 0.1% at 2 A 
+Trueness of the measurement (1)
+±5% at 0.1 A
+± 2% at 1.0 A
+± 2% at 2.0 A
+± 5% at 3.0 A
+(1) for 340, 405, 505
+Thermostatic system
+Thermostatation range
+25º C to 40º C
+Accuracy of the temperature
+± 0.5ºC
+Temperature stability
+± 0.2º C in 30 minutes
+Aspiration system
+Suction tube (external length)
+approx. 100 mm
+Flow cuvette
+Length of light passage
+10 mm
+Diameter of light passage
+1.5 mm
+Volume
+18 μL
+Quality of the glass
+optical
+Normal cuvettes
+Macro, semimicro, micro
+Test tubes
+Round base with a diameter of 12 mm x 75 mm in 
+length

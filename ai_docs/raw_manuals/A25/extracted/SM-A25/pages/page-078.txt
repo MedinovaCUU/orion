@@ -1,0 +1,21 @@
+78
+Service manual
+4. Reactions rotor. Dispensing point on the rotor reactions cover.
+5. Fridge. Dispensation point in the holes of the fridge.
+6. XYZ tray position.
+If you select the point of origin, automatic adjustment is possible in this position by pressing an AutoAdjustment 
+button (the process can take around 3 minutes).
+5.2.3.1. Adjustment of X, Y and Z position for reagent and pediatric racks
+Note: the pediatric rack is a 15 diameter rack with pediatric adapters and wells
+This process is used to adjust each rack individually in the three coordinates, X, Y and Z as much for pediatric 
+as for reagent racks. For that, each rack of the tray will be adjusted to positions 1 and 12 for pediatric racks 
+and 1 and 10 for the reagent ones.
+
+In order to carry out this XYZ rack adjustment, you may use the screen or keyboard buttons. Movements using 
+keyboard:
+• 
+X axis movements: right and left cursor button
+• 
+Y axis movements: up and down cursor button
+• 
+Z axis movements: page up and page down button

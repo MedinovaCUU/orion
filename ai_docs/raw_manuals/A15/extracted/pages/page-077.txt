@@ -1,0 +1,27 @@
+78
+Manual de servicio
+5.3. Tests
+Varios tests permiten comprobar que los diferentes elementos del analizador funcionan correctamente.
+5.3.1. Tests de motores
+Mediante estos tests el técnico puede comprobar el correcto funcionamiento de todos los motores paso a 
+paso del analizador. La pantalla permite escoger qué motor se desea probar y qué test se desea realizar. El 
+analizador utiliza los siguientes motores paso a paso:
+• 
+Eje X del brazo manipulador
+• 
+Eje Y del brazo manipulador
+• 
+Eje Z del brazo manipulador
+• 
+Bomba dosificadora
+• 
+Rotor
+• 
+Tambor de filtros 
+Todas las pruebas de motores pueden realizarse sin las tapas y sin las carcasas del analizador. Después 
+de las verificaciones, el brazo manipulador siempre vuelve auto máticamente a su posición de reposo. Para 
+probar el motor de la bomba dosificadora el brazo se posiciona sobre la estación de lavado. Es conveniente 
+que el sistema dosi ficador esté cebado para que el pistón no trabaje en seco. A continuación se describen los 
+distintos tests realizables.
+5.3.1.1. Test de inicialización
+Este test permite verificar el detector de inicio de cada uno de los motores.

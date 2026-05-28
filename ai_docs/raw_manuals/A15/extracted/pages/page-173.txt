@@ -1,0 +1,77 @@
+Nombre de la empresa:
+Número de serie:
+Fecha reacondicionamiento:
+PROCESO CAMBIO DE PIEZAS
+1. Piezas a cambiar
+Cambio punta
+Ok / No Ok
+Cambio tubos de teflón
+Ok / No Ok
+Cambio lámpara
+Ok / No Ok
+Cambio retén bomba
+Ok / No Ok
+Actualizar firmware y 
+software
+Ok / No Ok
+PROCESO VERIFICACIÓN / AJUSTE
+Verificación de las posi-
+ciones del brazo XYZ
+Ok / No Ok
+Verificación de las posicio-
+nes del rotor de lecturas y 
+del tambor de filtros
+Ok / No Ok
+Verificaicón de la sensi-
+bilidad detección de nivel 
+con los diferentes botellas 
+y tubos
+Ok / No Ok
+Verificación de la termos-
+tatización de la punta y 
+del rotor
+Ok / No Ok
+Test de fotometría
+Ok / No Ok
+Tiempos de integra-
+ción
+Ok / No Ok
+Número de cuentas
+Ok / No Ok
+Cuentas de oscuridad
+Ok / No Ok
+Repetibilidad sin mo-
+ver tambor de filtros 
+Ok / No Ok
+Estabilidad a 505 nm
+Ok / No Ok
+Repetibilidad 
+moviendo filtros
+Ok / No Ok
+VEARIFICACIÓN FUNCIONAL
+Verificación según 
+apartado 7.2.6
+Ok / No Ok
+Imprimir y guardar los 
+resultados de la hoja 
+Excel
+Ok / No Ok
+FINALIZACIÓN
+Colocar etiqueta de 
+equipo renovado
+Ok / No Ok
+Añadir caja completa de 
+accesorios
+Ok / No Ok
+Verificar embalaje
+Ok / No Ok
+Aceptación reacondicionamiento
+Reacondicionamiento OK
+Disponible para la venta
+Ok / No Ok
+Firma:
+Realizado por:
+REGISTRO DEL PROCESO DE REACONDICIONAMIENTO 
+Página 1/1 
+ Rev 2 
+Fecha operativa: 4/5/20

@@ -1,0 +1,44 @@
+26
+Service manual
+21
+18
+15
+22
+16
+17
+5
+7
+17
+20
+13
+14
+Figure 3.6 
+1 – Z guide profile
+2 – Z track rails
+3 – Y start detection barrier
+4 – Z start detection barrier
+5 – Linear slide unit
+6 – Y carriage chain terminal
+7 – Z carriage chain terminal
+8 – Notched belt
+9 – Belt fastening
+10 – Return pulley
+11 – Bearing
+12 – Operating pulley
+13 – Y carriage chain support cover
+14 – Encoder photodetector
+15 – Encoder
+16 – Spring
+17 – Spring fastening
+18 – Support body
+19 – Cover
+20 – Bonding strip
+21 – Unit holding
+22 – Z motor
+Reference Figure 3.5 and Figure 3.6
+3.2.1.4.  Z carriage
+The Z carriage holds the thermostated needle (9). It can run along the Z guide, which forms part of the Y carriage, by 
+means of the guide rollers (3) fastened to the carriage body (6). The belt (7) that operates the Z carriage is held to the 
+body of the carriage by means of the fastening (8). The terminal of the Z carriage chain (5) is screwed to the carriage 
+body. The electronic needle conditioning board (1) is screwed to the needle body and to the support plate (2). This 
+board con­tai­ns the Z carriage start photode­tec­tor.

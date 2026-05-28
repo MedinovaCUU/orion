@@ -1,0 +1,14 @@
+22
+21
+20
+Ilustración 8.72 
+Montaje manifod en la bomba
+8.12.3. AC17429 - Manifold racord
+Desmontaje:
+1. Desmonte el manifold según el capítulo 8.12.2
+2. Desenrosque el racord con una llave fija hasta extraerlo
+Montaje:
+1. Enrosque a mano el racord hasta el tope
+2. Utilice una llave dinanométrica y enrosque el racord con un par de 55Ncm. 
+3. Una vez montado el manifold, verifique la estanqueidad del racord
+213

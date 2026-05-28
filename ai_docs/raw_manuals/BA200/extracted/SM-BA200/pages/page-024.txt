@@ -1,0 +1,32 @@
+Para colocar las muestras, primero tiene que insertar los adaptadores para tubos (5) en las posiciones que quiera 
+colocar las muestras. El adaptador se orienta con la apertura longitudinal hacía el exterior para permitir la lectura del 
+láser del lector del códigos de barras. Presione fuertemente hasta oír un “clic” para que la pestaña de sujeción entre 
+correctamente. Puede sacar los adaptadores (5) de su posición estirando de ellos hacía fuera. Los tubos primarios (6) 
+de 14 mm y 15 mm de diámetro se insertan directamente en el adaptador. Para poder utilizar los tubos de 13 mm 
+de diámetro y los pocillos pediátricos es necesario colocar previamente otro adaptador (4).
+4
+5
+7
+6
+8
+Ilustración 3.2 
+Posicionamiento de los tubos de muestra
+El rotor (2) tiene una posición única una vez se ha insertado en su alojamiento (3). Para ello tiene un centrador que 
+lo guía. Una vez insertado, el rotor no se puede extraer porque queda bloqueado. Para liberar el rotor de la base se 
+tiene que pulsar el botón (8). 
+Exteriormente el vaso se cubre con una tapa (1). Hay un detector de efecto Hall que indica la presencia de la tapa 
+en el analizador.
+El vaso del rotor (9) está sujeto al conjunto rotor mediante los 4 tornillos (12). El aislante del refrigerador (9) se 
+separa del conjunto de transmisión (11). 
+El rotor (3) se une al centrador rotor y este a través de un eje a la polea (14). La correa (13) trasmite el movimiento 
+del motor (11) a todo el conjunto.
+El sistema de refrigeración consiste en un vaso metálico que se enfría entre los 2 °C y 12 °C de temperatura. El vaso 
+tiene un aislante (13) para mantener la temperatura en el interior. La refrigeración se realiza por 4 peltiers (15) que 
+enfrían el vaso, la transmisión de la temperatura de cada una de las caras de las peltiers se realiza a través de unos 
+grafitos (14) y (16) . La peltier está aislada mediante unas espumas (18). El calor que provocan las peltiers se evacua 
+por medio de los radiadores (19) y los ventiladores (20).
+Con el funcionamiento del refrigerador se puede formar agua por condensación en su interior, para evacuarlo hay 
+un orificio y un tubo de salida que evacua en el depósito de baja contaminación. El tubo se puede separar en dos 
+mediante un racor rápido (17).
+Manual de servicio
+24

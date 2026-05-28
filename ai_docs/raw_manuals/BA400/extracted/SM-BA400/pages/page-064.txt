@@ -1,0 +1,67 @@
+Manual de servicio
+64
+Esquema eléctrico con la placa de entrada AC
+N
+E
+P
+N
+E
+P
+FN 284-10-06
+MAIN PS
+ISE
+FRIDGE PS
+UNIVERSAL INPUT
+94V - 264V 
+600W
+AC INPUT
+PLMA00258
+CIIM00056
+FRIDGE PS
+MAIN PS
+ISE
+FA
+FRIDGE
+FA
+MAIN
+FA
+ISE
+SP-320-24
+24V 13A
+SP-320-24
+24V 13A
+RS-35-24
+24V 1.5A
+FA FRIDGE
+FA SF1
+FA ISE
+FA MAIN
+FA MAIN
+EMC
+CN1
+CN1
+1
+2
+3
+CN4
+CN4
+1
+2
+3
+CN3
+CN3
+1
+2
+3
+CN2
+CN2
+1
+2
+3
+Ilustración 4.2 
+Esquema de la conexión de la entrada de alimentación.
+Mejora de la conexión de la entrada AC con la eliminación de la placa CIIM00056. Modificación recogida en el 
+BA400v2.
+ 
+) Véase el capítulo AII para saber a partir de que números de serie se ha implementado.
+Esquema eléctrico con la modificación aplicada. Sin la placa de entrada AC.

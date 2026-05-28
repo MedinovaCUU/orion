@@ -1,0 +1,30 @@
+{
+  "manufacturer": "Biosystems",
+  "equipment": "IPRO",
+  "aliases": [],
+  "document_type": "service_manual",
+  "language": "Spanish",
+  "source_pdf": "/Users/ricardomontanezmiranda/Documents/BioSys Diagnostico/data/manuals/IPRO/SM-IPRO.pdf",
+  "source_filename": "SM-IPRO.pdf",
+  "source_sha256": "5a57969dba6faf9ba8dd26829488e84c6fd5968fd1ef8bc9a67d9344b14c1187",
+  "page_count": 89,
+  "pdf_metadata": {
+    "format": "PDF 1.7",
+    "title": "TESE00016-ES.pdf - ServiceManual-0008 - (131) - 11/02/2025 12:54:12",
+    "author": "Biosystems",
+    "subject": "TESE00016-ES.pdf - ServiceManual-0008 - (131) - 11/02/2025 12:54:12",
+    "keywords": "",
+    "creator": "Biosystems",
+    "producer": "Biosystems",
+    "creationDate": "D:20260330211510+02'00'",
+    "modDate": "D:20260330211510+02'00'",
+    "trapped": "",
+    "encryption": null
+  },
+  "title_lines": [
+    "Manual de",
+    "Servicio",
+    "Espa\u00f1ol"
+  ],
+  "manual_code": "TESE00016-02-ESP"
+}

@@ -1,0 +1,18 @@
+Service manual
+72
+Esquema de Comunicaciones
+Communications Scheme
+CPU BOARD
+CIIM00006
+COMMUNICATION BOARD
+CIIM00019
+PLMA00035
+J25
+J1
+CN1
+P1
+P2
+USB
+SERIAL COM1
+SERIAL COM2
+Figure 4.12

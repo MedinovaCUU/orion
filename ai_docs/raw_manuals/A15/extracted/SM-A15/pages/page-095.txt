@@ -1,0 +1,20 @@
+96
+Manual de servicio
+5.4.6. Modo de demostración
+Pulsando el botón Iniciar, el analizador activa algunos de sus elementos móviles imitando el funcionamiento 
+durante una rutina de trabajo. Los elementos mecánicos activados son el brazo manipulador, el rotor de re-
+acciones y el tambor de filtros. Pulsando el botón Cancelar, el analizador acabad el ciclo en curso y retorna a 
+su posición de reposo.
+5.4.7. Leer/cargar ajustes y ciclos
+Des de esta pantalla es posible leer los ajustes actuales que el analizador está utilizando pulsando el botón 
+Leer AJustes.
+Se permite guardar en un fichero estos ajustes. El nombre y ubicación de este fichero los selecciona el técnico.
+También desde esta misma pantalla y con el botón Cargar Ajustes se permite al técnico seleccionar un fichero 
+de ajustes y cargarlo en el analizador. Una vez realizada la carga de los ajustes el analizador se apaga y la 
+aplicación se cierra. Al reiniciar la aplicación ya estarán activos los nuevos ajustes cargados.
+Desde la versión de firmware 2.80 el programa cuenta el número de ciclos de cada elemento y tarea del ana-
+lizador. Desde esté menú se pueden leer los ciclos realizados por el analizador. En la pantalla se muestran 
+dichos ciclos con sus unidades. 
+El programa guarda automáticamente una copia en un fichero de los ajustes y ciclos leídos. Este fichero se 
+puede encontrar en la siguiente carpeta:
+c:\Archivos de programa\A15 Service\Adjustments\

@@ -1,0 +1,16 @@
+70
+71
+72
+Ilustración 8.83 
+Cambio conjunto estación de lavado
+8.13.9. AC16565 - Placa fotobarrera
+Herramientas: Allen 2.5
+Desmontaje:
+1. Desconecte el cable de la placa de la fotobarrera
+2. Desatornille los 2 tornillos (27)
+Montaje:
+1. Sustituya por la nueva placa (26).
+2. Alinee la placa para que la plancha no colisione con el fotodetector.
+3. Atornille los 2 tornillos (27) y conecte el cable a la fotobarrera.
+Manual de servicio
+226

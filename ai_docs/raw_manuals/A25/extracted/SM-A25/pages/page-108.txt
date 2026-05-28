@@ -1,0 +1,17 @@
+108
+Service manual
+When users are created, the access is limited to different parts of the program. When starting the program, an 
+identification of the user is requested, by the user name and a password, and then the program will automatically 
+restrict the different parts of the program depending on the access level permitted. 
+Whenever you want, you can change the user by means of the option Change of user from the User menu.
+It is also allowed to eliminate users already created. Each user is capable of changing his password. All these 
+options can be reached from the user menu.
+5.7.2. 
+Reagent Consumption 
+In order to access the consumption of reagents, it is first necessary to configure the program with the option 
+of working with passwords. The administrator user is the only one that can access this menu -this option is 
+deactivated for any other user. 
+In order to generate a list of the consumption of reagents, the administrator has to introduce the dates between 
+which he wants to know the consumption. For this, it appears a screen like this:
+Such option creates two files of results, one in text format .txt and the another one in excel format .xls. These 
+files will be located at directory within the application directory, it will usually be:

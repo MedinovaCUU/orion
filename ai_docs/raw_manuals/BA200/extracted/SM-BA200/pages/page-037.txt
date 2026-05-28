@@ -1,0 +1,27 @@
+Ilustración 3.17 
+Posición detector de inicio
+3.5. Conjunto bomba de dispensación
+El conjunto de la bomba cerámica sirve para realizar la aspiración y dispensación de las muestras y reactivos. Está 
+formado por conjunto motor (20) más pistón cerámico (15), un conjunto manifold (14) y una bomba de membrana 
+(10). La salida del manifold es un tubo de teflón que se conecta a la punta de dispensación a través de una placa de 
+interconexión. Las entradas son un tubo para aspirar agua destilada (9) y otro para aspirar solución de lavado(1). Las 
+electroválvulas JE1-E1M (3), JE1-E2M (4) y JE1-E3M (5) conmutan para seleccionar aire, solución de lavado o agua 
+destilada. Con la bomba de membrana se realiza el lavado interno del circuito de dispensación con agua destilada 
+o solución de lavado en función de la selección de las electroválvulas. La cámara fluídica de la bomba incorpora en 
+el manifold un sensor de presión (6) para detectar cuando la punta está obturada.
+1
+6
+5
+2
+3
+4
+8
+7
+9
+10
+Ilustración 3.18 
+Bomba cerámica para el pipeteo y dispensación
+El funcionamiento se basa en un motor (20) que está unido a un husillo (19) multivuelta. El husillo hace subir o 
+bajar el soporte del pistón (15) donde está encolado el pistón. La cámara de aspiración está sellada mediante un 
+retén (17). Los tubos se conectan al manifold mediante racores.
+37

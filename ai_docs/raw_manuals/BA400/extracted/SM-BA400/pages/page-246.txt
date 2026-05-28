@@ -1,0 +1,21 @@
+Ilustración 8.109 
+5
+Ilustración 8.110 
+8. No se acaba de apretar el tornillo de M4 (5) para no aplastar en exceso el cable que sale de la placa verticalmente.
+8.15.3. AC17287 - Calefactor
+Para montar el calefactor en un equipo BA400v1 seguir los siguientes pasos:
+1. Desmontar el antiguo calefactor retirando los tubos del calefactor
+2. Desconectar el cableado del antiguo calefactor
+3. Conectar el cableado del nuevo calefactor de la misma forma que el antiguo
+Cantidad
+Descripción
+1
+Calefactor modelo BA400v2
+1
+Separador SS8-3L
+1
+Tornillo Allen M4x25
+1
+Arandela seguridad M4
+Manual de servicio
+246

@@ -1,0 +1,24 @@
+20
+Manual de servicio
+Pantalla que se hace visible al técnico cuando el procesador ha acabado las operaciones previas que 
+realiza para entrar en modo SERVICIO. Si todo el hardware del procesador está en correctas condi­
+ciones se presenta el resultado «Hardware iniciado correctamente».
+Si algún elemento hardware presenta algún problema de funcionamiento, en la pantalla se presentará 
+«Hardware no iniciado completamente», y se indicará el elemento que no está funcionando correc­
+tamente.
+Para cerrar la pantalla y continuar trabajando pulsar el botón Aceptar.
+Para obtener copia impresa de este report de inicialización pulsar el botón Imprimir.
+NOTA: Si se ha reportado un error y el técnico continua trabajando con el programa de servicio, debe 
+tener en cuenta que hay un elemento hardware que no está funcionando correctamente.
+3.2  AJUSTES 
+Permiten realizar diferentes ajustes de parámetros necesarios para el correcto funcio­namiento del 
+procesador. Todos los valores a ajustar tienen unos determinados rangos acotados, indicados por el 
+programa de servicio. Estos valores se muestran también en un apéndice al final de este manual. Si 
+variando alguno de los parámetros dentro de su rango permitido no se consigue poner a punto el pro­
+cesador, este hecho es indicativo de que el sistema correspondiente está averiado y debe ser reparado.
+3.2.1  Ajuste del posicionamiento del brazo manipulador
+Esta pantalla permite ajustar el posicionamiento horizontal y vertical (X, Y, Z) del brazo. Debe des­
+montarse la carcasa del brazo para ver la posición de las puntas. Antes de realizar los ajustes, comprobar 
+visualmente la verticalidad de la puntas y el paralelismo entre las mismas. Si es necesario, enderezarlas 
+cuidadosamente, procurando no dañarlas. Debe seleccionarse en la pantalla el punto donde se desea 
+ajustar el posicionamiento. Al pulsar la tecla Ajustar el brazo se inicializa y se coloca sobre este pun­

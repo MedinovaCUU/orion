@@ -1,0 +1,53 @@
+Manual usuario 
+ 
+ 
+ 
+Manual usuario 
+ 
+ 
+ 
+68
+68
+Biosystems
+Biosystems
+ Residuos de baja contaminación El contenedor de residuos de baja contaminación está ubicado en el interior del 
+analizador y no es accesible por el usuario. El vaciado del contenedor es automá­
+tico. Los residuos salen por la conexión de la parte trasera del analizador. 
+ 
+)
+Véase Conexión del tubo de residuos en el capítulo 4.4 
+ 
+Agua purificada El contenedor de agua purificada está ubicado en el interior del analizador y no 
+es accesible por el usuario. El llenado y vaciado del contenedor es automático. 
+La entrada de agua purificada proviene del exterior del analizador. Puede venir 
+directo de una toma de agua purificada o de un contenedor exterior de mayor 
+capacidad. 
+ 
+)
+Véase Conexión de agua purificada en el capítulo 4.3
+8.10. Módulo ISE (opcional)
+El módulo lector de iones ISE es un módulo opcional que sirve para la determi­
+nación de la concentración de los iones Na+, K+, Cl- y Li+ en las muestras de 
+suero, plasma y orina.
+Las mediciones se realizan mediante electrodos selectivos de iones. La Ilustración 
+39 muestra un diagrama del sistema de medida. La explicación más detallada del 
+proceso de cálculo lo puede encontrar en el capítulo 15.4
+La temperatura ambiente de la sala donde esté ubicado el analizador con el módulo 
+lector de iones ISE instalado no debería variar más de ±4 ºC ni ser superior a 30 ºC.
+El módulo lector de iones funciona en paralelo juntamente con las determinaciones 
+de bioquímica. 
+Cuando en la lista de programación de pacientes está programada la determinación 
+de iones, el brazo de dosificado de la muestra es el encargado de suministrar la 
+muestra al módulo de iones. Entonces es el módulo que realiza la determinación 
+de la concentración de los iones y suministra los resultados al programa.
+El módulo de iones requiere una calibración a dos puntos para su correcto funcio­
+namiento. Esta calibración se debe realizar cada 4h y no requiere la participación 
+del brazo de muestras. El programa de usuario emitirá un mensaje con esta perio­
+dicidad a modo de recordatorio.
+Adicionalmente, para cada determinación el módulo realiza una medida de uno 
+de los dos líquidos desde el kit de reactivos: A para las determinaciones en suero 
+y plasma y B para las determinaciones en orina.
+Tanto el líquido A como el B se suministran conjuntamente en el kit de reactivos. 
+Dicho kit se conecta directamente al módulo ISE. 
+El kit se suministra como accesorio y se accede a su alojamiento desde las puertas 
+frontales del analizador.

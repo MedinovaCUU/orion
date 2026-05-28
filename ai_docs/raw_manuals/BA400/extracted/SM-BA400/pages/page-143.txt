@@ -1,0 +1,46 @@
+El tiempo de duración del proceso es: 1,5 horas.
+Tiempo extra para analizadores con módulo ISE: 10 minutos
+7.3.6.1. Material necesario
+Use reactivos y controles de Biosystems o códigos equivalentes, use siempre nuevos calibradores y controles recons­
+tituidos.
+Código
+Descripción
+21503/23503 
+Glucosa 50 ml
+21531/23531 
+AST-GOT 50 + 20mL
+21518/23518 
+Fósforo 50 + 20mL
+18011/18044 
+Calibrador bovino / humano 5 ml
+18009/18043 
+Suero de control bovino / humano I 5 ml
+18010/18042 
+Suero de control bovino / humano II 5 ml
+Pipeta de 100-1000 µm (calibrada)
+Puntas de pipeta desechables
+Agua destilada tipo II
+Use una plantilla de Excel para hacer todo el cálculo de los resultados: Results verification.xlsx
+Solicite al departamento de servicio técnico para obtener el archivo de Excel
+7.3.6.2. Proceso de verificación
+1. Utilice una versión de software superior a v5.2.3
+2. Cargue el satreport apropiado basado en el analizador BA400 o BA200. Herramientas -> Cargar satreor
+3. NO cargue este reportsat en la PC del usuario, hágalo en otro. Perderá todos los datos del historial (resultados, 
+calibraciones, controles de calidad, etc.). De lo contrario si utiliza el PC del usuario realice un restorepoint y 
+después del proceso de verificación cargue otra vez el restorepoint de lbackup.
+4. Conecta e inicia el calentamiento
+5. Haga clic en el botón de conexión (flechas)
+6. Haga clic en el botón de calentamiento (tecla)
+7. Puede preparar todo el software y los líquidos durante el tiempo de calentamiento.
+8. Descargue los valores de calibración del sitio web de BioSystems u obténgalos de la “Hoja de valores”
+• 
+ www.biosystems-sa.com
+• 
+ www.biosystems.es
+9. Si no recuerda su acceso o no lo tiene, póngase en contacto con customersupport@biosystems.es
+10. Use el código y el número de lote para buscar en la “Hoja de valores”
+11. Hacer un reset de la sesión.
+12. Cargue la sesión memorizada: “Sesión de verificación”. Sesión de trabajo -> Cargar sesión de trabajo, seleccione 
+“Sesión de verificación”, Posicionar muestras seleccionadas “
+13. Posicionar automáticamente las muestras
+143

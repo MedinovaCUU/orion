@@ -1,0 +1,41 @@
+115
+115
+Ilustración 74 
+Pantalla de programación de las técnicas externas
+ 
+Nombre Introduzca el nombre de la técnica externa
+ 
+Nombre corto 
+Abreviación del nombre de la técnica. Cómo máximo puede tener 8 caracteres. 
+Este campo se utiliza en aquellas partes del programa donde no hay suficiente 
+espacio para mostrar el nombre completo.
+ 
+Valor por defecto 
+Introduzca el valor por defecto para la técnica externa, ponga un valor sólo en 
+caso de que la técnica siempre tenga el mismo valor, aunque este valor se podrá 
+modificar en la lista de trabajo. Si el valor es cero se tendrá que introducir el 
+valor para cada muestra.
+ 
+Tipo de muestra 
+Introduzca el tipo de muestra.
+ 
+Tipo de resultado 
+Introduzca cómo será el resultado: cuantitativo o cualitativo. 
+Tipo de resultado
+Descripción
+Cuantitativo
+Es un resultado numérico. Cuando se seleccione esta 
+opción también se introducirán las unidades y el 
+número de decimales del resultado.
+Cualitativo
+Es un resultado no numérico. Por ejemplo: resultado 
+positivo o negativo, resultado alto o bajo, etc.
+ 
+Rangos de referencia 
+Introduzca los valores de referencia. 
+ 
+)
+Véase cómo introducir los valores de referencia en el capítulo 10.3.1.6.
+10.4. Inicialización y apagado del analizador
+El proceso de encendido del analizador se realiza cuando se abre el interruptor 
+principal del analizador. El analizador realiza sus verificaciones internas y cuando

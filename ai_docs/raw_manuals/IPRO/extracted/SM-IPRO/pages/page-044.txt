@@ -1,0 +1,16 @@
+44
+Manual de servicio
+2
+Ilustración 4.2.  Desmontaje tapa
+4.2.  AC17412 - Carcasa
+Desmontaje:
+1. Quitar los 6 tornillos (3)
+2. Quitar la tapa trasera (4)
+3. Quitar los 5 tornillos (5) de cada lado
+4. Quitar la chapas laterales (6) descendiéndolas para separarlas del analizador.
+5. Desconectar el cable de la placa del led de estado
+6. Quitar la carcasa (7) elevándola por encima del instrumento. Ir con cuidado con la placa del led 
+de estado que se encuentra por la parte interior de la carcasa
+Montaje:
+1. Desmontar la placa del led de estado de la carcasa antigua y colocarla en la nueva carcasa
+2. Siga los pasos del desmontaje en sentido inverso

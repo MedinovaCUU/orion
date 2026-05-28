@@ -1,0 +1,79 @@
+Manual usuario 
+ 
+ 
+ 
+Manual usuario 
+ 
+ 
+ 
+100
+100
+Biosystems
+Biosystems
+ 
+Límite blanco cinético 
+Introduzca el valor límite de blanco cinético correcto. Sólo aplica a las técnicas 
+con modo de cálculo cinético.
+ 
+Límite de linealidad 
+Introduzca el valor para el cuál el reactivo ya no es lineal. Si el valor de con­
+centración es superior a este valor entonces el programa muestra un mensaje 
+de aviso y si está activada en la programación se lanza automáticamente una 
+repetición.
+ 
+Límite de detección 
+Introduzca el valor para el cuál el reactivo no detecta valor. Si el valor de con­
+centración es inferior a este valor entonces el programa muestra un mensaje 
+de aviso y si está activada en la programación se lanza automáticamente una 
+repetición.
+ 
+Límites de factor 
+Margen superior e inferior para verificar que el factor de la calibración es 
+correcto.
+ 
+Rango de repetición 
+El analizador repite la muestra automáticamente si el valor de la concentración 
+está dentro del rango. Este rango sirve para realizar una confirmación del resul­
+tado de forma automática.
+En función de los valores programados en esta pantalla, y si estan programadas las 
+repeticiones automàticas (véase 10.3.1.3 y 10.2.1.1) , se ejecutaran la repeticiones 
+mediante predilución, concentración de la muestra o manteniendose las mismas 
+condiciones de ejecución”
+ 
+Efecto prozona 
+El llamado efecto prozona puede ocurrir en técnicas basadas en el principio 
+de la formación de complejos antígeno-anticuerpo (aglutinación). Este efecto 
+generalmente se detecta en muestras con un alto contenido de antígeno. El 
+excedente de antígeno invierte la dirección de la reacción y puede causar medi­
+das incorrectas de las muestras. Para detectar dicho efecto se tiene que activar la 
+opción de efecto prozona e introducir los 3 parámetros: Tiempo 1, Tiempo 2 y 
+el ratio en (%).
+El programa calcula los incrementos de absorbancia en los tiempos 1 y 2. Realiza 
+el cociente de los incrementos y compara el resultado con el ratio. Si el cociente 
+no supera el ratio entonces aparece una alarma indicando que la muestra puede 
+tener efecto prozona y tiene que ser el usuario que realice una repetición manual 
+con un factor de dilución para acabar de determinar el valor exacto de la muestra.
+ 
+CAUTION
+ 
+Los parámetros de la verificación del efecto prozona se han de determinar por 
+el usuario final. En caso de duda de la detección de la prozona, el usuario debe 
+realizar una dilución de la muestra para asegurar su correcto resultado.
+ 
+Función slope 
+Introduzca los parámetros a y b de la fórmula Y=aX+b. Estos parámetros mo­
+difican el valor de la concentración del resultado de manera lineal. Esta opción 
+sirve para corregir de manera proporcional la concentración de una muestra 
+para una misma absorbancia. Donde X será sustituida por el valor de concentra­
+ción e Y será el valor de concentración modificada.
+ 
+Sustrato consumido 
+Se aplica un algoritmo de cálculo para detectar reacciones donde el sustrato de 
+la muestra se ha agotado. Este algoritmo funciona para los siguientes modos de 
+cálculo, siendo distinto en función de cada tipo de reacción:
+• 
+Punto final creciente
+• 
+Cinética decreciente
+• 
+Tiempo fijo decreciente

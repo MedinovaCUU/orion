@@ -1,0 +1,76 @@
+61
+Instrument connection diagram with serial number prior to:
+A25: 831015800
+Y25: 831020152
+Esquema de Alimentación
+Power-In Scheme
+1/2
+FUENTE DE
+ALIMENTACION
+POWER SUPPLY
+SW300-36
+115-240V
+ENTRADA UNIVERSAL
+UNIVERSAL INPUT
+PLMA00105
+PLMA00159
+PLMA00158
+Amarillo-Verde/Yellow-Green
+FUSIBLE
+FUSE
+2A (F)
+INTERRUPTOR
+SWITCH
+FILTRO DE RED
+LINE FILTER
+FC-3Z
+DC/DC BOARD
+CIIM00007
+PLMA00107
+Rojo/Red
+Negro/Black
+36V
+GND
+1 3
+Negro/Black
+Negro/Black
+FUENTE DE
+ALIMENTACION
+POWER SUPPLY
+HWS100-12/A
+RACKS BOARD
+CIIM00010
+J6
+Rojo/Red
+Negro/Black
+12V
+GND
+1 2
+Amarillo-Verde/Yellow-Green
+PLMA00157
+Negro/Black
+Negro/Black
+Azul/Blue
+Marron/Brown
+Negro/Black
+Negro/Black
+Marron/Brown
+Azul/Blue
+PLMA00033
+PLMA00159
+PLMA00033
+PLMA00034
+PLMA00183
+N
+N
+L
+L
+FG
+N
+L
+PLMA00204
+PLMA00034
+J3
+Negro/Black
+Negro/Black
+Figure 4.1

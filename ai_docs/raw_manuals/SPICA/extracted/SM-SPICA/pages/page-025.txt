@@ -1,0 +1,43 @@
+25
+USUARIO
+Manual de Usuario BioSystems SPICA | Versión 2.8 - Agosto 2024
+Manual de Usuario BioSystems SPICA
+5. PROCEDIMIENTOS DE MEDICIÓN
+5.2 Cálculo de las absorbancias
+2. PUNTO FINAL BI-REACTIVO
+Este modo de funcionamiento se utiliza, por ejemplo, si la estabilidad del reactivo de trabajo es muy corta; 
+de tal manera que es el analizador el que prepara el reactivo de trabajo en cada preparación. En este modo 
+de cálculo, se hace una sola lectura y la reacción comienza cuando se dispensa el segundo reactivo.
+En primer lugar, se dispensa el reactivo A, seguido de la muestra, y se agita. Luego se dispensa el reactivo B 
+y se vuelve a agita, y comienza la reacción. Una vez que se equilibra, se toma la lectura, L1. El cambio en la 
+absorbancia es directamente proporcional a la concentración del analito.
+El cálculo de la absorbancia puede ser monocromático o bicromático. Si la reacción es monocromática, la 
+medición se realiza en el tiempo L1 a una longitud de onda.
+Si la reacción es bicromática, se hacen dos lecturas en el tiempo L1. Cada una de las lecturas se hace en 
+una longitud de onda diferente. La absorbancia es la diferencia entre las dos longitu-des de onda.
+3. MODO DIFERENCIAL
+Las pruebas diferenciales hacen dos lecturas, la primera antes de dispensar el reactivo B y la segunda 
+después del final de la reacción. Estas pruebas se utilizan para eliminar los posibles efectos de turbidez en 
+la muestra o eliminar los posibles niveles de absorbencia del reactivo A.
+Se dispensa el primer reactivo A, seguido de la muestra, en el siguiente paso se agita y comienza la reacción. 
+Antes de dispensar el reactivo B, se toma la lectura de L1. El reactivo B se dispensa en unos pocos ciclos 
+después y se agita en el siguiente ciclo, y comienza la segunda parte de la reacción. Cuando la segunda 
+reacción está equilibrada, se toma la lectura L2.
+A = ABS
+λprincipal
+L1
+A = ABS
+-
+λreferencia
+L1
+A = ABS
+λprincipal
+L1
+ABS
+PUNTO FINAL Bi-Reactivo 
+Tiempo (ciclos)
+RA + S
+L1
+1 18 3
+5
+RB

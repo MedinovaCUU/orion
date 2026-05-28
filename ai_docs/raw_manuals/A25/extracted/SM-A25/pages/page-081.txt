@@ -1,0 +1,21 @@
+81
+5.2.4.2. Centering of the rotor with regard to the optical system
+This adjustment is necessary only if the Rotor Centering Adjustment has been carried out with regard to the 
+dispensing point (5.2.4.1). This adjustment must be made with the rotor cover in position. The analyzer initialises 
+the rotor and fills the first 3 wells of the rotor with distilled water. Next, step-by-step optical readings are made 
+through these wells at the wavelength selected by the technician. Once the readings have ended, the program 
+shows a graph of the light intensity measured on the rotor steps. On this graph, the program indicates at which 
+points the optical readings are made on each of the 3 wells when the analysis is made, with the coordinate of 
+the reading point of the first well currently programd in the analyzer. If necessary, the technician can move the 
+reading points over the graph jointly using two buttons. The optimum reading point is that which globally max­
+imises the light intensity for the three wells. At all times, the screen shows the current coordinate of the reading 
+in the first well and the last coordinate stored, as additional information for the technician. When the position 
+is satisfactory, the current coordinate of the reading point of the first well can be stored by pressing the Store 
+button. Pressing the Cancel button keeps the last stored value and the current value is not stored.
+5.2.5. 
+Adjustment of the positioning of the filter wheel
+This adjustment must be made with the rotor cover in position. The analyzer initialises the rotor and the filter 
+wheel and fills the first rotor well with distilled water. Next, it takes optical readings through this well, turning the 
+filter wheel step by step, with a certain integration time as indicated by the technician (the concept of integration 
+time is explained in the section on photometric adjustments). Once the readings have ended, the program shows 
+a graph of the light intensity measured on the steps of the filter wheel. On this graph, the program indicates at

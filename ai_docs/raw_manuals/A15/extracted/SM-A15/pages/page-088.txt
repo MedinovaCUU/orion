@@ -1,0 +1,15 @@
+89
+5.3.7.7. Verificación del rotor de reacciones
+Puede usarse este test para verificar el estado óptico de un rotor de reaccio nes. Puede escogerse el filtro óptico 
+con el que se desea realizar el test. El técnico debe colocar el rotor en el analizador y pulsar el botón Test. El 
+analizador si se ha seleccionado la opción Llenado Automático llena con agua destilada los 120 pozos del rotor 
+y a continuación realiza una línea base en cada pozo con el filtro elegido. El analizador muestra gráficamente 
+las absorbancias relativas al promedio de todos los pozos e indica al técnico el estado del rotor (óptimo o re-
+quiere ser lavado y revisado por el técnico). Después del test, se debe quitar el rotor del analizador, vaciarlo y 
+secarlo completa mente antes de utilizarlo para realizar análisis. En caso de que algún pocillo esté sucio o en 
+malas condiciones, el técnico podrá identificar claramente en la gráfica ya que está numerada cada dos pocillos.
+5.3.8. Test de sensores de control de nivel
+Esta pantalla permite comprobar el funcionamiento de las balanzas de control de nivel de los contenedores 
+de agua destilada y de residuos. El técnico debe seleccionar qué balanza desea verificar y colocar una cierta 
+cantidad de líquido en el contenedor correspondiente. Pulsando el botón Test la pantalla in dica el nivel de 
+líquido medido por el analizador(0 ó 100 %).

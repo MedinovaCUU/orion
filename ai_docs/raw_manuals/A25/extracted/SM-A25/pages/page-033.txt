@@ -1,0 +1,33 @@
+33
+1
+2
+3
+4
+6
+7
+8
+Figure 3.13 
+1 – Washing water diaphragm pump
+2 – Pump-electrovalve pvc tube
+3 – 2-Channel electrovalve
+4 – Fittings
+5 – Electrovalve-limiter pvc tube
+6 – Flow volume limiter
+7 – Waste extraction diaphragm pump
+8 – Support
+Reference Figure 3.13
+3.2.4.  Reactions rotor with integrated optical system
+The reactions rotor is thermostated at 37ºC. The optical system, made up of a lighting system and a photometric 
+system takes the readings directly on the rotor reaction wells. The lighting system has a halogen lamp, a filter wheel 
+for the selection of the wavelength and various lenses to form the appropriate beam of light. The photometric system 
+contains a silicon photodiode and the corresponding electronics to obtain a digital value that is proportionate to the 
+light intensity received. 
+3.2.4.1.  Thermostated rotor and photometric system
+The dispensing system dispenses the reagents and the samples in the methacrylate rotor (1). The optical system 
+measures the absorbance directly on the rotor wells. The aluminium heating channel (2) surrounds the rotor and 
+keeps it at 37ºC. The channel is thermally insulated from the exterior by means of the molded expanded polystyrene 
+insulation (3). The Peltier cells (4), with their respective radiators (5), act on the channel to control the temperature. 
+The screws that fasten the radiators are thermally insulated from the former by the bushes (6). The sensor used to 
+control the temperature is the probe (27), which is thermally insulated from the exterior of the channel by means of the 
+sleeve (28). The methacrylate rotor is fastened to its centerer (8) by means of the screw (7). The centerer is fastened 
+to the rotor (12), which is mounted on bearings (13) in the gear support (10). This support is screwed to the heating

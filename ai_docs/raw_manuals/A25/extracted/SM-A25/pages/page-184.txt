@@ -1,0 +1,29 @@
+Service manual
+184
+List of spare parts
+Code
+Representation 
+Description
+ME11549
+Spring cover hinge (2)
+ZO14727
+Analyzer grip
+VA10355
+Mains connector
+ZO10407
+Fuse holder
+AC17322
+Refrigerator switch
+IN11557
+AC17408
+Main switch
+PC11862
+Communications board
+PC14709
+Rack board
+PC11553
+Top board
+PC11556
+Power supply board
+PC11552
+Photometric system board

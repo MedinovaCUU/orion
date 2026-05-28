@@ -1,0 +1,52 @@
+9.3. Mantenimiento del módulo ISE
+Capítulo explicativo para realizar los procesos de mantenimiento del módulo ISE y para solucionar posibles pro­
+blemas de éste.
+9.3.1. Cambio de electrodos
+Al cambiar los electrodos seguir las instrucciones del manual. Tenga en cuenta de realizar un ciclo de mantenimiento 
+antes de retirar los electrodos. Este ciclo realiza un vaciado del líquido en el canal fluídico evitando que haya restos 
+de calibrador cuando se extraigan los electrodos. 
+Una vez retirados secar inmediatamente los electrodos para evitar que restos de calibrador y/o sales vayan a parar a 
+los contactos.
+Al realizar las calibraciones del proceso de instalación, verifique que no hay una deriva significativa (>2 unidades) 
+entre ellas. Si esto ocurre las membranas de los electrodos necesitan más tiempo para alcanzar su funcionamiento 
+óptimo. No se recomienda realizar medidas hasta que esta deriva desaparezca. Se puede acelerar el proceso haciendo 
+circular sueros control (realizar determinaciones ISE).
+9.3.2. Verificar que el sistema fluídico funciona correctamente. 
+• 
+Verifique que el pack de reactivos no está agotado.
+• 
+Verifique la correcta colocación del conector al pack de reactivos. Verifique que el conector no está un poco 
+levantado dificultando el contacto del conector con el pack.
+• 
+Verifique que la zona de contacto entre el conector y el pack está limpia.
+• 
+Presione con la mano el lateral del pack de reactivos para evitar una posible obstrucción del CAL A o CAL B 
+debido al relleno de la bolsa de residuos.
+• 
+Verifique que el frente del líquido en los tubos de teflón del CAL A y del CAL B no se trocea. En caso de encon­
+trar el frente troceado, es indicativo de que el pack se está finalizando o de que entra aire en el circuito fluídico.
+• 
+Compruebe si el líquido se desplaza por los tubos después de que las bombas se hayan detenido. Este desplaza­
+miento puede indicar la entrada de aire en algún punto del sistema fluídico o su obturación.
+• 
+Verifique que los electrodos están bien colocados y que no haya fugas de líquido.
+• 
+Verifique que las juntas tóricas están bien colocadas entre los electrodos.
+• 
+Verifique que haya las juntas tóricas en el pack de reactivos en cada uno de los orificios.
+• 
+Verifique que el codo inferior de los electrodos no se salga y está bien colocado.
+• 
+Verifique que las bombas peristálticas giran correctamente.
+• 
+Realice las siguientes calibraciones: Bomba peristáltica, detector de burbujas, y calibración de electrodos. Veri­
+fique que los resultados están dentro de los márgenes.
+9.3.3. Pasar un fiador de nylon por el orificio
+En caso de que el orificio del electrodo esté obturado, límpielo con un paño humedecido con agua destilada y en 
+caso de no conseguirlo pase un fiador para desobturar el orificio del electrodo.
+Si el fiador de nylon no es suficientemente rígido para desobturar el orificio, puede utilizar una punta fina de la 
+jeringa subministrada con la caja de accesorios. 
+Vaya con cuidado de no dañar con el fiador las paredes de la membrana del electrodo. No fuerce en exceso el fiador.
+Si no puede eliminar la obturación provocada por la solución salina del electrodo de referencia, aplique agua templada 
+durante unos quince minutos para favorecer la disolución de las sales y vuelva a probar con el fiador.
+225

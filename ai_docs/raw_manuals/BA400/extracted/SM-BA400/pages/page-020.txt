@@ -1,0 +1,31 @@
+Manual de servicio
+20
+Se han realizado unas mejoras generales al analizador BA400. Para indicar los cambios a lo largo del manual se 
+etiquetarán dichos cambios con el nombre de BA400v2.
+ 
+) Véase el capítulo AII para saber a partir de que número de serie se ha implementado los cambios
+A continuación se indica cúales son las principales mejoras:
+• 
+Eliminación de la placa de distribución AC - CIIM00056
+• 
+Nueva versión de placa CPU - CIIM00046-03
+• 
+Nueva versión de placa de fluidos - CIIM00053-03
+• 
+Nueva versión de placa control de fotometría - CIIM00050-02
+• 
+Cambio distribución posicionamiento bombas de membrana
+• 
+Cambio del calefactor de los tubos de la estación de lavado
+• 
+Sustitución de las electroválvulas por checkvalve en la bomba de pistones. Se han añadido unos filtros a la en­
+trada de las checkvalves
+• 
+Añadidos unos filtros frontales a los ventiladores
+• 
+Abertura frontal para visualizar la copa del módulo ISE
+• 
+Añadido un detector de desbordamiento en la estación de lavado
+• 
+Cambio en el guiaje de los tubos de los brazos
+En todos los recambios que están marcados cómo BA400v2, indica que son exclusivos de está modificación.

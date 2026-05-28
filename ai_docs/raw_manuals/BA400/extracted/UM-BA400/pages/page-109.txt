@@ -1,0 +1,49 @@
+109
+109
+ 
+Identificación de paciente 
+Introduzca un identificador de paciente para poder asociar los datos de paciente 
+a los resultados.
+ 
+Nombre 
+Introduzca el nombre del paciente.
+ 
+Apellidos 
+Introduzca los apellidos del paciente.
+ 
+Género 
+Introduzca el género del paciente: hombre o mujer
+ 
+Fecha de nacimiento 
+Introduzca la fecha de nacimiento del paciente. El campo de edad se calcula 
+automáticamente una vez introducida la fecha.
+ 
+Análisis realizado por 
+Introduzca el nombre del médico
+ 
+Observaciones 
+Campo abierto para poder introducir el texto que crea oportuno.
+ 
+ 
+Pulse este icono cuando quiera realizar una búsqueda de un paciente determina­
+do en toda la lista de pacientes. Al pulsar el icono aparece una pantalla auxiliar 
+para escoger el campo de búsqueda. 
+ 
+)
+Véase Ilustración 74 para más información.
+ 
+ 
+Pulse este icono cuando quiera anular las opciones de la búsqueda y visualizar 
+todos los pacientes.
+Ilustración 74 
+Pantalla de selección de las opciones de búsqueda.
+Rellene uno o más campos para introducir los criterios de la búsqueda. Para los 
+campos de fecha de nacimiento y edad tiene que introducir un rango de fechas y 
+edades respectivamente.
+ 
+ 
+Pulse este icono para realizar la búsqueda una vez ha introducido los criterios.
+ 
+ 
+Pulse este icono para borrar todos los criterios de búsqueda. Se activa cuando se 
+introduce una información en cualquier campo.

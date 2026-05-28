@@ -1,0 +1,127 @@
+69
+CAN BUS
+STATUS LED
+BICOLOUR
+FAN
+CPU
+PLMA00286
+DETECTOR COVER
+CN8
+CN7
+CN10
+CPU F. FAN1
+PLMA00285
+CIIM00046
+COVER SENSOR
+LED STATUS
+CAN BUS
+LED STATUS
+RS-232
+ISE
+USB
+F.FAN1
+COVER SENSOR
+CN2
+CN2
+1
+2
+3
+4
+5
+GREEN
+ORANGE
+GREEN
+ORANGE
+1
+2
+3
+USB
+USB
+1
+2
+3
+4
+5
+1
+6
+2
+5
+4
+CN20
+CN20
+1
+2
+CN1
+CON3
+CN1
+CON3
+1
+2
+3
+RS-232 -ISE MODULE
+RS-232 -ISE MODULE
+5
+9
+4
+8
+3
+7
+2
+6
+1
+CN21
+CN21
+1
+2
+CN3
+CN3
+1
+2
+RS-232
+RS-232
+5
+9
+4
+8
+3
+7
+2
+6
+1
+CN21
+CN21
+1
+2
+Ilustración 4.8 
+Conexiones de la placa CPU
+Conector
+Función
+Pin
+CN2
+Conexión del bus CAN 
+Pin 1: 24V
+Pin 2: GND
+Pin 3: NC
+Pin 4: CAN_H
+Pin 5: CAN_L
+CN1
+Led de estado (tricolor)
+Pin 1: Activación LED1
+Pin 2: GND
+Pin 3: Activación LED2
+CN7
+Canal serie módulo ISE
+Pin 2: Transmisión
+Pin 3: Recepción 
+Pin 5: GND
+CN8
+Canal serie analizador
+Pin 2: Transmisión
+Pin 3: Recepción 
+Pin 5: GND
+CN10
+Conexión USB
+Pin 1: 5 V
+Pin 2: USB+
+Pin 3: USB-
+Pin 4: GND

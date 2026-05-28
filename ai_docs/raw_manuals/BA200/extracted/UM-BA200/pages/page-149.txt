@@ -1,0 +1,55 @@
+149
+149
+ 
+ 
+Asigna esta repetición.
+ 
+ 
+Cierra la pantalla sin seleccionar ninguna repetición.
+ 
+ 
+Recupera los Factores de dilución sugeridos (los mismos programados en la 
+técnica)
+Los blancos, calibradores y controles presentan estas opciones desactivadas, ya que 
+siempre se repiten con las mismas condiciones iniciales.
+Cada fila de resultados muestra un icono informativo indicando el tipo de criterio 
+de repetición aplicado (tanto para repeticiones automáticas como manuales). Hay 
+un icono identificativo para el resultado original y otro para el resultado repetido.
+Campo
+Descripción de los iconos en los resultados
+Indica que se ha solicitado una repetición incrementada de una 
+muestra.
+Indica que se ha solicitado una repetición decrementada de una 
+muestra.
+Indica que se ha solicitado una repetición con las mismas 
+condiciones de una muestra.
+ 
+Indica que el resultado proviene de una muestra incrementada.
+Indica que el resultado proviene de una muestra decrementada.
+Indica que el resultado proviene de una muestra repetida.
+10.8. Históricos
+10.8.1. Resultados paciente
+Pantalla que permite visualizar los resultados históricos de los pacientes.
+En la parte superior de la pantalla hay varios campos que permiten introducir cri­
+terios de selección para restringir la visualización de los resultados. Puede escoger 
+más de un criterio de selección a la vez.
+ 
+ 
+Una vez realizada la selección, pulse el icono para ejecutar la búsqueda y visuali­
+zar los resultados en la parte inferior de la pantalla.
+ 
+Rango de fechas 
+Introduzca la fecha inicial y la fecha final para realizar la selección de los resulta­
+dos por un rango de fechas. 
+ 
+Paciente 
+Introduzca el código de paciente, el nombre o el apellido para realizar la selec­
+ción de los resultados por el paciente. Se mostrarán todos los resultados que 
+tenga un paciente que comiencen por el valor introducido.
+ 
+Código de barras 
+Introduzca el código de barras de una muestra para realizar la selección de los 
+resultados. 
+ 
+Urgente 
+Las opciones posibles son: Todo, urgente o normal.

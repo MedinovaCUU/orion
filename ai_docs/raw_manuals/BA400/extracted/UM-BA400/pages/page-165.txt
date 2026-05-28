@@ -1,0 +1,41 @@
+165
+165
+del LIS o las comunicaciones, existe esta herramienta auxiliar en el BA400 que 
+permite eliminar ordenes de LIS. La eliminación de ordenes de LIS de esta forma 
+se reporta al LIS enviado un mensaje de orden cancelada, de esta forma el LIS 
+puede registrar usuario y fecha en la que se realiza esta acción. 
+No se recomienda el uso intensivo de esta utilidad. Formalmente, siempre debe ser 
+el sistema LIS quien distribuye las ordenes entre los instrumentos del laboratorio 
+e informe de las cancelaciones a cada instrumento.
+Los motivos por los cuales el LIS decide cancelar ordenes en el BA400 pueden ser: 
+los tubos de muestra no llegan al instrumento, existen alarmas del instrumento que 
+impiden que realice el trabajo y se decide enviar las ordenes a otro instrumento.
+Esta acción únicamente está disponible cuando el analizador está en modo STAND-
+BY y las comunicaciones del LIS estén activadas y sin errores.
+ Borrado de la cola de mensajes 
+pendientes de subir a LIS
+ 
+Borrar la cola de mensajes pendientes de subir al sistema central LIS. Cuando 
+hay algún problema de comunicaciones con el LIS los mensajes se pueden acu­
+mular en la cola a la espera de restablecer las comunicaciones. En caso de que el 
+usuario ya no le interese el envío de estos mensajes se pueden borrar desde esta 
+opción.
+Esta acción únicamente está disponible cuando el analizador está en modo STAND-
+BY.
+ Configuración de las trazas de 
+mensajes
+ 
+Permite configurar el nivel de trazas para capturar información en el LOG sobre 
+el funcionamiento de las comunicaciones entre LIS y BA400. Esta opción sirve 
+para diagnosticar posibles problemas de comunicaciones durante la etapa de 
+integración del LIS con el BA400.
+Ilustración 114 
+Pantalla de las utilidades del LIS
+10.9.6. Informe para servicio técnico
+Cuando en el programa surja algún problema inesperado, existe esta herramienta 
+para ayudar al personal que desarrolla el programa a encontrar el posible problema 
+inesperado. 
+Esta herramienta genera un fichero con toda la información del programa.
+Cuando suceda que el programa se cierra inesperadamente o realiza una acción no 
+deseada, ejecute esta herramienta.
+NOTE

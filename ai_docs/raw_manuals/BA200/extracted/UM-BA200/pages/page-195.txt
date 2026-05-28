@@ -1,0 +1,66 @@
+195
+195
+13.3.2.2. Cambio del kit de reactivos
+Abra la puerta delantera y en la izquierda se encuentra el kit de reactivos para el 
+módulo ISE. Retírelo de su alojamiento y quite el conector del paquete. Presione 
+el botón amarillo y separe el kit del conector.
+Deshágase de los residuos de acuerdo con la legislación vigente para la eliminación 
+de residuos biológicos peligrosos de su gobierno nacional o local. No perfore ni 
+abra el kit de reactivos. 
+Asegúrese que el nuevo kit procede de una zona con temperatura ambiente similar 
+a la del analizador.
+Desembale el kit y retire los tres tapones rojos de protección. No presione el lateral 
+del kit una vez retirados los tapones, ya que las soluciones que contiene podrían 
+rebosar. Tenga a mano papel para secar la superficie donde se acopla el conector 
+en caso que rebose algo de líquido. 
+Posicione el conector orientado correctamente y presione con una ligera fuerza 
+hasta oír un clic. Escriba en el lateral del kit la fecha de la instalación.
+Coloque el kit en su alojamiento.
+Ejecute las acciones, en número y orden indicado, con el programa de usuario, en 
+el apartado utilidades ISE, cambio del kit de reactivos.
+ 
+)
+Véase capítulo 10.9.4
+Paso
+Acción 
+Repeti­
+ciones 
+Descripción
+1
+Activar 
+kit de 
+reactivos
+1
+Si no se activa el icono de ejecución al 
+seleccionar esta opción, verifique que se trata 
+de un kit nuevo. Si el kit ya se ha activado con 
+anterioridad esta opción no estará disponible, 
+sin embargo podrá efectuar una lectura con la 
+opción Leer Kit de reactivos. Si este es el caso, 
+salte a la siguiente instrucción. Si se trata de 
+un nuevo kit, compruebe que el conector está 
+colocado correctamente, sepárelo de nuevo y 
+vuélvalo a conectar. 
+2
+Purgar B
+3
+Saque la tapa inferior del agitador, le permitirá 
+observar la copa de dispensación.
+ 
+)
+Véase Ilustración 117
+Observe la copa y verifique que el vaciado es 
+efectivo, es decir, que cada vez que las bombas 
+del módulo dispensan líquido en la copa, esta 
+se vacía antes de la siguiente dispensación. Si las 
+bombas no dispensan líquido, vuelva a ejecutar 
+la acción anterior. Si después de repetir 4 veces 
+no observa dispensación de líquido desconecte 
+y vuelva a conectar el adaptador del kit y repita 
+la acción. 
+3
+Purgar A
+3
+Proceda de igual manera que en el paso anterior
+BIOHAZARD
+BIOHAZARD

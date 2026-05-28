@@ -1,0 +1,27 @@
+54
+Manual de servicio
+3
+Ilustración 4.18.  Desmontaje tornillo sujeción correa X
+4.10.  MO11516 - Motor Y / ME11513 - Correa Y
+Desmontaje motor:
+1. Extraer las carcasas del instrumento y del brazo
+2. Desenchufar el cable del motor Y
+3. Desatornillar los 3 tornillos (5) y (6) que sujetan al motor
+Desmontaje correa:
+1. Extraer las carcasas del instrumento y del brazo
+2. Aflojar los 3 tornillos (5) y (6) que sujetan al motor
+3. Descender el carro Z para poder acceder a los alojamientos de los tornillos (7) que sujetan la 
+abrazadera de la correa
+4. Extraer los tornillos (7) que sujeta la abrazadera de la correa
+5. Quitar la correa
+Montaje motor:
+1. Colocar el nuevo motor en su ubicación
+2. Colocar los 4 tornillos (5) y (6) , las tuercas y arandelas sin apretar
+3. Colocar la correa en la polea del motor
+4. Ajustar la tensión de la correa a 60 N, estirando el motor hacía fuera. Empezar apretando los tor­
+nillos (6) y luego los tornillos (5) para fijar fuertemente el motor.
+5. Conectar el cable al motor Y
+6. Realizar los ajustes del brazo con el programa de servicio y los test de funcionamiento
+Montaje correa:
+1. Colocar la nueva correa en su ubicación, entre el motor y la contrapolea
+2. Descender el carro Z para poder acceder a los alojamientos de los tornillos (7)

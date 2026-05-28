@@ -1,0 +1,36 @@
+6.5.2.2. Metrology
+This option is used to check the analyser photometry status. See Figure 6.15.
+The following checks can be made:
+• 
+Repeatabilty of the readings.
+• 
+Stabiliity of the readings.
+• 
+Absorbance reading.
+Figure 6.17 
+Photometric verification screen.
+To make a verification the rotor must be filled with distilled water. This can be performed by the analyser or the 
+user can do it manually. 
+1. Select the rotor filling mode and the well where the readings will be made
+2. Press the icon for raising or lowering the wash station in order to remove or insert a rotor.
+3. If you want to measure the absorbance of a specific reagent or fluid, select the manuall filling option. Dispense 
+the fluid to be measured into a well. In the screen, select the well where the fluid was dispensed.
+4. Select the type of measurement to be made.
+5. Press the adjustment button to start the measuring process.
+Repeatability
+This verification takes measurements in all the wavelengths for 3 minutes. It is used to verify the repeatability of 
+the photometric system readings 
+After taking the measurements it shows the following parameters for each wavelength:
+• 
+Mean
+• 
+Standard deviation of all measurements
+• 
+Coefficient of variation (CV)
+• 
+Maximim absorbance
+• 
+Minimum absorbance
+)
+) See chapter AIII ranges accepted for parameters.
+79

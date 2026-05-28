@@ -1,0 +1,9 @@
+153
+153
+Ilustración 101 
+Pantalla edición de resultados de control de calidad
+ 
+Ilustración 102 
+Pantalla con la gráfica de Levy-Jennings
+Ilustración 103 
+Pantalla con la gráfica de Youden

@@ -1,0 +1,40 @@
+Ilustración 6.12 
+Punto de ajuste de Z ref.
+La tabla de acontinuación indica cada brazo a que pocillo se tiene que ajustar:
+Elemento
+Pocillo del rotor a 
+dispensar
+Óptica
+1
+Brazo muestra
+26
+Brazo posición muestra 
+diluida
+23
+Brazo reactivo 1
+56
+Brazo reactivo 2
+43
+Agitador 1
+77
+Agitador 2
+111
+Inicio estación lavado
+8
+Final estación lavado
+118
+6.5.2. Fotometría
+Desde este menú se accede a verificar las corrientes de los leds y verificaciones fotométricas. Las corrientes se ajustan 
+cada vez que se realiza una línea de base
+6.5.2.1. Línea base y corriente de oscuridad
+Desde esta pantalla se realiza el ajuste de las corrientes para cada led. Ver Ilustración 6.13.
+Para realizar este ajuste es necesario tener llenado un pocillo con agua destilada. El llenado del pocillo lo puede 
+realizar automáticamente el analizador o manualmente el usuario.
+1. Para ello seleccionar la opción deseada (1) y escoja el número de pocillo para el llenado.
+2. Pulse el icono para elevar o descender la estación de lavado y así poder retirar o colocar un rotor.
+3. Pulse el botón de ajuste para iniciar el proceso de ajuste de las corrientes para cada led. Éste es un proceso auto­
+mático que va modificando la corriente del led y leyendo con los dos fotodiodos, el principal y el de referencia. 
+El objetivo es conseguir que el número de cuentas del fotodiodo que tenga más luz esté cerca de 900 000 cuentas 
+sin que el otro fotodiodo se sature.
+Manual de servicio
+116

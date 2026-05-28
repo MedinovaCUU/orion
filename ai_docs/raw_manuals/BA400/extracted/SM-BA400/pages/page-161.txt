@@ -1,0 +1,13 @@
+3
+5
+4
+Ilustración 8.20 
+Desmontaje conjunto interruptores
+6
+7
+Ilustración 8.21 
+Conexiones del cableado del interruptor
+9. Coloque la fuente de alimentación (10) véase Ilustración 8.22
+10. Conecte el cable (9) que proviene del interruptor a la entrada de la fuente. Este cable lleva los 220V
+11. Conecte los cables de salida (8) a la fuente (24 V), estos cables ya vienen preinstalados en el analizador.
+161

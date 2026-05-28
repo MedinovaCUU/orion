@@ -1,0 +1,20 @@
+39
+1
+2
+3
+Figure 3.19 
+1 – Connectors support cover
+2 – Com1 connector (db9 female or usb)
+3 – Com2 connector or auxiliary (db9 male)
+4 – Ventilation grill
+Reference Figure 3.19
+3.2.6.2.  Switch cover
+The metallic support (1) supports the connector (2) for the network cable, the instrument switch (3) and the fuse 
+holder (4). 
+1
+2
+3
+4
+6
+5
+Figure 3.20

@@ -1,0 +1,40 @@
+Manual de servicio
+12
+Símbolo
+Descripción 
+Etiqueta de embalaje. No se puede mojar
+Etiqueta de embalaje. No apilar más de 200 Kg
+Etiqueta de embalaje. Equipo pesado
+Precauciones de seguridad
+Símbolo
+Descripción 
+Prevención de riesgo eléctrico
+Para reducir el riesgo de descargas eléctricas. No quitar ninguna de las carcasas 
+del analizador. No hay ninguna intervención del usuario que requiera acceder 
+a las piezas del interior del equipo. Cuando sea preciso diríjase a su servicio de 
+asistencia técnica.
+BIOHAZARD
+Prevención de riesgo biológico por manipulación de muestras
+La manipulación inapropiada de las muestras, controles y calibradores puede 
+causar una infección biológica. No toque las muestras, mezclas ni residuos con 
+las manos. Use guantes y vestimenta de protección cuando sea necesario.
+En caso que las muestras entren en contacto con la piel, lave inmediatamente 
+con abundante agua y consulte con un médico. Se recomienda que siga las 
+buenas prácticas de laboratorio.
+WARNING
+Prevención por manipulación de reactivos
+Manipule con cuidado los reactivos y soluciones de lavado, hay sustancias que 
+pueden ser corrosivas.
+En caso que los reactivos o solución de lavado entren en contacto con la 
+piel, lave inmediatamente con abundante agua y si aparece alguna reacción 
+consulte con un médico. 
+Consulte la hoja de adaptación del reactivo o solución de lavado para seguir 
+las instrucciones de seguridad.
+Se recomienda que siga las buenas prácticas de laboratorio.
+BIOHAZARD
+Prevención de riesgo biológico por manipulación de residuos líquidos
+Manipule con cuidado el contenedor de residuos de alta contaminación. 
+Utilice guantes y vestimenta de protección al manipular el contenedor.
+Deshágase de los residuos de acuerdo con la legislación de su gobierno 
+nacional o local para la eliminación de residuos biológicos peligrosos y 
+consultar al fabricante o distribuidor de los reactivos para más detalles.

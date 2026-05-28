@@ -1,0 +1,33 @@
+Ilustración 6.15 
+Pantalla verificación fotométrica.
+Para realizar cualquier verificación es necesario llenar el rotor con agua destilada. Este proceso lo puede realizar el 
+analizador o el usuario manualmente. 
+1. Seleccione el modo de llenado del rotor y el pocillo donde realizará las lecturas
+2. Pulse el icono para elevar o descender la estación de lavado y así poder retirar o colocar un rotor.
+3. Si quiere realizar la medida de absorbancia de un reactivo o líquido en especial, seleccione la opción de llenado 
+manual. Dispense en un pocillo el líquido a medir. Seleccione en la pantalla el pocillo donde ha dispensado el 
+líquido.
+4. Seleccione el tipo de medida que quiera realizar.
+5. Pulse el botón de ajuste para iniciar el proceso de medidas.
+Repetibilidad
+Esta verificación realiza medidas durante 3 minutos en todas las longitudes de onda. Sirve para verificar la repetibi­
+lidad de las lecturas del sistema fotométrico 
+Al finalizar las medidas muestra para cada longitud de onda los siguientes parámetros:
+• 
+Promedio
+• 
+Desviación estándar de todas las medidas
+• 
+Coeficiente de variación (CV).
+• 
+Absorbancia máxima
+• 
+Absorbancia mínima
+ 
+) Véase capítulo AV los márgenes aceptables para los parámetros.
+Estabilidad
+Esta verificación realiza medidas durante 30 minutos en todas las longitudes de onda. Sirve para verificar la esta­
+bilidad de las lecturas fotométricas 
+Al finalizar las medidas muestra para cada longitud de onda los siguientes parámetros:
+Manual de servicio
+94

@@ -1,0 +1,39 @@
+Manual usuario 
+ 
+ 
+ 
+Manual usuario 
+ 
+ 
+ 
+80
+80
+Biosystems
+Biosystems
+ 
+ 
+Pulse este botón para pasar en modo edición. Entrará en una pantalla que le 
+permitirá modificar el formato del cabecero de página, del pie de página. Tam­
+bién podrá introducir textos, elementos gráficos, iconos. 
+10.2.4. Ordenación de las técnicas
+Permite ordenar las técnicas que luego aparecerán en el mismo orden en el informe 
+de paciente.
+Desde esta pantalla permite escoger el orden de las técnicas, técnicas calculadas y 
+técnicas externas. Al realizar el informe de paciente el orden de las técnicas aparece 
+según el escogido.
+Ilustración 49 
+Pantalla para la ordenación de las técnicas
+ 
+ 
+ 
+ 
+ 
+Seleccione una técnica o grupo de técnicas y pulse uno de los botones hasta 
+situar la técnica en la posición deseada.
+ 
+ 
+Pulse este botón para restablecer las técnicas en orden alfabético.
+10.2.5. Código de barras
+Pantalla desde la cuál se configura las opciones del lector de códigos de barra. 
+En la Ilustración 50 muestra la pantalla con las diferentes opciones que permite 
+configurar.

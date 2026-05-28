@@ -1,0 +1,25 @@
+71
+1. Colocar en la posición 2 de la bandeja un rack de diámetro 15 con un tubo en la posición 1 del rack.
+2. Introducir un valor en la casilla de relación Z pediátrico-tubo. Este valor indica los pasos de separación que 
+hay entre un pocillo pediátrico y un tubo primario.
+3. Pulsar Iniciar. 
+4. Comprobar que la punta no ha colisionado con el fondo del tubo. 
+5. Desplazar la punta con movimientos Z (pantalla o teclado) hasta que la punta toque el fondo del pocillo.
+6. Una vez finalizados todos los ajustes se deben memorizar en el instrumento, para ello pulsar Guardar.
+5.2.3.4. Ajuste del eje Z para los tubos de heces
+Cuando quiera utilizar los tubos para heces, es necesario realizar el ajuste siguiente, una vez cambiado el 
+modelo de punta:
+1. Colocar en la posición 2 de la bandeja un rack de diámetro 15 con un tubo para heces en la posición 1 
+del rack.
+2. Introducir un valor en la casilla de relación Z pediátrico-tubo de heces. Este valor indica los pasos de 
+separación que hay entre un pocillo pediátrico y el tubo. Introduzca un valor para que la punta toque el 
+líquido interior del tubo de heces.
+Esta relación de Z Pediátrico a Z de tubo de heces es negativo. A diferencia de la relación Z Pediátrico con 
+tubo 15mm/13mm que es positivo
+3. Pulsar Guardar.
+NOTA: Si el instrumento viene de un Firmware anterior y ha sido actualizado por el servicio técnico a la versión 
+que incorpora el tubosde heces (v6.16 o superior), la relación Z pediátrico-tubo heces será 0. Esto significa que 
+en el posicionamiento para hacer el ajuste la punta bajará hasta la posición de Z para pocillo pediátrico. Se 
+recomienda no usar en ese primer caso un tubo de heces ya que la punta puede bajar demasiado y colisionar. 
+Utilizando un tubo o nada en esa posición, realizar un pre-ajuste dejando el offset a -500. 
+Proceder luego a realizar el ajuste de la manera indicada.

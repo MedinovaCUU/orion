@@ -1,0 +1,20 @@
+Manual de servicio
+124
+6.2.4. 
+ME11514 - Z belt
+Z belt removal:
+1. Remove the tip assembly. See chapter 6.2.5
+2. Remove the 2 screws (1)
+3. Loosen the 4 screws (3) that hold the Z motor
+4. Detach the plate (4) from the belt holder, moving the belt down
+5. Remove the screw (2) to release the part that holds the belt
+Encoder spring mounting
+1. Put on the new belt
+2. Put the piece that holds the belt and its screw (2)
+3. Move the belt to align the belt holder with the plate (4), install and tighten the 2 screws (1).
+4. Assemble the tip assembly. See chapter 6.2.5
+5. Tighten the belt to 30 N, stretching the motor down. Tighten the screws (3)
+6. Verify that the tip assembly rises by itself
+7. Verify the positioning with the service program
+1
+Figure 6.19

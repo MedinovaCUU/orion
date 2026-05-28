@@ -1,0 +1,32 @@
+• 
+Estado de cada peltier
+• 
+Diagnóstico de cada peltier
+• 
+Temperatura del sensor y temperatura ambiente
+• 
+Modo de control de las peltiers
+• 
+La tensión de alimentación de las peltiers
+• 
+La temperatura y voltaje de los drivers
+Ilustración 6.31 
+Pantalla de información del estado de la nevera
+6.7. Registro y mantenimiento
+6.7.1. Informes histórico
+Desde esta pantalla permite consultar todas las acciones realizadas con el programa de servicio.
+Cualquier acción realizada queda memorizada en una base de datos. Para consultar las acciones proceda a seleccionar 
+los campos de los filtros y pulse el botón de buscar.
+Filtro
+Descripción
+Número de serie 
+analizador
+Introduzca el número de serie del analizador que 
+quiera consultar las acciones
+Fecha
+Introduzca el rango de fechas por las que quiera filtrar 
+las acciones
+Tareas
+Seleccione una de las tareas posibles: Todas, Ajustes, 
+test o utilidades
+133

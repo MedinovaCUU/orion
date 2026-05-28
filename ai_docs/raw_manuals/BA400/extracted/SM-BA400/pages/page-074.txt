@@ -1,0 +1,65 @@
+Manual de servicio
+74
+4.5. Placa detección punta - CIIM00049
+Placa situada en la parte superior de los brazos de muestra y reactivos. Estas placas controlan a través de un micro­
+controlador (U10) los siguientes elementos:
+• 
+Sistema de detección del líquido
+• 
+Detector de colisión de la punta
+• 
+La resistencia calefactora y el sensor de temperatura solamente en las puntas de reactivo.
+• 
+Protecciones contra ESD de la punta.
+DR1
+PROBE
+TEMPERATURE
+SENSOR
+PROBE
+RESISTANCE
+PROBE
+DETECTOR
+CIIM00049
+PLMA00330
+PLMA00329
+PLMA00328
+DM1
+TP
+HP
+DN
+TP
+HP
+DN
+CAN BUS
++tº
++tº
+1
+2
+CN2
+CON2
+CN2
+CON2
+1
+2
+CN4
+CON3
+CN4
+CON3
+1
+2
+3
+1
+2
+CN1
+CN1
+1
+2
+3
+4
+5
+CN3
+CN3
+1
+2
+Ilustración 4.12 
+Conexiones de la placa punta

@@ -1,0 +1,39 @@
+77
+5.2.2. 
+Adjustment of the rotor thermostation system
+This screen makes it possible to adjust the thermostation system of the rotor in such a way that the reactions 
+temperature is 37ºC. To make this adjustment, place a well rotor in position and ensure that the analyzer has 
+been initialised. The rotor can be automatically filled with distilled water by pressing the corresponding button. 
+Once filled, the technician must wait a few minutes for the rotor to be thermostated. The temperature in the 
+rotor wells must be measured with a temperature calibrated at 37ºC through the dispensing hole of the rotor 
+cover. A button makes it possible to turn the rotor in increases of 15 wells to change the well on which the 
+measurement is being taken. The program shows the control set point temperature, which is the parameter that 
+must be adjusted for the temperature of the rotor to be correct. This parameter must be other than 37ºC. The 
+technician must measure the temperature of the water with the calibrated thermometer in the wells and enter 
+the temperature on the screen. The analyzer automatically modifies the set point temperature in accord with 
+the temperature measured with the thermometer for the rotor reactions temperature to be 37ºC. The technician 
+can modify this set point temperature proposed by the program. On pressing Adjust, the analyzer thermostates 
+the rotor with the new set point. Each time the set point temperature is modified, wait 5 minutes before per­
+forming new dispensing operations for the rotor temperature to become stabilised. The technician must repeat 
+this process until the rotor temperature is as near as possible to 37ºC. Pressing the Store button, the analyzer 
+stores the current value of the adjusted set point temperature. Pressing the Cancel button keeps the last stored 
+value and the current value is not stored. Pressing the Restore button restores the initial screen input value. 
+5.2.3. 
+Adjustment of the positioning of the operating arm
+This screen makes it possible to adjust the horizontal positioning (X, Y) of the arm. The arm housing must be 
+removed to see the position of the needle. Before making the adjustments, visually check the verticality of the 
+needle. If necessary, carefully straighten it up ensuring you do not damage it. On the screen, select the point 
+at which you wish to adjust the horizontal positioning. On pressing the Adjust button the arm initialises and 
+positions itself over said point. The technician has buttons to move the arm step by step over the horizontal 
+plain (X, Y) and vertically (Z). The arm can also be moved introducing a certain number of absolute movement 
+steps. These absolute movements of the arm must be made with the needle at its highest position so as not to 
+damage it (coordinate 0). The technician must lower the needle to the adjustment point and adjust its horizontal 
+position. When the position is satisfactory, save the current coordinates (X, Y) by pressing the Store button. 
+Pressing the Cancel button keeps the last adjustment values stored. Pressing the Restore button restores the 
+initial screen input values. At all times, the screen shows the current coordinates of the arm for the selected 
+point, the last coordinates stored and the initial screen input coordinates, as additional information for the tech­
+nician. The technician may repeat the procedure to adjust the positioning of the arm at the different possible 
+adjustment points. These points are as follows:
+1. Origin. Vertex of the self-centering plate of the needle.
+2. Rack tray Screw that fastens the washing station cover. 
+3. Washing station. Centre of the stainless steel font of the washing station.

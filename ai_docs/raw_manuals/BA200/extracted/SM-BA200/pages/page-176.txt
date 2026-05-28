@@ -1,0 +1,30 @@
+2
+1
+1
+2
+Ilustración 8.64 
+Posicionamiento y colocación de las peltiers
+8.13.9. AC17293 - Centrador rotor de muestras y reactivos
+Herramientas: Llaves allen del 2.5, 3
+Desmontaje:
+1. Desmonte el motor y la correa según las instrucciones del capítulo 8.13.10.
+2. Desmonte el detector de inicio del motor.
+3. Quite todas las bridas que sujetan el cableado a la base.
+4. Desconecte todo el cableado que va a la placa electrónica.
+5. Desmonte los 4 tornillos (22) que sujetan el centrador con el cuerpo de la nevera o del rotor de muestras. 
+Véase Ilustración 8.65
+6. Desmonte las 2 piezas de aislamiento (23) y desmonte los 2 tornillos (24) que sujetan la escuadra que soporta 
+el lector de códigos de barra
+Montaje:
+1. Cambie el conjunto centrador rotor.
+2. Coloque el soporte lector del código de barras con los 2 tornillos (24).
+3. Coloque los 2 aislantes (23), el cuerpo de la nevera y sujételo con los 4 tornillos (22). Encare la ventana óptica 
+del vaso hacía el lector del código de barras.
+4. Conecte todo el cableado a la placa electrónica. En el capítulo 4.8 indica como conectar el cableado a los 
+conectores.
+5. Monte el detector de inicio.
+6. Monte la correa y el motor según las instrucciones del capítulo 8.13.10
+7. Verifique con el programa de servicio el funcionamiento del conjunto (motor, nevera, detector de tapa, sensor 
+de temperatura, lector de código de barras)
+Manual de servicio
+176

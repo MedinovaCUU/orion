@@ -1,0 +1,73 @@
+137
+137
+Código de 
+colores
+Nombre 
+Descripción de la identificación de las 
+muestras
+Vacío 
+insuficiente /
+bloqueado 
+por coágulo 
+o colisión de 
+punta
+Muestra que el analizador ha detectado 
+volumen insuficiente o detección de 
+coágulo o colisión. El programa bloqueará 
+el resto de técnicas pendientes de realizar 
+de dicho paciente. Para desbloquear la 
+muestras debidas a volúmen insuficiente, 
+el usuario debe rellenar la muestra y pulsar 
+el botó rellenar 
+ en la pantalla de 
+posición.
+Para desbloquear las muestras debidas 
+a detección de coágulo o por colisión, 
+el usuario debe verificar el estado de las 
+muestras y pulsar el botón de desbloqueo 
+ en la pantalla de posición.
+Pendiente o 
+Bloqueada
+Muestra que está pendiente de ejecutar o 
+bloqueada manualmente
+En proceso
+Muestra en proceso
+Acabado
+Muestra finalizada
+Error lectura 
+cód.
+Error en la lectura del código de barras
+Hay un código de colores para identificar el estado de las botellas de teactivo.
+Código de 
+colores
+Nombre
+Descripción de la identificación de las 
+botellas
+Reactivos
+Botella de reactivos usada en la sesión de 
+trabajo
+Soluciones 
+adicionales
+Botellas de solución de lavado, agua 
+purificada, solución salina, etc
+Vacío 
+insuficiente / 
+Bloqueado por 
+colisión
+Botella de reactivo que el analizador ha 
+detectado volumen insuficiente o colisión 
+para realizar la preparación. El programa 
+bloqueará todas las preparaciones siguientes 
+que utilizan dicho reactivo. Para desbloquear 
+las botellas debido a volumen insuficiente el 
+usuario debe insertar una botella nueva y leer 
+el código de barras.
+Para desbloquear las botellas debido a una 
+colisión, el usuario debe revisar las posiciones 
+de la botella con colisión, y pulsar el botón 
+de desbloqueo 
+para volver a utilizar esta 
+botella.
+Poco volumen
+Aviso de que en breve se terminará el 
+volumen de la botella.

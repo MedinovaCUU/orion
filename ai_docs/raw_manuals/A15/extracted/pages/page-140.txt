@@ -1,0 +1,47 @@
+141
+7. Mantenimiento preventivo
+En este capítulo, en primer lugar se describen paso a paso las diferentes ope ra ciones necesarias tanto 
+para el mantenimiento preventivo como para la repara ción del analizador. A continuación, se dan unas 
+recomendaciones básicas para el manteni miento preventivo del instrumento. Finalmente, se exponen una 
+serie de indicaciones para su cuidado y limpieza.
+7.1. Acciones de mantenimiento y periodicidad
+Acciones a realizar por el operario del instrumento.
+Acciones al inicio del día
+1
+Rellene la botella de líquido de sistema
+2
+Inicialice el analizador. Realice el warm-up con el programa de usuario
+3
+Realice 2 ciclos de acondicionamiento (sólo cuando esté el analizador varios días 
+apagado)
+4
+Verifique la temperatura del rotor de reacciones
+5
+Verifique el volumen de los reactivos
+6
+Coloque el rotor del día anterior o un rotor nuevo.
+Acciones al final del día
+1
+Apague el analizador realizando el Shut-down con el programa
+2
+Vacíe la botella de residuos
+3
+Retire los calibradores, controles y muestras del rotor de muestras
+4
+Retire el rotor de reacciones del instrumento. Tírelo se estan usadas todos los pocillos 
+del rotor. 
+Acciones a realizar cada semestre
+1
+Limpie la superficie de trabajo
+2
+Limpie externamente la punta de pipeteo con alcohol
+3
+Limpie los interiores de los contenedores de agua destilada y residuos de baja 
+contaminación.
+Operaciones para realizar el servicio técnico.
+Mantenimiento anual
+1
+Limpie de polvo las placas electrónicas y los ventiladores
+2
+Revise las conexiones fluídicas de la bomba a la punta y las conexiones de la estación 
+de lavado, Verifique la estanqueidad de los rácores y que ninguna pierda líquido.

@@ -1,0 +1,39 @@
+Manual usuario 
+ 
+ 
+ 
+Manual usuario 
+ 
+ 
+ 
+212
+212
+Biosystems
+Biosystems
+Primero se dispensa el reactivo A y la muestra en el ciclo 1, se agita y empieza la 
+reacción. En el tiempo L1 el analizador empieza a tomar lecturas hasta el tiempo L2. 
+El cálculo de la absorbancia es el siguiente:
+A=[
+ABS
+min ]
+principal
+ 
+(7)
+
+
+ 
+
+
+
+
+ 
+!
+!
+Ilustración 128 
+ Representación del método de cálculo cinética
+15.2.7. Cinética bireactiva
+En este modo de funcionamiento es el analizador que prepara el reactivo de trabajo 
+en cada preparación.
+Primero se dispensa el reactivo A y la muestra en el ciclo 1, en el siguiente ciclo se 
+agita, en el ciclo 18 se dispensa el reactivo B, se agita y empieza la reacción. En el 
+tiempo L1 el analizador empieza a tomar lecturas hasta el tiempo L2.

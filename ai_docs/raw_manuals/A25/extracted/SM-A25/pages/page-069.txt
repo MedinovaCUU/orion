@@ -1,0 +1,36 @@
+69
+1 2 3
+LAMP
+Gris/Grey
+Gris/Grey
+Esquema de Sistema Rotor
+Rotor System Scheme
+2/2
+CPU BOARD
+CIIM00006
+DC/DC BOARD
+CIIM00007
+PHOTODIODE BOARD
+CIIM00009
+1 2
+Rojo/Red
+Negro/Black
+PLMA00008
+16 pins
+16 pins
+J35
+J3
+J28
+J2
+ROTOR PELTIER CELL
+PLMA00023
+PLMA00015
+PLMA00009
+ROTOR CHASIS
+A25 CHASIS
+(T)
+(T)
+Instrument connection diagram with serial number prior to:
+A25: 831015800
+Y25: 831020152
+Figure 4.9

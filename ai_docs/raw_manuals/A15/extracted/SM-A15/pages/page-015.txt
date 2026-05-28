@@ -1,0 +1,32 @@
+Manual de servicio
+16
+16
+2.1. Descripcion General Del Analizador
+El analizador A15 está constituido por tres elementos básicos: el brazo manipulador, el sistema dosificador y el rotor 
+de reacciones y lectura. El sistema electrónico del instrumento controla estos elementos y se comunica con el orde-
+nador externo que contiene el programa de aplicación. A través de este programa el usuario puede controlar todas 
+las operaciones del analizador. 
+2.1.1. Brazo manipulador
+Es un mecanismo cartesiano XYZ de 3 ejes. Los ejes X e Y desplazan la punta dosi fica dora sobre el plano del 
+analizador y el eje Z la desplaza verticalmente. Está accionado por tres motores paso a paso. En cada ciclo de pre-
+paración de 24 segundos, el brazo manipulador realiza las siguientes acciones: primero aspira el reactivo del frasco 
+correspondiente. A continuación, la punta se lava externamente en la estación de lavado y aspira la muestra del 
+tubo correspondiente. Se vuelve a lavar externamente y dispensa la muestra y el reactivo en el rotor de reacciones. 
+Finalmente, se lava externamente e internamente de forma exhaustiva para proceder con la siguiente preparación. El 
+brazo dispone de un sistema de control del movimiento vertical para detectar si la punta ha colisionado al descender. 
+En caso de que suceda una colisión, como por ejemplo si se ha dejado un frasco de reactivos con el tapón puesto, el 
+brazo se reinicia automáticamente, verifica la rectitud de la punta y prosigue con su trabajo emitiendo el correspon-
+diente aviso al usuario. Un sistema de retención del eje vertical evita que la punta pueda caer en caso de fallo en el 
+suministro eléctrico, evitando que el usuario pueda dañarse con la punta o doblarla al intentar mover manualmente 
+el brazo. El brazo manipulador sólo realiza las preparaciones si la tapa general del analizador está cerrada. Si se 
+levanta la tapa mientras éste está trabajando, automáti camente el brazo aborta la tarea en curso y se sitúa en su 
+posición de aparcamiento para evitar cualquier lesión al usuario.
+2.1.2. Sistema dosificador
+Este sistema consiste en una punta termostatizada, soportada y desplazada por el brazo manipulador, conec ta da 
+a una bomba dosificadora. La punta es desmontable para facilitar su limpieza o substitución. El analizador dispone 
+de detección de nivel capacitiva para controlar el nivel de los frascos y tubos y evitar que la punta penetre excesiva-
+mente en los líquidos correspondientes, minimizando así la contaminación. Un sistema automático de ajuste avisa 
+al usuario si la punta no está montada o bien si está excesivamente doblada. La punta dispone de un sofisticado 
+sistema de termos tatización con elementos resistivos con control PID, capaz de termostatizar las preparaciones a 
+aproximadamente 37° en menos de 15 segundos. La dosificación se realiza mediante una bomba de pistón cerámico 
+de bajo mantenimiento, accionada por un motor paso a paso. Puede dispensar entre 3 y 1250 uL. El exterior de la

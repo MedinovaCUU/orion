@@ -1,0 +1,25 @@
+LIST OF SPARES PARTS
+Code
+Representation 
+Description
+AC16579
+Pre dose Manifold 
+AC16580
+Water inlet valve
+AC16581
+Dispensing pumps
+AC16582
+Suction pumps
+AC16583
+External water inlet adapter
+AC16584
+Water tank inlet adapter
+AC16585
+Wash station pump stop + O-ring 
+AC16586
+Wash station pump motor
+AC16587
+Top chamber
+AC16588
+Piston support + pistons
+117

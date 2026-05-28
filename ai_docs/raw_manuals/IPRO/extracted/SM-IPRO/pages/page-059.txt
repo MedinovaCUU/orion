@@ -1,0 +1,18 @@
+59
+19
+20
+Ilustración 4.26. 
+4.12.  ME11514 - Correa Z
+Desmontaje:
+1. Quitar los 2 tornillos (1)
+2. Afloje los 4 tornillos (3) que sujetan el motor Z
+3. Separe la placa (4) de la sujeción de la correa, moviendo la correa hacía abajo
+4. Saque el tornillo (2) para liberar la pieza que sujeta la correa
+Montaje:
+1. Colocar la nueva correa
+2. Ponga la pieza que sujeta la correa y su tornillo (2). Ver Ilustración 4.28
+3. Mueva la correa para alinear la sujeción de la correa con la placa (4), coloque y apriete los 2 tor­
+nillos (1). 
+4. Tensar la correa a 30 N, estirando el motor hacía abajo. Apretar los tornillos (3)
+5. Verificar que el conjunto punta sube solo
+6. Verifique con el programa de servicio el posicionamiento

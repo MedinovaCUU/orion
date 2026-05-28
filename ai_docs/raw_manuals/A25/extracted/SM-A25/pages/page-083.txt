@@ -1,0 +1,20 @@
+83
+of racks and samples: 
+• Paediatric Rack: place 4 paediatric glasses in positions 5, 6, 17 and 18 with 150 uL of liquid system.
+• Rack of 13/15mm sample: place 4 tubes in positions 5, 6, 17 and 18 with 500 uL of liquid system.
+• Rack of reagents: place 2 bottles of 20mL in positions 5 and 6 with 2mL of liquid system.
+• Fridge: Place 2 bottles of 20mL in the position 5 and 6 of the center with 2mL of liquid system.
+It is possible to see a graphic with the position of the tubes and racks in the screen photo. When pressing the 
+Adjust button, the arm takes some sensitivity readings automatically until detecting the water in each one of 
+the tubes. Once this operation is finished, the arm is parked in its original position and it shows the sensitivity 
+results of each one of the tubes. Once these readings are finished, the program calculates the average of all 
+sensitivities; the result is the average sensitivity. The technician should notice that the sensitivity values of each 
+tube have to be similar; otherwise, he should repeat the whole measurement.
+Repeat this adjustment per each rack type. 
+The sensitivity value can also be introduced manually for each rack in the corresponding box.
+Pressing the button Save, the analyser saves the new adjusted sensitivity value. Pressing the button Close, 
+the old value stays. Pressing the button Restore, the initial value of entry to the screen is restored. A manual 
+sensitivity value can be inserted in the corresponding box.
+5.3. 
+Tests
+Various tests make it possible to check that the different components of the analyzer function correctly.

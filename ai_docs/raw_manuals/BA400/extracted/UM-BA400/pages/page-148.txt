@@ -1,0 +1,49 @@
+Manual usuario 
+ 
+ 
+ 
+Manual usuario 
+ 
+ 
+ 
+148
+148
+Biosystems
+Biosystems
+Ilustración 98 
+Pantalla históricos de blancos y calibradores
+En la parte superior de la pantalla hay varios campos que permiten introducir cri­
+terios de selección para restringir la visualización de los resultados. Puede escoger 
+más de un criterio de selección a la vez.
+ 
+ 
+Una vez realizada la selección, pulse el icono para ejecutar la búsqueda y visuali­
+zar los resultados en la parte inferior de la pantalla.
+ 
+Rango de fechas 
+Introduzca la fecha inicial y la fecha final para realizar la selección de los resulta­
+dos por un rango de fechas. 
+ 
+Nombre de la técnica 
+Introduzca el nombre de la técnica para realizar la selección.
+ 
+ 
+Los resultados se mostrarán en dos tablas ordenados por la fecha, la primera ta­
+bla mostrará los resultados de los blancos, la segunda tabla mostrará los resulta­
+dos de las calibraciones. Si pulsa en el cabecero de fecha o de técnica de la tabla 
+entonces se reordenarán los resultados por dicha columna.
+Los campos de los blancos y de los calibradores que se visualizan son los mismos 
+que los campos que aparecen en la pantalla de resultados de la sesión actual selec­
+cionados por técnica.
+ 
+)
+Véase capítulo 10.7.2 para ver la descripción de cada uno de los campos de las pantalla 
+de blancos y calibradores.
+ 
+ 
+Pulse este icono para imprimir los resultados que haya seleccionado 
+previamente.
+10.8.3. Resultados de control de calidad
+Pantalla que permite la revisión de los resultados actuales del control de calidad. 
+Tam­bién permite modificar los criterios de cálculo definidos y visualizar gráfica­
+mente los resultados.

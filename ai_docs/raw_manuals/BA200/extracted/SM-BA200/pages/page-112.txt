@@ -1,0 +1,39 @@
+7.2. Limpieza
+Material y herramientas necesarias para realizar la limpieza:
+• 
+Botella de aerosol de aire seco o pera de aire
+• 
+Llave torx T20, con una longitud mínima de 40 mm
+7.2.1. Limpieza de los alojamiento interiores
+Cada vez que se haga una intervención en el analizador es recomendable que se haga una limpieza de los comparti­
+mentos de la electrónica y de la fluídica.
+1. Desmonte las carcasas laterales
+2. Sople el polvo de las placas electrónicas, de los componentes y de los ventiladores con aire seco. 
+7.2.2. Verificación de las conexiones fluídicas
+Verifique que todas las conexiones fluídicas, las conexiones que van a las electroválvulas y bombas no sufren ninguna 
+fuga.
+1. Desmonte las carcasas laterales
+2. Toque con la mano cada una de las conexiones para verificar que las uniones no pierden líquido. Verifique que 
+los racors están apretados a un par de 33 Ncm. 
+3. Utilice el programa de servicio para abrir y cerrar las electroválvulas y accionar las bombas. Verifique si hay 
+pérdidas de líquido en los dos estados de cada elemento.
+7.2.3. Limpieza de los contenedores de agua y residuos de baja contaminación
+1. Quite la tapa trasera.
+2. Prepare un depósito con agua y solución de lavado. 
+3. Con el programa de servicio seleccione la toma de entrada por depósito.
+4. Desde el programa de servicio realice un llenado del depósito de agua destilada con la preparación de agua y 
+solución de lavado. 
+5. Deje el depósito lleno durante media hora.
+6. Quite el tubo de entrada de agua.
+7. Con el programa de servicio vacie el depósito de agua destilada.
+8. Vuelva a configurar la selección de entrada de agua destilada en función de la configuración del laboratorio.
+9. Rellene y vacie el depósito de agua dos veces para enjuagar el depósito.
+7.2.4. Limpieza externa de la punta y agitador
+WARNING
+Use guantes y vestimenta de protección al manipular la punta.
+Con el analizador apagado, levante con las manos la punta, el agitador y la estación de lavado.
+Vaya con mucho cuidado en el momento de levantar la punta. 
+1. Limpie con un paño bañado en solución de lavado la punta, la pala del agitador y las puntas de la estación de 
+lavado.
+Manual de servicio
+112

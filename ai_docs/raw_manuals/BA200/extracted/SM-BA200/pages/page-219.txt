@@ -1,0 +1,40 @@
+9. Troubleshooting
+9.1. Proceso de instalación del sofware y firmware
+Como medida de precaución ante cualquier eventualidad es bueno realizar una copia de seguridad del programa y 
+de la base de datos.
+9.1.1. Copia de seguridad antes de realizar la actualización de versión
+1. Abre el programa BA200. 
+2. Seleccione el menu: Utilidades/Crea punto de restauración con los datos actuales
+3. Haga clic en el botón de guardar.
+4. Cierre el programa.
+5. El programa genera un copia de la bases de datos en la carpeta: c:\ProgramData\BA200\RestorePoints\ , esta 
+carpeta no forma parte de los archivos del programa, con lo cual si desintala la versión este archivo no lo perderá.
+9.1.2. Actualización de la versión
+• 
+Si el programa de instalación se lo descarga del ftp.
+1. Crea una carpeta en el ordenador llamada: C/Temp
+2. Copie el archivo .zip que se ha descargado del ftp en la carpeta c:/temp. No la copie en el escritorio. Es im­
+portante copiarla en la carpeta c:/temp porqué hay rutas de subcarpeta muy largas en el instalador y podría no 
+copiarse correctamente.
+3. Verifique que el archivo .zip está integro calculando el checksum MD5.
+4. El cálculo del MD5 se puede realizar con el programa HJSplit. Lo puede localizar en la página web: http://
+www.hjsplit.org/
+5. Descomprima el archivo .zip en la carpeta C:/Temp
+6. Continúe a partir del paso 8.
+• 
+Si el programa de instalación lo ejecuta desde un DVD
+7. Abra la unidad lectora de DVD e introduzca el DVD con la nueva versión.
+8. Ejecuta el programa setup.exe como administrador (Seleccione el archivo, pulse el botón derecho y seleccione 
+la opción: ejecutar como administrador). 
+9. Siga los pasos del proceso de instalación.
+10. Ejecuta el programa BA200.exe. Lo primero que realizará el programa será el proceso de actualización de la base 
+de datos. Al finalizar aparecerá un mensaje de que la versión del firmware del analizador es diferente y requiere 
+actualizarla.
+11. El programa automáticamente realiza una copia de la base de datos de la versión anterior y la guarda en la car­
+peta: c:\Program Files (x86)\BA200\User Sw\RestorePoints\
+• 
+Proceso de actualización del firmware
+1. Cierre el programa de usuario.
+2. Cierre y abra el interruptor del analizador.
+3. Abra el programa de servicio.
+219

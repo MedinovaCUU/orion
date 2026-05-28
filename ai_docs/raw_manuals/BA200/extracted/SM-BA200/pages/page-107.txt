@@ -1,0 +1,26 @@
+Ilustración 6.30 
+Pantalla de información del estado de la nevera
+6.7. Registro y mantenimiento
+6.7.1. Informes histórico
+Desde esta pantalla permite consultar todas las acciones realizadas con el programa de servicio.
+Cualquier acción realizada queda memorizada en una base de datos. Para consultar las acciones proceda a seleccionar 
+los campos de los filtros y pulse el botón de buscar.
+Filtro
+Descripción
+Número de serie 
+analizador
+Introduzca el número de serie del analizador que quiera consultar las acciones
+Fecha
+Introduzca el rango de fechas por las que quiera filtrar las acciones
+Tareas
+Seleccione una de las tareas posibles: Todas, Ajustes, test o utilidades
+Acciones
+Aparecerá un listado de acciones en función de la tarea escogida. Cuando hay muchas 
+acciones realizadas, sirve para visualizar únicamente la acción escogida.
+Una vez seleccionados los campos de los filtros, el programa muestra una lista en forma de tabla con la información 
+filtrada.
+En la columna de comentarios el usuario puede introducir texto para realizar alguna indicación sobre la acción 
+seleccionada. Pulse en el interior de la casilla de comentarios para introducir el texto. Al finalizar pulse el botón de 
+guardar o deshacer. 
+Cuando quiera borrar una acción del histórico, seleccione la acción y pulse el botón de borrar.
+107

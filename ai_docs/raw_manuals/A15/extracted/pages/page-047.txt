@@ -1,0 +1,64 @@
+Manual de servicio
+48
+4.9. Placa interconexión bombas (CIIM00028)
+La placa de interconexión bombas, interconecta la placa CPU con la bomba de dosificación, bomba de 
+residuos, electroválvula, sensor de nivel de botellas y la tapa del instrumento.
+Relación de diodos LED
+DL1 - Electroválvula
+DL2 - Bomba residuos
+DL3 - Home Bomba
+DL4 - Tapa instrumento
+Conector
+Función
+Pins
+J1
+Sensor residuos
+1 - Sensor residuos
+J2
+Conexión señal con placa CIIM00026
+1 - Sensor residuos
+2 - Sensor líquido de sistema 
+3 - Señal LS/residuos
+4 - Señal detección líquido punta
+5 - Home bomba de dosificación
+6 - Vcc
+7 - GND
+8 - Tapa instrumento 
+J3
+Sensor líquido sistema
+1 - Sensor líquido de sistema
+J4
+Señal sensor LS/residuos
+1 - Señal líquido de sistema
+J5
+Señal detección líquido punta
+1 - Señal detección líquido punta
+J6
+Home bomba dosificadora
+1 - Fotodetector, amarillo
+2 - Fotodetector, negro
+3 - Fotodetector, rojo
+J7
+Electroválvula
+1 - Cable blanco
+2 - Cable blanco
+J8
+Conexión potencia con la placa CIIM00026
+1 - 24 V electroválvula
+2 - GND
+3 - Bomba residuos
+4 - Bomba de residuos
+5 - Bomba dosificadora bobina 1
+6 - Bomba dosificadora bobina 1
+7 - Bomba dosificadora bobina 2
+8 - Bomba dosificadora bobina 2
+J9
+Bomba de residuos 
+1 - Bomba de residuos, rojo
+2 - Bomba de residuos, negro
+J10
+Bomba de residuos
+1 - Bobina 1
+2 - Bobina 1
+4 - Bobina 2
+5 - Bobina 2

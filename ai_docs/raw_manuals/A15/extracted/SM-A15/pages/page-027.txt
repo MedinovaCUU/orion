@@ -1,0 +1,41 @@
+Manual de servicio
+28
+39
+41
+38
+37
+42
+43
+45
+40
+44
+46
+47
+Ilustración 3.7. Conexiones botellas de residuos y liquido de sistema
+37 – Tubo PCV de residuos
+38 – Varilla detección de nivel de la botella de residuos
+39 – Botella de liquido de sistema
+40 – Tubo de teflón de aspiración del líquido de sistema
+41 – Varilla detección de nivel de la botella de liquido de 
+sistema
+42 – Bomba aspiración residuos
+43 – Tubo PVC de conexión de los residuos de la estación 
+de lavado a la bomba aspiración
+44 – Filtro de entrada del líquido de sistema
+45 – Placa de referencia para la detección de nivel
+46 – Rácor de residuos rápido antigoteo
+47 – Pasatubos
+48 – Base del instrumento y estación de lavado
+49 – Tubo rebosadero
+50 – Tubo sumidero
+51 – Tubo conexión a la bomba de residuos
+Referencias de la Ilustración 3.7 y Ilustración 3.8
+3.3.3. Sensores de control de nivel de los contenedores
+El analizador dispone de un sistema capacitivo para controlar el nivel de los conte nedores de agua des tilada (39) 
+y de residuos. Para ello debajo de las botellas existe un plano de emisión (45) donde se inyecta una señal a través 
+de un conector. Encima de esta la base donde se apoyan las botellas. En éstas existen dos varillas (38 y 41) que 
+recogen la señal emitida e indican la presencia o no de líquido.
+3.3.4. Bandeja de racks con estación de lavado integrada
+La bandeja (48) de inyección de plástico forma parte de la base del instrumento. En su parte derecha está instalada 
+la estación de lavado (48). El tubo de PVC (50) conecta el sumidero de la estación de lavado (51) con el tubo (51) 
+que va a la bomba de extracción de residuos y con el tubo rebosadero (49).

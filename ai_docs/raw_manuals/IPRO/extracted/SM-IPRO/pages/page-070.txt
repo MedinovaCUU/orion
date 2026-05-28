@@ -1,0 +1,53 @@
+70
+Manual de servicio
+5.  MANTENIMIENTO PREVENTIVO
+Para lograr un óptimo funcionamiento del procesador es aconsejable realizar un mantenimiento pre­
+ventivo y chequear determinadas partes del instrumento periódicamente. La tabla siguiente indica las 
+diferentes partes a comprobar y su periodicidad:
+TAREA
+PERIODICIDAD
+1
+Verificar tensión correas del brazo
+2 años
+2
+Lavado exhaustivo de circuitos
+1 año
+3
+Cambiar casete de la bomba peristáltica
+400 horas
+4
+Comprobar estanqueidad del circuito fluídico
+1 año
+5
+Cambiar motor bomba peristáltica
+1000 horas
+6
+Cambiar retén bomba pistón cerámico
+20 000 millones de pasos o cada 2 años
+7
+Realización de los test del programa de servicio
+1 año
+5.1  VERIFICAR LA TENSIÓN DE LAS CORREAS DEL BRAZO
+Verificar que las correas X , Y y Z estén correctamente tensadas. Si es necesario tensarlas, hacerlo tal 
+como se indica en el capítulo correspondiente al cambio de correas del brazo del manual de servicio.
+5.2  LAVADO EXHAUSTIVO DE LOS CIRCUITOS Y LAS PUNTAS
+• 
+Desmontar las puntas y pasarle el desatascador.
+• 
+Limpiar las puntas externamente con alcohol de 70°. 
+- Para limpiar los circuitos y las puntas internamente proceder como sigue: Utilizar una solución de 
+hipoclorito de sodio (Lejía) al 1.5% en agua destilada, que se debe preparar en la botella de PBS. 
+Realizar un cebado de circuitos mediante la opción del menú de utilidades Cebado de circuitos (10 
+ciclos), marcar el botón Cebado de circuitos con PBS. Dejar esperar unos minutos. Cambiar la solución 
+de hipoclorito de sodio de la botella de PBS por agua destilada. Cebar otra vez el circuito (20 veces). 
+Repetir la operación de cebado con agua destilada 2 veces más.
+5.3  CAMBIAR CASET DE LA BOMBA PERISTÁLTICA
+El número de horas de la bomba se puede consultar con el programa de servicio en el menú de «Uti­
+lidades/Leer y cargar Ajustes y Ciclos». Seleccionar la pestaña de Ciclos y consultar el valor de pasos 
+de la bomba peristáltica. Cambiar el casete a las 400 horas de uso (2400 minutos).
+5.4  COMPROBAR LA ESTANQUEIDAD DE LOS CIRCUITOS DE FLUIDOS
+Al menos una vez al año, asegurar que las conexiones de la bomba, bomba peristáltica, válvulas y pun­
+tas están bien apretados. Compruebe que no hay burbujas en la cámara de la bomba de dispensación.
+5.5  CAMBIAR MOTOR DE LA BOMBA PERISTÁLTICA
+Al igual que en el caso del casete, el número de horas del motor de la bomba peristáltica se puede 
+consultar en el menú de utilidades. Cuando la bomba haya llegado a 1000 horas, proceder al cambio

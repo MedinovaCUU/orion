@@ -1,0 +1,4 @@
+173
+173
+[Documents]\BA400\RestorePoints donde [Documents] es la carpeta “mis documen­
+tos” del sistema.

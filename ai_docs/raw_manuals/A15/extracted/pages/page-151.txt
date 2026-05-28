@@ -1,0 +1,27 @@
+Manual de servicio
+152
+Grado de polución 
+2
+CUMPLIMIENTO DE DIRECTIVAS
+Modelo A15/A15C: 
+Directiva CE – IVD
+98/79/CE
+Modelo Y15/Y15C: 
+Directiva de baja tensión
+Directiva de compatibilidad electromagnética
+2014/35/EU
+2014/30/EU
+A15/A15C/Y15/Y15C:
+Directiva sobre restriccione a la utilización de 
+determinadas sustancias peligrosas en aparatos 
+eléctricos y electrónicos. 
+2011/65/EU
+DIMENSIONES MÁXIMAS DEL ANALIZADOR
+Dimensiones con tapa cerrada (Ancho, profundo y 
+alto)
+840 mm x 665 mm x 600 mm
+Dimensiones con tapa abierta (Ancho, profundo y 
+alto)
+840 mm x 710 mm x 1050 mm
+Peso
+45 Kg

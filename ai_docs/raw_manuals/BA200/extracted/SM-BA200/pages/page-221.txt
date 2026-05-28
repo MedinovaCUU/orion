@@ -1,0 +1,16 @@
+Ilustración 9.1 
+Programas instalados del SQL Server
+3. Si ha instalado la aplicación desde un fichero .zip, verifique que lo ha descomprimido en la carpeta c:/Temp y 
+que no ha habido ningún error en la descompresión del archivo.
+9.1.6. Solución
+1. Desinstale manualmente cada una de las entradas del motor de la base de datos SQLserver.
+2. Asegúrese de que el archivo no esté corrupto. Pida a su servicio técnico los datos de fecha de creación, tamaño 
+del archivo de instalación de la versión para asegurarse de que el archivo recibido está correcto.
+3. Siga los pasos desde el punto 9.1 de este capítulo.
+9.1.7. Resolución de posibles problemas de la configuración del ordenador
+Cuando aparezca una ventana emergente con el error:
+“Operation with Visual Style, came to error because now no active styles representation.”
+Proceda de la siguiente manera:
+Active los estilos visuales del windows:
+1. Abra la siguiente ruta: Menu de inicio/Panel de control/sistema/configuración avanzada del sistema
+221

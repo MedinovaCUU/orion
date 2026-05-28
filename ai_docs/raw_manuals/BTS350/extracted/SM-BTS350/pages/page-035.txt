@@ -1,0 +1,81 @@
+—  35  —
+Service manual
+• 
+First dismantle the top housing.
+• 
+Dismantle the display, by unscrewing the 4 screws at its ends. Unplug the 2 connectors from the display.
+• 
+Unscrew the 4 screws of the printer support. Two screws are on the outer part of the support, and the other two are 
+inside it. Unplug the connector from the printer.
+• 
+Unscrew the 3 screws on the tray. Unplug the motor connections from the peristaltic pump and from the motor earth 
+clamp.
+• 
+Unscrew the screw of the light guide on the front panel.
+• 
+Unscrew the 4 screws that join the electronic board to the semi-automatic analyzer. 
+• 
+Carefully remove the board from the appliance, together with the optical bench.
+5.11. - Semiautomatic analyzer Firmware Update
+5.11.1. Updating the firmware from a USB memory
+Steps to install the new firmware:
+• 
+Connect the USB memory with the new version of the firmware stored in the main folder
+• 
+Select the menu: Utilities / new installation program
+• 
+You access the program monitor (internal program to manage change firmware)
+• 
+Select F3, Access to USB
+• 
+Select the first option, firmware load file
+• 
+A menu with all files that can be loaded appears. Select the file with the new version.
+• 
+The upgrade starts in the semi-automatic analyzer. This process takes a few minutes.
+• 
+When finished, on screen appears a message of complete download.
+• 
+Press the exit button (F5) twice
+• 
+The semiautomatic analyzer is initialized with the new version.
+• 
+Check on the home screen version of firmware.
+Next table indicated the firmware type to use depending on the instrument model and the version of the electronic board.
+Board number
+Instrument model
+File Type
+CIIM00037-07
+BTS-350
+File with extension .bin
+CIIM00037-08
+BTS-350
+File with extension .b35
+CIIM00037-09
+BTS-350
+File with extension .b35
+CIIM00037-08
+Y-350
+File with extension .y35
+CIIM00037-09
+Y-350
+File with extension .y35
+5.11.2. Firmware update via EPROM memory
+Steps to install the new version of the program:
+• 
+Open the top cover of semiautomatic analyzer
+• 
+Put the EPROM with the new version in socket U1 of hte board. Note the orientation of the EPROM in the socket.
+• 
+Attach the two terminals of the connector JP1 of the board.
+• 
+Turn on the semiautomatic analyzer
+• 
+Wait until the recording process finish. This process takes a few minutes. On the display will appear a message indicating 
+that the process it has completed
+• 
+Turn off the semiautomatic analyzer
+• 
+Do the same with the second EPROM
+• 
+Remove the EPROM socket and union connector JP1

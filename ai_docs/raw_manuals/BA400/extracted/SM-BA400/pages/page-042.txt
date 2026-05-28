@@ -1,0 +1,24 @@
+Referencias de la Ilustración 3.27 y Ilustración 3.28
+1 – Cable para el detector de desbordamiento de la estación de lavado
+2 – Columnas de soporte para la placa de fotometría
+3 – Placa de deteccion de nivel para el desbordamiento. CIIM00069
+4 – Nueva ubicación del sensor de detección de colisión y final de carrera de la estación de lavado. CIIM00068
+5 – Nueva versión de placa de control de fotometría CIIM00050-02
+6 – Detector de desbordamiento
+7 – Secador de pocillos
+1
+6
+7
+Ilustración 3.28 
+Vista puntas estación de lavado
+3.6. Brazos de pipeteo
+Los brazos de pipeteo sirven para aspirar y dispensar líquidos. Hay tres brazos, dos para manipular reactivos y uno 
+para manipular las muestras.
+Los brazos de pipeteo están formados por una carcasa (1) que cubre las conexiones de la punta (6) y la placa elec­
+trónica (2). El conjunto punta y placa unidos a un soporte es el conjunto móvil del brazo. El conjunto se eleva 
+mediante un tubo guía (9) por el interior del cual pasan los cables y los tubos que van conectados a la punta. La 
+elevación se realiza con un motor (10) que transmite el movimiento a través de una polea (11) a una correa, que 
+está solidaria con el tubo guía (9). El movimiento angular se realiza con el motor (4) a través de una correa (3) que 
+hace girar al tubo guía (9).
+Manual de servicio
+42

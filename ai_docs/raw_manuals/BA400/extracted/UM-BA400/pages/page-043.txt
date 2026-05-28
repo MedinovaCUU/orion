@@ -1,0 +1,50 @@
+43
+43
+4.12.3. Configuración para la cyberseguridad
+4.12.3.1. Creación de usuarios del ordenador
+Por seguridad es necesario ejecutar la aplicación con un usuario con bajos permisos 
+de acceso al ordenador.
+Para ello cree un nuevo usuario con bajos permisos al ordenador. Siga los pasos 
+siguientes:
+1. Seleccione Todas las configuraciones
+2. Seleccione la opción Cuentas
+3. Seleccione la opción Familia y otras personas
+4. Seleccione la opción Agregar otra persona a este equipo
+5. Cree la cuenta con el nombre del operario que va a acceder al equipo.
+6. Reinicie el equipo con el usuario del operario.
+4.12.3.2. Configurar los permisos de usuario de la aplicación
+Crea tantos usuarios en el programa del BA400 como operarios haya en el labo­
+ratorio.
+Asigne los permisos pertinentes a cada usuario, si es usuario supervisor u operador
+El usuario supervisor se le permite modificar los valores de concentración de los 
+calibradores y controles además de las funcionalidad del operador. El usuario 
+operador únicamente crea las listas de trabajo, posiciona y las ejecuta. También 
+puede visualizar los resultados, imprimirlos y/o enviarlos al host.
+ 
+)
+Véase capítulo 10.2.8 cómo crear los usuarios y asignar los permisos.
+4.12.3.3. Activar y configurar el antivirus del sistema operativo
+Active o instale uno de los siguientes sistemas antivirus:
+• 
+Windows defender (Microsoft ™)
+• 
+ESET Endpoint antivirus
+Configure el sistema antivirus de la siguiente manera:
+Para configurar el firewall de windows, siga los pasos siguientes:
+• 
+Seleccione Todas las configuraciones
+• 
+Seleccione Actualización y seguridad
+• 
+Seleccione Windows defender
+• 
+Seleccione Abrir centro de seguridad de windows defender
+• 
+Pulse sobre la opción de Protección antivirus y contra amenazas
+ 
+)
+Véase Ilustración 21
+• 
+Seleccione Configuración de antivirus y protección contra amenazas
+• 
+Active la opción de protección en tiempo real

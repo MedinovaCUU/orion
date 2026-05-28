@@ -1,0 +1,27 @@
+Lista de accesorios
+Código
+Representación
+Descripción 
+AC16 369
+Botella de alta contaminación con tapón
+AC17273
+Tapón de la botella de solución de lavado para modelos 
+BA400v2
+AC16749
+Tapón de la botella de residuos de alta contaminación para 
+modelos BA400v2
+AC17393
+Rotor de reactivos
+AC16 371
+Rotor de muestras
+AC16534
+Tornillo sujeción rotor reacción
+CA10 455
+Cable de red europeo
+CA10 456
+Cable de red americano
+FI14 226
+Cable USB para conexión al ordenador
+AC16747
+Fusible 10 A - 5SF10L250V (2)
+265

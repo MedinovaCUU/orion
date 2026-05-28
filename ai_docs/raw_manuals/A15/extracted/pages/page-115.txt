@@ -1,0 +1,27 @@
+Manual de servicio
+116
+15
+16
+Ilustración 6.12 Desmontaje placa punta
+6.3. Sistema dosificador
+6.3.1. AC17316 - Manifold
+Desmontaje:
+1. Desatornille los 4 tornillos (1) y separe el manifold (2) del resto de la bomba. 
+2. Estire con cuidado el manifold para sacar el pistón del retén que va con el manifold.
+3. Dele la vuelta al manifold y desatornille los 4 tornillos (3) para separar las piezas sujeción cámara (4), 
+junta tórica (5), supresor burbujas (6) y el adaptador retén con el retén (7).
+Montaje: 
+1. Sustituya el manifold.
+2. Oriente correctamente cada una de las piezas (4) según 
+3. Gire el manifold sujetando las piezas (8).
+4. Verifique que la junta tórica (8) está limpia. Colóquela en su alojamiento. Verifique que se ha insertado 
+correctamente y no se sale de las guías (9). Ver Ilustración 6.15
+5. Verifique que el supresor burbujas (10) está sin rebabas ni suciedad. Colóquelo encima de la junta 
+tórica. Una vez montado verifique que no se ve la junta tórica. Ver Ilustración 6.15
+6. Oriente correctamente el adaptador retén (11) y retén. La cara plana del adaptador tiene que coincidir 
+con la ventana del manifold (12). Ver Ilustración 6.16
+7. Atornille los 4 tornillos (13) con un par de apriete de 30 Ncm y en cruz. Ver Ilustración 6.16
+8. Lubrique el pistón y el retén con WS (Washing Solution)
+9. Oriente correctamente el manifold con la bomba. La ventana del manifold (15) tiene que coincidir con 
+el tornillo de guiaje (16) de la bomba. Ver Ilustración 6.17
+10. Introduzca el pistón en el retén

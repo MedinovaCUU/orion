@@ -1,0 +1,61 @@
+23
+USUARIO
+Manual de Usuario BioSystems SPICA | Versión 2.8 - Agosto 2024
+Manual de Usuario BioSystems SPICA
+4. FUNCIONAMENTO GENERAL 
+5. PROCEDIMIENTOS DE MEDICIÓN
+5.1 Generalidades
+En este capítulo se describen los diferentes modos de análisis del analizador y los cálculos realizados 
+para obtener los resultados analíticos, es decir, los valores de concentración de los diferentes analitos de 
+la muestra. Se indican en cada caso las diferentes fórmulas utilizadas. Los controles se tratan de la misma 
+manera que las muestras de los pacientes en todos los cálculos.
+Símbolos utilizados en la fórmula:
+5.2 Cálculo de las absorbancias
+El cálculo de la absorbancia depende del modo de análisis programado. 
+El analizador tiene los siguientes modos de análisis:
+DESCRIPCIÓN
+Valor de absorbancia leído en un instante de la reacción
+El valor de absorbencia se calcula en base al modo de análisis elegido
+Valor de absorbencia en la longitud de onda principal.
+Valor de absorbencia en la longitud de onda de referencia.
+Valor de absorbencia en el tiempo L1
+Valor de absorbencia en el tiempo L2
+Aumento de la absorción
+Volumen de la muestra 
+Volumen del reactivo 1
+Volumen del reactivo 2
+Concentración del analito
+Factor 
+Absorbancia del blanco de reactivo
+Absorbancia del calibrador / standard
+Absorbancia de la muestra
+Concentración conocida del calibrador / standard
+MODO DE ANÁLISIS 
+Mono-reactivo de Punto Final 
+Bi-reactivo de Punto Final
+Modo Diferencial
+Mono-reactivo de Tiempo Fijo 
+Bi-reactivo de Tiempo Fijo
+Mono-reactivo Cinético 
+Bi-reactivo Cinético
+SÍMBOLO
+ABS 
+A 
+[...] λprincipal 
+[...] λreferencia
+[...] L1 
+[...] L2 
+DABS 
+VM 
+VR1 
+VR2 
+C 
+F 
+Ablanco 
+Acalibrator 
+Amuestra 
+Ccalibrator 
+Este producto puede hacer diferentes pruebas de concentración. El usuario puede seguir el flujo de trabajo 
+para definir y configurar las muestras a analizar, colocar las muestras y los reactivos en el instrumento y 
+ejecutar y ver el resultado. Las muestras a analizar pueden ser muestras o material de control de calidad y/o 
+calibración. La APP incluye un MANUAL DE USUARIO para ayudar al usuario a entender el flujo de trabajo.

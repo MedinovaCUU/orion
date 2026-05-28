@@ -1,0 +1,23 @@
+Manual usuario 
+ 
+ 
+ 
+Manual usuario 
+ 
+ 
+ 
+50
+50
+Biosystems
+Biosystems
+Ilustración 25 
+Configuración de puntos de restauración
+4.12.3.7. Verificación de la integridad de la aplicación
+Cómo medida de seguridad, la aplicación incorpora un sistema de control para 
+verificar la integridad de la aplicación.
+Si cualquiera de los archivos de la aplicación es modificado la apliación lo detecta 
+y evita que pueda ejecutarse.
+En caso de encontrarse con el error de la Ilustración 26, llame al servicio técnico 
+para que realice una reinstalación de la aplicación.
+Ilustración 26 
+Pantalla de la verificación de la integridad de la aplicación

@@ -1,0 +1,43 @@
+Manual usuario 
+ 
+ 
+ 
+Manual usuario 
+ 
+ 
+ 
+152
+152
+Biosystems
+Biosystems
+10.8.3. Resultados de control de calidad
+Pantalla que permite la revisión de los resultados actuales del control de calidad. 
+Tam­bién permite modificar los criterios de cálculo definidos y visualizar gráfica­
+mente los resultados.
+Los resultados de control de calidad de la sesión de trabajo activa no estarán dis­
+ponibles en esta pantalla hasta que se ejecute el reset de la misma. 
+Para cada control y técnica se almacenan y visualizan un máximo de 50 resultados. 
+En el momento en que se ejecuta el reset de la sesión de trabajo activa, se verifica 
+esta condición para cada control y técnica con resultados de control de calidad en 
+la sesión y, en caso de que el máximo haya sido excedido, se muestra una pantalla 
+advirtiendo que los resultados actuales (excepto los de la sesión de trabajo activa) 
+se acumularán. El usuario podrá aceptar la advertencia y acumular los resultados 
+automáticamente, o cancelar temporalmente el reset y acumular los resultados 
+manualmente desde la pantalla de Acumular resultados de control de calidad diaria.
+ 
+)
+Véase la explicación del capítulo 10.8.4.1 sobre acumular resultados.
+A la izquierda se muestra la lista de técnicas con resultados de control de calidad 
+pendientes de revisión. Al seleccionar una técnica de la lista, a la derecha de la 
+pantalla se mostrará la información de sus controles programados y activos, pero 
+sólo de aquellos con al menos un resultado no revisado. En esta zona de detalle 
+hay tres zonas claramente diferenciadas:
+• 
+Criterios de cálculo. Permite especificar los criterios de selección y validación 
+de los resultados de control de calidad. Al modificar el valor por defecto de 
+cualquiera de estos criterios, se vacía el contenido de las otras dos zonas de 
+detalle, y se debe seleccionar el botón de búsqueda para recargarlas. Los va­
+lores seleccionados se actualizarán también en la programación de la técnica. 
+(excepto la selección de las reglas de Westgard).
+Ilustración 96 
+Pantalla de entrada manual de resultados de control de calidad

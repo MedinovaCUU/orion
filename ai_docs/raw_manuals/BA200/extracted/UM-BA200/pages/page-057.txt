@@ -1,0 +1,56 @@
+57
+57
+9. Encienda el analizador. Espere hasta oír un pitido.
+10. Seleccione la opción la pestaña de Configuración de las comunicaciones, dentro 
+del submenú General del menú Configuración.
+11. Seleccione la opción de automático.
+12. En la misma ventana, seleccione la pestaña de Analizador.
+13. Seleccione una de las dos opciones de selección de entrada de agua, acorde a la 
+instalación realizada del tubo de entrada de agua.
+ 
+)
+Véasae capítulo 10.2.1
+14. Pulse el botón de inicialización del analizador. 
+15. Realice 5 acondicionamientos para asegurar que el depósito interno de agua se 
+llena y el sistema fluídico se ceba correctamente.
+ 
+)
+Véase capítulo 10.9.2
+16. En caso de disponer de módulo ISE, realice la instalación de los electrodos y 
+kit de reactivos.
+ 
+)
+Véase capítulo 10.9.4
+17. Rellene los campos de las concentraciones de los calibradores y controles de 
+aquellas técnicas que va a utilizar.
+ 
+)
+Véasae capítulo 10.3.5 y 10.3.6 
+18. Realice una lista de blancos, calibradores y controles.
+ 
+)
+Véasae capítulo 10.5.4 y 10.5.5
+4.15. Precauciones durante el funcionamiento
+• 
+En aquellos analizadores que tengan instalado el módulo ISE, no apague nunca 
+el interruptor del módulo. Periódicamente y de manera automática el módulo 
+realiza un ciclo de cebado. Cuando quiera apagar el módulo ISE siga los pasos 
+indicados en el capítulo 13.3.2.4
+• 
+Para mantener los reactivos refrigerados con el analizador apagado, deje el 
+interruptor del refrigerador en posición de encendido.
+• 
+Cuando el analizador esté en funcionamiento no abra la tapa principal sin 
+pulsar previamente el botón de Pausa 
+. En caso de que se abra la tapa 
+principal inesperadamente, el analizador parará cualquier acción que esté en 
+curso, perdiéndose todas aquellas preparaciones ya iniciadas a las que aún no 
+se les haya dispensado la muestra.
+• 
+Asegúrese de que las tapas de los rotores de muestras y reactivos y de reacciones 
+están colocadas durante el funcionamiento. El analizador no iniciará ninguna 
+acción si falta alguna de estas tapas.
+• 
+Mantenga la superficie de trabajo del analizador libre de obstáculos que puedan 
+ser causa de colisión para los brazos de preparación o agitación.
+NOTE

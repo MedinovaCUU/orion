@@ -1,0 +1,36 @@
+135
+135
+• 
+El analizador está encendido y conectado al ordenador cuando está de color 
+verde.
+• 
+El sistema de refrigeración está encendido cuando está de color verde.
+• 
+El módulo ISE está encendido e inicializado correctamente cuando está de 
+color verde. Cuando está en color rojo indica que está encendido pero no 
+permite trabajar por algún problema de inicialización. Cuando está en color 
+gris no está instalado o está apagado.
+ 
+Temperatura 
+Muestra si la temperatura del rotor y del refrigerador están dentro de los límites 
+establecidos.
+ 
+ 
+Cuando se produzca alguna alarma, en la pantalla principal aparecerán unos 
+globos informativos indicando en qué lugar del analizador se ha producido la 
+alarma o advertencia y una breve explicación. 
+ 
+)
+Ver pantalla de alarmas en capítulo 10.6.6
+10.6.2. Sesión de trabajo
+En esta pestaña aparece información de la sesión de trabajo que está realizando el 
+analizador, del estado de las muestras y de las técnicas. 
+La información se organiza en una tabla con todas las muestras y técnicas de la 
+sesión y en un gráfico resumen del estado de las preparaciones.
+La sesión de trabajo se ordena de forma que siempre se realizan primero las ur­
+gencias. Antes de las muestras de paciente se realizan los blancos, calibradores y 
+controles de las técnicas asignadas a pacientes. 
+Ilustración 88 
+Pantalla sesión de trabajo
+La tabla permite visualizar el estado de las muestras y las técnicas mediante un 
+código de colores e información adicional mediante iconos

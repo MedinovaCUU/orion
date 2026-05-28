@@ -1,0 +1,27 @@
+27
+25
+26
+Ilustración 3.47 
+Modificación del conjunto fluídico
+Referencias de la Ilustración 3.47
+25 – Bomba SF1-B10
+26 – Conexión del agua destilada al desgasificador
+27 – Coneixón de la solución de lavado a las bombas de dispensación
+Los cambios en el conjunto fluídico consisten en :
+• 
+Cambio del modelo de la bomba de aspiración de los residuos de alta contaminación SF1- B10 (25)
+• 
+Incorporado el conjunto premanifold en el conjunto de las bombas de aspiración. 
+3.12. Mejoras en el las conexiones fluidicas. BA400v2
+Se ha simplificado el subconjunto de fluídica, y se han incorporado los siguiente mejoras:
+• 
+Posicionando las placas electrónicas en la misma chapa de soporte
+• 
+Se han unificado todas las bombas de membrana sólo en la parte fluídica
+• 
+Se ha eliminado el colector fluídico
+• 
+Se ha modificado el calefactor de la estación de lavado
+• 
+Se han sustituido las electroválvulas por checkvalve en la bomba de pistones
+57

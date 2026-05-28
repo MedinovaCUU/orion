@@ -1,0 +1,27 @@
+77
+77
+• 
+Rotor entero de 135 posiciones
+• 
+Rotor segmentado de 9 segmentos
+10.2.1.2. Configuración general: opciones del analizador
+En la Ilustración 44 muestra la pantalla de las opciones de configuración del 
+analizador.
+Ilustración 44 
+Configuración de las opciones del analizador
+ 
+Selección de entrada de agua 
+Seleccione el modo de entrada de agua en el analizador.
+La entrada de agua puede venir por vías diferentes y excluyentes entre ellas:
+• 
+Agua de depósito
+• 
+Agua de red
+ 
+)
+Véase capítulo 4.3 para la instalación del agua purificada.
+ Sonido de alarma desactivado 
+Marque está opción cuando no quiera que suene el zumbador al aparecer una 
+alarma.
+10.2.1.3. Configuración general: comunicaciones
+En la Ilustración 45 se muestra la pantalla para configurar las comunicaciones.

@@ -1,0 +1,14 @@
+90
+Manual de servicio
+5.3.9. Test de detección de tapas 
+Este test permite verificar el funcionamiento de los siguientes detectores incorporados en el analizador:
+• 
+Detector de apertura de la tapa general del analizador
+• 
+Detector de presencia de la tapa del rotor
+El técnico puede manipular los elementos correspondientes, por ejemplo, abrir y cerrar la tapa del analizador.
+5.3.10. Test del canal de comunicaciones PC-Analizador
+Al pulsar el botón Test, el ordenador intenta establecer comunicación con el analiza dor. El programa indica al 
+técnico si ésta ha sido posible o no.
+El Técnico puede seleccionar Configuración Automática o Manual. En este último caso puede definir el Puerto 
+y la Velocidad.

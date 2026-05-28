@@ -1,0 +1,23 @@
+40
+Service manual
+1 – Switch support cover
+2 – Mains connector
+3 – Switch
+4 – Fuse holder
+5 – Id labeL
+6 – VENTILATION GRILL
+Reference Figure 3.20
+3.2.7.  Electronics cover
+The metallic cover (1) supports the central fans (3) protected by the gri­lls (2).
+2
+1
+3
+Figure 3.21 
+1 – Back cover of the electronics
+2 – Fan grid
+3 – Fans
+Reference Figure 3.21
+3.2.8.  Main cover hinges
+The two hinges enabling the raising of the main cover of the analyzer consist of an articulated steel structure (2) 
+operated by a hydro-pneumatic spring (1). The right-hand hinge includes a photodetector (3) to detect whether or not 
+the cover of the analyzer is open or closed.

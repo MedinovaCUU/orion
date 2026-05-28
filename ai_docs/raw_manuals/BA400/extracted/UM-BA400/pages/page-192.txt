@@ -1,0 +1,62 @@
+Manual usuario 
+ 
+ 
+ 
+Manual usuario 
+ 
+ 
+ 
+192
+192
+Biosystems
+Biosystems
+Paso
+Acción 
+Repeti­
+ciones 
+Descripción
+5
+Cebar B
+1
+6
+Cebar A
+1
+7
+Calibrar 
+electrodos
+1
+8
+Espere 5 
+minutos
+Realice las 4 últimas acciones 3 veces. En caso de que la calibración no sea satis­
+factoria, espere 5 minutos y repita las últimas 4 acciones.
+LI+
+Cl−
+Na+
+K+
+REF
+WASTE
+Ilustración 123 
+Orden de colocación de los diferentes electrodos
+13.3.2.2. Cambio del kit de reactivos
+Abra las puertas delanteras y en la izquierda se encuentra el kit de reactivos para el 
+módulo ISE. Retírelo de su alojamiento y quite el conector del paquete. Presione 
+el botón amarillo y separe el kit del conector.
+ 
+BIOHAZARD
+BIOHAZARD
+ 
+Deshágase de los residuos de acuerdo con la legislación vigente para la elimi­
+nación de residuos biológicos peligrosos de su gobierno nacional o local. No 
+perfore ni abra el kit de reactivos. 
+Asegúrese que el nuevo kit procede de una zona con temperatura ambiente similar 
+a la del analizador.
+Desembale el kit y retire los tres tapones rojos de protección. No presione el lateral 
+del kit una vez retirados los tapones, ya que las soluciones que contiene podrían 
+rebosar. Tenga a mano papel para secar la superficie donde se acopla el conector 
+en caso que rebose algo de líquido. 
+Posicione el conector orientado correctamente y presione con una ligera fuerza 
+hasta oír un clic. Escriba en el lateral del kit la fecha de la instalación.
+Coloque el kit en su alojamiento.
+Ejecute las acciones, en número y orden indicado, con el programa de usuario, en 
+el apartado utilidades ISE, cambio del kit de reactivos.

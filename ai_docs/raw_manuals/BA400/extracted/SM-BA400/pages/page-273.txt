@@ -1,0 +1,20 @@
+Lista de recambios
+Código
+Representación 
+Descripción
+AC16572
+Botella agua destilada con tapón y boyas
+AC16573
+Botella residuos baja contaminación con tapón y 
+boyas
+AC16574
+Estación lavado puntas
+AC16575
+Columna soporte rotor reacción
+AC16576
+Conjunto colector
+AC17287
+Calefactor de la estación de lavado
+AC16578
+Electroválvula 3 vías
+273

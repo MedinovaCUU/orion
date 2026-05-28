@@ -1,0 +1,39 @@
+133
+133
+Ilustración 91 
+Pantalla sesión de trabajo
+La tabla permite visualizar el estado de las muestras y las técnicas mediante un 
+código de colores e información adicional mediante iconos
+Código de color
+Descripción
+Estado de la técnica pendiente de preparar
+Técnica en curso de preparación y lectura
+Técnica finalizada y con resultados 
+ 
+ 
+Indica que la técnica o paciente ha finalizado correctamente.
+ 
+ 
+Indica que la técnica o paciente ha terminado con alarmas.
+ 
+ 
+Botón para visualizar la curva de reacción. La visualización puede ser en tiempo 
+real o una vez finalizada la reacción.
+ 
+ 
+Indica que el usuario puede imprimir el informe de paciente final porque ya ha 
+finalizado.
+ 
+ 
+Indica que puede enviar los resultados a través del sistema LIS
+ 
+ 
+Indica que la técnica o paciente está bloqueado. Puede ser debido a una alarma 
+de falta de muestra y/o reactivo, o problemas con el blanco o calibrador de la 
+técnica.
+ 
+ 
+Al realizar un clic en la casilla de una técnica, bloquea temporalmente dicha téc­
+nica para que no se realice. Volviendo a realizar un clic sobre la misma técnica, 
+la desbloquea. Únicamente se pueden bloquear las técnicas de los pacientes o los 
+pacientes enteros que aún no hayan iniciado la preparación.

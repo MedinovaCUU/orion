@@ -1,0 +1,29 @@
+Manual de servicio
+160
+Lista de recambios
+Código
+Representación
+Descripción 
+CA13379
+AC17350
+Carcasa inferior del conjunto punta
+CA13394
+AC17349
+Carcasa superior
+CA13378
+AC17351
+Carcasa superior del conjunto punta
+CA13397
+AC17354
+Tapa instrumento
+CA13396
+AC17353
+Tapa protección muelle
+ME13377
+Cilindro hidroneumático de la bisagra de la tapa
+VA10355
+Conector de red
+ZO10407
+Portafusibles
+AC17322
+Interruptor refrigerador

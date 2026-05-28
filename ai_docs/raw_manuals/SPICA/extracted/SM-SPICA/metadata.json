@@ -1,0 +1,29 @@
+{
+  "manufacturer": "Biosystems",
+  "equipment": "SPICA",
+  "aliases": [],
+  "document_type": "service_manual",
+  "language": "Spanish",
+  "source_pdf": "/Users/ricardomontanezmiranda/Documents/BioSys Diagnostico/data/manuals/SPICA/SM-SPICA.pdf",
+  "source_filename": "SM-SPICA.pdf",
+  "source_sha256": "0a7e18d8b20423682efc752287cfce4c92f5ca04f35cb5516455de4b4149a591",
+  "page_count": 60,
+  "pdf_metadata": {
+    "format": "PDF 1.7",
+    "title": "UM-SPICAv2.8-ES.pdf - UserManual-0020 - (138) - 11/02/2025 13:28:06",
+    "author": "Biosystems",
+    "subject": "UM-SPICAv2.8-ES.pdf - UserManual-0020 - (138) - 11/02/2025 13:28:06",
+    "keywords": "",
+    "creator": "Biosystems",
+    "producer": "Biosystems",
+    "creationDate": "D:20260330210855+02'00'",
+    "modDate": "D:20260330210855+02'00'",
+    "trapped": "",
+    "encryption": null
+  },
+  "title_lines": [
+    "MANUAL",
+    "DE",
+    "USUARIO"
+  ]
+}

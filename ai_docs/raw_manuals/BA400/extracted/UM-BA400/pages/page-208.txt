@@ -1,0 +1,52 @@
+Manual usuario 
+ 
+ 
+ 
+Manual usuario 
+ 
+ 
+ 
+208
+208
+Biosystems
+Biosystems
+Primero se dispensa el reactivo A, en el ciclo 31 se dispensa la muestra, se agita y 
+empieza la reacción. Se realiza la lectura L1 y al cabo de unos ciclos se realiza la 
+lectura L2. La absorbancia es la diferencia de las lecturas.
+RA
+S
+L1
+Time (Cycles)
+ABS
+1
+31
+FIXED TIME − MonoReagent
+L2
+Ilustración 131 
+Representación del método de cálculo tiempo fijo monoreactivo
+El cálculo de la absorbancia puede ser monocromática o bicromática. 
+Cuando la reacción es monocromática, sólo se mide a una longitud de onda y el 
+cálculo de la absorbancia se calcula con la siguiente fórmula:
+A=ABS L2−ABS L1
+ 
+(6)
+Cuando la reacción es bicromática, se realizan dos lecturas en el tiempo L1 y dos 
+lecturas en el tiempo L2. La absorbancia es la diferencia entre las dos longitudes 
+de onda a cada tiempo de lectura.
+A=ABS L2
+principal−ABS L2
+referencia−ABS L1
+principal−ABS L1
+referencia 
+(7)
+15.2.5. Tiempo fijo bireactivo
+En este modo de funcionamiento es el analizador que prepara el reactivo de trabajo 
+en cada preparación.
+Primero se dispensa el reactivo A, en el ciclo 31 se dispensa la muestra, en el si­
+guiente ciclo se agita, en el ciclo 66 se dispensa el reactivo B, se agita y empieza la 
+reacción. Se realiza la lectura L1 y al cabo de unos ciclos se realiza la lectura L2. 
+En este modo de cálculo se realizan dos lecturas y la absorbancia resultante es la 
+diferencia de las dos lecturas. 
+El cálculo de la absorbancia puede ser monocromática o bicromática. 
+Cuando la reacción es monocromática, sólo se mide a una longitud de onda y el 
+cálculo de la absorbancia se calcula con la siguiente fórmula:

@@ -1,0 +1,23 @@
+Pulse este botón para leer los ajustes del analizador. En la pantalla aparecerán los valores de los ajustes por si quiere 
+consultarlos. También aparecerá una pantalla emergente para seleccionar el nombre y carpeta donde quiere guardar 
+el fichero con los ajustes.
+Pulse este botón para seleccionar un fichero de ajustes guardado previamente. En la pantalla se mostrarán los valores 
+del fichero.
+Pulse este botón para enviar los ajustes leídos previamente de un fichero al analizador.
+Pulse este botón para restaurar los valores iniciales de los ajustes. Tenga en cuenta que una vez restaurados los valores 
+iniciales tendrá que volver a reajustar todo el analizador.
+6.6.4. Actualizar el firmware
+Desde esta pantalla se permite realizar la actualización del firmware del analizador. En la parte superior de la pantalla 
+se muestra la versión del firwmare actual. Para realizar este proceso el analizador tiene que estar en “sleeping”. Si no 
+lo está apague y vuelva a encender el analizador.
+Pulse este botón para poner el analizador en modo sleeping. Para realizar el poceso de carga de firmware es necesario 
+que el analizador esté en modo sleeping.
+Pulse este botón para seleccionar el fichero de firmware que quiera instalar.
+Pulse este botón para enviar el fichero de firmware al analizador. Este proceso se realiza automáticamente hasta que 
+finaliza. 
+Ilustración 6.28 
+Pantalla de actualización del firmware
+6.6.5. Cambiar rotor de reacciones
+Cuando quiera cambiar el rotor por mantenimiento preventivo o porque aparece un aviso que indica que hay de­
+masiadas cubetas descartadas, utilice la opción de cambio de rotor del menú de utilidades. 
+105

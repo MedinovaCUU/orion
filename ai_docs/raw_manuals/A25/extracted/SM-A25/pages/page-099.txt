@@ -1,0 +1,15 @@
+99
+5.4.2. 
+Prime the fluid system
+On pressing the Test button, the analyzer fills the conduits of the dispensing system and the washing station 
+with distilled water. To perform this operation, the operating arm is moved to the washing station. The technician 
+can choose whether he wishes to prime the dispensing system, the washing system or both. The technician can 
+choose which liquid want to prime the dosification system, with air, with washing solution or with liquid system.
+5.4.3. 
+Cleaning of the dispensing system
+On pressing the Wash button, the analyzer washes the dispensing system internally and externally. To perform 
+this operation, the operating arm is moved to the washing station. The technician can choose between performing 
+the wash with distilled water or wash solution. In the case of the latter, the analyzer asks the technician to place 
+a bottle of wash solution in stead of the distilled water container or to fill the latter with wash solution. Once the 
+wash has been performed, the analyzer asks for the distilled water container to be put back in position. Finally, 
+the analyzer primes the system with distilled water.

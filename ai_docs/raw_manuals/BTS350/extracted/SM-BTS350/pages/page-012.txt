@@ -1,0 +1,57 @@
+—  12  —
+Service manual
+2.3.3. - Physical description
+In Figure 2.8 a cross-section of the optical bench is shown, with 
+the thermostatation system. The cuvette holder (2) is inserted in 
+the optical support (1). One of the sides of the Peltier cell (4) is 
+touching the cuvette holder (2). On the other side is the radiator 
+(5) and the fan (6). The temperature sensor (3) is housed in the 
+cuvette holder.
+2.3.4. - Programming
+Programming the thermostatization system consists of telling 
+the instrument which temperature is desired for the reaction 
+mixture. This will depend on each particular case. The appliance 
+has several points where this value can be programmed. For 
+instance, each stored test can programme a temperature.
+2.3.5. - Adjustment
+Like the other systems, the set of tolerances of the elements 
+comprising the thermostatation system includes a deviation 
+between the programmed temperature and the real temperature, and so an adjustment process will be necessary to offset 
+those deviations. The thermostatisation adjustment procedure is described in section.
+2.3.6. - Precautions and maintenance
+The thermostatisation system has two especially critical and delicate points: good thermal contact between both sides of 
+the Peltier cell and the cuvette holder and radiator, respectively, and the thermal contact between the temperature sensore 
+and the cuvette holder.
+To guarantee proper functioning at these points, the following precautions should be taken:
+• 
+Place a thin but even layer of silicone on each side of the Peltier cell, covering the whole surface.
+• 
+The silicone must not exceed the edge of the cell surface or be between the two sides of it, as this would cause a thermal 
+crossover, reducing the system's performance.
+• 
+The temperature sensor must have a layer of silicone that is sufficient to established good thermal contact with the 
+bottom of the housing.
+To assemble the above elements, following the procedures indicated on the CE15121 Peltier cell spares and AC15122 
+temperature sensor. 
+2.4. - Communications system
+The semi-automatic analyzer are equipped with two communications systems:
+• 
+USB port type A
+• 
+USB port type B
+2.4.1. - USB port type B
+This is a USB port with type B connector.
+The channel is supplied already preconfigured in the factory and has the following characteristics:
+• 
+Transmission speed (Baud rate): 9600
+• 
+Timeout: 0
+• 
+Terminal number: 0
+Figure 2.8 
+1
+2
+3
+4
+5
+6

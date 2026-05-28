@@ -1,0 +1,35 @@
+27
+29
+32
+35
+31
+28
+30
+33
+34
+Ilustración 3.6. Detalle de la bomba cerámica
+22 – Manifold
+23 – Bomba cerámica
+24 – Tubo de interconexión interno
+25 – Tubo de interconexión bomba - punta
+26 – Tubo de interconexión botella liquido de sistema - 
+bomba
+27 – Fotodetector de inicio
+28 – Motor de la bomba
+29 – Manifold metracrilato
+30 – Camara de dispensación
+31 – Retén 
+32 – Pistón cerámico
+33 – Husillo
+34 – Rodamiento aixial antigiro
+35 – Eje del motor
+36 – Electroválvula del manifold
+Referencias de la Ilustración 3.4, Ilustración 3.5 y Ilustración 3.6
+3.3.2. Conjunto tubos y contenedores
+El tubo de teflón (40 y 26) conecta el contenedor de agua destilada (39) con la electroválvula (36) de la bomba do-
+sificadora. Este tubo lleva instalado en el extremo del contenedor el filtro (44). Está conectado a la electroválvula de 
+la bomba dosificadora mediante el rácor (26). El tubo de teflón pasa a través de la pieza de goma, instalada en el 
+tapón del contenedor, que fija sus posiciones. El tubo de PVC (43) conecta la bomba de mem brana de extracción de 
+residuos con el contenedor de residuos. El tapón del contenedor de residuos posee un rácor de acoplamiento rápido 
+(46) con cierre automático antigoteo cuando está desconectado. Todos los tubos pasan al interior del analizador a 
+través del pasa muros de goma (47).

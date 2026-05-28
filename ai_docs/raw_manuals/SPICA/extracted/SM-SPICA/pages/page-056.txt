@@ -1,0 +1,9 @@
+SERVICIO
+Manual de Usuario BioSystems SPICA
+56
+Manual de Usuario BioSystems SPICA | Versión 2.8 - Agosto 2024
+6. COMO ACEDER A LOS SUBSISTEMAS
+Paso 5 - Desconectar el sensor de la puerta para quitar las cubiertas de la superficie de trabajo
+Paso 4 - Quitar el lado izquierdo lateral para acceder al subsistema electrónico
+Paso 6 - Subir el perfil redondo de aluminio negro antes de quitar las hojas de metal de la 
+superficie de trabajo:

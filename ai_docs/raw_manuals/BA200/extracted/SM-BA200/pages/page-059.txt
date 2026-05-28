@@ -1,0 +1,40 @@
+Manual de servicio
+59
+Ilustración 4.37 
+Serigrafía de la placa punta
+Conector
+Función
+Pin
+CN1
+Conexión del bus CAN 
+Pin 1: 24V
+Pin 2: GND
+Pin 3: NC
+Pin 4: CAN_H
+Pin 5: CAN_L
+CN2
+Sensor temperatura punta
+Pin 1: 3.3 V
+Pin 2: Sensor
+CN3
+Resistencia punta
+Pin 1: Resistencia
+Pin 2: Resistencia
+CN4
+Detección punta
+Pin 1: Señal detección
+Pin 2: Inyección señal
+Test point
+Función
+TP1
+5 V
+TP1
+Selección de placa. Dirección 1 
+TP2
+Selección de placa. Dirección 2
+TP3
+Selección de placa. Dirección 3
+TP4
+Selección de placa. Dirección 4
+TP6
+3.3 V

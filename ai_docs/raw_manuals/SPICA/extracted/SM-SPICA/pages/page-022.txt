@@ -1,0 +1,15 @@
+22
+USUARIO
+Manual de Usuario BioSystems SPICA | Versión 2.8 - Agosto 2024
+Manual de Usuario BioSystems SPICA
+3. DESCRIPCIÓN
+3.1 Descripción de los componentes
+POCILLOS PEDIATRICOS DE MUESTRA
+Para insertar los pocillos pediátricos de muestra en sus posiciones, se proporciona un accesorio con el 
+analizador para adaptar los diámetros. 
+BOTELLAS DE REACTIVOS
+Se pueden insertar 2 tipos de botellas. Los volúmenes de las botellas son los siguientes:
+• 60 mL, sólo para la colocación en el anillo interior.
+• 20 mL, para colocar en el anillo interior y exterior.
+12. APP
+Una aplicación simples e intuitiva le permite acceder a todas las funciones de BioSystems SPICA.

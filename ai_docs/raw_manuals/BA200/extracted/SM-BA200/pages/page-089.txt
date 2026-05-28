@@ -1,0 +1,20 @@
+2
+1
+Ilustración 6.9 
+Ajuste estación de lavado
+1. Posicione el útil AC16643 en el rotor. En caso de no disponer de un útil, coloque un rotor normal y verifique 
+que las puntas inicial y final de la estación de lavado entran entre los pocillos 117 y 8.
+2. Afloje el tornillo (1) y (2) que sujeta la estación de lavado.
+3. Mueva el cabezal de la estación de lavado hasta que las puntas estén correctamente centradas en el rotor.
+4. Apriete el tornillo (1) y (2).
+Una vez realizado el ajuste mecánico pase a realizar el ajuste de la altura de la estación de lavado con el programa 
+de servicio.
+Ver Ilustración 6.10.
+Ilustración 6.10 
+Pantalla ajuste posición estación de lavado
+1. Pulse el botón de inicio del ajuste. 
+2. Desplace el posicionamiento vertical de la estación de lavado con el recuadro de ajuste.
+3. Mueva paso a paso la estación de lavado para descender las puntas de la estación hasta que la punta del secador 
+toque el rotor y el muelle se comprima un poco (unos 0.5 mm).
+4. Guarde el valor del posicionamiento.
+89

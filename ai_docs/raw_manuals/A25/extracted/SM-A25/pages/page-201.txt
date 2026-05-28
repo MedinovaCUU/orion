@@ -1,0 +1,74 @@
+RECORD OF REFURBISH PROCESS 
+ 
+Page 1/1 
+ Rev 2.0 
+Operative date: 17/3/20
+Company name:
+Serial number
+Refurbish date:
+SPARE CHANGE PROCESS
+TIp change
+Ok / No Ok
+Teflon tubing change
+Ok / No Ok
+Lamp change
+Ok / No Ok
+Pump seal change
+Ok / No Ok
+Fan change
+Ok / No Ok
+Update firmware and 
+software
+Ok / No Ok
+VERIFICATION / ADJUSTMENT PROCESS
+Verification of XYZ arm 
+positions
+Ok / No Ok
+Verification of readings 
+rotor positions and filter 
+drum
+Ok / No Ok
+Verification of the sensibil­
+ity level detection with the 
+different bottles and tubes
+Ok / No Ok
+Verification of the thermo­
+statization of the tip and 
+rotor
+Ok / No Ok
+Photometry test
+Ok / No Ok
+Integration times
+Ok / No Ok
+Number of accounts
+Ok / No Ok
+Dark accounts
+Ok / No Ok
+Repeatability without 
+moving filter drum
+Ok / No Ok
+Stability at 505 nm
+Ok / No Ok
+Repeatability by mov­
+ing filters
+Ok / No Ok
+FUNCTIONAL VERIFICATION
+Functional check following 
+chapter 7.2.6
+Ok / No Ok
+Print and save results
+Ok / No Ok
+FINALITATION
+Place label of refurbished 
+equipment
+Ok / No Ok
+Add full box of accesories
+Ok / No Ok
+Check packaging
+Ok / No Ok
+Acceptance of refurbished
+Refurbished OK
+Available for sale
+Ok / No Ok
+Signature:
+Performed by:

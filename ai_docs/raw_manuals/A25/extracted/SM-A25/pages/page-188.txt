@@ -1,0 +1,20 @@
+Service manual
+188
+List of spare parts
+Code
+Representation 
+Description
+AC11519
+Z motor with encoder
+AC14619
+Encoder without motor
+AC14712
+Z guide with a skate
+ME11514
+Z belt
+AC11520
+Thermostatted tip assembly
+AC13227
+Spiral tip
+CE11561
+Peltier tip

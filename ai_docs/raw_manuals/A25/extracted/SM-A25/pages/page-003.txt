@@ -1,0 +1,40 @@
+Version manual
+Revision date
+Modification
+11
+December 2022
+Modified Chapter: 1, 6.4.7, AI, AIII, AIV
+10
+June 2020
+Modified Chapter: 6, AII
+09
+March 2020
+Modified Chapter: 1, 3, 4, 6, 7, AIII, AIV, AV
+08
+May 2012
+Modified Chapter: AV
+07
+September 2011
+Modified Chapter: AVI
+ 
+Manual code TESE000015-11-ENG
+ 
+Manufacturer’s address 
+BIOSYSTEMS
+ 
+ 
+c/Costa Brava 30, 
+ 
+ 
+08030 Barcelona
+ 
+ 
+SPAIN
+ 
+ 
+http://www.biosystems.global
+ 
+ 
+The A25 is compliant with Regulation (EU) 2017/746 and RoHS Directive
+The Y25 is compliant withe the electrical security 2014/35/EU directive and 
+electromagnetic compatibility 2014/30/EU directive of the European Union

@@ -1,0 +1,59 @@
+Action 
+Description
+Priming A
+Performs a priming cycle with calibration standard A 
+using a volume of 300 μL. In the repetitions parameter 
+indicate how many times the action must be executed.
+Priming B
+Performs a priming cycle with calibration standard B 
+using a volume of 300 μL. In the repetitions parameter 
+indicate how many times the action must be executed.
+Wash
+Performs a wash cycle with the ISE washing solution. 
+In the sample rotor pos. parameter indicate the position 
+of the tube with the washing solution. In the volume 
+parameter indicate the volume to be dispensed for 
+washing.
+Activate the reagent 
+kit
+Execute this action to activate and memorise the reagent 
+kit in the programme. It is also used to memorise the 
+installation date and record the consumption of the 
+calibration standards. The programme issues a warning 
+when the standards are no longer usable.
+Activation of 
+electrodes
+Execute this action to activate and memorise the 
+electrodes in the programme. It is used to record the 
+consumption of the electrodes and warn the user when 
+they are no longer usable.
+Activation of ISE 
+preparations
+Use this action to tell the programme you have installed 
+an ISE module.
+6.5.8. Stress
+The stress verification test simulates the normal operating cycle of the analyser. However, instead of pipetting serum 
+and reagent, the analyser moves the arms and pumps, but without pipetting any fluids. 
+The stress can be configured as global stress, i.e., performing a complete cycle or partial stress of functional parts 
+of the analyser.
+Partial stress options:
+• 
+Arms (selected separately)
+• 
+Rotors (selected separately)
+• 
+Photometry
+• 
+Syringes
+• 
+Fluids
+Steps for programming stress
+1. Select the stress duration by number of cycles.
+2. Select whether you want the global or partial stress option.
+3. Press the adjustment button to start the stress test
+4. While the stress test is being executed, a status bar will appear indicating the stress duration.
+5. Once the stress test has finished, the following information is displayed in the results section:
+a) Type of stress
+b) Total number of cycles and total stress duration time
+Service Manual 
+88

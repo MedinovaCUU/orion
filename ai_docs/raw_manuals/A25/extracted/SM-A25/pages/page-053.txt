@@ -1,0 +1,52 @@
+53
+Connector
+Function
+Pins
+J4
+Board CPU I2C connection
+1- 5V
+2- SDA
+3- SCK
+4- GND
+J5
+Fridge detection signal faston
+1- Sensor
+J7
+Cover fridge detection sensor
+1- Sensor
+2- Sensor
+J9
+Fridge peltier
+1- Peltier red
+2- Peltier black
+J10
+Fridge peltier
+1- Peltier red
+2- Peltier black
+J11
+Fridge peltier
+1- Peltier red
+2- Peltier black
+4.7. 
+LED Board (CIIM00011)
+This board indicates the different states of the analyzer. It is made up of a bicolor LED and the circuitry associated 
+with action. 
+D1 - Bicolor LED
+Connector
+Function
+Pins
+J36
+LED board connection (CIIM000011)
+1 - GND
+2 - LED
+3 - LED
+4 - Vdc 
+4.8. 
+Communications Board (CIIM00019)
+This enables communication with the exterior of the analyzer through a USB channel or a RS232 channel. It also 
+includes an auxiliary RS232 channel for monitoring the functions of the analyzer during its execution.
+CN1 - USB Connector
+P1 - Main RS232 connector
+P2 - Auxiliary RS232 connector
+D1 - USB TX LED indicator
+D2 - USB Rx LED indicator

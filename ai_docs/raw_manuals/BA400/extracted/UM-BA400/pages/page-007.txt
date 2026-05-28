@@ -1,0 +1,51 @@
+7
+4.12. Instalación del programa de usuario en el ordenador...........................37
+4.12.1. Configuración de opciones de energía........................................................... 39
+4.12.2. Configurar programas en segundo plano....................................................... 40
+4.12.2.1. Actualizaciones de flash........................................................................ 40
+4.12.2.2. Actualizaciones de java......................................................................... 41
+4.12.2.3. Configuración de los servicios del sistema operativo................................. 42
+4.12.3. Configuración para la cyberseguridad........................................................... 43
+4.12.3.1. Creación de usuarios del ordenador........................................................ 43
+4.12.3.2. Configurar los permisos de usuario de la aplicación................................. 43
+4.12.3.3. Activar y configurar el antivirus del sistema operativo............................. 43
+4.12.3.4. Ejecutar el antivirus antes de realizar la instalación de la aplicación....... 45
+4.12.3.5. No instale ningún programa adicional................................................... 45
+4.12.3.6. Configurar la actualización de las versiones de windows.......................... 46
+4.12.3.7. Verificación de la integridad de la aplicación.......................................... 48
+4.12.3.8. Copia de seguridad de los datos............................................................. 49
+4.12.3.9. Recuperación de la contraseña principal................................................. 49
+4.12.3.10. Sistema con conexión a un host............................................................. 49
+4.12.3.11. Configuración de un sistema VPN......................................................... 51
+4.13. Instalación del módulo ISE (Opcional)...............................................51
+4.14. Primeros pasos para el funcionamiento del analizador........................55
+4.15. Precauciones durante el funcionamiento.............................................56
+4.16. Preanalítica y preparación de soluciones adicionales...........................57
+5. Transporte y reexpedición...........................................................59
+6. Manipulación y almacenamiento................................................59
+7. Principio de funcionamiento......................................................60
+8. Descripción del analizador.........................................................61
+8.1. 
+Cubiertas y tapas..................................................................................61
+8.2. 
+Rotor de muestras................................................................................62
+8.3. 
+Rotor de reactivos................................................................................63
+8.4. 
+Rotor de reacciones..............................................................................64
+8.5. 
+Sistema óptico .....................................................................................65
+8.6. 
+Estación de lavado...............................................................................65
+8.7. 
+Brazo de agitación................................................................................66
+8.8. 
+Brazo de dosificado..............................................................................66
+8.9. 
+Contenedores de residuos, agua purificada y solución de lavado.........67
+8.10. Módulo ISE (opcional)........................................................................68
+9. Descripción del software.............................................................70
+9.1. 
+Identificación de las partes del programa.............................................70
+9.1.1. 
+Listado de botones más comunes.................................................................. 70

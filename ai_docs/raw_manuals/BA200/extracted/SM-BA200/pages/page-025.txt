@@ -1,0 +1,44 @@
+El aislante tiene una abertura con una ventana transparente (10) para permitir la lectura del código de barras. La 
+ventana está calefactada para evitar su empañamiento
+En el subconjunto de la transmisión está sujeto el lector del código de barras (22). El lector tiene un soporte (21) 
+que permite ajustar la posición.
+ 
+) Ver capítulo 6 para proceder el ajuste con el programa de servicio y el capítulo 8 para ver como se realiza el ajuste mecánico del 
+lector de código de barras.
+La transmisión consiste en una estructura de soporte (25) donde está sujeto el motor (23). La correa (26) transmite 
+la fuerza del motor a través de unas poleas al eje (11) donde se afloja el rotor con los reactivos y las muestras.
+El detector de inicio (24) asegura con una pestaña de la polea la posición inicial del rotor.
+9
+12
+11
+10
+Ilustración 3.3 
+Refrigeración y transmisión
+Referencias de la ilustración 3.1, 3.2, 3.3, 3.4 y 3.5:
+1 – Tapa del rotor
+2 – Rotor de reactivos y muestras 
+3 – Conjunto rotor de reactivos y muestras
+4 – Adaptador para pocillos pediatricos
+5 – Adaptador para tubos
+6 – Tubo de muestras
+7 – Posición para reactivos o adaptadores de tubo
+8 – Pulsador para liberar el rotor
+9 – Refrigerador
+10 – Ventana para el lector del código de barras
+11 – Eje de transmisión del rotor
+12 – Tornillos de sujeción del refrigerador
+13 – Aislante del refregerador
+14 – Grafito conductor térmico
+15 – Peltier
+16 – Grafito conductor térmico
+17 – Conector rápida para el desagüe
+18 – Aislante
+19 – Radiador
+20 – Ventiladaor
+21 – Soporte para el lector del códifo de barras
+22 – Lector del código de barras
+23 – Motor
+24 – Detector de inicio
+25 – Soporte de la trasnmisión
+26 – Correa
+25

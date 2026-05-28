@@ -1,0 +1,25 @@
+Manual de servicio
+164
+Lista de recambios
+Código
+Representación
+Descripción 
+MO13363
+AC16594
+Motor bomba dosificadora
+MO13372
+Motor del rotor
+MO13376
+Motor del tambor de filtros
+MO13351
+Motor eje X
+MO13353
+Motor eje Y
+MO13354
+Motor eje Z
+ZO13374
+Portalámparas
+AC13370
+Rotor de reacciones completo
+AC15421 
+Canal calefactor del rotor

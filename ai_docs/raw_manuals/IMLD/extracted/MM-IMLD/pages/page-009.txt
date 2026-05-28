@@ -1,0 +1,49 @@
+9
+ENGLISH
+4. Cleaning
+Necessary material:
+- A mixture of 70% alcohol and 30% ether.
+- Lens cleaning tissue.
+- Rubber bulb for blowing air.
+- Fine, soft brush.
+- Cotton tipped.
+Procedure
+a. Cleaning the body of the microscope.
+- Use a cloth moistened with a solution of water and neu-
+tral soap. Never use detergents or abrasives.
+b. Cleaning of the microscope's external components.
+- General rules
+ Once the external optical components have been remo-
+ved (lenses, condenser, objectives), proceed as follows:
+- Use the fine, soft brush to eliminate dust and other
+particles. Use the rubber bulb to assure that all dust is
+removed. To eliminate adhered dust, use the lens cleaning
+paper by wiping in a circular motion. If there are any
+fingerprints or remains of grease, use a cotton swab
+moistened with the alcohol/ether solution. Caution: Do not
+use the alcohol/ether solution to clean the daylight filter.
+Instead, use distilled water and dry with a soft cloth.
+c. Cleaning the internal lenses.
+ - If dirt is detected on the internal lenses, they must be
+taken off and be cleaned with the fine brush and compressed
+air (or using the rubber bulb). It is not advisable to remove
+the optical elements, given that they would have to be
+adjusted again.
+List of cleaning accessories supplied by
+Bioystems
+Code
+Description
+AC15506
+Air blower
+AC15504
+Lens tissue
+AC15505
+Cotton tipped
+AC15503
+Lens cleaning brush
+AC15507
+Complete cleaning kit:
+- Dust blower
+- Lens cleaning paper
+- Cotton swabs
+- Brush for lenses

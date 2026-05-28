@@ -1,0 +1,10 @@
+Ilustración 6.26 
+Pantalla de estrés
+6.6. Utilidades
+6.6.1. Modo demostración
+Permite poner el analizador en un modo de demostración. Este modo realiza el ciclo básico de pipeteo y dispen­
+sación, con lo cual hay un movimiento de los brazos y rotores pero no hay ninguna manipulación de líquidos ni 
+realiza ninguna lectura fotométrica.
+Ilustración 6.27 
+Pantalla modo demostración
+129

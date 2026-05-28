@@ -1,0 +1,294 @@
+89
+PUMP
+ALTERNATIVE
+SUPPLY
+FA SF1
+PUMP
+PUMP
+SF1-GE1
+EV
+CIIM00053
+CAN BUS
+WASHING 
+STATION
+DETECTOR
+WASHING 
+STATION
+MOTOR
+SF1
+WPUMP
+SF1-WPUMP
+SF1-B1
+PUMP
+PUMP
+PUMP
+5xEV
+PUMP
+PUMP
+PUMP
+PUMP
+SENSOR WATER
+SENSOR WASTE
+HCW
+WS
+THERMISTOR
+TEMPERATURE
+SENSOR
+SF1-HEATER
+HEATER
+PLMA00256
+THERMAL FUSE
+WS
+HIGH CONCENTRATION WASTE
+WASTE SENSOR
+WATER SENSOR
+EV
+SF1-E2
+DC MOTOR
+PLMA00302
+DC MOTOR
+PLMA00303
+EV
+SF1-EV3
+CAN BUS
+THERMAL PROT.
+ST1
+ST2
+E1
+E2
+B1
+B2
+B3
+B4
+GE1
+SF1-B2
+SF1-B3
+SF1-B4
+SF1-B5
+SF1-B6
+SF1-B7
+SF1-B8
+SF1-B9
+SF1-B10
+SF1-E1
+B5
+B6
+B7
+B8
+B9
+B10
+HOME
+WPUMP
+HCW
+WS
+THERMISTOR
+HEATER
+THERMAL
+PROT.
+ST1
+ST2
+E3
+1
+2
+CN6
+CN6
+1
+2
+3
+4
+CN22
+CN22
+1
+2
+CN18
+CN18
+1
+2
+CN20
+CN20
+1
+2
+CN28
+CN28
+1
+2
+CN24
+CN24
+1
+2
+CN1
+CN1
+1
+2
+CN3
+CN3
+1
+2
+3
+4
+5
+1
+2
+3
+4
+5
+6
+CN5
+CN5
+1
+2
+3
+4
+CN13
+CN13
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+1
+2
++tº
++tº
+1
+2
+1
+2
+CN23
+CN23
+1
+2
+1
+2
+1
+2
+CN21
+CN21
+1
+2
+1
+2
+1
+2
+1
+2
+CN12
+CN12
+1
+2
+CN19
+CN19
+1
+2
+CN7
+CN7
+1
+2
+3
+4
+CN17
+CN17
+1
+2
+1
+2
+1
+2
+CN11
+CN11
+1
+2
+1
+2
+CN2
+CN2
+1
+2
+1
+2
+1
+6
+2
+5
+4
+CN10
+CN10
+1
+2
+CN4
+CN4
+1
+2
+CN9
+CN9
+1
+2
+CN16
+CN16
+1
+2
+CN26
+CN26
+1
+2
+3
+4
+1
+2
+CN15
+CN15
+1
+2
+1
+2
+CN14
+CN14
+1
+2
+CN8
+CN8
+1
+2
+3
+4
+CN26
+CN26
+1
+2
+3
+Ilustración 4.21 
+Conexiones de la placa control de fluidos
+Conector
+Función
+Pin
+CN1
+Activación agitador 1
+Pin 1: Salida 1
+Pin 2: Salida 2
+CN2
+Activación agitador 2
+Pin 1: Salida 1
+Pin 2: Salida 2
+CN3
+Conexión del bus CAN 
+Pin 1: 24V
+Pin 2: GND
+Pin 3: NC
+Pin 4: CAN_H
+Pin 5: CAN_L
+CN4
+Alimentación extra
+Pin 1: 24 V
+Pin 2: GND
+CN5
+Sensor de detección de nivel de la botella de 
+residuos
+Pin 1: GND
+Pin 2: Detector inferior
+Pin 3: GND
+Pin 4: Detector superior

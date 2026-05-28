@@ -1,0 +1,36 @@
+8.10. Recambio desgasificador
+AC17094
+AC17092
+AC17220
+ 
+Código
+Descripción de los códigos
+AC17094
+Desgasificador
+AC17092
+Membrana de recambio del 
+desgasificador
+AC17220
+Placa control desgasificador
+8.10.1. Insertar y sacar tubos de los racores rápidos
+Inserción de un tubo en el racor rápido:
+1. Inserte el tubo (1) hasta el final del conector
+2. Estire el tubo hacía afuera (2) para bloquear la conexión.
+Para sacar el tubo del racor rápido:
+1. Presione la lengüeta del conector hacía dentro (3) para liberar el tubo.
+2. Estire del tubo (4) mientras mantiene apretada hacía dentro la lengüeta.
+8.10.2. AC17092 - Cambio de la membrana del desgasificador
+Desmontaje:
+1. Quite los tubos de ambos extremos de la membrana(5). Para quitar los tubos, presione la anilla exterior del 
+conector (3) mientras estira el tubo (4).
+2. Quite la tubos para realizar el vacío (6).
+3. Quite los tornillos de adaptación de los tubos de vacío (7).
+4. Quite la membrana.
+Montaje:
+1. Coloque la nueva membrana.
+2. Coloque los tornillos de adaptación (7), apriete fuertemente.
+3. Coloque los tubos para realizar el vacío (6).
+4. Coloque los tubos de entrada y salida en los extremos de la membrana (5) . Verifique la correcta colocación de 
+los tubos, estirando un poco hacía fuera una vez introducido el tubo.
+5. Ponga en marcha el analizador, la bomba de vacío debe estar funcionando unos segundos para realizar el vacío.
+149

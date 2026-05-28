@@ -1,0 +1,60 @@
+—  8  —
+Service manual
+2. - Operating description
+Below is a summary of how the semi-automatic analyzer functions to provide a clear picture of the unit and allow it to be 
+studied in detail, in order to carry out maintenance and repair work.
+These semi-automatic analyzer are based on the following functional modules:
+• 
+An optical system for performing photometric readings. (Patent pending).
+• 
+A suctioning system based on a peristaltic pump for positioning the sample in a continuous flow cuvette.
+• 
+A cuvette thermostation system to maintain all the reactions that require it at a constant temperature.
+• 
+A communications system that enables the semi-automatic analyzer to be connected to a computer which, if using a 
+treatment programme, can use the data sent by the instrument.
+• 
+A microcontroller system that regulates the four modules described above.
+• 
+A battery supply system (optional).
+A description of each of these functional modules is given below.
+2.1. - Optical system
+2.1.1. - Elements comprising it
+The Figure 2.1 shows a diagram of the optical 
+system, which is comprised of the following 
+elements:
+• 
+A series of LEDs for each wavelength (1).
+• 
+A series of interferential filters (2).
+• 
+A series of light beamsplitters (3).
+• 
+Two lenses (4).
+• 
+One reference photodiode (5).
+• 
+One flow cuvette (6).
+• 
+One mirror (7).
+• 
+One main photodiode (8).
+2.1.2. - Description of the system
+The optical system is comprised of 8 LEDs, one 
+for each wavelength (1). The microprocessor activates one LED, depending on the wavelength that is to be read. The 
+microprocessor permanently controls that the LED is activated and also the current being supplied to it. The interferential 
+filter (2) serves to define the spectrum width of the LED emission. The light beamsplitter (3) deflects the light beam 
+towards the optical axis. This component is necessary because all the LEDs are placed perpendicular to the optical axis. 
+Before crossing the sample, part of the light is deflected towards the reference photodiode (5) and the rest penetrates the 
+sample through the flow cuvette (6). This photodiode measures the light before it penetrates the sample, thereby allowing 
+potential fluctuations to be read. The light passing through the sample is deflected by a mirror (7) and then collected by 
+the main photodiode (8), which makes the reading to calculate the absorbance. 
+Figure 2.1 
+1
+2
+3
+4
+5
+6
+7
+8

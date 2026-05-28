@@ -1,0 +1,107 @@
+71
+4.3.1. Mejora de la placa CPU - CIIM00046-03. 
+Se ha realizado una mejora en los analizadores BA400 y se ha realizado un cambio en la placa CPU. Mejora recogida 
+en el BA400v2.
+ 
+) Véase el capítulo AII para saber a partir de que números de serie se ha implementado.
+Los cambios principales son:
+• 
+Sustitución de la conexión de RS-232 auxiliar por una conexión USB
+• 
+Añadido una salida para una memoria USB
+CAN BUS
+STATUS LED
+BICOLOUR
+FAN
+CPU
+PLMA00286
+DETECTOR COVER
+CN8
+CN7
+CN10
+CPU F. FAN1
+PLMA00285
+CIIM00046
+COVER SENSOR
+LED STATUS
+CAN BUS
+LED STATUS
+USB FLASH DRIVE
+ISE
+USB COMMS
+F.FAN1
+COVER SENSOR
+USB SERVICE
+CN22
+F.FAN2
+F.FAN3
+CPU
+CN19
+1
+2
+RS-232 -ISE MODULE
+5
+9
+4
+8
+3
+7
+2
+6
+1
+CN20
+1
+2
+USB FLASH DRIVE
+1
+2
+3
+4
+5
+USB SERVICE
+1
+2
+3
+4
+5
+1
+6
+2
+5
+4
+CN3
+1
+2
+CN21
+1
+2
+CN1
+1
+2
+3
+USB COMMS
+1
+2
+3
+4
+5
+GREEN
+ORANGE
+1
+2
+3
+CN2
+1
+2
+3
+4
+5
+Ilustración 4.9 
+Conexiones de la placa CPU versión 3
+Las demás conexiones son iguales a la versión anterior. 
+La versión de Firmware para esta placa CPU es compatible con las placas CPU de las versiones anteriores.
+4.4. Placas brazos - CIIM00048
+Estas placas están situadas en cada uno de los cinco brazos. 
+La placa incorpora un microcontrolador (U1) que controla los drivers de los motores que mueven el brazo en di­
+rección vertical (U7) y horizontal (U8). 
+También incorpora la electrónica de control de los detectores de inicio para cada motor.

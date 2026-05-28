@@ -1,0 +1,117 @@
+SERVICIO
+Manual de Usuario BioSystems SPICA
+51
+Manual de Usuario BioSystems SPICA | Versión 2.8 - Agosto 2024
+2. ESQUEMA BÁSICO
+DE FLUIDEZ
+El analizador funciona con 3 tanques para procesar los fluidos. Estos tanques son el tanque de agua 
+destilada, el tanque de residuos de baja contaminación y el tanque de solución de lavado. Están situados 
+en la parte delantera del analizador y el usuario puede acceder a ellos directamente.
+• Una vez hecha la determinación, el reactivo y las mezclas de la muestra permanecen en el rotor de 
+PMMA. Es un residuo de alta contaminación y debe ser tratado con cuidado.
+ • El tanque que contiene la solución de lavado tiene una capacidad de 1L. La solución de lavado se 
+utiliza para durante el funcionamiento de los fluidos principales.
+ • Todos los residuos del analizador se depositan en el tanque de residuos de baja contaminación. 
+El tanque tiene una capacidad de 2.9L, y el usuario debe vaciarlo cuando el App lo indique.
+ • El tanque de agua destilada tiene una capacidad de 3L. El agua se utiliza para cebar el sistema 
+de pipeteo, lavar el interior y el exterior de la punta.
+LOW 
+CONTAMINATION
+WASTE
+WATER
+WASHING
+SOLUTION
+USER ACCES
+Air
+EV 7
+WS or air
+OUT 7
+BIOSYSTEMS
+DEGASSER
+EV 6
+WS or air or water
+OUT 6
+EV9
+Air
+OUT1
+PRESSURE 
+SENSOR
+KNF 30 
+KPDC 24V
+DEGASSER
+PUMP 8
+Degasser
+OUT 0
+PUMP 1
+Washing station drain
+OUT 2
+STIRRER
+NEEDLE
+PUMP 2
+Washing station fill
+OUT 3
+R0,7
+R0,7
+EV 5
+WS or air or
+water or syringe
+OUT 5
+PUMP 3
+Needle internal washing
+OUT 4
+PISTON
+PUMP
+PRE-DOSING / DOSING
+MANIFOLD
+7
+6
+5
+PRESSURE 
+SENSOR
+PRESSURE
+_______ FOOD
+STEPP 0
+HOME 0
+To needle
+Thread 1/4 - 28UNF
+Tubing connection
+ØID=1/8" ØOD=3/16" SMC
+TIUB 05 BU Polyurethane
+FUNCTIONALITY SPECI
+* PUMP 3 must be OFF
+* PUMP 8 must be ON 
+* PUMP 8 must be OFF
+* During needle intern
+during the end of the 
+*Use the specific tool 
+and needle gripper
+170mm
+170mm
+1
+2
+1
+1
+TWG-E-O-160031
+E
+20PPV-PE2-02
+20PPV-SE3-02
+20PPV-PE2-02
+20PPV-SE3-02
+20PPV-PE2-02
+20PPV-SE3-02
+20PPV-PE2-02
+20PPV-SE3-02
+E
+E
+E
+Nº
+SOLIC. MODIF
+E
+PM-0097
+C
+PDC-0064 SPICA-3056
+ST6
+SPICA-1873 PDC-0035
+B
+Rotor's Wasing Station + I
+SPICA-1850 R0.4 to R0.7 T

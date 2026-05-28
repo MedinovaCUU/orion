@@ -1,0 +1,64 @@
+—  47  —
+Service manual
+Peristaltic pump
+Type of operation
+Stepper motor
+Nominal flow
+10 mL/min
+Aspiration volume
+100 μL - 5000 μL
+Cross contamination
+< 3% at 200 μL
+< 1% at 300 μL
+< 0.5% at 400 μL
+Waste bottle capacity
+1L
+Power supply system
+External power supply
+Voltage
+100 V to 240 V AC
+Frequency
+50/60 Hz
+Output voltage
+15V CC
+Output power
+30W
+Instrument power consumption
+Maximum
+12 W without battery module 
+24 W with battery module installed and in full load 
+process
+Average
+5 W performing measurements
+Minimum
+2 W on standby
+Optional battery system
+Capacity
+2000 mAh
+Minimum duration
+2 hour with batteries fully charged
+Dimensions and weight
+Maximum dimensions 
+420 mm x 350 mm x 216 mm (16.5 in x 13.7 in x 8.5 in)
+Weight with battery pack
+4290 gr. (9.43 lb)
+Weight without battery pack
+4000 gr. (8.8 lb)
+Environmental conditions
+Use
+indoor
+Height
+< 2000 m
+Room temperature
+10º C – 35º C
+Maximum relative humidity
+85%
+Installation category (current surge category)
+II
+Pollution grade
+2
+Compliance with applicable directives and legislation BTS-350
+EC Directive 98/79 on medical devices for vitro diagnostics.
+Compliance with applicable directives and legislation Y-350
+EMC Directive: 2004/108 / EC
+Electrical Safety Directive: 2006/95 / EC

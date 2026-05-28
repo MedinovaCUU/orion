@@ -1,0 +1,26 @@
+102
+Service manual
+justment file and to load it in the analyzer. Once the adjustment loading is made, the analyser turns off and 
+the application is closed. When reinitiating the application, the new loaded adjustments will be already active.
+From the firmware version 2.80, the programme counts the number of cycles of each element and the task of 
+the analyser. From this menu, it is possible to read the cycles completed by the analyser. The screen displays 
+the said cycles with the corresponding units. 
+The programme automatically saves a copy of the adjustments and cycles read in a file. This file is located in 
+the following folder:
+c:\Program files\A25 Service\Adjustments\
+When a physical element of the analyser has to be changed, e.g. the Z axis belt, the counter must be reset 
+to zero for it to correspond to the number of cycles actually stored in the analyser. To perform this operation, 
+select the box of the element that is to be initialised and enter the number of cycles in the enabled box. Then 
+press the Load cycles button.
+Using the Load adjustments button, this screen also enables the technician to select an adjustments file and load 
+it in the analyser. When the adjustments are loaded, the cycles are also loaded. Perform this operation when 
+a CPU board has to be changed. This avoids having to completely readjust the analyser; only the following 
+sections will have to be readjusted:
+• 
+Scales
+• 
+Level detection sensitivity
+• 
+Needle thermostatation
+• 
+Rotor thermostatation

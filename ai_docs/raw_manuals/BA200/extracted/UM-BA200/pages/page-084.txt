@@ -1,0 +1,59 @@
+Manual usuario 
+ 
+ 
+ 
+Manual usuario 
+ 
+ 
+ 
+84
+84
+Biosystems
+Biosystems
+Cuando este campo está activado además del identificador de muestra también 
+hay información del tipo de muestras. El tamaño total del código de barras sigue 
+siendo flexible entre 1 y 30. Los siguientes campos también se habilitan.
+ 
+Inicio y final 
+Seleccione las posiciones de inicio y final de la codificación del tipo de muestra 
+dentro del código de barras. El tipo de muestra siempre tendrá una longitud 
+menor que la del código de barras.
+ 
+Tipo de muestra 
+Tabla que relaciona los tipos de muestra del software (SER, URI, PLM, WBL, 
+CSF, LIQ Y SEM) con la codificación que tenga el laboratorio para identificar los 
+diferentes espécimenes.
+Ilustración 47 
+Configuración del lector de código de barras
+10.2.6. Configuración del funcionamiento con LIS
+Pantallas que permiten la configuración de los parámetros de la aplicación LIS 
+con la que se desee comunicar. Estos parámetros únicamente se pueden modificar 
+cuando el analizador está en modo STAND-BY.
+10.2.6.1. Configuración de la sesión de trabajo
+Pantalla que muestra las opciones de configuración con las comunicaciones LIS 
+que afectan a la sesión de trabajo.
+En la Ilustración 48 muestra la pantalla de las opciones de configuración del LIS.
+ 
+Host Query 
+Permite activar o desactivar este modo de trabajo..
+ 
+Modo de trabajo 
+Rerun (repeticiones)
+ 
+Permite seleccionar quién tiene permiso para realizar las repeticiones: el LIS, el 
+analizador o ambos.
+ 
+Consulta automática a LIS 
+(antes de iniciar/continuar la 
+sesión de trabajo)
+ 
+Al activarse esta opción, permite automatizar el proceso de Host Query desde el 
+botón de inicio de sesión. Por defecto está activo cuando haya LIS conectado y 
+disponible.
+ 
+Tiempo máximo de espera de 
+Ordenes de LIS 
+ Tiempo de espera máximo para la respuesta del LIS. Este valor debe ajustarse en 
+función de la velocidad de respuesta de cada LIS y de la velocidad de las comu­
+nicaciones en cada laboratorio y del tamaño del paquete de cada mensaje de 
+consulta, configurable en la opción de Paquetes de Host Query.

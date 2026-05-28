@@ -1,0 +1,9 @@
+79
+5.3.1.2. Test de movimiento
+Este test permite desplazar cualquiera de los elementos móviles hasta el punto desea do de su rango de funcio-
+namiento, introduciendo la coordenada absoluta corres pon diente o bien moviendolo paso a paso. La velocidad 
+y aceleración del movimiento son las utilizadas en el funcionamiento normal del analizador. 
+5.3.1.3. Test de pérdida de pasos
+Este test permite comprobar si un motor pierde pasos al realizar una cierta secuencia de movimientos. Puede 
+realizarse el test con la velocidad y aceleración utilizadas en el funcionamiento normal del analizador o bien 
+con estas magnitudes aumentadas un 10% para verificar el margen de seguridad de funcionamiento.

@@ -1,0 +1,71 @@
+50
+Test point
+Function
+TP7
+Decoder 2
+TP8
+Decoder 3
+TP9
+Decoder 4
+TP10
+Activation of LED 1
+TP11
+Activation of LED 2
+TP12
+Activation of LED 3
+TP13
+Activation of LED 4
+TP14
+Activation of LED 5
+TP15
+Activation of LED 6
+TP16
+Activation of LED 7
+TP17
+Activation of LED 8
+TP18
+Activation of LED 9
+TP19
+Activation of LED 10
+TP20
+Activation of LED 11
+TP21
+Activation of LED 12
+LEDs
+Function (on condition)
+LD1
+340 nm LED
+LD2
+560 nm LED
+LD3
+670 nm LED
+LD4
+600 nm LED
+LD5
+535 nm LED
+LD6
+505 nm LED
+LD7
+635 nm LED
+LD8
+405 nm LED
+LD9
+Free position
+LD10
+Free position
+LD11
+Free position
+LD12
+I2C decoder indicator
+4.7. Rotor boards - CIIM00052
+The analyser has two CIIM00052 boards which are located in the sample and reagent rotor assemblies. Boath boards 
+have the same PCB but the fridge components have not been mounted on the sample rotor board. Each board has 
+a different board selection switch code.
+ 
+Elements that are common to both boards
+• 
+Micro controller (U5) 
+• 
+Cover sensor (U3)
+• 
+Control of fans located in the structure (U3 and U6)

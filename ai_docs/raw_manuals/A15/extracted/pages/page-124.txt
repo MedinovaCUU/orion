@@ -1,0 +1,20 @@
+125
+2. Extraer el conjunto rotor. Ver capitulo 6.4.1
+3. Aflojar el tornillo (5) que sujeta el aislante del rotor
+4. Extraer los 2 tornillos que sujetan cada ventilador (8)
+Desmontaje peltier:
+1. Extraer los 4 ventiladores 
+2. Extraer los 4 radiadores (9)
+3. Extraer las 4 peltiers. Las peltiers estan todas unidas con un solo cableado
+Montaje peltier
+1. Limpiar de restos de silicona el canal calefactor y los radiadores. Utilizar alcohol.
+2. Colocar una fina capa de silicona térmica a ambos lados de la peltier (10)
+3. Vaya con cuidado de no poner demasiada silicona para no realizar un puente térmico con el sobrante 
+4. Orientar las 4 peltiers según indica la Ilustración 6.26
+5. Colocar cada peltier con su radiador (9) con sus tornillos
+6. Colocar los ventiladores (8) con sus tornillos
+7. Realizar los ajustes del posicinamiento y temperatura del rotor
+8
+9
+10
+Ilustración 6.25 Desmontaje de las peltiers

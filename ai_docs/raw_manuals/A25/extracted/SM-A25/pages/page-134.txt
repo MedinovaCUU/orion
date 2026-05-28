@@ -1,0 +1,22 @@
+Manual de servicio
+134
+8. Follow the manifold mounting steps according to chapter 6.3.2
+ 
+24
+25
+26
+27
+Figure 6.30 
+Lubricating the spindle and mounting the pump body
+6.3.5. 
+AC14718 - Waste pump / AC11534 - Cleaning pump / ME14671 - 2-way solenoid valve
+Disassembly
+1. Take out the fridge and front cover
+2. Disconnect all tubes
+3. Disconnect the 3 elements
+4. Remove the 4 screws (28) to remove the pump assembly
+5. Rotate the assembly
+6. Remove the faulty element (diaphragm pump or solenoid valve)
+Mounting
+1. Change the faulty item
+2. Follow the steps in reverse order

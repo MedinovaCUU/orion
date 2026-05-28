@@ -1,0 +1,15 @@
+
+Serial Number Analyzer : 834001902
+
+
+FIRMWARE INFORMATION : 
+
+CPU : 
+
+Board Serial Number: 5DD2D34
+Firmware Version: 2.15.1.03
+CRC32 Result: OK
+CRC32 Value: 3D5A70AC
+CRC32 Size: 398772
+Hardware Version: 1.05
+

@@ -1,0 +1,42 @@
+8
+Maintenance Manual
+ENGLISH
+9
+8
+8
+3. Check of the optical
+components
+a. Check the integrity of the LED of the fluorescence mo-
+dule.
+- Remove one of the objectives, and select the empty
+position of the revolver assembly.
+- Turn on the fluorescence module. Put the potentiometer
+at maximum.
+- Put a sheet of white paper on the plate.
+- Lower the carriage to the lowest position.
+- Observe that the projected light matches the light in the
+photograph.
+- All the rectangles are very well defined, and the corona
+that surrounds them, although diffused, is clean, meaning
+that it shows no running or stains.
+b. Check the halogen lamp.
+- Clean if necessary. Use a cloth moistened with alcohol.
+Avoid touching it with your fingers. Fingerprints or stains
+reduce its useful life.
+5
+6
+7
+sample holder. Use a fine brush to apply grease lightly to
+the guides (4). Spread the grease by moving and lowering
+the sample holder. Wipe off any excess grease.
+c. Check the threads of the objectives, and check that the
+revolver assembly moves correctly.
+d. Check the movement of the interpupillary adjustment.
+The eyepieces must remain in the set position. Otherwise,
+the tightness must be adjusted. To do so, loosen the bolts
+(5) and remove the cover with the scale (6).
+- Loosen the screws (7).
+- Using circlip pliers, tighten or loosen the nut (8) until the
+desired level of tension is achieved.
+- Re-tighten the screws (7).
+- Put on the cover with the scale (6) .

@@ -1,0 +1,44 @@
+Manual usuario 
+ 
+ 
+ 
+Manual usuario 
+ 
+ 
+ 
+94
+94
+Biosystems
+Biosystems
+Factor de repetición
+Descripción
+Factor aumentado. 
+Se utilizará cuando se requiera realizar una 
+preparación con mayor proporción de muestra 
+(para resolver casos de muestras con muy baja 
+concentración que hayan quedado por debajo 
+del límite de detección)
+Introduzca el factor para que la concentración 
+de la repetición aumente y supere el límite de 
+detección. El analizador modifica la relación de 
+volúmenes de la muestra/reactivo con el factor 
+programado. Automáticamente el resultado de 
+la preparación se dividirá por el factor.
+10.3.1.4. Parámetros técnicas: calibración y blancos
+ 
+Tipo de blanco 
+El blanco se puede realizar de diferentes maneras. Seleccione la manera de reali­
+zar el blanco:
+Tipo de blanco
+Descripción
+Blanco con Agua Destilada
+El analizador realiza el blanco con agua 
+purificada.
+Blanco con Solución Salina
+El analizador realiza el blanco con solución 
+salina.
+Blanco Sólo con Reactivo
+El analizador realiza el blanco únicamente con 
+el reactivo
+Ilustración 60 
+Pantalla parámetros técnicas, calibración y blancos

@@ -1,0 +1,54 @@
+147
+ 
+Hoja de Registro de 
+instalación
+Nombre del laboratorio:
+Modelo de analizador:
+Número de serie:
+Nombre del responsable técnico:
+Fecha de instalación:
+Pasos Acciones del servicio técnico
+Realizado
+1
+Ubicación/Fijación analizador/Nivelación
+2
+Desbloqueo del brazo manipulador
+3
+Instalación de los contenedores de residuos, líquido de sistema y 
+solución de lavado
+4
+Preparación de la solución de lavado
+5
+Preparación del líquido de sistema
+6
+Instalación del rotor de reacciones
+7
+Conexión a la red eléctrica
+8
+Conexión del cable de comunicaciones al ordenador
+9
+Instalación del programa de usuario en el ordenador
+10
+Configurar programas de segundo plano: ahorro de energía, Windows 
+update,...
+11
+Instalación del programa de servicio en el ordenador y lanzar un estress 
+de 10 min
+12
+Verificar que el resultado del estress es satisfactorio
+13
+Instalación de los racks de muestra / reactivos
+14
+Verificar el numero de serie del analizador para aquellas unidades que 
+llevan ajustes o especificacines especiales. Anotar sólo en el caso de 
+que aplique
+Acciones del especialista de producto
+14
+Instalar reactivos 
+15
+Programar los valores de calibración y los márgenes de los controles
+16
+Realizar el proceso de verificación del analizador. Siga las instrucciones 
+del capítulo 7.2.6
+Firma y fecha del operario
+Firma y fecha del cliente

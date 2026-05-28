@@ -1,0 +1,24 @@
+Placa
+Código
+Selector
+Brazo punta
+0000
+Brazo agitador
+AG1
+0010
+Ilustración 8.39 
+Colocación placa del brazo
+8.11.5. AC16599 - Correa polar / AC16600 - Motor polar
+Herramientas: Llave allen de 2.5 mm y de 3 mm, llave fija de 7
+ 
+) Véase Ilustración 8.40
+Desmontaje motor:
+1. Desconecte el cable del motor.
+2. Quite los 4 tornillos (10) y (11) que sujetan al motor (12).
+Desmontaje correa:
+1. Quite los 2 tornillos (8) del fotodetector.
+2. Quite la correa (9).
+Montaje correa:
+1. Inserte la nueva correa.
+2. Inserte el fotodetector con sus tornillos (8).
+157

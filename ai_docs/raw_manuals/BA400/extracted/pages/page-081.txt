@@ -1,0 +1,17 @@
+Figure 6.18 
+Scales adjustment screen
+6.5.3.2. Internal bottle verification
+Detecting the level of the internal bottles containing distilled water and low contamination waste is done through 
+a buoy system. This means that only the analyser can detect whether a bottle is full or empty.
+The programme enables the status of the buoys to be checked and indicates whether they are full or empty.
+The status of the buoys for each bottle is shown on the screen (see Figure 6.17). The verification may be made 
+manually or automatically. 
+Manual verification
+Access the buoys of the internal bottles. To do this, access the internal bottles through the rear part of the analyser 
+and unscrew their caps. 
+Move each buoy upward and downward. The status of each buoy will be constantly shown on the screen. 
+Automatic verification
+Press the Start button for the programme to perform a full filling and emptying cycle on each bottle. The programme 
+will constantly indicate the status of the buoys. 
+Bear in mind that this automatic verification process may take a few minutes.
+81

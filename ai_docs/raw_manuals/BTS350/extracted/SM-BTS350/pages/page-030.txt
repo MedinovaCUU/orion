@@ -1,0 +1,33 @@
+—  30  —
+Service manual
+The instrument does not select a wavelength. Take 30 readings with different integration times and calculate the following 
+parameters:
+• 
+Maximum number of counts
+• 
+Minimum number of counts
+• 
+average
+• 
+standard deviation
+Take the readings for the main and reference photodiodes. Press F1 to see the results for the main photodiode and F2 for 
+the results of the reference photodiode.
+The test calculates using the following integration times, by default:
+6, 15, 50, 250 and 500
+On starting the test, the programme requests an integration time for which the user can select an integration time other 
+than the pre-established ones for taking the reading. 
+See Appendix I.2 for the acceptable values range.
+4.11.3. - Readings stability
+This allows the stability of a set of repeated readings made on one sample to be analysed.
+When beginning the test, the instrument requests:
+• 
+Reading wavelenght (340).
+• 
+Stabilisation time (1).
+• 
+Sample volume (400).
+• 
+Number of intervals (30).
+• 
+Interval time (1).
+The values between brackets are the ones recommended for a routine test.

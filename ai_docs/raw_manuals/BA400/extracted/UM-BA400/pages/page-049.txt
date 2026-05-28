@@ -1,0 +1,45 @@
+49
+49
+4.12.3.8. Copia de seguridad de los datos
+Cada vez que se realiza un reset de la sesión se realiza una copia de seguridad de 
+la base de datos.
+Puede localizar esta copia de seguridad en la siguiente carpeta:
+c:\Users\[User name]\documents\BA400\RestorePoints\
+Donde [User name] es el nombre de usuario para entrar al sistema.
+Se guardan las 10 últimas copias de seguridad. Las copias más antiguas se van 
+borrando.
+Este archivo está protegido con contraseña. Únicamente se puede abrir con la 
+aplicación. A través de la opción de lectura del sat-report.
+Configure un método para realizar las copias de estos archivos fuera del sistema. 
+Para que en caso de fallo del sistema se puede recuperar los datos sin problemas.
+4.12.3.9. Recuperación de la contraseña principal
+En caso del olvido de la contraseña principal de la aplicación, llame a su distribui­
+dor habitual para que le indique como recuperar la contraseña y poder acceder a 
+la aplicación.
+4.12.3.10. Sistema con conexión a un host
+Para aquellos sistemas que están conectados a un host, active el firewall de windows 
+o uno alternativo que le suministre el administrador de sistemas.
+Para configurar el firewall de windows, siga los pasos siguientes:
+• 
+Seleccione Todas las configuraciones
+• 
+Seleccione Actualización y seguridad
+• 
+Seleccione Windows defender
+• 
+Seleccione Abrir centro de seguridad de windows defender
+• 
+Pulse sobre la opción de Firewall y protección de red
+ 
+)
+Véase Ilustración 28
+• 
+Verifique que para las tres clases de red (red de dominio, red privada y red 
+pública) el firewall está activado
+• 
+Seleccione Red pública
+• 
+Active el firewall de windows defender y bloquee las conexiones entrantes
+ 
+)
+Véase Ilustración 29

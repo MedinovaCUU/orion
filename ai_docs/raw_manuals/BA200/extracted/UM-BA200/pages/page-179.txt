@@ -1,0 +1,104 @@
+179
+179
+12. Listado de alarmas 
+A continuación se detalla el listado de errores que muestra el programa con su 
+resolución por parte del usuario:
+Tipo de 
+alarma
+Alarma/Error
+Causa del problema
+Solución propuesta
+Alarmas del 
+analizador
+Aviso de la tapa 
+principal del 
+analizador abierta
+Se ha abierto la tapa principal del 
+analizador durante la ejecución 
+de la lista de trabajo. Esta acción 
+bloquea la lista de trabajo.
+Cierre la tapa y pulse el botón de 
+recuperar el analizador. Pierde la lista 
+de trabajo en curso.
+Aviso de la tapa 
+principal del 
+analizador abierta
+Se abre la tapa del analizador en el 
+estado de parado. El programa avisa 
+de que se ha abierto la tapa principal 
+del analizador. 
+Con el aviso activo no permite iniciar 
+o continuar la lista de trabajo. Cierre 
+la tapa principal.
+Aviso de falta de 
+solución de lavado
+La botella de solución de lavado 
+está vacía. El analizador finalizará 
+las preparaciones ya iniciadas pero 
+no dispensará ninguna preparación 
+más.
+Rellene la botella de solución 
+de lavado. Pulse el botón de 
+confirmación de cambio de botella. 
+El analizador continuará la lista de 
+trabajo que esté en curso.
+Aviso de 
+botella de alta 
+contaminación 
+llena
+La botella de alta contaminación 
+está llena. El analizador finalizará 
+las preparaciones ya iniciadas pero 
+no dispensará ninguna preparación 
+más.
+Vacíe la botella de alta 
+contaminación. Pulse el botón de 
+confirmación de cambio de botella. 
+El analizador continuará la lista de 
+trabajo que esté en curso.
+Error de colisión 
+del brazo de 
+reactivos y 
+muestra
+Se ha producido una colisión en 
+el brazo. Está acción bloquea el 
+brazo colisionado. El analizador 
+recupera el brazo y continua con las 
+preparaciones.
+Solucione la causa de la colisión. 
+Revise el estado de la botella de 
+reactivo o del tubo de muestra que 
+ha colisionado.
+Aviso de poco 
+volumen de 
+reactivo R1 o R2
+El programa avisa de que está a 
+punto de finalizar el reactivo R1 o 
+R2.
+Ponga una segunda botella de 
+reactivo en el rotor antes de iniciar la 
+sesión de trabajo.
+Aviso de volumen 
+de reactivo R1 o 
+R2
+La botella de reactivo R1 o R2 
+está vacía. El programa bloquea las 
+siguientes preparaciones que usen 
+dicho reactivo.
+Pulse el botón de pausa. Cuando 
+el programa le avise, acceda al 
+rotor de reactivos y cambie la 
+botella finalizada. Pulse el botón de 
+continuar.
+Aviso de tapa de 
+rotor de reactivos 
+y muestras abierta
+Se ha abierto la tapa del rotor 
+de reactivos durante el estado de 
+parado.
+Cierre la tapa del rotor de reactivos.
+Aviso refrigeración 
+apagada
+El programa avisa de que el sistema 
+de refrigeración está apagado.
+Encienda el sistema de refrigeración.

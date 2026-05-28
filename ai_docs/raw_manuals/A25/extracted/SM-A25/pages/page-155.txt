@@ -1,0 +1,16 @@
+155
+2
+Figure 6.61 
+6.6.2. 
+MO11558 - Electronic box fan
+Removing the fan
+1. Remove the 3 screws (1) to lower the rear cover of the electronics. See Figure 6.60
+2. Depending on the fan to be replaced, disconnect the cables from the CPU board or the power supply board
+3. Remove the CPU board or power supply board. 
+4. Remove the 4 screws (10) that hold the board to the base.
+5. Remove the fan
+Fan mounting
+1. Follow the steps in reverse order
+10
+Figure 6.62 
+Dismantle fan

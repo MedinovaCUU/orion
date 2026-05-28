@@ -1,0 +1,50 @@
+Manual usuario 
+ 
+ 
+ 
+Manual usuario 
+ 
+ 
+ 
+78
+78
+Biosystems
+Biosystems
+Ilustración 39 
+Pantalla para modificar la contraseña
+10.2. Configuración
+Desde este menú se accede a las diferentes opciones de configuración:
+• 
+General: Configuración general del programa.
+• 
+Idiomas: Selección del idioma del programa.
+• 
+Informes: Configuración de los cabeceros y pies de los informes.
+• 
+Ordenar Impresión de Técnicas: Selección del orden de las técnicas para los 
+informes de paciente.
+• 
+Código de barras: Configuración del código de barras.
+• 
+LIS: Configuración del sistema de comunicaciones LIS.
+• 
+Mapeado para el LIS
+• 
+Usuarios: Creación de los usuarios para acceder al programa.
+• 
+Cambiar Usuario: Cambio de usuario.
+10.2.1. Configuración general
+Desde esta pantalla permite configurar las opciones generales del programa. 
+ 
+ 
+Pulse este botón para acceder directamente a las opciones generales de 
+configuración.
+Seleccione alguna de las siguientes pestañas:
+• 
+Sesión de Trabajo
+• 
+Analizador
+• 
+Configuración de la Comunicación
+• 
+Visibilidad de las técnicas

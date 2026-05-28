@@ -1,0 +1,23 @@
+Lista de recambios
+Código
+Representación 
+Descripción
+AC16543
+Tapa módulo ISE
+AC16544
+Conjunto puertas
+AC16545
+Conjunto tapas laterales
+AC16546
+Agarraderas tapa trasera
+AC16549
+Bisagras tapa general
+AC17426
+Bisagra trasera de la tapa general
+AC16550
+BA400 - Carcasa frontal led
+AC17376
+Y400 - Carcasa frontal led
+AC16551
+Patas
+269

@@ -1,0 +1,20 @@
+Manual de servicio
+112
+2
+Figure 6.2 
+Removing the grid from the refrigerator
+3
+4
+5
+Figure 6.3 
+Removing the refrigerator housing
+6.1.3. 
+AC14721 - Refrigerator cover / AC14722 - Refrigerator cover hinge
+Disassembly:
+1. Remove the reagent bottles separation grid (2).
+2. Remove the 3 screws (5) that hold the cover from the refrigerator housing
+3. Remove the remaining 3 screws holding the hinge to the refrigerator lid
+Mounting:
+1. Screw the 3 screws that hold the hinge to the refrigerator lid. Align the hinge with the lid.
+2. Screw in the 3 screws (5) that hold the lid hinge to the refrigerator housing.
+3. Check the movement of the opening and closing of the lid

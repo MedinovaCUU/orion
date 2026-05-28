@@ -1,0 +1,44 @@
+3. Si quiere realizar la medida de absorbancia de un reactivo o líquido en especial, seleccione la opción de llenado 
+manual. Dispense en un pocillo el líquido a medir. Seleccione en la pantalla el pocillo donde ha dispensado el 
+líquido.
+4. Seleccione el tipo de medida que quiera realizar.
+5. Pulse el botón de ajuste para inicial el proceso de medidas.
+Repetibilidad
+Esta verificación realiza medidas durante 3 minutos en todas las longitudes de onda. Sirve para verificar la repetibi­
+lidad de las lecturas del sistema fotométrico 
+Al finalizar las medidas muestra para cada longitud de onda los siguientes parámetros:
+• 
+Promedio
+• 
+Desviación estándar de todas las medidas
+• 
+Coeficiente de variación (CV).
+• 
+Absorbancia máxima
+• 
+Absorbancia mínima
+ 
+) Véase capítulo AV los márgenes aceptables para los parámetros.
+Estabilidad
+Esta verificación realiza medidas durante 30 minutos en todas las longitudes de onda. Sirve para verificar la esta­
+bilidad de las lecturas fotométricas 
+Al finalizar las medidas muestra para cada longitud de onda los siguientes parámetros:
+• 
+Promedio
+• 
+Desviación estándar de todas las medidas
+• 
+Coeficiente de variación
+• 
+Absorbancia máxima
+• 
+Absorbancia mínima
+Lectura de absorbancia
+Permite realizar la medida de absorbancia para un pocillo seleccionado para todas las longitudes de onda.
+Seleccione la longitud de onda en el cuadro de selección para mostrar el resultado de la absorbancia.
+Si el resultado muestra un valor de -1 indica que la medida de absorbancia ha superado el límite del margen fotométrico.
+6.5.3. Balanzas, botellas y depósitos
+6.5.3.1. Ajuste balanzas para la determinación de nivel.
+La determinación del nivel de las botellas de solución de lavado y residuos de alta contaminación se realiza mediante 
+pesada. Para ajustar las balanzas proseguir de la siguiente manera:
+119

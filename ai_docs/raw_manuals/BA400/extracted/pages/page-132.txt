@@ -1,0 +1,158 @@
+REPACKAGING RECORD 
+Company name:
+Serial number:
+Repackaging date:
+PART REPLACEMENT PROCESS
+1. Parts to be replaced
+Replacement of parts
+Ok / Not Ok
+Update the firmware 
+and software
+Ok / Not Ok
+ADJUSTMENT PROCESS
+Points to be readjusted
+Tolerances
+Value
+1. Thermostatting of reagent 1 tip
+Temperature set point
+50,0
+55,0
+Temperature test
+30,0
+35,0
+2. Thermostatting of reagent 2 tip
+Temperature set point
+50,0
+55,0
+Temperature test
+30,0
+35,0
+3. Thermostatting of reaction rotor
+Temperature set point
+37,0
+39,0
+Temperature test
+36,8
+37,2
+4. Photometry Tests
+4.1. Luminous intensity
+340 nm
+6 000
+25 000
+405 nm
+14 000
+30 000
+505 nm
+12 000
+30 000
+535 nm
+4 000
+30 000
+560 nm
+3 000
+15 000
+600 nm
+6 000
+25 000
+635 nm
+6 000
+20 000
+670 nm
+4 000
+15 000
+4.2. Number of counts of main photodiode
+340 nm
+600 000
+950 000
+405 nm
+850 000
+950 000
+505 nm
+850 000
+950 000
+535 nm
+850 000
+950 000
+560 nm
+550 000
+950 000
+600 nm
+850 000
+950 000
+635 nm
+850 000
+950 000
+670 nm
+450 000
+950 000
+4.3. Number of counts of reference photodiode
+340 nm
+100 000
+400 000
+405 nm
+400 000
+800 000
+505 nm
+400 000
+800 000
+535 nm
+400 000
+800 000
+560 nm
+400 000
+950 000
+600 nm
+300 000
+800 000
+635 nm
+400 000
+800 000
+670 nm
+200 000
+950 000
+4.4. Dark current counts
+Value
+3 300
+4 500
+4.5. Repeatability
+Tolerances CV(%)
+For all the filters
+< 10 %
+4.6. Stability
+For all the filters
+< 10 %
+FINAL FUNCTIONAL CHECK
+5. Biochemical precision
+Tolerances CV(%)
+Value
+Control serum Level I 
+Glucose
+< 2
+Control serum Level II 
+Glucose
+< 2
+Control serum level I 
+ALT
+< 4
+Control serum Level 
+II ALT
+< 2 
+FINALISATION
+6. Completed
+Label the renovated 
+equipment
+Ok / Not Ok
+Add a full box of acces­
+sories
+Ok / Not Ok
+Check the packaging
+Ok / Not Ok
+7. Acceptance of repackaging
+Repackaging OK
+Available for sale
+Ok / Not Ok
+Signed:
+Prepared by:
+Page 1/1 
+ Rev 1.0 
+Operative date: 25-06-12

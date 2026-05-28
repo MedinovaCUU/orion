@@ -1,0 +1,24 @@
+67
+4.17.  AC11527 - Retén pistón
+Herramientas: 
+Desmontaje:
+1. Siga los pasos de desmontaje según el capítulo 4.16
+2. Separe el retén del adaptador retén. 
+Montaje:
+1. Siga los pasos del montaje según el capítulo 4.16
+2. Antes de realizar el punto 7, cambie el retén (23) por uno nuevo. Humedezca con WS (Washing 
+Solution) el adaptador retén y el retén para facilitar la inserción del retén en su alojamiento. Ayú­
+dese de una pieza plana para realizar la presión del retén. 
+3. Verifique que el retén está correctamente nivelado con el adaptador retén.
+4. Continúe los pasos de montaje según el capítulo 4.16
+23
+Ilustración 4.39.  Montaje retén 
+4.18.  AC16594 - Pistón cerámico+motor
+Herramientas: Llave allen de 2 y 3 y llave fija del 7, grasa bomba cerámica
+Desmontaje:
+1. Siga los pasos de desmontaje según el capítulo 4.16
+2. Desmonte el detector de inicio.
+3. Quite los 4 tornillos con las tuercas que sujetan el cuerpo de la bomba (24) con el motor.
+4. Extraiga la cuerpo bomba (24).
+Montaje:
+1. Sustituya la pieza defectuosa.

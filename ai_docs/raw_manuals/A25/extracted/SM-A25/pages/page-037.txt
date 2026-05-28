@@ -1,0 +1,41 @@
+37
+3
+5
+6
+10
+12
+13
+14
+16
+27
+28
+Figure 3.17 
+1 – Body
+2 – Lamp holder
+3 – Halogen lamp
+4 – Lamp holder fastening
+5 – Filter wheel
+6 – Filter holder
+7 – Filter holder nut
+8 – Filter cover
+9 – Matched interferential filters
+10 – Filter wheel shaft
+11 – Bearing
+12 – Start photodetector
+13 – Motor
+14 – Pcx lens support
+15 – Diaphragm
+16 – Pcx lens
+17 – Pcx lens nut
+18 – Lcp129 lens support
+19 – Lcp129 lens
+20 – Lcp129 lens fastening
+21 – Lcp125 lens support
+22 – Slot between lenses
+23 – Lcp125 lens
+24 – Lcp125 lens fastening
+25 – Filter wheel window cover
+26 – Side covers
+27 – Fan
+28 – Fastening bracket
+Reference Figure 3.16 and Figure 3.7

@@ -1,0 +1,23 @@
+Manual de servicio
+150
+27
+Figure 6.53 
+6.5. 
+Refrigerator
+6.5.1. 
+AC14723 - Refrigerator status led / AC14724 - Refrigerator cover detector
+Disassembly LED and detector
+1. Follow the steps to disassemble the refrigerator body. See chapter 6.1.2
+2. Flip the case
+3. Pull the cable (3) of the LED through the bottom of the housing. Press from the top to release the led (2)
+4. Pull the cable (3) of the start detector through the bottom of the housing. Press from the top to release the detector (1)
+LED and detector mount
+1. Replace LED or detector
+2. Insert the LED (2) through the hole to its end position.
+3. Insert the cover detector (1) through the hole to its end position.
+4. Mount the refrigerator housing on the analyzer.
+5. Check the function of the lid and the status LED of the refrigerator.
+1
+2
+3
+Figure 6.54

@@ -1,0 +1,34 @@
+LIST OF SPARES PARTS
+Code
+Representation 
+Description
+AC16589
+Manifold
+AC16590
+Reagent piston stop
+AC16591
+Sample piston stop
+AC16592
+Pump motor+spindle
+AC16593
+Sample ceramic piston
+AC16594
+Reagent ceramic piston
+AC16595
+Wash station suction tip
+AC16596
+Wash station suction tip+dryer
+AC16597
+Wash station tip spring
+AC16598
+Vertical movement belt
+AC16599
+Polar movement belt
+AC16600
+Arm motor
+AC16601
+Contintuous current stirrer motor
+AC16602
+Stirrer paddle
+Service Manual
+118

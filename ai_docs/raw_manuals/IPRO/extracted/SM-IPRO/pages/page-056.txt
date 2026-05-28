@@ -1,0 +1,35 @@
+56
+Manual de servicio
+4.11.  AC11519 - Motor Z con encoder / AC14619 - Muelle encoder
+Desmontaje motor Z:
+1. Extraer las carcasas del instrumento y del brazo
+2. Extraer los tornillos (8) y la chapa
+3. Desconectar el cable del motor Z y extraer el fotodetector de inicio
+4. Desatornillar los 5 tornillos (9), (10) y (11) que sujetan al conjunto motor
+5. Sacar el conjunto motor Z y encoder
+Desmontaje muelle encoder:
+1. Desmontar el motor Z explicado anteriormente
+2. Extraer los 4 tornillos (12) y chapa de protección (13)
+3. Extraer el tornillo (15) y la tuerca (17) que sujetan el muelle. Aflojar el tornillo (16)
+4. Liberar el muelle con cuidado de su alojamiento
+5. Extraer los 2 tornillos (18) y la pieza (19) que sujeta el muelle (20).
+Montaje muelle encoder
+1. Colocar el nuevo muelle (20). Sujete el extremo interior del muelle con la pieza (19) y los tornillos 
+(18)
+2. Enrollar todo el muelle en su cavidad. Sujetar el otro extremo del muelle con el tornillo (15) y su 
+tuerca (17). Apriete el tornillo (16)
+3. Ponga la tapa (13) con sus 4 tornillos (12)
+4. Siga los pasos del montaje del motor
+Montaje motor:
+1. Colocar el conjunto motor y encoder en su ubicación
+2. Colocar los 4 tornillos (10) y (11) sin apretar.
+3. Colocar el tornillo (9), colocar entre la escuadra y el soporte el cable de la toma de masa.
+4. Tensar el muelle con un destornillador girando 270° en sentido horario. 
+5. Bloquear el muelle con un pasador. Colocar el pasador en cualquiera de los orificios (14)
+6. Sostener el carro Z en la posición superior y colocar la correa Z por la polea.
+7. Tensar la correa a 30 N, estirando el motor hacía abajo. Apretar los tornillos (10) y (11)
+8. Verificar que el conjunto punta sube solo
+9. Apretar l tornillo (9)
+10. Colocar el fotodetector y el conector del motor Z
+11. Colocar la chapa de protección y los tornillos (8) 
+12. Verificar el conjunto motor Z y encoder con el programa de servicio

@@ -1,0 +1,54 @@
+5
+USUARIO
+Manual de Usuario BioSystems SPICA | Versión 2.8 - Agosto 2024
+Manual de Usuario BioSystems SPICA
+1. INTRODUCCIÓN
+1.1 Avisos y advertencias
+ 
+Símbolos | Precauciones de seguridad | Abreviaturas y unidades 
+Solución irritante
+Precaución, posible derrame biológico y químico
+Precaución, Peso máximo 6 Kg
+Precaución, Partes mecánicas en movimiento. 
+Manténgase alejado
+Agua destilada (Clase II)
+Precaución, el uso exclusivo de la solución de 
+lavado de BioSystems
+H O
+2
+DIST
+El símbolo advierte de los 
+riesgos operativos que podrían 
+causar daños personales
+El símbolo advierte de peligro 
+biológico potencial
+El símbolo advierte de posibles 
+daños en los sistemas o de 
+resultados poco fiables
+El símbolo advierte que la 
+información requiere su atención
+Riesgo de descargas eléctricas
+Riesgo potencial debido a la 
+emisión de radiación láser.
+Por favor, consulte el manual 
+de usuario
+ATENCIÓN
+PRECAUCIÓN, POSIBLE 
+DERRAME BIOLÓGICO Y 
+QUÍMICO
+ATENCIÓN
+USO EXCLUSIVO DE LA 
+SOLUCIÓN DE LAVADO 
+DE BIOSYSTEMS
+ATENCIÓN
+PESO MÁXIMO 
+6Kg
+ATENCIÓN
+PARTES MECÁNICAS 
+EN MOVIMIENTO. 
+MANTÉNGASE ALEJADO
+ATENCIÓN
+NOTA
+ADVERTENCÍA
+PELIGRO
+BIOLÓGICO

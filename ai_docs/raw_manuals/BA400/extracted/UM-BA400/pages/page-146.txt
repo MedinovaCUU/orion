@@ -1,0 +1,61 @@
+Manual usuario 
+ 
+ 
+ 
+Manual usuario 
+ 
+ 
+ 
+146
+146
+Biosystems
+Biosystems
+icono también indica si es el resultado original que provocó una petición de repe­
+tición o si se trata del resultado de la repetición ya recibido.
+Campo
+Descripción de los iconos en los resultados
+Indica que se ha solicitado una repetición incrementada de una 
+muestra.
+Indica que se ha solicitado una repetición decrementada de una 
+muestra.
+Indica que se ha solicitado una repetición con las mismas 
+condiciones de una muestra.
+ 
+Indica que el resultado proviene de una muestra incrementada.
+Indica que el resultado proviene de una muestra decrementada.
+Indica que el resultado proviene de una muestra repetida.
+10.8. Históricos
+10.8.1. Resultados paciente
+Pantalla que permite visualizar los resultados históricos de los pacientes.
+En la parte superior de la pantalla hay varios campos que permiten introducir 
+criterios de selección para filtrar la visualización de los resultados. Puede escoger 
+más de un criterio de selección a la vez.
+ 
+ 
+Una vez realizada la selección, pulse el icono para ejecutar la búsqueda y visuali­
+zar los resultados en la parte inferior de la pantalla.
+ 
+Rango de fechas 
+Introduzca la fecha inicial y la fecha final para realizar la selección de los resulta­
+dos por un rango de fechas. 
+ 
+Paciente 
+Introduzca el código de paciente, el nombre o el apellido para realizar la selec­
+ción de los resultados por el paciente. Se mostrarán todos los resultados que 
+tenga un paciente que comiencen por el valor introducido.
+ 
+Código de barras 
+Introduzca la identificación de una muestra para realizar la selección de los 
+resultados. 
+ 
+Urgente 
+Las opciones posibles son: Todo, urgente o normal. 
+ 
+Tipo de técnica 
+Las opciones posibles son: Todo, estándar, calculada, ISE, externas
+ 
+Tipo de muestra 
+Las opciones posibles son: Todo, SER, URI, PLM, WBL, CSF, SEM, LIQ.
+ 
+Nombre de la técnica 
+Introduzca el nombre de la técnica para realizar la selección.

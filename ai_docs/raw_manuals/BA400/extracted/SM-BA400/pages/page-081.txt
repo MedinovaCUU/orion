@@ -1,0 +1,206 @@
+81
+CIIM00050
+CAN BUS
+ROTOR
+DETECTOR
+ROTOR
+MOTOR
+GLF1
+PLMA00321
+PLMA00307
+PLMA00306
+WASHING
+STATION
+HOME
+WASHING
+STATION
+MOTOR
+PLMA00310
+TEMPERATURE
+SENSOR
+FAN
+PLMA00309
+FAN
+PLMA00311
+PELTIER
+PLMA00314
+ROTOR
+COVER 
+DETECTOR
+PLMA00320
+CIIM00051
+PLMA00316
+CN1
+CN5
+WASHING
+STATION
+COLLITION
+DETECTOR
+FAN
+PLMA00312
+FAN
+PLMA00313
+PELTIER
+PLMA00315
+ENCODER
+ROTOR
+CAN BUS
+PHOTOMETRY
+PHOTOMETRY
+ROTOR COVER
+FAN
+FAN
+HOME ROTOR
+ROTOR
+WS COLISION
+HOME WASHING ST.
+WASHING STATION
+THERMISTOR
+ROTOR COVER
+FAN
+FAN
+FAN
+FAN
+THERMISTOR
+WASHING
+STATION
+HOME
+WASHING ST.
+WS COLISION
+ENCODER
+ROTOR
+HOME ROTOR
+PLMA00319
+ENCODER
+LEVEL
+DETECTION
+LEVEL DETECTION
+CIIM00069
+CN3
+CIIM00068
+FOTOMETRIA
+1
+6
+2
+5
+4
+CN15
+1
+2
+CN4
+CON3
+1
+2
+3
+CN7
+1
+2
+3
+4
+5
+CN9
+1
+2
+3
+4
+CN10
+CON3
+1
+2
+3
+CN1
+1
+2
+3
+4
+5
+1
+6
+2
+5
+4
+CN13
+1
+2
+CN14
+1
+2
+1
+6
+2
+5
+4
+CN11
+1
+2
++tº
+1
+2
+CN8
+CON3
+1
+2
+3
+CN12
+1
+2
+CN18
+1
+2
+3
+4
+5
+1
+6
+2
+5
+4
+1
+2
+3
+4
+5
+6
+1
+6
+2
+5
+4
+1
+2
+3
+4
+5
+6
+CN6
+1
+2
+3
+4
+1
+6
+2
+5
+4
+1
+2
+CN17
+1
+2
+CN3
+1
+2
+CN16
+1
+2
+Ilustración 4.16 
+Conexiones de la placa control de fotometría versión 2
+4.7. Placa lecturas fotométricas - CIIM00051
+Placa ubicada debajo del banco óptico en el conjunto del rotor de reacción. En la placa van directamente soldados 
+los leds para cada longitud de onda y los dos fotodetectores. 
+Desde esta placa se controla el encendido y apagado de cada led. Los led se controlan a través de una fuente de 
+corriente (U2, U8, U9 y T13) y la selección del encendido del led se realizada a través de un decodificador (U11).
+Las lecturas se realizan a través de dos fotodiodos (el fotodiodo principal y el de referencia) que son leídos por un 
+conversor integrador de doble rampa (U1, U4, U5 y U6).
+Todas las señales de control son enviadas a la placa de control de fotometría (CIIM00050) a través de un canal I2C 
+(U7)

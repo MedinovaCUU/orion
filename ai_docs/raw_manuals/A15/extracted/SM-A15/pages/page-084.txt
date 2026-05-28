@@ -1,0 +1,2 @@
+85
+realizando las lecturas ópti cas utilizando los tiempos de integración ajustados automáticamente.

@@ -1,0 +1,30 @@
+3.6. Desgasificador
+2
+6
+5
+7
+3
+4
+1
+Ilustración 3.20 
+Desgasificador
+Referencias de la Ilustración 3.20
+1 – Tubo de conexión a la entrada del desgasificador
+2 – Membrana de desgasificación
+3 – Sistema de control del vacío
+4 – Tubo de conexión de la salida del desgasificador al premanifold
+5 – Válvula antiretorno
+6 – Bomba para realizar el vacío
+7 – Tubo de conexión al depósito de residuos de baja 
+contaminación
+El agua del analizador que utiliza el sistema de pipeteo previamente pasa por el circuito de desgasificación para 
+eliminar la posible presencia de burbujas en el agua.
+El sistema está compuesto por una membrana (2) que aspira el aire del agua. Esta membrana está colocada en serie 
+con el circuito del agua (1) y (4). 
+Para que la membrana funcione correctamente se tiene que realizar el vacío con una bomba de membrana (6) y un 
+circuito de control (3) para monitorizar la presión del vacío.
+ 
+) Véase capítulo 8.10.4 para programar el sistema de control de vacío
+La salida de la bomba de membrana (6) pasa por una válvula antiretorno (5) y se conecta a través de un tubo a la 
+salida de los residuos de baja contaminación.
+39

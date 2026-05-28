@@ -1,0 +1,41 @@
+171
+171
+10.9.9. Exportar programación 
+Opción para generar un fichero con los parámetros de las técnicas, técnicas calcu­
+ladas, técnicas externas, técnias ISE, calibraciones y controles. 
+Seleccione el nombre del archivo y la ubicación donde quiera guardarlo. La exten­
+sión del archivo generado es .test
+10.9.10. 
+Importar programación 
+Opción para importar desde un fichero los parámetros de las técnicas que se hayan 
+guardado préviamente. Téngase en cuenta que al aceptar el fichero se añadirán las 
+técnicas nuevas que no tenga en el listado de técnicas y se aplicarán los cambios 
+a las técnicas existentes.
+Seleccione la ubicación donde se encuentra el archivo de técnicas y el nombre 
+para importarlo.
+10.9.11. 
+Auditoría
+La aplicación incorpora un sistema de auditoría. Este sistema memoriza cualquier 
+cambio realizado en la aplicación que pueda afectar a los resultados.
+Pulse esta opción del menú para visualizar el seguimiento de los cambios.
+Para poder realizar un análisis de los datos:
+• 
+Seleccione el texto a analizar. 
+• 
+Cópielo
+• 
+Pégelo en un editor de textos (por ejemplo el Notepad++). Desde el editor 
+podrá realizar búsquedas de una manera más fácil.
+10.10. Ayuda 
+10.10.1. 
+Manual de usuario
+Desde este menú puede abrir directamente una copia de este manual de usuario 
+en formato pdf. El lector de pdf (Reader®), lo puede instalar directamente desde el 
+DVD suministrado con el equipo o lo puede descargar de la página web de adobe®.
+10.10.2. 
+Información analizador
+Opción para ver en pantalla el número de serie del instrumento y la versión del 
+firmware que está instalado en el analizador
+10.10.3. 
+Acerca de
+Opción para ver en pantalla la versión del software que está instalado.

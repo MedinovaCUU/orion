@@ -1,0 +1,53 @@
+• 
+Salir sin apagar el analizador: Opción que solamente cierra el programa, dejando encendido y en espera 
+el analizador. 
+NO PASAR nunca del programa de servicio al programa de usuario sin apagar antes el analizador. Las inicializaciones 
+son diferentes cuando se realizan desde servicio que desde usuario.
+6.9. Ubicación de los diferentes archivos del software
+A continuaión se indica donde localizar los diferentes archivos que utiliza el software.
+Dirección de las carpetas
+Descripción
+c:\Program Files (x86)\BA400\
+c:\Program Files (x86)\Y400\
+Carpeta de instalación del sofware
+c:\Program Files (x86)\BA400\Firmware\
+c:\Program Files (x86)\Y400\Firmware\
+Copia del firmware del analizador
+c:\Program Files (x86)\BA400\USB driver\
+c:\Program Files (x86)\Y400\USB driver\
+Copia del driver de USB
+c:\ProgramData\BA400\Adjustments\
+c:\ProgramData\Y400\Adjustments\
+Carpeta donde se guarda una copia de los ajustes del 
+analizador.
+c:\ProgramData\BA400\Log\
+c:\ProgramData\Y400\Log\
+Carpeta donde se guardan los arhivos del log de la ejecución 
+del software
+c:\ProgramData\BA400\RestorePoints\
+c:\ProgramData\Y400\RestorePoints\
+Carpeta donde se guardan los Restorepoints, copias de 
+seguridad de la base de datos
+c:\ProgramData\BA400\Previous\
+c:\ProgramData\Y400\Previous\
+Carpeta donse se guardan los RestorePoints cuando hay un 
+cambio de versión de programa
+c:\ProgramData\BA400\LogConsum\
+c:\ProgramData\Y400\LogConsum\
+Carpeta donde se guardan los archivos de consumo de 
+reactivos
+c:\Users\Public\Documents\BA400\
+c:\Users\Public\Documents\Y400\
+Carpeta donde se guardan los SatReports
+Para poder acceder a la carpeta de c:\ProgramData, se tiene que cambiar la opción de ocultación de carpetas del 
+sistema operativo, para ello siga los pasos siguientes:
+• 
+Abra el explorador de windows
+• 
+Seleccione la opción del menú de Ver
+• 
+Seleccione la opción de ficheros ocultos
+ 
+) Ver Ilustración 6.33
+NOTE
+135

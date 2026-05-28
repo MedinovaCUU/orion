@@ -1,0 +1,3 @@
+Date,AnalyzerSN,TestName,SampleClass,SampleType,VR1,BarcodeR1,VR2,BarcodeR2,CalibControlName,CalibControlLotNumber,SampleVolume,PackISE_SN,RefElectrode,NaElectrode,KElectrode,ClElectrode,LiElectrode,IsFactoryTest
+2026-04-17 10:16:04,834001902,ISE_SIP,CALIB,,843125,,319500,,ISE Calibrator,	23021032,0,	0978B3C3090000CB,,,,,,True
+2026-04-17 12:56:50,834001902,ISE_SIP,CALIB,,475,,180,,ISE Calibrator,	23021032,0,	0978B3C3090000CB,,,,,,True

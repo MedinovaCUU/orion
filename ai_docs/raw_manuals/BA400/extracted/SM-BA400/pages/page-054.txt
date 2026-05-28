@@ -1,0 +1,19 @@
+24
+25
+26
+27
+28
+Ilustración 3.45 
+Pieza de interconexión del cableado y tubo para los brazos
+3.11. Conexiones de fluidos
+Todo el sistema fluídico está montado en una plancha que está localizada en la parte derecha del analizador.
+Para facilitar la identificación y seguimiento del esquema fluídico, la selección del color de los tubos ha seguido el 
+siguiente criterio:
+• 
+Azul: Tubos con agua destilada
+• 
+Rojo: Tubos con residuos
+• 
+Verde: Tubos con solución de lavado
+Manual de servicio
+54

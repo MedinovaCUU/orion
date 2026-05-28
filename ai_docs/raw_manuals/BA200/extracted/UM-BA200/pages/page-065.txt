@@ -1,0 +1,41 @@
+65
+65
+8.2. Rotor de muestras y reactivos
+El rotor de muestras y reactivos consiste en un tambor extraible con posiciones 
+para colocar los tubos de muestras, los calibradores, los controles y los reactivos. El 
+sisema es totalmente flexible y en cualquier posición se pueden colocar muestras 
+o reactivos. El rotor dispone de un lector de códigos de barras para identificar 
+automáticamente las muestras y reactivos colocados en el rotor. 
+Ilustración 32 
+Rotor de reactivos y muestras
+ 
+Posiciones Hay en total 88 posiciones dividas en dos coronas. En ambas coronas se pueden 
+leer los códigos de barras de las botellas y de las muestras.
+ 
+Tubos de muestras 
+Para posicionar los tubos es necesario insertar previamente un adaptador (véase 
+capítulo 4.6 que explica como colocar el adaptador) Dimensiones de los tubos 
+primarios:
+• 
+Diámetro mínimo: ∅12 mm
+• 
+Diámetro máximo: ∅16 mm
+• 
+Altura mínima: 70 mm
+• 
+Altura máxima: 100 mm
+ 
+Pocillos pediátricos Para insertar los pocillos pediátricos en las posiciones se suministra un accesorio 
+conjuntamente con el analizador para adaptar los diámetros. Véase capítulo 4.6 
+que explica como colocar el adaptador.
+ 
+Botellas 
+Se pueden colocar 2 tipos de botella, los volúmenes de las botellas son:
+• 
+60 mL, únicamente se pueden posicionar en la corona interna.
+• 
+20 mL, se puede posicionar tanto en la corona interna como en la externa.
+ 
+Refrigeración El sistema de refrigeración lleva una alimentación independiente del analiza­
+dor, con lo cual se puede apagar el analizador y dejar funcionando el sistema de 
+refrigeración.

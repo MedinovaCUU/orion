@@ -1,0 +1,119 @@
+167
+ 
+ 
+ 
+Incorporado un menú para utilizar el útil de fotometría.
+ 06/04/17 
+4.2.1 
+Software necesario para instrumentos con nevera
+ 
+26/9/17 
+4.2.2 
+Modificación para ajustar los tubo de heces
+Cambios en las versiones del programa de usuario A15
+Fecha 
+ Versiones 
+Cambios
+ 04/04/06 
+3.2.1 
+Primera versión
+ 20/07/06 
+3.2.2 
+Nuevo botón de reset de histórico de las líneas de base
+ 
+ 
+ 
+Cambio en la realización del warming-up y shut-down. Ahora, el pro-
+ceso de arranque y finalización es fijo
+ 14/11/06 
+3.3.0 
+Mejora y optimización de los tiempos de ejecución del programa. 
+Corregidos errores de la aplicación que aparecía el mensaje «no 
+responde». 
+ 05/03/07 
+3.3.1 
+Incorporación del idioma coreano
+ 
+ 
+ 
+Cambio de la adaptación de algunas técnicas
+ 
+ 
+ 
+Corrección de errores poco frecuentes.
+ 21/03/07 
+3.3.2 
+Incorporación del idioma Coreano. Correcciones de errores de run-
+time
+14/06/07 
+4.0.0 
+Nueva Función de control de Substrato Consumido en técnicas Ciné-
+ticas
+ 
+ 
+ 
+Nueva Función de control de Prozona en técnicas de Turbidmetría
+ 
+ 
+ 
+Nueva Correlación de resultados por técnica con otros analizadores
+ 
+ 
+ 
+Nueva Representación gráfica de los resultados
+ 
+ 
+ 
+Cambio de la manera de recalcular el factor
+ 
+ 
+ 
+Nuevo informe de resultados
+ 
+ 
+ 
+Nuevo documento explicativo de los mensajes de observaciones
+ 
+ 
+ 
+Incorporado los idiomas Indonesio y Rumano.
+ 17/07/09 
+4.1 
+Nueva función de comunicación LIMS online.
+ 
+ 
+ 
+Nueva funcionalidad en las curvas de calibración: cuando un valor 
+sale fuera de la curva se puede repetir con una postdilución automá-
+ticamente.
+ 23/07/10 
+4.5 
+Mejora en la gestión de técnicas bireactivas con tiempo de lectura de 
+600s
+ 
+ 
+ 
+Nueva opción de poder compartir posiciones en el rack de reactivos 
+con técnicas diferentes.
+ 
+ 
+ 
+Visualización de la curva cinética de los calibradores.
+ 
+ 
+ 
+Añadir nuevas técnicas en muestras con identificador autonumérico.
+ 1/10/10 
+4.5.2 
+Corrección adaptación metódica magnesio Xylidil. Incorporación de 
+nuevas contaminaciones. Incorporación de una nueva técnica calcu-
+lada.
+ 
+1/8/11 
+4.6 
+Nuevas adaptaciones para la HbA1C.
+ 
+ 
+ 
+Cambio en el nombre del tipo de técnicas de PLM a SEM y de CSF 
+a LIQ.

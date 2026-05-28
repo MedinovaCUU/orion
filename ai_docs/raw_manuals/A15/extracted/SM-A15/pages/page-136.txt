@@ -1,0 +1,36 @@
+137
+6.6. Refrigerador de reactivos
+6.6.1. Led indicador de estado y sensor de tapa del refrigerador
+Para sustituir el led de indicador de estado o el sensor de la tapa es necesario sustituir el cuerpo nevera. 
+Desmontaje:
+1. Extraer los 4 tornillos (1)
+2. Tirar del cuerpo (2)
+3. Desconectar los conetores (3)
+Montaje:
+1. Proceder en orden inverso para sustituir el cuerpo nevera
+3
+1
+2
+Ilustración 6.45 
+6.6.2. AC17320 - Peltiers del refrigerador / AC17321 - Ventilador del refrigerador
+Desmontaje peltier:
+1. Extraer el cuerpo de la nevera tal como se explica en el capítulo 6.6.1
+2. Abrir la tapa electrónica. 
+3. Quitar las bridas (1) y la tapa (2) para dejar libres los cables que van al refrigerador de reactivos. Des-
+conectar todos los conectores que van a la placa del refrigerador.
+4. Volver a cerrar la tapa electrónica.
+5. Quitar la tapa delantera.
+6. Quitar las bridas (3) .
+7. Quitar la tapa general del equipo. Ver capítulo 6.1.5
+8. Voltear el instrumento de tal manera que descanse sobre su parte posterior.
+9. Desmontar la tapa protectora (4) extrayendo los tornillos (5).
+10. Quitar los 4 tornillos exteriores (6) y extraer el conjunto.
+11. Una vez extraido de su alojamiento, quitar las bridas (7)
+12. Desenchufar los conectores de los ventiladores (8)
+13. Desmontar el sensor de temperatura (9) quitando el tornillo (10)
+14. Quitar el cable de señal de detección de nivel (11) quitando el tornillo (12). Extraer completamente la 
+nevera junto con el cable de las células de peltier.
+15. Una vez extraida completamente la nevera, quitar los capuchones y los tornillos (13), para poder quitar 
+los radiadores.
+16. Quitar las peltiers (14). Atención recordar la polaridad de las mismas para después volver a montar las 
+nuevas con la misma polaridad. Fijarse en el color de los cables.

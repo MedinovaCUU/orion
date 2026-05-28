@@ -1,0 +1,76 @@
+Service manual
+68
+Esquema de Sistema Rotor
+Rotor System Scheme
+1/2
+CPU BOARD
+CIIM00006
+M
+(A)
+(E)
+(K) (B)
+(C)
+1 2 3 4
+Naranja/Orange
+Blanco/White
+Amarillo/Yellow
+Negro/Black
+Negro/Black
+Amarillo/Yellow
+Rojo/Red
+1 2 3 4
+3 4 5
+M
+(A)
+(E)
+(K) (B)
+(C)
+1 2 3 4
+Naranja/Orange
+Blanco/White
+Amarillo/Yellow
+Negro/Black
+Negro/Black
+Amarillo/Yellow
+Rojo/Red
+1 2 3 4
+6 7 8
+PLMA00020
+PLMA00018
+J6
+J7
+FILTERS WHEEL MOTOR
+REACTIONS ROTOR MOTOR
+J24
+J24
+PLMA00010
+PLMA00010
+FAN
+11 1 2
+Rojo/Red
+Negro/Black
+PLMA00010
+J24
+9 10
+J24
+Verde/Green
+Verde/Green
+Blanco/white
+Blanco/White
+PLMA00010
+PLMA00011
+ROTOR
+TEMPERATURE
+SENSOR
+1 2
+Marron/Brown
+Rojo/Red
+PLMA00010
+J24
+Marron/Brown
+Rojo/Red
+ROTOR
+COVER
+SENSOR
+PLMA00013
+Figure 4.8

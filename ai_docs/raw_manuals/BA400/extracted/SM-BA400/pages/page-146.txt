@@ -1,0 +1,22 @@
+Hoja de Registro de 
+instalación
+Nombre del laboratorio:
+Modelo de analizador:
+Número de serie:
+Nombre del responsable técnico:
+Fecha de instalación:
+Pasos Acciones del especialista de producto
+Realizado
+1
+Instalar reactivos 
+2
+Programar los valores de calibración y los márgenes de los controles
+3
+Realizar la inicialización de los electrodos del módulo ISE
+4
+Realizar el proceso de verificación del analizador. Siga las instrucciones del capítulo 
+7.3.6
+Firma y fecha del especialista de producto
+Firma y fecha del cliente
+Manual de servicio
+146

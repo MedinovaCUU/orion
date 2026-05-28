@@ -1,0 +1,17 @@
+135
+6.5.6. PC13381 - Placa del sistema fotométrico.
+Desmontaje:
+1. Extraer los tornillos (1) de la tapa soporte (2) del sistema fotométrico.
+2. Extraer los tornillos (3) de la tapa soporte (4) de la placa fotométrica
+3. Desplazar ligeramente la tapa soporte (4) hacia el centro del rotor y extraerla de su alojamiento.
+4. Desconectar la banda plana de la placa del sistema fotométrico.
+5. Extraer los tornillos (5) para separar la tapa soporte de la placa fotométrica
+Montaje:
+1. Instalar de nuevo la placa, volver a conectar cuidadosamente todos los conec to res.
+2. Realizar el proceso inverso de desmontaje
+1
+2
+Ilustración 6.41 
+3
+4
+Ilustración 6.42

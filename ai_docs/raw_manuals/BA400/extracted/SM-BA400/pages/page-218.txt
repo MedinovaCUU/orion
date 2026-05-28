@@ -1,0 +1,61 @@
+AC16614
+AC16560
+AC16559
+Código
+Descripción del recambio
+AC16617
+Centrador rotor
+AC17216
+Detector de tapa rotor de reacción
+AC16620
+Sensor de temperatura rotor reacción
+AC17240
+Fotodetector de la estación de lavado
+AC16597
+Muelle puntas estación de lavado
+AC17289
+Punta aspiración estación de lavado
+AC17290
+Punta aspiración + secador estación de lavado
+AC17334
+Conjunto estación de lavado sin puntas de aspiración
+AC16565
+Placa fotobarrera
+AC16619
+Correa vertical estación lavado
+AC16618
+Motor elevación estación lavado
+AC16575
+Columna de soporte rotor de reacción
+AC16615
+Correa rotor de reacción 
+AC16621
+Conjunto ventiladores termostatización rotor
+AC16616
+Motor rotor de reacción
+AC16622
+Conjunto peltiers rotor de reacción
+AC16614
+Conjunto banco óptico sin filtros
+AC16560
+Placa fotometría
+AC16559
+Placa control de fotometría
+FI15128
+Filtro 340
+FI15129
+Filtro 405
+FI15130
+Filtro 505
+FI15131
+Filtro 535
+FI15132
+Filtro 560
+FI15133
+Filtro 600
+FI15134
+Filtro 635
+FI15135
+Filtro 670
+Manual de servicio
+218

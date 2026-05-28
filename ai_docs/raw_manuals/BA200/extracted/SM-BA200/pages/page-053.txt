@@ -1,0 +1,117 @@
+Manual de servicio
+53
+CAN BUS
+STATUS LED
+BICOLOUR
+CPU
+ASMB00983
+DETECTOR COVER
+CN8
+CN7
+CN10
+CPU F. FAN1
+ASMB00992
+CIIM00046
+COVER SENSOR
+STATUS LED
+CAN BUS
+STATUS LED
+USB FLASH DRIVE
+ISE
+USB COMMS
+F.FAN1
+COVER SENSOR
+USB SERVICE
+CN22
+F.FAN2
+F.FAN3
+FAN
+PEN DRIVE
+CN2
+1
+2
+3
+4
+5
+GREEN
+ORANGE
+1
+2
+3
+CN3
+1
+2
+3
+4
+USB COMMS
+1
+2
+3
+4
+5
+1
+6
+2
+5
+4
+CN20
+1
+2
+USB SERVICE
+1
+2
+3
+4
+5
+CN1
+1
+2
+3
+CN21
+1
+2
+USB SERVICE
+1
+2
+3
+4
+5
+RS-232 -ISE MODULE
+5
+9
+4
+8
+3
+7
+2
+6
+1
+CN19
+1
+2
+Ilustración 4.33 
+Conexiones de la placa CPU
+Conector
+Función
+Pin
+CN1
+Led de estado (tricolor)
+Pin 1: Activación LED1
+Pin 2: GND
+Pin 3: Activación LED2
+CN2
+Conexión del bus CAN 
+Pin 1: 24V
+Pin 2: GND
+Pin 3: NC
+Pin 4: CAN_H
+Pin 5: CAN_L
+CN3
+Conexión dector de la tapa
+Pin 1: 5V
+Pin 2: Detección tapa
+CN7
+Canal serie módulo ISE
+Pin 2: Transmisión
+Pin 3: Recepción 
+Pin 5: GND

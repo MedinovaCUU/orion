@@ -1,0 +1,50 @@
+Manual usuario 
+ 
+ 
+ 
+Manual usuario 
+ 
+ 
+ 
+186
+186
+Biosystems
+Biosystems
+13.2.5. Limpieza de la ventana del lector de código de barras
+Si el programa le reporta un elevado número de errores en la lectura del código 
+de barras, verifique el estado de la ventana por dónde el código de barras realiza 
+la lectura. 
+1. Apague el analizador.
+2. Quite las dos tapas de los rotores, de reactivos y de muestras.
+3. Quite los dos rotores, el de reactivos y el de muestras.
+4. Limpie con un paño húmedo ambas ventanas del interior del alojamiento de 
+los rotores.
+13.2.6. Llenado de la botella de solución de lavado
+1. Desenrosque el tapón de la botella de solución de lavado
+2. Rellénela con 5 L de agua purificada. 
+3. Añádale 25 mL de solución de lavado concentrado (código AC13 434). 
+Manipule con cuidado la botella de solución de lavado concentrado para 
+evitar derrames y salpicaduras. Utilice guantes y vestimenta de protección al 
+manipularla. 
+4. Enrosque el tapón con el tubo y colóquelo en su alojamiento dentro del 
+analizador. Enchufe el conector rápido al tapón y asegúrese de que hace clic.
+5. Pulse el botón de rellenado de la solución de lavado para indicar al analizador 
+que realice un cebado del sistema.
+13.2.7. Limpieza de las palas de los agitadores
+En el momento de apagar el analizador, una vez a la semana el programa avisa para 
+realizar esta tarea de mantenimiento. 
+Para realizar la limpieza de los agitadores son necesarios que estén posicionados 
+en el rotor las soluciones de limpieza ácida y alcalina (WS1 y WS2). En la propia 
+pantalla de aviso indica en que posiciones se tienen que colocar dichas soluciones.
+La limpieza de los agitadores consiste en las siguientes operaciones que se realizan 
+de manera automática:
+1. Aspirar cada una de las soluciones WS1, agua y WS2 y dispensarlas en dife­
+rentes pocillos del rotor de reacciones.
+2. Agitar primero con el agitador AG1 y luego con el AG2 en cada uno de los 
+pocillos anteriores durante varios segundos.
+3. Vaciar y secar con la estación de lavado los pocillos utilizados del rotor.
+13.2.8. Limpieza de los filtros de los ventiladores frontales
+Para limpiar los filtros de aire de los ventiladores frontales siga los pasos siguientes:
+1. Apague el analizador. 
+NOTE
+NOTE

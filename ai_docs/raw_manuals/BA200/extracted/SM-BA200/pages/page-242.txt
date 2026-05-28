@@ -1,0 +1,50 @@
+Lista de recambios
+Código
+Conjunto
+Representación 
+Descripción
+FI15132
+Rotor lectura
+Filtro 560
+FI15133
+Rotor lectura
+Filtro 600
+FI15134
+Rotor lectura
+Filtro 635
+FI15135
+Rotor lectura
+Filtro 670
+AC17246
+Rotor lectura
+Filtro 420, modelo Y200
+FI18444
+Rotor lectura
+Filtro 430, modelo Y200
+AC17247
+Rotor lectura
+Filtro 520, modelo Y200
+AC17248
+Rotor lectura
+Filtro 620, modelo Y200
+AC17249
+Rotor lectura
+Filtro 750, modelo Y200
+AC16614
+Rotor lectura
+Banco óptico sin filtros
+AC16615
+Rotor lectura
+Correa dentada rotor reacción
+AC16617
+Rotor lectura
+Centrador rotor
+AC16619
+Rotor lectura
+Correa movimiento vertical estación 
+lavado
+AC16620
+Rotor lectura
+Sensor temperatura rotor reacción
+Manual de servicio
+242

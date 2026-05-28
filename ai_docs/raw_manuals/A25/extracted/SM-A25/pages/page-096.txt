@@ -1,0 +1,19 @@
+96
+Service manual
+5.3.5. 
+PC-Analyzer communications channel test
+On pressing the Test button, the computer attempts to establish communication with the analyzer. The program 
+tells the technician if it has been possible or not.
+The technician can select Automatic Configuration or Manual Configuration. In the case of the latter, he can 
+define the Port and the Speed.
+5.3.6. 
+Global stress mode of the analyzer
+This test makes it possible to continually reproduce work cycles of the analyzer similar to those made during 
+the preparation and reading of reactions in a normal working routine, but dispensing at the washing station 
+instead of the rotor. It is necessary for the dispensing system to be primed so that the piston does not function 
+dry. All the racks must be removed from the racks tray. This test can be made without the covers and housing 
+of the analyzer. The technician can program the number of cycles he wishes (1 cycle = 15 seconds). The test 
+can be cancelled at any time.
+Once the test has been launched, the screen provides regular information about the current status of the pro­
+cess. If an error occurs during the process, the test ends and the screen displays a message indicating the 
+element causing the error.

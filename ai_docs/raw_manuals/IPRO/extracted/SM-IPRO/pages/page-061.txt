@@ -1,0 +1,14 @@
+61
+6
+5
+Ilustración 4.29.  Desmontaje conjunto puntas
+4.14.  ME14624 - Bomba peristáltica / ME14623 - Cabezal de la bomba 
+peristáltica
+Desmontaje:
+1. Desmontar el lateral. Ver capítulo 4.2
+2. Quitar los 4 tornillos (1)
+3. Desconectar el cable de la bomba y desconectar los tubos. 
+4. Separar el conjunto bomba peristáltica
+5. Quitar los 4 tornillos (3) para sacar la bomba del conjunto
+Montaje:
+1. Seguir los pasos del desmontaje en sentido inverso para cada una de los elementos

@@ -1,0 +1,74 @@
+2
+Manual de Usuario BioSystems SPICA | Versión 2.8 - Agosto 2024
+Manual de Usuario BioSystems SPICA
+GUIA DE USUARIO
+1. INTRODUCCIÓN
+1.1 Avisos y advertencias
+1.2 Acuerdo de licencia de usuario final 
+1.3. Uso previsto
+2. INSTALACIÓN
+2.1 Generalidades
+2.2. Ubicación
+2.3. Instalar el agua destilada, la solución de lavado y el 
+contenedor de residuos 
+2.4 Instalación de los racks de muestras y reactivos 
+2.5 Especificaciones de las etiquetas de códigos de barras
+2.6. Instalar el rotor de reacción
+2.7. Conexión a la red y puesta en marcha
+2.8. Comunicaciones con analizador SPICA
+2.9. Primeros pasos para operar el analizador
+2.10 Precauciones durante la operación
+3. DESCRIPCIÓN
+3.1 Descripción de los componentes
+4. FUNCIONAMENTO GENERAL 
+5. PROCEDIMIENTOS DE MEDICIÓN
+5.1 Generalidades
+5.2 Cálculo de las absorbancias
+5.3 Cálculo de la concentración
+5.4 Control de calidad interno
+6. MANTENIMIENTO
+6.1 Actividades y frecuencia de mantenimiento
+6.2 Limpieza del analizador 
+7. GUÍA DE SOLUCIÓN DE PROBLEMAS
+7.1 Pre-análisis y preparación de soluciones adicionales 
+7.2 Alarmas
+8. TRANSPORTE, MANIPULACIÓN Y ALMACENAMIENTO 
+8.1 Transporte y reexpedición
+8.2 Manipulación y almacenamiento 
+9. GARANTÍA Y LICENCIA
+10. ESPECIFICACIONES TÉCNICAS
+5
+5
+10
+11
+12
+12
+12
+13
+13
+14
+15
+16
+17
+18
+18
+19
+19
+23
+23
+23
+23
+29
+30
+32
+32
+32
+34
+34
+34
+35
+35
+35
+35
+36
+ÍNDICE

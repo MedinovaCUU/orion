@@ -1,0 +1,46 @@
+2. Sitúe El fijador muelle (4) a una altura de 13.5 mm. Fíjelo con las tuercas (2) y (6). Ayúdese con las dos llaves 
+fijas para apretar las tuercas.
+3. Verifique que el sistema antichoque de la punta funciona correctamente. 
+4. Para verificar el sistema antichoque de la punta: con el dedo o con una pieza de superficie plana se simula una 
+colisión de punta en movimiento vertical perfecto. El muelle tiene que subir y después recuperarse sólo y bajar 
+hasta la posición de reposo.
+5. Conecte los cables de la punta de la siguiente manera:
+Nombre conector
+HP
+TP
+DN
+Código cable
+PLMA0329
+PLMA0330
+PLMA0328
+Color cable
+Amarillo/Rojo
+Blanco
+Negro
+6. Coloque una brida para sujetar los cables a la placa electrónica. Asegúrese de que los cables no sobresalgan de 
+la placa electrónica en altura.
+7. Corte la cola de la brida.
+8. Conecte el tubo de teflón a la punta. Para apretar el racor sujete la punta por el punto (1).
+9. Verifique que el sistema antichoque de la punta funciona correctamente. Según el punto 4.
+10. Verifique que el led LD2 de la placa se enciende cuando corta el fotodetector, y está apagado cuando la punta 
+está en modo reposo.
+11. En caso de que el detector de colisión esté muy justo con el fotodetector, suba 1 mm la placa electrónica de su 
+posición.
+12. Coloque la tapa del brazo.
+13. Ajuste con el programa de servicio el valor de Zref de la punta.
+ 
+) Véase capítulo 4 para realizar el ajuste.
+8.11.4. AC16557 - Placa brazo
+Herramientas: llave allen de 2.5 mm
+Desmontaje:
+1. Quite los cables de los motores y fotodetectores de inicio.
+2. Quite el cable del bus CAN
+3. Quite las 4 tornillos que sujetan la placa
+Montaje:
+1. Coloque la placa en su posición.
+2. Ponga los 4 tornillos que sujetan la placa.
+3. Inserte el cable del bus CAN.
+4. Inserte los cables de los motores y fotodetectores de inicio.
+5. Seleccione el conmutador de la placa en función del brazo donde instale la placa.
+Manual de servicio
+156

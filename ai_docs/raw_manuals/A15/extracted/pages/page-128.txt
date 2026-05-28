@@ -1,0 +1,15 @@
+129
+7. Extraer con cuidado el motor (21) estirando hacía fuera
+8. Extraer hacía el exterior el tambor de filtros
+Montaje
+1. Colocar el motor (21) en su ubicación conjuntamente con el tambor de filtros (20)
+2. Haga coincidir el mecanizado del eje del motor con el apriete de los prisioneros (18). Ponga fijatornillos 
+en la rosca de los prisioneros.
+3. Coloque los tornillos (19) y apríetelos
+4. Verifique que el tambor de filtros gira libremente
+5. Ponga la tapa de protección
+6. Monte el conjunto rotor en el analizador
+7. Realice los ajustes del rotor
+17
+Ilustración 6.31 
+18

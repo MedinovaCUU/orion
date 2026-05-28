@@ -1,0 +1,44 @@
+Dirección de las carpetas
+Descripción
+c:\Program Files (x86)\BA200\Firmware\
+c:\Program Files (x86)\Y200\Firmware\
+Copia del firmware del analizador
+c:\Program Files (x86)\BA200\USB driver\
+c:\Program Files (x86)\Y200\USB driver\
+Copia del driver de USB
+c:\ProgramData\BA200\Adjustments\
+c:\ProgramData\Y200\Adjustments\
+Carpeta donde se guarda una copia de los ajustes del 
+analizador.
+c:\ProgramData\BA200\Log\
+c:\ProgramData\Y200\Log\
+Carpeta donde se guardan los arhivos del log de la ejecución 
+del software
+c:\ProgramData\BA200\RestorePoints\
+c:\ProgramData\Y200\RestorePoints\
+Carpeta donde se guardan los Restorepoints, copias de 
+seguridad de la base de datos
+c:\ProgramData\BA200\Previous\
+c:\ProgramData\Y200\Previous\
+Carpeta donse se guardan los RestorePoints cuando hay un 
+cambio de versión de programa
+c:\ProgramData\BA200\LogConsum\
+c:\ProgramData\Y200\LogConsum\
+Carpeta donde se guardan los archivos de consumo de 
+reactivos
+c:\Users\Public\Documents\BA200\
+c:\Users\Public\Documents\Y200\
+Carpeta donde se guardan los SatReports
+Para poder acceder a la carpeta de c:\ProgramData, se tiene que cambiar la opción de ocultación de carpetas del 
+sistema operativo, para ello siga los pasos siguientes:
+• 
+Abra el explorador de windows
+• 
+Seleccione la opción del menú de Ver
+• 
+Seleccione la opción de ficheros ocultos
+ 
+) Ver Ilustración 6.32
+Ilustración 6.32 
+Pantalla para configurar las opciones de ocultación de carpetas
+109

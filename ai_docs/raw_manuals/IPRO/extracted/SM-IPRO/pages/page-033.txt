@@ -1,0 +1,24 @@
+33
+3.3.5  Test de estresamiento
+Este test permite realizar de forma continua una cierta secuencia de movimientos. El técnico puede 
+programar la duración del test, que puede ser cancelado en cualquier momento. 
+3.3.6  Test de los sistemas de segu­ri­dad del eje Z
+El eje Z del brazo manipulador dispone de un encoder para detectar si ha habido pérdida de pasos 
+debido a una colisión de la punta. En caso de fallo del suministro eléctrico, un sistema mecánico eleva 
+automá­ticamente la punta. Seleccionando las opciones correspondientes, el procesador comprueba el 
+fun­ciona­miento de cada uno de estos dispositivos.
+3.3.7  Test de comprobación de Z máximo
+Este test permite comprobar la altura a que quedan las puntas para cualquier tipo de portaobjetos. Para 
+ello seleccionar el tipo de portaobjetos, el rack, el número de portaobjetos y el pocillo. El margen de 
+la altura correspondiente al tipo de portaobjetos se especifica en el anexo correspondiente. 
+3.3.8  Tests de electroválvulas y bombas peristáltica
+El procesador utiliza dos electroválvulas de 3 vías para gestionar el dosificado. Una que conmuta entre 
+la bomba dosificadora y la punta, y otra que conmuta entre la botella de líquido de sistema (PBS) y 
+la botella de solución de lavado. El sistema de lavado de la punta y portaobjetos utiliza una bomba 
+peristáltica. La pantalla permite escoger qué dispositivo se desea probar y qué test se desea realizar. 
+Los dispositivos que se pueden probar independientemente son:
+• Electroválvula de 3 vías de la bomba de dosificación
+• Electroválvula de 3 vías de conmutación de botellas
+• Bomba peristáltica
+Para realizar los tests, es conveniente que el sistema dosi­ficador esté cebado. A conti­nuación se des­
+criben los distintos tests realizables.

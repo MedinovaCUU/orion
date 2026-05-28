@@ -1,0 +1,29 @@
+26
+Manual de servicio
+4. Verificar que se ha abierto el puerto USB correctamente observando el símbolo de estado situado 
+en la parte inferior izquierda del programa. (Nota: Aunque ese símbolo es un punto de partida, 
+no significa que se haya conectado con el lector. Solo que se ha abierto el USB correspondiente.)
+5. Descargar la configuración del proyecto en el dispositivo pulsando el botón 
+6. Verificar el correcto funcionamiento del lector entrando en la opción de DIAGNOSIS del programa 
+tal y como indica la siguiente figura. En esta pantalla podemos establecer comunicación con el 
+lector, activar y desactivar el haz de luz o realizar una prueba de lectura. Para ello: 
+• 
+Pulsar el botón de VERSION y observar que el lector responde con la versión y la fecha.
+• 
+Ajustar a una distancia focal y pulsar el botón ACTIVATE DECODING comprobar con una 
+etiqueta de código de barras que el lector funciona correctamente 
+Es importante indicar que el lector sólo devuelve una lectura cuando la decodificación sea diferente 
+a la última lectura realizada. Es decir, nunca devolverá dos valores iguales seguidos el uno del otro.
+1
+2
+3
+3.2.4  Ajuste mecánico del lector del código de barras de muestras y reactivos
+El sistema de fijación del lector de código de barras permite graduar la verticalidad e inclinación del 
+haz. Mediante el programa de configuración del lector poner en marcha el haz como si fuéramos a 
+leer un tubo.
+• 
+Colocar in rack de muestras con un tubo en posición 11. Mover el rack hasta que el haz incida 
+sobre el tubo. Ajustar la fijación del lector hasta que coincida con el eje vertical del tubo.
+• 
+Por otro lado, ajustar la inclinación del haz de tal manera que cubra desde 1 cm debajo del extremo 
+inferior del tubo.

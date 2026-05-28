@@ -1,0 +1,48 @@
+87
+mente infecciosos. 
+AV.2.2  Componentes a eliminar
+• 
+Estación de lavado
+• 
+Juego de botellas con sus correspondientes tubos
+• 
+Racks de muestras y reactivos
+ATENCIÓN: NO eliminar las bandejas de portaobjetos.
+AV.2.3  Componentes a sustituir
+• 
+Cartucho de la bomba peristáltica
+• 
+Cambio del retén de la bomba cerámica (AC11527)
+• 
+Actualizar firmware y software
+AV.2.4  Proceso de ajuste
+Registrar los valores obtenidos del ajuste en el documento de registro que encontrará al final de esta 
+sección.
+Realizar los siguientes ajustes, consultar el manual de servicio (capítulo 3) para realizar los ajustes.
+• 
+Origen Autoajuste
+• 
+Referencia de Bandeja
+• 
+Z Portaobjetos
+• 
+Realizar el Test de Z portas con un portaobjetos tipo BIOSYSTEMS 4 .
+AV.2.5  Finalización
+• 
+Colocar una etiqueta indeleble al equipo reacondicionado. La etiqueta contendrá la siguiente 
+información (verificar la legislación nacional de cada país:
+1. La razón social y dirección de la compañía responsables de la ejecución y reacondicionamiento
+2. La fecha de la última revisión
+3. El número de reacondicionamientos realizados
+4. Indicación de que es un equipo renovado
+5. Vida útil: sin limitación siempre que se sigan las instrucciones del fabricante (uso y mante­
+nimiento). 
+• 
+Añadir las nuevas cajas de accesorios (AC16071).
+• 
+Introducir en una de ellas las bandejas de portaobjetos.
+• 
+Fijar el brazo manipulador con los tonillos fijadores. 
+• 
+Utilizar el embalaje original. Previamente verificar su estado y en caso de claro deterioro 
+sustituirlo por uno nuevo.

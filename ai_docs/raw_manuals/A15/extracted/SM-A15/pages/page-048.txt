@@ -1,0 +1,21 @@
+49
+Conector
+Función
+Pins
+J11
+Tapa instrumento
+1 - Fotodetector, amarillo
+2 - Fotodetector, negro
+3 - Fotodetector, rojo
+4.10. Placa refrigerador de reactivos (CIIM00075)
+Conector
+Función
+Pins
+CN1
+POWER SUPPLY
+1- 5V5
+2- GND
+CN2
+PUMPS- J11
+1 - 5V
+2 - GND

@@ -1,0 +1,22 @@
+3. Quite la pieza metálica (13) de protección de la placa.
+4. Desenchufe el conector de las varillas de detección
+5. Quite la placa (14)
+Montaje de la placa:
+1. Cambie la placa (14) por una nueva
+2. Coloque la placa con los separadores, la pieza (13) de protección y sujételo con los tornillos (15).
+3. Vuelva a montar el depósito en su alojamiento.
+15
+13
+14
+Ilustración 8.106 Desmontaje placa detección nivel del depósito
+8.16.6. AC17371 - Mejora en la conexión de la botella de solución de lavado
+Se ha realizado una mejora en los instrumentos que consiste en la eliminación de uno de los tubos de la botella de 
+la solución de lavado. Véase el capítulo AII para saber los números de serie que ya incorporan está mejora.
+Para actualizar el resto de instrumentos, realice los pasos siguientes.
+1. Cambie el tapón de la botella de solución de lavado. Véase Ilustración 8.107.
+2. Quite uno de los tubos exteriores de la solución de lavado(1), según indica la Ilustración 8.108.
+3. Coloque a la salida del filtro de la solución de lavado, el conector en forma de Y (2), dos tubos de longitud de 
+120 mm y dos checkvalves (3). Coloque las checkvalves según indica la Ilustración 8.109.
+4. Conecte tubos a cada salida de las checkvalves, y luego en las posiciones (4) y (5) según indica la Ilustración 8.110.
+Manual de servicio
+214

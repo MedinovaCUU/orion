@@ -1,0 +1,21 @@
+60
+59
+Ilustración 8.96 
+8.15.16. AC16614 - Conjunto banco óptico sin filtros / Cambio de filtros
+Herramientas: Allen 2.5
+Desmontaje banco óptico:
+1. Siga los pasos de desmontaje del capítulo 8.15.15 para separar el banco óptico
+2. Saque cada uno de los filtros del banco óptico
+Montaje banco óptico:
+1. Sustituya el banco óptico.
+2. Coloque cada uno de los filtros en la posición que indica Ilustración 8.97
+3. Siga el proceso de montaje del capítulo 8.15.15
+4. Verifique el funcionamiento con el programa de servicio.
+Desmontaje filtros:
+1. Siga los pasos de desmontaje del capítulo 8.15.15 para separar el banco óptico
+2. Saque el filtro averiado. Localice la posición según la Ilustración 8.97
+Montaje banco óptico:
+1. Sustituya el filtro por uno nuevo
+2. Siga el proceso de montaje del capítulo 8.15.15
+3. Verifique el funcionamiento con el programa de servicio.
+205

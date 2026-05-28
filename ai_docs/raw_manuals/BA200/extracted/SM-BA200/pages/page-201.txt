@@ -1,0 +1,20 @@
+45
+43
+42
+44
+48
+49
+46
+47
+Ilustración 8.91 
+Cambio de las peltiers
+8.15.14. AC16559 - Placa control de fotometría - CIIM0050
+Herramientas: 
+Desmontaje:
+1. Desconecte todos el cableado que va a la placa de control de fotometría.
+2. Quite la placa (50) de las piezas de soporte.
+Montaje:
+1. Sustituya la placa (50).
+2. Oriente correctamente la placa y colóquela en su posición
+3. Conecte cada uno de los cables en su posición. En el capítulo 4.6 indica como conectar cada uno de los cables.
+201

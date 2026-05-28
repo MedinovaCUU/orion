@@ -1,0 +1,17 @@
+97
+cuando se tenga que cambiar algún elemento físico del analizador, p.e. la correa del eje Z se tendrá que 
+inicializar el contador a cero para que corresponda el número de ciclos almacenados en el analizador con la 
+realidad. Parar realizar dicha operación debe de seleccionar la casilla del elemento a inicializar y introducir el 
+número de ciclos en la casilla activada. Luego pulsar el botón Cargar ciclos.
+También desde esta misma pantalla y con el botón Cargar Ajustes se permite al técnico seleccionar un fiche-
+ro de ajustes y cargarlo en el analizador. En le momento de cargar los ajustes también se cargan los ciclos. 
+Realizar esta operación cuando se tenga que cambiar una placa CPU, así no se tiene que ajustar de nuevo 
+todo el analizador, únicamente se tendrá que reajustar los siguientes apartados:
+• 
+Sensores de las botellas
+• 
+sensibilidad detección de nivel
+• 
+termostatización de la punta
+• 
+termostatización del rotor.

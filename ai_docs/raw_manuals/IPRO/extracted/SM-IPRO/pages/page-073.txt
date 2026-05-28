@@ -1,0 +1,57 @@
+73
+BOMBA DE DISPENSACIÓN
+• 
+Pistón cerámico con retén de PTFE-grafito
+• 
+Diámetro del pistón 8 mm
+• 
+Carrera 25 mm
+• 
+Volumen de dispensación 3 μL - 1250 μL
+• 
+Resolución 0.126 μL
+• 
+Imprecisión <1% hasta 3 μL
+• 
+Velocidad de dispensación máx. 880 µL/s
+ 
+REQUERIMIENTOS MÍNIMOS ORDENADOR
+• 
+Equivalente a Intel Core i3 @3.30 GHz o superior 
+• 
+Sistema operativo Windows ® 10 64 bits (x64)
+• 
+6 Gbytes de memoria RAM
+• 
+15 Gbytes libres de disco duro
+• 
+Lector de DVD (recomendado no imprescindible)
+• 
+Resolución mínima de 1280 x 800 (recomendada 1920 x 1080)
+• 
+Ratón (mouse)
+• 
+Conector USB
+ 
+El nivel de aislamiento del canal de comunicaciones del procesador iPRO es reforzado (el aislamiento 
+del canal de comunicaciones del ordenador ha de ser también reforzado)(1)
+(1) Se entiende como aislamiento reforzado aquel que asegura una protección igual o superior al doble 
+del proporcionado por el aislamiento principal. Aislamiento principal es el que podría causar un riesgo 
+de choque eléctrico (UNE EN 61010-1).
+REQUERIMIENTOS RECOMENDADOS ORDENADOR
+• 
+Equivalente a Intel Core i5 @3.30 GHz o superior 
+• 
+Sistema operativo Windows ® 10 64 bits (x64)
+• 
+8 Gbytes de memoria RAM
+• 
+15 Gbytes libres de disco duro
+• 
+Lector de DVD (recomendado no imprescindible)
+• 
+Resolución mínima de 1280 x 800 (recomendada 1920 x 1080)
+• 
+Ratón (mouse)
+• 
+Conector USB

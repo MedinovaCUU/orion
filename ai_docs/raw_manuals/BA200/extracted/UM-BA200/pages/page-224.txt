@@ -1,0 +1,56 @@
+Manual usuario 
+ 
+ 
+ 
+Manual usuario 
+ 
+ 
+ 
+224
+224
+Biosystems
+Biosystems
+Los resultados de técnicas externas (off-system) también se envían a LIS. Las 
+observaciones asociadas a los resultados se envían a LIS con un aviso genérico.
+Al realizar un reset de la sesión, todas las órdenes del LIS pendientes o bloqueadas 
+se guardan de forma automática en una sesión memorizada de LIS. En este caso el 
+botón añadir ordenes aparece activo (indicando que hay ordenes de LIS pendientes 
+de ser procesadas en el analizador). El nombre de la sesión es: LIS aaaaMMdd 
+hh:mm:ss.
+Estas ordenes de LIS pendientes de procesar en el analizador se añaden automá­
+ticamente a la siguiente sesión de trabajo de LIS al pulsar el botón Añadir ordenes 
+al LIS. Después de añadirlas a una nueva sesión se elimina automáticamente la 
+sesión memorizada.
+Para eliminar ordenes de LIS pendientes, el LIS debe enviar los mensajes de Can­
+celación correspondientes.
+Desde la pantalla de utilidades del LIS se permite eliminar aquellas peticiones 
+provenientes del LIS que no hayan sido procesadas.
+16.4. Repeticiones
+Desde la pantalla de configuración del LIS se establece quien puede solicitar las 
+repeticiones de las técnicas. Las opciones son las siguientes:
+• 
+LIS: Únicamente desde el LIS se permite la repetición de técnicas de paciente. 
+Se lanzan peticiones de repetición durante la validación clínica desde el gestor 
+LIS. Se bloqueará la opción manual de repeticiones de muestras de paciente 
+de la pantalla de resultados actuales. Los blancos, calibradores y controles sí 
+se podrán repetir desde el analizador.
+• 
+Analizador: Únicamente desde el analizador se permite la repetición de técnicas 
+de paciente. Se lanzan peticiones de repetición durante la validación técnica de 
+los resultados. Se rechazarán las órdenes de repetición recibidas desde el LIS.
+• 
+Ambos: Se aceptan todas las peticiones de repetición provengan del LIS o del 
+analizador.
+16.5. Motivos de rechazo
+A continuación se muestran los posibles motivos de rechazo de mensajes por el 
+B400. 
+Debido a acciones del usuario
+Descripción 
+Causa
+Usuario borra peticiones 
+aceptadas del LIS pendientes 
+de ejecutar por el BA200
+El espécimen requerido no se ha recibido
+Falta de reactivo
+Otras razones
+Debido a cancelaciones solicitadas por el LIS

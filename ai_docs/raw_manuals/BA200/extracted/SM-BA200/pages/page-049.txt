@@ -1,0 +1,35 @@
+Manual de servicio
+49
+4.2. Placa distribución - CIIM00047
+La placa distribución es la encargada de realizar la conexión para cada una de las diferentes placas. Las conexiones 
+se realizan por el bus CAN. El cable del bus distribuye la alimentación para cada placa y las señales CAN.
+Las placa de distribución lleva serigrafiado en cada conector que subconjuntos se conectan.
+Ilustración 4.29 
+Serigrafía de la placa de distribución
+Conector
+Función
+CN1 A
+Conexión a la placa CPU
+CN2 A
+Conexión a la placa GLF
+CN3 A
+CN4 A
+Conexión a la placa SF1
+CN5 A
+Conexión a la placa AG1
+CN6 A
+Conexión a la placa DR1
+CN7 A
+Conexión a la placa BR1
+CN8 A
+Conexión a la placa RR1
+CN9
+CN20
+Conexión con la fuente de 
+alimentación
+LEDs
+Función (Condición de encendido)
+LD1
+Tensión de 24 V
+Los conectores CAN, vienen con un sistema de anclaje para asegurar su conexión.
+En caso de necesidad de retirar un cable CAN, siga los pasos siguientes (ver Ilustración 4.30):

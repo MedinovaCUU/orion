@@ -1,0 +1,22 @@
+137
+2. Remove the 2 screws (37), the plate (38) and the washers.
+3. Remove the 2 screws (39)
+4. Rotate the assembly
+5. Remove the 2 screws (41) to separate the load cell (40)
+Mounting
+1. Change load cell (40)
+2. Assembly in the reverse process of disassembly
+3. Adjust the scale with the service program
+37
+39
+41
+38
+40
+Figure 6.34 
+6.3.8. 
+AC14706 - Rack tray
+Disassembly
+1. Take out the fridge and front cover
+2. Remove the 8 screws (42)
+3. Disconnect tubes from tray and cables
+4. Remove tray

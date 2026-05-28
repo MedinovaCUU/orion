@@ -1,0 +1,25 @@
+Lista de recambios
+Código
+Representación 
+Descripción
+AC16830
+Modulo ISE, placa de compresión
+AC16831
+Placa modulo ISE, placa principal
+AC16832
+Placa modulo ISE, preamplificador
+AC16833
+Detector de burbujas
+AC16834
+Conjunto bomba peristaltica
+AC16835
+Rcambio abrazadera de la bomba peristaltica (3)
+AC16836
+Rcambio abrazadera de la bomba peristaltica (1)
+AC17219
+Conector del tubo de residuos
+AC17217
+Conector del pack de reactivos
+AC16791
+Conjunto filtro de entrada (5 µm)
+281

@@ -1,0 +1,81 @@
+Manual usuario 
+ 
+ 
+ 
+Manual usuario 
+ 
+ 
+ 
+56
+56
+Biosystems
+Biosystems
+Paso
+Acción 
+Repeti­
+ciones 
+Descripción
+6
+Fecha 
+instala­
+ción de 
+los tubos
+1
+7
+Calibrar 
+bombas
+1
+Si no obtiene un resultado satisfactorio 
+compruebe la correcta instalación de los tubos y 
+ejecute las acciones desde el paso 4.
+8
+Activar 
+electrodos
+1
+Indique la fecha de instalación. Si alguno de los 
+electrodos no es nuevo, vuelva a registrarlos con 
+la fecha de instalación original.
+9
+Cebar y 
+calibrar
+2
+Ejecute esta acción para calibrar los electrodos 
+con la nueva solución y verificar que está 
+en buenas condiciones. Si el resultado no es 
+aceptable por presencia de aire, verifique que las 
+soluciones circulan correctamente repitiendo 
+los pasos 4 o 5 según el error reportado. Si las 
+calibraciones finalizan pero los resultados no 
+son aceptables repita estas instrucciones un par 
+de veces.
+10
+Esperar 5 
+minutos
+1
+11
+Cebar y 
+calibrar - 
+final
+1
+Si la calibración no es satisfactoria en la última 
+medida, espere 5 minutos más y repita las 
+acciones desde el paso 9.
+12
+Activar 
+módulo 
+ISE
+1
+4.14. Primeros pasos para el funcionamiento del 
+analizador
+1. Rellene el depósito de solución de lavado.
+2. Conecte los tubos de entrada para el agua destilada y de salida para los residuos 
+de baja contaminación.
+3. Conecte el cable de la red eléctrica al analizador.
+4. Instale el programa en el ordenador.
+5. Instale el rotores para las muestras y reactivos.
+6. Instale un rotor de reacciones. 
+ 
+)
+Véase capítulo 4.9
+7. Cierre todas las tapas.
+8. Conecte el cable de comunicaciones USB entre el analizador y el ordenador.

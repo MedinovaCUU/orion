@@ -1,0 +1,65 @@
+Manual usuario 
+ 
+ 
+ 
+Manual usuario 
+ 
+ 
+ 
+30
+30
+Biosystems
+Biosystems
+4. Enrosque el tapón, conecte los tubos y colóquelo en su alojamiento dentro 
+del analizador.
+4.3.2. Vaciado del contenedor de residuos de alta contaminación
+El contenedor de residuos de alta contaminación (4) viene con un racor de co­
+nexión rápida. 
+1. Presione el racor de conexión rápida del tapón y retire del analizador el con­
+tenedor.
+2. Desenrosque el tapón del contenedor.
+3. Vacíe el contenedor.
+4. Enrosque el tapón al contenedor, inserte el tubo con la conexión rápida y 
+coloque el contenedor en su alojamiento dentro del analizador.
+ 
+ 
+Asegúrese de que el racor de conexión rápida se ha insertado correctamente en 
+el tapón del contenedor. Para verificarlo, en el momento de insertar el racor 
+se tiene que oír un “clic”. En caso contrario indicaría que no se ha insertado 
+correctamente.
+ 
+BIOHAZARD
+ 
+Deshágase de los residuos de acuerdo con la legislación vigente para la elimina­
+ción de residuos biológicos peligrosos de su gobierno nacional o local.
+Manipule con cuidado el contenedor de residuos de alta contaminación. Utilice 
+guantes y vestimenta de protección al manipular el contenedor. 
+4.4. Conexión de agua purificada
+El analizador dispone en la parte trasera dos entradas para la admisión del agua 
+purificada. Ver Ilustración 7.
+Una vez instalado el programa de usuario configure la selección de la entrada de 
+agua acorde a la conexión realizada. 
+ 
+)
+Véase selección de entrada de agua en el capítulo 10.2.1
+ 
+Entrada agua de red 
+Esta conexión sirve para aquellos laboratorios que disponen de un sistema cen­
+tral de producción de agua purificada. 
+1. La presión del agua de red en dicha tubería tiene que estar entre 0.5 bar y 4 bar.
+2. Conecte el tubo de color azul de la caja de accesorios al conector superior 
+(1). Está marcado como “MAINS WATER INLET”. Conecte el otro extremo a 
+la toma general de agua.
+3. Verifique que el sistema central de producción de agua purificada incorpora un 
+filtro a su salida. En caso de no incorporar ningún filtro es necesario la instala­
+ción de uno entre el sistema de producción de agua purificada y el analizador.
+ 
+Especificación del filtro 
+Filtración < 5 μm
+ 
+Entrada agua de depósito 
+Para aquellos laboratorios que no dispongan de un sistema central de genera­
+ción de agua purificada, utilizar un depósito auxiliar para suministrar el agua 
+purificada
+NOTE
+NOTE

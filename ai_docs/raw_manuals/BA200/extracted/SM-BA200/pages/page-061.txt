@@ -1,0 +1,219 @@
+Manual de servicio
+61
+4.6. Placa control fotometría - CIIM00050
+La revisión mínima de la placa para el BA200 es la CIIM00050-02. 
+Placa ubicada en el rotor de lecturas. Contiene un microcontrolador (U5) que controla los siguientes elementos:
+• 
+Detección de la tapa del rotor de reacciones(U7)
+• 
+Motor de la estación de lavado (U14)
+• 
+Detección de inicio de la estación de lavado (U10)
+• 
+Detección de colisión de la estación de lavado (U10)
+• 
+Conexión con la placa de fotometría
+• 
+Motor del rotor de reacción (U12)
+• 
+Detección de inicio del rotor de reacciones (U10)
+• 
+Detección del encoder del rotor de reacciones(13)
+• 
+Control de las peltiers para realizar la termostatización del rotor de reacciones (U18)
+• 
+Control de los ventiladores para la refrigeración de las peltiers (U17). Son ventiladores a 3 hilos.
+• 
+Control del sensor de temperatura de la termostatización del rotor de reacciones (U15 y U16)
+• 
+Control de desbordamiento de la estación de lavado
+CIIM00050
+CAN BUS
+ROTOR
+DETECTOR
+ROTOR
+MOTOR
+GLF1
+ASMB00265
+WASHING
+STATION
+HOME
+WASHING
+STATION
+MOTOR
+ASMB00277
+TEMPERATURE
+SENSOR
+FAN
+FAN
+PELTIER
+ASMB00310
+ROTOR
+COVER 
+DETECTOR
+CIIM00051
+CN1
+CN5
+WASHING
+STATION
+COLLISION
+DETECTOR
+FAN
+FAN
+PELTIER
+ASMB00313
+ENCODER
+ROTOR
+CAN BUS
+PHOTOMETRY
+PHOTOMETRY
+ROTOR COVER
+FAN
+FAN
+HOME ROTOR
+ROTOR
+WS COLLISION
+HOME WASHING ST.
+WASHING STATION
+THERMISTOR
+ROTOR COVER
+FAN
+FAN
+FAN
+FAN
+THERMISTOR
+WASHING
+STATION
+HOME
+WASHING ST.
+WS COLLISION
+ENCODER
+ROTOR
+HOME ROTOR
+PLMA00319
+ENCODER
+LEVEL
+DETECTION
+LEVEL DETECTION
+CIIM00069
+CN3
+CIIM00068
+FAN
+FAN
+ASMB00269
+1
+2
+3
+4
+5
+6
+CN11
+1
+2
+CN16
+1
+2
++tº
+1
+2
+CN1
+1
+2
+3
+4
+5
+CN15
+1
+2
+CN12
+1
+2
+CN9
+1
+2
+3
+4
+1
+2
+3
+4
+5
+6
+CN17
+1
+2
+CN18
+1
+2
+3
+4
+5
+CN10
+CON3
+1
+2
+3
+1
+6
+2
+5
+4
+1
+6
+2
+5
+4
+1
+6
+2
+5
+4
+CN3
+1
+2
+CN7
+1
+2
+3
+4
+5
+1
+6
+2
+5
+4
+CN8
+CON3
+1
+2
+3
+CN6
+1
+2
+3
+4
+CN4
+CON3
+1
+2
+3
+CN14
+1
+2
+1
+6
+2
+5
+4
+CN13
+1
+2
+1
+6
+2
+5
+4
+1
+2
+Ilustración 4.38 
+Conexiones de la placa control de fotometría

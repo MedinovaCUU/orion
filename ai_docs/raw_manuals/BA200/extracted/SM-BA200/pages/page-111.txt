@@ -1,0 +1,65 @@
+Mantenimiento Semestral
+Explicación en el ma­
+nual. Capítulo:
+7
+Limpie los contenedores interiores de agua destilada y residuos de baja 
+contaminación.
+ 7.2.3
+8
+Limpie externamente la punta de pipeteo, el agitador y las puntas de la 
+estación de lavado con alcohol
+ 7.2.4
+9
+Limpie la ventana del lector del código de barras
+ 7.2.5
+Operaciones para realizar el servicio técnico.
+Mantenimiento Anual
+Explicación en el ma­
+nual. Capítulo:
+1
+Cambie los tubos de teflón del módulo ISE
+ 8.8
+2
+Cambie la membrana del desgasificador
+ 8.10.2
+3
+Cambie el filtro de agua y solución de lavado de la estación de lavado
+ 8.16.3
+4
+Revise la bomba de pistones de la estación de lavado (verifique que no 
+fuga y engrase los rodamientos)
+5
+Revise los 2 brazos (pipeteo y agitación) y el brazo de la estación de lavado 
+(Verifique el desgaste de las correas y la tensión)
+6
+Revise el sistema antichoque del brazo y de la estación de lavado
+7
+Revise el rozamiento del agitador en el rotor de reacciones
+8
+Revise el desgaste de la correa y su tensión del rotor de muestras y reactivos 
+y del rotor de reacciones
+9
+Revise la colocación y el detector de las tapa de reactivos y muestras y la 
+tapa de reacción
+10
+Revise el encaje y colocación del rotor de muestras y reactivos
+11
+Revise el giro de los ventiladores y límpielos de polvo.
+12
+Revise que la nivelación del analizador sea correcta
+13
+Revise que la tapa general se sostenga correctamente y no se caiga.
+Mantenimiento bianual
+Explicación en el ma­
+nual. Capítulo:
+1
+Cambie las correas de transmisión vertical del brazo de pipeteo, del 
+agitador y de la estación de lavado
+ 8.11.6 y 8.15.8
+2
+Cambie las peltiers de la nevera
+ 8.13.8
+WARNING
+Después de realizar cualquier operación de mantenimiento asegúrese de que todos los elementos 
+que hayan sido sustituidos o desmontados se han montado correctamente.
+111

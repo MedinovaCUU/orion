@@ -1,0 +1,76 @@
+Fecha
+Versión de 
+Software
+Versión de 
+Firmware
+Cambios
+1/3/19
+5.2
+3.80.3
+• 
+Nueva pantalla para modificar el nombre del tipo de muestra
+• 
+Posibilidad de crear técnicas calculadas con la función log
+• 
+Posibilidad de poner un valor por defecto en las técnicas 
+offsystem
+• 
+Mejora en la introducción de pacientes en la pantalla de nueva 
+muestra (entrada manual)
+• 
+Nueva funcionalidad de entrada de muestra con la tecla 
+ENTER
+• 
+Funcionalidad de la utilidad copiar&pegar con la entrada de 
+nuevas muestra
+• 
+Funcionalidad de renombrar los nombres de muestras 
+arrastrando el cursor en la pantalla de nueva muestra
+• 
+Posibilidad de entrar a la vez en la casilla de número de 
+muestras y de nombre de muestras y se crea automáticamente 
+tantas muestras con identificadores iniciando el nombre 
+introducido
+• 
+En la pantalla de resultados, la columna de pacientes se puede 
+ordenador alfabéticamente y según la entrada de la pantalla 
+nueva muestra
+• 
+Nueva utilidad para la limpieza automática de los agitadores, 
+funciona cuando se cierra el programa y ha caducado una vez a 
+la semana.
+• 
+Durante el inicio el programa avisa de que el rotor o la linea de 
+base ha caducado y permite escoger qué operación realizar.
+• 
+Durante el inicio de la lista el programa avisa de que la linea de 
+base ha caducado y permiete que operación realizar.
+• 
+Mejorado la apliación para aprovechar la resolución de la 
+pantalla
+• 
+Introducido el tiempo de la sesión
+• 
+Marcado las muestras que han sido pipeteadas y no finalizadas
+• 
+Solucionado el bug cuando se realiza un query con pocillo 
+pediatricos
+• 
+Solucionado un bug con el idioma turco y el LIS
+17/2/20
+5.3.1
+4.00.7
+Mejorar las advertencias de resultados: blancos negativos, cinética 
+de no liniaridad, límite de blanco
+Relación de cambios en las versiones de software y 
+firmware para Y200
+1/3/19
+5.2
+3.80.4
+Primera versión del software 
+17/2/20
+5.3.1
+4.00.7
+Mismas mejoras que en el BA200
+Manual de servicio
+252

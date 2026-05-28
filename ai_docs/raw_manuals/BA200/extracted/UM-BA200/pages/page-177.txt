@@ -1,0 +1,26 @@
+177
+177
+Lista de accesorios modulo ISE (Opcionales)
+Código
+Representación
+Descripción 
+5625
+Conjunto tubos del módulo ISE
+5201
+Electrodo Na+ 
+5202
+Electrodo K+
+5207
+Electrodo Cl-
+5205
+Electrodo Li+
+5206
+Electrodo separador
+5204
+Electrodo de referencia
+5421
+Kit de solución de lavado del módulo ISE
+5412
+Dilución de orina módulo ISE 125 mL
+5408
+Dilución de orina módulo ISE 500 mL

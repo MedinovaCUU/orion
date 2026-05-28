@@ -1,0 +1,28 @@
+• 
+Exportar los resultados de la prueba actual en formato .CSV
+• 
+Copie el contenido del archivo a la hoja “Datos” del archivo de Excel
+24. Ingrese el resto de los datos en la hoja de “instrucciones y lote” del archivo de Excel
+25. En el “resumen” y en los “resultados de la verificación” obtendrá todos los resultados y el resultado final.
+26. Guarde e imprima el archivo de Excel con el número de serie como nombre. Deseche el resto de las muestras 
+y la calibración.
+La siguiente tabla muestra los criterios de aceptación de la verificación:
+Valores del coeficiente de variación
+GLUCOSE
+AST
+PHOSPHORUS
+SCI
+SCII
+SCI
+SCII
+SCI
+SCII
+Tolerance (CV%)
+3.00
+3.00
+5.00
+3.00
+5.00
+3.00
+Además, todos los resultados de concentración deben estar entre el rango del control.
+117

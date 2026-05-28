@@ -1,0 +1,15 @@
+87
+5.3.1.7. Diaphragm pumps and electrovalves test
+The analyzer uses three 3-way electrovalve to manage the dispensing operations. The washing system of 
+the needle uses a 2-way electrovalve and two diaphragm pumps. The screen makes it possible to choose the 
+device to be tested and the test that is to be carried out. The devices that can be tested independently are:
+• Each of electrovalve of 3 ways of the dosification pump independently
+• Electrovalve of 2 way of the washing system
+• Each of membrane pump of the washing system independently
+To carry out these tests, the dispensing system should be primed. The following is a description of the different 
+tests that can be performed.
+5.3.1.8. Functioning test
+This test makes it possible to manually switch the selected device.
+5.3.1.9. Stress mode test
+This test makes it possible for a certain sequence of device switching to be performed continually. The technician 
+can program the duration of the test, which can be cancelled at any moment.

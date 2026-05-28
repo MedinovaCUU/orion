@@ -1,0 +1,46 @@
+Elemento
+Descripción
+Temperatura nevera
+Muestra la temperatura de la nevera
+Temperatura reactivo 1
+Muestra la temperatura del brazo del reactivo 1. 
+Temperatura reactivo 2
+Muestra la temperatura del brazo del reactivo 2. 
+Temperatura del calefactor de 
+la estación de lavado
+Muestra la temperatura del calefactor de la estación de lavado
+Nivel botella solución de 
+lavado
+Indica el nivel de la botella de solución de lavado
+Tapa principal
+Indica el estado de la tapa principal del analizador
+Tapa reactivo
+Indica el estado de la tapa de reactivos
+Tapa muestras
+Indica el estado de la tapa de muestras
+Tapa reacción
+Indica el estado de la tapa de reacción
+Conectado
+Indica el estado de la conexión del analizador con el programa
+6.2. Inicialización del programa.
+Para iniciar el programa, haga doble clic sobre el icono que encontrará en el escritorio, según el modelo de analizador:
+ 
+o ejecute el programa desde la ruta siguiente:
+Inicio/BA400 Service
+Inicio/Y400 Service
+Al inicializar el programa aparece una pantalla de bienvenida y a continuación la pantalla de identificación del 
+usuario como muestra la Ilustración 6.3
+ 
+Ilustración 6.3 
+Pantalla inicial según el modelo de analizador
+Introduzca el nombre del usuario y la contraseña para acceder al programa.
+Campo
+Valor modelo BA400
+Valor modelo Y400
+Nombre Usuario
+SERVICE
+SERVICE
+Contraseña
+BA400
+Y400
+107

@@ -1,0 +1,70 @@
+GESTIÓN DE REACTIVOS
+Resolución del pipeteo
+1 mL
+Detección de nivel
+Sí
+Lavado de la punta
+Interior y exterior
+Detector de colisión vertical
+Sí
+Punta termostatada
+Sí
+ROTOR REACCIONES
+Volumen reacción mínima
+180 µL
+Volumen de reacción máxima
+600 µL
+Número de cubetas
+120
+Material cubetas
+Metacrilato UV
+Tipo de incubación
+Seca
+Tiempo fijo dispensación del 2º reactivo
+5 min (fijo)
+Temperatura cubeta reacción
+37 °C
+Veracidad temperatura
+±0,2 °C
+Estabilidad temperatura
+±0,1 °C
+Agitadores
+2
+SISTEMA LAVADO CUBETAS
+Número de puntas del sistema lavador
+7
+Número de puntas con solución de lavado
+2
+Aclarados con agua
+3
+Secados
+2
+Volumen de lavado
+711 µL
+Consumo de la solución de lavado
+1.42 mL/ciclo
+SISTEMA ÓPTICO
+Fuente de luz
+LED+Filtro Hard Coating
+Nº de longitudes de onda
+8
+Longitudes de onda, modelo BA400
+340­ – 405 – 505 – 535 – 560 – 600 – 635 – 670 
+nm
+Longitudes de onda, modelo Y400
+340­ – 405 – 420 – 430 – 505 – 520 – 560 – 600 – 
+620 – 635 – 750 nm
+Ancho de banda de los filtros
+10 nm ± 2 nm
+Veracidad de la longitud de onda
+± 2 nm
+Rango fotométrico
+-0.2 A a 3.5 A
+Resolución interna
+0.0001
+Detector 
+Fotodiodo principal + fotodiodo de referencia
+Precisión de la medida (para 340 nm, 405 nm y 505 nm)
+CV < 1 % a 0.1 A
+CV < 0.1 % a 2 A
+295

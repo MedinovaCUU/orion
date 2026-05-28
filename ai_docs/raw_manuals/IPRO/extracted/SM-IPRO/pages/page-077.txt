@@ -1,0 +1,19 @@
+77
+CÓDIGO
+DESCRIPCIÓN
+AC14668 
+Rack de diluciones
+AC17399
+Rack de muestras
+AC17401
+Rack de controles
+AC17400
+Rack de reactivos
+AC14669 
+Rack portaobjetos
+AC17403
+Estación de lavado
+AC17268
+Adaptador para tubos
+AC16360
+Adaptador de tubos abierto

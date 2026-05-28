@@ -1,0 +1,47 @@
+Manual usuario 
+ 
+ 
+ 
+Manual usuario 
+ 
+ 
+ 
+66
+66
+Biosystems
+Biosystems
+8.3. Rotor de reacciones
+El rotor de reacciones consiste en un canal termostatado donde se coloca un rotor 
+de plástico con calidad óptica que permite la transmisión de la luz UV.
+Ilustración 33 
+Rotor de reacción
+ 
+Posiciones 
+Hay un total de 120 posiciones. En cada cubeta se dispensa el reactivo y la 
+muestra. Durante la reacción de la mezcla se realiza la lectura óptica para medir 
+la absorbancia. 
+ 
+Volumen El volumen de la reacción está comprendido entre 180 μL y 600 μL.
+ 
+Temperatura El rotor se mantiene a una temperatura estable de 37°C gracias a un sistema de 
+termostatización basado en peltiers.
+Ciclos de dispensación de cada uno de los brazos:
+• 
+Ciclo 1: Dispensación Reactivo 1 y de la muestra 
+• 
+Ciclo 2: Agitación Reactivo 1 y muestra
+• 
+Ciclo 3: Inicio lecturas fotométricas
+• 
+Ciclo 18: Dispensación del Reactivo 2
+• 
+Ciclo 19: Agitación del Reactivo 2
+• 
+Ciclo 35: Finalización de las lecturas
+• 
+Ciclos 36 –46: Lavado de las cubetas en la estación de lavado
+8.4. Sistema óptico 
+El sistema óptico genera la luz monocromada mediante el conjunto de leds y 
+filtros. El sistema de lectura está formado por dos fotodiodos. El fotodiodo de 
+referencia sirve para estabilizar la luz y el fotodiodo principal capta la luz que ha 
+atravesado la reacción.

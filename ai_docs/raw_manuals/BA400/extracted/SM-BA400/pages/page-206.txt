@@ -1,0 +1,32 @@
+1. Desconecte el cable del motor. Véase Ilustración 8.64
+2. Quite los 4 tornillos (24) y (25) que sujetan al motor.
+3. Quite el motor (26).
+Desmontaje de la correa:
+1. Afloje los tornillos (24) y (25) que sujetan al motor.
+2. Quite la correa (23).
+Montaje correa:
+1. Ponga una correa nueva, insértela en la polea 
+2. Ajuste la tensión de la correa según las indicaciones del montaje del motor.
+Montaje motor AC16623:
+1. Inserte el motor (26) en su alojamiento.
+2. Ponga los 4 tornillos (24) y (25) con sus arandelas y tuercas sin apretarlos.
+3. Coloque la correa en la polea del motor.
+4. Ajuste la tensión de la polea tirando del motor hacía fuera. La tensión de la polea se ajusta a 5.5 Kg. Apriete los 
+tornillos empezando por el tornillo (25) y luego apriete el tornillo (24).
+25
+23
+26
+24
+Ilustración 8.64 
+Desmontaje motor AC16623 y/o correa
+Desmontaje del motor AC17239:
+1. Desconecte el cable del motor. Véase Ilustración 8.65 y Ilustración 8.66
+2. Desenrosque las 4 tuercas (31) que sujetan la placa (28) con el motor (27).
+3. Desenrosque los 4 tornillos (30) que sujetan el motor con la placa.
+4. Quite el motor (27).
+Desmontaje de la correa:
+1. Afloje las tuercas (31) para destensar la placa (28) que sujeta el motor
+2. Quite la correa (23).
+Montaje correa:
+Manual de servicio
+206

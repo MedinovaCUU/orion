@@ -1,0 +1,35 @@
+21
+USUARIO
+Manual de Usuario BioSystems SPICA | Versión 2.8 - Agosto 2024
+Manual de Usuario BioSystems SPICA
+3. DESCRIPCIÓN
+3.1 Descripción de los componentes
+9. Interruptor general y entrada eléctrica 
+El analizador tiene un filtro con la entrada eléctrica general y el interruptor general. Este interruptor contiene 
+2 fusibles para evitar daños eléctricos en el analizador.
+10. Puertos de la CPU
+El analizador tiene 4 puertos USB tipo A y un puerto Ethernet.
+11. Rotor de muestras y reactivos 
+El rotor de muestras y reactivos consiste en un conjunto de racks extraíbles con posiciones para insertar 
+los tubos de muestra, los calibradores, los controles y los reactivos. El sistema es completamente flexible, y 
+las muestras o reactivos pueden ser insertados en cualquier posición.
+MUESTRA Y ESTANTE DE REACTIVOS 
+Hay 7 racks:
+• Con 15 posiciones de muestras o botellas de 20mL
+• Con 5 posiciones de 60mL y 5 posiciones de muestras o botellas de 20 mL
+• Los códigos de barras de las muestras y de las botellas de reactivo se pueden leer en los dos anillos externos.
+POSICIONES
+Hay diferentes configuraciones posibles para las posiciones de muestras y reactivos en los racks: 
+• Máximo de 105 posiciones de muestra 
+• Máximo de 105 botellas de 20mL de reactivos 
+• Máximo de 35 botellas de 60mL de reactivos
+TUBOS DE MUESTRA 
+Para posicionar los tubos, primero hay que insertar un adaptador. Dimensiones del tubo primario:
+• Diámetro mínimo: ø 12 mm con un extra-adaptador
+• Diámetro máximo: ø 16 mm
+• Altura mínima: 70 mm
+• Altura máxima: 100 mm
+8
+10
+9
+11

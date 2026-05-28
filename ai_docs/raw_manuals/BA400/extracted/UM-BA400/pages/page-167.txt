@@ -1,0 +1,36 @@
+167
+167
+10.9.8. Restaurar datos previos
+Utilidad que permite recuperar la base de datos guardada anteriormente en el 
+punto de restauración. Aparece una ventana con todos los archivos creados desde 
+el punto de restauración anterior. Seleccione uno y pulse el botón aceptar. 
+Tenga en cuenta que cuando restaure un archivo de base de datos, ésta sustituirá la 
+base de datos actual, con lo cual perderá los datos desde la última vez que realizó 
+el último punto de restauración. 
+Es aconsejable realizar siempre un punto de restauración justo antes de realizar 
+una restauración de datos previos.
+Ilustración 117 
+Pantalla restaurar datos previos
+10.9.9. Exportar programación 
+Opción para generar un fichero con los parámetros de las técnicas, técnicas calcu­
+ladas, técnicas externas, técnicas ISE, calibraciones y controles. 
+Seleccione el nombre del archivo y la ubicación donde quiera guardarlo. La exten­
+sión del archivo generado es .test
+10.9.10. 
+Importar programación 
+Opción para importar desde un fichero los parámetros de las técnicas que se hayan 
+guardado préviamente. Téngase en cuenta que al aceptar el fichero se añadirán las 
+técnicas nuevas que no tenga en el listado de técnicas y se aplicarán los cambios 
+a las técnicas existentes.
+Seleccione la ubicación donde se encuentra el archivo de técnicas y el nombre 
+para importarlo.
+10.9.11. 
+Auditoría
+La aplicación incorpora un sistema de auditoría. Este sistema memoriza cualquier 
+cambio realizado en la aplicación que pueda afectar a los resultados.
+Pulse esta opción del menú para visualizar el seguimiento de los cambios.
+Para poder realizar un análisis de los datos:
+• 
+Seleccione el texto a analizar. 
+• 
+Cópielo

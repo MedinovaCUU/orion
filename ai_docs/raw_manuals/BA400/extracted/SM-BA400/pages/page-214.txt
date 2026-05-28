@@ -1,0 +1,17 @@
+28
+Ilustración 8.73 
+Cambio racord manifold
+8.12.4. AC16590 - Retén pistón reactivo / AC16591 - Retén pistón muestra
+Herramientas: Llave allen número 2.5
+Desmontaje:
+1. Siga los pasos de desmontaje según el capítulo 8.12.2
+2. Separe el retén del adaptador retén. 
+Montaje:
+1. Siga los pasos del montaje según el capítulo 8.12.2
+2. Antes de realizar el punto 7, cambie el retén (23) por uno nuevo. Humedezca con WS (Washing Solution) el 
+adaptador retén y el retén para facilitar la inserción del retén en su alojamiento. Ayúdese de una pieza plana 
+para realizar la presión del retén. 
+3. Verifique que el retén está correctamente nivelado con el adaptador retén.
+4. Continúe los pasos de montaje según el capítulo 8.12.2
+Manual de servicio
+214

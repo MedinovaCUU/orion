@@ -1,0 +1,44 @@
+2. Coloque la placa electrónica con una separación de 1 mm hasta el tope para asegurar que la chapa de la punta 
+no corte el detector de colisión.
+3. Conecte el cable del bus CAN.
+4. Conecte los cables de la punta de la siguiente manera:
+Nombre conector
+HP
+TP
+DN
+Reactivos
+Reactivos
+Reactivos
+Muestra
+Código cable
+PLMA0329
+PLMA0330
+PLMA0328
+Color cable
+Amarillo/rojo
+Blanco
+Negro
+5. Ponga una brida para sujetar los cables. Asegúrese de que los cables no sobresalgan por la parte superior de la 
+placa electrónica.
+6. Ajuste el potenciómetro de detección con el destornillador de ajuste. 
+7. Véase capítulo 6.5.1 del manual de servicio 
+8. Seleccione el conmutador de la placa en función del brazo donde lo instale: 
+Placa
+Código
+Selector
+Detección punta 
+1110
+9. Verifique que la chapa de colisión de la punta entra y sale correctamente del fotodetector. En el caso de que la 
+chapa esté cortando el fotodetector suba un poco la placa de detección.
+8.11.3. AC17292 - Punta
+Herramientas: 2 llaves fijas de 5.5 o llave fija de 5.5 y 1 llave de tubo de 5.5
+Desmontaje:
+1. Corte la brida que sujeta los cables.
+2. Quite los cables de la punta.
+3. Desenrosque el tubo que va a la punta sujetando con una mano el racor (1) y con la otra el tubo. Vigile que no 
+se tuerza el racor soldado de la punta.
+4. Quite la tuerca (2), la arandela de seguridad (3), el fijador muelle (4), arandela de seguridad (5), tuerca (6), 
+arandela (7), el muelle (8).
+5. Quite la punta (9).
+Manual de servicio
+154

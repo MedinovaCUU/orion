@@ -1,0 +1,42 @@
+1 – Soporte en L unificado del conjunto lector
+2 – Soporte de selección
+3 – Arandela aislante del tornillo de sujeción
+4 – Separador aislante
+5 – Pieza de sujeción del lector
+6 – Peiza extra para sujetar el lector de Microscan
+7 – Lector de Microscan
+8 – Lector de Opticon
+9 – Posición para reactivos y muestas del lector de microscan 
+10 – Posición para reactivos y muestas del lector de microscan 
+11 – Posición para reactivos del lector de opticon 
+12 – Posición para muestras del lector de opticon
+13 – Posición del soporte para el lector de microscan y para el 
+rotor de reactivos del lector de opticon
+14 – Posición del soporte para el rotor de muestras del lector 
+de opticon
+Referencias de las Ilustración 3.6, Ilustración 3.7, Ilustración 3.8, Ilustración 3.9 y Ilustración 3.10:
+3.3.1. 
+Ajuste del lector del rotor de reactivos
+Inicialice el analizador con el programa de servicio y seleccione el menú de ajuste del lector de códigos de barras. 
+1. Ajustes /test / Código de Barras
+2. Seleccione el tipo de rotor: Reactivos
+3. Monte la escuadra de soporte del lector en la posición (1).
+4. Coloque el lector en la posición media del coliso en los 3 ajustes (2), (3) y (4). Ver Ilustración 3.11 y Ilustración 
+3.12
+5. Con el programa de servicio ponga el lector en modo ajuste para encender el haz láser del lector. Ajuste el haz 
+del láser lo más paralelo posible al eje del rotor mediante los tornillos (2) que sujetan la escuadra. Con la ayuda 
+de una escuadra o útil verifique el paralelismos del haz. Ver Ilustración 3.13
+6. Coloque un rotor de reactivos con una botella en la posición 1 con una etiqueta. Ajuste el ángulo de la posición 
+vertical (4) para conseguir que el haz del láser cubra toda la etiqueta y el inicio del láser quede en la posición 
+superior de la botella como indica la Ilustración 3.14
+7. Ajuste el ángulo del láser (3) para que el haz quede entre 12 y 14 mm desviado del centro del eje, ver Ilustra­
+ción 3.15.
+8. Con el programa de servicio ajuste con los controles la posición central de la botella número 1, para después 
+verificar las lecturas del rotor completo.
+ 
+1
+2
+Ilustración 3.11 
+Ajuste en alabeo del lector del código de barras
+Manual de servicio
+32

@@ -1,0 +1,11 @@
+VERSIÓN 
+MANUAL
+Manual de Usuario BioSystems SPICA
+58
+Manual de Usuario BioSystems SPICA | Versión 2.8 - Agosto 2024
+58
+Se han tomado todas las precauciones necesarias para garantizar que la información que 
+figura en el presente manual sea correcta en el momento de su publicación. No obstante, 
+BioSystems, S.A. se reserva el derecho de hacer cualquier cambio que sea necesario, como 
+parte inseparable del desarrollo continuo del producto. Los cambios se comunicarán a 
+través de los canales de comunicación oficiales.

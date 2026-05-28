@@ -1,0 +1,55 @@
+Manual de servicio
+32
+1 – Rotor de metacrilato
+2 – Canal calefactor
+3 – Aislante térmico del canal calefactor
+4 – Celulas Peltier
+5 – Radiadores
+6 – Ventiladores
+7 – Sonda de temperatura
+8 – Centrador rotor
+9 – Tornillo fijador dle rotor
+10 – Fotodetetor de inicio del rotor
+11 – Rodamientos
+12 – Piñón
+13 – Motor del rotor
+14 – Corona del rotor
+15 – Distanciador motor
+16 – Placa del sistema fotométrico
+17 – Tapa soporte placa eletrónica
+18 – Tapa de la óptica
+19 – Centrador rendija del fotodiodo
+20 – Rendija del rotor
+21 – Detector de la tapa
+22 – Eje del rotor
+23 – Portalamparas
+24 – Lámpara halógena
+25 – Fijación del portalámparas
+26 – Tambor de filtros
+27 – Portafiltros
+28 – Tuerca del portafiltros
+29 – Filtros interferencial compensado
+30 – Eje del tambor de filtros
+31 – Fotodetector de inicio
+32 – Motor del tambor de filtros
+33 – Diafragma
+34 – Rodamiento del eje del tambor de filtros
+35 – Fotodetector de inicio del tambor de fitlros
+36 – Diafragma
+37 – Rendija
+Referencias de la Ilustración 3.9 Ilustración 3.10 y Ilustración 3.11
+2
+23
+24 25
+26
+27
+28
+29
+30
+34
+32
+31
+35
+36
+37
+Ilustración 3.11. Visualización de la óptica

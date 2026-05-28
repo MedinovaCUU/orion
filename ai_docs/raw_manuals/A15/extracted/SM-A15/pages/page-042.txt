@@ -1,0 +1,33 @@
+43
+Conector
+Función
+Pins
+J3
+Conexión a la placa fotométrica (CIIM000027)
+1 - 12 V
+2 - GND
+3 - DVALID
+4 - DCLK
+5 - DOUT
+6 - DXMIT
+7 - RANGE2
+8 - RANGE1 
+9 - RANGE0
+10 - TEST
+11 - CONV
+12 - GND
+13 - CLKAD
+14 - GND
+15 -GND
+16 - Vcc
+4.6. Placa de interconexión XYZ(CIIM00018)
+Es la placa encargada de interconectar la placa CPU (CIIM00026) con el carro X. Distribuye las señales 
+de los motores X e Y, y trasmite las señales de home de los movimientos X e Y, además de enviar la señal 
+del encoder a la placa CPU.
+Conector
+Función
+Pins
+J1
+Conexión a motor X
+J2
+Conexión motor Y

@@ -1,0 +1,71 @@
+70
+Conector
+Función
+Pin
+CN22
+Alimentación 24 V nevera
+Pin 1: 24V
+Pin 2: GND
+CN23
+Alimentación 24 V nevera
+Pin 1: 24V
+Pin 2: GND
+Test point
+Función
+TP1
+24 V
+TP2
+5 V
+TP3
+24 V (Tensión en el bus)
+TP4
+GND (Tensión en el bus)
+TP5
+CAN_H
+TP6
+Selección de placa. Dirección 1
+TP7
+CAN_H (Señal en el bus)
+TP8
+Selección de placa. Dirección 2
+TP9
+CAN_L (Señal en el bus)
+TP11
+24 V Nevera
+TP12
+5 V Nevera
+TP13
+CAN_L
+TP14
+Selección de placa. Dirección 4
+TP15
+Selección de placa. Dirección 3
+TP19
+Paso motor rotor
+LEDs
+Función (Condición de encendido)
+LD1
+Voltaje de 3.3 V
+LD2
+Voltaje de 3.3 V Nevera
+LD3
+Activación código de barras
+LD4
+Arranque microprocesador
+LD5
+Detección tapa
+LD7
+Detección inicio rotor
+LD9
+Activación peltier nevera
+LD10 
+Activación peltier nevera
+LD12
+Arranque microprocesador nevera
+4.9. Placa control del sistema fluídico - CIIM00064
+Esta placa está ubicada en la parte superior de la zona de fluidos.
+La placa a través de un microcontrolador (U1) controla los siguientes elementos:
+• 
+Sensor de presión del circuito de muestras (detector de coágulo)
+• 
+Alimentación del led del manifold

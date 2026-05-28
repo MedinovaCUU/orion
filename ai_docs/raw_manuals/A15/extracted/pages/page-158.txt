@@ -1,0 +1,25 @@
+159
+Lista de accesorios
+Código
+Representación
+Descripción 
+AC13199
+Pata de altura ajustable
+AC13200
+Tapa tambor de filtros
+AC14549
+Rack de reactivos 20 / 50mL (3)
+AC14550
+Rack de muestras tubo (3)
+AC14554
+Adaptador tubos (80 unidades)
+Lista de recambios
+Código
+Representación
+Descripción 
+CA13393
+AC17356
+Carcasa base
+CA13395
+AC17352
+Carcasa frontal

@@ -1,0 +1,32 @@
+Manual de servicio
+80
+Test point
+Función
+TP41
+Tensión paso driver motor
+TP51
+Temperatura rotor
+LEDs
+Función (Condición de encendido)
+LD1
+Activación 3.3 V
+LD2
+Arranque CPU
+LD3
+Detección reposo estación lavado
+LD4
+Detección inicio rotor
+LD5
+Detección inicio estación lavado
+4.6.1. Nueva versión placa control de fotometría - CIIM00050-02
+Se ha realizado una mejora en los analizadores BA400 y se ha realizado un cambio en la placa control de fotometría. 
+Mejora recogida en el BA400v2.
+ 
+) Véase el capítulo AII para saber a partir de que números de serie se ha implementado.
+Los cambios principales son:
+• 
+Unificación de los dos sensores de inicio de la estación de lavado. Los 2 sensores son: inicio de carrera y detección 
+de colisión. Los conectores son CN4 y CN10 ahora se conectan a la placa CIIM00068
+• 
+Nueva conexión para la placa de detección de nivel CIIM00069 a través del conector CN18. Esta nueva placa 
+detecta si hay un desbordamiento de agua en el rotor de lecturas.

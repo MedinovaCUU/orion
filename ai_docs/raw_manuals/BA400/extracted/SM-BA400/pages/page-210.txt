@@ -1,0 +1,28 @@
+1
+2
+3
+5
+6
+4
+Ilustración 8.67 
+Desmontaje placa de LEDS y detector de inicio
+8.12.2. AC17255 - Manifold Reactivos / AC17254 - Manifold muestras
+Herramientas: Llave allen número 2.5
+El proceso de montaje y desmontaje es el mismo para el manifold de reactivos y para el manifold de muestras.
+Desmontaje: 
+1. Desmonte la tapa y la placa leds. Véase capítulo 8.12.1
+2. Desatornille los 4 tornillos (7) y separe el manifold (8) del resto de la bomba. Estire con cuidado el manifold 
+para sacar el pistón del retén que va con el manifold.
+3. Dele la vuelta al manifold y desatornille los 4 tornillos (13) para separar las piezas sujeción cámara (9), junta 
+tórica (10), supresor burbujas (11) y el adaptador retén con el retén (12).
+9
+12
+13
+7
+8
+10
+11
+Ilustración 8.68 
+Desmontaje manifold
+Manual de servicio
+210

@@ -1,0 +1,26 @@
+39
+40
+41
+Ilustración 8.90 
+Cambio de los ventiladores
+8.15.13. AC16622 - Conjunto peltiers rotor de reacción
+Herramientas: Llave allen 3
+Desmontaje:
+1. Las peltiers van unidas de dos en dos. Las peltiers (42) y (43) van con el mismo cableado. Y las otras dos (44) y 
+(45) van con otro cableado. Al sustituir las peltiers, se tendrá que sustituir el conjunto de dos peltiers.
+2. Quite los 2 ventiladores según el capítulo 8.15.12, del conjunto de peltiers a sustituir.
+3. Quite los 2 radiadores. Desatornilles los 4 tornillos (48). Quite también las arandelas de seguridad y las arandelas 
+de plástico para aislar los tornillos.
+4. Quite el conjunto de las 2 peltiers.
+5. Limpie de restos de silicona la base y el radiador. Puede utilizar un poco de alcohol para limpiar los restos de 
+silicona.
+Montaje:
+1. Sustituya el conjunto de las 2 peltiers.
+2. Oriente correctamente las 2 peltiers. Fíjese en la colocación del cableado rojo (47) y negro (46)
+3. Ponga una fina capa de silicona a las dos caras de la peltier. No ponga demasiada silicona para que no rebose 
+por los lados y se produzca un puente térmico.
+4. Coloque el radiador (49) con los 4 tornillos (48) y apriételos en cruz.
+5. Coloque los ventiladores según el capítulo 8.15.12.
+6. Verifique y ajuste la temperatura con el programa de servicio.
+Manual de servicio
+200

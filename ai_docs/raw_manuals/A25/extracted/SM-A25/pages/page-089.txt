@@ -1,0 +1,22 @@
+89
+5.3.1.12. 
+Needle thermostatation system test
+This screen makes it possible to check that the dispensing temperature of the reactions is around 37ºC. To 
+make this adjustment, the analyzer must be initialised. The technician must measure the temperature of the 
+dispensed liquid with a thermometer calibrated at 37ºC. The program shows the set point temperature of the 
+current control. This parameter must be different from 37ºC. When the technician so indicates, the analyzer 
+dispenses thermostated distilled water on a certain position in the racks tray shown on the screen. The technician 
+must measure the temperature of the water with the calibrated thermometer and introduce the temperature on 
+the screen. The program indicates if the temperature measured is within the tolerated error margins and stores 
+this value for the test result reports. The liquid to be dispensed is taken from the system liquid container or from 
+the bottle of reagent selected by the technician.
+5.3.1.13. 
+Rotor thermostatation system test
+This screen makes it possible to check that the temperature of the rotor reactions is 37ºC. To make this test, the 
+analyzer must be initialised. The methacrylate rotor can be automatically filled with distilled water by pressing 
+the corresponding button. Once filled, the technician must wait a few minutes for the rotor to be thermostated. 
+The temperature in the rotor wells must be measured with a temperature calibrated at 37ºC through the dis­
+pensing hole of the rotor cover. A button makes it possible to turn the rotor in increases of 15 wells to change 
+the well on which the measurement is being taken. The program shows the set point temperature of the current 
+control. This parameter must be other than 37ºC. The technician must measure the temperature of the water 
+with the calibrated thermometer in the wells and enter the temperature on the screen. The program indicates if

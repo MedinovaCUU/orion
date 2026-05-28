@@ -1,0 +1,51 @@
+87
+Test point
+Función
+TP11
+24 V Nevera
+TP12
+5 V Nevera
+TP13
+CAN_L
+TP14
+Selección de placa. Dirección 4
+TP15
+Selección de placa. Dirección 3
+TP19
+Paso motor rotor
+LEDs
+Función (Condición de encendido)
+LD1
+Voltaje de 3.3 V
+LD2
+Voltaje de 3.3 V Nevera
+LD3
+Activación código de barras
+LD4
+Arranque microprocesador
+LD5
+Detección tapa
+LD7
+Detección inicio rotor
+LD9
+Activación peltier nevera
+LD10 
+Activación peltier nevera
+LD12
+Arranque microprocesador nevera
+4.8.1. Nueva versión placa rotores - CIIM00052-02
+Se ha realizado una mejora en los analizadores BA400 y se ha realizado un cambio en la placa de los rotores. 
+ 
+) Véase el capítulo AII para saber a partir de que números de serie se ha implementado.
+Los cambios principales son:
+• 
+Nueva gestión individualizada de los drivers de las peltiers
+• 
+Cambio de la fuente de alimentación (SPV-150-12) de las peltiers. Esta nueva fuente tiene la tensión de salida 
+variable.
+• 
+Nueva fuente de alimentación para alimentar el control del refrigerador. (RS-25-24)
+ 
+) Véase Ilustración 4.3 para ver el esquema con las fuentes de alimentación
+Las demás conexiones son iguales a la versión anterior. 
+La versión de Firmware para esta placa de rotores es compatible con las placas de las versiones anteriores.

@@ -1,0 +1,52 @@
+54
+Test point
+Function
+TP11
+24 V Fridge
+TP12
+5 V Fridge
+TP13
+CAN_L
+TP14
+Board selection. Direction 4 
+TP15
+Board selection. Direction 3 
+TP19
+Rotor stepper motor
+LEDs
+Function (on condition)
+LD1
+3.3 V voltage
+LD2
+3.3 V voltage Fridge
+LD3
+Barcode reader activation
+LD4
+Microprocessor start-up
+LD5
+Cover detection
+LD7
+Rotor start-up detection
+LD9
+Fridge peltier activation
+LD10
+Fridge peltier activation
+LD12
+Fridge microprocessor start-up
+4.8. Fluid control board – CIIM00053
+This board is located at the top of the fluid zone.
+The board controls the following elements, through a micro controller (U10):
+• 
+Stirrer driver (U18)
+• 
+Scales signal conditioning (U5 and U6) for the washing solution and high contamination waste
+• 
+Internal water and waste bottle buoy conditioning
+• 
+Driver for the wash station water heater (U1)
+• 
+Temperature sensor for controlling the thermostatting of the wash station water
+• 
+Wash station water dispensing driver 
+• 
+Wash station water dispensing start-up detection

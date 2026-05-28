@@ -1,0 +1,38 @@
+10. Seleccionar con botón azul
+11. Presionar el botón azul durante 3s para salir.
+12. Verificar el funcionamiento del sistema de vacío taponando las dos salidas de la membrana y verificando que la 
+conexión se realiza a: 65.0 y la desconexión a: 50.0 (paso 8)
+8.8.6. 
+AC17341 - Cambio nueva placa de control del desgasificador
+Cambio en el control del desgasificador. 
+ 
+) Véase el capítulo AII para saber a partir de que números de serie se ha implementado.
+19
+20
+21
+22
+Desmontaje:
+1. Quite los 3 cables (19), (20) y (21) de la placa del desgasificador.
+2. Quite el tubo que se conecta al sensor (22) de vacio
+3. Quite la placa de su alojamiento
+Montaje:
+1. Coloque la nueva placa en su posición
+2. Conecte cada cable de la siguiente manera:
+Conector
+Identificación
+Cable
+Posición
+CN2 (19)
+Conector de 2 pines
+ASMB784 o 
+ASMB1392
+Tensión de alimentación
+CN3 (20)
+Conector de 2 pines
+ASMB873
+Bomba de membrana
+CN4 (21)
+Conector de 2 pines
+Conexión electroválvula
+3. Conecte el tubo al sensor (22) de vacio. Asegúrese de no tener ninguna fuga en el tubo que se conecta al sensor.
+175

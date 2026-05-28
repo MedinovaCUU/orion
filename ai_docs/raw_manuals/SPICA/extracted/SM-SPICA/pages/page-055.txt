@@ -1,0 +1,10 @@
+SERVICIO
+Manual de Usuario BioSystems SPICA
+55
+Manual de Usuario BioSystems SPICA | Versión 2.8 - Agosto 2024
+6. COMO ACEDER A LOS SUBSISTEMAS
+Descripción general paso a paso para acceder a los subconjuntos: 
+Paso 1 - Eliminar la parte superior 
+Paso 2 - Quitar el lado derecho lateral para acceder al subsistema de fluidos
+Paso 3 - Después de los 2 primeros pasos, es posible retirar la cubierta general (retirar el 
+sensor de la puerta general antes de hacer esta operación):

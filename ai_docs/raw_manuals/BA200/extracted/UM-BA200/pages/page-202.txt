@@ -1,0 +1,74 @@
+Manual usuario 
+ 
+ 
+ 
+Manual usuario 
+ 
+ 
+ 
+202
+202
+Biosystems
+Biosystems
+14.3. Rotor reacciones
+Volumen de reacción mínimo
+180 mL
+Volumen de reacción máximo
+440 mL
+Número de cubetas
+120
+Material cubetas
+Metacrilato UV
+Tipo de incubación
+Seca
+Tiempo dispensación del 2º reactivo
+5 min (fijo)
+Temperatura cubeta reacción
+37 °C
+Veracidad de la temperatura
+±0,2 °C
+Estabilidad de la temperatura
+±0,1 °C
+Agitadores
+1
+14.4. Sistema lavado cubetas
+Número de puntas del sistema de lavado
+7
+Número de puntas con solución de lavado
+2
+Aclarados con agua
+3
+Secados
+2
+Volumen de lavado por punta
+711 mL
+Consumo de la solución de lavado
+1.42 mL/ciclo
+14.5. Sistema óptico
+Fuente de luz
+LED+Filtro Hard Coating
+Nº de longitudes de onda
+8
+Longitudes de onda
+340­ – 405 – 505 – 535 – 560 – 
+600 – 635 – 670 nm
+Ancho de banda de los filtros
+10 nm ± 2 nm
+Veracidad de la longitud de onda
+± 2 nm
+Rango fotométrico
+-0.2 A a 3.5 A
+Resolución interna
+0.0001
+Detector 
+Fotodiodo principal + 
+fotodiodo de referencia
+Precisión de la medida (para 340 nm, 
+405 nm y 505 nm)
+CV < 1 % a 0.1 A
+CV < 0.1 % a 2 A
+14.6. Modulo ISE (opcional)
+Tipo de muestra
+Suero, Plasma u Orina
+Tipo de electrodos
+Na+, K+, Cl-. Li+ (opcional)

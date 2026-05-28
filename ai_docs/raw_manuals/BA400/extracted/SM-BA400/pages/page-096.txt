@@ -1,0 +1,42 @@
+Manual de servicio
+96
+Ilustración 4.25 
+Serigrafía de la placa control de jeringas
+Test point
+Función
+TP1
+GND
+TP2
+Selección de placa. Dirección 1
+TP3
+Selección de placa. Dirección 2
+TP4
+Selección de placa. Dirección 3
+TP5
+Selección de placa. Dirección 4
+TP6
+24 V (Tensión en el bus)
+TP7
+GND (Tensión en el bus)
+TP8
+24 V
+TP9
+5 V
+TP10
+CAN_H (Señal en el bus)
+TP12
+CAN_L (Señal en el bus)
+TP13
+3.3 V
+TP14
+Tensión referencia motor reactivo 2
+TP15 
+Tensión paso driver motor reactivo 2
+TP16
+Tensión referencia motor reactivo 2
+TP17
+Tensión paso driver motor reactivo 2
+TP18
+Tensión referencia motor muestra
+TP19
+Tensión paso driver motor muestra

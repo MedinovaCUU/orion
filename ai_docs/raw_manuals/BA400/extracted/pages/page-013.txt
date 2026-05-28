@@ -1,0 +1,23 @@
+13
+Foreseen use
+The BA400 analyser is used to determine analyte concentrations by in vitro biochemical, turbidimetric and electrolyte 
+measurements of human samples of serum, urine, plasma, cephalorachidian fluid or total blood. 
+The analyser is exclusively for professional use, i.e., for users who have the appropriate training and expertise to use 
+it. In addition to how to install the instrument, users are instructed on how to use the analyser and the software 
+that goes with it. 
+The environmental conditions for the functioning of the analyser are normal clinical analysis laboratory conditions. 
+These conditions are described in the specifications chapter.
+1. Introduction
+The BA400 analyser is a random-acess, automatic analyser that makes readings at a rate of 400 prep/h. It is specifi­
+cally designed for performing clinical biochemical and turbidometric analyses and for electrolyte readings. Control 
+of the instrument is performed on-line in real time from a dedicated external PC. 
+The analyser has 5 arms: 2 arms for handling reagents, 1 arm for handling samples and 2 arms for stirring the reagent 
+and sample mixture.
+There are two rotors, with the reagents being positioned in one and the samples in the other.
+The reagent rotor is refrigerated and both rotors have barcode readers.
+The reagent and sample are mixed in the third rotor or reaction rotor. It is also where the photometric readings 
+are taken while the reaction develops. The reaction rotor is thermostatted and has a wash station for emptying the 
+completed reactions and for washing and drying the cuvettes for the next preparation round. It therefore processes 
+a continuous flow of preparations.
+The analyser has the following built-in safety elements: vertical arm collision detector, sample tip clot detector and 
+detectors in all the covers.

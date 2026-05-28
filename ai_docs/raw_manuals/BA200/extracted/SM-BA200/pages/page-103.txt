@@ -1,0 +1,24 @@
+Pasos para programar el estrés
+1. Seleccione la duración del estrés en número de ciclos.
+2. Pulse el botón de ajuste para iniciar el estrés.
+3. Durante la ejecución del estrés aparece una barra de estado indicando la duración del estrés.
+4. Una vez ha finalizado el estrés, en el apartado de resultados muestra la siguiente información:
+a) Tipo de estrés
+b) Número total de ciclos y tiempo total de la duración del estrés
+c) Número de ciclos completados
+d) Número de reinicios y ciclo en que se ha producido el reinicio. Sirve para verificar si ha habido un corte 
+de suministro eléctrico en estrés con duraciones muy largas.
+e) Número de errores y descripción del error. Cada ciertos ciclos el analizador realiza una verificación interna 
+para detectar si hay algún problema en el funcionamiento del analizador. Por ejemplo cuenta el número 
+de pasos en cada motor para verificar que no haya pérdida de pasos. En caso de encontrar algún problema 
+lo muestra en la casilla de los errores.
+Ilustración 6.25 
+Pantalla de estrés
+6.6. Utilidades
+6.6.1. Modo demostración
+Permite poner el analizador en un modo de demostración. Este modo realiza el ciclo básico de pipeteo y dispen­
+sación, con lo cual hay un movimiento de los brazos y rotores pero no hay ninguna manipulación de líquidos ni 
+realiza ninguna lectura fotométrica.
+Pulse el botón ajuste para iniciar el modo de demostración.
+El analizador no parará de realizar el modo de demostración hasta la pulsación del botón stop.
+103

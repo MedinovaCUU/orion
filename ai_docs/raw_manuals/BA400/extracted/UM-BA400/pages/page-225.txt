@@ -1,0 +1,75 @@
+225
+225
+Menú
+Submenú
+Descripción
+Mantenimiento tipos 
+de muestra
+Opción para configurar los 
+tipos de muestra 
+Menú
+Submenú
+Descripción
+Programación
+Técnicas
+Programación de los 
+parámetros de las técnicas
+Técnicas Calculadas
+Programación de los 
+parámetros de las técnicas 
+calculadas
+Contaminaciones
+Programación de las 
+contaminaciones
+Perfiles
+Programación de los perfiles
+Calibradores
+Programación de los 
+calibradores
+Controles
+Programación de los controles
+Datos de paciente
+Entrada de datos de los 
+pacientes
+Técnicas ISE
+Programación para las técnicas 
+ISE
+Técnicas externas
+Programación de las técnicas 
+externas
+Exportar la 
+programación
+Exportar los parámetros de las 
+técnicas a un fichero externo
+Importar la 
+programación
+Importar los parámetros de las 
+técnicas de un fichero externo
+Menú
+Submenú
+Descripción
+Sesión de Trabajo
+Solicitud de Muestras
+Pantalla para programar la 
+sesión de trabajo
+Posicionamiento en 
+Rotores
+Pantalla para posicionar las 
+muestras y reactivos de la sesión 
+de trabajo
+Información adicional 
+de muestras
+Pantalla para introducir los 
+datos de paciente de la sesión 
+de trabajo
+Cargar sesión
+Opción para cargar una sesión 
+previamente memorizada
+Guardar sesión
+Opción para guardar una 
+sesión.
+Borrar sesión
+Opción para borrar una sesión.
+Borrar rotores
+Opción para borrar rotores 
+virtuales.

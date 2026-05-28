@@ -1,0 +1,30 @@
+{
+  "manufacturer": "Biosystems",
+  "equipment": "IMLD",
+  "aliases": [],
+  "document_type": "maintenance_manual",
+  "language": "Spanish",
+  "source_pdf": "/Users/ricardomontanezmiranda/Documents/BioSys Diagnostico/data/manuals/IMLD/MM-IMLD.pdf",
+  "source_filename": "MM-IMLD.pdf",
+  "source_sha256": "5c870be1c885add7938a0801b58b1ee86b30bae0aecc500222d49bd0ad1972ad",
+  "page_count": 11,
+  "pdf_metadata": {
+    "format": "PDF 1.7",
+    "title": "Manual Mantenimiento imLD.pdf - ServiceManual-0012 - (209) - 22/04/2025 13:53:49",
+    "author": "Biosystems",
+    "subject": "Manual Mantenimiento imLD.pdf - ServiceManual-0012 - (209) - 22/04/2025 13:53:49",
+    "keywords": "",
+    "creator": "Biosystems",
+    "producer": "Biosystems",
+    "creationDate": "D:20260330213339+02'00'",
+    "modDate": "D:20260330213339+02'00'",
+    "trapped": "",
+    "encryption": null
+  },
+  "title_lines": [
+    "Manual de mantenimiento",
+    "Maintenance manual",
+    "ES",
+    "EN"
+  ]
+}

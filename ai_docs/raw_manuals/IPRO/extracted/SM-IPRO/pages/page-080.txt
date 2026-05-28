@@ -1,0 +1,21 @@
+80
+Manual de servicio
+CÓDIGO
+DESCRIPCIÓN
+AC15362
+Adaptadores portaobjetos euroimmun
+Lista de recambios exclusiva para el servicio de asistencia técnica.
+CÓDIGO
+DESCRIPCIÓN
+AC17411
+ CD - software servicio
+AC17410
+Tapa
+AC17407
+Detector de tapa
+AC17412
+Carcasa
+AC17418
+Carcasa del brazo
+AC17409
+Cilindro hidroneumático tapa

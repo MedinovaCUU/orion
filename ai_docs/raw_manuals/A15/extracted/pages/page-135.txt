@@ -1,0 +1,14 @@
+Manual de servicio
+136
+5
+Ilustración 6.43 
+6.5.7. PC13387 - Placa del interconexión de las bombas
+Desmontaje:
+1. Extraer todo el cableado de la placa
+2. Extraer los 4 tornillos (7) de sujeción de la placa de interconexión (6)
+Montaje:
+1. Instalar la nueva placa, volver a conectar cuidadosamente todos los conec to res.
+2. Realizar el proceso inverso de desmontaje
+6
+7
+Ilustración 6.44

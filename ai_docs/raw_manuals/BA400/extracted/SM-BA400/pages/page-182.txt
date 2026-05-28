@@ -1,0 +1,27 @@
+8.9.5. 
+AC16557 - Placa brazo
+Herramientas: llave allen de 2.5 mm
+Desmontaje:
+1. Quite los cables de los motores y fotodetectores de inicio.
+2. Quite el cable del bus CAN
+3. Quite las 4 tornillos que sujetan la placa
+Montaje:
+1. Coloque la placa en su posición.
+2. Ponga los 4 tornillos que sujetan la placa.
+3. Inserte el cable del bus CAN.
+4. Inserte los cables de los motores y fotodetectores de inicio.
+5. Seleccione el conmutador de la placa en función del brazo donde instale la placa.
+Placa
+Código
+Selector
+Brazo muestra 1
+BM1
+1000
+Brazo reactivo 1
+BR1
+0000
+Brazo reactivo 2
+BR2
+0100
+Manual de servicio
+182

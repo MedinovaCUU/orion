@@ -1,0 +1,37 @@
+2. Repita el proceso con alcohol de 70
+3. Inicialice el analizador con el programa de servicio y realice un lavado de las puntas mediante la utilidad de lavado.
+4. Verifique que el secador de la estación de lavado está bien sujeto y en buenas condiciones. En caso de estar 
+deteriorado, reemplácelo por uno nuevo.
+7.2.5. Limpieza de la ventana del lector de código de barras
+Limpie la ventana del lector de código de barras internamente y externamente.
+1. Desmonte la chapa superior del analizador
+2. Utilice un paño húmedo, y limpie internamente la ventana del lector de código de barras.
+3. Quite el rotor de su alojamiento.
+4. Limpie externamente con un paño húmedo la ventana del lector del código de barras.
+7.2.6. Limpieza del canal calefactor y de los contenedores de los rotores
+Utilice un paño húmedo con jabón neutro. 
+1. Con el analizador apagado, levante con la mano la estación de lavado.
+2. Quite las tapas de los 2 rotores (rotor de lectura y de reactivos y muestras)
+3. Quite el rotor de metacrilato y el rotor para muestras y reactivos.
+4. Pase el paño por toda la superficie del canal calefactor y por el interior de la vasija del rotor.
+5. Verifique que los desagües no están obstruidos. Para ello tire un poco de agua en el orificio y compruebe que 
+el agua desaparece por el desagüe.
+7.3. Mantenimiento
+Todos los mantenimientos se realizan cada año o cuando haya alguna intervención por parte del servicio técnico.
+Material y herramientas necesarias para realizar el mantenimiento:
+• 
+Llave torx T20, con una longitud mínima de 40 mm
+• 
+Juego de llaves allen 
+• 
+Grasa bomba cerámica o equivalente
+7.3.1. Revisión de la bomba de pistones de la estación de lavado
+1. Desmonte la carcasa lateral izquierda
+2. Pase los dedos por las conexiones fluídicas de las 5 cámaras de metacrilato y verifique que no hay ninguna fuga 
+de líquido. 
+3. Ponga un poco de grasa de la bomba cerámica en los rodamientos lineales de la bomba de pistones. 
+7.3.2. Revisión del brazo de pipeteo, del agitador y de la estación de lavado
+Verifique estado tensión de las correas:
+1. Desmonte la chapa superior del analizador
+2. Extraiga del equipo el brazo de pipeteo y el de agitación
+113

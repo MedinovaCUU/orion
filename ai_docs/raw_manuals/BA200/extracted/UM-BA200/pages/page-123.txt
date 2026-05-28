@@ -1,0 +1,47 @@
+123
+123
+2. Posicione el cursor del ratón en la columna de paciente/muestra. 
+3. Pulse el botón derecho y arrastre el cursor hasta la fila que quiera copiar. Al 
+pulsar el botón del ratón verá que el icono del cursor cambia.
+4. El código de paciente se copia tantes veces como muestras haya seleccionado, 
+creando el código con una numeración consecutiva a partir del número inicial 
+del que partía.
+ 
+Copiar y pegar 
+También puede copiar una lista de códigos creada desde otro programa y luego 
+pegarla en la pantalla de creación de listas. Siga los pasos siguientes:
+1. Crea una lista de códigos de muestra. Sólo la lista de códigos sin ningúna 
+técnica ni código de barras
+2. Cópiela. CRTL+C
+3. Seleccione el programa del BA400
+4. Seleccione la fila a partir de donde quiera modificar los códigos de muestras
+5. Pegue la lista. CRTL+V
+ 
+ 
+Este botón permite eliminar de la sesión de trabajo técnicas y muestras. Selec­
+cione primero la fila a eliminar y luego pulse el botón. Los blancos y calibra­
+dores se eliminan automáticamente si no hay ningún paciente más con dicha 
+técnica. Los controles también se pueden eliminar.
+ 
+ 
+Permite guardar una sesión para recuperarla a posteriori. El programa le pedirá 
+que introduzca un nombre para la sesión.
+ 
+ 
+Permite cargar una sesión previamente guardada. El programa le dejará seleccio­
+nar el nombre de una lista de sesiones guardadas.
+ 
+ 
+Pulse este botón para enviar las muestras y reactivos a posicionar en los rotores. 
+El programa le cambiará automáticamente de pantalla. Una vez las muestras 
+están enviadas a la pantalla de posicionamiento éstas quedarán marcadas en gris.
+ 
+)
+Ver capítulo 10.5.3 para el procedimiento del posicionamiento en el rotor.
+ 
+ 
+Pulse el botón para abrir una pantalla desde la cuál le permite introducir los 
+resultados de los pacientes que tengan técnicas externas. 
+ 
+)
+Véase Ilustración 80

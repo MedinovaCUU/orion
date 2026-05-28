@@ -1,0 +1,54 @@
+125
+125
+Ilustración 81 
+Pantalla emergente introducción datos de paciente
+En la parte derecha de la ventana están los campos de datos de paciente que puede 
+el usuario introducir. Todos los campos son opcionales.
+Se facilita la entrada rápida de datos mediante la tecla ENTER o TAB que pasa al 
+siguiente campo. Al llegar al último campo y pulsar tecla ENTER o TAB se pasa 
+a la siguiente muestra de la lista.
+ 
+Nombre Nombre del paciente. Al introducir las letras del nombre se realiza una búsque­
+da y se muestra la lista de los nombres coincidentes almacenados. El usuario 
+puede seleccionar un nombre de la lista o introducir uno nuevo. En este ultimo 
+caso, el nombre se almacenará para un futuro uso. 
+ 
+Apellidos 
+Apellido del paciente. También se genera un desplegable con sugerencia de 
+apellidos para facilitar la introducción de datos. Los apellidos sugeridos son solo 
+aquellos que tienen el nombre introducido en la casilla previa.
+ 
+Sexo 
+Hombre/Mujer/Sin valor. Puede pulsar la inicial para seleccionar rápidamente la 
+opción.
+ 
+Fecha nacimiento 
+Fecha de nacimiento del paciente. Si la fecha está mal introducida, se marcará 
+en rojo y no se memorizará pero tampoco bloqueará el campo. Permite intro­
+ducir la fecha en cualquier formato de la configuración regional de su sistema 
+operativo (formato largo o corto). Para las edades de menos de 1 año no es 
+necesario introducir el año. La edad se calcula automáticamente
+ 
+Análisis realizado por 
+Campo abierto para introducir el nombre de la persona que solicita los tests de 
+cada paciente. Este campo aparecerá en el informe por paciente.
+ 
+Comentarios 
+Campo abierto de varias líneas para introducir comentarios. Este campo apare­
+cerá en el informe por paciente. Puede introducir comentarios con salto de línea 
+utilizando la combinación de teclas CTRL + ENTER.
+ 
+ 
+Borra de la pantalla emergente todos los datos del paciente en curso. 
+ 
+ 
+Pulse este icono para deshacer los cambios del paciente en curso.
+ 
+ 
+Pulse este icono para avanzar un paciente. 
+ 
+ 
+Pulse este icono para retroceder un paciente.
+ 
+ 
+Pulse este icono para ir al último paciente.

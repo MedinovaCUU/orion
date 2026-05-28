@@ -1,0 +1,139 @@
+65
+Esquema de Brazo Manipulador
+Operating Arm Scheme
+M
+(A)
+(E)
+(K) (B)
+(C)
+1 2 3 4
+Rojo/Red
+Blanco/White
+Azul/Blue
+Marron/Brown
+Negro/Black
+Amarillo/Yellow
+Rojo/Red
+1 2 3 4
+1 2 3
+M
+(A)
+(E)
+(K) (B)
+(C)
+1 2 3 4
+Azul/Blue
+Rojo/Red
+Blanco/White
+Marron/Brown
+Gris/Grey
+Amarillo/Yellow
+Rosa/Pink
+1 2 3 4
+1 2 3
+M
+(A)
+(E)
+(K) (B)
+(C)
+J4
+J31
+J30
+J1
+J32
+J2
+MOTOR X
+MOTOR Y
+MOTOR Z
+PLMA00190
+PLMA00038
+1 2 3 4
+Azul/Blue
+Rojo/Red
+Blanco/White
+Marron/Brown
+Gris/Grey
+Amarillo/Yellow
+Rosa/Pink
+1 2 3 4
+1 2 3
+J29
+1 2 3 4 5 6
+J1
+J6
+1 2 3 4 5 6
+Verde/Green
+Amarillo/Yellow
+Gris/Grey
+Rosa/Pink
+Blanco/White
+PROBE
+PLMA00026
+PLMA00027
+PLMA00029
+Marron/Brown
+J41
+1 2 3 4 5 6 7 8
+(A)
+(E)
+(K) (B)
+(C)
+Rojo/Red
+Negro/Black
+Blanco/White
+Verde/Green
+Rojo/Red
+Negro/Black
+Blanco/White
+Verde/Green
+Rojo/Red
+Negro/Black
+Blanco/White
+Verde/Green
+Rojo/Red
+Negro/Black
+Blanco/White
+Verde/Green
+PLMA00169
+PLMA00168
+(A)
+(E)
+(K) (B)
+(C)
+AUTOCENTER
+CORNER
+Negro/Black
+FAN
+PELTIER
+CELL
+PROBE
+TEMPERATURE
+SENSOR
+1 2
+1 2
+1 2
+Blanco/White
+Blanco/White
+PLMA00043
+PLMA00046
+Rojo/Red
+Negro/Black
+J5
+J4
+J3
+PLMA00045
+Negro/Black
+Rojo/Red
+3 1 2
+Negro/Black
+Azul/Blue/Yellow
+Marron/Brown
+1 2 3
+J2
+J29
+PLMA00028
+PROBE BOARD
+CIIM00008
+CPU BOARD
+CIIM00006
+Figure 4.5

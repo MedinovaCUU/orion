@@ -1,0 +1,40 @@
+111
+111
+10.3.9. Técnicas externas
+Las técnicas externas son aquellas técnicas cuyo resultado no es medido por el 
+analizador pero interesa que aparezca en el informe por paciente o en el histórico 
+del paciente. Cuando se asigna una de estas técnicas en la sesión de trabajo se podrá 
+introducir los resultados relativos a estas técnicas desde la pantalla de creación de 
+la sesión o desde la de visualización de los resultados.
+Toda la información introducida en la técnica podrá ser mostrada en el informe 
+por paciente.
+Ilustración 76 
+Pantalla de programación de las técnicas externas
+ 
+Nombre Introduzca el nombre de la técnica externa
+ 
+Nombre corto 
+Abreviación del nombre de la técnica. Cómo máximo puede tener 8 caracteres. 
+Este campo se utiliza en aquellas partes del programa donde no hay suficiente 
+espacio para mostrar el nombre completo.
+ 
+Valor por defecto 
+Introduzca el valor por defecto para la técnica externa, ponga un valor sólo en 
+caso de que la técnica siempre tenga el mismo valor, aunque este valor se podrá 
+modificar en la lista de trabajo. Si el valor es cero se tendrá que introducir el 
+valor para cada muestra.
+ 
+Tipo de muestra 
+Introduzca el tipo de muestra.
+ 
+Tipo de resultado 
+Introduzca cómo será el resultado: cuantitativo o cualitativo. 
+Tipo de resultado
+Descripción
+Cuantitativo
+Es un resultado numérico. Cuando se seleccione esta 
+opción también se introducirán las unidades y el número 
+de decimales del resultado.
+Cualitativo
+Es un resultado no numérico. Por ejemplo: resultado 
+positivo o negativo, resultado alto o bajo, etc.

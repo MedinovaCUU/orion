@@ -1,0 +1,12 @@
+3
+2
+Ilustración 8.109 Montaje conector Y a la salida del filtro de la solución de lavado
+4
+5
+Ilustración 8.110 Conectar los tubos de la salida del filtro de la solución de lavado
+8.16.7. Eliminación de las checkvalves a la salida de las electroválvulas
+Se ha realizado una mejora en los instrumentos que consiste en la eliminación de las checkvalves a la salida de las 
+electroválvulas de selección de agua. Véase el capítulo AII para saber los números de serie que ya incorporan está 
+mejora.
+Manual de servicio
+216

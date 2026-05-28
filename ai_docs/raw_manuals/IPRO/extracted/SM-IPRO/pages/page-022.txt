@@ -1,0 +1,7 @@
+22
+Manual de servicio
+(3) Corrección Z en los racks de portaobjetos. Hay 8 puntos de ajuste que corresponden a los vértices 
+de los racks de portaobjetos. Poner el útil AC14759 en la posición 1 del rack 1, poner la pinza en el 
+posicionador de la estación de lavado y pulsar ajustar. Hacer bajar la punta con cuidado hasta que 
+toque el útil, el led verde de la placa electrónica del brazo se iluminará. Repetir el ajuste para los 7 
+puntos restantes.

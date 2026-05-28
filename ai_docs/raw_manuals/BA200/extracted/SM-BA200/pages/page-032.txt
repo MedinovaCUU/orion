@@ -1,0 +1,39 @@
+Todo el conjunto de las puntas se fija mecánicamente al soporte mediante el tornillo (32).
+La varilla (37) sirve para detectar si hay desbordamiento de líquidos en la estación de lavado debido a algún fallo 
+en las bombas de aspiración.
+Referencias de la Ilustración 3.10 y Ilustración 3.11:
+24 – Conjunto puntas estación de lavado
+25 – Eje transmisión vertical
+26 – Detector de colisión de las puntas y detector de inicio
+27 – Correa
+28 – Pestaña de detección 
+29 – Piñón
+30 – motor
+31 – Caracasa estación de lavado
+32 – Tornillo fijador conjunto puntas
+33 – Pieza soporte de las puntas
+34 – Aspiración reacción
+35 – Aspiración solución de lavado
+36 – Enjuague agua 
+37 – Detección desbordamiento
+38 – Aspiración de vaciado
+39 – Secado
+40 – Pieza bloqueo abertura de la tapa
+41
+44
+26
+42
+43
+Ilustración 3.12 
+Vista placas electrónicas
+El banco óptico (41) es un conjunto cerrado que está montado sobre la placa electrónica CIIM00051 (42). Ésta se 
+comunica mediante una banda plana con la placa CIIM00050 (44) que realiza el control de fotometría. La placa 
+CIIM00069 (43) es la encargada de realizar la detección de nivel con la varilla de desbordamiento (37). Y la placa 
+(26) es la placa con el doble detector para detectar la colisión de la estación de lavado y la posición de inicio.
+El banco óptico se sujeta directamente sobre la placa CIIM00051 (42). Los diferentes LEDS (54) para cada longitud 
+de onda como los fotodiodos (55) principal y de referencia están soldados en la placa CIIM00051 (42). Los filtros 
+(52) para cada longitud de onda van insertados en el portafiltros (53) y roscados en el soporte del banco óptico (5). 
+Para que cada haz de luz de cada longitud de onda incida en el rotor (50) hay los divisores de haz (48) y las lentes 
+(49). Todo el conjunto está sellado con una junta de goma (47) y una tapa (46).
+Manual de servicio
+32

@@ -1,0 +1,26 @@
+{
+  "manufacturer": "Biosystems",
+  "equipment": "BA200",
+  "aliases": [],
+  "document_type": "user_manual",
+  "language": "Spanish",
+  "source_pdf": "/Users/ricardomontanezmiranda/Documents/BioSys Diagnostico/data/manuals/BA200/UM-BA200.pdf",
+  "source_filename": "UM-BA200.pdf",
+  "source_sha256": "659182985edb55ac5813475a194dfc170461f5c11c681ed738a70ae385dc23c3",
+  "page_count": 229,
+  "pdf_metadata": {
+    "format": "PDF 1.4",
+    "title": "",
+    "author": "",
+    "subject": "",
+    "keywords": "",
+    "creator": "Adobe InDesign 16.0 (Windows)",
+    "producer": "Adobe PDF Library 15.0",
+    "creationDate": "D:20210701095307+02'00'",
+    "modDate": "D:20210701095405+02'00'",
+    "trapped": "",
+    "encryption": null
+  },
+  "title_lines": [],
+  "manual_code": "TEUS00055-06-ESP"
+}

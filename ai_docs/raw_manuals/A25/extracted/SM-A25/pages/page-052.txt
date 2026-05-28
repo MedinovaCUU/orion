@@ -1,0 +1,48 @@
+Service manual
+52
+Connector
+Function
+Pins
+J3
+Photometric board connection (CIIM00009)
+1 - 12 V
+2 - GND
+3 - DVALID
+4 - DCLK
+5 - DOUT
+6 - DXMIT
+7 - RANGE2
+8 - RANGE1 
+9 - RANGE0
+10 - TEST
+11 - CONV
+12 - GND
+13 - CLKAD
+14 - GND
+15 -GND
+16 - Vdc
+4.6. 
+Racks Board (CIIM00010)
+This board decodes the rack type the analyzer has at each of the positions for said racks. It is made up of a battery 
+of photobarriers that allow or stop light passing through the rack identification tabs at logical levels the analyzer firm­
+ware can handle.
+Connector
+Function
+Pins
+J1
+CPU (CIIM0006) board connection
+1- Detector 1
+2- Detector 2
+...
+...
+24- Detector 24
+25- GND
+26- 5V
+J2
+Fridge LED connection
+1 -5V
+2- GND
+J3
+Temperature sensor fridge connection
+1- Sensor
+2- Sensor

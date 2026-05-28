@@ -1,0 +1,28 @@
+Lista de recambios
+Código
+Conjunto
+Representación 
+Descripción
+AC17284
+Placa fluidos
+AC16565
+Placa fotobarreras
+AC17285
+Placa Leds Manifold
+AC17308
+Placa doble fotodetector
+AC16567
+Fuente de alimentación 320 W
+AC16569
+Fuente de alimentación 35 W
+AC17310
+Fuente de alimentación 320 W para la 
+nevera
+AC17311
+Fuente de alimentación 35 W para el 
+control de la nevera
+AC16570
+Célula de carga
+AC16571
+Ventilador general (2 hilos)
+237

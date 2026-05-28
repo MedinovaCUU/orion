@@ -1,0 +1,22 @@
+111
+1
+2
+Ilustración 6.7 Desmontaje motor X
+6.2.2. MO13353 - Motor Y / ME13352 - Correa Y
+Desmontaje motor:
+1. Extraer la carcasa superior. Ver capítulo 6.1.5
+2. Desconectar el cableado del motor Y
+3. Quitar los 4 tornillos (5) con sus arandelas que sujetan el motor (3)
+4. Quitar el motor Y de la placa de sujeción (4)
+Desmontaje correa:
+1. Quite la correa desde la contrapolea
+Montaje correa:
+1. Coloque la nueva correa, colocándola primero en la contrapolea 
+2. Siga las instrucciones del montaje del motor Y
+Montaje motor Y:
+1. Colocar el nuevo motor Y (3) con la chapa de sujeción (4) y la correa en la polea
+2. Colocar los 4 tornillos (5) con las arandelas para sujetar el motor sin apretar
+3. Tensar la correa desplazando el motor y luego apriete los tornillos (5)
+4. Vuelva a colocar la carcasa
+5. Realice unos ciclos de estress con el programa de servicio para verificar que se ha realizado correc-
+tamente el montaje

@@ -1,0 +1,71 @@
+Manual usuario 
+ 
+ 
+ 
+Manual usuario 
+ 
+ 
+ 
+220
+220
+Biosystems
+Biosystems
+2. El usuario pulsa el botón iniciar.
+3. El programa automáticamente realiza las siguientes acciones:
+• 
+Realiza la lectura de los códigos de barras del rotor de reactivos.
+• 
+Realiza la lectura de los códigos de barras del rotor de muestras.
+• 
+Muestra en una pantalla auxiliar todos los especímenes leídos con el 
+código de barras.
+• 
+Solicita el Query por espécimen al LIS de cada uno de los tubos. 
+• 
+El LIS envía las órdenes de trabajo de los especímenes solicitados.
+• 
+Cierra la pantalla auxiliar de información.
+• 
+Se descargan las órdenes de trabajo, se genera la lista de trabajo y se inicia 
+automáticamente la ejecución de la lista de trabajo.
+4. Hay algunos casos de excepción en que la lista no inicia la ejecución auto­
+máticamente.
+• 
+Cuanto en la lista de trabajo hay calibradores o controles por posicionar.
+• 
+Cuando en la lista de trabajo falta algún reactivo.
+• 
+Cuando se ha solicitado una técnica de ISE para muestra de orina. Esta 
+muestra se ha de diluir y posicionar manualmente en el rotor.
+5. En los casos de excepción el programa no inicia la ejecución y abre la pantalla de 
+posicionamiento para que el usuario pueda corregir los motivos de excepción.
+Cuando hay problemas con las comunicaciones o el sistema LIS es muy lento se 
+puede dar el caso de que, habiendo transcurrido el tiempo máximo establecido, 
+se inicie la ejecución automática de la lista y aún no se hayan recibido la totalidad 
+de las órdenes de trabajo; entonces se activa el icono de añadir órdenes. El usuario 
+tiene que pulsar el icono para añadir las órdenes pendientes a la lista de trabajo. Si 
+esta situación sucede muy a menudo, el usuario puede cambiar la configuración de 
+los tiempos de respuestas del LIS y/o del número de órdenes enviadas por mensaje 
+para evitar esta situación.
+ 
+)
+Véase capítulo 10.2.6 para la configuración del funcionamiento con LIS
+ 
+ 
+Cuando la sesión de trabajo está en ejecución y el usuario pulsa el botón de 
+Query por espécimen, el programa realiza una petición al LIS de todos los tubos 
+leídos con el código de barras. Esta acción sirve para verificar si se han añadido 
+nuevas técnicas a los tubos ya posicionados o si se ha solicitado una repetición 
+de alguna técnica.
+16.2. Query All
+Escenario en el cual el BA400 solicita al LIS el trabajo pendiente antes de la lle­
+gada de los especímenes al analizador. En este caso el LIS envía todas las ordenes 
+pendientes para ese analizador. 
+ 
+NOTE
+NOTE
+ 
+Se recomienda que el LIS filtre las ordenes y envíe sólo las correspondientes al 
+analizador que pregunta, en caso contrario, quedarán ordenes pendientes en el 
+analizador y el LIS tendrá que enviar cancelaciones cuando reciba resultados 
+para las mismas desde otro analizador.

@@ -1,0 +1,91 @@
+185
+185
+Tipo de 
+alarma
+Alarma/Error
+Causa del problema
+Solución propuesta
+Factor de 
+calibración NO 
+calculado
+La absorbancia del calibrador es 
+inferior a la absorbancia del blanco.
+No se ha podido calcular la 
+Absorbancia del calibrador.
+No se ha podido calcular la 
+absorbancia del blanco.
+La absorbancia del calibrador ha 
+superado el límite fotométrico >3.5
+Repita la calibración
+CONC fuera 
+del rango de 
+normalidad
+El valor de la concentración 
+ha salido fuera del rango de 
+normalidad, definido en la 
+programación de la técnica. 
+Repita el ensayo para asegurar que la 
+muestra es patológica.
+CONC <0
+La absorbancia de la muestra es 
+inferior a la absorbancia del blanco.
+Repita el ensayo. Si el valor del 
+blanco es memorizado, repita el 
+blanco.
+CONC > límite 
+linealidad
+El valor de la concentración ha 
+superado el límite de linealidad. 
+Repita el ensayo diluyendo la 
+muestra. El proceso se puede 
+automatizar. Active en la 
+programación la postdilución 
+automática, e introduzca un valor en 
+el límite de linealidad.
+CONC < límite 
+detección
+El valor de la concentración es 
+inferior al límite de detección. 
+Repita el ensayo aumentando la 
+concentración de la muestra. El 
+proceso se puede automatizar. Active 
+en la programación la postdilución 
+automática, e introduzca un valor en 
+el límite de detección.
+CONC fuera 
+de la curva de 
+calibración
+Resultado extrapolado, la Abs de la 
+concentración está fuera de la curva 
+de calibración. 
+Repita diluyendo la muestra.
+Conc NO 
+calculada
+La absorbancia del blanco no se ha 
+podido calcular.
+La absorbancia de la muestra no se 
+ha podido calcular.
+El factor no se ha podido calcular.
+La curva de calibración es 
+incorrecta.
+Repita el ensayo para la muestra, el 
+blanco o el calibrador en función del 
+problema.
+Muestra 
+con sustrato 
+consumido
+Este mensaje aparecerá para 
+técnicas programadas como 
+cinéticas. 
+Si aparece el mensaje indica que 
+el sustrato se ha consumido antes 
+de iniciarse la reacción, esto 
+ocurre para aquellas muestras de 
+concentración muy elevada. 
+Repita el ensayo diluyendo la 
+muestra.
+El proceso se puede automatizar. 
+Active en la programación la 
+postdilución automática, e 
+introduzca un valor en el campo de 
+sustrato consumido.

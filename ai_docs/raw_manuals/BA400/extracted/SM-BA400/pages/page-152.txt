@@ -1,0 +1,25 @@
+Ilustración 8.6 
+Desmontaje tapa ISE
+2
+1
+Siga los pasos siguientes para montar la tapa ISE (ver Ilustración 8.7):
+1. Haga el montaje del tornillo, arandelas, tuercas y separador de la tapa antes de montarla en el analizador.
+2. Monte los dos conjuntos según la Ilustración 8.7, uno en cada lado de la tapa ISE.
+3. No apriete las tuercas.
+4. Posicione la tapa ISE en el analizador y enrosque un poco los tornillos (1) en cada lado.
+5. Apriete uno o otro tornillo hasta que la tapa ISE quede bien centrada.
+6. Sujete con la llave allen el tornillo y con una llave fija apriete la tuerca (3)
+7. Repita el proceso con la tuerca (4)
+Ilustración 8.7 
+Detalle montaje tapa ISE
+3
+1
+4
+5
+2
+2
+8.1.5. 
+Desmontaje carcasa superior delantera
+La carcasa superior delantera está formada por dos partes. Siga los pasos siguientes para desmontar una de las dos.
+Manual de servicio
+152

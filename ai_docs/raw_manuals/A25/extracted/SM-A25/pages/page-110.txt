@@ -1,0 +1,4 @@
+110
+Service manual
+Figure 5.1 
+Screen to configure hiding folder options

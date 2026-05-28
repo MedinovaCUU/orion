@@ -1,0 +1,59 @@
+Manual usuario 
+ 
+ 
+ 
+Manual usuario 
+ 
+ 
+ 
+136
+136
+Biosystems
+Biosystems
+Código de 
+colores
+Nombre
+Descripción de la identificación del 
+estado de las cubetas del rotor de 
+metacrilato
+Lavado
+Cubeta en el estado de lavado
+No Utilizado
+Cubeta sin usar. Vacía
+R1
+Dispensado R1
+R1+muestra
+Dispensado R1 y muestra
+R1+muestra+R2
+Dispensado R1, muestra y R2
+Dilución de la 
+muestra
+Cubeta con dilución de la muestra
+Acabado
+Cubeta con la reacción finalizada
+Contaminado
+Cubeta contaminada. 
+Rechazo óptico
+Cubeta rechazada ópticamente.
+10.6.6. Estado del módulo ISE
+Pantalla que muestra información detallada sobre el módulo ISE ( si está instalado 
+en el analizador).
+• 
+Fechas: Muestra las fechas de instalación del kit de reactivos, de cada uno de 
+los electrodos, de las calibraciones de los electrodos, de las calibraciones de las 
+bombas y de la última limpieza realizada.
+• 
+Consumos: Muestra los consumos estimados de los calibradores A y B y el 
+número de preparaciones realizadas para cada uno de los electrodos.
+Al instalar un nuevo kit de reactivos o electrodo se debe introducir la fecha de 
+instalación y el cómputo de los consumos y preparaciones se inicializará automá­
+ticamente. 
+En esta pantalla también se muestran los avisos sobre caducidades y recomenda­
+ciones de cambios cuando los electrodos están agotados o cuando los electrodos 
+han caducado (más de 6 mesos instalados o superado el número de preparaciones 
+recomendadas).
+También muestra avisos cuando las calibraciones tienen resultados incorrectos.
+El programa, de forma automática, comprueba si existen avisos o recomendaciones 
+de cambios que impidan obtener resultados correctos. En este caso aparece un 
+aviso recordatorio y el usuario puede continuar o solucionar antes los problemas 
+del módulo ISE.

@@ -1,0 +1,10 @@
+77
+5.2.9. Ajuste de la sensibilidad en el analizador para determinar analitos en heces
+Con la nueva punta para determinar analitos en heces reajustar la sensibilidad de la detección de nivel.
+• 
+Rack colector de heces: introducir manualmente el valor de sensibilidad a 255
+5.2.10. Seleccionar el modelo de instrumento.
+Para seleccionar el modelo de instrumento, ir a la opcción del menú principal Ajustes/Habilitar Nevera. Apare-
+cerá un menú desplegable. Escoger el modelo de instrumento:
+• 
+Analizador con o sin nevera.

@@ -1,0 +1,27 @@
+183
+List of accessories
+Code
+Representation 
+Description
+AC14553
+Separating grid of bottles from the fridge
+List of spare parts
+Code
+Representation 
+Description
+CA11573
+Back cover
+CA11572
+Front cover
+CA11550
+Tip set cover
+CA11580
+Dome
+AC15533
+Refrigerator body
+AC14721
+Refrigerator lid
+AC14722
+Refrigerator lid hinge
+AC11574
+Cover hinge (2)

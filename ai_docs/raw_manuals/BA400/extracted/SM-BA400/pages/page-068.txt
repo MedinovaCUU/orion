@@ -1,0 +1,27 @@
+Manual de servicio
+68
+En la Ilustración 4.6 se muestra un conector CAN, con los pines (1), el conector (2) y el anclaje extra (3).
+Pasos para montar un conector CAN:
+1. Coloque cada uno de los pines (1) prensando el cable en el alojamiento del conector (2). Los pines tienen una 
+posición única.
+2. Inserte los pines hasta el final. Los pines han de quedar anclados.
+3. Inserte por el lateral del conector (2) el anclaje extra (3) hasta oír un clic.
+4.3. Placa principal (CPU) - CIIM00046
+Esta es la placa principal, donde se realiza la distribución de las tareas (a nivel del firmware) a cada una de las placas 
+de los subconjuntos.
+Esta placa también controla los siguientes dispositivos:
+• 
+Las comunicaciones con el ordenador, por RS-232 y por USB
+• 
+El led de estado del analizador
+• 
+El detector de la tapa principal del analizador.
+• 
+Los ventiladores generales del analizador. Estos ventiladores son de dos hilos.
+• 
+El control del envío de los comandos para controlar el módulo ISE y recibir los resultados del mismo.
+La electrónica de control del RS-232 para las comunicaciones y para el módulo ISE, están aislados eléctricamente 
+de la electrónica principal. Para su alimentación utiliza un regulador especial aislado (U20 y U3).
+USB alimentado del ordenador y aislado de la electrónica del equipo.
+Ilustración 4.7 
+Serigrafía de la placa CPU

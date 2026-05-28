@@ -1,0 +1,20 @@
+Manual de servicio
+114
+7
+8
+Figure 6.5 
+Removing of main cover
+6.1.6. 
+CA11573 - Back housing
+Disassembly:
+1. Remove the front housing.
+2. Remove the main cover.
+3. Manually position the manipulator arm fully to the left.
+4. Remove the screws that hold the housing from the bottom of the base (9).
+5. Remove the rubber grommet that holds the tubes of the containers
+6. Remove the hoousing (10) by pulling it up and tilting it slightly forward.
+Mounting:
+1. Follow the steps in reverse order to removal
+2. Move the arm horizontally to verify that the arm does not rub against the opening in the housing.
+3. In case of friction, place some gauges (washers) at the base of the housing to slightly raise the housing and thus 
+avoid friction between the arm and the housing.

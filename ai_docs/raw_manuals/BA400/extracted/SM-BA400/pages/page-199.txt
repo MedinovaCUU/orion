@@ -1,0 +1,58 @@
+8.11. Recambios del rotor de muestras y reactivos
+AC16623
+AC16624
+AC16625
+AC16628
+AC16561
+AC16562
+AC16629
+AC16813
+AC16630
+AC16631
+AC16632
+AC16657
+Código
+Descripción
+AC16561
+Placa rotor muestras
+AC16562
+Placa rotor reactivos
+AC16623
+Motor rotor
+AC16624
+Correa rotor
+AC16632
+Centrador rotor de reactivos
+AC16813
+Centrador rotor de muestras
+AC16625
+Lector de código de barras
+AC16628
+Calefactor y ventana del lector código 
+de barras
+Código
+Descripción
+AC16629
+Ventana lector código de barras
+AC16626
+Ventilador nevera
+AC16627
+Peltiers nevera
+AC17229
+Separadores de plástico para peltier
+AC16630
+Detector tapa del rotor de reactivos
+AC16657
+Detector tapa del rotor de muestras
+AC16631
+Sensor temperatura
+8.11.1. AC16538 - Placa rotor muestras / AC16562 - Placa Rotor reactivos
+Las placas para cada rotor (de muestras y de reactivos) son diferentes pero el montaje y desmontaje es el mismo 
+para ambas.
+Desmontaje: 
+1. Desconecte todos los cables que van a la placa.
+2. Abra las 4 abrazaderas para liberar la placa.
+Montaje: 
+1. Posicione e inserte en las 4 abrazaderas la nueva placa.
+2. Conecte cada uno de los cables a la placa según las indicaciones del capítulo 4.8.
+199

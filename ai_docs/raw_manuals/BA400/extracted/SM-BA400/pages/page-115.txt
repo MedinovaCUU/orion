@@ -1,0 +1,59 @@
+Brazo muestra
+Posición de ajuste
+Descripción
+Anillo 3
+Ajuste del posicionamiento del brazo en el anillo 3 del rotor de muestras. Se 
+ajusta el ángulo polar del brazo, la profundidad del brazo y el ángulo del rotor. La 
+profundidad se ajusta para un pocillo pediátrico.
+Z tubo
+Ajuste de la profundidad para los tubos. Este ajuste sirve para los 3 anillos del rotor.
+Posición ISE
+Ajuste del punto de dispensación en la entrada de muestra para el módulo ISE.
+Aparcamiento
+Ajuste del posicionamiento de la posición de aparcamiento del brazo.
+Brazo reactivo 1 y 2
+Posición de ajuste
+Descripción
+Dispensación
+Ajuste del punto de dispensación en el rotor de reacciones.
+Z Ref.
+Ajuste de la posición de referencia para el descenso de la punta en el rotor de 
+reacciones. Para facilitar el ajuste, la referencia es la superficie del rotor.
+ 
+)
+Véase Ilustración 6.12
+Lavado
+Ajuste del posicionamiento de la punta en la estación de lavado.
+Anillo 1
+Ajuste del posicionamiento del brazo en el anillo 1 del rotor de reactivos. Se ajusta el 
+ángulo polar del brazo, la profundidad del brazo y el ángulo del rotor.
+Anillo 2
+Ajuste del posicionamiento del brazo en el anillo 2 del rotor de reactivos. Se ajusta el 
+ángulo polar del brazo, la profundidad del brazo y el ángulo del rotor.
+Aparcamiento
+Ajuste del posicionamiento de la posición de aparcamiento del brazo.
+Brazo agitador 1 y 2
+Posición de ajuste
+Descripción
+Dispensación
+Ajuste del punto de agitación en el rotor de reacciones.
+Z Ref.
+Ajuste de la posición de referencia para el descenso de la punta en el rotor de 
+reacciones. Para facilitar el ajuste, la referencia es la superficie del rotor.
+ 
+)
+Véase Ilustración 6.12
+Lavado
+Ajuste del posicionamiento del agitador en la estación de lavado.
+Aparcamiento
+Ajuste del posicionamiento de la posición de aparcamiento del brazo.
+Ref. Polar
+Ajuste de la posición inicial. En este ajuste no se muestra ningún valor, es un ajuste 
+interno en el firmware. Para ajustar las diferentes posiciones de los agitadores, se tiene 
+que iniciar por este ajuste primero y luego seguir con los otros. 
+NOTE
+ Siempre que se realice este ajuste será neceario repetirlos ajustes de 
+dispensación, lavado y Aparcamiento
+Icono que aparece al seleccionar los brazos agitadores 1 y 2. Al pulsarlo activa y desactiva la rotación del agitador. 
+De esta manera se puede verificar si el agitador roza en el rotor durante su funcionamiento.
+115

@@ -1,0 +1,24 @@
+2. Saque el filtro metálico (3)
+Montaje del filtro:
+1. Cambie el filtro o límpielo con agua y jabón, asegúrese de que la malla no está obstruida
+2. Coloque el filtro en su alojamiento y ponga la pieza (4). Asegúrese de que el filtro está concéntrico con el soporte 
+y no quede torcido. Apriete la pieza (4) con la llave inglesa.
+3
+4
+Ilustración 8.102 Desmontaje filtro de entrada para el agua
+8.15. Adaptación de recambios BA400v2 en equipos BA400v1
+8.15.1. AC16555 - Placa CPU (CIIM0046-03)
+Para sustituir una placa CPU en un equipo BA400v2, seguir los pasos siguientes:
+1. Copiar los ajustes del instrumento
+ 
+) Ver capítulo 6.6.3.1 para guardar los ajustes
+2. Sustituir la placa averiada
+3. Cargar los ajustes a la nueva placa.
+Para montar la placa CPU (CIIM0046-03) en un equipo BA400v1 realizar los siguientes cambios:
+1. Desmontar la placa antigua
+2. Para colocar la nueva placa, hay que incorporar 3 tornillos M4x12 (1) para roscar por la parte trasera de la chapa 
+que soporta la CPU.
+ 
+) Ver Ilustración 8.103
+Manual de servicio
+242

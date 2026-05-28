@@ -1,0 +1,15 @@
+Realice el mismo procedimiento para sacar la carcasa del lado izquierdo.
+3
+1
+Ilustración 8.4 
+Desmontaje lateral
+2
+Ilustración 8.5 
+Desmontaje lateral
+8.1.4. 
+Desmontaje y montaje tapa ISE
+Para desmontar la tapa ISE siga los pasos siguientes:
+1. Abra la tapa ISE (1) para acceder a los 2 tornillos que la sujetan (2).
+2. Con una llave allen M4, quite los 2 tornillos (2) juntamente con las tuercas, arandelas y el separador.
+3. Retire la tapa ISE.
+151

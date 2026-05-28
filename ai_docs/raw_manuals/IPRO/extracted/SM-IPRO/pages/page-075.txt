@@ -1,0 +1,41 @@
+75
+AII.  TABLAS DE MÁRGENES DE AJUSTE
+Principales valores de ajuste del procesador
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+Posicionamiento del brazo manipulador 
+Tolerancias
+Perdida de pasos del eje X
+Perdida de pasos
+[-3, 3]
+Perdida de pasos del eje Y
+Perdida de pasos
+[-3, 3]
+Perdida de pasos del eje Z
+Perdida de pasos
+[-3, 3]
+Perdida de pasos del motor de la 
+bomba
+Perdida de pasos
+[-4, 4]
+Posición ajuste XY
+Origen X
+[1500, 1550]
+Origen Y
+[1375, 1425]
+Referencia de bandeja X
+[1025, 1075]
+Referencia de bandeja Y
+[25, 75]
+Referencia de bandeja Z
+[400, 450]
+Corrección Z portaobjetos general [510, 570]
+Altura entre la punta de aspiración y el portaobjetos
+Para portaobjetos de células (tipos 3 y 4)
+[0.7 - 0.95] mm
+Esta altura asegura el ajuste para todo tipo de portaobjetos

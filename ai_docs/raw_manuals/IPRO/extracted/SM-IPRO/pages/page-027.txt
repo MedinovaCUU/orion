@@ -1,0 +1,20 @@
+27
+3.2.5  Ajuste del lector del código bidimensional de portaobjetos
+En caso de sustituir el lector del código bidimensional de portaobjetos, es necesaria la configuración 
+del mismo. Antes se debe instalar el programa de control del lector.
+Instrucciones para la instalación del programa de control del código bidimensional:
+Acceder a la página principal de Leuze (https://www.leuze.com). Navegar hasta la página del producto 
+DCR55M2/R2 - Stationary 2D-code reader.
+En el apartado Downloads descargar el siguiente software:
+Descomprimir las dos carpetas para proceder a la instalación. Instalar primero el Sensor Studio. Para 
+realizar la configuración y verificación del lector seguir las siguientes instrucciones:
+El preparador iPRO sólo cuenta con un único puerto de comunicaciones en el que se multiplexan todos 
+los canales de comunicaciones. En el momento de conectar el preparador, el operario puede comprobar 
+en el administrador de dispositivos de Windows que se generan 4 puertos COM. Aunque el número de 
+COM es variable en función del PC. El lector de código bidimensionales de portaobjetos normalmente 
+estara conectado al segundo puerto asignado al instrumento.
+Configuración
+1. Abrir el programa de control del lector SENSOR STUDIO instalado previamente y seleccionar la 
+opción de “Selección del equipo con búsqueda del equipo y establecimiento de la conexión” tal y 
+como indica la siguiente figura.
+2. Selecionar el dispositivo DCR 55

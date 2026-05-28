@@ -1,0 +1,13 @@
+8. Sujetar los cables con una brida (7).
+9. Reconectar los tubos
+7
+Ilustración 8.114 
+8.15.4. AC17226 - Conjunto rotor de reacciones
+Para montar el conjunto rotor de reacciones en un equipo BA400v1 seguir los siguientes pasos:
+1. El conjunto del rotor es compatible entre un BA400v2 con un BA400v1, sólo es necesario sustituir la chapa 
+trasera (8) que sujeta la electrónica de control. 
+2. Desmontar del conjunto antiguo la chapa (8) de sujecion de la electrónica y colocarla en el conjunto nuevo.
+8
+Ilustración 8.115 
+Manual de servicio
+248

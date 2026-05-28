@@ -1,0 +1,21 @@
+7
+éste está trabajando, automáti­camente el brazo aborta la tarea en curso y se sitúa en su posición de 
+aparcamiento para evitar cualquier lesión al usuario.
+1.1.2  Sistema dosificación-aspiración
+Este sistema consiste en dos puntas, soportadas y desplazadas por el brazo manipulador: una de ellas 
+conec­ta­da a una bomba dosificadora, la otra conectada a una bomba peristáltica de aspiración. El 
+procesador dispone de detección de nivel por conductividad para controlar el nivel de los frascos y 
+tubos y evitar que las puntas penetre excesivamente en los líquidos correspondientes, minimizando así 
+la contaminación. Un sistema automático de ajuste avisa al usuario si las puntas no están montadas 
+o bien si están excesivamente dobladas. La dosificación se realiza mediante una bomba de pistón 
+cerámico de bajo mantenimiento, accionada por un motor paso a paso. Puede dispensar entre 3 y 1250 
+mL. El exterior de las puntas se mantiene constan­temente limpio mediante una estación de lavado. 
+1.1.3  Circuito de dosificación
+La punta de dosificación, mas corta que la punta de aspiración, se une a la bomba de pistón cerámico 
+a través de una electroválvula de tres vías y ésta a otra de las mismas características, que conmuta el 
+circuito entre la botella de solución de lavado y la botella de PBS.
+ Las botellas poseen un sensor de líquidos que informan al procesador de falta de líquido.
+1.1.4  Circuito de aspiración
+Formado por la punta de aspiración y conectada a la bomba peristáltica. Ésta transporta el líquido a la 
+botella de residuos. La botella posee un sensor de nivel que informa al procesador de que la misma 
+está llena.

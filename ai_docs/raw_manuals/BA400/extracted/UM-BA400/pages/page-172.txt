@@ -1,0 +1,32 @@
+Manual usuario 
+ 
+ 
+ 
+Manual usuario 
+ 
+ 
+ 
+172
+172
+Biosystems
+Biosystems
+Lista de accesorios
+Código
+Representación
+Descripción 
+AC16 369
+Botella de alta contaminación con tapón
+AC16748
+Tapón de la botella de solución de lavado
+AC16749
+Tapón de la botella de residuos de alta contaminación
+AC17393
+Rotor de reactivos
+AC16 371
+Rotor de muestras entero
+AC17456 
+Rotor de muestras segmentado
+AC17457 
+Segmentos extra (3)
+AC11 486
+Tornillo sujeción rotor reacción

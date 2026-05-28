@@ -1,0 +1,37 @@
+205
+205
+15.2.1. Punto final monoreactiva
+En las reacciones de punto final la reacción una vez iniciada dura un cierto tiempo 
+hasta que alcanza el equilibrio, entonces el valor de la absorbancia se mantiene 
+estable. Es en este punto cuando se programa la lectura de la absorbancia. Ver Ilus­
+tración 128
+Primero se dispensa el reactivo A, en el ciclo 31 se dispensa la muestra, se agita y 
+empieza la reacción. Una vez alcanza el equilibrio se realiza la lectura, L1. El cambio 
+de la absorbancia es directamente proporcional a la concentración de los analitos.
+RA
+S
+L1
+Time (Cycles)
+ABS
+1
+31
+ENDPOINT − MonoReagent
+Ilustración 128 
+Representación del método de cálculo punto final monoreactivo
+La lectura de la absorbancia se puede realizar a una sola longitud de onda (mono­
+cromática) o a dos longitudes de onda (bicromática).
+Las lecturas bicromáticas generalmente se realizan para sustraer la influencia de la 
+cubeta en la lectura de la absorbancia.
+Cuando la reacción es monocromática la medición se realiza en el tiempo L1 a 
+una sola longitud de onda.
+A=ABS L1
+principal 
+(1) 
+Cuando la reacción es bicromática, se realizan dos lecturas en el tiempo L1. Cada 
+una de las lecturas se realizada con una longitud de onda diferente. La absorbancia 
+es la diferencia entre las dos longitudes de onda.
+A=ABS L1
+principal−ABS L1
+referencia
+ 
+(2)

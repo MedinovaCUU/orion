@@ -1,0 +1,22 @@
+1
+2
+3
+4
+Ilustración 8.18 
+Desmontaje rotor de reacción, vista delantera. BA400v2.
+En la modificación del BA400v2 el rotor de reacción se desmonta de la siguiente manera:
+1. Desatornillo los 4 tornillos (1) que sujetan el conjunto a la chapa. Véase Ilustración 8.17 e Ilustración 8.18
+2. Desatornille el tornillo (3) que sujeta el cable de la toma de tierra
+3. Desatorinlle los 2 tornillos (2) que sujetan la placa electrónica a las columnas de soporte (4)
+4. Desenchufe el cable del bus CAN de la placa de control de fotometría
+5. Retire el conjunto rotor de reacción del analizador
+8.6. 
+Instalación del módulo ISE
+El módulo ISE es opcional. Si quiere incorporar a un analizador el módulo ISE, siga las siguientes instrucciones:
+El contenido del recambio es el siguiente:
+Componente
+Descripción
+Fuente de alimentación
+Interruptor
+Cableado
+159

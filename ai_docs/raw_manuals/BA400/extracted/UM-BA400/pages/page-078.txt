@@ -1,0 +1,38 @@
+Manual usuario 
+ 
+ 
+ 
+Manual usuario 
+ 
+ 
+ 
+78
+78
+Biosystems
+Biosystems
+Ilustración 45 
+Configuración de las comunicaciones
+ 
+Automática 
+Seleccione esta opción para que el programa busque automáticamente el puerto 
+de salida del ordenador para comunicarse con el analizador.
+ 
+Manual 
+Seleccione esta opción para escoger manualmente el puerto. 
+Tipo de conexión:
+• 
+Puerto — Tendrá que seleccionar el número de puerto COM
+ 
+NOTE
+ 
+Si en el desplegable del puerto no aparece ningún valor, espere unos minutos 
+y vuelva a probar la conexión. El proceso de registro del driver del USB puede 
+llegar a tardar unos minutos.
+10.2.1.4. Configuración general: Visibilidad de las técnicas
+En la Ilustración 46 se muestra la pantalla para configurar la visibilidad de las 
+técnicas.
+Hay una lista de todas las técnicas disponibles, el usuario selecciona mediante un 
+tic sólo aquellas técnicas que quiere visualizar en las pantalla de programación, de 
+técnicas calculadas y de perfiles 
+Ilustración 46 
+Configuración de la visibilidad de las técnicas

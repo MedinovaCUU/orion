@@ -1,0 +1,27 @@
+LIST OF SPARES PARTS
+Code
+Representation 
+Description
+AC16629
+Barcode reader window
+AC16630
+Cover sensor
+AC16631
+Refrigerator temperature sensor
+AC16632
+Reagent or sample rotor centring device
+AC16391
+ISE module
+Instruments and tools
+Code
+Representation 
+Description
+AC16643
+ 
+Adjustment instruments
+AC16644
+Adjustment screwdriver for level detection
+AC16645
+Allen key lengthener assembly
+Service Manual
+122

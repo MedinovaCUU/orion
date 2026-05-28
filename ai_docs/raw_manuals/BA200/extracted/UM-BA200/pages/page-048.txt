@@ -1,0 +1,40 @@
+Manual usuario 
+ 
+ 
+ 
+Manual usuario 
+ 
+ 
+ 
+48
+48
+Biosystems
+Biosystems
+4.12.3.6. Configurar la actualización de las versiones de windows
+EL sistema operativo windows 10 viene configurado con las actualizaciones del 
+sistema activadas. 
+Configure las actualizaciones del sistema en horas en que el analizador no funcine. 
+Siga los pasos siguientes:
+• 
+Seleccione Todas las configuraciones
+• 
+Seleccione Actualización y seguridad
+• 
+Seleccione Windows update
+• 
+Seleccione Cambiar horas activas
+• 
+Configure las horas en que el analizador estará en funcinamiento. Durante 
+este tiempo se evitará que se reinicie el ordenador.
+ 
+)
+Véase Ilustración 23
+• 
+Seleccione las Opciones de reinicio
+• 
+Active la opción de Mostrar más notificaciones
+ 
+)
+Véase Ilustración 24
+Ilustración 23 
+Configuración de las horas activas

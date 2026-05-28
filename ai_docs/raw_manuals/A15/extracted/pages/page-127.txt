@@ -1,0 +1,15 @@
+Manual de servicio
+128
+14
+Ilustración 6.29 Desmontaje motor rotor
+16
+15
+Ilustración 6.30 Separación motor del distanciador
+6.4.6. MO13376 - Motor del tambor de filtros / AC13375 - Tambor de filtros
+Desmontaje:
+1. Extraer la carcasa superior. Ver 6.1.5
+2. Extraer el conjunto rotor. Ver capitulo 6.4.1
+3. Girar el conjunto rotor
+4. Extraer los 4 tornillos (17) quesujetan la chapa de protección
+5. Extraer los 2 prisioneros (18) que sujetan el tambor de filtros con el eje
+6. Extraer los 4 tornillos (19) que sujetan al motor (21)

@@ -1,0 +1,28 @@
+131
+131
+10.5.9. Borrar sesión
+Esta opción permite borrar una sesión previamente memorizada. Al pulsar sobre 
+la opción se abre una ventana emergente, seleccione el nombre y pulse sobre el 
+icono de borrar.
+10.5.10. 
+Borrar rotores virtuales
+Esta opción permite borrar rotores virtuales memorizados previamente desde la 
+pantalla de posicionamiento de muestras y reactivos. El rotor virtual es un nombre 
+dado para identificar las posiciones de reactivos o de muestras de un rotor. Para 
+que aparezcan la lista de nombres, previamente en la pantalla de posicionamiento 
+se ha tenido que memorizar el rotor. 
+Al pulsar sobre la opción se abre una ventana emergente, seleccione el nombre del 
+rotor virtual y pulse el botón de borrar.
+10.6. Monitor de estado actual
+Permite visualizar toda la información del estado actual del analizador, de la sesión 
+de trabajo, de los rotores y de las alarmas de forma gráfica. En tiempo real facilita 
+observar el estado de la sesión (muestras en curso, acabadas o con errores o bloqueos 
+por falta de algún reactivo o muestra). Permite visualizar las alarmas de volumen 
+de reactivos y muestras de forma ágil y conocer el volumen actual de los reactivos. 
+Así como acceder a la pantalla de curva de absorbancia durante la recepción de los 
+resultados y a la pantalla de resultados cuando una técnica está finalizada.
+10.6.1. Principal
+Pantalla que informa del estado del analizador: los elementos del analizador que 
+están encendidos (nevera, módulo ISE), los principales sensores (tapas, temperatu­
+ras), información gráfica de alarmas e información de procesos que está realizando 
+el analizador.

@@ -1,0 +1,15 @@
+93
+5.4.1. Desmontaje de la punta dosificadora
+Al pulsar el botón Desmontar Punta, el brazo manipulador se coloca sobre la bandeja de racks. El programa 
+advierte al técnico para que retire cualquier objeto colocado debajo del brazo. Al aceptar, la punta desciende 
+y el técnico puede extraerla para manipularla o cambiarla. Para extraer la punta, ésta debe desenroscarse 
+sujetándola por el rácor superior. Si durante la manipulación de la punta el carro asciende debido a la presión 
+ejercida por el técnico, éste puede presionar el botón Bajar Punta para que la punta descienda de nuevo. Una 
+vez que se ha vuelto a montar la punta en el analizador, pulsando el botón Aparcar, la punta asciende, realiza 
+el test de auto cen trado y el brazo retorna finalmente a su posición de aparcamiento. Estas operaciones deben 
+hacerse con suma precaución ya que se realizan con la tapa del analizador abierta y la punta puede estar 
+contaminada. Deben utilizarse siempre guantes de laboratorio.
+5.4.2. Cebado del sistema fluídico
+Al pulsar el botón Test, el analizador llena los conductos del sistema de dosificación y de la estación de lavado 
+con agua destilada. Para rea lizar esta operación el brazo manipulador se desplaza hasta la estación de lavado. 
+El técnico puede seleccionar si desea cebar el sistema de dosificación, el sistema de lavado o ambos.

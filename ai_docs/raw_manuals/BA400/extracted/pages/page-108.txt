@@ -1,0 +1,25 @@
+AI. List of accessories and spares
+In the event of any of the analyser components being damaged or if any fungible goods are required, always use 
+original BioSystems material. 
+The following table shows a list of the components that might be needed. To purchase them contact your habitual 
+distributor and ask for each element with its respective code. 
+LIST OF ACCESSORIES
+CODE
+REPRESENTATION
+DESCRIPTION 
+AC16 359
+DVD with User Programme
+AC11 485
+“Reaction Rotor” (10)
+AC10 770
+“Sample wells” (1 000)
+AC16 434
+500 mL bottle of concentrated washing solution
+AC16 360
+Open adapter for primary tubes (90)
+AC16 361
+Closed adapter for sample wells (45)
+AC16 362
+60mL reagent bottles (20)
+Service Manual
+108

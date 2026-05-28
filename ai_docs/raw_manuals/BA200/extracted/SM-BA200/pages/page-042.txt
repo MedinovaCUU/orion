@@ -1,0 +1,36 @@
+Referencias de la Ilustración 3.22
+19 – Tubo de salida de las válvulas entiretorno
+20 – Tubo de entrada de las válvulas entiretorno
+21 – Válvulas antiretorno para solución de lavado
+22 – Válvulas antiretorno para agua destilada
+23 – Cámaras de los pistones
+24 – Pistones
+25 – Eje de transmisión
+26 – Motor
+Estación de lavado
+El sistema de lavado del rotor está compuesto por 10 etapas.
+ 
+) Véase capítulo 2.4 para la explicación de cada etapa de la estación de lavado.
+La dispensación de cada punta se realiza con una bomba de pistones (7). La bomba se acciona con el motor (26). 
+El motor transmite la fuerza a los pistones (24) a través del eje (25). Los 5 pistones se mueven a la vez. 
+Cada pistón está conectado a una válvula antiretorno para que los líquidos fluyan únicamente en una dirección. Las 
+posiciones (21) aspiran solución de lavado y las posiciones (22) aspiran agua destilada.
+La aspiración del líquido en los pocillos se realiza con las bombas de membrana. La punta de la etapa marcada con el 
+número 6 aspira los residuos de alta contaminación a través de la bomba (2) y los dispensa directamente a la botella 
+exterior de residuos de alta contaminación. 
+Las puntas de las etapas marcadas con el 7 y 8 son aspiradas por la misma bomba (3) y aspiran la solución de lavado 
+para el lavado de los pocillos.
+Las puntas de las etapas marcadas con el 9 y 10 son aspiradas por la bomba (4) y aspiran agua destilada para el 
+enjuague de los pocillos.
+La punta de la etapa marcada con el 12 es aspirada por la bomba (5) y la punta de la etapa marcada con el 13 por 
+la bomba (6). Estas dos últimas bombas realizan el secado de los pocillos. 
+La salida de las últimas 4 bombas están conectadas al depósito de residuos de baja contaminación.
+3.8. Conjunto electrónica
+Las fuentes de alimentación del analizador están localizadas en el lado derecho del analizador. Están sujetas en una 
+plancha metálica. El enchufe e interruptor principal (11) con el filtro de red se accede por la parte trasera. El ana­
+lizador dispone de 3 interruptores para alimentar el analizador (8), la nevera (9) y el módulo ISE (10). Éste último 
+solo en el caso de que el analizador tenga instalado el módulo ISE.
+Hay una fuente de alimentación independiente para cada subsistema, analizador (2), nevera (1) y (5) y módulo ISE (6). 
+En esa misma chapa también se ubican la placa de distribución del bus CAN (3) y la placa CPU (4).
+Manual de servicio
+42

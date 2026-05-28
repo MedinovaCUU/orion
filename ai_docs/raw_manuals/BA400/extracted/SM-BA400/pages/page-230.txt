@@ -1,0 +1,28 @@
+2. Quite la columna (33)
+Montaje:
+1. Sustituya la columna.
+2. Fíjese en la orientación de la columna. Tiene un posicionador (34)
+3. Coloque la arandela y el tornillo (32), apriételo.
+8.13.13. AC16615 - Correa rotor de reacción / AC16616 - Motor rotor de reacción
+36
+38
+35
+37
+Ilustración 8.88 
+Cambio motor y correa rotor
+Herramientas: Allen 2.5
+Desmontaje motor:
+1. Desconecte el cable del motor
+2. Desatornille los 4 tornillos (36) y (38) con sus arandelas de seguridad
+3. Quite el motor (37)
+Desmontaje correa:
+1. Afloje los tornillos (36) y (38) que sujetan el motor
+2. Quite la correa (35)
+Montaje motor:
+1. Sustituya el motor (37).
+2. Coloque los tornillos (36) y (38), arandelas y tuercas sin apretar.
+3. Coloque la correa por la polea
+4. Tense la correa entre 2.5 Kg y 4 Kg. Apriete los tornillos empezando por los tornillos (36) y luego los (38)
+5. Verifique el tensado de la correa con un frecuencímetro. La frecuencia tiene que estar entre 190 Hz y 230 Hz.
+Manual de servicio
+230

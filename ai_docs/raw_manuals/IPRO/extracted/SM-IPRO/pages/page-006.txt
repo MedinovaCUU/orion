@@ -1,0 +1,44 @@
+6
+Manual de servicio
+1.  INTRODUCCIÓN
+El procesador iPro es un preparador automático para Diagnóstico In Vitro especialmente diseñado para 
+realizar preparaciones de inmunofluorescencia (IFA). El control del instrumento se realiza on-line en 
+tiempo real desde un ordenador PC externo dedicado. El procesador realiza las diluciones requeridas 
+de las muestras para la realización de los ensayos, así como la dispensación de las mismas, de los 
+conjugados y los lavados necesarios
+El instrumento está provisto de un brazo cartesiano de tres ejes para realizar las preparaciones. Dotado 
+de dos puntas, una para dispensar y otra para extraer los residuos. Una bomba cerámica es la encargada 
+de ejecutar las diluciones y las dispensaciones con precisión. Una bomba peristáltica de larga duración 
+extraerá los residuos tanto en el proceso de lavado de los portaobjetos y en el lavado de las puntas. La 
+gran planitud del área de trabajo asegura que las puntas no dañen los portaobjetos. 
+El programa de aplicación posee una interfaz gráfica que facilita la programación de las sesiones de 
+trabajo. Ya en la ejecución de la sesión informa en todo momento del estado de la misma.
+Este manual contiene la información necesaria para conocer, mantener y reparar el procesador iPro. 
+Debe ser utilizado por el Servicio Técnico co­mo documen­tación de aprendizaje y de consulta para el 
+mantenimiento o la reparación del instru­mento. En el capítulo 2 se describe el sistema electrónico y 
+fluídico del instrumento. En el capítulo 3 el programa de servicio. Todos los ajustes y comprobaciones 
+del procesador se realizan mediante este programa, que es independiente del programa de apli­cación 
+(Programa de Usuario). La separación de ambos programas permite que sean mante­nidos por sepa­
+rado y las ampliaciones y mejoras de uno no afecten al otro. El usuario no dispone del programa de 
+servicio. El Servicio Técnico debe instalarlo en el ordenador del usuario para poder realizar las tareas 
+de servicio. Una vez concluidas estas tareas, el Servicio Técnico debe desinstalar el programa. En el 
+capítulo 5 se proporcionan instrucciones para las diferentes operaciones de mante­nimiento, repara­ción 
+y limpieza que puede realizar el Servicio Técnico. Los anexos contienen un resumen de las especifica­
+ciones técnicas del procesador, las tablas de márgenes de ajuste, las listas de accesorios y recambios.
+1.1  DESCRIPCIÓN GENERAL DEL PROCESADOR
+El procesador iPro está constituido por 3 elementos básicos: el brazo manipulador, el sistema de 
+dosificación-aspiración y el área de trabajo. El sistema electrónico del instrumento controla estos 
+elementos y se comunica con el ordenador externo que contiene el programa de aplicación. A través 
+de este programa, el usuario puede controlar todas las operaciones del procesador.
+1.1.1  Brazo manipulador
+Es un mecanismo cartesiano XYZ de 3 ejes. Los ejes X e Y desplazan las puntas de dosificación y 
+aspiración sobre el área de trabajo del procesador y el eje Z las desplaza verticalmente. Está accionado 
+por tres motores paso a paso. El procesador tiene cuatro ciclos básicos: el ciclo de dilución, el ciclo de 
+dispensación de muestra, el ciclo de dispensación de conjugado y el ciclo de lavado. El brazo dispone 
+de un sistema de control del movimiento vertical para detectar si la punta ha colisionado al descender. 
+En caso de que suceda una colisión, como por ejemplo si se ha dejado un frasco de reactivos con el 
+tapón puesto, el brazo se reinícia automáticamente, verifica la rectitud de la punta y prosigue con su 
+trabajo emitiendo el correspondiente aviso al usuario. Un sistema de retención del eje vertical evita 
+que la punta pueda caer en caso de fallo en el suministro eléctrico, evitando que el usuario pueda 
+dañarse con la punta o doblarla al intentar mover manualmente el brazo. El brazo manipulador sólo 
+realiza las preparaciones si la tapa general del procesador está cerrada. Si se levanta la tapa mientras

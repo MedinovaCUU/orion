@@ -1,0 +1,49 @@
+39
+Circuiteria analógica:
+Los sensores de residuos y líquido de sistema funcionan mediante U6, U5 y U4, los cuales generan y 
+sensan la señal encargada de detectar el líquido de sistema y los residuos. Estas señales se envían y 
+reciben a través de la placa de interconexión de fluidos(conectada a la placa CPU mediante J9). La detec-
+ción de nivel en los racks se hace de manera análoga a través de U7, U8 y U2. La señal que se inyecta 
+a la base de las botellas va hacia la placa de interconexión de fliuidos por J9 y se recoge después de 
+ser amplificada por J10(conexión con la placa de la punta). Tenemos tambien un circuito encargado del 
+acondicionamiento de señal del termistor asociado a la termostatización del rotor que está constituido por 
+los circuitos U1y U2. El termistor se conecta a la placa de interconexión del rotor y ésta a la placa CPU.
+TP1 - Señal de control de bomba de residuos
+TP2 - Señal de control de la electroválvula
+TP3 - Señal del termistor rotor
+TP4 - RESET
+TP5 - WATCHDOG
+TP6 - Señal de detección de botellas LSO_BOT
+TP7 - Señal de las botellas
+TP8 - Señal de detección de la punta
+TP9 - Señal de detección de la punta LSO
+TP10 - Señal de detección de la punta LSO atenuada
+TP11 - Driver Peltier punta IN1 
+TP12 - Driver resistencias de la punta 
+TP19 - ASL 
+TP20 - HWR_L
+TP21 - LWR_L 
+TP22 - WE_L
+TP24 - CS_FPGA_L 
+TP25 - DVALID(Fotometría)
+TP26 - 12 Volts analógicos
+TP27 - Driver Peltier punta IN2
+TP28 - Driver Peltier punta EF
+TP30 - DOUT(Fotometría)
+TP33 - RANGE(Fotometría)
+TP34 - CLKAD(Fotometría) 
+TP35 - Señal acondicionada del termistor
+TP38 - DXMIT(Fotometría) 
+TP39 - GND analógica 
+TP40 - GND potencia 
+TP41 - GND potencia 
+TP42 - GND potencia 
+TP43 - GND digital 
+TP44 - GND digital 
+TP45 - GND digital 
+Relacion de diodos LED
+DL1 - Driver electroválvula
+DL2 - Driver bomba de residuos
+DL3 - PELTIER Calentando
+DL8 - PELTIER Enfriando
+DL4 - Driver resistencias punta

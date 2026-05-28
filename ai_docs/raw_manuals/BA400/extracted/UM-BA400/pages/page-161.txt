@@ -1,0 +1,21 @@
+161
+161
+Ilustración 110 
+Pantalla de histórico de alarmas
+10.9. Utilidades
+10.9.1. Cambio del rotor
+Cuando quiera cambiar el rotor por mantenimiento preventivo o porque aparece 
+un aviso que indica que hay demasiadas cubetas descartadas, utilice la opción de 
+cambio de rotor del menú de utilidades. Ver Ilustración 111.
+Ilustración 111 
+Cambio de rotor
+Siga los siguientes pasos para realizar el cambio de rotor:
+1. Abra la tapa principal.
+2. Pulse el botón para ascender la estación de lavado.
+3. Quite la tapa del rotor de reacción.
+4. Desenrosque el tornillo de sujeción del rotor.
+5. Quite el rotor y deséchelo.
+6. Ponga un rotor nuevo. Vaya con cuidado al colocar el rotor, tiene una posición 
+única. 
+7. Enrosque el tornillo de sujeción y vuelva a colocar la tapa del rotor de reacción. 
+Cierre la tapa principal.

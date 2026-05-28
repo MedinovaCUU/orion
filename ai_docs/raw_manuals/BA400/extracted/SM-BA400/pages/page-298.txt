@@ -1,0 +1,107 @@
+Parámetro
+Mínimo
+Máximo
+Valor de referencia intensidad Led 560
+1 000
+30 000
+Valor de referencia intensidad Led 600
+1 000
+30 000
+Valor de referencia intensidad Led 635
+1 000
+20 000
+Valor de referencia intensidad Led 670
+1 000
+30 000
+Model Y400
+Valor de referencia intensidad Led 340
+1 000
+25 000
+Valor de referencia intensidad Led 405
+1 000
+15 000
+Valor de referencia intensidad Led 420
+1 000
+15 000
+Valor de referencia intensidad Led 430
+1 000
+15 000
+Valor de referencia intensidad Led 505
+1 000
+25 000
+Valor de referencia intensidad Led 520
+1 000
+25 000
+Valor de referencia intensidad Led 560
+1 000
+30 000
+Valor de referencia intensidad Led 600
+1 000
+30 000
+Valor de referencia intensidad Led 620
+1 000
+30 000
+Valor de referencia intensidad Led 635
+1 000
+20 000
+Valor de referencia intensidad Led 750
+1 000
+30 000
+Márgenes de fotometría:
+Parámetro
+Mínimo
+Máximo
+Corriente de oscuridad fotodiodo 
+principal
+3 300
+4 500
+Corriente de oscuridad fotodiodo 
+referencia
+3 300
+4 500
+Modelo BA400
+Número de cuentas fotodiodo principal
+Mínimo
+Máximo
+Longitud de onda 340
+350 000
+950 000
+Longitud de onda 405
+350 000
+950 000
+Longitud de onda 505
+350 000
+950 000
+Longitud de onda 535
+350 000
+950 000
+Longitud de onda 560
+350 000
+950 000
+Longitud de onda 600
+350 000
+950 000
+Longitud de onda 635
+350 000
+950 000
+Longitud de onda 670
+350 000
+950 000
+Número de cuentas fotodiodo 
+de referencia
+Mínimo
+Máximo
+Longitud de onda 340
+100 000
+950 000
+Longitud de onda 405
+100 000
+950 000
+Longitud de onda 505
+100 000
+950 000
+Longitud de onda 535
+100 000
+950 000
+Manual de servicio
+298

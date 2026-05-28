@@ -1,0 +1,27 @@
+3. Quite el motor (29)
+Desmontaje correa:
+1. Afloje los tornillos (28) y (30) que sujetan el motor
+2. Desatornille el tornillo (31)
+3. Quite la correa
+Montaje motor:
+1. Sustituya el motor (29).
+2. Coloque los tornillos (28) y (30), arandelas y tuercas sin apretar.
+3. Coloque la correa por la polea
+4. Tense la correa entre 2 Kg y 3Kg. Apriete los tornillos empezando por los tornillos (28) y luego los (30)
+5. Verifique el tensado de la correa con un frecuencímetro. La frecuencia tiene que estar entre 150 Hz y 170 Hz.
+Montaje correa:
+1. Sustituya la correa
+2. Verifique el dentado de la correa, haga coincidir los vanos con los dientes para ver si hay algún salto de diente.
+3. Coloque la correa por la polea y contrapolea y una los 2 extremos de la correa con el cierre y coloque y apriete 
+el tornillo (31). 
+4. Tense la correa y el motor según el punto 4 y 5 del montaje del motor.
+8.13.12. AC16575 - Columna de soporte rotor de reacción
+33
+32
+34
+Ilustración 8.87 
+Cambio columna de soporte
+Herramientas: Allen 2.5
+Desmontaje:
+1. Desatornille el tornillo (32)
+229

@@ -1,0 +1,19 @@
+34
+Manual de servicio
+3.3.9  Test de funcionamiento
+Este test permite conmutar manualmente el dispositivo seleccionado.
+3.3.10  Test de estresamiento
+Este test permite realizar de forma continua una cierta secuencia de conmutaciones del dispositivo 
+seleccionado. El técnico puede programar la duración del test, que pue­de ser cancelado en cualquier 
+momento.
+3.3.11  Test del sistema de autocentrado de la punta
+Mediante este test se puede verificar el funcionamiento del sistema de autocentrado de la punta. El 
+procesador, durante su inicialización, utiliza este sistema para compro­bar la presencia de la punta y 
+su verticalidad y corregir automáticamente pequeñas desviaciones. El test consiste tan sólo en lanzar 
+la ejecución de este mismo proceso. El técnico puede desmontar la carcasa del brazo para observar la 
+realización del test. Al finalizar el test, el programa muestra la desviación (X, Y) encontrada en pasos 
+de motor.
+3.3.12  Test del sistema de detección de nivel
+Este test permite comprobar el funcionamiento del sistema de detección de las puntas en los tubos de 
+muestra. Se puede realizar la comprobación en cualquier posición del rack de muestras. Seleccionar 
+la fila y la columna que indica la posición del tubo. Pulsar el botón de test y el programa moverá el

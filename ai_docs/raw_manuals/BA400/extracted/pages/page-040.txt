@@ -1,0 +1,82 @@
+40
+Connector
+Function
+Pin
+CN19
+General fan
+Pin 1: 24 V
+Pin 2: Activation
+CN20
+General fan
+Pin 1: 24 V
+Pin 2: Activation
+CN21
+General fan
+Pin 1: 24 V
+Pin 2: Activation
+Test point
+Function
+TP1
+5 V
+TP7
+GND ISE
+TP18
+ISE transmission serial channel
+TP19
+ISE reception serial channel
+TP26
+GND serial channel
+TP27
+Transmission serial channel
+TP28
+Reception serial channel
+TP29
+USB + signal
+TP31
+USB - signal
+TP33
+USB transmission serial channel
+TP34
+USB reception serial channel
+TP38
+3.3 V
+TP40
+24 V
+TP41
+GND
+TP42
+CAN_H (bus signal)
+TP43
+CAN_H
+TP44
+CAN_L (bus signal)
+TP45
+CAN_L
+TP48
+5 V
+TP49
+3.3 V
+TP50
+GND
+TP51
+GND
+TP52
+5V
+TP76
+5V USB
+TP78
+5V USB
+TP87
+Fan activation voltage
+TP90
+Buzzer activation voltage
+LEDs
+Function (on condition)
+LD3
+3.3 V voltage
+LD5
+Insulated 3.3 V voltage
+LD6
+CPU start-up indication 
+LD7
+CAN start-up indication

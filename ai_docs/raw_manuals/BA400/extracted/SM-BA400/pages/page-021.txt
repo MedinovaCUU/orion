@@ -1,0 +1,49 @@
+21
+2. Descripción general del analizador
+Mecánicamente el analizador está dividido en subconjuntos. Cada subconjunto incorpora su placa electrónica para 
+el control de los elementos individuales del subconjunto. 
+Todos los subconjuntos están conectados eléctricamente por el cable del bus CAN. El bus CAN incorpora los cables 
+de alimentación y los de transmisión de información entre placas.
+La relación de los subconjuntos es la siguiente:
+• 
+Rotor de muestras
+• 
+Rotor de reactivos
+• 
+Rotor de reacciones
+• 
+Brazo de pipeteo
+• 
+Brazo de agitación
+• 
+Estación de lavado
+• 
+Bombas de dispensación 
+• 
+Sistema fluídico
+• 
+Botellas de solución de lavado y residuos de alta contaminación
+• 
+Conexiones eléctricas y de comunicaciones
+• 
+Módulo ISE (opcional)
+2.1. Rotor de muestras
+El rotor de muestras consiste en un tambor para posicionar las muestras, de una tapa y de un lector de códigos de barra. 
+El tambor tiene una estructura circular con 3 coronas concéntricas donde se puede posicionar los tubos o pocillos 
+pediátricos de muestras.
+Cada una de las 3 coronas dispone de 45 posiciones para tubos de diámetros entre 12 y 16 mm y altura de hasta 
+100 mm
+El lector de códigos de barras únicamente puede leer los tubos primarios con código situados en las dos coronas 
+externas. 
+La caja de accesorios incorpora unos adaptadores para insertar en cada una de las posiciones por si se quieren colocar 
+pocillos pediátricos en vez de tubos primarios.
+La colocación de los sueros en las coronas es indistinta, pero se aconseja la siguiente:
+En la corona más interna en pocillos pediátricos se posicionan los sueros calibradores, los controles, y las soluciones 
+especiales (cómo la de lavado, dilución, etc). Las muestras se colocan en las dos coronas exteriores en tubos primarios 
+para poder ser leídas por el lector de código de barras.
+2.2. Rotor de reactivos
+El rotor de reactivos consiste en un tambor para posicionar los reactivos, de una tapa y de un lector de código de 
+barras. Todo el conjunto está refrigerado.
+El tambor tiene una estructura circular con 2 coronas concéntricas donde puede posicionar las botellas de reactivo.
+Cada corona dispone de 44 posiciones.
+El lector de códigos de barras puede leer los códigos de las botellas posicionadas en ambas coronas.

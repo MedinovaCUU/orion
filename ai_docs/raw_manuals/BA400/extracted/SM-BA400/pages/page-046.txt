@@ -1,0 +1,22 @@
+6
+7
+8
+Ilustración 3.33 
+Modificación agitador
+3.9. Conjunto bombas de dispensación
+3.9.1. 
+Conjunto bombas de dispensación
+El conjunto bombas de dispensación está formado por tres bombas. Cada bomba es independiente y están conectadas 
+a las puntas de los brazos de reactivos y de muestra. 
+El pistón de las dos bombas para pipetear el reactivo tienen un diámetro de 8 mm, mientras que el pistón de la 
+bomba de muestras tiene un diámetro de 3 mm.
+El sistema fluídico de las tres bombas con las electroválvulas de entrada está fabricado mediante un manifold (1) 
+de metacrilato. 
+La cámara fluídica de la bomba de muestras incorpora en el manifold un sensor de presión para detectar cuando la 
+punta de muestras está obturada (3).
+Las tres bombas son idénticas, excepto la bomba de muestras. Su pistón tiene un diámetro menor. El funcionamiento 
+se basa en un motor (13) que está unido a un husillo (12) multivuelta. El husillo hace subir o bajar el soporte del 
+pistón (11) donde está encolado el pistón. La cámara de aspiración está sellada mediante un retén (10). Los tubos 
+se conectan al manifold mediante racores (7).
+Manual de servicio
+46

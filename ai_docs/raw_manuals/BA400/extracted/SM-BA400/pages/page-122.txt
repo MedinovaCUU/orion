@@ -1,0 +1,23 @@
+6.5.5.1. Ajuste de la termostatización de la estación de lavado
+El agua destilada o solución de lavado que dispensa la estación de lavado se termostata previamente para no interferir 
+en la temperatura del rotor. Desde esta pantalla se realiza el ajuste de la termostatización.
+ 
+) Véase Ilustración 6.18
+Siga los pasos para realizar el proceso de ajuste:
+1. Pulse el botón de ajuste del apartado 1 para realizar un acondicionamiento fluídico del sistema. 
+2. Quite la tapa trasera y ponga la sonda del termómetro en el punto de medición del calefactor 
+ 
+) Véase Ilustración 6.19
+3. Introduzca el valor de la temperatura medida con el termómetro en la casilla del apartado 2.
+4. Pulse el botón de ajuste del apartado 3 para modificar la consigna del sistema de regulación si el valor medido 
+está fuera de los márgenes.
+ 
+) Véase capítulo AV para ver los márgenes de aceptación del ajuste del calefactor de la estación de lavado.
+5. Guarde el valor del ajuste.
+Ilustración 6.18 
+Pantalla ajuste de la termostatización de la estación de lavado
+ 
+Ilustración 6.19 
+Punto de medición de la temperatura del calefactor de la estación de lavado para BA400v1 y BA400v2
+Manual de servicio
+122

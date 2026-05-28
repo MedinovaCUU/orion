@@ -1,0 +1,37 @@
+The methacrylate rotor (2) is centred by means of tabs with a size that is different to that of the rotor centering 
+device (8) and secured firmly by a bolt (7). The initiation photosensor (9) detects the initial position of the rotor.
+The heating canal (4) is insulated (6). The canal is thermostatted at 37 °C by 4 peltiers (10), with their respective 
+radiators (11) and fans (12).
+The rotor shaft is connected to a pulley (14) which transmits the motor movement (15) through a belt (17) and 
+a pinion (16). The encoder disk (13) is attached to the pulley. The photosensors (18) relays the movement of the 
+encoder to the electronic board.
+The washing operation has 10 cycles. In each cycle two tips are used. The longest is used for suctioning and the 
+shortest for dispensing. 
+• 
+Cycle 1(26): The reaction mixture is suctioned and the washing solution is dispensed. The suctioned waste is 
+sent directly to the high contamination waste bottle. 
+• 
+Cycle 2(27): The washing solution is suctioned and then dispensed again. 
+• 
+Cycle 3: Wait cycle during which the wells are washed
+• 
+Cycle 4 to 6 (28): Rinsing, suctioning of liquid and dispensing of distilled water
+• 
+Cycle 7: Wait cycle
+• 
+Cycle 8: Optical checking of well
+• 
+Cycle 9(29): Suctioning of distilled water
+• 
+Cycle 10(30): Drying of well.
+During the last two cycles, in the event of the tips colliding with the rotor, a sensor (21) detects this and stops the 
+operation. 
+The whole tip assembly is secured mechanically with a bolt (22).
+The wash station has a built-in system for blocking the entry of light through the cover vents, part (25). This part is 
+always in a lower position, touching the cover. When the wash station is raised and lowered, part (25) is maintained 
+in its position, making contact with the cover, by means of guide elements (23) and springs (24).
+The wash station tip assembly is joined to a shaft (31). This shaft is dragged by a belt (37) through part (34). In 
+turn, the motor (38) transmits the movement to the belt (37) through the pulley (39).
+The transmission pulley is protected by part (40).
+The tab (35) and photosensors (36) are used to detect the wash station start-up position.
+23

@@ -1,0 +1,34 @@
+147
+147
+Campo
+Descripción
+Unidades
+Muestra las unidades programadas en la técnica.
+Límites de 
+concentración
+Muestra los límites máximo y mínimo de los 
+controles introducidos en la programación de la 
+técnica.
+Observaciones
+Muestra las alarmas que pueden aparecer en los 
+resultados. 
+ 
+) Véase las posibles alarmas en el capítulo 12 
+Fecha
+Fecha en que se ha entregado el resultado
+Modo de repetición
+Muestra el modo en que se ha repetido la muestra.
+Cuando seleccione la pestaña de los pacientes la información que visualizará está 
+detallada en el capítulo 10.7.1.
+10.7.3. Gráficas de las reacciones
+ 
+ 
+Pulse este botón para visualizar las gráficas de las cinéticas de reacción. Aparece­
+rá una pantalla como la de la Ilustración 92. Se puede visualizar un único repli­
+cado o todos a la vez. Si hay una pausa durante la sesión de trabajo, el sistema 
+de lectura del rotor de reacciones continua leyendo. Dichas lecturas se marcan 
+con un triángulo en la gráfica de la reacción.
+Ilustración 92 
+Pantalla gráfica de la cinética de reacción 
+El botón de gráfica de reacción es accesible desde las pantallas de resultados, de la 
+sesión de trabajo y la de reacciones.

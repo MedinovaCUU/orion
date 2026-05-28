@@ -1,0 +1,14 @@
+93
+5.3.2.4. Stability
+This test takes absorbance readings during 30 minute with the filter wheel in fixed position. The technician 
+can choose the rotor well on which he wishes to take the readings and fill it with the liquid he desires. He can 
+choose which wavelength he wishes to use. The test can also be performed with the filter covered. The test can 
+be cancelled at any time. When the readings end, the screen graphically displays the count numbers obtained 
+and the absorbances with regard to the corresponding base lines. The program also shows the averages and/
+or standard deviations of the count numbers and the absorbances.
+5.3.2.5. Repeatability moving filter wheel
+This test takes absorbance readings during 10 minute moving the filter wheel randomly. The technician can 
+choose the rotor well on which he wishes to take the readings and fill it with the liquid he desires. The test can 
+be cancelled at any time. When the readings end, the screen graphically displays the count numbers obtained 
+and the absorbances for each filter with regard to the corresponding base lines. The program also shows the 
+averages and/or standard deviations of the count numbers and the absorbances for each filter.

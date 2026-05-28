@@ -1,0 +1,39 @@
+Manual usuario 
+ 
+ 
+ 
+Manual usuario 
+ 
+ 
+ 
+170
+170
+Biosystems
+Biosystems
+11. Lista de consumibles y accesorios
+En caso de deterioro de alguno de los componentes del analizador o si precisa 
+alguno de los materiales fungibles, utilice siempre material original BioSystems. 
+En la tabla siguiente aparece el listado de los componentes que pueden ser necesa­
+rios. Para su adquisición, contacte con el distribuidor habitual y pida cada elemento 
+con su correspondiente código. 
+Solo usar consumibles cuya fecha de caducidad sea posterior a la fecha actual de uso.
+Lista de accesorios
+Código
+Representación
+Descripción 
+AC16 359
+DVD Programa de Usuario y servicio
+AC11 485
+“Reaction Rotor”, rotor de reacciones (10)
+AC10 770
+“Sample wells”, pocillos muestra (1 000)
+AC16 434
+Botella de solución de lavado concentrada 500 mL
+AC17201
+Botella de solución de lavado ácida (5x20 mL)
+AC17205
+Botella de solución de lavado alcalina (5x15 mL)
+AC17800
+Botella de solución de lavado alcalina elevada (2x60 mL)
+AC16 360
+Adaptador abierto para tubos primarios (90)

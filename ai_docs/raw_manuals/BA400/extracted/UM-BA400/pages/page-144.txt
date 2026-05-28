@@ -1,0 +1,42 @@
+Manual usuario 
+ 
+ 
+ 
+Manual usuario 
+ 
+ 
+ 
+144
+144
+Biosystems
+Biosystems
+Campo
+Descripción
+Fecha
+Fecha en que se ha entregado el resultado
+Modo de repetición
+Muestra el modo en que se ha repetido la muestra.
+Cuando seleccione la pestaña de los pacientes la información que visualizará está 
+detallada en el capítulo 10.7.1.
+10.7.3. Gráficas de las reacciones
+ 
+ 
+Pulse este botón para visualizar las gráficas de las cinéticas de reacción. Aparece­
+rá una pantalla como la de la Ilustración 95. Se puede visualizar un único repli­
+cado o todos a la vez. Si hay una pausa durante la sesión de trabajo, el sistema 
+de lectura del rotor de reacciones continua leyendo. Dichas lecturas se marcan 
+con un triángulo en la gráfica de la reacción.
+Ilustración 95 
+Pantalla gráfica de la cinética de reacción 
+10.7.4. Repeticiones de resultados
+El programa solicita automáticamente repeticiones de todos los resultados fuera 
+de margen cuando la técnica tiene este modo de repetición programado.
+Los modos automáticos de repetición son los siguientes:
+Tipo
+Criterio de repetición
+Límite de linealidad
+Repite con decremento
+Límite de detección
+Repite con incremento
+Sustrato consumido
+Repite con decremento

@@ -1,0 +1,83 @@
+27
+USUARIO
+Manual de Usuario BioSystems SPICA | Versión 2.8 - Agosto 2024
+Manual de Usuario BioSystems SPICA
+5. PROCEDIMIENTOS DE MEDICIÓN
+5.2 Cálculo de las absorbancias
+Se dispensa el primer reactivo A y se dispensa la muestra, se agita y comienza la reacción. Se toma la 
+lectura L1 y después de unos ciclos se toma la lectura L2. La absorbancia es la diferencia entre las lecturas.
+El cálculo de la absorbancia puede ser monocromático o bicromático. Si la reacción es monocromática, 
+sólo se mide a una longitud de onda y el cálculo de la absorbancia se realiza con la siguiente fórmula:
+Si la reacción es bicromática, se hacen dos lecturas en el tiempo L1 y dos lecturas en el tiempo L2. La 
+absorbancia es la diferencia entre las dos longitudes de onda en el tiempo de lectura del alcance.
+5. TIEMPO FIJO BIREACTIVO
+En este modo de funcionamiento, es el analizador el que prepara el reactivo de trabajo en cada preparación. 
+En primer lugar, el reactivo A se dispensa seguido de la muestra, y en el siguiente ciclo se agita. A continuación, 
+el reactivo B se dispensa, se agita y comienza la reacción. Se toma la lectura L1 y después de un tiempo 
+se toma la lectura L2. En este modo de cálculo, se toman dos lecturas y la absorbancia resultante es la 
+diferencia entre ambas lecturas.
+El cálculo de la absorbancia puede ser monocromático o bicromático. Si la reacción es monocromática, 
+sólo se mide a una longitud de onda y el cálculo de la absorbancia se realiza con la siguiente fórmula:
+Si la reacción es bicromática, se hacen dos lecturas en el tiempo L1 y dos lecturas en el tiempo L2. La 
+absorbancia es la diferencia entre las dos longitudes de onda en el tiempo de lectura del alcance.
+A = 
+L2
+L1
+ABS
+ABS
+-
+A = 
+L2
+L1
+ABS
+ABS
+-
+A = 
+λprincipal
+λprincipal
+L2
+L2
+ABS
+ABS
+ABS
+ABS
+(
+(
+)
+)
+-
+-
+-
+λreferencia
+λreferencia
+L1
+L1
+A = 
+λprincipal
+λprincipal
+L2
+L2
+ABS
+ABS
+ABS
+ABS
+(
+(
+)
+)
+-
+-
+-
+λreferencia
+λreferencia
+L1
+L1
+ABS
+TIEMPO FIJO Bi-Reactivo
+Tiempo (ciclos)
+RA + SR
+B
+L1
+L2
+1 18 19 3
+5

@@ -1,0 +1,79 @@
+Manual de servicio
+16
+Abreviatura
+Definición
+EN
+Norma europea
+F
+Rápido (tipo de fusible)
+FUS
+Fusible
+HL7
+Health Level Seven (www.hl7.org)
+IHE
+Integrating the Healthcare Enterprise (www.
+ihe.net)
+ISE
+Electrodo selectivo de iones
+IVD
+Diagnóstico In Vitro
+LED
+Diodo emisor de luz
+LIS
+Sistema de información de laboratorios
+RAEE
+Residuos de aparatos eléctricos y electrónicos
+REF
+Solución de referencia para la unidad ISE
+SAI
+Sistema de alimentación ininterrumpida
+SAT
+Servicio asistencia técnica
+SD
+Desviación estándar
+SE
+Seguridad eléctrica
+USB
+Universal Serial Bus
+UV
+Ultravioleta
+Unidades
+Definición
+“
+Pulgada
+˚C
+Grados centígrados
+A
+Amperio / Absorbancia
+GB
+Gigabyte
+h
+Hora
+Hz
+Hercio
+Kg
+Kilogramo
+L
+Litro
+MB
+Megabyte
+m
+Metro
+min
+Minuto
+mL
+Mililitro
+mm
+Milímetro
+mmol
+Milimol
+mV
+Milivolt
+nm
+Nanometro
+Nm
+Newton Meto
+prep
+Preparación
+s
+Segundo

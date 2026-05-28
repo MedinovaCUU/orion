@@ -1,0 +1,42 @@
+Service Manual
+61
+Figure 4.20 
+Syrigne control board silk printing
+Test point
+Function
+TP1
+GND
+TP2
+Board selection. Direction 1 
+TP3
+Board selection. Direction 2 
+TP4
+Board selection. Direction 3 
+TP5
+Board selection. Direction 4 
+TP6
+24 V (bus voltage)
+TP7
+GND (bus voltage)
+TP8
+24 V
+TP9
+5 V
+TP10
+CAN_H (bus signal)
+TP12
+CAN_L (bus signal)
+TP13
+3.3 V
+TP14
+Reagent 2 motor reference voltage
+TP15 
+Reagent 2 stepper motor driver voltage
+TP16
+Reagent 2 motor reference voltage
+TP17
+Reagent 2 stepper motor driver voltage
+TP18
+Sample motor reference voltage
+TP19
+Sample stepper motor driver voltage

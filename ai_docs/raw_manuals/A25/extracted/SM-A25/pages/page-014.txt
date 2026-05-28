@@ -1,0 +1,35 @@
+14
+Service manual
+1. 
+Intended use
+• 
+Automated analyzer for the measurement of analyte concentrations in human clinical specimens using in vitro 
+diagnostics reagents. For in vitro professional use in the clinical laboratory only.
+• 
+The Y25 analyzer is an automatic random access analyzer specially designed to perform biochemical analyzes 
+in wines, beverages, food and samples of biological crops.
+The analyser is exclusively for professional use, for users who have the appropriate training and expertise to use 
+it. Together with the installation of the instrument, users are instructed in the operation of the analyzer and the 
+software that accompanies it.
+ The environmental conditions for the functioning of the analyser are normal clinical analysis laboratory conditions. 
+These conditions are set out in the specifications chapter.
+The Y25 analyser has been optimised to operate with the BioSystems Food quality reagent lines. Reagents not 
+included in the Y25 analyser validation performed in BioSystems SA require a complete and detailed validation 
+by the user or the laboratory. 
+Users are strongly advised to validate the overall functioning of the analyser and of the reagents in the laboratory, 
+taking into consideration the preanalytical phase and all other relevant aspects.
+2. 
+Introduction
+The A25/Y25 analyzer is an automatic random access analyzer specially designed for performing analyses. The 
+instrument is controlled on-line in real time from an external dedicated PC. 
+In each of the components of the A25/Y25 analyzer, BioSystems has used leading edge tech­nology to obtain optimum 
+analytical performance, as well as taking into account eco­no­my, robustness, easy use and maintenance. A three-axis 
+Cartesian operating arm prepares the reactions. Dispensing is performed by means of a pump with a ceramic piston 
+via a detachable thermostatised needle with Fuzzy Logic control. A washing station guarantees that the needle is 
+kept perfectly clean throughout the process. The reactions take place in a thermostatised rotor in which absorbance 
+readings are taken directly by means of an integrated optical system. 
+This manual contains the information required for learning about, maintaining and repairing the A25/Y25 automatic 
+analyzer. It should be used by the Technical Service ­as a learning and consultation docu­ment for the maintenance 
+and repair of the instru­ment. Chapter 2 describes the different mechanical components that form the analyzer togeth­
+er with their functionality, and chapter 3 describes the electronic system. Chapter 4 describes the Service Program. 
+All the adjustments and checks of the analy­zer are carried out through this program, which is independent from the

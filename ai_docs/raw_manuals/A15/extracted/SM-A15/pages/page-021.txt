@@ -1,0 +1,62 @@
+Manual de servicio
+22
+3. Elementos mecanicos
+3.1. Desglose del instrumento
+La estructura física del analizador puede esquematizarse de la siguiente manera:
+• 
+Brazo manipulador
+• 
+Guiaje X
+• 
+Guiaje Y
+• 
+Carro X
+• 
+Carro Y
+• 
+Conjunto Punta
+• 
+Sistema de dosificación
+• 
+Punta termostatizada
+• 
+Bomba dosificadora
+• 
+Conjunto tubos y contenedores
+• 
+Sensores de control de nivel de los contenedores
+• 
+Bandeja de racks con estación de lavado integrada
+• 
+Bomba de residuos
+• 
+Rotor de reacciones con sistema óptico integrado
+• 
+Rotor termostatizado y sistema fotométrico. Contiene la placa electrónica del sistema foto métrico
+• 
+Sistema de iluminación
+• 
+Caja electrónica. Aloja las placas electrónicas del microprocesador, de la fuente de alimenta ción y del indicador 
+frontal
+• 
+Bisagras de la tapa principal
+• 
+Base
+• 
+Refrigerador de reactivos(Solo modelo A15C, Y15C)
+• 
+Carcasas
+• 
+Carcasa Superior
+• 
+Carcasa Frontal
+• 
+Carcasas del brazo
+• 
+Tapa principal
+A continuación se describen brevemente cada uno de los elementos mecánicos que constituyen el analizador.
+3.2. Descripción de los elementos mecánicos
+3.2.1. Brazo manipulador
+Este mecanismo posiciona la punta dosi fica dora adecuadamente durante la prepara ción de los análisis. Un encoder 
+comprueba el movimiento vertical de la punta y un resorte evita automáticamente su caída en caso de fallo en el 
+suministro eléctrico. El tubo de dosifi cación y las mangueras eléctricas del brazo pasan a través de la carcasa frontal

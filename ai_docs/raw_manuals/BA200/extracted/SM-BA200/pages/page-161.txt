@@ -1,0 +1,19 @@
+8.12.1. AC17284 - Placa fluidos
+Desmontaje: 
+1. Quite la carcasa lateral izquierda. Quite el conjunto desgasificador (2). 
+2. Quite el soporte (1). Tiene que desatornillar 6 tornillos.
+3. Quite la bomba de pistones (4) y la plancha de plástico de protección (3).
+4. Quite la placa electrónica de los separadores, y desconecte todos los cables. Corte las bridas para facilitar el 
+acceso de los conectores a la placa.
+Montaje: 
+1. Conecte cada uno de los cables a la placa.
+2. Ponga la placa en su posición, tenga cuidado de insertar correctamente el ventilador que sobresale un poco de 
+la placa.
+3. Vuelva a montar la plancha de protección, la bomba de pistones, el soporte y el desgasificador.
+2
+1
+4
+3
+Ilustración 8.43 
+Placas de fluidos y jeringas
+161

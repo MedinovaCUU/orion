@@ -1,0 +1,25 @@
+Montaje correa:
+1. Sustituya la correa
+2. Verifique el dentado de la correa, haga coincidir los vanos con los dientes para ver si hay algún salto de diente.
+3. Coloque la correa por la polea y contrapolea.
+4. Tense la correa y el motor según el punto 4 y 5 del montaje del motor.
+8.13.14. AC16621 - Conjunto ventiladores termostatización rotor
+Herramientas: Allen 2.5
+Desmontaje:
+1. Desatornille los 4 tornillo (39) con sus arandelas de seguridad.
+2. Desconecte el ventilador de la placa electrónica
+3. Quite el ventilador (40)
+Montaje:
+1. Sustituya el ventilador defectuoso.
+2. Introduzca los 4 tornillos (39) con sus arandelas de seguridad en el soporte inferior. 
+3. Oriente correctamente el ventilador. El flujo de aire (41) tiene que soplar hacía el radiador.
+4. Atornille los 4 tornillos en cruz.
+5. Conecte el ventilador a la placa electrónica y verifique su funcionamiento.
+39
+40
+41
+Ilustración 8.89 
+Cambio de los ventiladores
+8.13.15. AC16622 - Conjunto peltiers rotor de reacción
+Herramientas: Allen 2.5
+231

@@ -1,0 +1,24 @@
+Ilustración 6.30 
+Pantalla de actualización del firmware
+6.6.4. Cambio del rotor de reacciones
+Pasos a seguir para el cambio del rotor
+1. Ir al menú de utilidades y ejecutar la opción de cambio de rotor. Pulse el botón de elevar la estación de lavado 
+para poder retirar la tapa del rotor.
+2. Quite la tapa del rotor de reacciones. Vaya con cuidado en no tocar con la tapa las puntas de la estación de lavado.
+3. Desenrosque el tornillo central que sujeta el rotor.
+4. Quite el rotor. Manipúlelo con guantes y protección.
+5. Trate el rotor como material con riesgo biológico.
+6. Coja un nuevo rotor de la caja de accesorios.
+7. Inserte el rotor en su alojamiento.
+8. Enrosque el tornillo hasta el final.
+9. Ponga la tapa del rotor de reacciones.
+10. Pulse de botón de finalizar en la opción de cambio de rotor del programa de usuario.
+6.6.5. Información estado de la nevera
+Pantalla que da información sobre el estado de la nevera.
+Muestra la información siguiente:
+• 
+Velocidad de giro de los ventiladores
+• 
+Corriente de cada una de las peltiers
+Manual de servicio
+132

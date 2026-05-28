@@ -1,0 +1,17 @@
+8.1.5. 
+Desmontaje de la carcasa frontal inferior
+Para desmontar la carcasa frontal inferior es necesario desmontar previamente las carcasas laterales y la puerta frontal.
+1. Quite todos los 8 tornillos y arandelas (1) y (2)
+2. Extraiga todo el frontal hacía afuera, vaya con cuidado ya que es una única pieza. La varilla que sujeta la puerta 
+va unida al frontal.
+3. Una vez extraído, desconecte el cable del led frontal.
+1
+2
+Ilustración 8.7 
+Desmontaje carcasa frontal inferior
+8.1.6. 
+Desmontaje de la carcasa frontal superior
+Para desmontar la carcasa frontal superior es necesario desmontar previamente las carcasas laterales y la chapa trasera.
+1. Quite todos los 10 tornillos y arandelas por la parte trasera
+2. Extraiga el frontal superior un poco hacía adelante hasta que no se pueda más y luego muévelo hacía arriba.
+127

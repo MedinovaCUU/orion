@@ -1,0 +1,47 @@
+23
+Cada punta tiene una función específica, y corresponde a un ciclo diferente de la ejecución:
+• 
+Ciclo 1: Aspira los residuos de alta contaminación y dispensa solución de lavado
+• 
+Ciclo 2: Aspira y dispensa solución de lavado
+• 
+Ciclo 3: Reposo de la solución de lavado
+• 
+Ciclo 4: Aspira la solución de lavado y dispensa agua destilada
+• 
+Ciclos 5 y 6: Aspira y dispensa agua destilada
+• 
+Ciclo 7: Reposo del agua destilada
+• 
+Ciclo 8: Comprueba ópticamente la cubeta
+• 
+Ciclo 9: Aspira el agua destilada
+• 
+Ciclos 10: Seca la cubeta
+El agua destilada para el aclarado y la solución de lavado están termostatadas para no interferir en la temperatura 
+del rotor.
+Cuando se realiza el último aclarado también se realiza la lectura óptica del pocillo del rotor, de esta manera, se 
+comprueba el estado del pocillo. En caso de estar rayado o en malas condiciones, este pocillo se descarta y no par­
+ticipa en la reacción.
+Cuando hay un número elevado de pocillos en malas condiciones el programa avisa de la sustitución del rotor de 
+reacción.
+2.6. Contenedores de residuos, agua destilada y solución de lavado
+El analizador dispone de 4 contenedores para almacenar los residuos, el agua destilada y la solución de lavado. Estos 
+contenedores están colocados en su interior. 
+Desde el frontal se puede acceder a los contenedores de residuos de alta contaminación y de solución de lavado. 
+La capacidad de ambos contenedores es de 5 L. Esta capacidad da una autonomía para 8 h de funcionamiento 
+ininterrumpido. 
+La detección de la botella llena o vacía se realiza por pesada.
+Los contenedores de residuos de baja contaminación y de agua destilada están ubicados en el interior del analizador 
+en la parte posterior y no son accesibles por el usuario. Estos contenedores disponen de un sistema de boyas para 
+indicar al analizador cuando están llenos o vacíos. El sistema de llenado y vaciado desde el exterior es automático.
+La entrada de agua destilada exterior puede venir de una toma de agua destilada a presión o de un contenedor 
+exterior de mayor capacidad.
+La salida de los residuos de baja contaminación se realiza por un tubo de desagüe directamente a un contenedor o 
+a un sumidero.
+2.7. Brazo de agitación
+El analizador dispone de dos brazos para la agitación de la reacción. Estos brazos disponen de una pequeña pala que 
+gira en el interior de las cubetas de reacción para realizar correctamente la mezcla del reactivo y la muestra.
+Uno de los brazos de agitación se introduce en la cubeta una vez dispensada la muestra y el otro brazo de agitación 
+se introduce después de la dispensación del segundo reactivo en aquellas reacciones que utilizan dos reactivos.
+Una vez realizada la mezcla el brazo procede a su limpieza en la estación de lavado dedicada a su fin.

@@ -1,0 +1,88 @@
+REQUISITOS MÍNIMOS DEL ORDENADOR
+(1) Se entiende como aislamiento reforzado aquel que asegura una protección igual o superior al doble del 
+proporcionado por el aislamiento principal. Aislamiento principal es aquel cuyo fallo podría causar un riesgo de 
+choque eléctrico (UNE EN 61010-1:2010).
+CUMPLIMIENTO DE DIRECTIVAS
+Modelo BA400: 
+Directiva CE – IVD
+98/79/CE
+Modelo Y400: 
+Directiva de baja tensión
+Directiva de compatibilidad electromagnética
+2014/35/EU
+2014/30/EU
+BA400 y Y400:
+Directiva sobre restriccione a la utilización de 
+determinadas sustancias peligrosas en aparatos eléctricos
+y electrónicos. 
+2011/65/EU
+AV. Tablas de márgenes de ajuste
+Márgenes de ajuste:
+Parámetro
+Mínimo
+Máximo
+Posición referencia lectura - Pocillo 1
+7 860
+7 905
+Tara solución de lavado 0
+-5
+5
+Tara solución de lavado 50
+40
+60
+Tara solución de lavado 100
+95
+105
+Tara solución de lavado 150
+100
+150
+Tara Residuos 0
+-5
+5
+Tara Residuos 50
+40
+60
+Tara Residuos 100
+95
+105
+Tara Residuos 150
+100
+150
+Ajuste Termo rotor reacciones
+37,0
+45,0
+Ajuste Termo agua estación de Lavado
+40,0
+55,0
+Ajuste Termo Punta Reactivo 1
+45,0
+55,0
+Ajuste Termo Punta Reactivo 2
+45,0
+55,0
+Test termo rotor reacciones
+36.8
+37,2
+Test termo agua estación de lavado
+45,0
+55,0
+Test termo punta reactivo 1
+30,0
+35,0
+Test termo punta reactivo 2
+30,0
+35,0
+Modelo BA400
+Valor de referencia intensidad Led 340
+1 000
+25 000
+Valor de referencia intensidad Led 405
+1 000
+15 000
+Valor de referencia intensidad Led 505
+1 000
+25 000
+Valor de referencia intensidad Led 535
+1 000
+15 000
+297

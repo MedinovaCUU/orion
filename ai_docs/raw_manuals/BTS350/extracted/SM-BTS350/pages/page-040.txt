@@ -1,0 +1,50 @@
+—  40  —
+Appendix III. - Preventive maintenance plan
+To maintain this semi-automatic analyzer in perfect conditions of use, we advise having it serviced every year by the 
+Technical Assistance Service.
+In each review, the following operations should be performed, in the order in which they are listed:
+III.1. - Clean
+• 
+General cleaning of interior
+• 
+Flow cuvette
+III.2. - Change
+• 
+Aspiration tube
+• 
+Dosing tube
+• 
+Interior waste output tube
+• 
+Exterior waste output tube
+III.3. - Check
+• 
+Fan
+• 
+Keyboard
+• 
+Beep
+• 
+Screen
+• 
+Printer
+• 
+Serial channel
+• 
+Peristaltit pump motor
+• 
+Light intensity
+• 
+Darkness
+• 
+Readings stability
+III.4. - Check
+• 
+Photometric accuracy
+• 
+Aspiration system adjustment
+• 
+Temperature adjustment
+Appendix IV. - Password
+The PASSWORD to enter in the semi-automatic analyzer is:
+251209

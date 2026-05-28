@@ -1,0 +1,48 @@
+Figure 3.9 Wash station tip assembly
+20
+24
+25
+26
+27
+29
+30
+28
+23
+22
+21
+Figure 3.10 
+Wash station elevation system
+31
+35
+36
+37
+38
+40
+39
+34
+33
+32
+References of figures 3.9 and 3.10:
+20 – Wash station housing
+21 – Tip collision sensor
+22 – Set screw
+23 – Pedal guide shaft
+24 – Spring
+25 – Pedal
+26 – Waste aspiration
+27 – Washing solution aspiration
+28 – Rinsing with water
+29 – Water aspiration
+30 – Drying
+31 – Wash station elevation shaft
+32 – Wash station shaft anchoring support
+33 – Counter pulley
+34 – Part anchoring shaft with belt
+35 – Start-up detection tab
+36 – Start-up detection photosensor
+37 – Belt
+38 – Wash station motor
+39 – Transmission pulley
+40 – Transmission pulley protector
+Service Manual 
+24

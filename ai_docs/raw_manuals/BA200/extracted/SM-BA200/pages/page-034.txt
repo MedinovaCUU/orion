@@ -1,0 +1,31 @@
+La placa de control del brazo es la CIIM00048 (7), y la placa de control de la punta es la CIIM00049 (2).
+Características de la punta:
+Características
+Valor
+Diámetro interior en el extremo
+0.5 mm
+Volumen máximo contenido en 
+el interior
+500 mL
+Termostatización
+Sí
+Sensor de temperatura
+Sí
+Detección de líquidos
+Sí 
+1
+5
+4
+6
+2
+3
+8
+7
+9
+11
+10
+12
+Ilustración 3.14 
+Conjunto brazo de pipeteo
+Manual de servicio
+34

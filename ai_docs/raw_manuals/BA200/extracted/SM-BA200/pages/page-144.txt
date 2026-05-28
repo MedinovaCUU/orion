@@ -1,0 +1,42 @@
+25
+26
+27
+29
+28
+30
+Ilustración 8.29 
+Montaje tubos del módulo ISE
+8.9. 
+Recambios bomba estación de lavado
+AC16587
+AC16816
+AC16817
+AC16586
+AC16588
+AC16585
+ 
+AC16585
+AC16587
+1
+2
+3
+4
+5
+(2)+(3)+(4)+(5)
+(3)+(4)
+Código
+Descripción recambio
+AC16588
+Conjunto bomba pistones
+AC16587
+Conjunto camara superior
+AC16816
+Conjunto soporte pistón y pistones
+AC16817
+Abrazadera
+AC16586
+Motor bomba pistones
+AC16585
+Retén y junta tórica
+Manual de servicio
+144

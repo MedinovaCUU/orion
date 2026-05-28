@@ -1,0 +1,31 @@
+1
+2
+3
+4
+4
+Ilustración 6.17 
+Pantalla verificación de las bombas y electroválvulas
+1. Seleccione uno de los circuitos a verificar (1):
+• Circuito dosificación interna
+• Circuito lavado externo
+• Aspiración estación de lavado
+• Dispensación estación de lavado
+• Entrada/salida fluidos
+2. Seleccione si quiere realizar un único ciclo o ciclos continuos (2)
+3. Pulse sobre la electroválvula que quiera activar. Pasará de color gris a verde para indicar que está activa (3).
+4. Pulse sobre la bomba que quiera hacer funcionar, pasará de color gris a verde (4)
+5. Introduzca en el recuadro de ajuste el número de pasos que quiera que realice las bombas de dispensación. 
+6. Verifique en el analizador que los líquidos entran y salen en función de la electroválvulas y bombas activadas.
+7. Al salir del test, se desactivarán todas las electroválvulas y bombas que hayan quedado activas.
+8. En aquellos circuitos donde van seguidos una bomba y una electroválvula, cuando active la bomba siempre se 
+activará la electroválvula, y cuando desactive la electroválvula, desactivará la bomba.
+6.5.4.1. Test de colisión de punta
+Pulse el botón de inicio de test. 
+Los estados de cada punta tienen que estar en verde indicando que no hay colisión.
+Suba suavmente con la mano una de las puntas para simular una colisión. El indicador de estado cambiará a rojo 
+para indicar el estado de colisión.
+Repita el proceso con las otras puntas.
+6.5.5. Ajuste de los sistemas de termostatización
+Pantalla que permite realizar el ajuste de la termostatización del rotor de reacciones, del conjunto punta de reactivos 
+y de la termostatización de la estación de lavado.
+121

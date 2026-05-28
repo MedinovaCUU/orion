@@ -1,0 +1,21 @@
+76
+Service manual
+5.2.1. 
+Adjustment of the needle thermostatation system
+This screen adjusts the needle thermostatation in such a way that the dispensing temperature of the reactions 
+is as close as possible to 37ºC. To make this adjustment, the analyzer must be initialised. The liquid to be dis­
+pensed is taken from the system liquid container or from the bottle of reagent selected by the technician. The 
+technician must measure the temperature of the dispensed liquid with a thermometer calibrated at 37ºC. The 
+program shows the control set point temperature, which is the parameter that must be adjusted for the dispensing 
+temperature to be correct. This parameter must be different from 37ºC. When the technician so indicates, the 
+analyzer dispenses thermostated distilled water on a certain position in the racks tray shown on the screen. 
+The technician must measure the temperature of the water with the calibrated thermometer and introduce the 
+temperature on the screen. The analyzer automatically modifies the set point temperature in accord with the 
+temperature measured with the thermometer for the dispensing temperature to be 37ºC. The technician can 
+modify this set point temperature proposed by the program. On pressing Adjust, the analyzer thermostates 
+the needle with the new set point and, when the technician so requests, performs new dispensing operations. 
+Each time the set point temperature is modified, wait 1 minute before performing new dispensing operations 
+for the needle temperature to become stabilised. The technician must repeat this process until the dispensing 
+temperature is as near as possible to 37ºC. Pressing the Store button, the analyzer stores the current value 
+of the adjusted set point temperature. Pressing the Cancel button keeps the last stored value and the current 
+value is not stored. Pressing the Restore button restores the initial screen input value.

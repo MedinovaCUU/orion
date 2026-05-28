@@ -1,0 +1,51 @@
+Manual usuario 
+ 
+ 
+ 
+Manual usuario 
+ 
+ 
+ 
+102
+102
+Biosystems
+Biosystems
+ 
+Técnica contaminada 
+Indica qué técnica es contaminada, para evitar ser aspirada en el próximo ciclo.
+ 
+Lavado 
+Indica con que solución de lavado se utiliza para limpiar la punta: Agua, solu­
+ción de lavado1, solución de lavado 2 o solución de lavado 3.
+ 
+Volumen 
+Escoger el volumen a utilizar en el ciclo de lavado. Se puede seleccionar entre un 
+volumen alto o un volumen bajo. 
+ 
+Ciclos de lavado 
+Indica el número de ciclos necesarios para limpiar la punta con la solución de 
+lavado escogida. Se pueden programar de 1 a 5 ciclos.
+ 
+Lavado de agua equivalente Se permiten dos posibilidades:
+Opción
+Descripción
+Desactivado
+Para limpiar la punta únicamente se puede realizar con el 
+número de ciclos y con la solución de lavado programada 
+anteriormente.
+Activado
+Para limpiar la punta se puede realizar con el número de ciclos 
+y con la solución de lavado programados anteriormente o con 
+el número de ciclos de lavado con agua introducidos en la 
+programación en la columna siguiente.
+ 
+Ciclos de lavado con agua 
+Indica el número de ciclos equivalentes de agua que eliminan la contamina­
+ción. Se pueden programar de 1 a 10 ciclos. En estos ciclos el programa dis­
+pensa cualquier reactivo o solución de lavado excepto el reactivo de la técnica 
+contaminante.
+ 
+)
+Véase Ilustración 66
+Ilustración 66 
+Pantalla programación de las contaminaciones en punta

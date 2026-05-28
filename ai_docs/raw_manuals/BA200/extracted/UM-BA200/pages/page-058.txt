@@ -1,0 +1,66 @@
+Manual usuario 
+ 
+ 
+ 
+Manual usuario 
+ 
+ 
+ 
+58
+58
+Biosystems
+Biosystems
+• 
+Coloque correctamente y bien centradas las etiquetas de los códigos de barras 
+en los tubos de muestra. Éstas deben ir bien alineadas a lo largo del tubo. Si 
+la etiqueta tiene un código de barras con pocos dígitos colóquela centrada 
+longitudinalmente evitando posicionarla en la parte superior del tubo. Posi­
+cione el tubo de muestras con la etiqueta del código de barras mirando hacia 
+el exterior del rotor.
+• 
+Tenga la precaución de no duplicar ningún código identificador de tubo de 
+muestra en las etiquetas del código de barras durante una misma sesión. En el 
+caso de que varios tubos de muestras tengan el mismo identificador de código de 
+barras mientras el equipo esté habilitado para trabajar con las comunicaciones 
+con LIS, el analizador no asignará automáticamente ninguna técnica a dichos 
+tubos y mostrará un aviso en pantalla para indicar esta situación. En el caso 
+de funcionamiento manual (sin comunicaciones LIS), el analizador pipeteará 
+primero el tubo que se encuentre en la posición menor del rotor de muestras.
+• 
+Las posiciones de los tubos de muestra y de las botellas de reactivos deberán 
+mantenerse siempre que no se use la Verificación Automática de códigos de 
+barra antes de empezar / continuar la sesión de trabajo.
+• 
+Cuando utilice tubos de muestra de 15 mm de Ø o 15 mL de capacidad, no 
+los rellene con la muestra hasta el borde. Rellénelos como máximo con 14 mL 
+para poder detectar correctamente la muestra.
+• 
+Utilice siempre que sea posible la identificación positiva de los tubos de mues­
+tra, es decir la utilización de los código de barras para la identificación de los 
+tubos de muestra. De esta manera se evita los posibles errores en la colocación 
+de los tubos en el rotor de muestras.
+4.16. Preanalítica y preparación de soluciones adicionales
+ 
+Reactivos 
+Siga las instrucciones de uso y de seguridad que indica en los IFU (Instrucciones 
+de Uso) de los reactivos para su preparación y manipulación.
+Antes de usar por primera vez el reactivo, verifique la programación de la técnica 
+con la programación suministrada con el reactivo. Solo la última versión del pro­
+grama contiene la programación actualizada de todas las técnicas. Aconsejamos 
+actualizar siempre a la última versión de programa.
+Para aquellos reactivos que tenga que homogeneizar su contenido, hágalo suave­
+mente sin agitar. Si se han formado burbujas en la superficie del reactivo, elimínelas. 
+Cuando cambie el lote de reactivo, asegúrese de realizar el blanco y la calibración 
+de la técnica.
+Se recomienda realizar un blanco de reactivo cuando se cambia de botella de 
+reactivo y/o siguiendo la periodicidad que marcan las IFU.
+Se puede formar condensación en las paredes de las botellas de reactivo, en el 
+cuello de la botella o en las etiquetas de los códigos de barra. Si la condensación 
+está presente, elimínela con una toalla de papel secante. 
+ 
+Tubos primarios de suero 
+Para el buen funcionamiento del analizador proceda con la fase preanalítca de 
+las muestras con tubos de suero de la siguiente manera:
+NOTE
+NOTE
+NOTE

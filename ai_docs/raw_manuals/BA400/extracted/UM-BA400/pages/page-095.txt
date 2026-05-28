@@ -1,0 +1,46 @@
+95
+95
+ 
+Replicados blanco 
+Número de replicados para realizar el blanco. El margen va de 1 a 3. En el cál­
+culo de la concentración se usa la media de los replicados.
+ 
+Factor 
+Si la técnica no se calibra, introduzca el valor del factor multiplicativo para 
+calcular la concentración.
+ 
+Calibrador experimental 
+Introduzca los datos del calibrador así cómo su concentración. Pulse el icono de 
+nuevo para abrir directamente la pantalla de calibración y poder introducir los 
+parámetros del calibrador. 
+ 
+)
+Véase cómo introducir los parámetros del calibrador en el capítulo 10.3.5
+ 
+Replicados calibrador 
+Número de replicados para realizar el calibrador. El margen va de 1 a 3. En el 
+cálculo del factor se usa la media de los replicados.
+ 
+Usar calibrador alternativo 
+Cuando una técnica tiene varios tipos de muestra creados, generalmente se cali­
+bra para un tipo (por ejemplo suero) y los otros tipos de muestra (por ejemplo 
+orina) utilizan la calibración del primer tipo (suero). Seleccione en este campo el 
+tipo de muestra de donde obtendrá la calibración.
+ Valores y curva de calibración Muestra los valores del calibrador asignados a la técnica. Sólo se muestran a ni­
+vel informativo. Para crear nuevos calibradores y/o modificarlos, edítelos desde 
+la pantalla de calibradores.
+10.3.1.5. Parámetros técnicas: control de calidad
+Ilustración 61 
+Pantalla parámetros técnicas, control de calidad
+ 
+Control de calidad activo 
+Marque esta opción cuando quiera activar el control de calidad para esta 
+técnica.
+ 
+Replicados de control 
+Número de replicados para medir los controles. El margen va de 1 a 3.
+ 
+Criterio de rechazo 
+Introduzca el criterio de rechazo para controlar la activación de las alarmas en 
+la gestión del control de calidad. Este valor se calcula en desviaciones estándar 
+(SD). El margen va de 0.1 a 4.

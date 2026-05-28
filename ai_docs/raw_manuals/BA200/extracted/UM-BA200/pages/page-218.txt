@@ -1,0 +1,55 @@
+Manual usuario 
+ 
+ 
+ 
+Manual usuario 
+ 
+ 
+ 
+218
+218
+Biosystems
+Biosystems
+La pendiente se define como:
+pendiente= E B−E A
+log C B
+C A
+ 
+(15)
+Símbolo
+Descripción
+CA 
+Concentración del calibrador A en mmol/L
+CB 
+Concentración del calibrador B en mmol/L
+EA 
+Tensión medida en el ISE del calibrador A en mV
+EB 
+Tensión medida en el ISE del calibrador B en mV
+El valor de la pendiente de la calibración se ve afectada por la temperatura así 
+como por el envejecimiento de los electrodos. El valor de la pendiente se verifica 
+que esté dentro de unos límites.
+15.6. Control Interno de Calidad
+Muchos materiales comerciales para el control interno se acompañan de valores 
+asignados. Para cada componente suelen proporcionarse varios valores de concen­
+tración que corresponden a diferentes métodos de medida. Además, cada valor se 
+acompaña de un intervalo “admisible” (modo Manual). La utilidad de estos valores 
+e intervalos es cuestionable y se aconseja no utilizarlos para el control interno de 
+la calidad. 
+La asignación de valor a los materiales de control y el establecimiento del inter­
+valo de valores admisibles para el control interno de la calidad, debe realizarse en 
+el propio laboratorio (modo Estadístico), en sus propias condiciones de trabajo 
+(instrumentos, reactivos y operarios).
+El control interno debe diseñarse de forma tal que sea poco sensible a los aumentos 
+tolerables del error mientras que debe advertir sobre errores importantes.
+15.6.1. Fundamento
+El resultado obtenido para el material de control se compara con un intervalo de 
+valores admisibles y se toma una decisión:
+• 
+El resultado está comprendido en el intervalo: Se considera que el procedi­
+miento de medida mantiene su exactitud dentro de unos límites (es estable) 
+y se aceptan los resultados de la serie. 
+• 
+El resultado está fuera del intervalo: Se considera que el procedimiento de 
+medida muestra un error superior al tolerable y se rechazan los resultados de 
+la serie.

@@ -1,0 +1,36 @@
+149
+149
+Los resultados de control de calidad de la sesión de trabajo activa no estarán dis­
+ponibles en esta pantalla hasta que se ejecute el reset de la misma. 
+Para cada control y técnica se almacenan y visualizan un máximo de 500 resultados. 
+En el momento en que se ejecuta el reset de la sesión de trabajo activa, se verifica 
+esta condición para cada control y técnica con resultados de control de calidad en 
+la sesión y, en caso de que el máximo haya sido excedido, se muestra una pantalla 
+advirtiendo que los resultados actuales (excepto los de la sesión de trabajo activa) 
+se acumularán. El usuario podrá aceptar la advertencia y acumular los resultados 
+automáticamente, o cancelar temporalmente el reset y acumular los resultados 
+manualmente desde la pantalla de Acumular resultados de control de calidad diaria.
+ 
+)
+Véase capítulo 10.8.4.1
+Ilustración 99 
+Pantalla de visualización de resultados de control de calidad
+A la izquierda se muestra la lista de técnicas con resultados de control de calidad. 
+Al seleccionar una técnica de la lista, a la derecha de la pantalla se mostrará la 
+información de sus controles programados y activos, pero sólo de aquellos con al 
+menos un resultado. En esta zona de detalle hay tres zonas claramente diferenciadas:
+• 
+Criterios de cálculo. Permite especificar los criterios de selección y validación 
+de los resultados de control de calidad. Al modificar el valor por defecto de 
+cualquiera de estos criterios, se vacía el contenido de las otras dos zonas de 
+detalle, y se debe seleccionar el botón de búsqueda para recargarlas. Los va­
+lores seleccionados se actualizarán también en la programación de la técnica. 
+ 
+Rango de fechas 
+Rango de fechas de los resultados a visualizar. El rango de fechas informado por 
+defecto es el que permite mostrar todos los resultados. 
+ 
+Criterio de rechazo 
+Número de desviaciones estándar para determinar los límites del intervalo de 
+valores admisibles para los resultados: 
+Rango=Media±Criteriode rechazo⋅SD

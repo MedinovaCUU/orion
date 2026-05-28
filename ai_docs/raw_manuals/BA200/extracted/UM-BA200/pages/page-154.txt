@@ -1,0 +1,77 @@
+Manual usuario 
+ 
+ 
+ 
+Manual usuario 
+ 
+ 
+ 
+154
+154
+Biosystems
+Biosystems
+• 
+Listado de controles. Muestra la información estadística para todos los 
+controles activos y con resultados pendientes de revisión para la técnica 
+seleccionada. Con el tic se activa/desactiva la visualización de los resultados 
+individuales detallados.
+En las columnas de la izquierda se muestran los valores objetivos para cada con­
+trol: media, desviación estándar (SD), coeficiente de variación (CV) y rango de 
+valores admisibles, calculados según el modo de cálculo y el criterio de rechazo 
+seleccionados. 
+En las columnas de la derecha (área de Resultados), se muestran para cada control 
+los valores estadísticos calculados en base a los resultados disponibles:
+Parámetros de resultados
+Cómo se calcula
+n
+Número de resultados que intervienen el cálculo
+Media
+Media estadística de los resultados.
+Media=
+∑
+i=1
+n
+X i
+n
+SD
+Desviación estándar de los resultados:
+SD=
+∑
+i=1
+n
+xi−Media
+2
+n−1
+CV
+Coeficiente de variación de los resultados:
+CV =
+SD
+Media⋅100
+Si se ha seleccionado el modo de cálculo estadístico, los resultados utilizados para 
+calcular los valores objetivo no intervienen en el cálculo.
+• 
+Resultados individuales detallados. Muestra los resultados individuales de 
+todos los controles seleccionados dentro del rango de fechas especificado, 
+validados de acuerdo con los criterios de cálculo indicados. La información 
+que se visualiza para cada resultado es la siguiente:
+Parámetro
+Descripción
+n
+Número de serie ejecutada.
+Control
+Nombre del control al que pertenece el resultado
+Fecha
+Fecha/hora del resultado.
+Resultado
+Valor del resultado.
+Indicador de 
+resultado manual
+Muestra el icono de resultado modificado cuando:
+• 
+El valor del resultado se ha cambiado manualmente
+• 
+El resultado se ha agregado manualmente 
+Unidad
+Unidad de medida del resultado
+Error absoluto
+Diferencia entre el valor del resultado y la media objetivo.

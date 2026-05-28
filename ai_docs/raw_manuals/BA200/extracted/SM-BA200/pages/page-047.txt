@@ -1,0 +1,53 @@
+Manual de servicio
+47
+4. Elementos electrónicos
+La electrónica que controla el analizador está distribuida en 7 placas independientes. Cada placa controla un sub­
+conjunto del analizador. El método de transmisión de la información entre las placas se realiza a través de un bus 
+de comunicaciones, el bus utilizado es el CAN. 
+Hay una placa que sirve para realizar la interconexión del bus CAN. És la placa CIIM00047.
+Hay placas que realizan la misma función y que están repetidas, como por ejemplo las placas que controlan el 
+brazo. Para que la comunicación de la información a través del bus, llegue a la placa apropiada, ésta debe tener un 
+identificador único dentro del analizador. Para ello cada placa dispone de unos conmutadores (switch) para poder 
+seleccionar el identificador de la placa.
+A continuación se indica el código asignado a cada placa:
+Tipo de placa
+Descripción placa
+Código identificación
+Posición selector
+Placas brazos
+Brazo punta
+0000
+Brazo agitador 
+AG1
+0010
+Placas detección
+Detección punta
+DR1
+1110
+Placas rotores
+Rotor reactivo
+RR1
+0011
+Placa jeringas
+Jeringas
+JE1
+0100
+Cada una de las placas anteriores incorpora un microprocesador. Para poder identificar rápidamente el estado del 
+microprocesador, incorporan un led indicador de estado. La información de parpadeo del led es la siguiente:
+Estado
+Descripción
+Parpadeo muy rápido 
+(ráfaga)
+Arranque de la placa. Al cabo de unos segundos pasa al parpadeo lento.
+Parpadeo rápido
+Placa en modo monitor.
+Parpadeo lento
+Placa dispone de firmware y este está funcionando correctamente.
+Parpadeo muy rápido. Sin 
+ninguna secuencia periódica
+Proceso de actualización del firmware.
+No parpadeo
+Placa sin alimentación o averiada.
+NOTE
+El chasis del analizador y con ello todas las partes metálicas están únicamente conectadas a la toma 
+de tierra del enchufe. Es la toma para la seguridad eléctrica.

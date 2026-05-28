@@ -1,0 +1,37 @@
+Lista de recambios
+Código
+Representación 
+Descripción
+AC16605
+Muelle punta
+FI15128
+Filtro 340
+FI15129
+Filtro 405
+FI15130
+Filtro 505
+FI15131
+Filtro 535
+FI15132
+Filtro 560
+FI15133
+Filtro 600
+FI15134
+Filtro 635
+FI15135
+Filtro 670
+AC17246
+Filtro 420, modelo Y400
+FI18444
+Filtro 430, modelo Y400
+AC17247
+Filtro 520, modelo Y400
+AC17248
+Filtro 620, modelo Y400
+AC17249
+Filtro 750, modelo Y400
+AC16614
+Banco óptico sin filtros
+AC16615
+Correa dentada rotor reacción
+277

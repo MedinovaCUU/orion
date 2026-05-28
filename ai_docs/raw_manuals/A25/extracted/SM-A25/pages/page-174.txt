@@ -1,0 +1,66 @@
+Service manual
+174
+OPTICAL SYSTEM
+Halogen lamp 
+12 V, 20 W
+Wavelength selection with compensated interferential filters
+Detection system with silicon photodiode and 20-bit AD integrator-converter
+Measurement range
+from -0.05 A to 3.0 A
+Reading speed
+5 readings/s
+Maximum number of filters
+9
+Base configuration of the filter wheel A25
+340, 405, 505, 535, 560, 600, 635, 670 nm
+Base configuration of the filter wheel Y25
+340, 405, 420, 520, 560, 600, 620, 635, 670 nm
+Wavelength precision
+± 2 nm
+Bandwidth
+10 ± 2 nm
+Digital resolution
+< 0.0001 A
+Base line stability
+max. 0.004 A in 30 min, at 505 nm
+MINIMUM COMPUTER REQUIREMENTS
+Operating system
+Windows® 10 64 bits (x64)
+Windows® 11 64 bits (x64)
+CPU
+Equivalente a Intel Core i3 @3.10 GHz o superior
+RAM memory
+512 Mbytes
+Hard disk
+20 Gbytes
+CD-ROM
+Yes
+VGA Monitor
+Minimum resolution 640x480
+Mouse
+Yes
+USB Conector
+USB
+The insulation level of the communications channel of the A25 analyzer is reinforced (the insulation of 
+the communications channel of the computer must also be reinforced)(1)
+(1) Reinforced insulation is that which ensures protection equal to or higher than double that provided by 
+the main insulation. 
+The main insulation is that whose failure could lead to a risk of electric shock (EN 61010-1).
+POWER REQUIREMENTS
+Input voltage
+125 Vac - 230 Vac ±10%, 50/60 Hz
+Power
+300 W
+Electrical installation category (overvoltage 
+category)
+II
+The power point must be officially approved, earthed and the cable must have a minimum cross-
+section of 1.5 mm2.
+ATMOSPHERIC CONDITIONS
+Interior use
+Height 
+< 2500 m 
+Temperature
+10°C - 35°C 
+Relative humidity 
+< 75%

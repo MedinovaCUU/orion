@@ -1,0 +1,50 @@
+—  22  —
+Service manual
+• 
+Press the ADJUSTMENT function key. The message line will display “insert temperature sensor and press ENTER”.
+• 
+Insert the digital thermometer temperature sensor into the cuvette holder and press ENTER. The message line will 
+read “Thermostatting” followed by a time that is gradually reduced. 
+• 
+On reaching zero, the following message appears: “Enter cuvette temperature at 25º C”. Enter the temperature value 
+(corrected) that is marked by the thermometer and press ENTER. The following message will appear: “Thermostatting” 
+followed by a time that is gradually reduced.
+• 
+On reaching zero, the following message will appear: “Enter cuvette temperature at 37º C”. Enter the temperature 
+value (corrected) marked by the thermometer and press ENTER.
+3.2.1.4. - Explanation of the list concepts
+• 
+STEP: Each of the adjustment phases.
+• 
+TEMP. READ: Temperature read by the semi-automatic analyzer before applying the correction factors.
+• 
+REAL TEMP.: Temperature indicated by the thermometer that is input into the semi-automatic analyzer by the 
+operator, through the keyboard.
+• 
+ABSOLUTE ERROR: Difference in degrees between the read and the real temperature.
+E = Tread - Treal
+• 
+RELATIVE ERROR: Percentage of deviation in the real temperature compared to the read temperature. 
+100
+⋅
+−
+=
+real
+real
+read
+relative
+T
+T
+T
+E
+ 
+• 
+OFFSET: Additive correction factor.
+• 
+TANGENT: Multiplicative correction factor.
+3.2.1.5. - Check
+This allows you to check the precision of the thermostatation at a given temperature. To select this option, press the 
+function key TEST In the UTILITIES / SERVICE menu (Password...) / ADJUSTMENTS / THERMOSTATATION. The cursor 
+will go to the line:
+ 
+TEMPERATURE TO BE TESTED: _

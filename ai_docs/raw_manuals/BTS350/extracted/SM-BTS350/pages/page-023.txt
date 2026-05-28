@@ -1,0 +1,35 @@
+—  23  —
+Insert the calibrated digital thermometer sensor in the cuvette holder, enter the temperature to be tested and press ENTER. 
+The message line will read “Thermostatting” followed by a time that is gradually reduced. After waiting for 5 minutes 
+(when the time counter reaches 0), the programme will ask for another temperature.
+Now check that the temperature marked by the digital thermometer is within the acceptance criteria.
+3.2.2. - Photometric parameters
+This procedure serves to adjust the analogical-digital converter integration time values and those of the currents for each 
+LED.
+3.2.2.1. - Development
+Select the option using the path UTILITIES / SERVICE (Password) / ADJUSTMENTS / PHOTOM. PARAM.
+The following information will appear on screen:
+• 
+LEDS - indicate the wavelength of the emitting LED. Its position in the row indicates the order in which it is 
+physically placed in the semi-automatic analyzer. As you can see the LED are not positioned in increasing order of 
+wavelength. It is important to respect that order.
+• 
+Int - indicates Integration time (in number of counts). This is the time during which the analogical-digital converter 
+is being integrated. 
+• 
+DAC - indicates digital-analogical converter (in number of counts). It serves to establish the current value at the time 
+of activating each LED.
+• 
+DMX - indicates Maximum value of the DAC (in number of counts). It serves to establish the maximum current to be 
+used by the automatic system for adjusting the integration time and current of the LED. The ratio is the following: 
+a value of 255 indicates a current of 50mA. This value is optimised in the factory to guarantee good emission and 
+durability of the LED. It is advisable not to change this value.
+• 
+PH1 - indicates photodiode 1. Indicates the readings of the analogical-digital conversion of the main photodiode. It 
+is indicated as the number of counts.
+• 
+PH2 - indicates photodiode 2. Indicates the readings of the analogical-digital conversion of the reference photodiode. 
+It is indicated as the number of counts.
+Function keys:
+Press ENTER to read the selected LED. It shows the reading as the number of counts of the 2 photodiodes and the sample 
+onscreen.

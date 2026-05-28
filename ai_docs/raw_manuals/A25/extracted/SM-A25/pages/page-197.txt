@@ -1,0 +1,148 @@
+197
+Compatibilities table A25
+A25 User 4.7.1
+4.8.3
+4.9.1
+4.9.3
+5.2
+5.2.4
+5.4
+5.5
+5.5.1
+5.5.2
+5.5.4
+Firmware
+3.77
+x
+x
+x
+x
+x
+x
+x
+x
+x
+x
+6.21
+x
+x
+x
+x
+x
+x
+x
+x
+x
+x
+6.24
+x
+x
+x
+x
+x
+x
+x
+x
+x
+x
+6.38
+x
+It is advisable to always install the last existing version of firmware.
+Change in the versions of user program Y25
+Date 
+version 
+Changes
+ 19/3/12 
+4.7 
+Possibility of positioning tubes and pediatric wells in the same rack.
+ 
+ 
+ 
+New functionality of automatic calibration curve by dilluciones from a 
+single calibrator. 
+ 
+7/9/12 
+4.7.1 
+Solve bugs
+ 29/1/15 
+4.8.2 
+New screen to order the test
+ 
+ 
+ 
+Improve the search in the history screen
+ 
+ 
+ 
+In the screen of new sample the user is able to introduce the number 
+of replicates
+ 12/3/15 
+4.8.3 
+New test added
+ 15/7/15 
+4.9.1 
+Improve the prozone detection
+ 22/12/15 
+4.9.3 
+Sovled bugs
+ 31/7/17 
+5.2 
+Continuous loading without pressing pause button
+ 
+ 
+ 
+New observation about substrate depletion with end point method
+ 
+ 
+ 
+Improve the selection of predilution of diluent
+ 
+ 
+ 
+New calcultated test with external parameters
+ 
+7/6/18 
+5.2.4 
+New test
+ 18/7/19 
+5.4 
+New option to autopause at the end of the work list.
+ 
+ 
+ 
+Be able to create calculated test of calculated test
+ 
+ 
+ 
+Add a warning message at the end of the rotor notifying you to remove 
+it from the equipment
+ 
+ 
+ 
+Be able to select the order in which patients / samples are displayed 
+on the results screen
+ 
+ 
+ 
+Be able to create profiles of calculated test
+ 
+ 
+ 
+Be able to save the results out in history
+ 
+ 
+ 
+Be able to calculate the bichromatic differential and bichromatic fixed 
+time
+ 12/10/19 
+5.5 
+Changing the location of the software files folders
+ 
+ 
+ 
+Improved configuration of import / export folders
+ 
+ 
+ 
+Improvement in the treatment of negative values in the calculation of 
+the calculated techniques

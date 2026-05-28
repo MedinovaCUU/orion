@@ -1,0 +1,48 @@
+143
+• 
+Solución de alcohol y éter al 50%
+• 
+Palitos de algodón
+• 
+Perilla de aire
+Todos los elementos ópticos deben manipularse en una zona de máxima limpieza y con extremo cuidado, 
+ya que son componentes frágiles y delicados. Para desmon tar los y volverlos a montar deben seguirse 
+cuidadosamente las ins trucciones correspon dientes indicadas en el capítulo Mantenimiento. Debe evitarse 
+tocar con los dedos las zonas útiles de estos elementos. Los filtros y el fotodiodo deben sujetarse por sus 
+superficies laterales. No se debe tocar directamente el bulbo de la lámpara. Para ma nipular la lámpara, 
+debe usarse el propio envoltorio, cortándolo por el extremo de los termi nales y apretándolo hasta que 
+salgan. Para la limpieza de los componentes ópticos deben tenerse en cuenta las siguientes indica cio nes:
+1. Quitar el polvo presente en la superficie del componente con la perilla de aire. De esta forma se evita 
+que se produzcan rayadas por partículas depositadas en la superficie al frotarla con el papel.
+2. Frotar cuidadosamente la superficie del componente con el papel de limpieza.
+3. Si la suciedad es persistente o es de origen graso, limpiar el componente con el papel hume decido 
+en la solución de alcohol y éter. Seguidamente, secarlo con un papel seco. Para limpiar los filtros o la 
+ventana del fotodiodo es muy útil utilizar los palitos de algodón para acompañar al papel en las zonas 
+difíciles y delicadas.
+4. Finalmente, se recomienda volver a soplar el componente con la perilla de aire, eliminando así cualquier 
+resto del papel o del algodón.
+7.2.3. Limpieza del sistema de dosificación
+Es muy conveniente recomendar al usuario que configure el analizador de forma que lave automática-
+mente el sistema de dosificación al finalizar cada jornada de trabajo con solución de lavado, siguiendo las 
+instruccines del programa de usuario, para asegurar que éste queda comple tamente libre de burbujas de 
+aire y perfectamente limpio. Con el lavado inicial, el sistema queda pre parado para trabajar en óptimas 
+condiciones durante toda la jornada, ofreciendo sus máximas prestaciones. Con el lavado final, el anali-
+zador limpia la punta al concluir el trabajo diario, mante niéndola de esta forma en per fectas condiciones 
+para las próximas jornadas de trabajo. Pueden realizarse lavados adicionales del sistema de dosificación 
+mediante la utilidad Lavado del sistema de dosificación del programa de usuario. El analizador debe estar 
+en el modo de espera.
+Es conveniente que el propio usuario limpie y compruebe el estado de los filtros del contenedor de agua 
+destilada. En las operaciones de servicio debe comprobarse también el estado de estos filtros. 
+Si la punta queda obstruida por residuos sólidos, se debe desmontar y proce der a su limpieza utilizando 
+la varilla de limpieza metálica suministrada con el analizador. Para ello debe usarse la utilidad Desmon taje 
+de la punta dosificadora. Es conveniente también limpiar la superficie exterior de la punta con un trozo de 
+algodón o un paño suave impregnado con alcohol. La punta debe ser reemplazada en caso de dete rioro 
+perceptible.
+7.2.4. Limpieza general interior del aparato
+Es importante que el interior del instrumento permanezca limpio de polvo para preservar el correcto fun-
+cionamiento de los diversos elementos. Para ello, extraer las car casas del analizador y limpiar de polvo 
+cuidadosamente el interior del apa rato y de la electrónica.
+7.2.5. Limpieza del refrigerador de reactivos
+Para la limpieza del refrigerador, desmontar el cuerpo nevera tal como se explica en el apartado 5.1.6.1. 
+Limpiar la placa fria con un paño húmedo con agua y jabón neutro. Limpiar de la misma manera el cuerpo 
+de la nevera.

@@ -1,0 +1,51 @@
+81
+81
+ 
+Desactivación del código de 
+Barras para reactivos
+ 
+Seleccione esta opción para desactivar el lector de código de barras del rotor de 
+reactivos.
+ 
+Desactivación de Código de 
+Barras para Muestras
+ 
+Seleccione esta opción para desactivar el lector de código de barras del rotor de 
+muestras.
+ 
+Tipo de código 
+Seleccione el tipo de código de barras para configurar el lector del rotor de 
+muestras. Puede seleccionar más de un tipo de código de barras. El código de 
+barras impreso en las etiquetas de los tubos primarios tienen que coincidir con 
+el código seleccionado en la configuración.
+ 
+Activación de los campos del 
+código de barras
+ 
+Cuando este campo no esté activado el lector del código de barras identifica 
+todo el código de barras como el identificador de muestra, y el lector podrá leer 
+cualquier código con una longitud entre 1 y 30 caracteres. En una misma sesión 
+se pueden mezclar códigos con distinta longitud.
+Cuando este campo está activado se permite introducir más detalles para separar 
+varios campos del identificador de código de barras. Identificador externo y opcio­
+nalmente el tipo de muestra del tubo. El tamaño total del código de barras sigue 
+siendo flexible entre 1 y 30. Los siguientes campos se habilitan.
+ 
+ID Externo 
+Seleccione las posiciones de inicio y final del identificador de muestra dentro 
+del código de barras. El identificador de muestra puede coincidir con toda la 
+longitud del código de barras o el código de barras puede contener más infor­
+mación aparte del identificador de muestra.
+ 
+Tipo Muestra 
+Cuando el código de muestras incorpore información sobre el tipo de muestras, 
+habilite la opción del tipo de muestras y seleccione el inicio y final de la codifi­
+cación del tipo de muestras dentro del código de barras. También indique cómo 
+codifica el laboratorio cada tipo de muestra. El campo de tipo de muestras no se 
+puede solapar con el de identificación de muestra.
+Ilustración 50 
+Configuración del lector de código de barras
+10.2.6. Configuración del funcionamiento con LIS
+Pantallas que permiten la configuración de los parámetros de la aplicación LIS 
+con la que se desee comunicar. Estos parámetros únicamente se pueden modificar 
+cuando el analizador está en modo STAND-BY.

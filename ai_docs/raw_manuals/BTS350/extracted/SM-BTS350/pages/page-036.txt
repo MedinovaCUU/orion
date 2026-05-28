@@ -1,0 +1,40 @@
+—  36  —
+• 
+Place the upper housing semiautomatic analyzer
+• 
+Check that you have correctly installed the new version. On the Initial screen displays the software version.
+5.11.3. Firmware update via PC-photometer program
+Steps to install the new firmware:
+• 
+Connect the USB cable to the computer semi-automatic analyzer.
+• 
+Select the menu: Utilities / new installation program
+• 
+You access the program monitor (internal program to manage change firmware)
+• 
+Select the option communications / Load new program of PC-photometer programme
+• 
+Select a file to send.
+• 
+Press the button to start
+• 
+The upgrade starts in the semi-automatic analyzer. This process takes a few minutes.
+• 
+On the display will appear a message indicating that the process it has completed
+• 
+Press the exit button (F5) twice
+• 
+The semiautomatic analyzer is initialized with the new version.
+• 
+Check on the initial screen the version of firmware.
+5.11.4. Recovering a failed firmware update
+If an error has occurred during the firmware upgrade process or has not been completed successfully or a power cut has 
+occurred, follow these steps:
+• Turn off the semiautomatic analyzer.
+• Turn it back on by pressing the PUMP button.
+• This process will re-access the program part of the update process
+• Ensure that the upload file is correct and not corrupt.
+• Repeat the update process again.
+5.12. - Spares parts
+An explanation of how to change each spare in the semi-automatic analyzer can be found among the documents included 
+with each spare. A copy of all the documents and the service manual can be found in the cd-rom.

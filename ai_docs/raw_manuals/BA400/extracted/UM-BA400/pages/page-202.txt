@@ -1,0 +1,62 @@
+Manual usuario 
+ 
+ 
+ 
+Manual usuario 
+ 
+ 
+ 
+202
+202
+Biosystems
+Biosystems
+14.10. Requerimientos eléctricos
+Tensión de red
+115 V a 230 V ±10% Vac
+Frecuencia de red
+50 Hz o 60 Hz
+Potencia eléctrica
+500 VA
+14.11. Requerimientos fluídicos
+Entrada de agua
+Por depósito externo o por 
+toma de red directa
+Tipo de agua
+Purificada tipo II (NCCLS)
+Consumo de agua
+< 14 L/h
+Depósito de residuos de alta contaminación
+Interno de 5 L
+Depósito de solución de lavado
+Interno de 5 L 
+14.12. Requisitos mínimos del ordenador
+Sistema operativo
+Windows® 7 (x64), 
+Windows® 10 (x64)
+CPU
+Equivalente a Intel Core 
+i3 @3.10 GHz o superior
+Memoria RAM
+4 Gbytes
+Disco duro
+40 Gbytes o superior
+Lector de DVD
+Sí
+Monitor
+Resolución mínima 1200 x 800
+Conector canal serie
+USB
+El nivel de aislamiento del canal de comunicaciones es reforzado (el 
+aislamiento del canal de comunicaciones del ordenador ha de ser también 
+reforzado)(1)
+(1) Se entiende como aislamiento reforzado aquel que asegura una protección 
+igual o superior al doble del proporcionado por el aislamiento principal. 
+Aislamiento principal es aquel cuyo fallo podría causar un riesgo de choque 
+eléctrico (UNE EN 61010-1:2010).
+14.13. Cumplimiento directivas
+Directiva CE – IVD
+98/79/CE
+Directiva sobre restriccione a la utilización 
+de determinadas sustancias peligrosas en 
+aparatos eléctricos y electrónicos. 
+2011/65/EU

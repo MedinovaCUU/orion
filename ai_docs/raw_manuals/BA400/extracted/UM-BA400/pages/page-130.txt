@@ -1,0 +1,35 @@
+Manual usuario 
+ 
+ 
+ 
+Manual usuario 
+ 
+ 
+ 
+130
+130
+Biosystems
+Biosystems
+• 
+Parar: Esta acción para la sesión de trabajo, finaliza las preparaciones que tenga 
+en curso hasta dar el resultado de la concentración y no prepara ninguna más. 
+La acción a realizar a continuación es resetear la sesión de trabajo.
+• 
+Abortar: Esta acción aborta la sesión de trabajo. Finaliza inmediatamente la 
+ejecución de la lista perdiendo las preparaciones en curso que tenga el ana­
+lizador. La acción a realizar a continuación es resetear la sesión de trabajo.
+• 
+Cancelar: Cierra la ventana y continua con la ejecución de la lista actual.
+Ilustración 89 
+Pantalla mensaje abortar
+10.5.7. Guardar sesión
+Esta opción permite guardar con un nombre la sesión creada. Esta utilidad sirve 
+para poder guardar listas repetitivas, como por ejemplo lista de blancos, calibra­
+dores y controles.
+Al pulsar sobre esta opción se abre una ventana emergente, escriba un nombre 
+para identificar la sesión y pulse el botón aceptar.
+Esta acción no memoriza las posiciones de las muestras ni de los reactivos en los 
+rotores, únicamente memoriza la sesión.
+10.5.8. Cargar sesión
+Esta opción permite cargar una sesión previamente memorizada. Al pulsar sobre la 
+opción se abre una ventana emergente, seleccione el nombre y pulse el botón abrir.

@@ -1,0 +1,29 @@
+Ilustración 6.31 
+Pantalla de información histórica
+6.7.2. Informes SAT
+Desde esta pantalla permite realizar un informe para el servicio técnico. 
+Pulse el botón de “guardar ReportSAT” y automáticamente realizará una copia de la base datos de las acciones de 
+histórico.
+Encontrará el fichero generado en la siguiente carpeta:
+c:\Users\Public\Documents\BA200\
+También permite borrar ReportSAT antiguos. 
+6.8. Salir
+Para salir del programa, vaya al menú salir y escoja una de las dos opciones:
+• 
+Salir apagando el analizador: Opción que cierra el programa e indica al analizador que también se apague, 
+realizando el proceso de cierre.
+• 
+Salir sin apagar el analizador: Opción que solamente cierra el programa, dejando encendido y en espera 
+el analizador. 
+NO PASAR nunca del programa de servicio al programa de usuario sin apagar antes el analizador. Las inicializaciones 
+son diferentes cuando se realizan desde servicio que desde usuario.
+6.9. Ubicación de los diferentes archivos del sofware
+A continuaión se indica donde localizar los diferentes archivos que utiliza el software.
+Dirección de las carpetas
+Descripción
+c:\Program Files (x86)\BA200\
+c:\Program Files (x86)\Y200\
+Carpeta de instalación del sofware
+NOTE
+Manual de servicio
+108

@@ -1,0 +1,41 @@
+89
+89
+Ilustración 57 
+Pantalla creación de técnicas
+ 
+ 
+Pulse el icono para crear una técnica nueva. Para indicar que los campos se pue­
+den editar, el color de fondo cambiará a blanco. Algunos parámetros aparecerán 
+con valores por defecto.
+ 
+ 
+Para editar los parámetros de una técnica ya introducida, seleccione previamente 
+de la lista de las técnicas el nombre de la técnica a modificar y pulse el icono. 
+También se puede editar los parámetros de la técnica realizando doble clic direc­
+tamente sobre el nombre de la técnica en la lista de técnicas.
+ 
+ 
+Seleccione el nombre de la técnica y pulse el icono. El programa pedirá confir­
+mación antes de proceder a la eliminación. Sólo se permite eliminar las técnicas 
+que ha creado el usuario (el icono de la técnica es de color amarillo). Las técni­
+cas originales (el icono es de color azul) no se pueden eliminar.
+ 
+ 
+Pulse el icono cuando quiera imprimir un listado de los parámetros de las 
+técnicas.
+ 
+ 
+Pulse el icono para abrir una pantalla auxiliar, la cual permite anular técnicas y 
+ordenarlas. La ordenación i/o anulación de las técnicas se aplica en la pantalla de 
+selección de técnicas.
+ 
+)
+Véase capítulo 10.3.1.1
+ 
+ 
+Pulse este icono para realizar una copia de una técnica. Se obliga cambiar el 
+nombre de la nueva técnica.
+Puede eliminar o imprimir varias técnicas a la vez, realice una selección múltiple 
+del listado de técnicas.
+ Selección múltiple no consecutiva Seleccione una técnica, mantenga la tecla CONTROL del teclado presionada 
+mientras seleccione las siguientes técnicas.

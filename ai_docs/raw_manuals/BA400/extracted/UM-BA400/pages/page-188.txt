@@ -1,0 +1,43 @@
+Manual usuario 
+ 
+ 
+ 
+Manual usuario 
+ 
+ 
+ 
+188
+188
+Biosystems
+Biosystems
+13.2.9. Limpieza del módulo ISE
+ Lavado del canal del módulo ISE Al finalizar el día o después de realizar 50 muestras de paciente es necesario 
+realizar una limpieza del sistema fluídico del módulo ISE. 
+1. Con el programa de usuario en el apartado de utilidades ISE, realice 1 ciclo 
+de lavado.
+2. Ponga un tubo de muestras con al menos 300 μL de solución de lavado (5421) 
+en el rotor de muestras. No utilice ningún otro tipo de agentes limpiadores 
+tales como tensoactivos, emulsiones ni buffers, podrían dañar los electrodos.
+3. Indique en el programa en que posición del rotor ha situado el tubo. Ejecute 
+la instrucción. El analizador automáticamente dispensará 300 μL en la copa 
+del módulo para realizar la limpieza.
+4. Una vez finalizada la acción guarde la solución de limpieza en el frigorífico.
+ Limpieza de la copa de entrada 
+de muestras
+ 
+Una vez a la semana utilice un bastoncillo largo de algodón y agua purificada 
+(en la caja de accesorios encontrará una bolsa con los bastoncillos de algodón). 
+Acerque el bastoncillo a la entrada del módulo y frote con el bastoncillo el exte­
+rior e interior de la copa de entrada. Para poder ver la entrada de la copa, retire 
+la pieza de plástico situada al pie del brazo de reactivos R2.
+ 
+)
+Véase IIlustración 121
+También puede retirar la tapa de acceso a los electrodos del módulo ISE y podrá 
+visualizar la copa del módulo ISE a través de la ventana situada en la parte superior 
+de los electrodos.
+ 
+)
+Véase Ilustración 122
+Ilustración 121 
+Acceso a la copa ISE

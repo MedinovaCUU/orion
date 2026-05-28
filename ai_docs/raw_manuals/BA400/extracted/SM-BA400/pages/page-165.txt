@@ -1,0 +1,20 @@
+9. Coloque los 4 tornillos (7) para sujetar la cámara a la bomba.
+1
+2
+5
+3
+6
+Ilustración 8.25 
+Montaje retén 
+8.7.2. 
+AC16816 - Conjunto soporte pistón y pistones
+Herramientas: Llave allen 2.5 mm y 3 mm
+Desmontaje:
+1. Quite las 5 cámaras (9).
+ 
+) Véase AC16587 - Cámara superior
+2. Quite la abrazadera, quitando los tornillos (10) y (11).
+3. Afloje los tornillos (12) para liberar el motor de la cremallera
+4. Quite el tornillo (13) para quitar la cremallera por la parte superior.
+5. Quite el soporte pistón con los pistones.
+165

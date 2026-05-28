@@ -1,0 +1,40 @@
+2. Verifique que el anclaje del eje de los rotores de muestras y reactivos funciona correctamente. Cuando está 
+colocado no sale sin pulsar el botón superior y al insertarlo entra suavemente.
+Verifique los ventiladores:
+1. Verifique que no hay ninguna alarma de funcionamiento de los ventiladores de la nevera ni del rotor de reacción.
+7.3.4. Revisión de la tapa y de la estructura
+1. Verifique que los ventiladores generales funcionan correctamente, ponga la mano por el exterior para verificar que 
+expulsan aire. Los ventiladores generales no incorporan un sistema automático de detección de funcionamiento.
+2. Verifique que las ruedas no tienen ningún defecto. 
+3. Verifique que el analizador está bien sujeto en su posición, verifique que las patas hacen tope con el suelo. 
+Apriételas con una llave inglesa.
+4. Verifique la planitud del analizador con un nivel. Aprieta más o menos las patas hasta conseguir la planitud.
+Revisión de la tapa y puertas:
+1. Verifique que las puertas se abren y cierran correctamente y con suavidad. Verifique que están bien alineadas, 
+una con la otra.
+2. Verifique que la tapa principal se sostiene correctamente cuando está totalmente abierta, y al cerrarla no cae 
+bruscamente.
+3. Dosifique 1 gota de SAE-40 a las bisagras traseras de la tapa principal. Abre y cierre la tapa varias veces para 
+ayudar a distribuir el aceite por la bisagra.
+4. Verifique el estado de los “bumpers” (topes de goma para proteger de la colisión la tapa principal), en caso de 
+pérdida o de claro deterioro, sustitúyalos.
+7.3.5. Revisión del módulo ISE
+Cada 6 meses sustituya los tubos de las bombas peristálticas.
+Limpie la entrada de muestra por el orificio del módulo ISE.
+Verifique que los tubos no están obstruidos.
+Realice varios ciclos de cebado con ambos reactivos, A y B, verifique que los líquidos circulan correctamente por 
+los tubos. 
+Realice una calibración de la bomba, del detector de burbujas y de los electrodos.
+7.3.6. Proceso de verificación del analizador
+Este es un proceso estándar para verificar el funcionamiento correcto del instrumento después de realizar una in­
+tervención.
+Este proceso se puede aplicar a las siguientes operaciones:
+• 
+Recepción de instrumentos (en la oficina, antes de la instalación)
+• 
+Mantenimiento
+• 
+Después de una reparación
+El objetivo es estandarizar el proceso de verificación y los criterios de aceptación.
+Manual de servicio
+142

@@ -1,0 +1,25 @@
+Manual de servicio
+156
+6.6.3. 
+PC11556 - Power supply board
+Removing the power supply board
+1. Remove the 3 screws (1) to lower the rear cover of the electronics. See Figure 6.60
+2. Disconnect all connectors from the power supply board.
+3. Remove the 4 screws (3) that hold the board to the base. See Figure 6.63
+4. Remove the board.
+Mounting the power supply board
+1. Follow the steps in reverse order
+3
+Figure 6.63 
+6.6.4. 
+PC11556 - Power supply board - Update to the new version
+Spare part PC11556 come with all necessary cables to update instrument power supply. Check the electrical 
+schematics of the instrument in chapter 4.10, especially Figure 4.3, for more details about the connections.
+Removing the power supply board
+1. Remove the 3 screws (1) to lower the rear cover of the electronics. See Figure 6.60
+2. Disconnect all connectors from the power supply board.
+3. Remove the 4 screws (3) that hold the board to the base. See Figure 6.63
+4. Remove the board.
+5. Remove the 4 screws (5) and remove power-in panel. See Figure 6.65
+Mounting the new power supply board
+1. Connect cables at power-in panel according to Figure 6.66 and Figure 6.67

@@ -1,0 +1,33 @@
+30
+Manual de servicio
+1. Iniciar al programa de emulación de terminal, y conectar al puerto de servicio del instrumento.
+2. Iniciar el programa de servicio y inicializar el instrumento.
+3. Ir al programa Sensor Studio, e iniciar la conexión con el lector de códigos bidimensionales (ver 
+3.2.5).
+4. Pulsar la tecla D y aparecerá el siguiente menú:
+X: Increment X value
+x: Decrement X value
+Y: Increment Y value
+y: Decrement Y value
+m: Move to read position
+1: Save Values
+2: Exit without changes
+3: Load default values
+5. El valor actual del ajuste se enseñará en la parte inferior del menú. Pulsar m para mover el brazo 
+manipulador a la posición de lectura del código del primer portaobjetos del primer rack, utilizando 
+el valor actual del ajuste.
+6. En programa Sensor Studio, acceder en la opción de DIAGNOSIS, y luego la opción IMAGE 
+VIEWER. Pulsar el botón de captura de nueva imagen. El dispositivo se activará y obtendrá una 
+imagen de código del portaobjetos.
+1
+3
+2
+7. El código bidimensional del portaobjetos debe estar centrado en el recuadro que aparece en la 
+imagen. Si no es el caso, ajustar el posicionamiento, mover el brazo manipulador a la posición de 
+lectura y repita la captura de imagen hasta conseguir que el código esté centrado en el recuadro.
+8. Pulsar 1 para salvar los datos.
+Los valores del ajuste que aparecen son relativos al punto de origen portaobjetos. Si pulsamos X 
+(mayúscula) el valor de X aumentará y el brazo quedará más hacia la derecha después del ajuste. Si 
+pulsamos x (minúscula) el valor de x se decrementará y quedará más a la izquierda después del ajuste. 
+Lo mismo para el valor de Y. Si aumentamos el valor de Y el brazo quedará más hacia delante y si 
+disminuimos el valor de Y quedará más hacia tras.

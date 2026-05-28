@@ -1,0 +1,15 @@
+17
+punta se mantiene constan temente limpio mediante una estación de lavado, integrada en la base. Una bomba de 
+membrana transporta los residuos a su contenedor.
+El analizador A15 dispone de una bandeja con 4 posiciones libres para racks de reac ti vos o de muestras. Cada rack 
+de reactivos puede alojar hasta 10 reactivos, en frascos de 20 mL o 50 mL. Cada rack de muestras puede contener 
+hasta 24 tubos de muestras. Las muestras pueden ser pacientes, calibradores o controles. Se puede configurar el 
+analizador para trabajar con tubos de muestra de 13 mm o 15 mm de diámetro y hasta 100 mm de longitud o con 
+pocillos pediátricos. Puede montarse cualquier configuración de racks posible desde 1 rack de reactivos (10 reactivos) 
+y 3 racks de muestras (72 muestras) hasta 3 racks de reactivos (30 reactivos) y 1 rack de muestras (24 muestras). 
+En la parte izquierda del analizador se encuentran los contenedores de agua destilada y de residuos. El analizador 
+controla constantemente de nivel de estos contenedores y emite los avisos oportunos si se está terminando el agua 
+destilada o bien si el contenedor de residuos está lleno.
+El modelo A15C/Y15C dispone de un refrigerador. Éste refrigerador de reactivos dispone de dos racks fijos. En el 
+primer rack puede contener hasta 10 reactivos, en frascos de 20 mL. El segundo rack puede contener 10 reactivos 
+de 50 mL. Cada una de éstas posiciones puede ponerse frascos de 20 mL, pero no ambos.

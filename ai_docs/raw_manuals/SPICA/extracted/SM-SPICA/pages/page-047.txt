@@ -1,0 +1,32 @@
+SERVICIO
+Manual de Usuario BioSystems SPICA
+47
+Manual de Usuario BioSystems SPICA | Versión 2.8 - Agosto 2024
+1. ELEMENTOS DE HARDWARE
+1.3 Banco Óptico
+El banco óptico es una unidad sellada montada en el tablero electrónico. Los diferentes LED para cada 
+longitud de onda y los fotodiodos principales y de referencia están soldados a la placa. Los filtros para cada 
+longitud de onda se insertan en los portafiltros y se atornillan al soporte del banco óptico. Para asegurar 
+que el haz de luz de cada longitud de onda llegue al rotor, hay divisores de haz y lentes. Una junta de goma 
+y una cubierta sellan todo el conjunto.
+1.4 Brazo Dosificador
+El brazo dosificador se usa para succionar 
+y dispensar fluidos. 
+El brazo se utiliza para manejar reactivos 
+y muestras. El brazo dosificador está 
+compuesto por una carcasa que cubre 
+las conexiones de las puntas y la placa 
+electrónica. El conjunto de punta y placa, 
+unido a un soporte, es la parte móvil del 
+brazo (Fig.1).
+Una guía lineal eleva el conjunto, y los 
+cables y tubos se conectan al paso 
+de punta. La operación de elevación 
+se ejecuta con un motor que guía el 
+movimiento a través de una polea a una 
+correa unida a la guía lineal. El movimiento 
+angular se ejecuta con el motor mediante 
+una correa, que hace girar la guía lineal 
+(Fig.2)
+(Fig.1)
+(Fig.2)

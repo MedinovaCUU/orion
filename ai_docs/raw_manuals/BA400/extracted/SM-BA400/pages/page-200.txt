@@ -1,0 +1,29 @@
+8.11.2. AC16628 - Ventana y calefactor del lector código de barras
+1
+2
+Ilustración 8.56 
+Desmontaje ventana lector código de barras
+Herramientas: Llave fija de 2
+Desmontaje:
+1. Desatornille las 4 tuercas (1).
+2. Desconecte el cable del calefactor.
+Montaje:
+1. Coloque en su posición la nueva ventana con el calefactor.
+2. Ponga los 4 tuercas con sus arandelas que sujetan la ventana.
+3. Conecte el cable del calefactor.
+8.11.3. AC16625 - Lector del código de barras
+Herramientas: 1 llaves allen de 2.5
+Desmontaje:
+1. Quite el tornillo (2). Ver Ilustración 8.56
+2. Corte las bridas que sujetan el cable y desconecte el lector de la placa electrónica.
+Hay dos modelos homologados de lectores de código de barras. También se ha modificado las piezas de sujeción 
+para montar ambos modelos. 
+ 
+) Véase el capítulo AII para saber a partir de que número de serie se ha implementado el cambio de las piezas de sujeción.
+Montaje:
+1. Ponga el tornillo que sujeta el lector a la pieza de sujeción.
+2. Inserte el cable y ponga las bridas para guiar al cable por el soporte.
+ 
+) Véase el capítulo 3.3 para saber ver cómo se instalan y ajustan los 2 modelos de lectores de código de barra
+Manual de servicio
+200

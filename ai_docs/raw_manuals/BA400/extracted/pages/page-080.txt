@@ -1,0 +1,37 @@
+Stability
+This verification takes measurements in all the wavelengths for 30 minutes. It is used to verify the stability of the 
+photometric readings 
+After taking the measurements it shows the following parameters for each wavelength:
+• 
+Mean
+• 
+Standard deviation of all measurements
+• 
+Coefficient of variation
+• 
+Maximim absorbance
+• 
+Minimum absorbance
+Absorbance reading
+This allows you to measure the aborbance of a selected well.
+6.5.3. Scales, bottles and tanks
+6.5.3.1. Scale adjustment for determining level.
+The levels of the washing solution and high contamination waste bottles are determined by weighing. To adjust the 
+scales, proceed as follows:
+Washing solution bottle adjustment
+1. Put the full washing solution bottle in place.
+2. Press the FULL adjustment button.
+3. Put the empty washing solution bottle in place.
+4. Press the EMPTY adjustment button.
+5. Save the results
+High contamination waste bottle adjustment
+1. Put the full waste bottle in position.
+2. Press the FULL adjustment button.
+3. Put the empty waste bottle in position.
+4. Press the EMPTY adjustment button.
+5. Save the results
+Final verification of the washing solution and high contamination waste bottle levels
+To verify whether the bottle level adjustment is correct, place a known level of fluid in the washing solution or waste 
+bottle and check that the value shown on the screen (see Figure 6.16) inside the bottles matches the real bottle level.
+Service Manual 
+80

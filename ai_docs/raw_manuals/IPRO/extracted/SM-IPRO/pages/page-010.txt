@@ -1,0 +1,19 @@
+10
+Manual de servicio
+2.  SISTEMA ELECTRóNICO Y FLUIDOS
+2.1  DESCRIPCIÓN DE LA ELECTRÓNICA
+La electrónica del procesador se compone de diferentes circuitos impresos ubicados en diferentes 
+puntos del procesador y están destinadas a funciones específicas. 
+Hay 5 circuitos impresos diferentes, que corresponden a:
+• 
+Placa CPU (CIIM00006)
+• 
+Placa de alimentación (SP150 & CIIM00041)
+• 
+Placa de acondicionamiento de la punta (CIIM00040)
+• 
+Placa LED frontal (CIIM00011)
+• 
+Placa de comunicaciones (CIIM00096)
+2.2  DIAGRAMAS DE FLUIDOS
+Ver diagrama de fluidos en el capítulo anterior.

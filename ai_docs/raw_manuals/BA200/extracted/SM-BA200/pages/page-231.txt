@@ -1,0 +1,29 @@
+Lista de accesorios
+Código
+Representación
+Descripción 
+AC17273
+Tapón de la botella de solución de lavado
+AC16749
+Tapón de la botella de residuos de alta contaminación
+AC17393
+Rotor de reactivos
+AC16534
+Tornillo sujeción rotor reacción
+CA10 455
+Cable de red europeo
+CA10 456
+Cable de red americano
+FI14 226
+Cable USB para conexión al ordenador
+AC16747
+Fusible 10 A - 5SF10L250V (2)
+AC17097
+ 
+Conjunto filtro de entrada para el agua purificada de 
+150 µm
+AC16791
+Conjunto filtro de entrada de agua (5 µm)
+AC16792
+Recambio del cartucho del filtro de agua (5 µm)
+231

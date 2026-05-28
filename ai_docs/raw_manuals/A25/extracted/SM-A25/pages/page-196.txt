@@ -1,0 +1,134 @@
+Service manual
+196
+ 1/12/03 
+1.40 
+Improve the communications of auxiliar channel. Improve the stress 
+mode. Correction of integration time calculus.
+ 13/02/04 
+1.60 
+Improve the information send by the auxiliar channel. Improve the 
+switch off lamp. Correction of the temperature rotor and probe control.
+ 9/07/04 
+2.00 
+Improve and robust the communications. New implementation of 
+the turbidimetric system. New functional of the alarm acustic signal. 
+Correction, unification of the criterions of service and user programs. 
+Improve the stress mode. Add the sensitivity map of the racks.
+ 23/07/04 
+2.02 
+Corrections of the level deteccion map.
+ 28/02/05 
+2.40 
+Improve the demo test. Improve the bireactive test with contaminations. 
+Enlarge the integration time limits. Improve the encoder control.
+ 4/03/05 
+2.42 
+ 14/03/05 
+2.44 
+Corretion of the synthesis of FPGA
+ 17/05/05 
+2.46 
+Add 2 new type of racks of 13 and 15mm. Correction of stress test. 
+ 31/05/05 
+2.48 
+Correction of encoder control
+ 14/09/05 
+2.50 
+Impove, from user program load the analyser adjustments.
+ 03/02/06 
+2.54 
+Correction of the encoder error during warming-up and shut-down
+ 20/03/06 
+2.80 
+Improve the execution of base line 
+ 
+ 
+ 
+new adjustment, the maximum sweep of the z axis
+ 
+ 
+ 
+New cycles meter 
+ 
+ 
+ 
+Correct the bireactive, bichromatic with contamination test
+ 26/05/06 
+2.94 
+Increase the acceptance range of base line check
+ 
+ 
+ 
+Increase the Z motor current to 1.6A 
+ 30/11/06 
+3.00 
+In order to avoid the splashes in the dispensation of the predilution, 
+the dispensation speed have been reduced.
+ 
+ 
+ 
+The sensitivity adjustment have been split in 3 diferents adjustments, 
+one for each type of rack.
+ 04/04/07 
+3.15 
+In order to avoid a rotor overheating, this version has a protection in 
+the rotor thermo. This only occur when an error appear during the 
+analyser initialitation. 
+ 20/07/07 
+3.22 
+Included a autodiagnostic tool.
+ 
+ 
+ 
+Correction during global stress of the filter wheel lost steps
+ 
+ 
+ 
+Correction of the reading system. During a bicromatic test happens a 
+error of encoder, then there are some erroneous readings. 
+ 17/07/09 
+3.60 
+Correction about enter the serial number of the analyzer
+ 
+ 
+ 
+Added a protection of the Shut-down process.
+ 
+9/11/09 
+3.64 
+Increase of Z motor current to 1.6A. Improve the movement of Z 
+motor.
+ 17/05/10 
+3.68 
+Improve the dispensing maneuver.
+ 1/06/10 
+3.72 
+Improve in the predilution maneuver.
+ 
+ 
+ 
+Improve in the bireagent maneuver with reading time of 900s
+ 28/06/10 
+3.73 
+Fixed a bug of level detection with metallic racks when the CPU is 
+mounted in A25 with fridge.
+ 31/08/10 
+3.74 
+Fixed a bug of level detection with 13/15mm racks in the position 4, 
+5 and 6 of the tray rack, when the CPU is mounted in A25 with frid­
+ge. 
+ 18/10/10 
+3.75 
+Fixed a bug in the detection of board CIIM00010-06
+ 10/3/10 
+3.77 
+Improve the dispensing manoubre.
+ 25/4/19 
+6.21 
+Improve the management of the motor current
+ 16/10/19 
+6.24 
+Increase of the acceptance margins of the baseline for 340nm
+ 13/4/21 
+6.38 
+Add the active mixing management

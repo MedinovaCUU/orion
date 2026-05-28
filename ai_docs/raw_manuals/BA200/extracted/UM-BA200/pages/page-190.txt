@@ -1,0 +1,48 @@
+Manual usuario 
+ 
+ 
+ 
+Manual usuario 
+ 
+ 
+ 
+190
+190
+Biosystems
+Biosystems
+ 
+)
+Véase Ilustración 116
+3. Desenrosque con la ayúda de una llave inglesa el soporte del filtro de entrada 
+de agua (1).
+4. Límpie el filtro con agua y jabón neutro (2).
+5. Vuelva a colocar el filtro y el soporte en su posición.
+2
+3
+1
+Ilustración 116 
+Desmontaje filtros de agua
+13.2.9. Limpieza del módulo ISE
+Lavado del canal del módulo ISE Al finalizar el día o después de realizar 50 mues­
+tras de paciente es necesario realizar una limpieza del sistema fluídico del módulo 
+ISE. 
+1. Con el programa de usuario en el apartado de utilidades ISE, realice 1 ciclo 
+de lavado.
+2. Ponga un tubo de muestras con al menos 300 μL de solución de lavado (5421) 
+en el rotor de muestras. No utilice ningún otro tipo de agentes limpiadores 
+tales como tensoactivos, emulsiones ni buffers, podrían dañar los electrodos.
+3. Indique en el programa en que posición del rotor ha situado el tubo. Ejecute 
+la instrucción. El analizador automáticamente dispensará 300 μL en la copa 
+del módulo para realizar la limpieza.
+4. Una vez finalizada la acción guarde la solución de limpieza en el frigorífico.
+La limpieza automática del módulo ISE también se solicita por parte del software 
+al haber procesado 50 muestras.
+ 
+Limpieza de la entrada de 
+muestras
+ 
+Una vez a la semana utilice un hisopo de algodón y solución de lavado de ISE 
+(5421). 
+ 
+)
+Véase Ilustración 117 y Ilustración 118

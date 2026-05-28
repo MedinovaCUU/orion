@@ -1,0 +1,33 @@
+3. Verifique la tensión de las dos correas de cada brazo. La tensión de la correa no tiene que estar ni muy floja ni 
+muy tensa. 
+4. Verifique también que la correa no presenta ningún desgaste ni restos de material adheridos en los dientes. 
+Verifique que el sistema antichoque funciona correctamente en el brazo de pipeteo:
+1. Quite la carcasa superior.
+2. Inicialice el analizador con el programa de servicio
+3. Vaya a la opción de verificación del sistema antichoque.
+4. Con la mano suba la punta y verifique que retroceda correctamente con suavidad.
+5. Verifique que el led indicador en la placa se encienda cada vez que la punta está en la posición superior.
+6. Verifique en el programa de servicio la indicación de que la punta está en la posición superior.
+Verifique que el agitador funciona correctamente:
+1. Utilice el programa de servicio para poner en funcionamiento el giro de la pala del agitador. Verifique que giran 
+correctamente sin ninguna excentricidad.
+7.3.3. Revisión del rotor de Muestras y reactivos
+Verifique la tapa del rotor:
+1. Inicialice el analizador con el programa de servicio.
+2. Verifique que el detector de la tapa funciona correctamente.
+3. Verifique que las tapa encaja correctamente en su alojamiento.
+Verifique que el rotor encaja correctamente:
+1. Quite la tapa del conjunto.
+2. Verifique que el anclaje del eje del rotor de muestras y reactivos funciona correctamente. Cuando está colocado 
+no sale sin pulsar el botón superior y al insertarlo entra suavemente.
+Verifique los ventiladores:
+1. Verifique que no hay ninguna alarma de funcionamiento de los ventiladores de la nevera ni del rotor de reacción.
+7.3.4. Revisión de la tapa general y de la estructura
+1. Verifique que los ventiladores generales funcionan correctamente, ponga la mano por el exterior para verificar que 
+expulsan aire. Los ventiladores generales no incorporan un sistema automático de detección de funcionamiento.
+2. Verifique la planitud del analizador con un nivel. Aprieta más o menos las patas hasta conseguir la planitud.
+Revisión de la tapa y puertas:
+1. Verifique que la puerta se abra y cierre correctamente y con suavidad. Verifique que esté bien alineada con la 
+carcasa.
+Manual de servicio
+114

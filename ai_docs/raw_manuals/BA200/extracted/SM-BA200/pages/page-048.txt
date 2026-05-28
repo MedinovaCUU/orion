@@ -1,0 +1,72 @@
+48
+La referencia negativa o GND del circuito eléctrico está aislado del chasis. Para medir las tensiones con un multímetro 
+o osciloscopio, colocar la referencia del instrumento en los “test points” marcados como GND de cada placa o en la 
+toma de referencia del conector CAN.
+4.1. Fuentes
+El analizador para funcionar necesita de 4 fuentes de alimentación. A continuación se detallan las referencias de las 
+fuentes así como su funcionalidad:
+Nombre
+Descripción
+Especificaciones
+Funcionalidad
+FA Fridge 
+control
+RS-25-24
+24V 1.5 A
+Fuente de aliementación para la elec­
+trónica de la nevera
+FA Fridge 
+power
+SPV-150-12
+12 V 12.5A
+Fuente para alimentar las peltiers de la 
+nevera 
+FA MAIN
+RSP-320-24
+24 V 10A
+Fuente principal para alimentar el ana­
+lizador
+FA ISE
+RS-35-24
+24 V 13A
+Fuente auxiliar para alimentar el módu­
+lo ISE (opcional)
+N
+E
+P
+N
+E
+P
+FN 284-10-06
+UNIVERSAL INPUT
+94V - 264V 
+600W
+PLMA00258
+FRIDGE PS
+MAIN PS
+ISE
+FA
+FRIDGE
+FA
+MAIN
+FA
+ISE
+SPV-150
+12V 12,5A
+SP-320-24
+24V 10A
+RS-35-24
+24V 13A
+FA FRIDGE
+FA SF1
+FA ISE
+FA MAIN
+FA MAIN
+EMC
+FA
+FRIDGE
+RS-25-24
+FA CONTROL FRIDGE
+24V 1,5A
+Ilustración 4.28 
+Esquema de la conexión de la entrada de alimentación.

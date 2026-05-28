@@ -1,0 +1,74 @@
+227
+227
+Menú
+Submenú
+Descripción
+Configuración
+General
+Selección de las diferentes 
+opciones generales del 
+programa
+Idioma
+Selección del idioma
+Informes
+Configuración de los informes 
+de paciente
+Orden de técnicas en 
+informes
+Configuración del órden de 
+las técnicas para el informe de 
+paciente
+Código de barras
+Configuración de las diferentes 
+opciones del código de barras
+Configuración LIS
+Configuración de las opciones 
+para las comunicaciones con el 
+LIS
+Mapeo para LIS
+Configuración del mapeo de las 
+técnicas con el LIS
+Usuarios
+Configuración de los diferentes 
+usuarios
+Cambiar usuario
+Opción para cambiar de 
+usuario
+Exportar la 
+programación
+Exportar los parámetros de las 
+técnicas a un fichero externo
+Importar la 
+proggramación
+Importar los parámetros de las 
+técnicas de un fichero externo
+Menú
+Submenú
+Descripción
+Programación
+Técnicas
+Programación de los 
+parámetros de las técnicas
+Técnicas Calculadas
+Programación de los 
+parámetros de las técnicas 
+calculadas
+Contaminaciones
+Programación de las 
+contaminaciones
+Perfiles
+Programación de los perfiles
+Calibradores
+Programación de los 
+calibradores
+Controles
+Programación de los controles
+Datos de paciente
+Entrada de datos de los 
+pacientes
+Técnicas ISE
+Programación para las técnicas 
+ISE
+Técnicas externas
+Programación de las técnicas 
+externas

@@ -1,0 +1,64 @@
+Manual usuario 
+ 
+ 
+ 
+Manual usuario 
+ 
+ 
+ 
+204
+204
+Biosystems
+Biosystems
+Ilustración 127 
+Ciclos del analizador
+Abreviaciones
+Ciclos
+Descripción
+R1
+1
+Dispensación del reactivo 1
+S
+31
+Dispensación de la muestra
+M1
+32
+Agitación reactivo 1 y muestra
+L1
+33-100
+Lectura
+R2
+66
+Dispensación del reactivo 2 (opcional)
+M2
+66
+Agitación del reactivo 2
+L2
+67-100
+Lectura (L2 > L1)
+WS1
+101
+Inicio estación de lavado
+WS2
+111
+Inicio ciclos de secado
+15.2. Cálculo de las absorbancias
+El cálculo de las absorbancia depende del modo de análisis programado.
+El analizador dispone de los siguientes modos de análisis: 
+Modo de análisis
+Punto final monoreactiva
+Punto final bireactiva
+Diferencial
+Tiempo fijo monoreactiva
+Tiempo fijo bireactiva
+Cinética monoreactiva
+Cinética bireactiva
+A continuación se muestra en detalle cada uno de los modos de análisis que el 
+analizador realiza con su interpretación gráfica de los puntos de dispensación y de 
+lectura y el cálculo que se realiza para obtener la absorbancia.
+Cada uno de los modos de análisis anteriores puede ser creciente o decreciente.
+Cuando la técnica es creciente, la evolución de la absorbancia aumenta en función 
+del tiempo. Tiene un forma creciente.
+Cuando la técnica es decreciente, la evolución de la absorbancia disminuye en 
+función del tiempo. Tiene un forma decreciente. En estos métodos de cálculo, para 
+tener valores de absorbancia positivos, el resultado se multiplica por -1.

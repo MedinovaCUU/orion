@@ -1,0 +1,26 @@
+2. Enrase ambos tubos (23) a la misma profundidad
+3. Ponga una gota de loctite 243 a los espárragos (24)
+4. Atornille los espárragos (24).
+5. Coloque loctite 495 alrededor del tubo (23) y el secador (25) para sellar la unión.
+6. Ajuste el posicionamiento de la estación de lavado con el programa de servicio.
+21
+20
+22
+24
+23
+25
+Ilustración 8.81 
+Cambio tubo de dispensación y el secador
+8.13.7. AC17309 - Varilla detección desbordamiento
+Herramientas: Allen 1.5
+Desmontaje varilla detección :
+1. Desatornille el espárrago (26).
+2. Quite la varilla (25) de detección. 
+3. Desconecte el cable de la placa, quite los pins del conector para facilitar el paso por la pieza de plástico donde 
+pasan todos los tubos
+Montaje varilla detección :
+1. Desmonte los pins del conector. Pase por el orificio número 11, los 2 cables del conector.
+2. Coloque los pines en el conector y conecte en la placa CIIM0069 del conjunto del rotor de lecturas.
+3. Coloque la varilla (25) por el orificio y sujétela con el espárrago (26).
+Manual de servicio
+224

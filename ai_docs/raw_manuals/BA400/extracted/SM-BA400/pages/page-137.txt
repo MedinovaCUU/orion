@@ -1,0 +1,67 @@
+7. Mantenimiento y limpieza
+7.1. Acciones de mantenimiento y periodicidad
+Operaciones para realizar el operario del instrumento.
+Acciones al inicio del día
+1
+Rellene la botella de solución de lavado
+2
+Inicialice el analizador. Realice el warm-up con el programa
+3
+Realice 2 ciclos de acondicionamiento
+4
+Verifique la temperatura del rotor de reacciones y del rotor de reactivos
+5
+Verifique el volumen de los reactivos
+6
+Realice una calibración de las bombas peristálticas del módulo ISE
+7
+Realice una calibración de los electrodos ISE
+Acciones al final del día
+1
+Realice la limpieza del modulo ISE
+2
+Apague el analizador realizando el Shut-down con el programa
+3
+Vacíe la botella de residuos de alta contaminación
+4
+Retire los calibradores, controles y muestras del rotor de muestras
+Acciones a realizar semanalmente
+1
+Cambie el rotor de reacciones
+2
+Calibre el detector de burbujas del módulo ISE
+3
+Limpie la copa de entrada del módulo ISE con un hisopo de algodón
+4
+Limpie la superficie de trabajo
+5
+Limpie el interior del vaso del rotor de reactivos
+6
+Limpie el interior del vaso del rotor de muestras
+7
+Verifique la capacidad del pack de reactivos del módulo ISE, en caso de agotarse cámbielo
+8
+Enjuague con agua destilada los tubos de residuos del módulo ISE
+9
+Limpie las palas de los agitadores con un paño empapado de solución de limpieza
+10
+Limpie los filtros de los ventiladores frontales
+Operaciones para realizar el servicio técnico.
+Mantenimiento Semestral
+Explicación en el ma­
+nual. Capítulo:
+1
+Cambie los tubos de silicona de las bombas peristálticas del módulo ISE
+Ver Manual de usuario, 
+capítulo 14.3.2.3
+2
+Cambie los electrodos del módulo ISE
+Ver Manual de usuario, 
+capítulo 14.3.2.1
+3
+Verifique o cambie el filtro de 150 µm externo de la toma de agua 
+destilada
+ 8.14.2
+4
+Verifique o cambie el filtro de 150 µm de la botella de solución de lavado
+137

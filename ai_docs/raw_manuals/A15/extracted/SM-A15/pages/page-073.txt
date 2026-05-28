@@ -1,0 +1,16 @@
+74
+Manual de servicio
+5.2.5. Ajuste del posicionamiento del tambor de filtros
+Este ajuste debe realizarse con la tapa del rotor colocada. El analizador inicializa el rotor y el tambor de filtros 
+y llena el primer pocillo del rotor con agua destilada. A continuación, realiza lecturas ópticas a través de este 
+pocillo, girando el tambor de filtros paso a paso, con un cierto tiempo de integración indicado por el técnico (el 
+concepto de tiempo de integración está explicado en el apartado de test foto métricos). Una vez terminadas 
+las lecturas, el programa muestra una gráfica de la intensidad luminosa medida frente a los pasos del tambor 
+de filtros. Sobre esta gráfica el programa indica en qué puntos se posicionan cada uno de los filtros cuando se 
+realizan lecturas ópticas al llevar a cabo los análisis, con la coordenada de posiciona mien to del filtro 0 actual-
+mente programada en el analizador. El técnico, si es necesario, puede desplazar sobre la gráfica los puntos de 
+lectura conjuntamente mediante dos botones. El punto óptimo de lectura es aquél que maximiza la intensidad 
+luminosa globalmente para el conjunto de todos los filtros. La pantalla muestra en todo momento la coor de-
+na da actual del filtro 0 y la última coordenada guardada, como información adicional para el técnico. Cuando 
+la posi ción es satisfac toria, puede guardar se la coordenada actual de posicio na mien to del filtro 0 pulsando el 
+botón Guardar. Pulsando el botón Cancelar, se mantiene el último valor guardado y no se guarda el valor actual.

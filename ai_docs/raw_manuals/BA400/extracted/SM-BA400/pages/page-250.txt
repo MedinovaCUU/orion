@@ -1,0 +1,15 @@
+9
+10
+11
+Ilustración 8.117 
+4. Una vez desmontado el cable que viene con el brazo de repuesto, obtener el cable del brazo original del BA400v1. 
+Se puede conseguir extrayendolo de la máquina original o llevando uno nuevo de repuesto, así como el tubo de 
+teflón que conecta el manifold con la punta.
+5. Utilizar la pieza de extensión (12) para hacer compatible el brazo con el BA400v1. Dicha pieza está incluída 
+con el recambio.
+12
+Ilustración 8.118 
+6. Pasar el cable extraído del BA400v1 por el interior de la pieza de extensión
+7. Pasar el cable y el tubo de teflón por el interior del tubo de aluminio del brazo.
+Manual de servicio
+250

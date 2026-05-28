@@ -1,0 +1,51 @@
+167
+7.2.6. 
+Process of analyser verification
+This is an standard process for verifying the correct operation of the instrument after doing an intervention.
+This process can be applied to the following operations:
+• 
+Instrument reception (in the office, before installation)
+• 
+Maintenance
+• 
+After a repair
+The goal is to standarize the verification process and the acceptance criteria.
+The duration time of the process is: 1,5 hours
+7.2.6.1. Material needed
+Use Biosystems reagent and controls or equivalents codes, use always new fresh reconstituted calibrators and controls.
+Model
+A15 / A25
+Code
+Description
+21503 / 23503 Glucose 50mL
+21531 / 23531 AST-GOT 50+20mL
+21518 / 23518 Phosphorus 50+20mL
+18011 / 18044 Bovine / Human calibrator 5mL
+18009 / 18043 Bovine / Human Control Serum I 5mL
+18010 / 18042 Bovine / Human Control Serum II 5mL
+100-1000 µm Pipette (Calibrated)
+Disposable pipette tips
+Distilled water Type II
+Model
+Y15 / Y25
+Code
+Description
+12800
+D-Glucose-D-Fructose 50 ml
+12810
+Acetic acid
+12812
+Glycerol
+12807
+PAN
+Each kit incorporate each calibrator
+12818 Nivel 2
+Multical
+100-1000 µm Pipette (Calibrated)
+Disposable pipette tips
+Distilled water Type II
+For A15 / A25 models use the template: Results verification.xlsx
+For Y15 / Y25 models use the template: Food Quality Verification Results-V1.xlsm
+Ask to the service department to get the excel file
+7.2.6.2. Process of the verification
+1. Use a software version higher than v5.4

@@ -1,0 +1,57 @@
+8.9. 
+Recambios brazo
+AC16538
+AC16558
+AC16599
+AC16557
+AC16603
+AC16604
+AC16600
+AC16598
+AC16600
+ 
+AC16602
+AC16601
+Código
+Descripción
+AC16538
+Tapa brazo
+AC16558
+Placa punta
+AC16599
+Correa polar
+AC16557
+Placa brazo
+AC16598
+Correa vertical
+AC16603
+Punta muestra
+AC16604
+Punta reactivo
+AC16600
+Motor brazo
+AC16601
+Motor de continua
+AC16602
+Pala agitadora
+8.9.1. 
+AC16538 - Tapa brazo
+Desmontaje: Presione en ambos lados de la tapa para liberar las pestañas. Saque la tapa
+Montaje: Coloque en su posición la carcasa y presione hacía abajo hasta que las pestañas estén insertadas en la base
+8.9.2. 
+AC16558 - Placa punta
+Herramientas: 1 llave allen del 2.5 mm
+ 
+Destornillador de ajuste (AC16644)
+Desmontaje:
+1. Corte la brida que sujeta los cables de la punta. Vaya con cuidado en no deteriorar la placa con el corte.
+2. Quite los cables de la punta.
+3. Quite el conector del bus CAN.
+4. Quite los 2 tornillos que sujetan la placa en la base del brazo.
+Montaje:
+1. Inserte la nueva placa en su posición y coloque los 2 tornillos que sujetan la placa con sus tuercas.
+2. Coloque la placa electrónica con una separación de 1 mm hasta el tope para asegurar que la chapa de la punta 
+no corte el detector de colisión.
+3. Conecte el cable del bus CAN.
+Manual de servicio
+176

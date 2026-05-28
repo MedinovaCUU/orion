@@ -1,0 +1,16 @@
+60
+Manual de servicio
+7. 
+1
+Ilustración 4.27.  Desmontaje correa Z
+2
+3
+4
+Ilustración 4.28. 
+4.13.  AC14627 - Conjunto puntas
+Desmontaje:
+1. Desmontar la carcasa del brazo. Ver capítulo 4.3
+2. Desconectar los cables de las puntas
+3. Quitar los 2 tornillos (6) que sujetan el conjunto puntas con el brazo
+Montaje:
+1. Seguir los pasos del desmontaje en sentido inverso para cada una de los elementos

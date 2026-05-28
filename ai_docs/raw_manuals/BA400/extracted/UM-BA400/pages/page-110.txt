@@ -1,0 +1,54 @@
+Manual usuario 
+ 
+ 
+ 
+Manual usuario 
+ 
+ 
+ 
+110
+110
+Biosystems
+Biosystems
+10.3.8. Módulo ISE
+Pantalla donde se programan los parámetros del módulo ISE. El módulo de medida 
+de iones es opcional. El módulo puede medir 4 iones diferentes: Na+, K+, Cl- y 
+Li+, ya programados por defecto. No se pueden borrar ni crear nuevos. El usuario 
+supervisor puede modificar los siguientes parámetros:
+Ilustración 75 
+Pantalla de programación de los parámetros ISE
+ 
+Nombre 
+Nombre de la técnica, este nombre servirá para identificar a la técnica en el 
+programa. La longitud máxima es de 16 caracteres.
+ 
+Nombre corto 
+Nombre reducido de hasta 8 caracteres para utilizar en determinadas pantallas 
+dentro de la aplicación.
+ 
+Tipo de muestra 
+Seleccione con que tipo de muestra se usará los iones.
+ 
+Técnica ISE disponible 
+Seleccione esta opción para que se visualice la técnica de Litio en la pantalla de 
+selección de muestras. 
+ 
+Decimales Número de decimales en que se mostrarán los valores de la concentración.
+ 
+Función slope Introduzca los parámetros a y b de la fórmula Y=aX+b. Estos parámetros 
+modifican el valor de la concentración del resultado de manera lineal. Esta 
+opción sirve para equiparar los resultados de diferentes analizadores. Donde X 
+será sustituida por el valor de concentración e Y será el valor de concentración 
+modificada.
+ 
+Control de calidad 
+Introduzca los valores para el control de calidad
+ 
+)
+Véase cómo introducir los valores del control de calidad en el capítulo 10.3.1.5
+ 
+Rangos de referencia 
+Introduzca los valores de referencia. 
+ 
+)
+Véase cómo introducir los valores de referencia en el capítulo 10.3.1.6

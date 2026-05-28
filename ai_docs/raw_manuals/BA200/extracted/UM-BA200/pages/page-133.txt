@@ -1,0 +1,27 @@
+133
+133
+• 
+Abortar: Esta acción aborta la sesión de trabajo. Finaliza immediatamente 
+la ejecución de la lista perdiendo las preparaciones en curso que tenga el 
+analizador. La acción a realizar a continuación es resetear la sesión de trabajo.
+• 
+Cancelar: Cierra la ventana y continua con la ejecución de la lista actual.
+Ilustración 86 
+Pantalla mensaje abortar
+10.5.6. Guardar sesión
+Opción del menú Sesión de trabajo que permite guardar con un nombre la sesión 
+creada. Esta utilidad sirve para poder guardar listas repetitivas, como por ejemplo 
+lista de blancos, calibradores y controles.
+Al pulsar sobre esta opción se abre una ventana emergente, escriba un nombre 
+para identificar la sesión y pulse el botón aceptar.
+Esta acción no memoriza las posiciones de las muestras ni de los reactivos en los 
+rotores, únicamente memoriza la sesión.
+10.5.7. Cargar sesión
+Opción del menú Sesión de trabajo que permite cargar una sesión previamente 
+memorizada. Al pulsar sobre la opción se abre una ventana emergente, seleccione 
+el nombre y pulse el botón abrir. Esta acción puede realizarse también desde la 
+Pantalla de Petición de Muestras.
+10.5.8. Borrar sesión
+Opción del menú Sesión de trabajo que permite borrar una sesión previamente 
+memorizada. Al pulsar sobre la opción se abre una ventana emergente, seleccione 
+el nombre y pulse sobre el icono de borrar.

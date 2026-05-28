@@ -1,0 +1,64 @@
+Manual usuario 
+ 
+ 
+ 
+Manual usuario 
+ 
+ 
+ 
+18
+18
+Biosystems
+Biosystems
+Símbolo
+Descripción 
+Prevención de un riesgo de emisión de una luz láser
+El analizador incorpora un lector de códigos de barra que emite luz láser. La luz 
+láser es de categoría II. El lector únicamente funcionan cuando el analizador 
+está en modo de ejecución y tiene las tapas de los rotores colocadas. En caso 
+de avería o durante el ajuste por parte del personal de asistencia técnica puede 
+activarse el haz sin tener la tapa colocada, en estos casos no mire directamente a 
+la luz láser. 
+WARNING
+Uso de consumibles
+Antes de usar las sustancias consumibles (soluciones de limpieza y líquidos de 
+sistema) verifique su fecha de caducidad. En caso de haberse caducado retire el 
+producto y utilice uno nuevo con la fecha de caducidad vigente.
+WARNING
+Cables de red de recambio
+Si va a usar un cable de red que no sea suministrado por el fabricante, 
+asegúrese de que soporte la potencia del analizador, que sea homologado y que 
+cumpla con la normativa CE.
+WARNING
+Operaciones de seguridad después del mantenimiento
+Para proceder con seguridad y dejar el instrumento en un estado seguro 
+durante las operaciones de mantenimiento, siga los pasos descritos en el 
+manual de usuario para cada una de las operaciones. Asegúrese de volver a 
+colocar los diferentes elementos de protección que haya quitado, así como de 
+no dejar ningún elemento de limpieza en el instrumento.
+WARNING
+Operaciones que puedan comprometer la seguridad el equipo
+Cualquier uso indebido (negligencia, condiciones de red eléctrica fuera de 
+tolerancia, condiciones ambientales o de ubicación inadecuadas, etc.) Así 
+como una manipulación interna del analizador por personal no autorizado 
+por Biosystems o el uso de consumibles y recambios no originales (rotores, 
+fusibles, etc.) pueden comprometer la protección asegurada por el analizador.
+Prevención al final de la vida útil del analizador
+Una vez finalice la vida del analizador, la retirada del producto debe realizarse 
+de acuerdo con las leyes medioambientales de cada país. En los paises de 
+la unión europea debe seguirse la directiva RAEE de aparatos eléctricos y 
+electrónicos. Es decir al final de la vida útil del aparato, éste se convierte en 
+residuo y debe separarse de la basura doméstica para su correcto reciclaje, para 
+ello contacte con el distribuidor para realizar el correcto reciclaje.
+Use guantes para manipular cualquier parte del analizador que ha estado en 
+contacto con material biológico: puntas, contenedores, tubos, etc
+Deshágase de este material de acuerdo con la legislación vigente para la 
+eliminación de residuos biológicos peligrosos de su gobierno nacional o local.
+Abreviaturas y unidades que aparecen en el manual
+Abreviatura
+Definición
+∅
+Diámetro
+ASTM 
+American Society for Testing and Materials ( www.
+astm.org)

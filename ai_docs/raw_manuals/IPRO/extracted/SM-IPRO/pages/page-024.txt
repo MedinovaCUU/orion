@@ -1,0 +1,40 @@
+24
+Manual de servicio
+3.2.2  Ajuste fino de las posiciones en X e Y
+Normalmente con los ajustes explicados en el apartado anterior no es necesario realizar un ajuste 
+adicional. En ocasiones sin embargo podría requerirse este. Es necesario tener instalado un software 
+de emulación de terminal (Telnet, Hyperterminal, PuTTy, etc).
+El preparador iPRO sólo cuenta con un único puerto de comunicaciones en el que se multiplexan el 
+canal de comunicaciones principal que conecta con el software, un segundo canal que conecta con el 
+lector de código bidimensional de portaobjetos, un tercer canal que conecta con el lector de código de 
+barras de muestras y reactivos y otro canal que conecta con el puerto de servicio. En el momento de 
+conectar el preparador, se puede comprobar en el administrador de dispositivos de Windows que se 
+generan 4 puertos COM. Aunque el número de COM es variable en función del PC, con el programa 
+de emulación de terminal se debe conectar al cuarto puerto asignado al instrumento.
+1. Ir al programa de emulación de terminal.
+2. Pulsar la tecla R y aparecerá el siguiente menú:
+1: Sample rack adjust
+2: Dilution rack adjust
+3: Reagents rack adjust
+4: Slide rack 1 adjust
+5: Slide rack 2 adjust
+X: Increment X value
+x: Decrement X value
+Y: Increment Y value
+y: Decrement Y value
+6: Save Values
+7: Exit without changes
+8: Load default values
+3. Pulsar 6 para salvar los datos.
+Si pulsamos 1 a 5 accederemos al posicionamiento del elemento que queramos ajustar. Por ejemplo 
+si pulsamos 1 aparecerá:
+Sample rack adjust
+X= -1024, Y= 0046
+Los valores que aparecen son respecto al punto de ajuste principal (centrador de la estación de lavado).
+Si pulsamos X (mayúscula) el valor de X aumentará y el brazo quedará más hacia la derecha después 
+del ajuste. Si pulsamos x (minúscula) el valor de X se decrementará y quedará más a la izquierda 
+después del ajuste. Se ha de tener en cuenta que 6,5 pasos equivalen a 1mm. Entonces si queremos 
+que las puntas queden un 1mm más a la derecha tendremos que aumentar 6 o 7 pasos, es decir X= 
+-614 o X=-619.
+Lo mismo para el valor de Y. Si aumentamos el valor de Y el brazo quedará más hacia delante y si 
+disminuimos el valor de Y quedará más hacia tras. La conversión también es de 6.5 pasos/mm.

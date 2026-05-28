@@ -1,0 +1,50 @@
+32
+USUARIO
+Manual de Usuario BioSystems SPICA | Versión 2.8 - Agosto 2024
+Manual de Usuario BioSystems SPICA
+5. PROCEDIMIENTOS DE MEDICIÓN
+5.4 Control de calidad interno
+3. Selección de las reglas de control
+Al seleccionar las normas que se utilizarán en el control interno deben tenerse en cuenta los siguientes 
+objetivos:
+• La simplicidad: Utilizar el menor número posible de materiales y reglas de control.
+• Baja probabilidad de falsos rechazos (≤ 2%, preferiblemente < 1%).
+• Alta probabilidad de detectar aumentos significativos del error. Cuanto menor sea el intervalo de valores de la 
+regla de control, mayor será la probabilidad de detectar aumentos de error.
+La idea es contar con el menor número posible de falsas alarmas y orientar la detección de errores que se 
+consideren importantes, partiendo del entendimiento de que pueden producirse errores más pequeños 
+(errores tolerables) sin ser detectados.
+6. MANTENIMIENTO
+6.1 Actividades y frecuencia de mantenimiento
+La siguiente lista muestra las actividades de mantenimiento y la frecuencia con la que deben ejecutarse:
+Actividades recomendadas realizar al inicio del día 
+ 
+1) Ejecutar 1 cebado del sistema al encender el analizador (proceso automático)
+ 
+Actividades recomendadas realizar al final del día 
+ 
+1 ) Apague el analizador iniciando el apagado desde el App
+ 
+2 ) Vacíe la botella de alta contaminación
+Actividades recomendadas realizar semanalmente 
+ 
+1 ) Limpiar el exterior del analizador BioSystems SPICA
+ 
+2 ) Limpiar el interior del recipiente del reactivo y del rotor de la muestra
+ 
+3 ) Limpiar la paleta del agitador y la sonda con un paño empapado en una solución de lavado 
+6.2 Limpieza del analizador 
+LIMPIEZA GENERAL DE LOS COMPARTIMENTOS 
+Use un paño húmedo y jabón neutro para limpiar las superficies del analizador y los compartimentos 
+internos del rotor.
+VACIAR Y LIMPIAR LA BOTELLA DE RESIDUOS DE BAJA CONCENTRACIÓN
+El contenedor de residuos se suministra con un conector rápido.
+• 
+Presione el conector rápido de la tapa y saque el recipiente del analizador. 
+• 
+Desenrosque la tapa del recipiente. 
+• 
+Vacía el contenedor.
+• 
+Enrosque la tapa del contenedor, inserte el tubo con el conector rápido y coloque el contenedor en su 
+alojamiento dentro del analizador.

@@ -1,0 +1,73 @@
+60
+Connector
+Function
+Pin
+CN8
+Activation of electro valve EV3
+Pin 1: 24 V
+Pin 2: Activation signal
+CN9
+Activation of electro valve EV2
+Pin 1: 24 V
+Pin 2: Activation signal
+CN10
+Activation of pump GE1
+Pin 1: 24 V
+Pin 2: Activation signal
+CN11
+Activation of pump B3
+Pin 1: 24 V
+Pin 2: Activation signal
+CN12
+Activation of electro valve EV5
+Pin 1: 24 V
+Pin 2: Activation signal
+CN13
+Activation of electro valve GE3
+Pin 1: 24 V
+Pin 2: Activation signal
+CN14
+Activation of electro valve GE2
+Pin 1: 24 V
+Pin 2: Activation signal
+CN15
+Activation of electro valve EV6
+Pin 1: 24 V
+Pin 2: Activation signal
+CN16
+Reagent 2 dispensation motor
+Pin 1: Coil 1
+Pin 2: Coil 1
+Pin 3: Coil 2
+Pin 4: Coil 2
+CN17
+Reagent 2 start-up detection
+Pin 1: Detection
+Pin 2: GND
+Pin 3: 5V
+CN18
+Reagent 1 dispensation motor
+Pin 1: Coil 1
+Pin 2: Coil 1
+Pin 3: Coil 2
+Pin 4: Coil 2
+CN19
+Reagent 1 start-up detection
+Pin 1: Detection
+Pin 2: GND
+Pin 3: 5V
+CN20
+Sample dispensation motor
+Pin 1: Coil 1
+Pin 2: Coil 1
+Pin 3: Coil 2
+Pin 4: Coil 2
+CN21
+Sample dispensation start-up detection
+Pin 1: Detection
+Pin 2: GND
+Pin 3: 5V
+CN22
+Manifold led
+Pin 1: 5 V
+Pin 2: GND

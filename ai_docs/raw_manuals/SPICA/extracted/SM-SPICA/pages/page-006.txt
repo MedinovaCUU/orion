@@ -1,0 +1,35 @@
+6
+USUARIO
+Manual de Usuario BioSystems SPICA | Versión 2.8 - Agosto 2024
+Manual de Usuario BioSystems SPICA
+1. INTRODUCCIÓN
+1.1 Avisos y advertencias
+ 
+Símbolos | Precauciones de seguridad | Abreviaturas y unidades 
+Fabricante
+Número de serie
+LOTE
+Fecha de caducidad
+Número de catálogo
+Fecha de Instalación
+Límite de Temperatura
+Etiqueta da embalaje. 
+Mantener en posición vertical
+Etiqueta da embalaje.
+Frágil
+Etiqueta da embalaje. 
+Mantener seco
+Etiqueta da embalaje. 
+Equipo pesado
+Etiqueta da embalaje. 
+Mantener en posición vertical.
+No apilar más de 200 Kg
+SN
+LOT
+REF
+Install by
+IN
+x
+200 Kg
+ma
+75 KG

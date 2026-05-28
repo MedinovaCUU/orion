@@ -1,0 +1,64 @@
+91
+91
+Tipo de muestra
+Descripción
+SER
+Suero
+URI
+Orina
+PLM
+Plasma
+WBL
+Sangre total
+CSF
+Líquido cefalorraquídeo
+SEM
+Semen
+LIQ
+Líquido biológico
+Al crear una técnica seleccione el tipo de muestra a la que se aplica.
+ 
+ 
+Puede crear una técnica con diferentes tipos de muestra, despliegue las opciones 
+del tipo de muestra y marque en el cuadro de opciones el tipo que quiera añadir.
+En una técnica con más de un tipo de muestra podrá introducir parámetros dife­
+rentes de la técnica para cada tipo de muestra.
+ 
+ 
+Este icono aparece cuando una técnica está programada con varios tipos de 
+muestra.
+ 
+Modo de análisis 
+El cálculo de la absorbancia depende del modo de análisis seleccionado. 
+Los modos de análisis pueden ser:
+Modos de análisis
+Punto final monoreactiva
+Punto final bireactiva
+Diferencial bireactiva
+Tiempo fijo monoreactiva
+Tiempo fijo bireactiva
+Cinética monoreactiva
+Cinética bireactiva
+ 
+)
+Véase cómo se realizan los cálculos de la absorbancia según el modo de análisis en el 
+capítulo 15
+ 
+Unidad 
+Seleccione de la lista la unidad que utilizará la técnica. Para crear una unidad 
+nueva, introduzca directamente la unidad en el campo. Esté valor se mostrará 
+junto con los resultados de concentración. 
+ 
+Decimales 
+Número de decimales en que se mostrarán los valores de la concentración.
+ 
+Número de replicados 
+Número de replicados que realizará el analizador para cada muestra.
+ 
+Tipo de reacción 
+Seleccione el tipo de reacción: creciente o decreciente. 
+ 
+Nombre del informe 
+Nombre de la técnica que aparecerá en el informe por paciente. Si no hay 
+ningún nombre entrado en este campo en el informe de paciente aparecerá el 
+nombre de la técnica.

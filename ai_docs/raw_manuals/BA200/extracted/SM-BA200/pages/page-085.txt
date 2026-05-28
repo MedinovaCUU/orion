@@ -1,0 +1,30 @@
+Selección de entrada de agua: Seleccione el modo de entrada de agua en el analizador. La entrada de agua puede 
+venir por dos vías diferentes y excluyentes entre ellas:
+• 
+Agua de depósito
+• 
+Agua de red
+Desactivar alarma sonora: Marque está opción cuando no quiera que suene el zumbador al aparecer una alarma.
+Desactivar otros elementos: Permite desactivar o activar independientemente los siguientes elementos. Estos 
+valores quedan memorizados en el analizador y se aplican durante la ejecución del programa de usuario.
+• 
+Tapa general del analizador
+• 
+Tapa del rotor de reacciones
+• 
+Tapa del rotor de reactivos y muestras
+• 
+Detección de coágulo
+Módulo ISE: Permite realizar la activación o desactivación del módulo ISE, cuando se quiera incorporar un módulo 
+ISE a un analizador sin él.
+Ilustración 6.4 
+Pantalla de configuración del analizador
+6.4.2. Comunicaciones
+Permite configurar el canal de comunicaciones entre el programa de servicio y el analizador. Escoja las siguientes 
+opciones:
+Automática: Seleccione esta opción para que el programa busque automáticamente el puerto de salida del orde­
+nador para comunicarse con el analizador.
+Manual: Seleccione esta opción para escoger manualmente el puerto. 
+Pulse el botón 
+ para verificar que las comunicaciones funcionan correctamente.
+85

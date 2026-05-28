@@ -1,0 +1,68 @@
+Manual usuario 
+ 
+ 
+ 
+Manual usuario 
+ 
+ 
+ 
+134
+134
+Biosystems
+Biosystems
+ 
+Estado de las técnicas 
+En este gráfico se informa del número total de preparaciones solicitadas y estado 
+de las mismas: acabadas, en proceso, pendientes, bloqueadas y acabadas con 
+alarmas.
+10.6.3. Estado rotor de muestras
+Pantalla de información del estado de cada uno de los tubos del rotor de muestras. 
+El usuario puede pulsar sobre cualquier tubo o pocillo para ver la información 
+detallada.
+Hay un código de colores para identificar el estado de cada pocillo.
+Código de 
+colores
+Nombre 
+Descripción de la identificación de las 
+muestras
+Seleccionada
+Selección de una posición del rotor
+No utilizado
+Muestra posicionada pero sin asignar en la 
+sesión de trabajo
+Vacío 
+insuficiente /
+bloqueado 
+por coágulo 
+o colisión de 
+punta
+Muestra que el analizador ha detectado 
+volumen insuficiente o por detección de 
+coágulo o colisión. El programa bloqueará 
+el resto de técnicas por realizar de dicho 
+paciente. Para desbloquear la muestras 
+debidas a volumen insuficiente, el usuario 
+debe rellenar la muestra y pulsar el botó 
+rellenar en la pantalla de posición.
+Para desbloquear las muestras debidas 
+a detección de coágulo o por colisión, 
+el usuario debe verificar el estado de las 
+muestras y pulsar el botón de desbloqueo 
+en la pantalla de posición.
+Pendiente o 
+Bloqueada
+Muestra que está pendiente de ejecutar o 
+bloqueada manualmente
+En proceso
+Muestra en proceso
+Acabado
+Muestra finalizada
+Error lectura 
+cód.
+Error en la lectura del código de barras
+Esta pantalla es solo para consulta de estados y no permite realizar modificaciones 
+de posición de muestras ni solucionar las alarmas de volumen, para ello debe utilizar 
+la pantalla de Posición de rotor de muestras.
+ 
+)
+Véase apartado 10.5.3

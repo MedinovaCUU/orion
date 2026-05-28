@@ -1,0 +1,71 @@
+AIV. 
+Características técnicas
+CARACTERÍSTICAS GENERALES
+Velocidad
+200 prep/h (sin electrolitos)
+Velocidad módulo ISE combinado
+267 prep/h con 3 canales
+300 prep/h con 4 canales
+Principios de análisis
+Espectrofotometría, turbidimetría.
+Módulo ISE: Potenciometría
+GESTIÓN DE MUESTRAS Y REACTIVOS
+Capacidad del rotor para muestras y 
+reactivos
+88
+Detector de código de barras
+Sí
+Número de muestras con código de barras
+88
+Tamaño de los tubos primarios 
+Diámetro de 12 mm a 16 mm (altura máx. 100 mm)
+Pocillo pediátrico
+Pocillo pediátrico de diámetro 13.5 mm
+Volumen botellas de reactivo
+20 mL, 60 mL
+Capacidad del rotor de reactivos
+88 (44 botellas de 20 mL o 60 mL + 44 botellas de 20 mL) 
+Reactivos refrigerados
+Sí
+Margen de temperatura de la nevera
+6 °C a 11 °C (a temperatura ambiente de 21 °C)
+Tipo de jeringa de la bomba de muestra
+Pistón cerámico de bajo mantenimiento
+Diámetro del pistón
+8 mm
+Volumen de dosificado
+2 mL a 40 mL
+Resolución del dosificado
+0.1 mL
+Relación de dilución
+1:1 a 1:200
+Volumen de reactivos R1
+90 mL a 300 mL
+Volumen de reactivos R2
+10 mL a 100 mL
+Resolución del dosificado
+0.1 mL
+Detección de nivel
+Sí
+Lavado de la punta
+Interior y exterior
+Detector de coágulo
+Sí
+Detector de colisión vertical
+Sí
+Punta termostatada
+Sí
+ROTOR REACCIONES
+Volumen de reacción mínimo
+180 mL
+Volumen de reacción máximo
+440 mL
+Número de cubetas
+120
+Material cubetas
+Metacrilato UV
+Tipo de incubación
+Seca
+Tiempo dispensación del 2º reactivo
+5 min (fijo)
+255

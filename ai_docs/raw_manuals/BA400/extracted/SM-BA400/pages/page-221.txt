@@ -1,0 +1,25 @@
+6
+7
+8
+9
+Ilustración 8.78 
+Cambio sensor de temperatura
+8.13.4. AC17240 - Detector de colisión de la estación de lavado
+Detector utilizado en instrumentos anteriores a la modificación de la estación de lavado. Véase capítulo AII para 
+saber hasta que número de serie está implementado
+Herramientas: Allen 2.5
+Desmontaje:
+1. Desatornille los tornillos (10) que sujetan el fotodetector de colisión.
+2. Desconecte el conector aéreo (12) del otro extremo del detector. 
+3. Quite los pins (13) del conector. 
+4. Estire el cableado hasta sacarlo del tubo guía (11).
+Montaje:
+1. Cambie el fotodetector de colisión.
+2. Quite los pins del conector (13)
+3. Inserte por la parte superior del tubo guía (11) de la estación de lavado los pins del cableado del detector.
+4. Una vez salga el cableado por la parte inferior, estire el cable hasta dejar unos 3 cm de holgura en la parte superior.
+5. Coloque los tornillos (10) para sujetar el fotodetector de colisión.
+6. Coloque los pins en el conector en el orden que indica la Ilustración 8.79
+7. Conecte el conector aéreo (12).
+8. Verifique su funcionamiento con el programa de servicio.
+221

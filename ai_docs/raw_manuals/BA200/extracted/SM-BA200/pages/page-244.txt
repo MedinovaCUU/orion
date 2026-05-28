@@ -1,0 +1,38 @@
+Lista de recambios
+Código
+Conjunto
+Representación 
+Descripción
+AC16627
+rotor de 
+reactivos y 
+muestras
+Conjunto peltiers nevera
+AC16628
+rotor de 
+reactivos y 
+muestras
+Calefactor ventana código de barras
+AC16629
+rotor de 
+reactivos y 
+muestras
+Ventana lector código de barras
+AC16630
+rotor de 
+reactivos y 
+muestras
+Detector tapas del rotor de reactivos y 
+tapa rotor de reacción
+AC16631
+rotor de 
+reactivos y 
+muestras
+Sensor temperatura nevera
+AC17293
+rotor de 
+reactivos y 
+muestras
+Centrador rotor de reactivos y muestras
+Manual de servicio
+244

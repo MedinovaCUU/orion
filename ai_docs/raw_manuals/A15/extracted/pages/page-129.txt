@@ -1,0 +1,17 @@
+Manual de servicio
+130
+Ilustración 6.32 
+19
+Ilustración 6.33 
+20
+21
+Ilustración 6.34 
+6.5. Sistemas electrónicos
+6.5.1. PC13385 - Placa interconexión XYZ
+Desmontaje:
+1. Extraer la carcasa superior. Ver capítulo 6.1.5
+2. Desconectar los cables de la placa
+3. Quitar los 4 tornillos (1) 
+4. Extraer la chapa de protección y la placa de interconexión
+5. 
+Montaje:

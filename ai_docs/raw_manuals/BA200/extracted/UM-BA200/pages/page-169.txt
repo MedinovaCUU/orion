@@ -1,0 +1,24 @@
+169
+169
+Esta acción únicamente está disponible cuando el analizador está en modo STAND-
+BY.
+ 
+Selección del nivel de 
+seguimiento de registro de 
+comunicación LIS’
+ 
+Permite configurar el nivel de trazas para capturar información en el LOG sobre 
+el funcionamiento de las comunicaciones entre LIS y BA200. Esta opción sirve 
+para diagnosticar posibles problemas de comunicaciones durante la etapa de 
+integración del LIS con el BA200.
+Ilustración 111 
+Pantalla de las utilidades del LIS
+10.9.6. Informe para servicio técnico
+Cuando en el programa surja algún problema inesperado, existe esta herramienta 
+para ayudar al personal que desarrolla el programa a encontrar el posible problema 
+inesperado. 
+Ilustración 112 
+Pantalla para generar un informe para el servicio técnico.
+Esta herramienta genera un fichero con toda la información del programa.
+Cuando suceda que el programa se cierra inesperadamente o realiza una acción no 
+deseada, ejecute esta herramienta.

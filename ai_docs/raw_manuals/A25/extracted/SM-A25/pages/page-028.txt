@@ -1,0 +1,32 @@
+28
+Service manual
+1
+5
+3
+4
+2
+6
+7
+8
+9
+Figure 3.8 
+1 – Peltier cell
+2 – Thermistor
+3 – Spiral unit
+4 – Needle fastening fitting
+5 – Removable needle
+6 – Body
+7 – Fastening fitting
+8 – Radiator
+9 – Fan
+Reference Figure 3.8
+3.2.2.2.  Dispensing pump
+The aluminium body (1) joins the different components that make up the pump. The transparent methacrylate fluidic 
+chamber (2) makes it possible to observe the flow of liquid through the pump. The support (4) fastens the seal (3) to 
+the chamber. The ceramic piston (5) dispenses by displacing a certain volume of liquid in the chamber. The plastic 
+protection (7) prevents the pump transmission from getting wet if the seal fails. The piston is adhered to the support 
+(6), which moves alternatively by the rotation of the worm (9) fixed to the motor shaft (11). The barrier (9), joined 
+to the piston support, obstructs the photodetector (12) when the piston reaches its start position. The axial bearing 
+(10) prevents any longitudinal displacement of the motor shaft for greater precision in the dispensing operation. The 
+3-channel electrovalve (16) makes it possible to connect the pump chamber to the distilled water container or to the 
+thermostated needle. The support (13) makes it possible to fasten the pump and the electrovalve to the analyzer.

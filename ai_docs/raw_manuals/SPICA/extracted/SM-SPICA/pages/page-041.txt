@@ -1,0 +1,28 @@
+INSTALACIÓN
+41
+Manual de Usuario BioSystems SPICA
+Manual de Usuario BioSystems SPICA | Versión 2.8 - Agosto 2024
+3. DESCRIPCIÓN
+3.1 Dimensiones y peso
+3.2 Necesidades de espacio
+El analizador ocupa un espacio mínimo de 100 x 62 x 65 cm (ancho x largo x alto). 
+Instalar en un espacio interior, dejando una distancia de al menos 10 cm detrás del analizador para que el 
+aire circule por la entrada del ventilador, y para facilitar el acceso a la zona trasera donde se encuentra el 
+botón ON-OFF y los enchufes para los diferentes tipos de conexiones.
+3.3 Soporte de mesa 
+La mesa que soporta el equipo debe tener una profundidad mínima de 70 cm y debe poder soportar una 
+carga mínima de 100 kg.
+La mesa debe estar nivelada y tener una pendiente máxima del 0,5%.
+Se recomienda una altura de 80 cm para tener la mesa para un fácil manejo de los rotores y introducción 
+de los racks.
+100 cm x 62 cm x 65cm
+75 Kg 
+Dimensiones (Ancho x Profundidad x Altura) 
+Peso
+4. REQUISITOS RELATIVOS A LAS INSTALACIONES
+4.1 Requisitos eléctricos 
+Consultar pagina 16
+4.2 Requisitos fluídicos
+En la parte frontal del SPICA, hay 3 botellas negras: dos con tapa verde y una con tapa roja. La pequeña de 
+la izquierda con la tapa verde es la botella de solución de lavado (1L). La que está en el medio con la tapa 
+rojo es la botella de residuos (3L) y la derecha con la tapa verde es la botella de agua destilada (3L).

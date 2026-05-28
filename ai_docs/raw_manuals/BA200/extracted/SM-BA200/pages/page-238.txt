@@ -1,0 +1,38 @@
+Lista de recambios
+Código
+Conjunto
+Representación 
+Descripción
+AC17286
+Depósito agua destilada con detección de 
+nivel
+AC17288
+Depósito residuos baja contaminación 
+con detección de nivel
+AC16574
+Fluidica
+Estación lavado puntas
+AC17287
+Fluídica
+Calefactor de la estación de lavado
+AC16580
+Fluídica
+Electroválvula de entrada de agua
+AC16581
+Fluídica
+Bombas de dispensación
+AC16582
+Fluídica
+Bombas de aspiración
+AC16584
+Fluídica
+Adaptador entrada de tanque de agua
+AC17097
+Fluídica
+ 
+Filtro entrada de agua
+AC17304
+Fluidica
+Filtro de agua estación de lavado
+Manual de servicio
+238

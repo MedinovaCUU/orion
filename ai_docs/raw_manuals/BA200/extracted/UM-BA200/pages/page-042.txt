@@ -1,0 +1,23 @@
+Manual usuario 
+ 
+ 
+ 
+Manual usuario 
+ 
+ 
+ 
+42
+42
+Biosystems
+Biosystems
+Ilustración 17 
+Cambie las opciones de la energía del USB
+4.12.2. Configurar programas en segundo plano
+Evite la ejecución de programas en segundo plano mientras está funcionando la 
+aplicación. 
+Para ello modifique la programación de los siguientes programas:
+4.12.2.1. Actualizaciones de flash
+1. Acceda a Inicio, Panel de control
+2. Acceda al icono de flash player
+3. Acceda a la pestaña de avanzado y seleccione la opción de No buscar actuali­
+zaciones nunca.

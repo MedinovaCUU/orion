@@ -1,0 +1,24 @@
+115
+9
+10
+Figure 6.6 
+Rear housing removal
+6.1.7. 
+AC11574 - Main cover hinge
+Disassembly:
+1. Remove the main cover and the corresponding metal rear covers.
+2. Disconnect the electrical connector from the cover detector.
+3. Remove the 4 screws that hold each hinge to the structure. The bottom 2 screws of each hinge must be removed 
+by inserting the Allen key through the rear holes of the hinge.
+Mounting:
+1. Follow the steps in reverse order to removal
+6.1.8. 
+ME11549 - Main cover hinge spring
+Disassembly:
+1. Disassemble the analyzer hinge assembly
+2. Remove the 2 circlips (11) and the axles (12)
+3. Rotate the support spring assembly (13)
+4. Remove the circlips (14) and the shaft (15)
+Mounting:
+1. Replace the spring assembly with the new one
+2. Follow the steps in reverse order

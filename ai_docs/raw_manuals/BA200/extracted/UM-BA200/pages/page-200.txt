@@ -1,0 +1,42 @@
+Manual usuario 
+ 
+ 
+ 
+Manual usuario 
+ 
+ 
+ 
+200
+200
+Biosystems
+Biosystems
+Elemento 
+Usuarios con bajo 
+volumen de muestras 
+ISE
+Usuarios con gran 
+volumen de muestras ISE
+(> 100 muestras/día)
+Electrodo Li+
+3 meses
+3000 muestras
+Electrodo Na+
+6 meses
+10.000 muestras
+Electrodo K+
+6 meses
+10.000 muestras
+Electrodo Cl-
+6 meses
+10.000 muestras
+Electrodo de 
+referencia 
+6 meses
+10.000 muestras
+Tubos de la bomba 
+peristáltica
+6 meses
+6 meses
+Tubos fluídicos
+12 meses
+12 meses

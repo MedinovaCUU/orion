@@ -1,0 +1,45 @@
+37
+37
+ 
+Potencia 
+1.5 KW
+ 
+Capacidad de las baterías 
+Superior a 15 min
+2
+3
+4
+Ilustración 12 
+Interruptores del analizador
+2 – 
+2 – Interruptor módulo ISE 
+Interruptor módulo ISE 
+(opcional)
+(opcional)
+3 – 
+3 – Interruptor sistema refrigeración
+Interruptor sistema refrigeración
+4 – 
+4 – Interruptor 
+Interruptor analizador
+analizador
+ 
+Conexión eléctrica 
+ Proceda de la siguiente manera:
+1. Compruebe que los tres interruptores situados en el lateral derecho están en 
+posición de desconectado (O) y el interruptor general de la toma de red (1) 
+también está en posición de desconectado.
+2. Conecte el cable de red, primero al aparato y después a la red.
+3. Conmute el interruptor general (1) a la posición de conectado (I).
+4. Hay tres interruptores independientes, uno para el analizador, otro para el 
+refrigerador y el último para el módulo ISE.
+5. Para poner en funcionamiento el analizador, conmute el interruptor (4) a la 
+posición de conectado (I).
+6. Para poner en funcionamiento el refrigerador, levante la tapa de protección y 
+conmute el interruptor (3) a la posición de conectado (I).
+7. Para poner en funcionamiento el módulo ISE, levante la tapa de protección 
+y conmute el interruptor (2) a la posición de conectado (I).
+4.11. Conexión al ordenador
+El ordenador tiene que estar totalmente dedicado al funcionamiento del anali­
+zador. No se debe utilizar ninguna otra aplicación mientras el analizador está en 
+funcionamiento.

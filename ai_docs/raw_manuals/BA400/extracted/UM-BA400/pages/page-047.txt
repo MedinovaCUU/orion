@@ -1,0 +1,29 @@
+47
+47
+Ilustración 25 
+Opciones de reinicio
+Las actualizaciones de Windows y del antivirus pueden provocar una falta de 
+compatibilidad que afecte al funcionamiento del software del BA400: Aplicación 
+de usuario, aplicación de Servicio o Librerías de comunicaciones con LIS.
+Para recuperar con rapidez la operatividad, recomendamos que programe la rea­
+lización automática y periódica de puntos de restauración del sistema operativo.
+Si detecta algún problema de compatibilidad tras una actualización, reporte in­
+mediatamente el problema a su Servicio Técnico adjuntando un SATReport y la 
+fecha en la que observó el problema. Mientras Biosystems analiza el problema y 
+diseña una solución para garantizar la compatibilidad, restaure el sistema operativo 
+a la ultima fecha con funcionamiento estable, esto le permitirá seguir trabajando.
+Siga los pasos para configurar los puntos de restauración:
+• 
+Seleccione Todas las configuraciones
+• 
+En la barra de buscar escriba: Crear un punto de restauración
+• 
+Se abre una ventana para configurar los puntos de restauración
+• 
+Seleccione Unidad OS C: (sistema) y pulse Configurar
+ 
+)
+Véase Ilustración 26
+• 
+Active la protección del sistema y configure el espacio máximo de disco que 
+se usará para la protección del sistema. Seleccione cómo mínimo 10 Gbytes

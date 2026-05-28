@@ -1,0 +1,37 @@
+Manual usuario 
+ 
+ 
+ 
+Manual usuario 
+ 
+ 
+ 
+162
+162
+Biosystems
+Biosystems
+8. Pulse el botón para indicar al programa que ha realizado el cambio de rotor, 
+bajará la estación de lavado y iniciará el proceso de ajuste de luz con el nuevo 
+rotor. 
+10.9.2. Acondicionamiento analizador
+Utilidad para realizar el acondicionamiento fluídico del analizador. Entre otras 
+operaciones realiza un cebado del sistema fluídico.
+Asegúrese de que la toma trasera de agua y de residuos están bien conectadas, y que 
+la selección de la toma de agua en la pantalla de configuración está seleccionada 
+acorde a la conexión física.
+Si usa un depósito externo de agua, asegúrese de que esté lleno de agua.
+ 
+ 
+Pulse el botón para iniciar el proceso de acondicionamiento. Dicho proceso 
+tarda unos minutos.
+10.9.3. Línea base
+Utilidad para realizar la línea de base de manera manual. 
+En la pantalla aparece la información de la última vez que se ha realizado la línea 
+de base.
+ 
+ 
+Seleccione este botón para realizar el proceso de línea de base. La realización de 
+la línea de base es exactamente la misma que la realizada durante el inicio del 
+analizador (warm-up). 
+Ilustración 112 
+Pantalla para realizar manualmente la linea de base.

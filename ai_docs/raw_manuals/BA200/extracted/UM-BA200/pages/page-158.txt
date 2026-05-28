@@ -1,0 +1,47 @@
+Manual usuario 
+ 
+ 
+ 
+Manual usuario 
+ 
+ 
+ 
+158
+158
+Biosystems
+Biosystems
+Ilustración 101 
+Pantalla para acumular resultados control de calidad diarios.
+A la izquierda se muestra la lista de controles con resultados por acumular. Al 
+seleccionar un control de la lista, a la derecha de la pantalla mostrará, además del 
+número del lote activo, la lista de técnicas con resultados por acumular para el 
+control.
+ 
+ 
+Para el control seleccionado, carga la información a acumular para cada técnica. 
+La acción de doble-clic sobre un control en la lista es equivalente a la funcionali­
+dad de este botón.
+La información de la lista de técnicas con resultados por acumular para el control, 
+está distribuida en dos tablas:
+• 
+Valores del último acumulado: para cada técnica, si existen acumulados 
+previos para el control seleccionado, muestra los valores de media, desviación 
+estándar (SD) y rango de valores admisibles del último acumulado; en caso 
+contrario, las celdas correspondientes se muestran vacías. Con el tic se selec­
+ciona/deselecciona la técnica para acumulación (se carga/descarga de la tabla 
+de Datos a acumular).
+• 
+Datos a acumular: únicamente para las técnicas seleccionadas en la tabla 
+anterior, muestra el cálculo de los valores que se acumularán:
+Parámetro
+Cómo se calcula
+n
+Número total de valores que se acumularán
+Media
+Media estadística de los resultados.
+Media=
+∑
+i=1
+n
+X i
+n

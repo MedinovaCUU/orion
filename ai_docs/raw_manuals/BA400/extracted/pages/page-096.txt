@@ -1,0 +1,22 @@
+7.2.4. Inspect the cover and the structure
+1. Check that the general fans are functioning correctly. Put your hand on the exterior to verify that they expel 
+air. The general fans have no automatic operation detection system.
+2. Check that the wheels have no defects. 
+3. Check that the analyser is correctly positioned, and that the legs make contact with the floor. Tighten them 
+with a spanner.
+4. Check that the analyser is perfectly level with a levelling instrument. Tighten or loosen the legs until the analyser 
+is completely level.
+Checking the cover and legs:
+1. Check that the doors open and close properly and smoothly. Check that they are correctly aligned with each other.
+2. Check that the main cover is correctly supported when fully open and that when closing it, it does not fall 
+suddenly.
+3. Apply 1 drop of SAE-40 to the rear hinges of the main cover. Open and close the cover several times to help 
+distribute the oil in the hinge.
+4. Check the state of the “bumpers” (rubber stops for preventing the main cover from colliding), and if they are 
+worn or damaged, replace them.
+7.2.5. ISE module inspection
+Replace the peristaltic pump tubes every 6 months.
+Clean the ISE module sample entry opening.
+Check that the tubes are not blocked.
+Service Manual 
+96

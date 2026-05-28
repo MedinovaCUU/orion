@@ -1,0 +1,10 @@
+86
+Manual de servicio
+5.3.7.2. Cuentas de oscuridad
+El programa muestra los tiempos de integración actuales para cada uno de los filtros. Al ejecutar el test, el 
+analizador posiciona el filtro tapado y realiza, con cada uno de los tiempos de integración, una medida del 
+número de cuentas de oscuridad. Cada vez que se realiza una lectura óptica, el analizador substrae estas 
+cuentas de oscuridad de los números de cuentas medidos para obtener la intensidad luminosa. El programa 
+muestra los valores obtenidos y emite los avisos correspondientes en caso de anomalías. Los valores deben 
+estar alrededor de 4100 - 4300. Todos los números de cuentas mostrados por los tests que se detallan a con-
+tinuación tienen las cuentas de oscuridad substraidas.

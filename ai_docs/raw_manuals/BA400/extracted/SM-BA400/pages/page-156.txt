@@ -1,0 +1,18 @@
+5. Desatornille los 5 tornillos que sujetan el conjunto rotor a la base. Véase Ilustración 8.12
+6. Quite el conjunto rotor, siga los movimientos indicados en la Ilustración 8.13 para sacar el rotor del analizador.
+Ilustración 8.12 
+Tornillos sujeción del rotor
+Ilustración 8.13 
+Movimientos a realizar para sacar el rotor del analizador
+8.4. 
+Desmontaje rotor de muestras
+1. Quite la tapa superior
+ 
+) Véase capítulo 8.1.6
+2. Desenchufe los 2 ventiladores que están conectados a la placa CIIM00052
+3. Desenchufe el cable CAN.
+4. Quite el brazo de muestras
+ 
+) Véase capítulo 8.2
+Manual de servicio
+156

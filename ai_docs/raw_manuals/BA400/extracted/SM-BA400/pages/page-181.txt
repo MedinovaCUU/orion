@@ -1,0 +1,36 @@
+Montaje:
+1. Coloque la punta en su ubicación.
+2. Inserte el muelle (8), y resto de tuercas y arandelas en el orden de la Ilustración 8.36
+3. Sitúe el fijador muelle (4) a una altura de 13.5 mm. Fíjelo con las tuercas (2) y (6). Ayúdese con las dos llaves 
+fijas para apretar las tuercas.
+4. Verifique que el sistema antichoque de la punta funciona correctamente. 
+5. Para verificar el sistema antichoque de la punta: con el dedo o con una pieza de superficie plana se simula una 
+colisión de punta en movimiento vertical perfecto. El muelle tiene que subir y después recuperarse sólo y bajar 
+hasta la posición de reposo.
+6. Conecte los cables de la punta de la siguiente manera:
+Nombre conector
+HP
+TP
+DN
+Código cable
+PLMA0329
+PLMA0330
+PLMA0328
+Color cable
+Amarillo/Rojo
+Blanco
+Negro
+7. Coloque una brida para sujetar los cables a la placa electrónica. Asegúrese de que los cables no sobresalgan de 
+la placa electrónica en altura.
+8. Corte la cola de la brida.
+9. Conecte el tubo de teflón a la punta. Para apretar el racor sujete la punta por el punto (1).
+10. Verifique que el sistema antichoque de la punta funciona correctamente. Según el punto 4.
+11. Verifique que el led LD2 de la placa se enciende cuando corta el fotodetector, y está apagado cuando la punta 
+está en modo reposo.
+12. En caso de que el detector de colisión esté muy justo con el fotodetector, suba 1 mm la placa electrónica de su 
+posición.
+13. Coloque la tapa del brazo.
+14. Ajuste con el programa de servicio el valor de Zref de la punta.
+ 
+) Véase capítulo 4 para realizar el ajuste.
+181

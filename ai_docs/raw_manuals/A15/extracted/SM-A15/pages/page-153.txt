@@ -1,0 +1,74 @@
+Manual de servicio
+154
+F1 340 nm
+[180,420]
+F2 405 nm
+[40,150]
+F3 505 nm
+[40,150]
+F4 535 nm
+[40,150]
+F5 560 nm
+[40,150]
+F6 600 nm
+[40,150]
+F7 635 nm
+[40,150]
+F8 670 nm
+[50,150]
+Números de cuentas
+F1 340 nm
+[750000,960000]
+F2 405 nm
+[840000,940000]
+F3 505 nm
+[840000,940000]
+F8 670 nm
+[840000,940000]
+Cuentas de oscuridad
+F1 340 nm
+[3700,4800]
+F2 405 nm
+[3700,4300]
+F3 505 nm
+[3700,4300]
+F8 670 nm
+[3700,4300]
+Repetibilidad SMF (Ruido) 
+Desv. Est. NC. F0 Tapado
+≤ 55
+Desv. Est. Abs. F1 340 nm
+≤ 0.0004
+Desv. Est. Abs. F2 405 nm
+≤ 0.0006
+Desv. Est. Abs. F3 505 nm
+≤ 0.0004
+Desv. Est. Abs. F8 670 nm
+≤ 0.0007
+Estabilidad a 505 nm
+Desv. Est. Abs. F3 505 nm
+≤ 0.0008
+NC máx
+[840000,940000]
+NC mín
+[840000,940000]
+NC máx / NC mín
+≤ 1.006
+Repetib. MF 
+(Repetibilidad)
+Desv. Est. Abs. F1 340 nm
+≤ 0.0008
+Desv. Est. Abs. F2 405 nm
+≤ 0.0006
+Desv. Est. Abs. F3 505 nm
+≤ 0.0005
+Desv. Est. Abs. F4 535 nm
+≤ 0.0005
+Desv. Est. Abs. F5 560 nm
+≤ 0.0005
+Desv. Est. Abs. F6 600 nm
+≤ 0.0005
+Desv. Est. Abs. F7 635 nm
+≤ 0.0005
+Desv. Est. Abs. F8 670 nm
+≤ 0.0005

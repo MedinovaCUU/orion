@@ -1,0 +1,31 @@
+Durante el proceso de manipulación del recambios de la bomba asegurase de no tocar con los dedos la ventana del 
+manifold o limpiar después de la manipulación.
+8.14.1. AC16565 - Placa detector inicio / AC17285 - Placa led manifold
+Herramientas: Llave allen número 2.5, lalve torx T10
+Desmontaje placa de LEDs: 
+1. Desconecte los dos cables de la placa LEDS
+2. Quite los 3 clips (1) y la tapa (2) del conjunto bomba
+3. Quite la placa de LED (3) 
+Montaje placa de LEDs: 
+1. Sustituya la placa de LEDS (3). Oriente correctamente la placa en su posición y introdúzcala en su ranura.
+2. Coloque la tapa (2) y los 3 clips (1) que sujetan la tapa en la bomba.
+3. Verifique que la tapa está correctamente orientada y ajustada con la ventana del manifold (4)
+4. Conecte los dos cables de la placa de LEDS. Encienda el analizador para verificar el funcionamiento de los LEDS.
+Desmontaje placa detector inicio: 
+1. Desconecte el cable de la placa detector de inicio
+2. Desatornille los 2 tornillos (5) que sujetan a la placa
+3. Quite la placa detector de inicio (6) 
+Montaje placa detector de inicio: 
+1. Sustituya la placa detector de inicio (6)
+2. Coloque los 2 tornillos (5) que sujetan a la placa. Alinee la placa detector de inicio cuando apriete los tornillos
+3. Conecte el cable del detector de inicio. Verifique su funcionamiento con el programa de servicio.
+1
+2
+3
+5
+6
+4
+Ilustración 8.69 
+Desmontaje placa de LEDS y detector de inicio
+Manual de servicio
+180

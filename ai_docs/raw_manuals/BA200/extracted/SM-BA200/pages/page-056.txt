@@ -1,0 +1,71 @@
+56
+HORIZONTAL
+DETECTOR
+HORIZONTAL
+MOTOR
+CIIM00048
+BR1
+VERTICAL
+DETECTOR
+VERTICAL
+MOTOR
+BA1
+CAN BUS
+MOTOR H
+HOME H
+HOME V
+MOTOR V
+MOTOR H
+HOME H
+HOME V
+MOTOR V
+1
+2
+3
+4
+5
+6
+1
+6
+2
+5
+4
+1
+2
+3
+4
+5
+6
+CN15
+1
+2
+3
+CN16
+1
+2
+3
+4
+5
+CN14
+1
+2
+3
+4
+1
+6
+2
+5
+4
+CN10
+1
+2
+3
+CN7
+1
+2
+3
+4
+Ilustración 4.34 
+Conexiones de la placa brazo
+Ilustración 4.35 
+Serigrafía placa brazo.

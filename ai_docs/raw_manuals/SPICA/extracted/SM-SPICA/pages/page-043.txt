@@ -1,0 +1,16 @@
+43
+43
+43
+GUÍA DE 
+SERVICIO
+Manual de Usuario BioSystems SPICA
+Manual de Usuario BioSystems SPICA | Versión 2.8 - Agosto 2024
+43
+Este manual está destinado a los profesionales del servicio técnico que realizan tareas 
+de man-tenimiento preventivo y de reparación del analizador. Estos profesionales habrán 
+recibido una formación especial que les permitirá realizar las tareas descritas en las 
+páginas siguientes.
+Este manual describe las características mecánicas, electrónicas y de servicio App para 
+ayudar a los técnicos a realizar los trabajos de mantenimiento y reparación. También 
+describe los pa-sos para desmontar y cambiar los diferentes elementos que componen 
+el analizador.

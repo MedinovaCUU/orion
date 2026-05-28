@@ -1,0 +1,28 @@
+8.12.2. AC17287 - Calefactor estación de lavado
+Herramientas: Llave allen 2.5
+Desmontaje:
+1. Quite la chapa superior.
+ 
+) Véase Capítulo 8.1.7
+2. Para acceder con facilitad al calefactor desmonte el desgasificador.
+3. Desenchufe todos los tubos del calefactor. Vaya con cuidado al quitar los tubos para no deformarlos. Para sacar 
+los tubos de su alojamiento, no los estire por el punto medio sino cógelo por el extremo. En caso de que se 
+deformen, cámbielos por unos nuevos.
+4. Desconecte el cable del calefactor. Quite la bomba de pistones y la chapa protectora para acceder a la placa de 
+fluidos.
+5. Quite los 2 tornillos (1)
+6. Retire el calefactor
+Montaje:
+1. Coloque el calefactor en su ubicación y sujételo con los tornillos (1).
+2. Conecte el cableado del calefactor en la placa de fluidos.
+3. Monte la bomba de pistones.
+4. Conecte los tubos para la solución de lavado según la Ilustración 8.45, 
+5. Conecte los tubos para el agua destilada según la Ilustración 8.46 
+6. Tenga en cuenta el momento de conectar la entrada y salida en las checkvalves según la Ilustración 8.47. 
+7. Vuelva a montar el desgasificador.
+8. Verifique la correcta dispensación de la estación de lavado con el programa de servicio
+1
+Ilustración 8.44 
+Desmontaje calefactor
+Manual de servicio
+162

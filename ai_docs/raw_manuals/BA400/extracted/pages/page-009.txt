@@ -1,0 +1,37 @@
+9
+Symbol
+Description
+Medical device for In Vitro Diagnostics
+Please consult the directions for use
+Serial number
+Expiry date
+Batch code
+Catalogue number
+Temperature limit
+Manufacturer
+Irritant
+Safety precautions
+Symbol
+Description
+Preventing electric shock
+To prevent the risk of electrocution. Do not remove any of the analyser 
+housing elements. No user intervention makes it necessary to access the parts 
+inside the equipment. If necessary, contact the technical assistance service.
+BIOHAZARD
+Preventing biological risks in handling the samples
+Inappropriate handling of samples, controls and calibrators could cause 
+biological infection. Do not touch the samples, mixtures or waste with your 
+hands. Wear gloves and protective clothing when necessary.
+In the event that the samples come into contact with the skin, wash 
+immediately with abundant water and seek medical advice. It is advisable to 
+follow best laboratory practices.
+WARNING
+Prevention in handling reagents
+Handle reagents and washing solutions with care, they contain substances that 
+could be corrosive.
+In the event that the reagents or washing solutions come into contact with the 
+skin, wash immediately with abundant water and in the event of a reaction, 
+seek medical advice. 
+Consult the reagent or washing solution adaptation sheet and follow the 
+safety instructions.
+It is advisable to follow good laboratory practices.

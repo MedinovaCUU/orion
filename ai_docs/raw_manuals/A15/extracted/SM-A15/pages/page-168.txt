@@ -1,0 +1,160 @@
+169
+de rack.
+ 
+ 
+ 
+Corrección de la gestión de las bireactivas con 10 minutos de tiempo de 
+lectura y con contaminaciones programadas
+6/02/07 
+3.12 
+Aumento del tiempo de estabilización de la conmutación de la electrovál-
+vula de 3 vias
+07/03/07 
+3.14 
+Corrección: cuando se realiza un shut-down y luego un warming-up sin 
+desconectar el analizador la termostatización de la punta no se activa.
+ 15/05/07 
+3.20 
+Incorporado un sistema de autodiagnóstico para uso interno.
+ 29/10/07 
+3.24 
+Mejora en la protección del cambio de estado de shutdown a sleeping.
+ 
+ 
+ 
+Corrección en la maniobra de lavado inicial cuando previamente la tapa se 
+había abierto y cerrado.
+ 
+ 
+ 
+Mejora en el sistema de autoapagado después de realizar un estresamien-
+to global. Si el programa de servicio está conectado no se apaga, en caso 
+contrario sí. 
+ 16/04/08 
+3.28 
+Corrección de la maniobra de predilución cuando se utilizan racks 
+ 
+ 
+ 
+de tubos.
+22/01/09 
+3.50 
+Mejora en el sistema de ajuste de la bandeja de racks y de reactivo. Nue-
+vos mapas de sensibilidad para los racks mejorados.
+ 17/07/09 
+3.61 
+Incorpora los dos tipos de mapas de sensibilidad para racks metalizados y 
+para racks de plástico (sin metalizar) 
+ 
+ 
+ 
+Corrección en la entrada del número de serie.
+ 
+ 
+ 
+Protección en la maniobra de shut-down
+ 14/05/10 
+3.70 
+Mejora en la maniobra de las prediluciones
+ 
+ 
+ 
+Mejora en la maniobra de las técnicas bireactivas con tiempos de lectura 
+de 600seg 
+ 
+11/6/14 
+4.12 
+Mejora en la detección de muestras en casos particulares
+ 
+9/11/15 
+5.10 
+Incorporado un sistema automático de autocentrado del rotor
+ 15/03/17 
+6.02 
+Firmware necesario para los instrumentos con nevera
+ 15/12/17 
+6.16 
+Firmware que incorpora el nuevo tipo de tubo para heces
+ 16/10/19 
+6.19 
+Ampliación de los margenes de aceptación de la linea de base para el 
+340nm
+Tabla de compatibilidades A15
+Usua. A15 
+4.7 
+4.8.3 
+4.9.1 
+4.9.3 
+ 5.2 
+5.4
+firmware 
+3.70 
+x 
+x 
+x 
+x
+4.12 
+ 
+x 
+x 
+x 
+x
+5.10 
+ 
+x 
+x 
+x 
+x
+6.02 
+ 
+ 
+ 
+ 
+x 
+x 
+6.16 
+ 
+ 
+ 
+ 
+ 
+x 
+x
+6.19 
+ 
+ 
+ 
+ 
+ 
+x 
+x
+Se recomienda instalar siempre la última versión de firmware existente.
+Cambios en las versiones del programa de usuario Y15
+Fecha 
+ Versiones 
+Cambios
+ 4/07/09 
+4.0.7 
+Posicionamiento del reactivo en tubos primarios y rack de muestras.
+ 
+ 
+ 
+Impresión de la curva de calibración
+ 16/03/09 
+4.0.9 
+Personalización del programa de A15, cambio de iconos, cambio del 
+nombre de tipos de muestra: WINE, MOST, BEVE y WAT.
+ 
+ 
+ 
+Incluido técnicas de absorbancia y técnicas calculadas:
+ 
+ 
+ 
+ 
+ICM=A420+A520+A620
+ 
+ 
+ 
+ 
+Tint=A420/A620

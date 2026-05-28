@@ -1,0 +1,28 @@
+45
+45
+4.12.3.4. Ejecutar el antivirus antes de realizar la instalación de la aplicación
+Antes de instalar la aplicación del BA400 ejecute el antivirus para asegurarse de 
+que el sistema está limpio de virus.
+Siga los pasos siguientes:
+• 
+Seleccione Todas las configuraciones
+• 
+Seleccione Actualización y seguridad
+• 
+Seleccione Windows defender
+• 
+Seleccione Abrir centro de seguridad de windows defender
+• 
+Seleccione Examen avanzado
+ 
+)
+Véase Ilustración 23
+• 
+Seleccione Examen completo
+Ilustración 23 
+Pantalla de ejecución del antivirus
+4.12.3.5. No instale ningún programa adicional
+Instale únicamente aquellos programas en el sistema que vaya a utilizar. Programas 
+antivirus, sistema de comunicaciones con el host. 
+No instale ningún otro programa extra ya que puede afectar a la seguridad o a la 
+estabilidad de la aplicación.

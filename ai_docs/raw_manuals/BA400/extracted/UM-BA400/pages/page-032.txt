@@ -1,0 +1,31 @@
+Manual usuario 
+ 
+ 
+ 
+Manual usuario 
+ 
+ 
+ 
+32
+32
+Biosystems
+Biosystems
+El rotor de muestras segmentado consta de 9 segmentos con 14 posiciones en 
+cada segmento.
+Cada segmento va numerado de la posición 1 a la 14. Las posiciones que se puede 
+leer los códigos de barras de las muestras son de la 1 a la 9.
+El analizador procesa las muestras en orden creciente dentro de cada segmento y 
+una vez finalizado un segmento procesa el siguiente. El orden de procesamiento 
+de los segmento sigue en el sentido a contrareloj.
+Usando la función de la pausa del analizador se pude quitar, añadir y cambiar de 
+sitio los segmentos en medio de una sesión, quitando, añadiendo y cambiando 
+de sitio las muestras en los segmento. El sistema nos avisa debidamente cuando 
+se detecta un cambio de posición de las muestras para que el usuario confirme si 
+permite la operación.
+Se puede usar un segmento para colocar todas las muestras con calibradores y 
+controles. El posicionamiento automático de calibradores y controles se priorizarán 
+en un mismo segmento si existen suficientes posiciones disponibles
+Ilustración 9 
+Rotor de muestras segmentado
+Ilustración 10 
+Un segmento del rotor de muestras

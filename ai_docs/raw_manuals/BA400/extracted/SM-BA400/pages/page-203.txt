@@ -1,0 +1,32 @@
+2. En los analizadores anteriores a la modificación, introduzca las tuercas y arandelas en los tornillos hasta al final 
+de la rosca.
+3. Coloque el ventilador según indican las flechas y apriete los tornillos. Fíjese que el flujo de aire del ventilador 
+tiene que soplar hacía el radiador.
+4. Apriete fuertemente las tuercas.
+5. Conecte el ventilador o con el conector aéreo o en la placa electrónica.
+8.11.7. AC16627 - Peltier nevera
+13
+15
+16
+17
+18
+11
+14
+12
+19
+Ilustración 8.60 
+Desmontaje conjunto peltier
+1
+2
+2
+1
+Ilustración 8.61 
+Posicionamiento y colocación de las peltiers
+ 
+) Véase el capítulo AII para saber a partir de que número de serie se ha implementado el cambio conjunto peltier.
+Herramientas: Llaves allen del 2.5
+Desmontaje:
+Las peltiers van unidas dos a dos. Al cambiar una peltier tendrá que cambiar dos unidades.
+1. Afloje los tornillos (12) para desmontar el ventilador (11)
+2. Afloje los tornillos (14) para desmontar el radiador (13)
+203

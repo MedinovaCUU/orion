@@ -1,0 +1,12 @@
+133
+6
+5
+Ilustración 6.37 Desmontaje fuentes de alimentación
+4
+5
+7
+Ilustración 6.38 Desmontaje fuentes de alimentación
+6.5.4. AC17323 - Placa eléctrónica del refrigerador
+1. Abatir la tapa trasera de la electrónica.
+2. Extraer los conectores (1)
+3. Extraer la placa de los separadores (2)

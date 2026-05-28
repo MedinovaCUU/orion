@@ -1,0 +1,26 @@
+227
+227
+Menú
+Submenú
+Descripción
+Ayuda
+Manual de Usuario
+Acceso directo al manual de 
+usuario
+Información del 
+analizador
+Acceso a la información del 
+número de serie
+Acerca de
+Acceso a la versión del 
+programa
+Menú
+Submenú
+Descripción
+Salir
+Con Apagado
+Opción de salir apagando el 
+analizador
+Sin Apagado
+Opción de salir sin apagar el 
+analizador

@@ -1,0 +1,43 @@
+Manual de servicio
+24
+2.8. Brazo de dispensación 
+El analizador dispone de 3 brazos para la dispensación de muestras y reactivos.
+Hay un brazo para dispensar las muestras de suero y orina y dos brazos para dispensar los reactivos. Uno sirve para 
+dispensar el reactivo 1 y el otro para dispensar el reactivo 2 sólo en aquellas reacciones bireactivas.
+Cada brazo dispone de su estación de lavado para limpiar la punta por dentro y por fuera.
+Los volúmenes que puede dispensar cada brazo son los siguientes:
+• 
+Brazo de muestras: de 2 μL hasta 40 μL
+• 
+Brazo de reactivos R1: de 120 μL hasta 450 μL 
+• 
+Brazo de reactivos R2: de 10 μL hasta 300 μL
+Cada brazo dispone de una punta con un sistema automático de detección de nivel. La punta desciende hasta alcanzar 
+el nivel de reactivo o muestra según el caso y así aspira el volumen programado. De esta manera se evita descender 
+demasiado la punta en el interior del líquido y se simplifica la limpieza exterior de la punta.
+Cada brazo incorpora un sistema de detección de colisión vertical para detectar choques de la punta y así evitar que 
+se estropee. 
+El brazo de dispensación de la muestra incorpora un detector de coágulo. Este sistema avisa al usuario cuando la 
+punta ha quedado obstruida en el momento de la aspiración de la muestra. La obstrucción puede venir debido a 
+restos de fibrina o a restos de coágulo que estén presentes en la muestra de suero.
+2.9. Módulo ISE (opcional)
+El módulo de iones ISE es un módulo opcional que sirve para la determinación de los iones Na+, K+, Cl- y Li+ en 
+las muestras de suero y orina.
+El módulo de iones es totalmente autónomo y funciona en paralelo juntamente con las determinaciones de bioquímica. 
+Cuando está programada en la lista la realización de iones ISE en los pacientes, es el brazo de dispensación de las 
+muestras el encargado de posicionar la muestra en el módulo de iones.
+El módulo dispone de un kit totalmente sellado que contiene los calibradores y recoge los residuos. Este kit es un 
+accesorio y se accede a su alojamiento desde la parte frontal del analizador.
+2.10. Modo de funcionamiento
+El analizador lleva a cabo los análisis paciente a paciente y permite la introducción continua de muestras. El control 
+del analizador se realiza desde un ordenador personal dedicado, en permanente co­mu­nicación con el instrumento. 
+El programa de aplicación, instalado en el ordenador, mantiene al usuario constantemente informado del estado 
+del analizador y del progreso de los análisis. A medida que van obteniéndose resultados, el orde­na­dor los muestra 
+inmediatamente al usuario.
+Cuando se inicia una Sesión de Trabajo, el ana­li­zador propone la realización de los blancos, calibra­dores y controles 
+programados para los procedimientos de medida que debe llevar a cabo. El usuario puede escoger realizar o no los 
+blancos y los calibrado­res. Si no los realiza, el analizador utiliza los últimos datos disponibles. Los controles tam­
+bién pueden activarse o no. Durante una sesión, mientras el analizador está trabajando, el usuario puede introducir 
+nuevas muestras a analizar, normales o urgentes. Cada vez que se añade una nueva muestra, el analizador propone 
+automáti­ca­mente los posibles nuevos blancos, calibradores o controles que sea necesario realizar. Se recomienda 
+reiniciar la sesión en cada jornada de trabajo.

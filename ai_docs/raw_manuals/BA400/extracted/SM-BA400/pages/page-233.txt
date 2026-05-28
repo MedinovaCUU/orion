@@ -1,0 +1,25 @@
+Montaje:
+1. Sustituya la placa (50).
+2. Oriente correctamente la placa y colóquela en su posición
+3. Conecte cada uno de los cables en su posición. En el capítulo 4.6 indica como conectar cada uno de los cables.
+50
+Ilustración 8.91 
+Cambio placa control de fotometría
+8.13.17. AC16560 - Placa fotometría - CIIM0051
+Herramientas: Allen 2.5
+Desmontaje:
+1. Desconecte todos el cableado que va a la placa de control de fotometría - CIIM00050. Libere el cableado de 
+las piezas que 
+2. Desatornille los 4 tornillos (51)que sujetan la placa de fotometría CIIM0051 al rotor. Hay uno de los tornillos 
+que conecta el cable de toma de tierra (52).
+3. Separe el conjunto de las 2 placas (fotometría y control de fotometría) del resto del rotor
+4. Desconecte la banda plana que comunica la placa de fotometría con la del control de fotometría.
+5. Desatornille los 2 tornillos (54) con sus arandelas y arandelas de seguridad que sujetan la placa de fotometría 
+a la pieza de soporte.
+6. Desatornille los 4 tornillos (55) que sujetan el banco óptico a la placa.
+7. Quite la abrazadera (57)
+8. Al separar el banco óptico de la placa electrónica vaya con cuidado con los protectores de los fotodiodos (56).
+Montaje:
+1. Sustituya la placa (53).
+2. Coloque correctamente en cada fotodiodo su protector (56)
+233

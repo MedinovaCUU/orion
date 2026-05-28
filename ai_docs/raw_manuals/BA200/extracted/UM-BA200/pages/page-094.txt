@@ -1,0 +1,58 @@
+Manual usuario 
+ 
+ 
+ 
+Manual usuario 
+ 
+ 
+ 
+94
+94
+Biosystems
+Biosystems
+ 
+Nombre del informe 
+Nombre de la técnica que aparecerá en el informe por paciente. Si no hay 
+ningún nombre entrado en este campo en el informe de paciente aparecerá el 
+nombre de la técnica.
+10.3.1.3. Parámetros técnicas: procedimiento
+Ilustración 56 
+Pantalla parámetros técnicas, procedimiento
+ 
+Modo de lectura 
+Seleccione una de las dos opciones: monocromática o bicromática. El cálculo de 
+la absorbancia depende del modo de lectura.
+ 
+)
+Véase cómo se realizan los cálculos de la absorbancia en el capítulo 15.
+ 
+Filtro principal 
+Seleccione el valor del filtro principal con el que se realizarán las lecturas.
+ 
+Filtro de referencia 
+Seleccione el valor del filtro de referencia. Este campo únicamente se activará si 
+se ha seleccionado el modo de lectura bicromático.
+ 
+Volumen de muestra 
+Introduzca el volumen de muestra para realizar la preparación. El margen de 
+volúmenes para muestra es de 2 mL a 40 mL. Se puede introducir el volumen en 
+fracciones de décimas de mL.
+ 
+Volumen de reactivo 1 
+Introduzca el volumen del reactivo 1 para realizar la preparación. El margen de 
+volúmenes va de 90 mL a 300 mL.
+ 
+Volumen de reactivo 2 
+Introduzca el volumen del reactivo 2 para realizar la preparación. El margen de 
+volúmenes va de 10 mL a 100 mL. Este campo únicamente se activa cuando está 
+seleccionado en el modo de análisis la opción de bireactivas.
+ 
+Tiempo de lectura 1 
+Introduzca el tiempo en que realizará la lectura para el cálculo de la absorban­
+cia. Se puede introducir en segundos o en ciclos. Los márgenes de los tiempos 
+van del ciclo 2 al 35 cuando la reacción es monoreactiva y de 2 a 18 cuando la 
+reacicón es bireactiva.
+ 
+Tiempo de lectura 2 
+Introduzca el tiempo en que realizará la última lectura. Este campo se activará 
+para aquellos métodos de cálculo cinéticos, tiempo fijo o diferencial. Los már­

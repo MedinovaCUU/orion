@@ -1,0 +1,40 @@
+El nivel del depósito interior de agua destilada está controlado por un sistema de boyas que indicará al programa 
+cuando el depósito está lleno o vacío. 
+Internamente también hay el depósito de residuos de baja contaminación. Igualmente el nivel de este depósito está 
+controlado por un sistema de boyas. 
+Cuando el sistema comprueba que el depósito está lleno, el programa activa la bomba (15) para vaciarlo al exterior.
+Sistema de pipeteo
+Cada una de las puntas, muestra, reactivo 1 y reactivo 2, están conectadas directamente a su respectiva bomba ce­
+rámica del conjunto del manifold. 
+Cuando las bombas están aspirando o dispensando muestra o reactivo, las electroválvulas JE1-EV1, JE1-EV2 y 
+JE1-EV3 están cerradas.
+Durante el proceso de limpieza interna de la punta, las anteriores electroválvulas están abiertas y puede dispensar 
+agua destilada, solución de lavado o aire, en función de la selección que se realiza en el pre-manifold.
+El pre-manifol selecciona o agua o solución de lavado o aire según el estado de las electroválvulas (20) y (21). Con 
+las bombas (22), (23) y (24) impulsa el líquido seleccionado por la punta de muestra, de reactivo 1 y de reactivo 2 
+respectivamente.
+La puntas también son lavadas externamente en la estación de lavado. En el lavado externo se usa agua destilada y 
+es impulsada a la punta de muestra por la bomba (7), a la punta de reactivo 1 y el agitador 2 por la bomba (6) y a 
+la punta de reactivo 2 y el agitador 1 por la bomba (5). 
+Estación de lavado
+El sistema de lavado del rotor está compuesto por 10 etapas.
+ 
+) Véase capítulo 2.5 para la explicación de cada etapa de la estación de lavado.
+La dispensación de cada punta se realiza con una bomba que acciona 5 pistones. La bomba se mueve por el motor 
+(19). Cada pistón está conectado a una electroválvula (17) donde las 2 primeras puntas dispensa solución de lavado 
+y las 3 restantes agua destilada.
+La punta de la primera etapa aspira los residuos de alta contaminación a través de la bomba (4) y los dispensa di­
+rectamente a la botella destinada a tal fin. 
+Las puntas de las etapas 2 y 4 son aspiradas por la misma bomba (11), la aspiración se vacía en el depósito de resi­
+duos de baja contaminación.
+Las puntas de las etapas 5 y 6 son aspiradas por la bomba (10), y también se vacían en el depósito de residuos de 
+baja contaminación.
+La punta de la etapa 9 es aspirada por la bomba (9) y la punta de la etapa 10 realiza el secado por la bomba (8). Estas 
+dos últimas bombas vacían la aspiración en el depósito de residuos de baja contaminación.
+3.11.1. Modificación de la conexiones de fluidos. Unificación del premanifold con el manifold
+Conjuntamente a la modificación del conjunto de bombas de dispensación también se modifica el conjunto pre­
+manifold.
+ 
+) Véase el capítulo AII para saber a partir de que números de serie se ha implementado.
+Manual de servicio
+56

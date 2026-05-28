@@ -1,0 +1,30 @@
+Manual usuario 
+ 
+ 
+ 
+Manual usuario 
+ 
+ 
+ 
+174
+174
+Biosystems
+Biosystems
+Lista de accesorios modulo ISE (Opcionales)
+Código
+Representación
+Descripción 
+5207
+Electrodo Cl-
+5205
+Electrodo Li+
+5206
+Electrodo separador
+5204
+Electrodo de referencia
+5421
+Kit de solución de lavado del módulo ISE
+5412
+Dilución de orina módulo ISE 125 mL
+AC16752
+Kit de limpieza para ISE

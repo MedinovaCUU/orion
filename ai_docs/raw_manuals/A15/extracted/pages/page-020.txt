@@ -1,0 +1,22 @@
+21
+• 
+Instalar la versión del programa de servicio v4.2.2
+• 
+Realizar el ajuste de posicionamiento para el nuevo tipo de tubo (STOOL). En el capítulo 4.2.3.4 indica como 
+realizar el nuevo ajuste. 
+• 
+Realizar el ajuste de la sensibilidad para el nuevo tipo de tubo colectores de heces (Stool). En el capítulo 4.2.7 
+indica como realizar el ajuste.
+Los códigos de recambio de los elementos a sustituir son:
+AC17342 
+Punta del A15 para determinar analitos en heces
+AC17343 
+CD programa usuario A15 para heces
+Si va a utilizar el analizador para medir analitos en heces, no mezcle los diferentes tipus de muestra en el mismo 
+analizador.
+BIOHAZARD
+La punta para la determinación de los analitos en heces es especial ya que termina en una punta 
+cortante para perforar el operculo del tubo primario. 
+Vaya con mucho cuidado al realizar las operaciones de mantenimiento y/o reparación que tengan 
+relación con la punta. Vigile mucho cuando manipule o reajuste la punta en no pincharse. La punta 
+puede ser potencialmente infecciosa. Utilice guantes y vestimenta de protección al manipular la punta.

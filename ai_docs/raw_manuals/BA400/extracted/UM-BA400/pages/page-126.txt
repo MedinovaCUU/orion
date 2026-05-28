@@ -1,0 +1,41 @@
+Manual usuario 
+ 
+ 
+ 
+Manual usuario 
+ 
+ 
+ 
+126
+126
+Biosystems
+Biosystems
+ 
+)
+Véase Ilustración 86
+En esta pantalla se mostrarán aquellos segmentos que no se han posicionado 
+ni manualmente en el rotor ni se han leído con el código de barras. El operario 
+también puede posicionar las muestras en estos segmentos arrastrándolos desde el 
+árbol de elementos necesarios hasta la posición deseada.
+Encima de cada segmento encontrará un selector para mostrar los segmentos no 
+posicionados. Escoja el segmento deseado para el posicionamiento manual de las 
+muestras para que coincida con el segmento físico que tenga fuera del analizador.
+Una vez el código de barras del segmento sea leído por el analizador o sea posicio­
+nado manualmente en el área del rotor de muestras, este segmento desaparecerá 
+de esta pantalla y se mostrará en la pantalla del rotor de muestras.
+ 
+ 
+Botón que se activa cuando el operario cambia de posición un segmento con 
+muestras ya iniciadas durante una pausa. Al pulsar el botón aparece una ventana 
+emergente indicando las muestras ya iniciadas que han cambiado de posición 
+para que el operario las rectifique y las coloque en la posición inicial.
+Ilustración 86 
+Pantalla donde se muestra los segmentos fuera del analizador
+10.5.5. Creación de la lista de trabajo desde la pantalla de posicionamiento 
+de las muestras
+Cuando se realiza un lectura de códigos de barras de los tubos de muestra posicio­
+nados en el rotor y no hay técnicas solicitadas para alguna de las muestras, se abre 
+automáticamente esta pantalla que permite completar la sesión de trabajo solici­
+tando la información a LIS mediante un Query por espécimen o manualmente. 
+Desde esta pantalla se pueden realizar Queries o añadir técnicas a cualquier tubo de 
+muestra posicionado que esté en color gris (es decir sin técnicas asignadas). Tanto

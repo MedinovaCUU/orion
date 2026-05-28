@@ -1,0 +1,75 @@
+Manual usuario 
+ 
+ 
+ 
+Manual usuario 
+ 
+ 
+ 
+146
+146
+Biosystems
+Biosystems
+Campo
+Descripción
+Unidades
+Muestra las unidades en que se ha programado la 
+técnica.
+Factor
+Valor calculado a partir de la absorbancia del 
+calibrador y que intervendrá en el cálculo de la 
+concentración.
+Límites del factor
+Límite del factor introducido en la programación 
+de la técnica. Si el valor del factor está fuera de 
+los límites aparecerá un aviso en el campo de 
+observaciones.
+Observaciones
+Muestra las alarmas que pueden aparecer en los 
+resultados. 
+ 
+) Véase las posibles alarmas en el capítulo 12 
+Fecha
+Fecha en que se ha entregado el resultado
+Modo de repetición
+Muestra el modo en que se ha repetido la muestra.
+La tabla de resultados de controles contiene la siguiente información:
+Campo
+Descripción
+ 
+Botones que permiten desplegar o plegar los 
+replicados de un resultado.
+Si se pulsa el icono del cabecero despliega o pliega 
+todas los controles diferentes que tenga la técnica.
+Sólo aparece uno de los dos iconos, cada vez que 
+pulse encima del icono se cambiará uno por el otro 
+alternativamente. 
+OK
+Indica que el resultado ha sido aceptado. Será 
+enviado al histórico y a LIS. Cuando se realizan 
+repeticiones, se acepta siempre por defecto el 
+último resultado. Si lo desea, puede aceptar varios 
+resultados o ninguno.
+Indica si se ha enviado al LIS, automáticamente o 
+de manera manual.
+Nuevo 
+Permite realizar una repetición del resultado.
+ 
+) Véase las diferentes opciones de repetición en el 
+capítulo 10.7.4
+Nombre
+Muestra el nombre del control
+Lote
+Muestra el lote del control
+Tipo
+Muestra el tipo
+Permite acceder a la visualización de la gráfica de la 
+cinética de reacción.
+Número
+Indica la numeración del replicado, cuando hay 
+más de un replicado
+Absorbancia
+Valor de la absorbancia del control obtenido.
+Concentración
+Valor de concentración calculada del control.
+Pestaña de controles

@@ -1,0 +1,50 @@
+Manual usuario 
+ 
+ 
+ 
+Manual usuario 
+ 
+ 
+ 
+104
+104
+Biosystems
+Biosystems
+10.3.4. Perfiles
+Los perfiles son el nombre que se le da a un conjunto de técnicas con significado 
+diagnóstico. Sirve para facilitar la programación del usuario en el momento de 
+crear la lista de trabajo. 
+Ilustración 68 
+Pantalla introducción información de los perfiles
+ 
+)
+Véase el funcionamiento de los iconos de creación, edición, borrado e impresión de la 
+pantalla de las técnicas en el capítulo 10.3.1
+Parámetros a programar en los perfiles:
+ 
+Nombre 
+Nombre del perfil.
+ 
+Tipo de muestra 
+Seleccione el tipo de muestra que tendrá el perfil.
+ 
+Tipo de técnica 
+Seleccione el tipo de técnica, pueden ser: técnicas estándar, técnicas calculada, 
+ISE, o externas. Sirve para filtrar el número de técnicas a mostrar en la columna 
+de selección. 
+ 
+ 
+Seleccione las diferentes técnicas que quiera que formen el perfil. Puede usar las 
+teclas CRTL y MAYUSCULAS para realizar una selección múltiple.
+ 
+ 
+Añade al perfil las técnicas seleccionadas.
+ 
+ 
+Elimina una técnica del perfil.
+ 
+ 
+Añade al perfil todas las técnicas a la vez.
+ 
+ 
+Elimine del perfil todas las técnicas a la vez.

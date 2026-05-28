@@ -1,0 +1,56 @@
+215
+215
+E x=E SRT
+nF ⋅logC 
+(14)
+Símbolo
+Descripción
+Ex 
+ Potencial del electrodo en la solución de la muestra
+ES 
+ Potencial desarrollado en las condiciones estándar
+RT/nF 
+ Constante dependiente de la temperatura
+a 
+ Coeficiente de actividad del ion medido en la solución 
+C 
+ Concentración del ion medido en la solución
+Para medir se utiliza un método comparativo. Primero, el módulo ISE mide los 
+potenciales desarrollados por la muestra cuando está posicionada en los electrodos. 
+Luego, el calibrador A para muestras de suero y plasma o el calibrador B para mues­
+tras de orina es posicionado en los electrodos. La diferencia entre las dos medidas 
+para cada ion es proporcional al logaritmo del cociente entre la concentración del 
+ion en la muestra y en la solución calibradora. El factor de proporcionalidad (S) 
+se calcula en una operación previa de calibración indicada más adelante. Puesto 
+que las diferencias de potencial de las concentraciones de los iones en la solución 
+calibradora son conocidas, se puede calcular la concentración de los iones en una 
+solución de muestra, según la ecuación de Nernst, reescribiremos:
+E x−E S=S⋅log
+C x
+C s
+ 
+(15)
+C x=C s·10
+E x−E S
+S
+ 
+(16)
+Símbolo
+Descripción
+Ex
+Voltaje del ISE en la solución de la muestra
+ES 
+Voltaje del ISE de la solución del calibrador
+S
+Pendiente del electrodo calculado durante el proceso de 
+calibración
+Cx
+Concentración del ion de la muestra
+CS
+Concentración del ion de la solución del calibrador
+“S”, la pendiente, es determinada durante la calibración usando el calibrador A y 
+B, dónde conocemos los niveles de sodio, potasio, cloro y litio.
+Cuando una calibración a dos puntos se inicia, la pendiente se calcula por la dife­
+rencia entre la lectura del calibrador A y la lectura del calibrador B. Una excesiva 
+deriva o lecturas ruidosas serán señaladas y se enviará un mensaje de error al sistema.
+La pendiente se define como:

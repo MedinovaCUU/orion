@@ -1,0 +1,37 @@
+125
+125
+ 
+ 
+Coloración verde para el indicador muestra que la posición del segmento está 
+ocupada, la letra de la cabecera indica la identificación del segmento que está 
+colocado en el rotor.
+Pulsando encima de la letra del segmento, selecciona todo el segmento. Pulse el 
+botón de Supr para descargar un segmento del rotor. Únicamente podrá descargar 
+un segmento en el estado de stand-by o de pausa.
+ 
+Posicionamiento manual 
+Para posicionar las muestras en los segmentos, el operario debe seleccionar 
+primero el segmento a utilizar. Para ello pulse dos veces sobre la cabecera del 
+segmento y aparecerá una ventana emergente donde podrá escoger la identifi­
+cación del segmento que quiera posicionar. El indicador superior del segmento 
+se pondrá de color verde. El usuario puede arrastrar cualquier muestra en las 
+posiciones libres del segmento.
+ 
+Posicionamiento automático 
+Coloque los tubos de muestra con códigos de barra de las posiciones del 1 al 9 
+dentro del segmento. Y coloque tantos segmentos dentro del rotor como po­
+siciones libres tenga. Pulse el botón de lectura de códigos de barra o el botón 
+de start para que el analizador automáticamente identifique los segmentos y 
+las muestras. En pantalla se mostrará toda la información tanto de las muestras 
+como de los segmentos.
+Para posicionar muestras sin código de barras o calibradores o controles use el 
+método manual de posicionamiento.
+Puede usar un segmento únicamente para posicionar tanto el tubo de agua destilada 
+como los calibradores y los controles. 
+Ilustración 85 
+Pantalla de posicionamiento de los rotores segmentados
+Cuando descarga un segmento manualmente este pasa a la situación de segmentos 
+fuera del analizador. 
+ Segmentos fuera del analizador 
+Pulse en la segunda pestaña de la pantalla para visualizar aquellos segmentos que 
+están fuera del analizador.

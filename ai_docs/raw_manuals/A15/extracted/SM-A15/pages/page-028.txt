@@ -1,0 +1,32 @@
+29
+48
+49
+50
+51
+Ilustración 3.8. Conexión de los tubos de la estación de lavado
+3.3.5. Bomba de lavado
+El sistema de lavado de la punta dispone de una bomba de extracción de residuos (42). Esta se conecta a la estación 
+de lavado a través del tubo de PVC (43). La bomba expulsa los residuos a la botella de residuos a través del tubo 
+(37). Los tubos se aseguran mediante dos bridas de seguridad.
+3.4. Rotor de reacciones con sistema óptico integrado
+El rotor de reacciones está termostatizado a 37°C. El sistema óptico, formado por un sistema de iluminación y un 
+sistema fotométrico, realiza las lec turas directamente sobre los pocillos de reacción del rotor. El sistema de iluminación 
+contiene una lámpara halógena, un tambor de filtros para la selección de la longitud de onda y rendijas para formar 
+el haz de luz adecuado. El sistema fotométrico contiene un fotodiodo de silicio y la electrónica correspondiente para 
+obtener un valor digital proporcional a la intensidad luminosa recibida. 
+3.4.1. Rotor termostatizado y sistema fotométrico
+El sistema de dosificación dispensa los reactivos y las muestras en el rotor de metacrilato (1). El sistema óptico realiza 
+las medidas de absorbancia directamente sobre los pocillos del rotor. El canal calefactor de aluminio (2) envuelve el 
+rotor y lo mantiene a 37°C. El canal está aislado térmicamente del exterior mediante el aislante (3) de poliestireno 
+expandido moldeado. Las células peltier (4), con sus respectivos radiadores (5) y ventiladores (6), actúan sobre el 
+canal para controlar su temperatura. El sensor utilizado para el control de temperatura es la sonda (7). El rotor de 
+metacrilato se fija a su centrador (8) mediante el tornillo (9). El centrador está fijado al canal calefactor mediante el 
+eje (22), que va montado sobre rodamientos (11). La barrera que obstruye el fotodetector (10) cuando el rotor llega 
+a su posición de inicio forma parte del centrador (8). El centrador también es un engranaje. El piñon (12), fijada al 
+motor (13), actúa a través de la corona (14) que actúa también como centrado. El distanciador (15) no permite que la 
+temperatura el motor llegue al canal calefactor. La placa electrónica del sistema fotométrico (16) está alojada dentro 
+de una cavidad del canal calefactor. La tapa superior de esta cavidad (17) soporta la placa electrónica. La tapa (18) 
+mantiene la cavidad estanca frente a posibles derrames de líquidos. El alojamiento del tambor de filtros está cerrada 
+por su parte inferior por la tapa (18). La pieza (19) centra el fotodiodo respecto al sistema de iluminación y a la vez 
+actúa como rendija para evitar que incida luz parásita sobre éste. La rendija (20) limita la luz que incide sobre el rotor 
+de reacciones. El detector (21) indica al analizador si la tapa del rotor está o no colocada.

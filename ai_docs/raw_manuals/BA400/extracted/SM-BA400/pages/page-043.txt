@@ -1,0 +1,49 @@
+3
+4
+5
+2
+1
+8
+9
+10
+11
+6
+7
+Ilustración 3.29 
+Conjunto brazo de pipeteo
+15
+12
+14
+13
+2
+16
+17
+6
+Ilustración 3.30 
+Punta de reactivos
+Referencias de la Ilustración 3.29 y Ilustración 3.30
+1 – Carcasa
+2 – Placa CIIM00049
+3 – Correa transmisión movimiento angular
+4 – Motor movimiento angular
+5 – Fotodetector de inicio movimiento elevación
+6 – Punta aspiración y dispensación
+7 – Placa CIIM00048
+8 – Correa transmisión movimiento elevación
+9 – Tubo de guiaje movimiento elevación
+10 – Motor movimiento elevación
+11 – Polea transmisora movimiento elevación
+12 – Cable sistema termostatización de la punta
+13 – Cable sensor de temperatura de la punta
+14 – Cable sistema de detección de la punta
+15 – Fotodiodo de detección de colisión
+16 – Sistema de detección de la colisión de la punta
+17 – Fotodiodo de inicio del movimiento angular
+La única diferencia entre los brazos de reactivos y el de muestras es la punta (6). 
+Características entre la punta de reactivos y la de muestras:
+Punta Reactivos
+Punta Muestra
+Diámetro interior en el extremo
+0.8 mm
+0.4 mm
+43

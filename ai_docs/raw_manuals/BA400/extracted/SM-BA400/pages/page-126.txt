@@ -1,0 +1,25 @@
+Manualmente vacíe o llene el pocillo situado en la posición de la varilla de la estación de lavado. 
+1. Pulse el botón de inicio para la verificación . 
+2. El test consiste en bajar y subir la estación de lavado mientras verifica el estado de la varilla.
+3. Cuando el pocillo esté vacío, el resultado indicará no detección
+4. Llene completamente hasta el borde superior el pocillo, vuelva a realizar el test. El resultado tiene que ser de 
+detección.
+6.5.7. Ajuste del lector de código de barras
+Desde esta pantalla permite realizar el ajuste del posicionamiento del lector del código de barras.
+ 
+) Véase Ilustración 6.25
+1. Seleccione primero el lector de código de barras que quiera ajustar.
+2. Quite la tapa y ponga un tubo o botella con un código de barras en la posición 1 del rotor para tener la refe­
+rencia del haz a ajustar.
+3. Mueva el rotor paso a paso con el recuadro de ajuste hasta que el haz del lector quede bien centrado en el código 
+de barras.
+4. Guarde el valor ajustado.
+5. Verifique en el apartado 3 que el lector recibe correctamente las lecturas. El valor indicado tiene que ser superior 
+al 60%.
+6. Para realizar el test del lector de código de barras, ponga varios tubos o botellas en el rotor del lector escogido 
+y pulse el botón de test del apartado 4. En la tabla aparecerá los códigos de barras leídos y las posiciones donde 
+se ha colocado los tubos/botellas.
+Ilustración 6.25 
+Pantalla ajuste del lector de código de barras
+Manual de servicio
+126

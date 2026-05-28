@@ -1,0 +1,53 @@
+9. Para verificar el sistema antichoque de la punta: con el dedo o con una pieza de superficie plana se simula una 
+colisión de punta en movimiento vertical perfecto. El muelle tiene que subir y después recuperarse sólo y bajar 
+hasta la posición de reposo.
+10. Conecte los cables de la punta de la siguiente manera:
+Nombre conector
+HP
+TP
+DN
+Código cable
+PLMA0329
+PLMA0330
+PLMA0328
+Color cable
+Amarillo/Rojo
+Blanco
+Negro
+11. Coloque una brida para sujetar los cables a la placa electrónica. Asegúrese de que los cables no sobresalgan de 
+la placa electrónica en altura.
+12. Corte la cola de la brida.
+13. Conecte el tubo de teflón a la punta. Para apretar el racor sujete la punta por el punto (5).
+WARNING
+Asegúrese de apretar fuertemente las tuercas de sujeción del fijador muelle, sujetando la tuerca (3) 
+fija y apretando la tuerca (1) sobre la (3).
+14. Verifique que el sistema antichoque de la punta funciona correctamente. Según el punto 9.
+15. Verifique que el led LD2 de la placa se enciende cuando corta el fotodetector, y está apagado cuando la punta 
+está en modo reposo.
+16. En caso de que el detector de colisión esté muy justo con el fotodetector, suba 1 mm la placa electrónica de su 
+posición.
+17. Coloque la tapa del brazo.
+18. Ajuste con el programa de servicio el valor de Zref de la punta.
+19. Ajuste con el programa de servicio la temperatura de consigna en función del modelo de la punta:
+Modelo
+R1
+R2
+Encapsulado 13 mm
+45 °C
+45 °C
+Encapsulado 10 mm
+55 °C
+50 °C
+20. Realice el ajuste de la Zref con el programa de servicio.
+ 
+) Véase capítulo 4 para realizar el ajuste.
+21. Para las puntas de reactivos, realice el ajuste de la temperatura.
+8.9.4. 
+Cambio punta muestra y reactivo con la modificación BA400v2
+Herramientas: 2 llaves fijas de 5.5 o llave fija de 5.5 y 1 llave de tubo de 5.5
+Desmontaje:
+1. Corte la brida que sujeta los cables.
+2. Quite los cables de la punta.
+3. Desenrosque el tubo que va a la punta sujetando con una mano el racor (1) y con la otra el tubo. Vigile que no 
+se tuerza el racor soldado de la punta.
+179

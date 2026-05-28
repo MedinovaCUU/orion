@@ -1,0 +1,31 @@
+3.13. Desgasificador
+5
+6
+7
+1
+4
+2
+3
+Ilustración 3.51 
+Desgasificador
+8
+9
+Ilustración 3.52 
+Conexión tubo de salida de la bomba
+Referencias de la Ilustración 3.51 y Ilustración 3.52
+1 – Sistema de control del vacío
+2 – Membrana de desgasificación
+3 – Válvula antiretorno
+4 – Bomba para realizar el vacío
+5 – Tubo de conexión a la entrada del desgasificador
+6 – Tubo de conexión de la salida del desgasificador al prema­
+nifold
+7 – Conjunto desgasificador
+8 – Conexión en T del tubo de salida de la bomba 
+9 – Tubo de los residuos de baja contaminación
+El agua del analizador que utiliza el sistema de pipeteo previamente pasa por el circuito de desgasificación para 
+eliminar la posible presencia de burbujas en el agua.
+El sistema está compuesto por una membrana (2) que aspira el aire del agua. Esta membrana está colocada en serie 
+con el circuito del agua (5) y (6). 
+Manual de servicio
+60

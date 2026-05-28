@@ -1,0 +1,13 @@
+8
+Ilustración 3.18 
+ 
+ 
+Ilustración 3.19 
+3.4. Rotor de reacciones
+En el rotor de reacciones es donde se produce la mezcla de la muestra con el reactivo. El rotor (2) consiste en 120 
+pocillos de metacrilato. El rotor se instala en un canal calefactor (3) que está termostatado a 37 °C. Todo el conjunto 
+se cubre con una tapa (1), para asegurar la temperatura en su interior y evitar la entrada de luz. El sistema funciona 
+de manera continua y para ello dispone de una estación de lavado (4), que en 10 etapas vacía y limpia los pocillos del 
+rotor. En cada ciclo, el analizador realiza la lectura de 68 pocillos con el sistema óptico (5) incorporado en el conjunto.
+Manual de servicio
+36

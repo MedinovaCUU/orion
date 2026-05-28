@@ -1,0 +1,24 @@
+Manual usuario 
+ 
+ 
+ 
+Manual usuario 
+ 
+ 
+ 
+160
+160
+Biosystems
+Biosystems
+Ilustración 102 
+Pantalla de acumulado del control de calidad - Vista tabular
+Ilustración 103 
+Pantalla de acumulado del control de calidad - Vista gráfica
+A la izquierda se muestra la lista de técnicas con resultados acumulados de con­
+trol de calidad. Al seleccionar una técnica de la lista, a la derecha de la pantalla se 
+mostrará la información de todos los controles con resultados acumulados para la 
+técnica. En esta zona de detalle hay dos zonas claramente diferenciadas:
+• 
+Resultados acumulados por control/lote: permite especificar el rango de 
+fechas de los resultados acumulados a consultar. Al modificar el rango de 
+fechas, se vacía el contenido de ambas áreas de detalle y se debe seleccionar

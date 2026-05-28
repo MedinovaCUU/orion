@@ -1,0 +1,20 @@
+8.14. Recambios estructura
+8.14.1. AC17304 - Filtro de partículas estación de lavado
+Desmontaje del filtro:
+1. Quite la tapa trasera
+2. Estire el filtro hacía afuera para sacarlo de su alojamiento
+3. Saque los tubos de ambos extremos. Presione las lengüetas del conector para liberar el tubo
+Montaje del filtro:
+1. Cambie el filtro por uno nuevo.
+2. La colocación de los filtros va según la Ilustración 8.101. La dirección de circulación del filtro inferior para el 
+agua destilada (2) va de izquierda a derecha y la dirección del filtro superior para la solución de lavado (1) de 
+derecha a izquierda.
+3. Coloque los tubos en cada extremo. Presione el tubo hasta realizar tope y luego estire hacía fuera.
+1
+2
+Ilustración 8.101 Cambio filtros estación de lavado
+8.14.2. AC17097 - Filtro de entrada para el agua
+Herramientas: 2 llaves inglesas
+Desmontaje del filtro:
+1. Con la ayuda de la llave inglesa desmonte la pieza (4). Véase Ilustración 8.102.
+241

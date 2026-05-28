@@ -1,0 +1,31 @@
+LIST OF SPARES PARTS
+Code
+Representation 
+Description
+AC16603
+Sample tip
+AC16604
+Reagent tip
+AC16605
+Tip spring
+AC16606
+340 Filter
+AC16607
+405 Filter
+AC16608
+505 Filter
+AC16609
+535 Filter
+AC16610
+560 Filter
+AC16611
+600 Filter
+AC16612
+635 Filter
+AC16613
+670 Filter
+AC16614
+Optical bench without filters
+AC16615
+Reaction rotor cogged belt
+119

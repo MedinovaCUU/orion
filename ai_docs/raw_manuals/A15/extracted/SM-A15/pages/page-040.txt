@@ -1,0 +1,45 @@
+41
+4.3. Placa Fuente de Alimentación (CIIM00015)
+El circuito se compone de 2 reguladores commutados DC/DC y de un regulador lineal de tensión que 
+permiten una alimentación distribuida según la necesidad de cada subsistema.
+Conector 
+Función
+Pins
+J1
+Entrada de 24 V
+1 - 24V
+3 - (GND)
+J2
+Tensión de salida de 
+6V , para alimentar a la 
+lámpara
+1 - 6 V
+3 - GND
+J3
+Salida de tensión de 24V 
+,12V, 5V y entrada de 
+control de la lámpara y 
+ventiladores
+1 - 24V
+2 - GND
+3 - 12V
+4 - 5V
+5 - ENABLE LAMP
+6 - ENABLE FAN
+J4,J5
+Tensión de salida de 24V 
+ventiladores
+1 - 24V
+2 - GND
+TP1 - Tensión lámpara de 5,75 V <6V
+TP2 - 12V Analógicos
+TP3 - 5V digitales
+Relación de los diodos LED:
+D4 - Indica 5V activado
+D2 - Indica 12V lámpara activado
+D3 - Indica 12V analógicos activado
+4.4. Placa punta (CIIM00017)
+En esta placa se realiza el acondicionamiento de señal del termistor asociado a la termostatización de la 
+punta, la preamplificación de la señal de detección de nivel, y el home Z. A ella llegan desde el mismo con-
+junto punta, las resistencias de termostatización, el termistor y la señal de nivel captada por la misma punta.
+Esta placa se conecta con la placa CIIM00026-01.

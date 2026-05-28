@@ -1,0 +1,26 @@
+8.15.2. AC16563 - Placa fluidos (CIIM00053-03)
+Para montar la placa de fluidos (CIIM00053-03) en un equipo BA400v1 realizar los siguientes cambios:
+1. Desmontar la placa vieja desconectando todos los cables y retirando los anclajes de plásticos que sujetan la placa
+Ilustración 8.105 Anclajes de sujeción de la placa
+2. Material extra necesario para sujetar la nueva placa
+Cantidad
+Descripción
+3
+Tornilleria necesaria a añadir en el recambio
+4
+Separadores metálicos RICHCO.HTSB-M4-20-7-2
+4
+Tuercas M4
+6
+Tornillos allen M4x12
+8
+Arandelas de seguridad
+2
+Arandelas NFE M4
+1
+Separador metálico RICHCO.301440041152
+Ilustración 8.106 
+3. Se montan los 4 separadores de M4 con el macho hacia arriba
+4. Se monta la placa y se colocan tuercas y arandelas
+Manual de servicio
+244

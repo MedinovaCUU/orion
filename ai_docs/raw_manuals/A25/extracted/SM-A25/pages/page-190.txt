@@ -1,0 +1,22 @@
+Service manual
+190
+List of spare parts
+Code
+Representation 
+Description
+AC13375
+Filter drum body
+MO11547
+Filter drum motor
+AC14708
+Lens (2)
+AC17326
+Optics fan
+AC13304 
+Rotor centering
+AC11542
+Rotor temperature probe
+AC15329
+Rotor fan
+CE14758
+Rotor peltier cell

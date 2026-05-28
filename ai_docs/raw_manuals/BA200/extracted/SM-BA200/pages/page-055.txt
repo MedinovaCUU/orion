@@ -1,0 +1,53 @@
+Manual de servicio
+55
+Test point
+Función
+TP51
+GND
+TP52
+5V
+TP75
+GND USB
+TP76
+5V USB
+TP78
+5V USB
+TP85
+Tensión activación ventiladores
+TP87
+Señal activación ventiladores
+TP90
+Tensión activación zumbador
+TP91
+Canal serie trasmisión USB 
+auxiliar
+TP92
+GND USB auxiliar
+TP93
+Canal serie recepción USB 
+auxiliar
+TP94
+5V USB auxiliar
+TP95
+5V USB auxiliar
+LEDs
+Función (Condición de encendido)
+LD1
+Indicación status general
+LD2
+Indicación status general
+LD3
+Voltaje de 3.3 V
+LD5
+Voltaje de 3.3 V aislado
+LD6
+Indicación arranque CPU 
+LD7
+Indicación arranque CAN
+LD12
+Indicación status USB tipo A
+4.4. Placas brazos - CIIM00048
+Estas placas están situadas en cada uno de los dos brazos. 
+La placa incorpora un microcontrolador (U1) que controla los drivers de los motores que mueven el brazo en di­
+rección vertical (U7) y horizontal (U8). 
+También incorpora la electrónica de control de los detectores de inicio para cada motor.

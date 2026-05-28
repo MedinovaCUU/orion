@@ -1,0 +1,21 @@
+Manual de servicio
+154
+6.6. 
+Electronic systems
+6.6.1. 
+PC15061 - Microprocessor board
+CPU board removal
+1. Remove the 3 screws (1) to lower the rear cover of the electronics.
+2. Remove the front housing of the analyzer. See chapter 6.1.4
+3. Remove the front cover of the electronics.
+4. Disconnect all connectors from the microprocessor board from the front of the analyzer.
+5. From the back of the analyzer, remove the 4 screws (2) that hold the board to the base. These screws also hold 
+some cable earth connections.
+6. Remove the board from the back of the analyzer.
+CPU board mounting
+1. Install the new board,
+2. Carefully reconnect all connectors. Do not forget the connection of the cable earth taps fixed by the fixing screws 
+of the board.
+3. Follow the steps in reverse order
+1
+Figure 6.60

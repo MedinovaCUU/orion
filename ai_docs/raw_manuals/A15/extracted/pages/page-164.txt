@@ -1,0 +1,29 @@
+165
+Lista de recambios
+Código
+Representación
+Descripción 
+AC17327 
+Centrador rotor
+AC13371
+Sonda de temperatura rotor
+MO13357
+Ventilador rotor
+AC14497
+Célula de peltier del rotor
+AC13373
+Detector tapa rotor
+AC13375
+Cuerpo del tambor de filtros
+AC17321
+Ventilador del refrigerador
+AC17320
+Peltiers del refrigerador
+AC17319
+Sensor temperatura refrigerador
+AC17318
+Contenedor del refrigerador+ Tapa
+AC16065
+Cajas de accesorios 
+AC16069
+Embalaje

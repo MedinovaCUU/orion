@@ -1,0 +1,23 @@
+Ilustración 6.5 
+Pantalla configuración de las comunicaciones
+6.4.3. Idioma
+Permite cambiar el idioma de la aplicación. Hay dos idiomas el español y el inglés.
+6.4.4. Código de barras
+Permite desactivar/activar la utilización de los lectores de códigos de barras y configurar las opciones del código de 
+barras.
+Ilustración 6.6 
+Pantalla configuración del lector de código de barras
+• 
+Desactivación de Código de Barras: Seleccione esta opción para desactivar el lector de código de barras 
+del rotor.
+• 
+Tipo: Seleccione el tipo de código de barras que permite leer el lector de código de barras para las muestras. 
+El CODE128 siempre ha de estar activo porque los códigos de barra de las botellas de reactivo están codificadas 
+con éste código
+• 
+Tipo Muestra: Si el código incorpora la información del tipo de muestras, seleccione la opción del tipo de 
+muestras, el inicio y final dentro del código y cómo el laboratorio codifica cada tipo de muestra. 
+6.4.5. Usuarios
+En la Ilustración 6.7 se muestra la pantalla de creación y mantenimiento de los usuarios.
+Manual de servicio
+86

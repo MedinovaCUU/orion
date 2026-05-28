@@ -1,0 +1,22 @@
+15
+USUARIO
+Manual de Usuario BioSystems SPICA | Versión 2.8 - Agosto 2024
+Manual de Usuario BioSystems SPICA
+2. INSTALACIÓN
+2.6. Instalar el rotor de reacción
+• Con el analizador encendido y sin operaciones programadas
+• Abra la cubierta principal del analizador y acceda al área interna de usuario (fig. 1) 
+• Abra la cubierta del rotor de reacción (fig. 2)
+• Retire el tornillo de fijación del rotor (fig. 3)
+• Coger un rotor de la caja de accesorios. Sostenga el rotor por las lengüetas y no por los pozos para evitar 
+que la ventana óptica se ensucie.
+• Inserte el rotor de metacrilato en el rotor de reacción, asegurándose de que el rotor no toque las puntas 
+de la estación de lavado (en caso que este presente)
+• El rotor sólo tiene una posición y debe estar correctamente encajado en el soporte.
+• Enrosque el tornillo de fijación del rotor hasta que quede bien fijo
+• Coloca la tapa del rotor en su alojamiento. Sólo tiene una posición.
+• Finalice la operación de cambio de rotor comunicando al analizador que ha cambiado el rotor (fig. 4) 
+(fig. 3)
+(fig. 4)
+(fig. 1)
+(fig. 2)

@@ -1,0 +1,21 @@
+2
+1
+3
+4
+Ilustración 8.42 
+Desmontaje placas fluidos y jeringas BA400v2
+8.10.3. AC16577 - Calefactor estación de lavado
+Herramientas: Llave allen 2.5
+Desmontaje:
+1. Quite los 2 tornillos y la abrazadera que sujeta el calefactor. (5)
+2. Desconecte los 2 cables del calefactor (6).
+3. Desenchufe todos los tubos del calefactor (7). Vaya con cuidado al quitar los tubos para no deformarlos. Para 
+sacar los tubos de su alojamiento, no los estire por el punto medio sino cógelo por el extremo. En caso de que 
+se deformen, cambielos por unos nuevos
+Montaje:
+1. Coloque el calefactor con el agujero central hacía el exterior.
+2. Conecte cada uno de los tubos en el calefactor, según indica la Ilustración 8.44
+3. Conecte los cables del calefactor a la placa electrónica.
+4. Coloque la abrazadera y los tornillos (5) que sujetan el calefactor.
+5. Verifique que funciona correctamente con el programa de servicio y si hace falta ajuste la temperatura.
+189

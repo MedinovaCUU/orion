@@ -1,0 +1,14 @@
+8. Al pasar el cable de CAN por el interior del tubo, destrenzar el cable para facilitar el movimiento del cable por 
+le interior del tubo.
+9. Introducir primero la parte del tubo de teflón con su funda y nos ayudamos de él para introducir el cable poco 
+a poco.
+10. Una vez pasado el cable y el tubo volvemos a colocar el conector del calbe CAN (tener en cuenta la posición de 
+los pines) y los gripper/racores en ambos lados del tubo.
+11. Una vez introducidos el cable y el tubo, fijarlo de nuevo en su posición utilizando la media luna (10) y una brida.
+12. Recolocar la pieza de extensión en su alojamiento y fijar de nuevo con los dos prisioneros (9), añadiendo loctite 
+243 en ellos.
+ 
+) Ver Ilustración 8.119, Ilustración 8.120 y Ilustración 8.121
+Ilustración 8.119 
+Ilustración 8.120 
+251

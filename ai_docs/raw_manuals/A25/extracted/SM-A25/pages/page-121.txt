@@ -1,0 +1,17 @@
+121
+Motor mounting:
+1. Put the motor and encoder assembly in place
+2. Fit the 4 screws (10) and (11) loosely.
+3. Fit the screw (9), place between square and the ground wire support.
+4. Tighten the spring with a screwdriver turning 270° clockwise
+5. Lock the spring with a pin. Place the pin in any of the holes (14)
+6. Hold Z carriage in the up position and put the Z belt through the pulley.
+7. Tighten the belt to 30 N, stretching the motor down. Tighten the screws (10) and (11)
+8. Verify that the tip assembly rises by itself
+9. Tighten the screw (9)
+10. Insert photodetector and Z motor connector
+11. Fit the protection plate and the screws (8)
+12. Check the Z motor and encoder assembly with the service program
+8
+9
+Figure 6.13

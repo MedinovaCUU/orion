@@ -1,0 +1,70 @@
+Manual de servicio
+38
+Conector
+Función
+Pins
+J7
+Conexion a la placa interconexión 
+Rotor(señales de de los motores y 
+señales de peltier)
+1 - bobina 2 motor filtros
+2 - bobina 2 motor filtros
+3 - bobina 1 motor filtros
+4 - bobina 1motor rotor
+5 - bobina 1 motor filtros
+6 - bobina 1 motor rotor
+7 - Peltier
+8 - bobina 2 motor rotr
+9 - Peltier
+10 - bobina 2 motor rotor
+11 - V(24 V)
+12 - Ventiladores peltier
+J8
+Conexion a la placa interconexión 
+fluidosr(señales de de las bombas y 
+electroválvula)
+1 - V(24 V)
+2 - Bomba de residuos
+3 - V(24 V)
+4 - Electroválvula
+5 - bobina 1 bomba cerámica
+6 - bobina 1 bomba cerámica
+7 - bobina 2 bomba cerámica
+8 - bobina 2 bomba cerámica
+9 - N.C.
+J9
+Conexion a la placa interconexión 
+fluidosr(señales de deteccion de nivel y 
+home bomba creámica)
+1 - Entrada sensor botella de 
+residuos
+2 - Entrada sensor líquido de 
+sistema
+3 - Señal de detección de 
+botellas
+4 - Señal dedetección de nivel 
+racks
+5 - Home bomba cerámica
+6 - Vcc
+7 - GND
+8 - Detección tapa instrumento
+J10
+Conexión a la placa punta
+1 -V (12 V)
+2 - GND
+3 - Home motor Z
+4 - Termistor de la punta
+5 - Señal de detecciín de nivel 
+racks
+6 - V (24 V)
+7 - Resistencias 
+termostatización punta
+8 - NC
+J11
+Conexión a la placa de alimentación
+1- V (24 V)
+2 - GND
+3 - V (12 V)
+4 - Vcc
+5 - Control ventiladores
+6 - Control lámpara

@@ -1,0 +1,23 @@
+Ilustración 6.5 
+Pantalla configuración de las comunicaciones
+6.4.3. Idioma
+Permite cambiar el idioma de la aplicación. Hay dos idiomas el español y el inglés.
+6.4.4. Código de barras
+Permite desactivar/activar la utilización de los lectores de códigos de barras y configurar las opciones del código de 
+barras.
+Ilustración 6.6 
+Pantalla configuración del lector de código de barras
+• 
+Desactivación de código de Barras para reactivos: Seleccione esta opción para desactivar el lector de 
+código de barras del rotor de reactivos.
+• 
+Desactivación de Código de Barras para Muestras: Seleccione esta opción para desactivar el lector de 
+código de barras del rotor de muestras.
+• 
+Tipo: Seleccione el tipo de código de barras en que se han imprimido las etiquetas de los tubos de muestras.
+• 
+Tamaño Total Código de Barras: Seleccione el tamaño total del código de barras para el lector de muestras. 
+El lector únicamente leerá los códigos del tamaño indicado, en caso contrario marcará la lectura cómo error 
+de código.
+Manual de servicio
+110

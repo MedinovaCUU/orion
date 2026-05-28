@@ -1,0 +1,67 @@
+143
+143
+Campo
+Descripción
+OK
+Indica que el resultado ha sido aceptado. Será 
+enviado al histórico y a LIS. Cuando se realizan 
+repeticiones, se acepta siempre por defecto el 
+último resultado. Si lo desea, puede aceptar varios 
+resultados o ninguno.
+Indica si se ha enviado al LIS, ya sea 
+automáticamente o de manera manual.
+Nuevo 
+Permite realizar una repetición de la preparación.
+Esta opción se desactiva si en la pantalla de 
+configuración del LIS se ha seleccionado la opción 
+de repetición sólo para LIS.
+ 
+) Véase las diferentes opciones de repetición en el 
+capítulo 10.7.4
+Técnica
+Nombre de la técnica
+Tipo
+Tipo de muestra
+Permite acceder a la gráfica de la cinética de 
+reacción.
+Número
+Indica la numeración del replicado, cuando hay más 
+de un replicado
+Absorbancia
+Valor de la absorbancia de la muestra obtenido.
+Concentración
+Valor de la concentración calculado según el 
+método de cálculo programado en la técnica
+Unidades
+Muestra las unidades programadas en la técnica.
+Márgenes de referencia
+Muestra los márgenes de referencia que se han 
+programado en la técnica. Si hay datos de paciente y 
+márgenes demográficos, entonces automáticamente 
+selecciona los márgenes en función de los datos de 
+paciente.
+Observaciones
+Muestra las alarmas que pueden aparecer en los 
+resultados. 
+ 
+) Véase las posibles alarmas en el capítulo 12 
+Fecha
+Fecha en que se ha entregado el resultado
+Modo de repetición
+Muestra el modo en que se ha repetido la muestra.
+ 
+ 
+Pulse este icono cuando quiera imprimir los informes por paciente definitivos.
+ 
+ 
+Pulse este icono para visualizar una tabla resumen de los resultados. Aparece una 
+tabla con los resultados de todos los pacientes y todas las técnicas de la sesión en 
+curso.
+ 
+ 
+Pulse este icono cuando quiera imprimir un listado de los resultados de los 
+pacientes en los que se incluyen los valores de absorbancia obtenidos’
+ 
+ 
+Pulse este icono para enviar manualmente los resultados seleccionados a un 
+sistema de información de laboratorio LIS.

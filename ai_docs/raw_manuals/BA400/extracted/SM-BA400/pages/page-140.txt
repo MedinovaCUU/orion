@@ -1,0 +1,39 @@
+4. Verifique que el secador de la estación de lavado está bien sujeto y en buenas condiciones. En caso de estar 
+deteriorado, reemplácelo por uno nuevo.
+7.2.5. Limpieza de la ventana del lector de código de barras
+Limpie la ventana del lector de código de barras internamente y externamente.
+1. Desmonte la chapa superior del analizador
+2. Utilice un paño húmedo, y limpie internamente la dos ventanas de los lectores de código de barras.
+3. Quite los dos rotores de su alojamiento.
+4. Limpie externamente con un paño húmedo las dos ventanas de los lectores del código de barras.
+7.2.6. Limpieza del canal calefactor y de los contenedores de los rotores
+Utilice un paño húmedo con jabón neutro. 
+1. Con el analizador apagado, levante con la mano la estación de lavado.
+2. Quite las tapas de los 3 rotores. 
+3. Quite el rotor de metacrilato y los dos rotores, el de muestras y el de reactivos.
+4. Pase el paño por toda la superficie del canal calefactor y por el interior de la vasija de los rotores.
+5. Verifique que los desagües no están obstruidos. Para ello tire un poco de agua en el orificio y compruebe que 
+el agua desaparece por el desagüe.
+7.2.7. Limpieza del polvo de los ventiladores, detectores de inicio y placas electrónicas
+1. Revise la velocidad de giro de cada uno de los ventiladores. Cambie aquellos ventiladores que giren más despacio 
+o no giren. Del resto de ventiladores limpie el polvo de las aspas.
+2. Revise cada uno de los detectores de inicio, hay fotodetectores en los brazos, rotores de muestras, reactivos y 
+reacción. Límpielos de polvo.
+3. Limpie el polvo de las placas electrónicas.
+7.3. Mantenimiento
+Todos los mantenimientos se realizan cada 2 años o cuando haya alguna intervención por parte del servicio técnico.
+Material y herramientas necesarias para realizar el mantenimiento:
+• 
+Llave torx T20, con una longitud mínima de 40 mm
+• 
+Juego de llaves allen 
+• 
+Lubricante SAE-40 o equivalente
+7.3.1. Revisión de la bomba de pistones de la estación de lavado
+1. Desmonte la carcasa lateral derecha
+2. Desmonte la chapa lateral derecha.
+3. Pase los dedos por las conexiones fluídicas de las 5 cámaras de metacrilato y verifique que no hay ninguna fuga 
+de líquido. 
+4. Ponga 2 gotas del lubricante SAE40 en los rodamientos lineales de la bomba. 
+Manual de servicio
+140

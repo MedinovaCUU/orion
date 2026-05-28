@@ -1,0 +1,16 @@
+25
+El analizador determina las concentraciones de los analitos a partir de medidas de absorbancia óptica. Para la medida 
+de la concentración de un cierto analito en una muestra, el analizador pipetea un volumen determinado de reactivo, 
+lo termostatiza dentro de la misma punta y lo dispensa en el rotor de reacciones. 
+A los 5 minutos el analizador pipetea un volumen determinado de muestra y lo dispensa en el mismo pocillo donde 
+se ha dispensado el reactivo.
+En el ciclo siguiente el agitador mezcla la reacción para asegurar una correcta homogeneización y se inicia la reacción 
+química. En los modos bireactivos la reacción se inicia cuando el analizador posteriormente dispensa un segundo 
+reactivo en el mismo pocillo de reacción y es mezclado por un segundo agitador.
+Las reacciones pueden ser de bioquímica o de turbidimetría. En ambos casos, la reacción o la cadena de reacciones 
+producidas generan substancias que atenúan ciertas lon­gi­tudes de onda de la luz, ya sea por absorción o por disper­
+sión. Comparando la inten­si­dad luminosa de una determinada longitud de onda que atraviesa un pocillo cuando 
+hay reacción y cuando no la hay, puede determinarse la concentración del analito correspondiente. Esta comparación 
+se cuantifica con la magnitud física llamada absorbancia. En algunos casos la concentración es función directamente 
+de la absorbancia, en otros casos es función de la variación de la absorbancia en el tiempo, dependiendo del modo 
+de análisis.

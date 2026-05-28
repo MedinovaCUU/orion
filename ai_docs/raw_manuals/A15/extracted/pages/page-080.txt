@@ -1,0 +1,12 @@
+81
+5.3.1.6. Test de comprobación de Z máximo
+Este test permite realizar la comprobación de que la punta no choca con las botellas en la bandeja de racks. 
+Para ello puede seleccionar el tipo de rack, (reactivo, pediàtrico, colector de heces, 13mm o 15mm ), la posición 
+del rack en la bandeja y la posición del tubo o botella en el rack.
+Pulsar el botón Iniciar para ir a la posición seleccionada, comprobar si la punta colisiona con el tubo o la botella 
+o hay holgura entre la punta y la botella. 
+Repetir el proceso en aquellas posiciones que el operario desee.
+5.3.2. Tests de electroválvulas y bombas de membrana
+El analizador utiliza una electroválvula de 3 vías para gestionar el dosificado. El sistema de lavado de la punta 
+utiliza una electroválvula de 2 vías y dos bombas de membrana. La pantalla permite escoger qué dispositivo 
+se desea probar y qué test se desea realizar. Los dispositivos que se pueden probar independientemente son:

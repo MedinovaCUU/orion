@@ -1,0 +1,75 @@
+Manual usuario 
+ 
+ 
+ 
+Manual usuario 
+ 
+ 
+ 
+82
+82
+Biosystems
+Biosystems
+10.2.6.1. Configuración de la sesión de trabajo
+Pantalla que muestra las opciones de configuración con las comunicaciones LIS 
+que afectan a la sesión de trabajo.
+En la Ilustración 51 muestra la pantalla de las opciones de configuración del LIS.
+ 
+Host Query 
+Permite activar o desactivar este modo de trabajo..
+ 
+Modo de trabajo Rerun 
+(repeticiones)
+ 
+Permite seleccionar quién tiene permiso para realizar las repeticiones: el LIS, el 
+analizador o ambos.
+ 
+Consulta automática a LIS 
+(antes de iniciar/continuar la 
+sesión de trabajo)
+ 
+Al activarse esta opción, permite automatizar el proceso de Host Query desde el 
+botón de inicio de sesión. Por defecto está activo cuando haya LIS conectado y 
+disponible.
+ 
+Tiempo máximo de espera de 
+Ordenes de LIS 
+ 
+Tiempo de espera máximo para la respuesta del LIS. Este valor debe ajustarse en 
+función de la velocidad de respuesta de cada LIS y de la velocidad de las comu­
+nicaciones en cada laboratorio y del tamaño del paquete de cada mensaje de 
+consulta, configurable en la opción de Paquetes de Host Query. 
+ Envío de resultados de paciente 
+solicitados desde el analizador
+ 
+Al activarse esta opción se envían los resultados de paciente creadas manualmen­
+te desde el analizador.
+ Envío de resultados de controles 
+solicitados por el analizador
+ 
+Al activarse esta opción se envían los resultados de los controles solicitados ma­
+nualmente desde el analizador.
+ 
+Envío de los resultados al 
+realizar reset de la sesión
+ 
+Al activarse esta opción se envían todos los resultados de la sesión al realizar 
+un reset. Se enviarán todos los resultados solicitados por el LIS y cuando tenga 
+activos los parámetros anteriores, también los resultados solicitados de manera 
+manual desde el BA400.
+ Activación de envíos automáticos Al activarse esta opción puede escoger la frecuencia con la que se envían auto­
+máticamente los resultados al LIS.
+Tipo exportación on-line
+Descripción
+Al finalizar cada sesión 
+de trabajo
+Al finalizar una sesión de trabajo se exportan 
+todos los resultados de la lista de pacientes.
+Al finalizar cada 
+paciente
+Al finalizar cada paciente se exportan los 
+resultados de dicho paciente.
+Al finalizar cada 
+técnica de paciente
+Al finalizar una técnica de un paciente se 
+exportan los resultados automáticamente.

@@ -1,0 +1,41 @@
+7
+ENGLISH
+vvvVerificación de
+elementos mecánicos
+1. Introduction
+In order for the imLD microscope to work correctly, we
+recommend that the following preventive maintenance
+operations be performed at least once a year.
+2. Check of mechanical
+components
+a. Check the adjustment of the plate using the sample
+positioning control knobs. The plate must remain in a fixed
+position.
+- If it has to be lubricated, proceed as follows:
+- X axis:
+- Clean the guides (1) of the bearing using a dry cloth. To
+access the guides completely, move the plate forward
+and back. Using a fine brush, apply silicone grease to
+the bearing guides (1). In order to thoroughly distribute
+the grease, move the plate. Wipe off any excess grease
+using a cloth. Do not put grease on the teeth of the rack
+and pinion.
+- Y axis:
+- Repeat the lubrication operation on the guides of the Y
+bearing (2). Do not put grease on the teeth of the rack and
+pinion.
+S
+6
+2
+b. Check the vertical movement of the plate using the
+macrometric and micrometric control knobs, thereby
+assuring that the plate remains in the desired position. If it
+is not correct, adjust the tension of the control knobs using
+the tension adjustment ring of the focus control knob (3).
+- For lubrication, use the same type of grease as in the
+preceding operations. Clean the guides (4) using a dry cloth.
+To access them completely, raise and lower the sample
+holder, and clean the guides both above and below the
+3
+1
+4

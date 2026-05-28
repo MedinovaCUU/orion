@@ -1,0 +1,32 @@
+1
+6
+2
+7
+3
+4
+5
+Ilustración 8.34 
+Cambio de punta
+Herramientas: 2 llaves fijas de 5.5 o llave fija de 5.5 y 1 llave de tubo de 5.5
+Desmontaje:
+1. Corte la brida que sujeta los cables.
+2. Quite los cables de la punta.
+3. Desenrosque el tubo de la punta sujetando con una mano el racor (5) de la punta y con la otra el racor del tubo.
+4. Quite las 2 tuercas (1). Con una llave fija se sujeta la tuerca (3) y con la otra llave se afloja la tuerca (1).
+5. Quite las 2 arandelas (6) de seguridad.
+6. Quite el fijador muelle (2).
+7. Quite las 2 arandelas (7) de seguridad.
+8. Quite las 2 tuercas (3).
+9. Quite el conjunto punta con el muelle (4).
+Montaje:
+1. Utilice el muelle (4) y fijador muelle (2) que viene con el recambio.
+2. Inserte el muelle en el conjunto punta, vaya con cuidado al pasar los conectores por el centro del muelle.
+3. Inserte el fijador muelle en el conjunto punta.
+4. Coloque la punta en su posición.
+5. Coloque las tuercas (3) a una altura de 12 mm. Luego la arandela (7) de seguridad.
+6. Inserte el fijador muelle (2)
+7. Coloque la otra arandela de seguridad (6) y las tuercas (1) para sujetar bien el fijador muelle, bloqueando el 
+movimiento de la tuerca (3) con una llave fija.
+8. Verifique que el sistema antichoque de la punta funciona correctamente. 
+Manual de servicio
+178

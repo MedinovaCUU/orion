@@ -1,0 +1,33 @@
+The internal distilled water tank level is controlled by a buoy system. 
+There is also an internal low contamination waste tank. The tank level is also controlled by a buoy system. 
+When the system detects that the tank is full, the programme activates the pump (15) and evacuates the water 
+externally.
+Pipetting system
+Each of the tips, sample, reagent 1 and reagent 2, is connected directly to its respective ceramic pump in the mani­
+fold assembly. 
+When the pumps are suctioning or dispensing the samples or reagents, electro valves JE1-EV1, JE1-EV2 and JE1-
+EV3 will be closed.
+During the internal tip washing process, these electro valves will be open and can dispense distilled water, washing 
+solution or air, depending on the selection made in the pre-manifold.
+The pre-manifold selects water, washing solution or air, depending on the state of the electro valves (20) and (21). 
+Using the pumps (22), (23) and (24) it pumps the liquids selected by the sample, reagent 1 and reagent 2 tips, 
+respectively.
+The outsides of the tips are also washed in the wash stations. Distilled water is used for washing the insides, and it 
+is pumped to the sample tip by pump (7), to the reagent 1 and stirring 2 tips by pump (6) and to the reagent 2 and 
+stirrer 1 tip by pump (5). 
+Wash station
+The rotor washing system is comprised of 10 cycles.
+)
+) See chapter 2.5 for a description of each wash station cycle.
+Dispensing from each tip is executed with a pump that activates 5 pistons. The pump is operated by the motor (19). 
+Each piston is connected to an electro valve (17) where the 2 first tips dispense washing solution and the other 3, 
+distilled water.
+The tip of the first cycle suctions the high contamination waste through pump (4) and dispenses it directly into the 
+bottle provided for that purpose. 
+The tips of cycles 2 and 4 are suctioned by the same pump (11) and the suctioned material is evacuated into the 
+low contamination waste tank.
+The tips of cycles 5 and 6 are suctioned by pump (10) and also emptied into the low contamination waste tank.
+The tip of cycle 9 is suctioned by pump (9) and the tip of cycle 10 executes the drying operation through pump (8). 
+The last two pumps evacuate the suctioned material into the low contamination water tank.
+Service Manual 
+32

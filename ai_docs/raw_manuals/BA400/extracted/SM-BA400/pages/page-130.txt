@@ -1,0 +1,17 @@
+Pulse el botón ajuste para iniciar el modo de demostración.
+El analizador no parará de realizar el modo de demostración hasta la pulsación del botón Stop.
+6.6.2. Información del analizador
+Desde esta pantalla permite realizar la entrada o modificación del número de serie del analizador.
+Pulse el botón de edición para modificar el número de serie.
+También realiza el mismo proceso de verificación que realiza el analizador cuando se inicializa. 
+Pulse el botón de “mostrar detalles” para ver los diferentes pasos realizados en la verificación.
+Ilustración 6.28 
+Pantalla de información del analizador
+6.6.3. Actualización del analizador
+Pantalla desde la cual permite seleccionar dos pestañas, la primera permite la lectura y actualización de los ajustes 
+del analizador y la segunda permieta la actualización del firmware del analizador.
+6.6.3.1. Copia de seguridad y restaurar ajustes
+Los ajustes del analizador están memorizados en el propio analizador. Desde esta pantalla se permite realizar la cópia 
+de seguridad de los ajustes, así como restaurar en el analizador unos ajustes préviamente guardados.
+Manual de servicio
+130

@@ -1,0 +1,37 @@
+{
+  "manufacturer": "Biosystems",
+  "equipment": "A15",
+  "aliases": [
+    "A15C",
+    "Y15",
+    "Y15C"
+  ],
+  "document_type": "service_manual",
+  "language": "Spanish",
+  "source_pdf": "/Users/ricardomontanezmiranda/Documents/BioSys Diagnostico/data/manuals/a15/source/A15_Service_Manual_TESE000015-02-ESP.pdf",
+  "source_filename": "A15_Service_Manual_TESE000015-02-ESP.pdf",
+  "source_sha256": "ad70cd659004972763f5f59637fc203a2850549b4d1c3c44f0cc1570ca39e09b",
+  "page_count": 174,
+  "pdf_metadata": {
+    "format": "PDF 1.4",
+    "title": "",
+    "author": "",
+    "subject": "",
+    "keywords": "",
+    "creator": "",
+    "producer": "macOS Versi\u00f3n 26.3.1 (a) (Compilaci\u00f3n 25D771280a) Quartz PDFContext",
+    "creationDate": "D:20260323045318Z00'00'",
+    "modDate": "D:20260323045318Z00'00'",
+    "trapped": "",
+    "encryption": null
+  },
+  "title_lines": [
+    "Manual",
+    "de servicio",
+    "Espa\u00f1ol"
+  ],
+  "manual_version": "02",
+  "revision_date": "Abril 2020",
+  "change_description": "A\u00f1adido cap\u00edtulos: Avisos y advertencias licencia",
+  "manual_code": "TESE000015-02-ESP"
+}

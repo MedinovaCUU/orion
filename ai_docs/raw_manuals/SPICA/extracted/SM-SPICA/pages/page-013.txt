@@ -1,0 +1,49 @@
+13
+USUARIO
+Manual de Usuario BioSystems SPICA | Versión 2.8 - Agosto 2024
+Manual de Usuario BioSystems SPICA
+2. INSTALACIÓN
+2.3. Instalar el agua destilada, la solución de lavado y el contenedor de residuos 
+En la parte frontal del SPICA, hay 3 botellas negras: dos con tapa verde y una con tapa roja. La pequeña de 
+la izquierda con la tapa verde es la botella de solución de lavado (1L). La que está en el medio con la tapa 
+rojo es la botella de residuos (3L) y la derecha con la tapa verde es la botella de agua destilada (3L).
+2.4 Instalación de los racks de muestras y reactivos 
+Cada rack tiene una capacidad de 15 posiciones para botellas de reactivos y/o muestras (pueden colocarse 
+el tubo primario o en los pocillos pediátricos de muestras). La colocación de las botellas de reactivo y 
+muestras es totalmente adaptable a las necesidades del laboratorio.
+Los compartimentos ya están preparados para que las botellas de reactivos se coloquen directamente en 
+ellos. Las botellas de 60 mL deben ir en el anillo interior, mientras que las botellas de 20 mL pueden ser 
+colocadas en el anillo interior, medio o exterior de los racks.
+Para el posicionamiento de la muestra, use los adaptadores. Los adaptadores pueden colocarse en la 
+posición que se desee y se colocan con la abertura longitudinal hacia fuera para permitir la lectura del 
+código de barras. Presione con fuerza hasta que escuche un “clic” que indique la entrada correcta de la 
+lengüeta de sujeción. Los adaptadores se pueden quitar de su posición tirando de ellos hacia fuera.
+Los tubos primarios con diámetros de 14 y 15 mm se insertan directamente en el adaptador. Para usar los 
+tubos de 13 mm de diámetro y los pocillos pediátricos de muestras, primero se debe colocar el adaptador.
+Para manejar los frascos con seguridad, retírelos de su posición y desconecte los tubos 
+presionando el conector rápido. Una vez llenas con agua destilada (con agua destilada 
+de tipo 2) o solución de lavado y/o los residuos se vacían, ponga las botellas en su lugar y 
+vuelva a conectar el conector rápido.
+Asegúrese de que el conector rápido se inserte correctamente en la tapa del contenedor. 
+Para ello, al insertar el accesorio, deberías oír un “clic”. Si no, significa que no ha sido 
+insertado correctamente.
+Preparando la solución de lavado:
+1. Desenrosque la tapa de la botella de solución de lavado.
+2. Llénelo con 1L de agua purificada.
+3. Añada 5 ml de la solución de lavado concentrada (código AC16 434) y mezcle 
+suavemente. Tenga cuidado al manipular el frasco de la solución de lavado concentrada 
+para evitar que el contenido se salpique o se derrame. Use guantes y ropa 
+protectora cuando los manipule.
+4. Enrosque la tapa, conecte los tubos y colóquela en su alojamiento dentro del analizador
+Opciones: Si el SPICA dispone de la opción de botellas externas, el usuario únicamente 
+tendrá que manipular las botellas frontales que contengan solución de lavado y residuos 
+de alta contaminación. Estas deberían estar conectadas a la red de suministro de agua 
+purificada o al depósito de agua purificada y al contenedor de residuos o al desagüe 
+general de residuos.
+Si se utiliza un contenedor de residuos o un depósito de agua purificada, el usuario tiene 
+que controlar los niveles de residuos/agua de estos depósitos externos.
+PELIGRO
+BIOLÓGICO
+NOTA
+NOTA
+ATENCIÓN

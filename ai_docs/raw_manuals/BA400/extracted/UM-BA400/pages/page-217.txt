@@ -1,0 +1,52 @@
+217
+217
+1. Es necesario disponer de un lote del material de control en cantidad suficiente 
+para cubrir las necesidades durante un periodo prolongado de tiempo.
+2. Realizar al menos 20 mediciones, cada una en una serie distinta, empleando 
+el procedimiento de medida que se desea controlar.
+3. Calcular el valor medio (Xm) y la desviación estándar (s) de los resultados 
+obtenidos. Conviene revisar estas primeras estimaciones cuando se disponga 
+de más resultados.
+La dispersión de los resultados obtenidos es debida a la imprecisión interserial del 
+procedimiento de medida. Esta dispersión debe seguir una distribución normal 
+caracterizada por los valores de la media y la desviación estándar.
+Es posible entonces establecer un intervalo de valores con una probabilidad cono­
+cida de que el resultado se encuentre incluido en dicho intervalo.
+Como se desea que la probabilidad sea elevada, es frecuente escoger intervalos 
+entre Xm ± 2s y Xm ± 3s. El criterio escogido para establecer el intervalo de valores 
+admisibles es un criterio de decisión o regla de control.
+El control interno se basa en la idea de que es muy poco probable obtener un 
+resultado fuera de los límites establecidos.
+Las reglas de control basadas en las estadísticas gaussianas suelen representarse 
+según el formato Ans, donde “A” representa el número de resultados de control y 
+“ns” es el límite admisible escogido.
+También pueden utilizarse varios resultados de control pertenecientes a un mismo 
+material de control o a más de uno. Asimismo, los resultados de control pueden 
+haber sido obtenidos en una misma serie o en varias consecutivas. 
+Con varios resultados de control pueden introducirse reglas algo más complejas.
+Las más empleadas son las siguientes:
+ 
+22s 
+Se rechaza la serie cuando se obtienen 2 resultados que exceden 2s en el mismo 
+sentido (positivo o negativo).
+ 
+41s 
+Se rechaza la serie cuando se obtienen 4 resultados que exceden 1s en el mismo 
+sentido.
+ 
+10X 
+Se rechaza la serie cuando se obtienen 10 resultados al mismo lado de la media.
+ 
+R4s 
+Se rechaza la serie cuando un resultado excede el límite +2s y el otro excede el 
+límite –2s.
+Las reglas para varios resultados de control también orientan sobre la posible causa 
+del aumento del error. Las reglas 22s, 41s y 10X son especialmente sensibles al error 
+sistemático, mientras que la regla R4s detecta mejor el aumento de la imprecisión.
+Otra opción interesante es la combinación de varias reglas en forma de secuencia 
+lógica o algoritmo. La combinación más conocida es el denominado algoritmo o 
+reglas de Westgard para dos resultados de control.
+En algunos casos no es posible realizar una estimación estadística de la dispersión de 
+resultados y aplicar reglas de control, porque no existen materiales de control ase­
+quibles o porque el procedimiento de medida se utiliza con muy escasa frecuencia. 
+En estas situaciones es frecuente emplear un material de control que proporciona

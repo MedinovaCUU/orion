@@ -1,0 +1,24 @@
+50
+Manual de servicio
+4.6.  PC14626 - Placa punta
+Desmontaje:
+1. Quitar la tapa del brazo. Ver capítulo 4.3
+2. Quitar los cables de conexión de la placa
+3. Quitar los 2 tornillos (7)
+4. Quitar la placa
+Montaje:
+1. Seguir los pasos del desmontaje en sentido inverso 
+8
+7
+Ilustración 4.12.  Desmontaje placa punta
+4.7.  AC17417 - Placa sensor Reed / MO11558 - Ventilador
+Desmontaje placa sensor Reed:
+1. Desmontar la placa CPU. Ver capítulo 4.5
+2. Desconectar todos los cables de la placa del sensor
+3. Quitar la placa sensor Reed (7)
+Desmontaje ventilador:
+1. Desmontar la placa CPU. Ver capítulo 4.5
+2. Quitar los 4 tornillos (8)
+3. Quitar el ventilador
+Montaje:
+1. Seguir los pasos del desmontaje en sentido inverso para cada una de los elementos

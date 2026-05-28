@@ -1,0 +1,47 @@
+221
+221
+Cuando los especímenes llegan al analizador, se leen los códigos de barras o se 
+introducen manualmente y se asocian con la lista de trabajo. Puede suceder que 
+haya menos especímenes de los programados en la lista de trabajo, entonces quedan 
+pendientes de realización. Estas peticiones pendientes o se realizan por la llegada 
+de los especímenes a posteriori o se cancelan por el LIS.
+La sucesión de acciones es la siguiente:
+1. Pulse el botón de Query All de la barra superior. El analizador realiza una 
+petición genérica al LIS de la lista de trabajo.
+2. El LIS envía todas las órdenes de trabajo que tenga para el analizador. El 
+programa procesa las órdenes y genera la lista de trabajo.
+3. El usuario posiciona en el rotor los especímenes de las muestras y lee los 
+códigos de barras.
+4. El programa asigna a cada espécimen la información de la orden de trabajo 
+programada en la lista. 
+5. El usuario puede iniciar la sesión de trabajo.
+6. Una vez finalizada la lista y obtenidos los resultados para cada espécimen, el 
+analizador los envía al LIS. El envío de resultados en tiempo real se realiza con 
+la frecuencia que el usuario haya configurado. (Final de Test, Final de Paciente, 
+Final de Sesión de trabajo).
+ 
+)
+Véase capítulo 10.2.6 para la configuración del funcionamiento con LIS
+7. El LIS debe enviar una cancelación de las órdenes no realizadas.
+16.3. Envío de resultados hacía el LIS. Upload.
+Una vez finalizada la lista de trabajo los resultados se envían al LIS. Según la con­
+figuración establecida en la pantalla de configuración LIS los resultados se pueden 
+enviar automáticamente con la siguiente frecuencia: 
+• 
+Al finalizar cada sesión de trabajo: los resultados se envían al finalizar la sesión 
+de trabajo.
+• 
+Al finalizar cada paciente: cuando todas las técnicas de un paciente tienen los 
+resultados se envían al LIS.
+• 
+Al finalizar cada técnica: Cuando una técnica tiene resultado se envía al LIS.
+También se pueden enviar resultados a LIS manualmente desde la pantalla de 
+resultados actuales o desde la pantalla de históricos.
+Cuando el envío de resultados de control solicitados desde el analizador está activo: 
+se enviarán a LIS todos los resultados de Controles internos solicitados desde el 
+BA400. (Con la misma frecuencia de envío configurada para el envío de resultados 
+a LIS: automática o manual).
+Cuando hay una orden de LIS relativa a una técnica calculada únicamente se en­
+vía el resultado de la técnica calculada, no se envían los resultados de las técnicas 
+parciales, excepto cuando el LIS solicita de forma explícita ordenes de las técnicas 
+parciales y también orden de la técnica calculada.

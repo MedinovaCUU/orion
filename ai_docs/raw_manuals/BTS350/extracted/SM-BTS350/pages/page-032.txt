@@ -1,0 +1,21 @@
+—  32  —
+Service manual
+• 
+Temperature.
+Press F1 to begin the test.
+Enter the baseline Then the instrument asks for the reference value. Insert the sample theoretical value by means of the 
+numeric keyboard. When requested by the programme to “Enter SAMPLE”, enter the known sample. The instrument 
+prints the following data:
+• 
+Reading number.
+• 
+Absorbance.
+• 
+Absolute errors:
+• 
+Relative errors:
+4.12. - Open / Close QC tests
+On leaving the factory memory positions 150 to 155 contain the tests used to perform the final quality control of the 
+finish. These tests are de-activated in the factory; if they are activated again, the names of this tests will appear again in 
+the list of programmed tests.
+This option is for internal factory use and is of no interest to the Technical Assistance Service.

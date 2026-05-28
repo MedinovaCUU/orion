@@ -1,0 +1,34 @@
+173
+173
+Lista de accesorios
+Código
+Representación
+Descripción 
+CA10 455
+Cable de red europeo
+CA10 456
+Cable de red americano
+FI14 226
+Cable USB para conexión al ordenador
+AC16747
+Fusible 10 A (2)
+AC17097
+ 
+Conjunto filtro de entrada para el agua purificada de 
+150 µm
+AC16791
+Conjunto filtro de entrada de agua (5 µm)
+AC16792
+Recambio del cartucho del filtro de agua (5 µm)
+Lista de accesorios modulo ISE (Opcionales)
+Código
+Representación
+Descripción 
+5420
+Kit de reactivos
+5625
+Conjunto tubos del módulo ISE
+5201
+Electrodo Na+ 
+5202
+Electrodo K+

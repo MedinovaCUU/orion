@@ -1,0 +1,56 @@
+163
+163
+10.9.4. Utilidades del módulo ISE
+Para realizar el mantenimiento del módulo ISE, vaya al menú de utilidades y escoja 
+la opción de utilidades ISE.
+Desde este menú lanza las acciones para realizar el mantenimiento del módulo ISE.
+Puede realizar las siguientes utilidades:
+• 
+Calibrar
+• 
+Instalar un kit de reactivos
+• 
+Instalar los electrodos
+• 
+Desactivar el módulo para una larga duración
+• 
+Cambiar los tubos de las bombas peristálticas
+• 
+Activar las preparaciones ISE
+Para cada utilidad se han de realizar varias acciones. Seleccione una de las utilidades 
+y despliegue el grupo de acciones para realizarlas paso a paso.
+ 
+)
+Véase capítulo 13.3.2 para la explicación del detalle de cada paso.
+ 
+ 
+Seleccione una acción y pulse el botón de ejecutar. En la zona de resultados apa­
+recerá información sobre la acción. Informará si la acción ha terminado correc­
+tamente (el texto aparece en color negro) o con fallos (el texto aparece en color 
+rojo). Y en las acciones que devuelven información, tales como las calibraciones, 
+muestra los resultados.
+También se han agrupado cada unas de las acciones en un grupo llamado General, 
+por si el usuario quiere únicamente realizar una de las acciones, poderla lanzar 
+directamente.
+Acción 
+Descripción 
+Mantenimiento
+Realiza el vaciado de los tubos. Únicamente acciona la 
+bomba de residuos. En el parámetro repeticiones indique 
+el número de veces a realizar la acción.
+Purgar A
+Realiza un ciclo de cebado con el calibrador A, utiliza 
+un volumen de 100 μL. En el parámetro repeticiones 
+indique el número de veces a realizar la acción.
+Purgar B
+Realiza un ciclo de cebado con el calibrador B, utiliza 
+un volumen de 100 μL. En el parámetro repeticiones 
+indique el número de veces a realizar la acción.
+Cebado A
+Realiza un ciclo de cebado con el calibrador A, utiliza 
+un volumen de 300 μL. En el parámetro repeticiones 
+indique el número de veces a realizar la acción.
+Cebado B
+Realiza un ciclo de cebado con el calibrador B, utiliza 
+un volumen de 300 μL. En el parámetro repeticiones 
+indique el número de veces a realizar la acción.

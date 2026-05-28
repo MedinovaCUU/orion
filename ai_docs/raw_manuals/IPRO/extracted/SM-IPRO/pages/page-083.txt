@@ -1,0 +1,19 @@
+83
+CÓDIGO
+DESCRIPCIÓN
+AC16594
+Motor de la bomba de dispensación
+MO14620
+Motor X
+ME14628
+Correa carro X
+MO11516
+Motor Y
+ME11513
+Correa carro Y
+AC11519 
+z guide motor with encoder-spring 
+AC14619 
+Muelle encoder 
+ME11514 
+Correa Z

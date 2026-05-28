@@ -1,0 +1,38 @@
+Service manual
+54
+Connector
+Function
+Pins
+J1
+CPU board connection (CIIM0006)
+1- Vcc
+2- GND
+3- TX0
+4- GND
+5- RX0
+6- GND
+7- GND
+8- TX1
+9- GND
+10- RX1
+4.9. 
+Auxiliar channel information
+The rear left part of the instrument is where the communications cables are connected. There are two connections, 
+the COM1 and the COM2.
+The COM1 is the main connection from the analyser to the computer. This connection should be always present to 
+analyser run propertly. 
+there are two connection types:
+ 
+A - Cable type USB
+ 
+B - Cable type RS-232
+Only connect one cable type.
+The labeled connector COM2 is the auxiliar connector.
+This connector is used to communicate with a second serial port in the computer. The function of this cable is to 
+monitor the internal states of the analyser.
+To show all this information, the user should execute the program: windows HyperTerminal and configure with the 
+following parameters:
+Baud Rate: 38400
+Número de bits: 8
+Stop bits: 1
+Paridad: none

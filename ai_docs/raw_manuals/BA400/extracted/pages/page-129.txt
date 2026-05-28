@@ -1,0 +1,49 @@
+AV. Repackaging instructions
+This chapter gives the instructions for repackaging and control of the marketed instruments for rental or free lease, 
+or transferred as second hand.
+General terms and conditions
+• 
+Useful life: There is no limit on the useful life, provided the manufacturer's instructions regarding use and 
+maintenance set out in the User Manual are complied with and original spares are used. BioSystems will maintain 
+the spares service up to 5 years after the manufacture of the same model of the last analyser.
+• 
+Number of times the appliance can be repackaged: There is no limit regarding the number of times it can 
+be repackaged, provided the repackaging instructions described in this section are complied with and original 
+spares are used.
+• 
+Accessories used in repackaged appliances: All repackaged analysers will use the accessories supplied by the 
+manufacturer. Any remains of surplus fungibles used previously such as rotors, spare reagent or washing solu­
+tion bottles, etc. will be disposed of.
+• 
+Personnel: The repackaging operation will be carried out by personnel authorised by Biosystems. This person­
+nel will normally be the dealer's technical service staff or persons who have received the appropriate training. 
+Instructions
+Cleaning and desinfecting
+Users carrying out disinfection processes must wear gloves and protective apparel. All consumable materials (reaction 
+rotor, reagent bottles, sample tubes) will be treated as potentially infectious waste.
+Check whether there are any reaction rotors in their compartments or reagent bottles in the refrigerator. If there 
+are, dispose of them. 
+Empty the high contamination waste tank and washing solution tank.
+Wash the inside of the equipment using a damp cloth and neutral soap. If there are splashes, wash them with alcohol.
+Follow the applicable national guidelines for disposing of waste that is considered potentially infectious. 
+Components to be replaced
+Replace the following components:
+• 
+Wash station suction tubes
+• 
+Wash station dryer
+• 
+Distilled water and washing solution bottle filters
+• 
+ISE module peristaltic pump tubes
+Update the firmware and software
+Adjustment process
+Take note of the values obtained from the adjustment in the record document at the end of the service manual.
+Make the following adjustments. To make the adjustments, consult chapter 6 of the service manual.
+• 
+Verification of the LED currents.
+• 
+Thermostatting adjustment in the reagent tips
+• 
+Thermostatting adjustment in the reaction rotor
+129

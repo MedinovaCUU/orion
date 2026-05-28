@@ -1,0 +1,67 @@
+AIV. Características técnicas
+WARNING
+El fabricante no se hace responsable de los daños causados por una 
+incorrecta utilización del aparato.
+CARACTERÍSTICAS GENERALES
+Velocidad
+400 prep/h (sin electrolitos)
+Velocidad modulo ISE
+320 prep/h
+Principios de análisis
+Colorimetría, turbidimetría.
+Módulo ISE: Potenciometría (método de electrodo 
+selectivo): Na+, K+, Cl- (Li+ es opcional)
+GESTIÓN DE MUESTRAS
+Capacidad del rotor de muestras
+135
+Detector de código de barras
+Sí
+Número de muestras con código de barras
+90
+Tamaño de los tubos primarios 
+Diámetro de 12 mm a 16 mm (altura máx. 
+100 mm)
+Pocillo pediátrico
+Pocillo pediátrico de diámetro 13.5 mm
+Tipo de jeringa de la bomba de muestra
+Pistón cerámico de bajo mantenimiento
+Diámetro del pistón
+3 mm
+Volumen de pipeteo
+2 µL a 40 µL
+Resolución del pipeteo
+0.1 µL
+Relación máxima entre volumen muestra y reactivo
+1:2 a 1:200
+Detección de nivel
+Sí
+Lavado de la punta
+Interior y exterior
+Detector de coágulo
+Sí
+Detector de colisión vertical
+Sí
+GESTIÓN DE REACTIVOS
+Volumen botellas de reactivo
+20 mL, 60 mL
+Capacidad del rotor de reactivos
+88 (44 botellas de 20 mL o 
+60 mL + 44 botellas de 20 mL) 
+Reactivos refrigerados
+Sí
+Temperatura máxima de la nevera
+6 °C a 11°C (a temperatura ambiente de 21 °C)
+Detector de código de barras
+Sí
+Brazos de reactivos 
+2 (R1, R2)
+Volumen de reactivos R1
+120 mL a 450 mL
+Volumen de reactivos R2
+10 mL a 300 mL
+Tipo de jeringa de la bomba de reactivos
+Pistón cerámico de bajo mantenimiento
+Diámetro del pistón
+8 mm
+Manual de servicio
+294

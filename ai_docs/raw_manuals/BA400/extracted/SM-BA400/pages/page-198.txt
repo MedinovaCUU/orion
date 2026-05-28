@@ -1,0 +1,16 @@
+8.10.9. AC16576 - Colector
+16
+Ilustración 8.55 
+Cambio colector
+Herramientas: 1 llaves allen de 2.5
+Desmontaje:
+1. Desconecte los tubos del colector. No quite los racores del colector porqué están sellados. Vaya con cuidado al 
+quitar los tubos para no deformarlos. Para sacar los tubos de su alojamiento, no los estire por el punto medio 
+sino cójalo por el extremo. En caso de que se deformen, cámbielos por unos nuevos.
+2. Quite los 2 tornillos (16)
+Montaje:
+1. Sustituya el conjunto colector.
+2. Atornille el colector en su posición.
+3. Conecte todos los tubos.
+Manual de servicio
+198

@@ -1,0 +1,19 @@
+Ilustración 6.9 
+Ajuste estación de lavado
+1. Afloje el tornillo (1) que sujeta la estación de lavado en la dirección polar.
+2. Mueva el cabezal de la estación de lavado hasta que las puntas no toquen los laterales del rotor.
+3. Apriete el tornillo (1).
+4. Afloje los tornillos (2) que sujetan la estación de lavado en la dirección axial.
+5. Mueva el cabezal de la estación de lavado hasta que las puntas de la estación queden bien centradas con el rotor.
+6. Apriete los tornillos (2).
+Una vez realizado el ajuste mecánico pase a realizar el ajuste de la altura de la estación de lavado con el programa 
+de servicio.
+Ver Ilustración 6.10.
+Ilustración 6.10 
+Pantalla ajuste posición estación de lavado
+1. Pulse el botón de inicio del ajuste. 
+2. Desplace el posicionamiento vertical de la estación de lavado con el recuadro de ajuste.
+3. Mueva paso a paso la estación de lavado para descender las puntas de la estación hasta que la punta del secador 
+toque el rotor y el muelle se comprima un poco (unos 0.5 mm).
+4. Guarde el valor del posicionamiento.
+113

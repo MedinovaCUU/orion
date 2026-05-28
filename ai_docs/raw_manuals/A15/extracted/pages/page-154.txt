@@ -1,0 +1,29 @@
+155
+AIII. Lista de consumibles, accesorios y piezas de 
+recambio
+En caso de deterioro de alguno de los componentes del analizador o bien si se precisa alguno de los materiales 
+fungibles, utilizar siempre material original BioSystems. En la tabla siguiente aparecen listados los componentes 
+que eventualmente pueden ser necesarios. Para su adquisición, contactar con el distribuidor habitual y pedir cada 
+elemento con su correspondiente código. Esto simplificará el trabajo y minimizará los errores. 
+Lista de accesorios
+Código
+Representación
+Descripción 
+AC13188 
+CD Programa de Usuario
+AC17343
+CD programa usuario A15 para heces
+CA10455
+Cable de red europeo
+CA10456
+Cable de red americano
+FI14226
+Cable USB
+AC10770
+Pocillos pediátricos de reacción (1000) <<Sample 
+Wells>>
+AC11485
+Rotor de reacciones (10 unidades) <<Reaction 
+Rotor>> 
+AC11486
+Tornillo fijador del rotor de reacciones

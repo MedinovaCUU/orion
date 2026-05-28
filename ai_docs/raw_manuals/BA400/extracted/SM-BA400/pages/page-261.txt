@@ -1,0 +1,54 @@
+9.3.6. Márgenes de aceptación de las calibraciones
+A continuación se muestran los márgenes de aceptación para la calibración de los electrodos y para la calibración 
+de la bomba peristáltica:
+Electrodo
+Margen de la calibración
+Li+ 
+47-64 mV/dec
+Na+ 
+52-64 mV/dec
+K+ 
+52-64 mV/dec
+Cl- 
+40-55 mV/dec
+Los resultados de la calibración pueden disminuir gradualmente con el tiempo a medida que los electrodos enve­
+jecen. Una variación repentina no responde a un comportamiento esperado. Si esto ocurre, verifique el estado del 
+módulo (tubos, electrodos, pack de reactivos) antes de proseguir con las medidas.
+Bomba peristáltica
+Margen de la calibración
+Bomba residuos
+Bomba Cal A
+1500 -3000 
+Bomba Cal B
+1500- 3000
+Detector de burbujas
+Margen de la calibración
+BBC A
+Número de pasos para mover 75 uL de CAL A
+BBC L
+Número de pasos para detectar el aire
+BBC M
+Delta entre el valor de A y L. Tiene que ser 
+superior a 90
+9.3.7. Errores de deriva y ruido
+La pendiente baja es generalmente el resultado de la pérdida de sensibilidad de un electrodo con el tiempo a pesar 
+de que podría ser debido a otras causas. El error de ruido indica la inestabilidad de los valores de una solución dada 
+durante un análisis. La deriva indica que el analizador no está observando valores estables entre las mediciones de 
+las soluciones de calibración.
+Para solucionar el problema, primero pasar la solución de limpieza diaria un par de veces para eliminar los residuos 
+de proteínas acumuladas en el canal fluídico. Si no se elimina el problema observado, asegúrese de que el man­
+tenimiento de rutina se ha realizado, por ejemplo, la sustitución del electrodo de referencia, junta tórica, etc, Si 
+continua sin funcionar, reemplace el electrodo dudoso y pruebe si resuelve el problema. Si no, el causante puede 
+ser la contaminación por sales.
+En todos los electrodos de iones específicos, existe la posibilidad de que la sal reseca o la humedad proporcionen una 
+vía de fuga eléctrica que puede dar como resultado errores, incluyendo la “deriva”, “ruido” o valores de pendiente 
+incorrectos. La señal eléctrica procedente de los electrodos ISE es extremadamente pequeña y cualquier interferencia 
+con estas señales dará lugar a errores. Durante el uso operativo del analizador, pequeñas cantidades de las soluciones 
+de calibración pueden filtrarse dejando caminos de humedad o residuos de sal que pueden no ser visibles a simple 
+vista. La humedad o residuos de sal son conductores de la electricidad y pueden proporcionar cortocirtcuitos de los 
+electrodos que interfieren con la medición.
+Para eliminar estos cortocircuitos que provocan los errores de la señal, limpie los caminos de humedad o de residuos 
+de sal. La mejor manera de hacer la limpieza es apagar el módulo ISE del analizador, retirar todos los electrodos del 
+analizador y limpiar cada contacto con una toalla de papel húmeda y dejándolos secar. El siguiente paso es limpiar 
+la zona donde los electrodos hacen contacto con el módulo ISE de los restos de humedad o residuos de sal con otra 
+261

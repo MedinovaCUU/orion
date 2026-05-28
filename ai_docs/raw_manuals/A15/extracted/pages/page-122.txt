@@ -1,0 +1,23 @@
+123
+6.4. Rotor de reacciones y lectura
+6.4.1. AC13370 - Conjunto de reacciones completo
+Desmontaje:
+1. Extraer la carcasa superior. Ver 6.1.5
+2. Desconectar la manguera de conexión al rotor y desmontar el portalámparas
+3. Extraer los 3 tornillos (1) y (2) que sujetan el conjunto a la base
+Montaje:
+1. Seguir el órden inverso al desmontaje
+1
+2
+Ilustración 6.22 Desmontaje conjunto rotor
+6.4.2. AC13371 - Sensor de la temperatura del rotor
+Desmontaje:
+1. Extraer la carcasa superior. Ver 6.1.5
+2. Desconectar la manguera de la sonda de temperatura
+3. Retirar el aislante térmico del sensor de temperatura
+4. Extraer el sensor de temperatura (3)
+Montaje:
+1. Sustituya el sensor de temperatura
+2. Retirar la silicona térmica del alojamiento y poner nueva silicona térmica en el extremo del nuevo sensor
+3. Montar el nuevo sensor de temperatura
+4. Realizar el ajuste de temperatura del rotor

@@ -1,0 +1,59 @@
+191
+191
+Siga los pasos siguientes para sustituir el electrodo (tanto el de referencia como 
+los otros)
+1. Con el programa de usuario en el apartado de utilidades ISE, realice 1 ciclo 
+de Mantenimiento, para vaciar el canal del módulo ISE.
+2. Apague la alimentación del módulo ISE.
+3. Abra las puertas y retire la tapa frontal del módulo ISE.
+4. Presione hacía abajo el botón amarillo para liberar la presión sobre los elec­
+trodos.
+5. Retire todos los electrodos.
+6. Deseche el electrodo a cambiar.
+7. Para colocar los electrodos de nuevo, presione el botón amarillo hacía abajo 
+e inserte primero el electrodo de referencia y luego el resto de electrodos si­
+guiendo el orden de la Ilustración 123.
+8. En caso de no disponer del electrodo de Li+, introduzca en su lugar un elec­
+trodo vacío, de esta manera habrá continuidad en el canal por donde circula 
+la muestra.
+9. Suelte el botón amarillo para que haya presión en todos los electrodos y buena 
+comunicación fluídica. 
+10. Para asegurarse que los electrodos están bien colocados presiónelos frontalmente 
+hasta oír un clic o un asentamiento de los mismos.
+11. Encienda la alimentación del módulo ISE.
+12. Coloque la tapa frontal y cierre las puertas.
+13. Ejecute las acciones, en número y orden indicado, con el programa de usuario, 
+en el apartado utilidades ISE, cambio de electrodos.
+Paso
+Acción 
+Repeti­
+ciones 
+Descripción
+1
+Cebado B
+1
+2
+Cebado A
+1
+Si obtiene algún error en la pantalla de 
+resultados, vuelva a ejecutar las dos primeras 
+acciones. Si el problema continúa verifique 
+que los electrodos están bien posicionados 
+y se han insertado correctamente. Si es 
+necesario extráigalos y vuélvalos a instalar. 
+Recuerde que el procedimiento de extraerlos 
+y volverlos a instalar se debe hacer con la 
+fuente de alimentación del módulo ISE 
+apagado.
+3
+Calibrar 
+bombas 
+1
+4
+Activar 
+electrodos
+1
+Indique la fecha de instalación. Si no ha 
+reemplazado alguno de los electrodos, vuelva 
+a registrar el electrodo antiguo con la fecha de 
+instalación original

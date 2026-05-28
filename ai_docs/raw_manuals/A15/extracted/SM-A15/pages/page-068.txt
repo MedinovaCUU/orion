@@ -1,0 +1,27 @@
+69
+5. Posicionar el rack en la posición seleccionada, colocar un pocillo o botella en el pocillo 1 del rack y pulsar 
+la tecla Iniciar.
+6. La punta descenderá automáticamente hasta una altura por encima del pocillo/botella, para evitar la coli-
+sión con el mismo. A continuación, se requiere introducir un poco la punta en el pocillo/botella. Para ello:
+• 
+Si la punta está muy descentrada en XY y fuera de la boca del pocillo o botella: Desplazar la punta con 
+movimientos XY (pantalla o teclado), antes de realizar movimientos Z para bajar la punta.
+• 
+A continuación, bajar ligeramente la punta con movimiento Z (pantalla o teclado) sólo para facilitar el 
+ajuste del centro. 
+A partir de esta posición de acercamiento se puede iniciar el ajuste de los valores:
+7. Ajustar el centro del pocillo/botella: para ello desplazar la punta con movimientos X e Y (pantalla o teclado)
+8. Ajustar el fondo del pocillo/botella: para ello desplazar la punta con movimientos Z (pantalla o teclado) 
+hasta que toque el fondo. Para comprobarlo: mover el pocillo/botella verticalmente.
+9. Para finalizar el ajuste XYZ pulsar Aceptar. 
+10. Los nuevos valores ajustados de XYZ aparecerán en la tabla superior. (Pero no se habrán guardado to-
+davía en el instrumento).
+11. El brazo se desplazará automáticamente a la posición 10 o 12 dependiendo del tipo de rack seleccionado. 
+Repetir los pasos 6 a 9.
+12. Una vez realizados los ajustes en la posición 10 o 12, el brazo se aparcará para poder mover el rack. 
+13. Colocar el rack en la siguiente posición de la bandeja, pulsar Iniciar. Repetir los pasos 6 a 9 para realizar 
+los ajustes en cada una de las posiciones de la bandeja de racks.
+14. Una vez finalizados todos los ajustes se deben memorizar en el instrumento, para ello pulsar Guardar.
+5.2.3.2. Instrumentos con refrigerador de reactivos
+El ajuste se realiza de la misma manera que en un instrumento sin refrigerador de reactivos. Hay que tener en 
+en cuenta que el ajuste para racks de nuestras(pediàtricos o tubos) solo se realizará en las posiciones 3 y 4:

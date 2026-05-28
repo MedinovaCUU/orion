@@ -1,0 +1,163 @@
+153
+AII. Tablas de margenes de 
+ajuste
+Principales puntos de medida de tensión
+Placa fuente alimentación CIIM00015
+ 
+TP1 - 6V 
+ 
+[5.6 – 5.8] V 
+ 
+TP2 - 12V 
+ 
+[11.7 – 11.9] V
+ 
+TP3 - 5V 
+ 
+[4.9 – 5.2] V
+ 
+Sp150 
+ 
+[23.5 – 24.5] V
+Placa microprocesador CIIM0026
+Test 
+Point
+Des-
+cripción
+V nominal
+modo 
+stress
+Margenes V
+Modo Stress
+V no-
+minal 
+standby
+TP56
+Vref 
+motor X
+1.95 V
+[1.75 – 2.14]
+640 mV
+TP57
+Vref 
+motor 
+bomba
+1.95 V
+[1.75 – 2.14]
+640 mV
+TP58
+Vref 
+motor 
+filtros
+1.95 V
+[1.75 – 2.14]
+1.48 V
+TP59
+Vref 
+motor 
+rotor
+1.60 V
+[1.44 – 1.76]
+640 mV
+TP60
+Vref 
+motor Z
+2.35 V
+[2.11 – 2.58]
+2.35 V
+TP61
+Vref 
+motor Y
+2.35 V
+[2.11 – 2.58]
+640 mV
+Principales valores de ajuste del analizador
+ 
+ 
+ 
+ 
+ 
+ 
+Tolerancias
+Posicionamiento brazo 
+manipulador 
+Pérdida pasos eje X
+Pérdida de pasos
+[-3,3]
+Pérdida pasos eje Y
+Pérdida de pasos
+[-3,3]
+Pérdida pasos eje Z
+Pérdida de pasos
+[-3,3]
+Pérdida pasos motor rotor
+Pérdida de pasos
+[-3,3]
+Pérdida pasos motor tambor 
+de filtros
+Pérdida de pasos
+[-3,3]
+Pérdida pasos motor bomba
+Pérdida de pasos
+[-4,4]
+Ajuste posiciones XY
+Origen X
+[10,125]
+Origen Y
+[240,290]
+Estación lavado X
+[330,450]
+Estación lavado Y
+[70,120]
+Rotor X
+[60,170]
+Rotor Y
+[1020,1060]
+Autocentrado punta
+Offset X
+[-4,4]
+Offset Y
+[-4,4]
+Posicionamiento punto de 
+de dispensac0ón
+Rotor en dispensación
+[90,120]
+X fino del rotor
+[35,200]
+Posicionamiento tambor 
+de filtros
+Posicionamiento
+[-5,5]
+Posicionamiento rotor en 
+óptica
+Posicionamiento
+[-15,0]
+Sensibilidad de control de 
+nivel botellas
+Agua vacía
+[200,255]
+Agua llena
+[46,230]
+Agua calculada
+[115,240]
+Residuos vacía
+[200,255]
+Residuos llena
+[113,245]
+Residuos calculada
+[160,245]
+Sensibilidad de la 
+detección de nivel
+Rack muestras pediátrico
+[35,100]
+Rack muestras 13/15mm
+[25,90]
+Rack reactivo
+[5,45]
+Termostatización de la punta
+Temperatura consigna 
+[35,45]
+Termostatización del rotor
+Temperatura consigna 
+[36,37.5]
+Tiempos de integración

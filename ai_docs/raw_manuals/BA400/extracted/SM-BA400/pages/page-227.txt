@@ -1,0 +1,22 @@
+27
+26
+Ilustración 8.84 
+Cambio fotobarrera estación de lavado
+8.13.10. AC17308 - Placa doble fotobarrera. BA400v2
+Desmontaje:
+1. Desatornille los tornillos (28) que sujetan la placa con el doble fotodetector.
+2. Desconecte los 2 conectores. Véase Ilustración 8.85
+Montaje:
+1. Cambie la placa del doble fotodetector (29).
+2. Coloque los tornillos (28) para sujetar el doble fotodetector.
+3. Coloque los 2 cables según la tabla siguiente:
+Placa CIIM00068
+Placa doble fotodetector
+Placa CIIM00050
+Placa control de fotometría
+CN1
+CN10
+CN2
+CN4
+4. Verifique su funcionamiento con el programa de servicio.
+227

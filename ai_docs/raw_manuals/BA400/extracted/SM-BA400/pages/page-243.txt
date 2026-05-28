@@ -1,0 +1,20 @@
+3. Incorporar 3 separadores roscados (2), que se sujetan con los 3 tornillos anteriores y permiten posicionar la 
+CPU en una nueva posición.
+4. Montar la CPU (CIIM0046-03) en la posición indicada utilizando los mismos tornillos que la sujetaban. Solo 
+3 de ellos.
+5. La chapa trasera deja ver el puerto de usuario y el de servicio.
+6. Cargar los ajustes a la nueva placa
+ 
+) Ver capítulo 6.6.3.1 para cargar los ajustes
+7. Configurar con el programa de servicio la versión de Hardware
+ 
+) Ver capítulo 6.4.1 para cambiar la versión de hardware
+ 
+2
+1
+Ilustración 8.103 Montaje tornillos y separadores CPU
+ 
+4
+3
+Ilustración 8.104 Montaje CPU
+243

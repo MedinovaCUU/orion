@@ -1,0 +1,61 @@
+Manual de servicio
+166
+Lista de herramientas necesarias
+Código
+Representación
+Descripción 
+Juego de llaves allen métricas.
+Grasa de silicona termoconductora o similar
+Soldador
+Destornilladores o dos llaves allen de 3mm de 
+diámetro
+AC13694
+Juego de llaves torx
+AC15212
+Conjunto Loctites: 243, 641, 415
+AC13935
+Termómetro Fluke
+AC13079
+Grasa mecánica ELESA NT1 (sólo para bomba 
+cerámica) 
+AC11860
+Útil de ajuste de la temperatura 
+AC15920
+Útil de ajuste del punto de dispensación en el rotor. 
+AIV. Versiones de software
+Cambios en las versiones del programa de servicio
+Fecha 
+Versiones 
+Cambios
+ 04/04/06 
+3.0.1 
+Primera versión
+ 20/07/06 
+3.0.2 
+Nueva comprobación de la integridad del firmware antes de ser enviado al 
+analizador
+ 
+ 
+ 
+Corrección de errores
+ 18/12/06 
+3.1.0 
+Modificación de la pantalla de ajuste de sensibilidad de nivel para incorpo-
+rar el ajuste independiente por tipo de rack.
+ 
+ 
+ 
+Incorporación del menú de ayuda, con la guía de mantenimiento preventi-
+vo.
+ 14/12/07 
+3.2.0 
+Mejora en la realización del ajuste fino de z máximo. Nuevo menú de con-
+figuración del tipo de rotor
+ 22/01/09 
+4.0.0 
+Mejora del sistema de ajuste de las posiciones de la bandeja de racks y 
+de reactivos.
+ 17/07/09 
+4.1 
+Se ha incorporado una opción en el ajuste de racks para seleccionar que 
+tipo de rack utiliza el analizador: Metalizado o de plástico.

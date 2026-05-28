@@ -1,0 +1,17 @@
+8.2. 
+Desmontaje rotor de reacción
+1. Quite la tapa superior
+ 
+) Véase capítulo 8.1.7
+2. Quite la carcasa de protección de la estación de lavado.
+3. Separe las puntas de la estación de lavado del conjunto rotor, quitando el tornillo manual de sujeción y quite 
+el cable del detector de desbordamiento.
+4. Quite los 7 tornillos de la Ilustración 8.11 y Ilustración 8.12 y el tornillo de toma de tierra. El tornillo (1) está 
+ubicado por debajo de la pieza de plástico que aloja a los tubos de la estación de lavado.
+5. Desconecte el tubo de desagüe (2) del rotor de lecturas. Es un conector rápido. Ver Ilustración 8.12, para acceder 
+a dicho conector tendrá que separar temporalmente los filtros de partículas (3)
+6. Quite el rotor de lecturas con cuidado separando el conjunto de puntas y tubos de la estación de lavado.
+Ilustración 8.11 
+Tornillos de sujeción del rotor de reacción
+Manual de servicio
+130

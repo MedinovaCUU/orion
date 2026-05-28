@@ -1,0 +1,54 @@
+REQUERIMIENTOS AMBIENTALES
+Temperatura de transporte y 
+almacenamiento
+0 °C a 40 °C
+Humedad de transporte y almacenamiento
+< 85 % sin condensación
+DIMENSIONES Y PESO
+Dimensiones (Ancho, profundo y alto)
+1077 mm x 690 mm x 680 mm
+Peso
+166 Kg
+REQUERIMIENTOS ELÉCTRICOS
+Tensión de red
+115 V a 230 V ±10% Vac
+Frecuencia de red
+50 Hz o 60 Hz
+Potencia eléctrica
+500 VA
+REQUERIMIENTOS FLUÍDICOS
+Entrada de agua
+Por depósito externo o por toma de red directa
+Tipo de agua
+Purificada tipo II (NCCLS)
+Consumo de agua
+< 9 L/h
+Depósito de residuos de alta contaminación
+Interno de 2.4 L
+Depósito de solución de lavado
+Interno de 2.4 L 
+REQUISITOS MÍNIMOS DEL ORDENADOR
+Sistema operativo
+Windows® 7 64 bit (x64), Windows® 10 64 bit (x64)
+CPU
+Equivalente a Intel Core i3 @3.10 GHz o superior
+Memoria RAM
+4 Gbytes
+Disco duro
+40 Gbytes o superior
+Lector de DVD
+Sí
+Monitor
+Resolución mínima 1 024 x 768
+Comunicaciones con el instrumento
+USB 2.0
+El nivel de aislamiento del canal de comunicaciones es reforzado (el aislamiento del canal de comunicaciones 
+del ordenador ha de ser también reforzado)(1)
+(1) Se entiende como aislamiento reforzado aquel que asegura una protección igual o superior al doble del 
+proporcionado por el aislamiento principal. Aislamiento principal es aquel cuyo fallo podría causar un riesgo de 
+choque eléctrico (UNE EN 61010-1:2010).
+CUMPLIMIENTO DE DIRECTIVAS
+Modelo BA200: 
+Directiva CE – IVD
+98/79/CE
+257

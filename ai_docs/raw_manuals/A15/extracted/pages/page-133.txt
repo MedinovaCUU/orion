@@ -1,0 +1,17 @@
+Manual de servicio
+134
+1
+2
+Ilustración 6.39 Desmontaje placa del refrierador
+6.5.5. PC13384 - Placa de comunicaciones
+Desmontaje:
+1. Abatir la tapa trasera de la electrónica.
+2. Desconectar la manguera de la placa de comunicaciones
+3. Extraer los 6 tuercas (1) 
+4. Extraer la palca de comunicaciones
+Montaje:
+1. Instalar una nueva placa
+2. Realizar el proceso inverso de desmontaje
+1
+2
+Ilustración 6.40

@@ -1,0 +1,20 @@
+55
+56
+57
+Ilustración 8.94 
+3. Coloque los tornillos (55) para unir el banco óptico a la placa electrónica. Apriételos con un par de 3.8 Nm.
+4. Coloque la abrazadera (57)
+5. Atornille los 2 tornillos (54) con la placa de fotometría con el soporte. No los apriete.
+6. Conecte la banda plana de comunicación entre la placa de fotometría y la del control de fotometría.
+7. Atornille los 4 tornillos (51) para unir el conjunto de placas electrónicas con el rotor. Conecte en ese momento 
+la toma de tierra (52) del conjunto del rotor de reacciones.
+8. Conecte todo el cableado a la placa de control de fotometría. En el capítulo 4.6 indica como conectar cada 
+uno de los cables.
+Montaje del conjunto rotor de reacciones al instrumento:
+9. Coloque el conjunto rotor en la posición dentro del instrumento.
+10. Deje flojos los tornillos (61) y (62) que sujetan la placa de fotometría.
+11. Coloque y atornille fuerte los tornillos en el siguiente orden: primero el tornillo (60), después los (64) y (65), 
+después los (58) y (59)
+12. Al final atornille con un par de apriete de 3.8 Nm, los tornillos (61) y (62)
+13. Coloque el tornillo (63) y apriételo para conectar la toma de tierra a la base del instrumento.
+235

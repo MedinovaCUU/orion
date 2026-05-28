@@ -1,0 +1,36 @@
+La estación de lavado incorpora un sistema de bloqueo de la entrada de luz por la abertura de la tapa, pieza (40). 
+Esta pieza siempre está en la posición inferior tocando la tapa. Cuando la estación de lavado sube y baja, dicha pieza 
+(40) se mantiene en su posición de contacto con la tapa mediante unos guiajes y unos muelles.
+33
+31
+39
+38
+40
+36
+32
+34
+37
+25
+35
+Ilustración 3.11 
+Conjunto puntas de la estación de lavado
+La maniobra de lavado está formada por 10 ciclos. En cada ciclo entra un par de puntas, donde la más larga sirve 
+para aspirar, y la corta para dispensar.
+• 
+Ciclo 1(34): Aspira la mezcla de la reacción y dispensa solución de lavado. El residuo aspirado va a parar direc­
+tamente a la botella de residuos de alta contaminación. 
+• 
+Ciclo 2 (35): Aspira la solución de lavado y dispensa otra vez solución de lavado. 
+• 
+Ciclo 3: Ciclo de espera para lavar correctamente el pocillo
+• 
+Ciclo 4 a 6 (36): Enjuague, aspira el líquido y dispensa agua destilada
+• 
+Ciclo 7: Ciclo de espera
+• 
+Ciclo 8: Comprobación óptica del pocillo
+• 
+Ciclo 9 (38): Aspira el agua destilada
+• 
+Ciclo 10 (39): Seca el pocillo.
+31

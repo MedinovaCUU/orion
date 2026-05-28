@@ -1,0 +1,14 @@
+83
+5.3.5. Test del sistema de termostatación de la punta
+Esta pantalla permite comprobar que la temperatura de dispensación de las reaccio nes es cercana a 37°C. 
+Para realizar este ajuste el analizador debe estar inicializado. El técnico debe medir la temperatura del líquido 
+dispensado con un termómetro calibrado a 37°C. El programa muestra la temperatura de consigna del control 
+actual. Este parámetro puede ser distinto a 37°C. Cuando el técnico lo indica, el analizador realiza dispen-
+saciones de una de las botellas centrales con agua destilada termostatizada sobre una cierta posición de la 
+bandeja de racks mostrada en la pantalla. El técnico debe medir con el termómetro calibrado la temperatura 
+del agua dispensada e introducir esta tempera tura en la pantalla. El programa indica si la temperatura medida 
+está dentro de los márgenes de error tolerados y guarda este valor para los informes de resultados de tests. 
+Para realizar el test seleccionar una de las botellas de reactivo.
+5.3.6. Test del sistema de termostatación del rotor
+Esta pantalla permite comprobar que la temperatura del rotor de reacciones está a 37°C. Para realizar este 
+test el analizador debe estar inicializado. El rotor de metacrilato puede llenarse de agua destilada automática-

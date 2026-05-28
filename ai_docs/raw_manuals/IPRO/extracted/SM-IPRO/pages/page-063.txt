@@ -1,0 +1,32 @@
+63
+30
+29
+Ilustración 4.32.  Conexiones fluídicas
+32
+31
+33
+Ilustración 4.33.  Conexiones fluídicas
+Referencia
+Conexión
+1
+Conexión tubo residuos a la bomba peristáltica
+2
+Conexión tubo residuos a la punta de aspiración
+3
+Conexión tubo residuos a la botella de residuos
+4
+Conexión interna del manifold bomba cerámica
+5
+Conexión tubo de solución de lavado a la bomba cerámica
+28
+Conexión tubo PBS a la botella de PBS
+29
+Conexión tubo PBS a la entrada bomba cerámica
+30
+Conexión interna del manifold bomba cerámica
+31
+Conexión interna del manifold bomba cerámica
+32
+Conexión tubo de teflón a la punta de dispensación
+33
+Conexión interna del manifold bomba cerámica

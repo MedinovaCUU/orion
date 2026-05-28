@@ -1,0 +1,31 @@
+30
+Service manual
+tube is installed at the end of the filter container (8). Both water tubes pass through the rubber piece (3) in the lid (2) 
+of the container, which fastens them in position. The PVC tube (12) connects the waste extraction diaphragm pump to 
+the waste container (9). The waste container lid (10) has a fast coupling fitting (11) with automatic drip-proof closing 
+when disconnected. All the tubes pass into the interior of the analyzer through the rubber grommet (13).
+1
+9
+3
+2
+7
+4
+10
+11
+12
+13
+Figure 3.10 
+1 – Water container
+2 – Water container lid
+3 – Water container tubes fastening
+4 – Water container teflon tube
+5 – Teflon tube filter
+6 – Electrovalve fitting
+7 – Water container pvc tube
+8 – Pvc tube filter
+9 – Waste container
+10 – Waste container lid
+11 – Fast coupling fitting
+12 – Waste container pvc tube
+13 – Grommet
+Reference Figure 3.10

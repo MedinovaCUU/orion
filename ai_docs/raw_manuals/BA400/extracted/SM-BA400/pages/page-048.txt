@@ -1,0 +1,35 @@
+8
+6
+2
+7
+1
+3
+4
+5
+Ilustración 3.36 
+Nuevo conjunto bombas de dispensación 
+Referencias de la Ilustración 3.36
+1 – Bomba reactivos R2
+2 – Bomba reactivos R1
+3 – Bomba muestra
+4 – Electroválvula premanifold JE1-EV4
+5 – Electroválvula premanifold JE1-EV5
+6 – Bomba lavado interno R2
+7 – Bomba lavado interno R1
+8 – Bomba lavado interno muestra
+14
+12
+10
+13
+9
+11
+15
+16
+18
+19
+20
+17
+Ilustración 3.37 
+Bomba cerámica de muestras y reactivo
+Manual de servicio
+48

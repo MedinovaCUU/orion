@@ -1,0 +1,48 @@
+CV =
+SD
+Media⋅100
+ 
+SD=
+∑
+i=1
+n
+xi−Media
+2
+n−1
+Verificar que los resultados están dentro de los márgenes:
+Modelo Y400
+Precisión enologia
+CV (%)
+Vino control blanco Glucosa-Fructosa
+< 3
+Vino control negro Glucosa-Fructosa
+< 3
+Vino control blanco A. Acético
+< 5
+Vino control negro A. Acético
+< 3
+Vino control blanco Fosfate
+< 5
+Vino control negro Fosfate
+< 3
+Verificar que la media de los resultados de cada control están dentro de los márgenes indicados en el inserto de cada 
+control.
+En caso de que los resultados no entren dentro de los márgenes anteriores, el analizador está averiado. Solucionar la 
+avería. Una vez reparada realizar de nuevo la verificación funcional.
+Finalización
+Colocar una etiqueta indeleble al equipo reacondicionado. La etiqueta contendrá la siguiente información (verificar 
+la legislación nacional de cada país):
+• 
+La razón social y dirección de la compañía responsables de la ejecución y reacondicionamiento
+• 
+La fecha de la última revisión
+• 
+El número de reacondicionamientos realizados
+• 
+Indicación de que es un equipo renovado
+Vida útil: sin limitación siempre que se sigan las instrucciones del fabricante (uso y mantenimiento). 
+Añadir una nueva caja de accesorios.
+Utilizar el embalaje original. Previamente verificar su estado y en caso de claro deterioro sustituirlo por uno nuevo.
+Enviar el registro rellenado al servicio técnico de Biosystems, (en formato pdf).
+Manual de servicio
+302

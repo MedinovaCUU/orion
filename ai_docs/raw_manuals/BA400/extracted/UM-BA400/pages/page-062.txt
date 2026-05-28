@@ -1,0 +1,71 @@
+Manual usuario 
+ 
+ 
+ 
+Manual usuario 
+ 
+ 
+ 
+62
+62
+Biosystems
+Biosystems
+ 
+Tapa principal Es la tapa que cubre la superficie del analizador. Abra esta tapa cuando quiera 
+acceder a los rotores de reactivos, de muestras o de reacción. Para el funciona­
+miento seguro del analizador esta tapa debe estar cerrada, dispone de un de­
+tector de tapa abierta o cerrada. El analizador parará la ejecución de la lista de 
+trabajo si abre la tapa durante su funcionamiento.
+ 
+Tapa rotor muestras Da acceso al rotor de muestras. En este rotor se posicionan las muestras de los 
+pacientes, los calibradores y los controles. La tapa dispone de un detector, de esta 
+manera el programa puede verificar la presencia de la tapa. 
+ 
+Tapa rotor reactivos Da acceso al rotor de reactivos. En este rotor se posicionan los dos tipos de botellas 
+de reactivo. El rotor de reactivos está refrigerado. La tapa dispone de un detector, 
+de esta manera el programa puede verificar la presencia de la tapa.
+ 
+Tapa rotor de reacciones 
+Da acceso al rotor de reacciones. Este rotor es donde se realizan las reacciones y las 
+lecturas fotométricas. Este rotor está termostatizado a 37 °C. La tapa dispone de 
+un detector, de esta manera el programa puede verificar la presencia de la tapa.
+ 
+Puertas frontales 
+Da acceso a las botellas de solución de lavado y residuos de alta contaminación, 
+también dan acceso al módulo ISE (unidad opcional).
+ 
+Led de estado 
+Led de indicación del estado del analizador. Estados posibles:
+Color del LED
+Descripción
+Apagado
+Analizador apagado.
+Naranja
+Analizador en modo dormido (SLEEP).
+Naranja parpadeando
+Analizador en proceso de inicialización.
+Verde
+Analizador inicializado. Modo espera de acciones 
+(STAND‑BY).
+Verde parpadeando
+Analizador realizando una acción o una sesión de 
+trabajo (RUNNING).
+Rojo
+Analizador con errores sin resolver.
+Rojo parpadeando
+Analizador realizando una acción con errores sin 
+resolver.
+Tabla 1 Estados del analizador indicados por el Led
+ 
+Estados del zumbador 
+El analizador dispone de un zumbador para avisar al usuario de que se ha pro­
+ducido una alarma.
+Al encender el analizador (alimentación), este realizará una serie de comprobaciones 
+internas. Cuando estas finalicen el instrumento generará un pitido corto para indi­
+car que está listo para establecer la conexión con el Software de Usuario/Servicio.
+Durante el estado de ejecución de una lista cuando aparezca una alarma, por ejemplo 
+de finalización de reactivo, de muestras, etc. el analizador lo indicará mediante la 
+alarma sonora hasta que el usuario la pare manualmente.
+8.2. Rotor de muestras
+El rotor de muestras consiste en un tambor extraíble con posiciones para colocar 
+los tubos de muestras, los calibradores y los controles. El rotor dispone de un lector

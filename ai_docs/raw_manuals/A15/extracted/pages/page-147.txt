@@ -1,0 +1,49 @@
+Manual de servicio
+148
+ 
+Registro mantenimiento 
+preventivo
+Nombre del laboratorio:
+Modelo de analizador:
+Número de serie:
+Nombre del responsable técnico:
+Fecha de instalación:
+Paso
+Acciones del servicio técnico
+Fecha realizado
+1
+Limpie de polvo las placas electrónicas y los ventiladores
+2
+Revise las conexiones fluídicas de la bomba a la punta y las 
+conexiones de la estación de lavado, Verifique la estanqueidad 
+de los rácores y que ninguna pierda líquido.
+3
+Compruebe el retén de la bomba dosifica do ra. Veri fique que no 
+haya pérdidas y que no se producen burbujas.
+4
+Limpie los filtros del contenedor de agua destilada
+5
+Limpie la estación de lavado
+6
+Desmonte y limpie la punta. Compruebe su estado.
+7
+Revise el brazo (Verifique el desgaste de la correa y su tensión)
+8
+Revise el sistema de detección y protección de choque de la 
+punta
+9
+Verifique el estado del canal calefactor
+10
+Verifique el juego entre los engranajes en el canal calefac-
+tor
+11
+Limpie los filtros, rendija y el fotodiodo
+12
+Revise la colocación y el detector de las tapa general y la tapa 
+de reacción
+13
+Revise que la tapa general se sostenga correctamente y no se 
+caiga.
+14
+Realice los test con el programa de servcio
+Firma y fecha del operario

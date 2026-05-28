@@ -1,0 +1,61 @@
+Manual usuario 
+ 
+ 
+ 
+Manual usuario 
+ 
+ 
+ 
+62
+62
+Biosystems
+Biosystems
+7. 
+Principio de funcionamiento
+El analizador tiene varios estados de funcionamiento: el estado inicial, el estado 
+de espera, el estado de trabajo y el estado de parada.
+ Estado dormido (SLEEPING) 
+Durante este estado el analizador está parado y con todos los sistemas electróni­
+cos dormidos para consumir el mínimo. El analizador no realiza ninguna acción 
+hasta que se activa el estado de warm-up.
+ Estado inicial (WARMING UP) 
+Durante este estado realiza la inicialización del analizador. La inicialización 
+consiste en el acondicionamiento del sistema fluídico, en la termostatización del 
+rotor de reacciones para que llegue a la temperatura correcta y finaliza con el 
+proceso de realización de la línea de base del rotor. La línea de base consiste en 
+rellenar todos los pocillos del rotor de reacciones con agua destilada, luego mide 
+la absorbancia en cada uno de los pocillos con todas las longitudes de onda y 
+verifica que las medidas estén dentro de unos márgenes. Si las medidas están co­
+rrectas vacia y seca el rotor. Estas lecturas de la línia de base sirven para corregir 
+las absorbancias de las lecturas de las preparaciones. Todo el proceso de lectrua 
+de la línia de base dura unos 20 minutos.
+ Estado de espera (STAND-BY) 
+En dicho estado el analizador queda a la espera de pasar al estado de trabajo. 
+Durante este estado el usuario puede realizar tareas de mantenimiento y/o ejecu­
+tar utilidades del analizador. 
+ Estado de trabajo (RUNNING) 
+Durante este estado el analizador realiza ciclos repetitivos para preparar las 
+reacciones y realizar las medidas. La dispensación del brazo realiza 2 maniobras 
+diferentes, la primera, aspiración de R1 y muestra y la segunda la aspiración y 
+dispensación de R2. La preparación de una reacción sigue los siguientes pasos:
+1. Aspiración del reactivo 1 y de la muestra, dispensación en el rotor de reacciones.
+2. Agitación de la mezcla del reactivo 1 y muestra.
+3. Inicio del periodo de las lecturas.
+4. Aspiración del reactivo 2 y dispensación en la cubeta de reacción a los 5 min 
+de dispensar R1.
+5. Agitación de la mezcla con el segundo reactivo.
+6. Finalización de las lecturas.
+7. Lavado de las cubetas.
+El proceso de lectura sigue el principio de espectrofotometría de absorción óptica. 
+La concentración se determina por comparación de la intensidad luminosa de 
+una determinada longitud de onda que atraviesa la cubeta cuando hay reacción y 
+cuando no hay reacción. En algunos casos la concentración es función directamente 
+de la absorbancia, en otros casos es función de la variación de la absorbancia en el 
+tiempo, dependiendo del modo de análisis.
+ 
+Estado de parada (PAUSE) 
+Durante este estado el analizador detiene el proceso de dosificado de muestras 
+y reactivos, permitiendo al usuario acceder a los rotores de muestras y reac­
+tivos para incorporar nuevas muestras o reemplazar algún reactivo. Durante 
+este estado el analizador continua realizando el proceso de lectura del rotor de 
+reacciones.

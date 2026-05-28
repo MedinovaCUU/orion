@@ -1,0 +1,29 @@
+1. Corte 7 dientes de la correa. Realice el corte haciendo coincidir el inicio y fin del hilo de acero con el trozo que 
+se descarta.
+2. Verifique la correa haciendo coincidir vanos y dientes para que no haya ningún salto de diente.
+3. Ponga la nueva correa y sujétela con la pieza y tornillo (14).
+Montaje motor:
+1. Inserte el motor en su alojamiento.
+2. Ponga los 4 tornillos (15) y (16) con sus arandelas y tuercas sin apretarlos.
+3. Coloque la correa en la polea del motor.
+4. Ajuste la tensión de la correa a 4 Kg, estirando el motor hacía abajo. Empiece apretando los tornillos (15) y 
+luego los tornillos (16). Una vez tensado el motor, verifique la tensión de la correa con un frecuencímetro. La 
+frecuencia de resonancia de la correa tiene que estar entre 130 Hz - 150 Hz.
+5. Conecte el cable del motor.
+8.9.8. 
+AC16601 - Motor del agitador/ AC16602 - Paleta agitadora
+17
+21
+18
+19
+20
+Ilustración 8.39 
+Montaje motor y paleta agitadora
+Herramientas: Llave allen de 1.5 mm y de 2.5 mm
+Desmontaje de la paleta:
+1. Afloje la abrazadera (21) superior, sujetando firmemente la paleta.
+2. Descienda con cuidado todo el conjunto de la paleta. El conjunto no se desmonta. 
+Desmontaje motor:
+1. Quite primero la paleta.
+2. Quite los 2 tornillos (20). Separe el motor del brazo.
+185

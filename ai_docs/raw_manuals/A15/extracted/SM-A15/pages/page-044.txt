@@ -1,0 +1,42 @@
+45
+Conector
+Función
+Pins
+J1
+Conexión a la placa CPU (CIIM00026)
+1 - Vcc
+2 - GND
+3 - Tx0
+4 - GND
+5 - Rx0
+6 - GND
+7 - GND
+8 - Tx1
+9 - GND
+10 - Rx1
+4.8. Placa interconexión rotor(CIIM00029)
+Interconexiona el rotor con la placa CPU.
+Relación de los diodos LED
+DL1 - Peltier
+DL2 - Home motor rotor
+DL3 - Home motor filtros
+DL4 - Tapa Rotor
+Conector
+Función
+Pins
+J1
+Conexión motor rotor
+J2
+Conexión potencia con la placa CIIM00026
+1 - Bobina 2 motor rotor
+2 - Bobina 2 motor rotor
+3 - Bobina 1 motor rotor
+4 - Bobina 1 motor filtros
+5 - Bobina 1 motor rotor
+6 - Bobina 1 motor filtros
+7 - Peltier
+8 - Bobina 2 motor filtros
+9 - Peltier
+10 - Bobina 2 motor filtros
+11 - V24(ventiladores)
+12 - GND(Ventiladores)

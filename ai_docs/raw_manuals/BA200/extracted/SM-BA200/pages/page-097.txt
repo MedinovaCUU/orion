@@ -1,0 +1,29 @@
+8. En aquellos circuitos donde van seguidos una bomba y una electroválvula, cuando active la bomba siempre se 
+activará la electroválvula, y cuando desactive la electroválvula, desactivará la bomba.
+1
+2
+3
+4
+5
+Ilustración 6.17 
+Pantalla verificación de las bombas y electroválvulas
+6.5.5. Ajuste de los sistemas de termostatización
+Pantalla que permite realizar el ajuste de la termostatización del rotor de reacciones, del conjunto punta de reactivos 
+y de la termostatización de la estación de lavado.
+6.5.5.1. Ajuste de la termostatización de la estación de lavado
+El agua destilada o solución de lavado que dispensa la estación de lavado se termostata previamente para no interferir 
+en la temperatura del rotor. Desde esta pantalla se realiza el ajuste de la termostatización.
+ 
+) Véase Ilustración 6.18
+Siga los pasos para realizar el proceso de ajuste:
+1. Pulse el botón de ajuste del apartado 1 para realizar un acondicionamiento fluídico del sistema. 
+2. Quite la tapa trasera y ponga la sonda del termómetro en el punto de medición del calefactor (1).
+ 
+) Véase Ilustración 6.19
+3. Introduzca el valor de la temperatura medida con el termómetro en la casilla del apartado 2.
+4. Pulse el botón de ajuste del apartado 3 para modificar la consigna del sistema de regulación si el valor medido 
+está fuera de los márgenes.
+ 
+) Véase capítulo AV para ver los márgenes de aceptación del ajuste del calefactor de la estación de lavado.
+5. Guarde el valor del ajuste.
+97

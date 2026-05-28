@@ -1,0 +1,29 @@
+14
+USUARIO
+Manual de Usuario BioSystems SPICA | Versión 2.8 - Agosto 2024
+Manual de Usuario BioSystems SPICA
+2. INSTALACIÓN
+2.4 Instalación de los racks de muestras y reactivos
+2.5 Especificaciones de las etiquetas de códigos de barras
+Para asegurar una buena detección con el lector de código de barras, las etiquetas de los tubos deben 
+cumplir con la siguiente especificación en cuanto a su posicionamiento.
+• Es aconsejable tener un ancho mínimo de 3,5 mm entre el borde de la etiqueta y el principio 
+del código de barras.
+• Es aconsejable que la altura mínima del código de barras sea de 10 mm.
+• La etiqueta se coloca con las barras perpendiculares al eje del tubo. La inclinación de la 
+etiqueta debe ser inferior a ± 7,5% o ± 4,2 SDgr con respecto al eje del recipiente de la muestra.
+• Es aconsejable utilizar el CÓDIGO 128 para el código de barras, pero el escáner también 
+puede leer el CÓDIGO 39, CÓDIGO BARRA, CÓDIGO 93, e INTERLACE 2 DE 5. 
+CONSEJO: RESPETE LOS MÁRGENES DE POSICIÓN DE LA ETIQUETA DEL 
+CÓDIGO DE BARRAS. 
+RACK
+ADAPTADOR 
+PRINCIPAL DE RACK 
+ADAPTADOR DE POCILLOS 
+PEDIATRICOS
+901125658589654
+Zona de colocación de símbolos 
+20 mm
+14 mm
+Etiqueta de la zona de colocación de símbolos
+La colocación de la etiqueta en el tubo primario

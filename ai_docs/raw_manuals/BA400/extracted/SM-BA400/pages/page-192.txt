@@ -1,0 +1,28 @@
+Montaje:
+1. Cambie la electroválvula. 
+2. Coloque los tornillos (9) para sujetar la electroválvula. 
+3. Coloque los 2 tornillos (8) que sujetan el conjunto de las 5 electroválvulas.
+4. Conecte todos los tubos en cada una de las electroválvulas, según indica las Ilustración 8.44 y Ilustración 8.45
+8.10.5. AC17287 - Calefactor estación de lavado. BA400v2
+Herramientas: Llave allen 2.5
+Desmontaje:
+1. Para acceder con facilitad al calefactor desmonte el desgasificador.
+2. Desenchufe todos los tubos del calefactor. Vaya con cuidado al quitar los tubos para no deformarlos. Para sacar 
+los tubos de su alojamiento, no los estire por el punto medio sino cógelo por el extremo. En caso de que se 
+deformen, cámbielos por unos nuevos.
+3. Desconecte el cable del calefactor. 
+4. Quite los 2 tornillos (1), según la Ilustración 8.47
+5. Retire el calefactor
+Montaje:
+1. Coloque el calefactor en su ubicación y sujételo con los tornillos (1).
+2. Conecte el cableado del calefactor en la placa de fluidos.
+3. Conecte los tubos para la solución de lavado según la Ilustración 8.49, Conecte un tubo del orificio marcado 
+como “WS IN” en la chapa (4) a la pieza en Y para conectar 2 tubos a las entradas de las checkvalves (10). De 
+las salidas (11) de las checkvalves se conectan a la parte inferior del calefactor. De las salidas (3) del calefactor 
+se conectan a la chapa marcada como “WS”
+4. Conecte los tubos para el agua destilada según la Ilustración 8.49. 
+5. Tenga en cuenta el momento de conectar la entrada y salida en las checkvalves según la Ilustración 8.48. 
+6. Vuelva a montar el desgasificador.
+7. Verifique la correcta dispensación de la estación de lavado con el programa de servicio
+Manual de servicio
+192

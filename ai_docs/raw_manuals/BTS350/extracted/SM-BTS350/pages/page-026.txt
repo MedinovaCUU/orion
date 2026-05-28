@@ -1,0 +1,54 @@
+—  26  —
+Service manual
+• 
+Follow these instructions. The pump is activated and the instrument calculates the position. Throughout this process 
+the instrument performs photometric readings, so the cuvette carrier lid must be kept closed. The process takes about 
+70 seconds.
+Checking the adjustment: 
+• 
+Press the function key TEST.
+• 
+Input 2000 as sample volume (2 mL).
+• 
+Perform an aspiration cycle with the volume adjustment tool filled with water until the upper mark (3 mL).
+• 
+The sample tail that has not entered the cuvette is 0 – 10 mm long.
+• 
+The level of water remaining in the tool is between the two lower marks (equivalent to 1 mL ± one tolerance)
+• 
+Press EXIT. The programme asks whether you want to save the new values and shows a window for selecting YES or 
+NO. Select one of these two options depending on whether you want to save the adjustment or not, and press ENTER. 
+Press EXIT (F5) again to return to the main menu.
+3.3. - Programming options
+The semi-automatic analyzer has a series of functions that cannot be seen from the menu. These functions are activated 
+through a combination of keys.
+The process for accessing these functions is as follows:
+• 
+Turn off the semi-automatic analyzer.
+• 
+Press the key combination.
+• 
+Turn on the semi-automatic analyzer while those keys are pressed. 
+Key combinatoin
+Function
+Description
+PUMP
+Update of firmware change
+Tool to access directly to the firmware update programme.
+F1+7
+Initialising of adjustments
+This function allows you to initialise all the semi-automatic 
+analyzer adjustment values. After doing this, the semi-
+automatic analyzer must be readjusted. 
+F2+8
+Stressing
+Function that performs 5-minute cycles. After each cycle the 
+Peltier is activated, together with the peristaltic pump and 
+printer. To exit that operating mode, press the Right cursor key.
+F3+9
+Change in serial number
+Enters a screen that allows you to change the semi-automatic 
+analyzer serial number.
+Right ​cursor
+Exit stressing
+Exit stressing mode.

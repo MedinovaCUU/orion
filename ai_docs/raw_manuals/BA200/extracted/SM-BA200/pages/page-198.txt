@@ -1,0 +1,17 @@
+33
+32
+34
+Ilustración 8.88 
+Cambio columna de soporte
+8.15.11. AC16615 - Correa rotor de reacción / AC16616 - Motor rotor de reacción
+36
+38
+35
+37
+Ilustración 8.89 
+Cambio motor y correa rotor
+Herramientas: Llave allen 3 y llave fija 7
+Desmontaje motor:
+1. Desconecte el cable del motor
+Manual de servicio
+198

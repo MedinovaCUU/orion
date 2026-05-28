@@ -1,0 +1,43 @@
+16
+11
+14
+10
+12
+17
+15
+13
+Ilustración 3.42 
+Vista de la estructura por detrás
+Referencias de la Ilustración 3.41 y Ilustración 3.42
+1 – Estructura
+2 – Modulo ISE (opcional)
+3 – Ventiladores para la nevera
+4 – Botella de residuos de alta contaminación
+5 – Botella de solución de lavado
+6 – Kit de calibradores del modulo ISE
+7 – Balanzas de pesaje de las botellas
+8 – Rueda
+9 – Pata de sujeción
+10 – Estación de lavado para las puntas
+11 – Interruptores laterales
+12 – Ventiladores generales
+13 – Ventiladores compartimento electrónica
+14 – Botella de agua destilada
+15 – Botella de residuos de baja contaminación
+16 – Interruptor principal
+17 – Conexiones externas de los fluidos
+3.10.1. Cambios en la estructura. BA400v2
+En la estrucutra se ha añadido dos filtros accesibles desde la parte posterior del instrumento. El filtro inferior (18) 
+conecta la entrada de agua al instrumento con el depósito de agua interno. Y el segundo filtro (19) conecta la entrada 
+de la solución de limpieza hasta la connexión con las checkvalves de la bomba de pistones.
+Las flechas etiquetadas encima de los filtros indican la dirección de circulación de cada líquido.
+En la chapa superior hay 3 piezas (20) para realizar la interconexión del cable y tubo del brazo. A través de los agu­
+jeros (21) de la chapa se pasa la pieza de guiaje del cable y tubo del brazo. 
+La interconexión del cable del bus CAN se realiza a través de la placa CIIM00070, en la placa se conecta el cable 
+(24) que proviene de la placa de distribución CIIM00047 y el cable (25) que va a la placa de detección del brazo.
+En la pieza de interconexión (27) se realiza la conexión de los tubos. Hay el tubo que viene del manifold (26) y el 
+tubo que va al brazo (28).
+Todos los tubos de la estación de lavado se recogen con una abrazadera (22).
+La placa de fotometría CIIM00051 del rotor de reacciones se sujeta con las 2 columnas (23)
+Manual de servicio
+52

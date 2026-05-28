@@ -1,0 +1,38 @@
+67
+67
+Ilustración 38 
+Brazo de dosificado
+Un brazo sirve para dosificar las muestras, los otros dos brazos sirven para dosificar 
+el reactivo 1 y el reactivo 2 respectivamente.
+Cada brazo dispone de una estación de lavado para limpiar la punta por dentro 
+y por fuera.
+ 
+Volúmenes de dispensación Volúmenes mínimo y máximo que puede manipular cada brazo:
+• 
+Brazo de muestras: 2 μL a 40 μL
+• 
+Brazos de reactivo 1: 120 μL a 450 μL
+• 
+Brazos de reactivo 2: 10 μL a 300 μL
+ 
+Sistemas de detección 
+Cada brazo dispone de un sistema de detección de nivel. 
+También hay un sistema de detección de colisión vertical para evitar dañar la punta 
+cuando hay alguna colisión accidental. 
+ 
+Detector de coágulo 
+Únicamente el brazo de muestras dispone de detector de coágulo. Este sistema 
+avisa al usuario cuando la punta queda obstruida. La obstrucción puede venir 
+por restos de coágulo que estén presentes en la muestra.
+8.9. Contenedores de residuos, agua purificada y solución 
+de lavado
+ 
+ El analizador dispone de 4 contenedores para almacenar los residuos, el agua 
+purificada y la solución de lavado. Todos los contenedores están situados en el 
+interior del analizador. 
+ Residuos de alta contaminación Se accede a este contenedor desde el frontal del analizador. La capacidad de este 
+contenedor es de 5 L. Tiene una autonomía para 40 h de funcionamiento. La 
+determinación del nivel del contenedor se realiza por pesada.
+ 
+Solución de lavado Se accede desde el frontal del analizador. La capacidad es de 5 L. La detección 
+del nivel del contenedor se realiza por pesada. Tiene una autonomía de 8 h.

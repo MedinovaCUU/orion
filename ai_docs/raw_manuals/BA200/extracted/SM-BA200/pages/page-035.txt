@@ -1,0 +1,39 @@
+Referencias de la Ilustración 3.14 y Ilustración 3.15
+1 – Carcasa
+2 – Placa CIIM00049
+3 – Correa transmisión movimiento angular
+4 – Motor movimiento angular
+5 – Fotodetector de inicio movimiento elevación
+6 – Punta aspiración y dispensación
+7 – Placa CIIM00048
+8 – Correa transmisión movimiento elevación
+9 – Tubo de guiaje movimiento elevación
+10 – Motor movimiento elevación
+11 – Polea transmisora movimiento elevación
+12 – Tubo guía para cables y tubo de teflón
+13 – Tubo teflón 
+14 – Cable sistema termostatización de la punta
+15 – Cable sensor de temperatura de la punta
+16 – Cable sistema de detección de la punta
+17 – Pestaña de detección de colisión
+18 – Fotodiodo de inicio del movimiento angular
+2
+16
+15
+18
+13
+14
+6
+17
+Ilustración 3.15 
+Conjunto punta
+3.4. Brazo agitador
+La parte del conjunto de los movimientos de elevación y rotación son iguales al conjunto del brazo de pipeteo. 
+ 
+) Ver apartado 3.3 para el detalle del conjunto.
+La única diferencia en la estructura del brazo para el brazo de pipeteo y el agitador, es la posición del detector de inicio.
+En el caso del brazo de pipeteo, el detector se coloca en la parte superior (5) mientras que en el brazo agitador se 
+coloca en la parte inferior (6). 
+ 
+) Véase Ilustración 3.17
+35

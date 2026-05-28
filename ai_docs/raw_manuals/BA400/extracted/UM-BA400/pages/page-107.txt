@@ -1,0 +1,41 @@
+107
+107
+10.3.6. Controles
+En esta pantalla se dan de alta los controles que se van a usar. Se puede crear nuevos 
+controles, editar y borrar.
+También permite la edición de los valores mínimos y máximos de cada técnica 
+para cada nivel de control.
+Ilustración 71 
+Pantalla de programación de los sueros controles
+ 
+Nombre de control 
+Introduzca el nombre del control.
+ 
+Tipo de muestra 
+Introduzca el tipo de muestra que va a usar este control.
+ 
+Nivel 
+Introduzca el nivel (1, 2 o 3) del control. Sirve para facilitar la selección de todo 
+un nivel en la pantalla de solicitud de muestras.
+ 
+Numero de lote 
+Introduzca el número de lote de este control
+ 
+ 
+Pulse este icono cuando quiera cambiar de lote para un control dado ya de alta. 
+ 
+)
+Véase Ilustración 72 
+ 
+Fecha de activación 
+Es la fecha a partir del primer uso del control.
+ 
+Fecha de caducidad 
+Introduzca la fecha de caducidad. El programa da un aviso en el momento de 
+usar un control con la fecha de caducidad superada.
+ 
+Técnicas 
+Pulse este botón para asignar o eliminar las técnicas asociadas a un nivel de 
+control. Aparece una pantalla auxiliar que contiene sólo las técnicas del mismo 
+tipo de muestra y con el control de calidad activado (por defecto las técnicas al 
+crearlas tienen el control de calidad desactivado).

@@ -1,0 +1,16 @@
+101
+Forzar Monitor y luego encendiéndolo nuevamente.
+En todo momento en la parte superior de la pantalla se indica si el analizador está en modo SERVICIO o en 
+modo MONITOR.
+Una vez realizada la carga del nuevo programa o la restauración de los ajustes por defecto se tiene que salir 
+de monitor para ello únicamente tiene que pulsar el botón Salir Monitor. 
+5.7. Opciones programa de usuario para servicio técnico
+En este apartado se describirán las opciones de servicio dentro del programa de usuario. Estas opciones son 
+para configurar el nivel de acceso del usuario.
+Cada apartado explica como gestionar y crear diferentes niveles de acceso al programa de usuario del analizador.
+Cuando se instala por primera vez el programa no hay ningún usuario creado y se tiene acceso total al programa.
+5.7.1. Configuración del nivel de acceso al analizador
+Para activar la opción de nivel de acceso al analizador se debe entrar la primera vez como administrador cuyos 
+valores son:
+Nombre de usuario: admin
+clave de acceso: A15

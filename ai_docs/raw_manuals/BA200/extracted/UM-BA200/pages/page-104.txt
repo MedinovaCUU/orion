@@ -1,0 +1,54 @@
+Manual usuario 
+ 
+ 
+ 
+Manual usuario 
+ 
+ 
+ 
+104
+104
+Biosystems
+Biosystems
+muestra las técnicas contaminadas y las siguiente columnas la solución de lavado 
+a utilizar y el numero de lavados a realizar para evitar la contaminación.
+Ilustración 62 
+Pantalla resumen de las contaminaciones
+10.3.3.2. Contaminaciones de punta
+Para eliminar la contaminación entre reactivos en las puntas dosificadoras, el pro­
+grama primero ordena las técnicas a realizar por paciente para que no se dosifiquen 
+de forma consecutiva. 
+Para cada reactivo contaminante, el programa permite editar el procedimiento de 
+limpieza de la punta. Se pueden programar los siguientes campos:
+ 
+Técnica contaminada 
+Indica qué técnica es contaminada, para evitar ser aspirada en el próximo ciclo.
+ 
+Lavado 
+Indica con que solución de lavado se utiliza para limpiar la punta: Agua, solu­
+ción de lavado1, solución de lavado 2 o solución de lavado 3.
+ 
+Volumen 
+Escoger el volumen a utilizar en el ciclo de lavado. Se puede seleccionar entre un 
+volumen alto o un volumen bajo. 
+ 
+Ciclos de lavado 
+Indica el número de ciclos necesarios para limpiar la punta con la solución de 
+lavado escogida. Se pueden programar de 1 a 5 ciclos.
+ 
+Lavado de agua equivalente Se permiten dos posibilidades:
+Opción
+Descripción
+Desactivado
+Para limpiar la punta únicamente se puede realizar con el 
+número de ciclos y con la solución de lavado programada 
+anteriormente.
+Activado
+Para limpiar la punta se puede realizar con el número de ciclos 
+y con la solución de lavado programados anteriormente o con 
+el número de ciclos de lavado con agua introducidos en la 
+programación en la columna siguiente.
+ 
+Ciclos de lavado con agua 
+Indica el número de ciclos equivalentes de agua que eliminan la contamina­
+ción. Se pueden programar de 1 a 10 ciclos. En estos ciclos el programa dis­

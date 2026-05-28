@@ -1,0 +1,13 @@
+85
+5.3.1.2. Movement test
+This test displaces any of the mobile components to the desired point along its range of functioning, introducing 
+the corresponding absolute coordinate or moving it step by step. The speed and acceleration of the movement 
+are those used in the normal functioning of the analyzer. 
+5.3.1.3. Loss step test
+This test makes it possible to check if a motor misses steps when performing a certain sequence of movements. 
+The test can be carried out with the speed and acceleration used in the normal functioning of the analyzer or 
+with these magnitudes increased by 10% to check the functioning safety margin.
+5.3.1.4. Stress mode test
+This test makes it possible for a certain sequence of movements to be performed continually. The technician 
+can program the duration of the test, which can be cancelled at any moment. Depending on the motor selected, 
+there is a minimum stress mode time (but in no case is it higher than 50 seconds).

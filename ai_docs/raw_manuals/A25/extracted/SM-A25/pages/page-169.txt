@@ -1,0 +1,44 @@
+169
+23. Export the current test results in .CSV format
+24. Copy the content of the file to the “Data” sheet of the excel file
+25. Enter the rest of the data in the “instruction and batch” sheet of the excel file 
+26. In the “summary” and in the “verification results” you will get all the results and the final result.
+27. Save and print the excel file with the serial number as a name. Discard all the rest of the samples and calibration.
+The following table shows the acceptance criteria of the verification:
+Values of the coeficient of variation
+Model: A15/A25
+GLUCOSE
+AST
+PHOSPHORUS
+SCI
+SCII
+SCI
+SCII
+SCII
+Tolerance (CV%)
+3.00
+3.00
+5.00
+3.00
+3.00
+Model: Y15/Y25
+Glucose-Fructose
+Acetico Acid
+Glycerol
+PAN
+N2
+N4
+N2
+N4
+N2
+N4
+N4
+Tolerance (CV%)
+3.00
+3.00
+5.00
+3.00
+3.00
+3.00
+3.00
+Also all the concentration results must be between the range of the control.

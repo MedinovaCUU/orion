@@ -1,0 +1,48 @@
+Manual usuario 
+ 
+ 
+ 
+Manual usuario 
+ 
+ 
+ 
+164
+164
+Biosystems
+Biosystems
+Acción 
+Descripción 
+Lavar
+Realiza un ciclo de lavado con la solución de lavado ISE. 
+En el parámetro de pos. rotor de muestras indique en que 
+posición coloca el tubo con la solución de lavado. En el 
+parámetro de volumen indique que volumen dispensará 
+para el lavado.
+Activación kit de 
+reactivos
+Utilice esta acción para activar y memorizar en el programa 
+el kit de reactivos. Sirve también para memorizar la fecha 
+de instalación y llevar el cómputo del consumo de los 
+calibradores. El programa da un aviso cuando finalizan 
+los calibradores.
+Activación 
+electrodos
+Utilice esta acción para activar y memorizar en el programa 
+los electrodos. Sirve para llevar el cómputo del consumo 
+de los electrodos y dar un aviso de la finalización de los 
+mismos.
+Activación 
+preparaciones ISE
+Utilice está acción para indicar al programa que ha 
+instalado un módulo ISE.
+Ilustración 113 
+Pantalla utilidades del módulo ISE
+10.9.5. Utilidades LIS
+Desde esta pantalla se permite realizar algunas acciones para resolver posibles 
+problemas causados por funcionamiento incorrecto del programa LIS.
+ Borrado de ordenes de LIS no 
+realizadas
+ 
+Borra las ordenes recibidas desde el LIS no ejecutadas y que quedan pendientes. 
+El programa LIS debe siempre enviar cancelaciones de las ordenes enviadas al 
+BA400 cuando finalmente decide no realizarlas. En caso de mal funcionamiento

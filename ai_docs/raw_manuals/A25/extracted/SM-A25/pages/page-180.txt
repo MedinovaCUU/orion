@@ -1,0 +1,36 @@
+Service manual
+180
+List of accessories
+Code
+Representation 
+Description
+FI11565
+505 nm filter set
+FI13812
+520 nm filter set
+FI11490
+535 nm filter set
+FI11491
+560 nm filter set
+FI10708
+570 nm filter set
+FI16339
+580 nm filter set
+FI11566
+600 nm filter set
+FI13816
+620 nm filter set
+FI11567
+635 nm filter set
+FI11568
+670 nm filter set
+AC16355
+700 nm filter set
+FI16423
+750 nm filter set
+FI15673
+880 nm filter set
+FI11498
+Clogged filter set
+AC12446
+Metal rod for cleaning the tip (10)

@@ -1,0 +1,34 @@
+Manual usuario 
+ 
+ 
+ 
+Manual usuario 
+ 
+ 
+ 
+198
+198
+Biosystems
+Biosystems
+13.3.4. Incorporar nuevos segmentos al rotor de muestras
+ 
+AC17457 Es el código de accesorio para incrementar el número de segmentos para un 
+rotor de muestras segmentado.
+El accesorio viene con 3 segmentos y un conjunto de etiquetas para identificar 
+correctamente cada segmento.
+Escoja cualquier letra de identificación de las suministradas (de la J a la R) y que 
+no coincida con ninguna que ya tenga en uso en el analizador.
+• 
+Coloque la etiqueta con el código de barras (1) en la posición frontal destinada 
+a tal fin. Asegúrase de que coloque la etiqueta correctamente en su posición.
+• 
+Coloque una de las etiquetas redondas (2) con la misma letra de identificación 
+que la etiqueta con el código de barras en la parte superior. Ccoloque una 
+segunda etiqueta con la misma letra de identificación en la parte posterior.
+1
+2
+k
+k
+k
+Ilustración 126 
+Colocación de las etiquetas en los segmentos

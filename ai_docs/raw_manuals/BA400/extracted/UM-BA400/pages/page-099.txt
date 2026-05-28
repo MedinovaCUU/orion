@@ -1,0 +1,35 @@
+99
+99
+ 
+Rangos de referencia 
+Indica los rangos de normalidad de referencia para la población. Si hay valores 
+introducidos en los campos, se muestran en la pantalla de resultados y en el 
+informe de paciente, conjuntamente con el resultado de concentración.
+Rango de 
+referencia
+Descripción
+Genérico
+En estos campos se introducen unos rangos comunes 
+para toda la población.
+Detallado
+En esta tabla se entran los rangos específicos por sexo 
+y/o por edad.
+Introduzca en cada fila, el sexo, el rango de edad y los 
+valores de normalidad.
+ 
+Rangos de pánico 
+Introduzca los valores para los cuáles un resultado es patológico. Los valores 
+introducidos tienen que cumplir con las siguientes condiciones:
+Mínimo pánico < Mínimo normalidad< Máximo normalidad< Máximo pánico
+10.3.2. Técnicas calculadas
+Pantalla donde se programan las técnicas calculadas. El resultado de las técnicas 
+calculadas se obtiene aplicando una fórmula con las concentraciones de varias 
+técnicas estándar realizadas previamente.
+Ilustración 64 
+Pantalla creación técnicas calculadas
+En la parte izquierda de la pantalla tiene una lista de las técnicas calculadas y en la 
+parte derecha hay los parámetros a introducir para cada técnica calculada. 
+ 
+)
+Véase el funcionamiento de los iconos de creación, edición, borrado e impresión de la 
+pantalla de las técnicas en el capítulo 10.3.1

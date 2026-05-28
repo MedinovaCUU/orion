@@ -1,0 +1,77 @@
+95
+Conector
+Función
+Pin
+CN7
+Activación electroválvula EV4
+Pin 1: 24 V
+Pin 2: Señal activación
+CN8
+Activación electroválvula EV3
+Pin 1: 24 V
+Pin 2: Señal activación
+CN9
+Activación electroválvula EV2
+Pin 1: 24 V
+Pin 2: Señal activación
+CN10
+Activación bomba GE1
+Pin 1: 24 V
+Pin 2: Señal activación
+CN11
+Activación bomba B3
+Pin 1: 24 V
+Pin 2: Señal activación
+CN12
+Activación electroválvula EV5
+Pin 1: 24 V
+Pin 2: Señal activación
+CN13
+Activación electroválvula GE3
+Pin 1: 24 V
+Pin 2: Señal activación
+CN14
+Activación electroválvula GE2
+Pin 1: 24 V
+Pin 2: Señal activación
+CN15
+Activación electroválvula EV6
+Pin 1: 24 V
+Pin 2: Señal activación
+CN16
+Motor dispensación reactivo 2
+Pin 1: Coil 1
+Pin 2: Coil 1
+Pin 3: Coil 2
+Pin 4: Coil 2
+CN17
+Detección inicio reactivo 2
+Pin 1: Detección
+Pin 2: GND
+Pin 3: 5V
+CN18
+Motor dispensación reactivo 1
+Pin 1: Coil 1
+Pin 2: Coil 1
+Pin 3: Coil 2
+Pin 4: Coil 2
+CN19
+Detección inicio reactivo 1
+Pin 1: Detección
+Pin 2: GND
+Pin 3: 5V
+CN20
+Motor dispensación muestra
+Pin 1: Coil 1
+Pin 2: Coil 1
+Pin 3: Coil 2
+Pin 4: Coil 2
+CN21
+Detección inicio dispensación muestra
+Pin 1: Detección
+Pin 2: GND
+Pin 3: 5V
+CN22
+Led Manifold
+Pin 1: 5 V
+Pin 2: GND

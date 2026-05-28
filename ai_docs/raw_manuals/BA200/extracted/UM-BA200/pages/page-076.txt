@@ -1,0 +1,22 @@
+Manual usuario 
+ 
+ 
+ 
+Manual usuario 
+ 
+ 
+ 
+76
+76
+Biosystems
+Biosystems
+Icono
+Nombre
+Descripción 
+Abortar sesión
+Botón para abortar o parar la sesión de 
+trabajo sin posibilidad de continuarla. 
+Recomendado únicamente cuando no se 
+desea continuar la sesión o hay problemas 
+que impidan su ejecución.
+Tabla 5 Descripción de los botones de acciones

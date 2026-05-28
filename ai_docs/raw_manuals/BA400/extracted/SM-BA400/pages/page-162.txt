@@ -1,0 +1,16 @@
+8
+9
+10
+Ilustración 8.22 
+Instalación de la fuente de alimentación
+11
+Ilustración 8.23 
+Instalacion del modulo ISE
+12. Inserte el módulo ISE en el alojamiento, colóquelo por la parte superior del analizador y desciendelo con cuidado. 
+13. Véase Ilustración 8.23. Utilice los mismos tornillos que sujetan la tapa para atornillar el módulo.
+14. Coloque la pinza (14) con el kit de calibradores (15) en el alojamiento situado al lado de las botellas. Véase 
+Ilustración 8.24
+15. Pase los tubos por los dos orificios (12) y (13) hasta alcanzar el módulo. Por el orificio (12) pase los tubos pro­
+vinientes del kit de calibradores. Por el orificio (13) pase el tubo de residuos del modulo. 
+Manual de servicio
+162

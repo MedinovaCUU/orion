@@ -1,0 +1,10 @@
+6.8. Exit
+To exit the programme go to the exit menu and select one of the two options:
+• 
+Exit by switching off the analyser: This option closes the programme and tells the analyser to switch itself 
+off and complete the closing process.
+• 
+Exit without switching off the analyser This option will only close the programme and leave the analyser 
+on and on standby. 
+Service Manual 
+92

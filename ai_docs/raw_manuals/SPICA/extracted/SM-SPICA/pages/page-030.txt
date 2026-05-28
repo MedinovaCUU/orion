@@ -1,0 +1,47 @@
+30
+USUARIO
+Manual de Usuario BioSystems SPICA | Versión 2.8 - Agosto 2024
+Manual de Usuario BioSystems SPICA
+5. PROCEDIMIENTOS DE MEDICIÓN
+5.3 Cálculo de la concentración
+Para las funciones lineales estándar, el blanco de reactivo se utiliza en las coordenadas de ordenadas 
+como el origen (0,0) y el inverso del factor como la pendiente. El factor se calcula de la siguiente manera:
+Y la siguiente fórmula se utiliza para calcular las concentraciones: 
+ 
+Para las funciones de calibración no lineales se utilizan varios calibradores de concentración conocidos que 
+se aproximan a la curva mediante funciones de regresión. Se pueden programar las siguientes funciones 
+de regresión:
+ 
+Para calcular la concentración en una curva no lineal se calcula la función inversa de la curva de 
+aproximación.
+ 
+5.4 Control de calidad interno
+Existen varios materiales de control disponibles comercialmente. Para cada componente se proporcionan 
+un rango de valores de concentración que corresponden a diferentes métodos de medición. Además, cada 
+valor va acompañado de un valor “admisible” (modo manual).
+DESCRIPCIÓN 
+Se une a cada punto por una línea
+Hace una regresión lineal con todos los puntos.
+Hace una regresión parabólica con todos los puntos. 
+Spline: Traza una curva que pasa por cada punto.
+TIPO DE FUCCIÓN
+Poligonal
+Regresión lineal
+Regresión parabólica
+Spline
+F = 
+-
+Ccalibrator
+Acalibrator
+Ablanco
+Cmuestra = F* (Amuestra - Ablanco) 
+ABS
+Amuestra
+Ablanco
+CONCENTRACIÓN
+C1
+C2
+C3
+C4
+C5
+Smuestra

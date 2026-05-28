@@ -1,0 +1,73 @@
+Service manual
+66
+Esquema de Sistema Fluídico
+Fluidic System Scheme
+1/2
+3 WAYS
+ELECTROVALVE
+M
+(A)
+(E)
+(K) (B)
+(C)
+DISPENSING PUMP MOTOR
+CPU BOARD
+CIIM00006
+1 2 3 4
+Naranja/Orange
+Blanco/White
+Amarillo/Yellow
+Negro/Black
+Negro/Black
+Amarillo/Yellow
+Rojo/Red
+1 2 3 4
+1 2 3
+PLMA00018
+PLMA00048
+1 2
+Negro/Black
+Rojo/Red
+3 WAYS
+ELECTROVALVE
+1 2
+Negro/Black
+Rojo/Red
+J5
+J33
+J9
+J12
+PLMA00217
+PLMA00163
+Negro/Black
+Amarillo/Yellow
+Rojo/Red
+Naranja/Orange
+Naranja/Orange
+Amarllo/Yellow
+Amarillo/Yellow
+PLMA00216
+PLMA00216
+PLMA00004
+3 WAYS
+ELECTROVALVE
+1 2
+Negro/Black
+Rojo/Red
+Verde/Green
+Verde/Green
+J10
+PLMA00216
+PLMA00164
+MANIFOLD
+2 WAYS
+ELECTROVALVE
+1 2
+Negro/Black
+Rosa/Pink
+Azul/Blue
+Azul/Blue
+J13
+PLMA00170
+PLMA00171
+Figure 4.6

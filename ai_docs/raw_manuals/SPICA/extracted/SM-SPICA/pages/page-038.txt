@@ -1,0 +1,43 @@
+38
+USUARIO
+Manual de Usuario BioSystems SPICA | Versión 2.8 - Agosto 2024
+Manual de Usuario BioSystems SPICA
+REQUISITOS DE CONEXIÓN INALÁMBRICA (WIFI, BLUETOOTH)
+Frecuencia de banda 2,4 GHz
+Soporta IEEE 802.11 b/g/n
+Tipo de Banda
+10. ESPECIFICACIONES TÉCNICAS
+10 °C a 35 °C 
+< 85% sin condensación
+< 2 000 m 
+2 
+0 °C a 40 °C 
+< 85% sin condensación
+Temperatura ambiental
+Humedad relativa
+Altitud máxima
+Grado de contaminación
+Temperatura de transporte y almacenamiento
+Humedad durante el transporte y almacenamiento
+REQUISITOS AMBIENTALES 
+REQUISITOS ELÉCTRICOS
+SUMINISTRO DE ENERGÍA ININTERRUMPIDA (UPS)
+REQUISITOS FLUÍDICOS
+Opcional/externo
+115 V o 230 V 
+50 Hz o 60 Hz 
+450 VA 
+±10 %
+Purificación tipo II (NCCLS)
+3 L 
+3 L
+1 L
+Voltaje de la red
+Frecuencia de la red
+Potencia eléctrica 
+Fluctuaciones de la tensión de red
+Tipo de agua
+Depósito de Agua
+Depósito de residuos
+Depósito de solución de lavado
+UPS ref. AC17262

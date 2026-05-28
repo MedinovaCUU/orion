@@ -1,0 +1,56 @@
+58
+Test point
+Function
+TP6
+CAN_L (bus signal)
+TP8
+Stirrer DC voltage
+TP9
+3.3 V
+TP11
+Motor driver reference voltage
+TP12
+Stepper motor
+TP13
+Board selection. Direction 1 
+LEDs
+Function (on condition)
+LD1
+3.3 V voltage
+LD2
+Heater activation
+LD3
+Activation of pump 1
+LD4
+Activation of pump 2
+LD5
+Activation of pump 3
+LD6
+Activation of electro valve 1
+LD7
+Activation of electro valve 2
+LD8
+Activation of electro valve 3
+LD9
+Microprocessor start-up
+LD10
+Motor start-up detection 
+4.9. Syringe control board - CIIM00054
+This board is located at the top of the fluid zone.
+The board controls the following elements, through a micro controller (U1):
+• 
+Sample circuit pressure sensor (clot sensor)
+• 
+Manifold led power supply
+• 
+Sample dispensation motor driver
+• 
+Sample dispensation start-up sensor
+• 
+Reagent 1 dispensation motor driver
+• 
+Reagent 1 dispensation start-up sensor
+• 
+Reagent 2 dispensation motor driver
+• 
+Reagent 2 dispensation start-up sensor

@@ -1,0 +1,142 @@
+195
+single calibrator. 
+ 
+7/9/12 
+4.7.1 
+Solve bugs
+ 29/1/15 
+4.8.2 
+New screen to order the test
+ 
+ 
+ 
+Improve the search in the history screen
+ 
+ 
+ 
+In the screen of new sample the user is able to introduce the number 
+of replicates
+ 12/3/15 
+4.8.3 
+New test added
+ 15/7/15 
+4.9.1 
+Improve the prozone detection
+ 22/12/15 
+4.9.3 
+Sovled bugs
+ 31/7/17 
+5.2 
+Continuous loading without pressing pause button
+ 
+ 
+ 
+New observation about substrate depletion with end point method
+ 
+ 
+ 
+Improve the selection of predilution of diluent
+ 
+ 
+ 
+New calcultated test with external parameters
+ 
+7/6/18 
+5.2.4 
+New test
+ 18/7/19 
+5.4 
+New option to autopause at the end of the work list.
+ 
+ 
+ 
+Be able to create calculated test of calculated test
+ 
+ 
+ 
+Add a warning message at the end of the rotor notifying you to remove 
+it from the equipment
+ 
+ 
+ 
+Be able to select the order in which patients / samples are displayed 
+on the results screen
+ 
+ 
+ 
+Be able to create profiles of calculated test
+ 
+ 
+ 
+Be able to save the results out in history
+ 
+ 
+ 
+Be able to calculate the bichromatic differential and bichromatic fixed 
+time
+ 
+ 
+ 
+Be able to perform absorbance techniques
+ 12/10/19 
+5.5 
+Changing the location of the software files folders
+ 
+ 
+ 
+Improved configuration of import / export folders
+ 
+ 
+ 
+Improvement in the treatment of negative values in the calculation of 
+the calculated techniques
+ 
+ 
+ 
+Incorporation of predilutions in controls
+ 
+6/9/21 
+5.5.1 
+Incorporation of a new programming option: active mixing
+ 
+ 
+ 
+Improvement in the selection of the diluent to perform the blanks
+ 
+ 
+ 
+Detection limit management improvement
+ 3/17/22 
+5.5.2 
+New algorithm to verify results outside the calibration curve (High/Low 
+Turbidimetric Verification)
+ 
+ 
+ 
+New menu to save partial test
+ 12/22/2 
+5.5 
+New option to change the font size of the reports
+ 
+ 
+ 
+New option to visualize the techniques
+ 
+ 
+ 
+Software has been verified for windows 11
+Change in the versions of firmware
+ 
+Date 
+version 
+Change
+ 21/05/03 
+1.0 
+First version 
+ 9/06/03 
+1.3 
+Correction of washing cycles. Correction of Base line. Correction of 
+communications.
+ 25/07/03 
+1.34 
+Improve of switch on/off of the analyser. Robust rotor manoeuvre.

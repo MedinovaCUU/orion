@@ -1,0 +1,26 @@
+3.2. Rotor de reacciones
+En el rotor de reacciones es donde se produce la mezcla de la muestra con el reactivo. El rotor (3) consiste en 120 
+pocillos de metacrilato. El rotor se instala en un canal calefactor (5) que está termostatado a 37 °C y se sujeta con 
+el tornilllo (2). Todo el conjunto se cubre con una tapa (1), para asegurar la temperatura en su interior y evitar la 
+entrada de luz. El conjunto tiene un detector de tapa (11) que funciona mediante un detector de efecto Hall. El 
+sistema funciona de manera continua y para ello dispone de una estación de lavado (4), que en 10 etapas vacía y 
+limpia los pocillos del rotor. En cada ciclo, el analizador realiza la lectura de 34 pocillos con el sistema óptico (6) 
+incorporado en el conjunto.
+4
+6
+1
+5
+3
+2
+Ilustración 3.6 
+Conjunto rotor de reacción
+El rotor de metacrilato (2) se coloca en el centrador rotor (8) y se sujeta firmemente con el tornillo (7). La coloca­
+ción del rotor en el centrador tiene una posición única, se distingue mediante dos pestañas de tamaño diferente. El 
+fotodetector de inicio (9) sirve para detectar la posición inicial del rotor.
+El canal calefactor (10) se termostatiza a 37 °C mediante 4 peltiers (13). Para el funcionamiento de las peltiers es 
+necesario de un conjunto radiador (14) y ventilador (15) por peltier. Para mantener la temperatura el canal calefactor 
+(10) tiene un aislante (16). El sensor de temperatura (12) sirve para estabilizar la temperatura del canal.
+El centrador rotor (8) está unido a un eje (23) que en su parte inferior tiene atornillada una polea (22) que transmite 
+el movimiento del motor (17) a través de la correa (19) y del piñón (18). El disco encoder (21) es solidario a la polea 
+(22). El fotodetector (20) sirve para indicar el inicio de la lectura del pocillo con su posición física.
+27

@@ -1,0 +1,38 @@
+Manual usuario 
+ 
+ 
+ 
+Manual usuario 
+ 
+ 
+ 
+172
+172
+Biosystems
+Biosystems
+10.11. Salir
+Para salir del programa, vaya al menú salir y escoja una de las dos opciones:
+ Salir apagando el analizador 
+Opción que cierra el programa e indica al analizador que también se apague, 
+realizando el proceso de cierre.
+Si durante el cierre del analizador el software detecta que las procesos de mante­
+nimiento preventivo están caducados, entonces aparece una pantalla de aviso para 
+indicar al usuario que se realizarán estos procesos. En la pantalla de aviso se indica 
+las posiciones done se requiere que se instalen las soluciones de limpieza (WS1 y 
+WS2) para realizar el mantenimiento. El usuario puede desactivar alguna de las 
+acciones si en este momento no puede realizarlas.
+Si el analizador dispone del módulo de ISE, en la misma pantalla de aviso también 
+aparecerá la opción de posicionar la solución de limpieza para el módulo ISE.
+ Salir sin apagar el analizador 
+Opción que solamente cierra el programa, dejando encendido y en espera el 
+analizador. 
+Según el mantenimiento preventivo puede ser que el programa le avise de realizar 
+las acciones de finalización
+Ilustración 115 
+Pantalla de aviso de las acciones de mantenimiento preventivo
+10.12. Utilidad de generación de RestorePoint automático
+Durante el Reset de la sesión se realiza un RestorePoint automático. Se mantienen 
+los RestorePoint de siete días (consecutivos o no). 
+Esto permite al servicio técnico disponer de información detallada para analizar 
+cualquier problema ocurrido durante los últimos siete días de trabajo. 
+Los archivos diarios se guardan en la siguiente carpeta:

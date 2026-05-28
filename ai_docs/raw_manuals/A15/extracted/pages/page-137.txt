@@ -1,0 +1,23 @@
+Manual de servicio
+138
+Desmontaje ventilador:
+1. Seguir los pasos anteriores hasta el punto 14
+2. Extraer el ventilador averiado
+Montaje:
+1. Limpiar las superficies de los radiadores (15) y de la placa fria (16) de restos de conductor térmico. 
+Para ello ayudarse primeramente de un cuter teniéndo cuidado de no rayar las superficies. Acabar de 
+limpiar dichas superficies con alcohol.
+2. Colocar los conductores térmicos (16) en ambas caras de las peltiers. Quitar el papel que protege una 
+de las caras. Aplicar calor en esta cara. Es suficiente aplicando un poco de aliento en la misma. Pegar 
+el conductor en la peltier.
+3. Colocar las peltiers en su alojamiento, respetando la polaridad. Montarlas en la misma posición que 
+estaban las sustituidas. Prestar atención en pasar el cable por el alojamiento para tal fin (17).
+4. Volver a colocar los radiadores. Apretar los tornillos uniformemente en el orden indicado. No apretar 
+los tornillos en exceso para evitar dañar las peltiers.
+5. Volver a montar el refrigerador en su alojamiento. Seguir los pasos anteriores en orden inverso, colo-
+cando bridas nuevas allí donde se habían quitado .
+1
+2
+Ilustración 6.46 
+3
+Ilustración 6.17.

@@ -1,0 +1,63 @@
+• 
+Cambiar los tubos de las bombas peristálticas
+• 
+Activar las preparaciones ISE
+Para cada utilidad se han de realizar varias acciones. Seleccione una de las utilidades y despliegue el grupo de acciones 
+para realizarlas paso a paso.
+ 
+) Véase capítulo correspondiente al módulo ISE del manual de usuario para la explicación del detalle de cada paso.
+Seleccione una acción y pulse el botón de ejecutar. En la zona de resultados aparecerá información sobre la acción. 
+Informará si la acción ha terminado correctamente (el texto aparece en color negro) o con fallos (el texto aparece 
+en color rojo). Y en las acciones que devuelven información, tales como las calibraciones, muestra los resultados.
+También se han agrupado cada unas de las acciones en un grupo llamado General, por si el usuario quiere únicamente 
+realizar una de las acciones, poderla lanzar individualmente.
+Acción 
+Descripción 
+Mantenimiento
+Realiza el vaciado de los tubos. Únicamente acciona 
+la bomba de residuos. En el parámetro repeticiones 
+indique el número de veces a realizar la acción.
+Purgar A
+Realiza un ciclo de cebado con el calibrador A, utiliza 
+un volumen de 100 µL. En el parámetro repeticiones 
+indique el número de veces a realizar la acción.
+Purgar B
+Realiza un ciclo de cebado con el calibrador B, utiliza 
+un volumen de 100 µL. En el parámetro repeticiones 
+indique el número de veces a realizar la acción.
+Cebado A
+Realiza un ciclo de cebado con el calibrador A, utiliza 
+un volumen de 300 µL. En el parámetro repeticiones 
+indique el número de veces a realizar la acción.
+Cebado B
+Realiza un ciclo de cebado con el calibrador B, utiliza 
+un volumen de 300 µL. En el parámetro repeticiones 
+indique el número de veces a realizar la acción.
+Lavar
+Realiza un ciclo de lavado con la solución de lavado 
+ISE. En el parámetro de pos. rotor de muestras indique 
+en que posición coloca el tubo con la solución de 
+lavado. En el parámetro de volumen indique que 
+volumen dispensará para el lavado.
+Activación kit de 
+reactivos
+Utilice esta acción para activar y memorizar en el 
+programa el kit de reactivos. Sirve también para 
+memorizar la fecha de instalación y llevar el cómputo 
+del consumo de los calibradores. El programa da un 
+aviso cuando finalizan los calibradores.
+Activación 
+electrodos
+Utilice esta acción para activar y memorizar en el 
+programa los electrodos. Sirve para llevar el cómputo 
+del consumo de los electrodos y dar un aviso de la 
+finalización de los mismos.
+Activación 
+preparaciones ISE
+Utilice está acción para indicar al programa que ha 
+instalado un módulo ISE.
+6.5.9. Estrés
+La verificación de estrés es una verificación que simula el ciclo de trabajo normal del analizador. Pero en vez de 
+pipetear sueros y reactivos, el analizador mueve los brazos y las bombas pero sin pipetear líquidos. 
+Manual de servicio
+102

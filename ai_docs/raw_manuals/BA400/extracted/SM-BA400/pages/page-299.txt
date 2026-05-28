@@ -1,0 +1,103 @@
+Número de cuentas fotodiodo 
+de referencia
+Mínimo
+Máximo
+Longitud de onda 560
+100 000
+950 000
+Longitud de onda 600
+100 000
+950 000
+Longitud de onda 635
+100 000
+950 000
+Longitud de onda 670
+100 000
+950 000
+Modelo Y400
+Número de cuentas fotodiodo principal
+Mínimo
+Máximo
+Longitud de onda 340
+350 000
+950 000
+Longitud de onda 405
+350 000
+950 000
+Longitud de onda 420
+350 000
+950 000
+Longitud de onda 430
+350 000
+950 000
+Longitud de onda 505
+350 000
+950 000
+Longitud de onda 520
+350 000
+950 000
+Longitud de onda 560
+350 000
+950 000
+Longitud de onda 600
+350 000
+950 000
+Longitud de onda 620
+350 000
+950 000
+Longitud de onda 635
+350 000
+950 000
+Longitud de onda 750
+350 000
+950 000
+Número de cuentas fotodiodo 
+de referencia
+Mínimo
+Máximo
+Longitud de onda 340
+100 000
+950 000
+Longitud de onda 405
+100 000
+950 000
+Longitud de onda 420
+100 000
+950 000
+Longitud de onda 430
+100 000
+950 000
+Longitud de onda 505
+100 000
+950 000
+Longitud de onda 520
+100 000
+950 000
+Longitud de onda 560
+100 000
+950 000
+Longitud de onda 600
+100 000
+950 000
+Longitud de onda 620
+100 000
+950 000
+Longitud de onda 635
+100 000
+950 000
+Longitud de onda 750
+100 000
+950 000
+Medidas realizadas a la 
+longitud de onda de 505 nm
+Parámetro
+Valor
+Repetibilidad medida a 0 Abs
+Desviación 
+estándar 
+< 0.0002 Abs
+Estabilidad a 0 Abs
+Rango
+< 0.0015 Abs
+ 
+299

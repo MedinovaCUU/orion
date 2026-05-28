@@ -1,0 +1,59 @@
+11
+Símbolo
+Descripción 
+WARNING
+Prevención por manipulación de reactivos
+Manipule con cuidado los reactivos y soluciones de lavado, hay sustancias que 
+pueden ser corrosivas.
+En caso que los reactivos o solución de lavado entren en contacto con la piel, lave 
+inmediatamente con abundante agua y si aparece alguna reacción consulte con 
+un médico. 
+Consulte la hoja de adaptación del reactivo o solución de lavado para seguir las 
+instrucciones de seguridad.
+Se recomienda que siga las buenas prácticas de laboratorio.
+BIOHAZARD
+Prevención de riesgo biológico por manipulación de residuos sólidos
+Manipule con cuidado las partes del analizador que se conviertan en residuos tales 
+como el rotor de reacción, tubos de muestras, botellas de reactivo.
+Utilice guantes y vestimenta de protección al manipular dichos residuos.
+Deshágase de los residuos de acuerdo con la legislación de su gobierno nacional o 
+local para la eliminación de residuos biológicos peligrosos y consultar al fabricante 
+o distribuidor de los reactivos para más detalles.
+NOTE
+Prevención de interferencias electromagnéticas
+El analizador cumple con los requisitos de emisión e inmunidad descritos en la 
+norma UNE -EN 61326-2-6:2006. Este equipo ha sido diseñado y ensayado para la 
+clase B de la norma UNE-EN 55022:2000. En un entorno doméstico puede causar 
+interferencias de radio, en cuyo caso, puede ser necesario tomar medidas para 
+mitigar la interferencia. 
+No usar el analizador en las proximidades de fuentes de radiación electromagnética 
+fuerte (por ejemplo aparatos de centrifugación, transmisores de radio, teléfonos 
+móviles), ya que estas pueden interferir con el funcionamiento adecuado.
+Prevención al final de la vida útil del instrumento
+Una vez finalice la vida del instrumento, la retirada del producto debe realizarse 
+de acuerdo con las leyes medioambientales de cada país. Si se pertenece a algún 
+país de la unión europea debe seguirse la directiva RAEE de aparatos eléctricos 
+y electrónicos. Es decir al final de la vida útil del aparato se convierte en residuo y 
+debe separarse de la basura doméstica para su correcto reciclaje, para ello contacte 
+con el distribuidor para realizar el correcto reciclaje.
+NOTE
+Prevención cuando se desactiva el sensor de tapa
+La opción de desactivar el sensor de tapas solo sirve para facilitar el servicio 
+técnico que puede llevar a cabo acciones de mantenimiento o de reparación. 
+Una vez finalizado el mantenimiento o la reparación, el técnico debe reactivar 
+el sensor de las tapas de nuevo. Los sensores de las tapas son elementos de 
+seguridad del analizador.
+NOTE
+Prevención de seguridad para el personal de servicio de asistencia técnica
+Use guantes y vestimenta de protección para manipular el analizador.
+Antes de realizar cualquier manipulación, vacie el analizador de material biológico: 
+muestras, depósitos, etc
+Vaya con precaución cuando tenga que reparar puntos del analizador que tengan 
+tensiones peligrosas tales como las partes relacionadas con las fuentes de ali-
+mentación. 
+Vaya con precaución cuando tenga que manipular puntos que tengan contacto 
+con material biológico, tales como las puntas, tubos y racors por donde fluyan los 
+residuos de alta contaminación.
+Asegúrese de seguir las indicaciones del manual cuando tenga que sustituir algu-
+na pieza o realizar el mantenimiento para garantizar la seguridad del personal de 
+servicio como del operario una vez finalizado la reparación.

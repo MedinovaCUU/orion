@@ -1,0 +1,64 @@
+Manual de servicio
+75
+Test point
+Función
+TP11
+Tensión referencia driver motor
+TP12
+Paso motor
+TP13
+Selección de placa. Dirección 1
+TP14
+Selección de placa. Dirección 1
+TP15
+Selección de placa. Dirección 2
+TP16
+Selección de placa. Dirección 3
+TP17
+Selección de placa. Dirección 4
+TP18
+Tensión referencia motor R-M
+TP19
+Tensión paso driver motor R-M
+LEDs
+Función (Condición de encendido)
+LD1
+Voltaje de 3.3 V
+LD2
+Activación calentador
+LD3
+Activación bomba B1F
+LD4
+Activación bomba B2F
+LD5
+Activación bomba B3F
+LD6
+Activación electroválvula E1F
+LD7
+Activación electroválvula E2F
+LD8
+Activación electroválvula E3F
+LD9
+Arranque microprocesador
+LD10
+Detección inicio motor
+LD11
+Activación electroválvula E3M
+LD12
+Activación bomba B2M
+LD13
+Activación bomba B1M
+LD14
+Activación electroválvula E2M
+LD15
+Activación electroválvula E1M
+LD16
+Activación electroválvula E4M
+LD17
+Arranque microprocesador
+LD18
+Detección inicio motor R-M
+4.10. Placa detección de nivel- CIIM00069
+Hay 3 placas de detección de nivel en el analizador. Dos de ellas están ubicadas encima de los depósitos internos, la 
+tercera está en el grupo lector. Su función es la detección de nivel capacitivo de los depósitos internos y de desbor­
+damiento del líquido en la estación de lavado.

@@ -1,0 +1,35 @@
+64
+Manual de servicio
+4.16.  ME14670 - Manifold
+Herramientas: Llave allen número 2.5, llave torx T10, destornillador plano
+Desmontaje: 
+1. Le damos la vuelta al conjunto para vaciar de la posible agua que haya quedado en la cámara.
+2. Desatornille los 4 tornillos (7) y separe el manifold (8) del resto de la bomba. Estire con cuidado 
+el manifold para sacar el pistón del retén que va con el manifold.
+3. Dele la vuelta al manifold y desatornille los 4 tornillos (13) para separar las piezas sujeción cámara 
+(9), junta tórica (10), supresor burbujas (11) y el adaptador retén con el retén (12).
+9
+12
+13
+7
+8
+10
+11
+Ilustración 4.34.  Desmontaje manifold
+Montaje:
+4. Sustituya el manifold.
+5. Oriente correctamente cada una de las piezas (9) según Ilustración 4.35.
+6. Gire el manifold sujetando las piezas (14).
+7. Verifique que la junta tórica (14) está limpia. Colóquela en su alojamiento. Verifique que se ha 
+insertado correctamente y no se sale de las guías (15). Ver Ilustración 4.36
+8. Verifique que el supresor burbujas (16) está sin rebabas ni suciedad. Colóquelo encima de la junta 
+tórica. Una vez montado verifique que no se ve la junta tórica. Ver Ilustración 4.36
+9. Oriente correctamente el adaptador retén y retén (17). La cara plana del adaptador tiene que coin­
+cidir con la ventana del manifold (18). Ver Ilustración 4.37
+10. Atornille los 4 tornillos (19) con un par de apriete de 30 Ncm y en cruz. Ver Ilustración 4.37
+11. Lubrique el pistón y el retén con WS (Washing Solution)
+12. Oriente correctamente el manifold con la bomba. La ventana del manifold (21) tiene que coincidir 
+con el tornillo de guiaje (22) de la bomba. Ver Ilustración 4.38
+13. Introduzca el pistón en el retén
+14. Apriete el manifold contra la bomba, posicione los 4 tornillos (20) y apriete en cruz con un par de 
+apriete de 60 Ncm.

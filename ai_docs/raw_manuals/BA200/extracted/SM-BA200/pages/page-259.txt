@@ -1,0 +1,106 @@
+Parámetro
+Mínimo
+Máximo
+Valor de referencia intensidad Led 635
+1 000
+30 000
+Valor de referencia intensidad Led 750
+1 000
+30 000
+Márgenes de fotometría:
+Parámetro
+Mínimo
+Máximo
+Corriente de oscuridad fotodiodo principal
+3 300
+4 500
+Corriente de oscuridad fotodiodo referencia
+3 300
+4 500
+Modelo BA200
+Número de cuentas fotodiodo principal
+Mínimo
+Máximo
+Longitud de onda 340
+600 000
+950 000
+Longitud de onda 405
+850 000
+950 000
+Longitud de onda 505
+850 000
+950 000
+Longitud de onda 535
+850 000
+950 000
+Longitud de onda 560
+420 000
+950 000
+Longitud de onda 600
+750 000
+950 000
+Longitud de onda 635
+850 000
+950 000
+Longitud de onda 670
+450 000
+950 000
+Número de cuentas fotodiodo de referencia
+Mínimo
+Máximo
+Longitud de onda 340
+100 000
+400 000
+Longitud de onda 405
+400 000
+950 000
+Longitud de onda 505
+400 000
+950 000
+Longitud de onda 535
+400 000
+950 000
+Longitud de onda 560
+400 000
+950 000
+Longitud de onda 600
+300 000
+950 000
+Longitud de onda 635
+400 000
+950 000
+Longitud de onda 670
+200 000
+950 000
+Modelo Y200
+Número de cuentas fotodiodo principal
+Mínimo
+Máximo
+Longitud de onda 340
+600 000
+950 000
+Longitud de onda 405
+850 000
+950 000
+Longitud de onda 420
+850 000
+950 000
+Longitud de onda 430
+850 000
+950 000
+Longitud de onda 505
+420 000
+950 000
+Longitud de onda 520
+750 000
+950 000
+Longitud de onda 560
+850 000
+950 000
+Longitud de onda 600
+450 000
+950 000
+Longitud de onda 620
+450 000
+950 000
+259

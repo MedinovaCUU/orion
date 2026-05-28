@@ -1,0 +1,45 @@
+Lista de recambios
+Código
+Conjunto
+Representación 
+Descripción
+AC17294
+rotor de 
+reactivos y 
+muestras
+Conjunto completo rotor de reactivos y 
+muestras
+AC17312
+ISE
+Módulo ISE 
+AC17218
+ISE
+Conjunto tubos de teflon módulo ISE
+AC16825
+ISE
+4 Channel O-Ring Replacement Kit
+AC16826
+ISE
+4 Channel O-Ring Electrodes Kit
+ AC16828
+ISE
+Modulo ISE, cable plano de conexión
+AC16827
+ISE
+Modulo ISE, angulo recto
+AC16829
+ISE
+Modulo ISE, copa de entrada
+AC16830
+ISE
+Modulo ISE, placa de compresión
+AC16831
+ISE
+Placa modulo ISE, placa principal
+AC16832
+ISE
+Placa modulo ISE, preamplificador
+AC16833
+ISE
+Detector de burbujas
+245

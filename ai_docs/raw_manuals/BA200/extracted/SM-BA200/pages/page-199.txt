@@ -1,0 +1,30 @@
+2. Desatornille los 4 tornillos (36) y (38) con sus arandelas de seguridad
+3. Quite el motor (37)
+Desmontaje correa:
+1. Afloje los tornillos (36) y (38) que sujetan el motor
+2. Quite la correa (35)
+Montaje motor:
+1. Sustituya el motor (37).
+2. Coloque los tornillos (36) y (38), arandelas y tuercas sin apretar.
+3. Coloque la correa por la polea
+4. Tense la correa entre 2.5 Kg y 4 Kg. Apriete los tornillos empezando por los tornillos (36) y luego los (38)
+5. Una vez tensado el motor, verifique la tensión de la correa con un frecuencímetro. La frecuencia de resonancia 
+de la correa tiene que estar entre 190 Hz - 230 Hz.
+Montaje correa:
+1. Sustituya la correa
+2. Verifique el dentado de la correa, haga coincidir los vanos con los dientes para ver si hay algún salto de diente.
+3. Coloque la correa por la polea y contrapolea.
+4. Tense la correa y el motor según el punto 4 y 5 del montaje del motor.
+8.15.12. AC16621 - Conjunto ventiladores termostatización rotor
+Herramientas: Allen 2.5
+Desmontaje:
+1. Desatornille los 4 tornillo (39) con sus arandelas de seguridad.
+2. Desconecte el ventilador de la placa electrónica
+3. Quite el ventilador (40)
+Montaje:
+1. Sustituya el ventilador defectuoso.
+2. Introduzca los 4 tornillos (39) con sus arandelas de seguridad en el soporte inferior. 
+3. Oriente correctamente el ventilador. El flujo de aire (41) tiene que soplar hacía el radiador.
+4. Atornille los 4 tornillos en cruz.
+5. Conecte el ventilador a la placa electrónica y verifique su funcionamiento.
+199

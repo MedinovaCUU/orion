@@ -1,0 +1,68 @@
+83
+LEDs
+Función (Condición de encendido) modelo BA400
+LD5
+LED de 535 nm
+LD6
+LED de 505 nm
+LD7
+LED de 635 nm
+LD8
+LED de 405 nm
+LD9
+Posición libre
+LD10
+Posición libre
+LD11
+Posición libre
+LD12
+Indicador del decodificador de I2C
+LEDs
+Función (Condición de encendido) modelo Y400
+LD1
+LED de 340 nm
+LD2
+LED de 620 nm
+LD3
+LED de 600 nm
+LD4
+LED de 560 nm
+LD5
+LED de 750 nm
+LD6
+LED de 420 nm
+LD7
+LED de 505 nm
+LD8
+LED de 635 nm
+LD9
+LED de 405 nm
+LD10
+LED de 520 nm
+LD11
+LED de 430 nm
+LD12
+Indicador del decodificador de I2C
+4.8. Placas rotores - CIIM00052
+Hay dos placas CIIM00052 en el analizador, están ubicadas en los conjuntos rotor de muestras y de reactivos. Ambas 
+placas tiene idéntico PCB pero en la placa del rotor de muestras no se han montado los componentes relacionados 
+con la nevera. Cada placa tiene una codificación diferente en los conmutadores de selección de placa.
+ 
+Elementos comunes para las dos placas
+• 
+Microcontrolador (U5) 
+• 
+Detector de tapa (U3)
+• 
+Control de los ventiladores ubicados en la estructura (U3 y U6)
+• 
+Motor del rotor (U8)
+• 
+Detección de inicio del rotor (U3)
+• 
+Comunicación con el lector de código de barras (U3 y U4)
+Componentes de la nevera montados en la placa del rotor de reactivos
+• 
+Alimentación independiente (U16)
+• 
+Microcontrolador (U13)

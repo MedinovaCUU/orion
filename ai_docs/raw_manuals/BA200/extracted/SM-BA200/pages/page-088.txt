@@ -1,0 +1,25 @@
+En caso de que algunas lecturas estén saturadas o no tengan suficiente luz desplace el deslizador de la corriente del 
+led para aumentar o disminuir la intensidad luminosa del led de lectura.
+1. Pulse el botón de inicio del ajuste. El programa realizará la lectura óptica de 5 pocillos del rotor.
+2. Mueva paso a paso el punto de disparo del encoder con el recuadro de ajuste hasta que la línea indicativa (4) 
+quede bien centrada respecto al pocillo.
+3. Guarde esta posición.
+4. Tenga en cuenta que si modifica este valor será necesario realizar el reajuste de todos los brazos.
+1
+2
+3
+4
+1 – Pasos del encoder
+2 – Lectura del encoder
+3 – Lectura óptica del rotor
+4 – Ajuste del disparo del encoder
+Ilustración 6.8 
+Pantalla ajuste estación de lavado.
+6.5.1.2. Ajuste de la estación de lavado
+Este ajuste sirve para ajustar en altura la estación de lavado. Previamente se tiene que ajustar manualmente el cen­
+trado de la estación de lavado.
+Ajuste manual del posicionamiento de la estación de lavado:
+El ajuste manual tiene dos movimientos independientes, el movimiento polar y el movimiento axial. Cada uno de 
+ellos se fija con tornillos diferentes.
+Manual de servicio
+88

@@ -1,0 +1,16 @@
+17
+CIIM00006
+CPU BOARD
+J25
+Esquema Comunicaciones
+COMMS Connection Scheme
+PLMA00035
+CN1
+COMMS BOARD
+CIIM00096
+CN1
+USB
+1
+2
+3
+4

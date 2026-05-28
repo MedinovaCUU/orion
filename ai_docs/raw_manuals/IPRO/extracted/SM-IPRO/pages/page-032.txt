@@ -1,0 +1,18 @@
+32
+Manual de servicio
+Todas las pruebas de motores pueden realizarse sin las tapas y sin las carcasas del procesador. Después 
+de las verificaciones, el brazo manipulador siempre vuelve auto­máticamente a su posición de reposo. 
+Es conveniente que el sistema dosi­ficador esté cebado para que el pistón no trabaje en seco. A conti­
+nuación se describen los distintos tests realizables.
+3.3.2  Test de inicialización
+Este test permite verificar el detector de inicio de cada uno de los motores.
+3.3.3  Test de movimiento
+Este test permite desplazar cualquiera de los elementos móviles hasta el punto desea­do de su rango 
+de funcionamiento, introduciendo la coordenada absoluta corres­pon­diente o bien moviéndolo paso a 
+paso. La velocidad y aceleración del movimiento son las utilizadas en el funcionamiento normal del 
+procesador. 
+3.3.4  Test de pérdida de pasos
+Este test permite comprobar si un motor pierde pasos al realizar una cierta secuencia de movimientos. 
+Puede realizarse el test con la velocidad y aceleración utilizadas en el funcionamiento normal del 
+procesador o bien con estas magnitudes aumentadas un 10% para verificar el margen de seguridad de 
+funcionamiento.

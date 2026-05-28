@@ -1,0 +1,13 @@
+47
+Montaje placa de led de estado:
+1. Colocar la nueva placa del led de estado
+2. Colocar las tuercas (12) 
+3. Conectar el cable a la placa 
+4. Colocar la tapa lateral
+5. Verificar el funcionamiento del Led de estado
+11
+10
+Ilustración 4.7.  Desmontaje detector de tapa
+13
+12
+Ilustración 4.8.  Desmontaje placa de led de estado

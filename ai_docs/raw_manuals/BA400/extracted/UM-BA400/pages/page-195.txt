@@ -1,0 +1,71 @@
+195
+195
+Tenga cuidado al conectar los tubos de la bomba de residuos (2) porque van conec­
+tados en sentido inverso a los tubos de la bomba para los calibradores A (4) y B (3). 
+Ejecute las acciones, en número y orden indicado, con el programa de usuario, en 
+el apartado utilidades ISE, cambio tubos bombas.
+Véase capítulo 10.9.4
+Paso
+Acción 
+Repeti­
+ciones 
+Descripción
+1
+Cebado B
+2
+2
+Cebado A
+2
+3
+Cebado B
+9
+4
+Cebado A
+9
+5
+Actualizar 
+fecha de 
+instala­
+ción
+1
+Actualiza la fecha de instalación de los tubos
+6
+Calibrar 
+las 
+bombas
+1
+Ejecute esta acción para calibrar las bombas. 
+Si el resultado no es aceptable por presencia 
+de aire, verifique la correcta instalación de los 
+tubos y repita las instrucciones anteriores. 
+13.3.2.4. Apagado de larga duración del módulo ISE 
+Si va a dejar parado el analizador durante un largo periodo de tiempo, por ejemplo, 
+durante el periodo de vacaciones, proceda de la siguiente manera para conservar 
+cada los electrodos, tubos y kit de reactivos.
+Para dejar el módulo inactivo es necesario desinstalar los electrodos, el kit de reacti­
+vos y limpiar los tubos para evitar que las sales o restos de suero obturen el circuito. 
+Ejecute las acciones, en número y orden indicado, con el programa de usuario, en 
+el apartado utilidades ISE.
+Véase capítulo 10.9.4
+Paso
+Acción 
+Repeti­
+ciones 
+Descripción
+1
+Llenado 
+con Cal A 
+3
+Esta acción dispensa 300 μl de la solución A en 
+la copa del módulo. Use la jeringa y la punta 
+larga que se suministra con la caja de accesorios 
+para aspirar el líquido y deposítelo en un 
+pocillo pediátrico o cualquier otro recipiente. 
+Repita esta acción 3 veces. Esta solución se 
+utilizará para llenar el canal de los electrodos en 
+el procedimiento de almacenamiento.
+2
+Lavar
+1
+Sitúe la solución de lavado en el pocillo 
+indicado del rotor de muestras

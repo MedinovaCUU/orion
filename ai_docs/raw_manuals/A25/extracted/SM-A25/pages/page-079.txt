@@ -1,0 +1,34 @@
+79
+Adjustment process
+1. Select the type of adjustment which you wish to carry out: adjustment of the tray (XYZ) of the pediatric 
+diameter rack or of the reagent rack.
+2. Press the button Adjust.
+3. Deactivate the option Adjust with the tool
+4. Select the number of rack to start the adjustment process. By default, it starts with number 1.
+5. Place the rack in the selected position, place the well or bottle in well number 1 of the rack and press Start.
+6. Probe will automatically descend to a distance over the well/bottle, in order to avoid colliding with it. Then, 
+probe has to be put into the well/bottle just a little. In order to do so:
+- 
+If probe is not centered in XY and out of the well or bottle opening: move the probe just by XY movements 
+(screen or keyboard) before carrying out Z movements to get the probe down.
+- 
+Then, get the probe slightly down with Z movements (screen or keyboard) just to make the adjustment 
+of the center easier. 
+From this position of approach, you may start the adjustment of values:
+7. Adjust the well/bottle center: to do so, move the probe by X and Y movements (screen or keyboard)
+8. Adjust the bottle or well bottom: to do so, move the probe by Z movements (screen or keyboard) until it 
+reaches the bottom. To check it: move the bottle/well up and down.
+9. To finish the XYZ adjustment, press Accept.
+10. The new adjusted XYZ values will appear in the upper table. (Nevertheless, they are not saved in the 
+instrument yet).
+11. The arm will automatically move to position 10 or 12, depending on the type of rack selected. Repeat steps 
+6 to 9.
+12. Once the adjustments in position 10 or 12 are carried out, the arm is parked so the rack can be moved.
+13. Place the rack in the following position of the tray, press Start. Repeat steps 6 to 9 to carry out the adjust­
+ments in the every position of the rack tray.
+14. Once the adjustments are finished, adjustments have to be kept in the instrument, so press Save.
+Adjustment of Z-axis of tubes
+
+When the adjustment of the tray of pediatric racks is selected, it appears another adjustment: the Z relation 
+between pediatric and tube.
+In order to carry out this adjustment, follow the following steps:

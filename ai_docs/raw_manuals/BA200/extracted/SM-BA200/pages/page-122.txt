@@ -1,0 +1,26 @@
+8. Explicación desmontaje de subconjuntos y re­
+cambios
+8.1. 
+Desmontaje de las carcasas
+La tapa principal, las carcasas lateral, las puertas y la plancha trasera son piezas que se desmontan independientemente 
+sin necesidad de desmontar las otras. 
+Para desmontar todas las carcasas y planchas sólo es necesario una herramienta:
+Llave torx T20, con una longitud mínima de 40 mm y una llave allen 3
+Para el montaje de las carcasas y planchas siga el proceso inverso al de desmontaje.
+NOTE
+En el momento de montar las carcasas, si se usa una máquina automática para apretar los tornillos, use 
+el control de par (2.5Nm). Nunca use la opción de taladro.
+8.1.1. 
+Desmontaje tapa superior
+Para desmontar la tapa superior siga los pasos siguientes:
+1. Abra la tapa y desmonte los 2 pistones (1) que sujetan la tapa. Para el desmontaje de los pistones tiene que 
+desarmar por la parte superior (2) la pinza que sujeta el cabezal, ayúdese de un destornillador de punta plana.
+2. Cierre la tapa y gire el analizador
+3. Quite los protectores de las bisagras (3) y los tornillos torx (4) que sujetan la tapa.
+4. Retire la tapa.
+1
+2
+Ilustración 8.1 
+Desmontaje pistón 
+Manual de servicio
+122

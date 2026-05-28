@@ -1,0 +1,34 @@
+7.3.2. Revisión de los brazos de reactivos, de muestras, agitadores y de la estación de lavado
+Verifique estado tensión de las correas:
+1. Desmonte la chapa superior del analizador
+2. Verifique la tensión de las dos correas de cada brazo (los 2 de reactivos, el de muestras y los dos agitadores). La 
+tensión de la correa no tiene que estar ni muy floja ni muy tensa. 
+3. Verifique también que la correa no presenta ningún desgaste ni restos de material adheridos en los dientes. 
+Verifique que el sistema antichoque funciona correctamente en los brazos de reactivo y de muestras:
+1. Quite las carcasas superiores de los 3 brazos.
+2. Inicialice el analizador con el programa de servicio
+3. Vaya a la opción de verificación del sistema antichoque.
+4. Con la mano suba cada una de las puntas y verifique que retrocedan correctamente con suavidad.
+5. Verifique que el led indicador en la placa se encienda cada vez que la punta está en la posición superior.
+6. Verifique en el programa de servicio la indicación de que la punta está en la posición superior.
+Verifique que los agitadores funcionan correctamente:
+1. Verifique que las palas de los agitadores están bien apretadas. Vaya con cuidado al apretar las palas de no des­
+alinearlas respecto al eje del motor.
+2. Utilice el programa de servicio para poner en funcionamiento el giro de los agitadores. Verifique que giran 
+correctamente sin ninguna excentricidad.
+Verifique el sistema antichoque de la estación de lavado
+1. Quite la carcasa superior de la estación de lavado.
+2. Inicialice el analizador con el programa de servicio
+3. Vaya a la opción de verificación del sistema antichoque de la estación de lavado.
+4. Con la mano suba la punta del secador y verifique que retroceda correctamente con suavidad.
+5. Verifique en el programa de servicio la indicación de que la punta secador está en la posición superior.
+6. Levante el sistema pisador de la estación de lavado con la mano y verifique que se desliza con suavidad y retro­
+cede a su posición inicial.
+7.3.3. Revisión del rotor de Muestras y de reactivos
+Verifique las tapas de los rotores:
+1. Inicialice el analizador con el programa de servicio.
+2. Verifique que el detector de las tapas funciona correctamente.
+3. Verifique que las tapas encajan correctamente en su alojamiento.
+Verifique que los rotores encajan correctamente:
+1. Quite las dos tapas de los conjuntos rotores.
+141

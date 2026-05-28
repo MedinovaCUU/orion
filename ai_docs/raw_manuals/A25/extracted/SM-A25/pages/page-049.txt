@@ -1,0 +1,81 @@
+49
+TP57 
+- EF Needle Peltier Driver 
+TP58 
+- IN2 Needle Peltier Driver 
+TP59 
+- IN1 Rotor Peltier Driver 
+TP60 
+- EF Rotor Peltier Driver 
+TP61 
+- IN2 Rotor Peltier Driver 
+The replacement of the CPU (PC15061) can be mounted in the A25 analyzer without fridge and in the analyzer A25 
+with a fridge.
+When installing a CPU board (PC15061) in a non A25 fridge analyzer, connect the cables as follows:
+Item
+Cables
+PC15061 board 
+connector
+Diaphragm pumps 
+PLMA0047
+ J8
+EV 2 way 
+PLMA0019 
+J13
+EV 3 way 
+PLMA0022 
+J12
+The connectors J9, J10 and J11 are unconnected.
+4.3. 
+DC/DC board (CIIM00090)
+It consists of 5 commutated DC / DC voltage regulators that allow distributed power according to the
+need for each subsystem.
+Connector 
+Function
+Pins
+CN1
+Output voltage of 36V and 
+12 V. It feeds the motors, 
+electrovalves and diaphragm 
+pumps and thermostating 
+systems.
+1 - 36V
+2 - GND
+3 - 12V Valve
+4 - GND
+5 - 12 V termos
+6 - GND
+7 - 12 V analogic
+8 - (GND)
+CN2
+Input voltage 36 V
+1 - 36V
+2 - GND
+CN3
+12V input voltage
+1 - 12V
+2 - GND
+CN4
+Connection of the fans of the 
+central rear cover.
+1 - 12V
+2- GND
+CN5
+Connection of the fans of the 
+central rear cover.
+1 - 12V
+2- GND
+CN6
+12V input voltage
+1 - 12V
+2 - GND
+CN8
+Voltage lamp
+1 - 12V
+2 - GND
+CN9
+5V output and power supply 
+enable pin
+1 - 5V
+2 - (GND)
+3 - ENABLE

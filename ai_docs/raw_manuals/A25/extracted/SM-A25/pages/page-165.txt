@@ -1,0 +1,48 @@
+165
+WARNING
+After carrying out any maintenance, make sure that all the elements that have been replaced or dismount­
+ed have been correctly assembled.
+7.2. 
+Care and cleaning
+7.2.1. 
+General care of the analyzer
+1. Never use detergents or abrasive products for cleaning the surface of the analyzer. Use only a damp cloth with 
+water and pH-neutral soap.
+2. If a reagent or corrosive product spills or splashes onto the apparatus, clean it with a damp cloth and soap imme­
+diately. If necessary, protect your hands with appropriate laboratory gloves.
+3. All the components of the analyzer have drainage conduits leading to the exterior to enable the elimination of any 
+liquid spilled and to prevent the apparatus from flooding. If the spillage is significant, the liquid spilled onto the 
+table through the drainage conduits and the analyzer must be adequately cleaned.
+4. When not in use, close the main cover of the analyzer to protect it from dust.
+7.2.2. 
+Cleaning the optical system
+The components of the optical system must be cleaned periodically in order to keep them free from dust and dirt. 
+These components are the lamp, the lenses, the filters and the photodiode. The recommended necessary material 
+is as follows: 
+• 
+Special paper for cleaning optical components (non-abrasive paper which does not leave solid residue).
+• 
+Ether and alcohol solution at 50%
+• 
+Cotton wool buds.
+• 
+Small bellows.
+All the optical components must be handled in an area of maximum cleanliness and with great care given that they are 
+fragile and delicate. To remove them and refit them, the corresponding instructions given in the Maintenance chapter 
+must be carefully followed. Avoid touching the useful area of these components with fingers. The lenses, filters and the 
+photodiode must be held by the sides. Do not touch the lamp bulb. To handle the lamp, use the wrapping, cutting it at 
+the terminal ends and squeezing them until they come out. To clean the optical components, bear in mind the following
+1. Remove the dust on the surface of the component with the bellows. This will avoid scratching by particles when 
+cleaning with paper.
+2. Carefully clean the surface of the component with the cleaning paper.
+3. If the dirt is persistent or greasy, clean the component with the paper moistened with the alcohol and ether solu­
+tion. Then dry with dry paper. To clean the filters or the window of the photodiode, use the cotton wool buds with 
+the paper in difficult and delicate areas.
+4. Finally, it is recommended that you use the bellows once again, thus removing any remains of paper or cotton.
+7.2.3. 
+Cleaning the dispensing system
+The analyser automatically performs conditioning of the fluid system at warm-up and shut-down. This conditioning 
+consists of a 3 primings of the dosing system, the first with air, the second with washing solution and the third and 
+last with system liquid. To perform this conditioning, the bottles of system liquid (marked with a blue dot) and washing 
+solution (marked with a green dot) must be full, and the waste bottle (marked with a red dot) must be empty. The final 
+conditioning consists of performing a priming with washing solution.

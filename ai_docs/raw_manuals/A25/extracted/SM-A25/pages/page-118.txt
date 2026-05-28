@@ -1,0 +1,18 @@
+Manual de servicio
+118
+3
+Figure 6.9 
+4
+Figure 6.10 
+6.2.2. 
+MO11516 - Y Motor / ME11513 - Y Belt
+Engine disassembly:
+1. Remove the arm and upper housings
+2. Disconnect the Y motor cable 
+3. Unscrew the 3 screws (5) and (6) that hold the motor
+Belt removal:
+1. Remove the arm and upper housings
+2. Loosen the 3 screws (5) and (6) that hold the motor
+3. Remove the Z carriage in order to gain access to the screw housings (7) that hold the belt clamp
+4. Remove the screws (7) that hold the belt clamp
+5. Remove the belt

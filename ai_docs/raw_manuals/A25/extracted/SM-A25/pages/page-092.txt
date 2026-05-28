@@ -1,0 +1,17 @@
+92
+Service manual
+5.3.2.2. Darkness counts
+The program shows the current integration times for each filter. On running the test, the analyzer positions the 
+covered filter and measures the darkness counts with each of the integration times. Each time an optical reading 
+is taken, the analyzer subtracts these darkness counts from the count numbers measured to obtain the light 
+intensity. The program shows the values obtained and issues the corresponding alarms in case of anomaly. 
+The values should be around 4100 - 4300. All the count numbers shown by the tests given as follows have the 
+darkness counts subtracted.
+5.3.2.3. Repeatability without moving the filter wheel
+To perform this and the following tests, the base line and darkness count test must have first of all been per­
+formed. This test takes absorbance readings during 1 minute with the filter wheel in fixed position. The technician 
+can choose the rotor well on which he wishes to take the readings and fill it with the liquid he desires. He can 
+choose which wavelength he wishes to use. The test can also be performed with the filter covered. When the 
+readings end, the screen graphically displays the count numbers obtained and the absorbances with regard to 
+the corresponding base lines. The program also shows the averages and/or standard deviations of the count 
+numbers and the absorbances.

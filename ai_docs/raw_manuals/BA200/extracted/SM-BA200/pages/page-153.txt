@@ -1,0 +1,45 @@
+8.11. Recambios brazo
+AC16538
+AC16558
+AC16599
+AC16557
+AC7292
+AC16600
+AC16598
+AC16600
+AC17291
+ 
+Código
+Descripción
+AC16538
+Tapa brazo
+AC16558
+Placa punta
+AC16599
+Correa polar
+AC16557
+Placa brazo
+AC16598
+Correa vertical
+AC17292
+Punta
+AC16600
+Motor brazo
+AC17291
+Motor de continua + pala 
+agitadora
+8.11.1. AC16538 - Tapa brazo
+Desmontaje: Presione en ambos lados de la tapa para liberar las pestañas. Saque la tapa
+Montaje: Coloque en su posición la carcasa y presione hacía abajo hasta que las pestañas estén insertadas en la base
+8.11.2. AC16558 - Placa punta
+Herramientas: 1 llave allen del 2.5 mm, llave fija de 5.5
+ 
+Destornillador de ajuste (AC16644)
+Desmontaje:
+1. Corte la brida que sujeta los cables de la punta. Vaya con cuidado en no deteriorar la placa con el corte.
+2. Quite los cables de la punta.
+3. Quite el conector del bus CAN.
+4. Quite los 2 tornillos que sujetan la placa en la base del brazo.
+Montaje:
+1. Inserte la nueva placa en su posición y coloque los 2 tornillos que sujetan la placa con sus tuercas.
+153

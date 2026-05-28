@@ -1,0 +1,28 @@
+Manual usuario 
+ 
+ 
+ 
+Manual usuario 
+ 
+ 
+ 
+218
+218
+Biosystems
+Biosystems
+el mismo suministrador de los reactivos o del sistema de medida y para el que se 
+indica un intervalo de valores admisibles (modo Manual). 
+15.6.3. Selección de las reglas de control
+Para seleccionar las reglas que se van a utilizar en el control interno deben tenerse 
+en cuenta los siguientes objetivos:
+• 
+Sencillez: Utilizar el menor número posible de materiales y de reglas de control.
+• 
+Baja probabilidad de falsos rechazos (≤ 2%, preferiblemente < 1%).
+• 
+Elevada probabilidad de detectar aumentos importantes del error. Cuanto 
+menor sea el intervalo de valores que ampara la regla de control, mayor es la 
+probabilidad de detectar incrementos del error.
+La idea es tener las menos falsas alarmas posibles y orientar la detección de errores a 
+aumentos que consideramos importantes, entendiendo que pueden ocurrir errores 
+de menor tamaño (errores tolerables) sin que sean detectados.

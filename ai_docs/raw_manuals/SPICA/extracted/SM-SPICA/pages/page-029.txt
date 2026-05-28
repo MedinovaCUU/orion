@@ -1,0 +1,45 @@
+29
+USUARIO
+Manual de Usuario BioSystems SPICA | Versión 2.8 - Agosto 2024
+Manual de Usuario BioSystems SPICA
+5. PROCEDIMIENTOS DE MEDICIÓN
+5.2 Cálculo de las absorbancias
+En primer lugar, el reactivo A se dispensa seguido de la muestra y posteriormente se agita la reacción. Al 
+cabo de un tiempo, se adiciona el reactivo B, se agita y comienza la reacción. El analizador comienza a 
+tomar las lecturas desde el tiempo L1 al tiempo L2. El cálculo de la absorbancia es el siguiente:
+5.3 Cálculo de la concentración
+Para determinar la concentración de analito de una muestra, su absorbancia debe calcularse utilizando 
+cualquiera de los modos de análisis anteriores, y debe utilizarse una función de calibración.
+1. Función de calibración
+Establece una relación entre los valores de absorbancia calculados y las concentraciones conocidas de 
+analitos de la muestra. Esta relación puede ser lineal o no lineal. Para calcular la función de calibración 
+se miden una o varias muestras con una concentración conocida del analito y se obtiene una curva de 
+calibración.
+Si la relación es lineal, sólo se mide un calibrador y se calcula la línea de calibración. Si la proporción es 
+no lineal se necesitarán varios calibradores y la curva de calibración se calculará con un procedimiento de 
+regresión. También se mide el blanco que será la señal medida por el analizador en ausencia del analito. En 
+la curva de calibración, el blanco corresponderá a un punto de concentración igual a cero.
+2. Blanco de reactivo (Blank)
+El blanco es la absorbancia en ausencia del analito. Se mide usando una muestra que no contiene analito. 
+En general, se utiliza agua purificada como muestra, pero también se puede utilizar la solución salina 
+fisiológica. Para medir correctamente la absorbancia del blanco de reactivos, debe utilizarse el mismo 
+modo de análisis que el utilizado con las muestras. 
+3. Calibrador (Calibrator/Standard)
+El calibrador es una muestra con la concentración conocida del analito a determinar. Es un estándar o 
+material de referencia. Para medir correctamente la absorbancia en blanco del calibrador, debe utilizarse 
+el mismo modo de análisis que el utilizado con las muestras. Si la relación entre la absorbancia del analito y 
+su concentración es lineal, entonces la función de calibración es una línea. Por lo tanto, sólo será necesario 
+medir el blanco y un calibrador.
+A = 
+λprincipal
+min
+ABS
+[
+]
+ABS
+Acalibrator
+Amuestra
+Ablanco
+CONCENTRACIÓN
+RB
+Smuestra Ccalibrator

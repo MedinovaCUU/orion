@@ -1,0 +1,35 @@
+183
+183
+Tipo de 
+alarma
+Alarma/Error
+Causa del problema
+Solución propuesta
+Muestra 
+con sustrato 
+consumido
+Este mensaje aparecerá para 
+técnicas programadas como 
+cinéticas. 
+Si aparece el mensaje indica que 
+el sustrato se ha consumido antes 
+de iniciarse la reacción, esto 
+ocurre para aquellas muestras de 
+concentración muy elevada. 
+Repita el ensayo diluyendo la 
+muestra.
+El proceso se puede automatizar. 
+Active en la programación la 
+postdilución automática, e 
+introduzca un valor en el campo de 
+sustrato consumido.
+Posible muestra 
+con prozona
+Este mensaje aparecerá para 
+técnicas programadas como 
+turbidimétricas. 
+Si aparece el mensaje indica 
+que la muestra puede tener la 
+concentración en prozona.
+Repita el ensayo diluyendo la 
+muestra.

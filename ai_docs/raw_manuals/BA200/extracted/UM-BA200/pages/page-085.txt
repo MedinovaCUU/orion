@@ -1,0 +1,45 @@
+85
+85
+ 
+Envío de resultados 
+de paciente solicitados desde el 
+analizador
+ Al activarse esta opción se envían los resultados de paciente creadas manualmen­
+te desde el analizador.
+ 
+Envío de resultados 
+de controles solicitados por el 
+analizador
+ Al activarse esta opción se envían los resultados de los controles solicitados ma­
+nualmente desde el analizador.
+ 
+Envío de los resultados 
+al realizar reset de la sesión
+ Al activarse esta opción se envían todos los resultados de la sesión al realizar 
+un reset. Se enviarán todos los resultados solicitados por el LIS y cuando tenga 
+activos los parámetros anteriores, también los resultados solicitados de manera 
+manual desde el BA200.
+ Activación de envíos automáticos Al activarse esta opción puede escoger la frecuencia con la que se envían auto­
+máticamente los resultados al LIS.
+Tipo exportación on-line
+Descripción
+Al finalizar cada sesión 
+de trabajo
+Al finalizar una sesión de trabajo se exportan 
+todos los resultados de la lista de pacientes.
+Al finalizar cada 
+paciente
+Al finalizar cada paciente se exportan los 
+resultados de dicho paciente.
+Al finalizar cada 
+técnica de paciente
+Al finalizar una técnica de un paciente se 
+exportan los resultados automáticamente. 
+Ilustración 48 
+Configuración de las opciones de LIS
+10.2.6.2. Configuración de las comunicaciones LIS
+Pantalla para configurar las comunicaciones con un sistema LIS.
+ Activación comunicaciones LIS 
+Permite activar o desactivar la comunicación con una aplicación LIS.
+ Tipo de transmisión de datos 
+La transmisión puede ser:

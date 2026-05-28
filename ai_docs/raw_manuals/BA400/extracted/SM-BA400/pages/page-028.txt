@@ -1,0 +1,30 @@
+18
+19
+20
+Ilustración 3.3 
+Ajuste lector código de barras
+3.2. Rotor de reactivos
+En el rotor de reactivos es donde se posicionan las botellas de reactivos. Hay dos tipos de botella, las de 60 mL y 
+las de 20 mL. El rotor (3) consta de 2 coronas, en la corona externa únicamente se pueden colocar las botellas de 
+20 mL, mientras que en la corona interna se pueden colocar tanto las de 20 mL como las de 60 mL. El conjunto 
+dispone de un lector de código de barras que puede leer los códigos en las botellas colocadas en ambas coronas. 
+Todo el conjunto está refrigerado y tiene un sistema de alimentación independiente para mantener la refrigeración 
+aún con el aparato apagado.
+1
+2
+3
+4
+5
+6
+7
+Ilustración 3.4 
+Conjunto rotor de muestras
+El sistema de transmisión del rotor y el soporte y ajuste del lector de código de barras es exactamente igual al del 
+rotor de muestras. 
+ 
+) Véase capítulo 3.1, la descripción del sistema de transmisión y del soporte del lector de código de barras.
+El alojamiento del rotor de reactivos está refrigerado. Para mantener la temperatura el vaso está aislado con un aislante 
+(8). El sistema de refrigeración se realiza por 4 peltiers (10) que enfrían el vaso a través de los separadores (9) que 
+son de cobre. El calor que provocan las peltiers se evacua por medio de los radiadores (11) y los ventiladores (12).
+Manual de servicio
+28

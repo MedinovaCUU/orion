@@ -1,0 +1,26 @@
+Manual de servicio
+108
+6.1.4. AC17318 - Carcasa del refrigerador
+Desmontaje:
+1. Extraer la tapa del refrigerador y todas las botellas de reactivo
+2. Extraer los 4 tornillos que sujetan la carcasa
+3. Estirar un poco hacía fuera
+4. Desconectar los 2 cables del sensor de tapa y del led de estado
+5. Acabar de extraer la carcasa del refrigerador
+Montaje:
+1. Coloque la carcasa del refrigerador
+2. Conecte los dos cables del sensor de tapa y del led de estado
+3. Coloque los 4 tornillos que sujetan la carcasa del refrigerador
+5
+Ilustración 6.4 Desmontaje carcasa refrigerador
+6.1.5. AC17349 - Carcasa superior
+Desmontaje:
+1. Extraer la cúpula. Ver capítulo 6.1.3
+2. Extraer la carcasa frontal. Ver capítulo 6.1.2
+3. Extraer la carcasa del refrigerador. Ver capítulo 6.1.4
+4. Quitar la tapa del rotor y mover el brazo manualmente en una posición centrada. 
+5. Extraer los 6 tornillos frontales (6) y los 5 traseros (7) que sujetan la carcasa.
+6. Extraer la carcasa levantándola
+Montaje:
+1. Coloque la nueva carcasa superior
+2. Siga los pasos en orden inverso

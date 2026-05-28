@@ -1,0 +1,24 @@
+33
+3.5. Carcasas y tapas
+La base sobre la que se fijan todos los elementos del analizador va fijada directamente a la carcasa inferior de plástico 
+(8). La bandeja portaracks y la estación de lavado forman parte de la misma. El instrumento se sostiene sobre 4 patas 
+de goma (10). La pata delantera derecha es ajustable en altura para adaptar el instrumento a la superficie de trabajo. 
+tLa carcasa frontal (5) esta atornillada ala carcasa superior (2) y esta a su vez a la carcasa inferior (8). La tapa superior 
+(1) es transparente y permite ver el analizador en funcionamiento con la tapa cerrada.
+La tapa metálica (20) soporta interruptor de red (11) y (12) y los portafusibles (13), también encontramos la etiqueta 
+identificativa (21). Los conectores COM1 y COM2 (15) y el conector de red (16) se encuentran fijos a la caja electró-
+nica. La tapa (1) se abate mediante 2 bisagras (19).
+Las dos bisagras que permiten la elevación de la tapa principal del analizador consisten en una estructura articulada 
+de acero (22) accionada por un resorte hidroneu mático (19). La bisagra derecha incluye un fotodetector (18) para 
+detectar si la tapa del analizador está abierta o cerrada.
+1
+8
+3
+4
+6
+2
+10
+5
+7
+9
+Ilustración 3.12. Tapas

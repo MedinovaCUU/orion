@@ -1,0 +1,13 @@
+117
+117
+Ilustración 75 
+Pantalla con avisos de caducidades al iniciar el analizador
+El proceso el apagado se realiza al pulsar este botón. Si se han realizado muestras 
+con determinación de ISE o ha caducado la limpieza de los agitadores, aparece 
+una pantalla de recordatorio para poder seleccionar la realización o no de estos 
+mantenimientos. Al aceptar la pantalla se ejecutan automáticamente los manteni­
+mientos antes de realizar el apagado del analizador. Asegúrese de tener las botellas 
+de lavado adicionales (WS1 y WS2) en las posiciones indicadas por el programa, 
+asi como el pocillo para la solución de limpieza para el modulo ISE.
+Ilustración 76 
+Pantalla con avisos de caducidades al finalizar el analizador

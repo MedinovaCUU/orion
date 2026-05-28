@@ -1,0 +1,25 @@
+50
+2
+1
+1
+Ilustración 4.30 
+Desconexión de un conector CAN
+1. Apriete fuertemente en los laterales del conector (1). En cada lado hay unas pestañas para anclarse al conector 
+hembra.
+2. Estire hacía afuera el conector y cable (2).
+3. Nunca estire directamente por el cable.
+4. En caso de no poder retirar el cable, utilice unas alicates de punta plana suficientemente anchas para apretar 
+las pestañas.
+Todos los cables CAN vienen con tres etiquetas colocadas en los extremos de los cables:
+• 
+Una etiqueta indica a que placa se conecta con la identificación de placa, sirve para diferenciar los cables por su 
+longitud, ya que constructivamente todos los cables son iguales.
+• 
+La otras dos etiquetas están en ambos extremos del cable, una es de color amarillo y la otra es de color blanco. 
+El extremo que se conecta a la placa distribuidora es la marca de color amarillo. 
+2
+1
+3
+Ilustración 4.31 
+Desglose conector CAN
+En la Ilustración 4.31 se muestra un conector CAN, con los pines (1), el conector (2) y el anclaje extra (3).

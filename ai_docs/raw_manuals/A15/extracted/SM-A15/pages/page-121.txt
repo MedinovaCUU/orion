@@ -1,0 +1,18 @@
+Manual de servicio
+122
+18
+20
+19
+Ilustración 6.20 Desmontaje bomba
+6.3.5. AC17317 - Tubo del manifold
+Desmontaje:
+1. Extraer la carcasa superior. Ver 6.1.5
+2. Extraer los tubos de conexión del manifold (21)
+Montaje:
+1. Sustituya el tubo por uno nuevo
+2. Colóquelo en su posición
+3. Verifique el funcionamiento con el programa de servicio
+21
+23
+22
+Ilustración 6.21 Conexión tubos en el manifold

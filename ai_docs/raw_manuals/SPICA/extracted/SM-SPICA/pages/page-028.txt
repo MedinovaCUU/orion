@@ -1,0 +1,43 @@
+28
+USUARIO
+Manual de Usuario BioSystems SPICA | Versión 2.8 - Agosto 2024
+Manual de Usuario BioSystems SPICA
+5. PROCEDIMIENTOS DE MEDICIÓN
+5.2 Cálculo de las absorbancias
+6. CINÉTICA MONO-REACTIVA
+En las pruebas programadas con el modo de cálculo cinético, la velocidad de reacción se mantiene 
+constante durante el proceso de reacción. Como resultado, la absorción de los analitos a una cierta longitud 
+de onda cambia uniformemente y el cambio en la absorbancia por minuto (DABS/min) es directamente 
+proporcional a la concentración de los analitos. El método cinético se utiliza para medir la actividad 
+enzimática. Para este modo de cálculo se programan un tiempo inicial y una final. Entre estos dos tiempos, 
+se toman varias lecturas y se calcula la regresión lineal de las lecturas. La absorbancia resultante es el valor 
+de la pendiente de la regresión lineal. Además, se comprueba la linealidad de las lecturas; para ello, se 
+calcula el coeficiente de correlación. Si el coeficiente de correlación es r < 0,9 entonces el resultado de la 
+reacción cinética es no lineal. 
+Se dispensa el primer reactivo A, seguido de la muestra, se agita y comienza la reacción. El analizador 
+comienza a tomar las lecturas desde el tiempo L1 al tiempo L2. El cálculo de la absorbancia es el siguiente: 
+7. CINÉTICA BI-REACTIVA
+En este modo de funcionamiento, es el analizador el que prepara el reactivo de trabajo para cada test.
+A = 
+λprincipal
+min
+ABS
+[
+]
+ABS
+CINÉTICA Mono-Reactiva
+Tiempo (ciclos)
+RA + S
+L2
+L1
+1 2 3
+5
+ABS
+CINÉTICA Bi-Reactiva
+Tiempo (ciclos)
+RA + SR
+B
+L1
+L2
+1 18 19 3
+5

@@ -1,0 +1,88 @@
+Manual de servicio
+72
+BR2
+HORIZONTAL
+DETECTOR
+HORIZONTAL
+MOTOR
+CIIM00048
+BR1
+PLMA00324
+PLMA00323
+PLMA00325
+PLMA00326
+VERTICAL
+DETECTOR
+VERTICAL
+MOTOR
+BM1
+AG1
+AG2
+CAN BUS
+MOTOR H
+HOME H
+HOME V
+MOTOR V
+MOTOR H
+HOME H
+HOME V
+MOTOR V
+CN10
+CN10
+1
+2
+3
+4
+CN10
+CN10
+1
+2
+3
+4
+1
+2
+3
+4
+5
+6
+1
+6
+2
+5
+4
+CN15
+CON3
+CN15
+CON3
+1
+2
+3
+1
+2
+3
+4
+5
+6
+CN14
+CON3
+CN14
+CON3
+1
+2
+3
+CN16
+CN16
+1
+2
+3
+4
+5
+1
+6
+2
+5
+4
+Ilustración 4.10 
+Conexiones de la placa brazo
+Ilustración 4.11 
+Serigrafía placa brazo.

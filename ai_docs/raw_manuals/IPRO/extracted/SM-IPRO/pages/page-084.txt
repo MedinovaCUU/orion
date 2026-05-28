@@ -1,0 +1,22 @@
+84
+Manual de servicio
+CÓDIGO
+DESCRIPCIÓN
+ME14624
+Bomba peristáltica
+ME14623
+Cabezal bomba peristáltica
+AC17413
+Lector de código de barras de muestras y 
+reactivos
+AC17432
+Lector de código bidimensional de 
+portaobjetos
+AC14627
+Conjunto puntas
+AC15357
+Separador de puntas
+AC14307
+Tubo de teflón 
+AC17453
+Conjunto boyas de las botellas

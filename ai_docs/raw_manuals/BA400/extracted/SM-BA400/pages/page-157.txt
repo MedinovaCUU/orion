@@ -1,0 +1,18 @@
+5. Desatornille los 4 tornillos que sujetan el conjunto rotor a la base. Véase Ilustración 8.14
+6. Desatornille el tornillo que sujeta la carcasa de la estación de lavado
+7. Desconecte todos los tubos de la estación de lavado y quítelos de la carcasa
+8. Quite el conjunto rotor, siga los movimientos indicados en la Ilustración 8.15 para sacar el rotor del analizador.
+Ilustración 8.14 
+Movimientos a realizar para sacar el rotor del analizador
+Ilustración 8.15 
+Movimientos a realizar para sacar el rotor del analizador
+8.5. 
+Desmontaje rotor de reacción
+1. Quite la tapa superior
+ 
+) Véase capítulo 8.1.6
+2. Desenchufe el cable CAN.
+3. Quite el brazo del agitador 2
+ 
+) Véase capítulo 8.2
+157

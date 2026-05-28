@@ -1,0 +1,57 @@
+Manual usuario 
+ 
+ 
+ 
+Manual usuario 
+ 
+ 
+ 
+26
+26
+Biosystems
+Biosystems
+4. 
+Instalación
+La entrega e instalación del analizador es responsabilidad de Biosystems o del 
+distribuidor habitual como representante legal.
+Con objeto de garantizar un óptimo funcionamiento del analizador, deben seguirse 
+cuidadosamente las instrucciones de este capítulo para su instalación.
+4.1. Ubicación
+ 
+Ubicación Ubique el analizador en el interior en un espacio amplio, el mínimo que ocupa 
+es de 120 cm x 72 cm. 
+Deje un espacio mínimo de 50 cm por la parte trasera del analizador para que cir­
+cule el aire de la salida de los ventiladores y para que pueda abrir la tapa principal. 
+Deje un espacio mínimo por encima del analizador de 60 cm para que pueda abrir 
+la tapa principal.
+Deje un espacio mínimo delantero de 60 cm para que pueda abrir las puertas y 
+acceder al módulo ISE. 
+Deje un espacio mínimo de 60 cm por el lateral izquierdo para acceder cómoda­
+mente a los interruptores parciales y al interruptor general.
+ 
+Condiciones ambientales Sitúe el analizador en un ambiente seco y no corrosivo. La humedad relativa 
+no debe superar el 85 % y sin condensación. Se recomienda que la temperatura 
+ambiente sea inferior a 35 °C o de 30 °C en el caso de usar el lector del módulo 
+ISE del analizador. Evite colocar el analizador en lugares expuestos a corrientes 
+de aire. 
+ 
+Iluminación Evite colocar el analizador debajo de una fuente de luz potente. Mantenga la 
+iluminación lo más estable posible, evite cualquier parpadeo de la iluminación 
+que incida directamente al analizador. Evite también la radiación directa de la 
+luz solar. 
+ 
+Evite 
+El analizador no debe estar cerca de fuentes de radiación electromagnética (tales 
+como motores, centrífugas, teléfonos móviles), ni de fuentes de calor.
+ 
+Fijación Desplace el analizador hasta su ubicación definitiva empujándolo suavemente. 
+Dispone de ruedas para facilitar su movimiento.
+Una vez colocado en la posición definitiva, fíjelo. Desenrosque las cuatro patas 
+ajustables (1) hasta que toquen el suelo. (Véase Ilustración 4)
+Nivele el analizador, alargando o acortando las patas según convenga. Ayúdese 
+con una llave inglesa para hacer girar la tuerca (2) (Véase Ilustración 5 una vez las 
+ruedas toquen el suelo. 
+Cuando esté correctamente nivelado fije las tuercas haciendo girar la contratuerca 
+(3) hasta el tope superior. 
+No dé demasiadas vueltas a la tuerca (3) para evitar desmontar la pata de la es­
+tructura.

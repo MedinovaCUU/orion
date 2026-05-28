@@ -1,0 +1,26 @@
+125
+2
+3
+4
+Figure 6.20 
+6.2.5. 
+AC11520 - Tip assembly / PC11553 - Tip plate / AC13227 - Spiral / CE11561 - Peltier / MO11522 - Fan
+Disassembly of the tip assembly:
+1. Remove the arm housing and upper housings
+2. Disconnect the spiral tube
+3. Disassemble the tip
+4. Remove the 4 screws (1)
+Disassembly of the probe board:
+1. Remove the tip assembly
+2. Disconnect all cables from the probe board (2)
+3. Unscrew the 3 screws that hold the board
+4. Remove the board (2)
+Fan disassembly:
+1. Remove the tip assembly
+2. Disconnect the fan cable from the probe board (2)
+3. Remove the fan (11)
+Peltier disassembly:
+1. Remove the tip assembly
+2. Remove the probe board
+3. Remove the fan (11)
+4. Unscrew the 4 screws (10) that hold the radiator (9)

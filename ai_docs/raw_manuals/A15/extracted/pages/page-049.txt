@@ -1,0 +1,68 @@
+Manual de servicio
+50
+Conector
+Función
+Pins
+CN3
+PUMPS- J13
+1 - 5V
+2 - GND
+3 - GND
+4 - Earth
+CN4
+FRIDGE THERMISTOR
+1 - Temp
+2 - GND
+CN5
+PELTIERS CELLS
+1 - 5V5
+2 - Peltier 1
+3 - 5V5
+4 - Peltier 2
+CN6
+PELTIER FANS
+1 - 5V5
+2 - Fan1
+3 - 5V5
+4 - Fan 2
+5 - 5V5
+6 - Fan 3
+7 - 5V5
+8 - Fan 4
+CN7
+STATUS LED
+1 - Green
+2 - GND
+3 - RED
+CN8
+COVER DETECTOR
+1 - 5V5
+2 - Cover
+CN9
+MAIN COVER DETECTOR
+1 - Main cover
+2 - GND
+3 - 5V5
+J2
+IN LEVEL SENSOR SIGNAL
+1 - In level sensor
+J3
+FRIDGE LEVEL SENSOR SIGNAL
+2 - Fridge level sensor
+4.11. Información sobre el canal auxiliar
+La parte trasera izquierda del analizador es donde se conectan los cables de comunicación con el orde-
+nador. Hay dos posibles conexiones el COM1 y el COM2.
+El COM1 es la conexión principal del analizador con el ordenador, para hacer funcionar el analizador esta 
+conexión siempre tiene que estar presente. Tiene dos posibilidades de conexión:
+ 
+A - Cable tipo USB
+ 
+B - Cable tipo RS-232
+Solamente se tiene que conectar un tipo de cable.
+El conector marcado como COM2 es el conector auxiliar.
+En esta posición sirve para conectar un cable a un segundo puerto de comunicaciones serie del ordenador. 
+Dicho cable sirve para realizar una escucha de los diferentes estados internos del analizador. 
+Para visualizar dicha información el usuario tiene que ejecutar una sesión del programa HiperTerminal de 
+Windows y configurarlo con los siguientes parámetros:
+Programa: Inicio\Todos los programas\accesorios\comunicaciones\hyperterminal
+Parametros:

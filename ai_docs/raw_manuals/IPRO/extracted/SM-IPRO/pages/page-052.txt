@@ -1,0 +1,18 @@
+52
+Manual de servicio
+11
+12
+Ilustración 4.15.  Desmontaje sensor de racks
+13
+Ilustración 4.16.  Desmontaje sensor de racks
+4.9.  MO14620 - Motor X / ME14628 - Correa X 
+Desmontaje motor:
+1. Extraer las carcasas. Ver capitulo 4.2
+2. Extraer la chapa frontal que protege a la placa de la CPU
+3. Desenchufar el cable del motor X
+4. Desatornillar los 3 tornillos (1) y (2) que sujetan al motor
+Desmontaje correa:
+1. Extraer las carcasas. Ver capitulo 4.2
+2. Aflojar los 3 tornillos (1) y (2) que sujetan al motor
+3. Extraer el tornillo (3) que sujeta la correa al carro X
+4. Quitar la correa

@@ -1,0 +1,57 @@
+201
+201
+14.6. Sistema óptico
+Fuente de luz
+LED+Filtro Hard Coating
+Nº de longitudes de onda
+8
+Longitudes de onda
+340­ – 405 – 505 – 535 – 560 – 
+600 – 635 – 670 nm
+Ancho de banda de los filtros
+10 nm ± 2 nm
+Veracidad de la longitud de onda
+± 2 nm
+Rango fotométrico
+-0.2 A a 3.5 A
+Resolución interna
+0.0001
+Detector 
+Fotodiodo principal + 
+fotodiodo de referencia
+Precisión de la medida (para 340 nm, 
+405 nm y 505 nm)
+CV < 1 % a 0.1 A
+CV < 0.1 % a 2 A
+14.7. Modulo ISE (opcional)
+Tipo de muestra
+Suero, Plasma u Orina
+Tipo de electrodos
+Na+, K+, Cl-. Li+ (opcional)
+Tipo de método
+ISE directo
+Volumen de muestra
+Suero: 100 mL 
+Orina: 200 mL
+14.8. Requerimientos ambientales
+Temperatura ambiente
+10 °C a 35 °C
+10 °C a 30 °C (con módulo 
+ISE)
+Humedad relativa
+< 85 % sin condensación
+Altitud máxima
+< 2 500 m
+Grado de polución
+2
+Temperatura de transporte y 
+almacenamiento
+0 °C a 40 °C
+Humedad de transporte y almacenamiento
+< 85 % sin condensación
+14.9. Dimensiones y peso
+Dimensiones (Ancho, profundo y alto)
+1 200 mm x 720 mm x 
+1 258 mm
+Peso
+210 Kg

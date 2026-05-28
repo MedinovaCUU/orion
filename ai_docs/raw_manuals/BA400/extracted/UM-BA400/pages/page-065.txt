@@ -1,0 +1,57 @@
+65
+65
+ 
+Posiciones 
+Hay un total de 120 posiciones. En cada cubeta se dispensa el reactivo y la 
+muestra. Durante la reacción de la mezcla se realiza la lectura óptica para obte­
+ner la absorbancia. 
+ 
+Volumen El volumen de la reacción está comprendido entre 180 μL y 600 μL.
+ 
+Temperatura El rotor se mantiene a una temperatura estable de 37°C gracias a un sistema de 
+termostatización basado en peltiers.
+Ciclos de dispensación de cada uno de los brazos:
+• 
+Ciclo 1: Dispensación Reactivo 1
+• 
+Ciclo 31: Dispensación muestra
+• 
+Ciclo 33: Agitación Reactivo 1 y muestra
+• 
+Ciclo 34: Inicio lecturas fotométricas
+• 
+Ciclo 66: Dispensación Reactivo 2 y agitación del Reactivo 2
+• 
+Ciclo 100: Finalización de las lecturas
+• 
+Ciclos 101 –111: Lavado de las cubetas en la estación de lavado
+8.5. Sistema óptico 
+El sistema óptico genera la luz monocromada mediante el conjunto de leds y 
+filtros. El sistema de lectura está formado por dos fotodiodos. El fotodiodo de 
+referencia sirve para estabilizar la luz y el fotodiodo principal capta la luz que ha 
+atravesado la reacción.
+El sistema óptico físicamente está ubicado en el rotor de reacción debajo de la 
+estación de lavado. 
+ 
+Longitudes de onda 340 nm, 405 nm, 505 nm, 535 nm, 560 nm, 600 nm, 635 nm, 670 nm
+ 
+Rango de medida De -0.2 A a 3.5 A
+ 
+Resolución 0.0001 A
+El sistema automáticamente realiza un blanco de cubeta antes de dispensar el 
+reactivo. Esta absorbancia del blanco de cubeta sirve para corregir las medidas 
+de absorbancia de la reacción debido al envejecimiento de la cubeta. Si este valor 
+supera un límite preestablecido se descarta la cubeta.
+8.6. Estación de lavado
+La estación de lavado consiste en un conjunto de varias etapas colocado encima 
+del rotor de reacciones.
+Ciclos de la estación de lavado
+• 
+Ciclo 1: Aspiración de los residuos de alta contaminación y dispensación de 
+solución de lavado.
+• 
+Ciclo 2: Aspiración y dispensación de solución de lavado.
+• 
+Ciclo 3: Cubeta en remojo con solución de lavado.
+• 
+Ciclo 4: Aspiración de la solución de lavado y dispensación de agua purificada.

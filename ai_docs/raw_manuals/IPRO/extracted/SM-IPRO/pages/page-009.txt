@@ -1,0 +1,28 @@
+9
+1.1.7  Programa de aplicación
+El programa de aplicación permite controlar todas las operaciones del procesador. Des­de este programa 
+el usuario puede monitorizar el estado del procesador y de la sesión de trabajo, programar parámetros, 
+por ejemplo de técnicas, preparar la sesión de trabajo, elaborar informes de resultados, configurar 
+diversas opciones el procesador. No es el objetivo de este manual explicar el funciona­mien­to del 
+programa de usuario.
+Para obtener información detallada del mis­mo debe con­sultarse el Manual de Usuario incluido con 
+el procesador.
+1.2  FUNCIONAMIENTO DEL PROCESADOR
+Mediante el programa de aplicación se asignan las técnicas a los diferentes pacientes a ensayar. Se crea 
+así una sesión de trabajo en la que la aplicación propone una titulación para cada paciente. El operador 
+puede descartar las diluciones mayores que crea conveniente. Se pueden procesar controles para cada 
+técnica, los cuales se pueden diluir si se desea. A continuación el programa asigna las posiciones de 
+las muestras, controles y portaobjetos en el área de trabajo. Una vez que se le da la orden de ejecutar 
+la sesión al procesador, éste empieza realizando las diluciones. Una vez ejecutadas, procederá a dis­
+pensarlas en los portaobjetos correspondientes. Tras el periodo de incubación previsto, se procederá 
+al lavado de las muestras de los portaobjetos. Seguidamente el procesador dispensará el conjugado 
+correspondiente realizando una nueva incubación. Al finalizar ésta, se finalizará la sesión lavando de 
+nuevo los portaobjetos. En todo momento el procesador está conectado al ordenador mostrando el 
+estado de la sesión en curso. Una vez acabada la sesión, el operador podrá montar los cubreobjetos. 
+Con ayuda de un informe generado por el programa de aplicación podrá identificar las muestras fá­
+cilmente para su estudio. 
+1.3  TRANSPORTE Y REEXPEDICIÓN DEL PROCESADOR
+En caso de que sea necesario reexpedir el procesador, o bien moverlo haciendo uso de un vehículo de 
+transporte, es importante bloquear el brazo manipulador y usar el embalaje original para asegurar que 
+el aparato no sufra ningún daño. Para embalar el instrumento, es recomendable seguir las indicaciones 
+de la hoja de ins­trucciones de desembalaje.

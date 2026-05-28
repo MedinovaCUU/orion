@@ -1,0 +1,12 @@
+Manual de servicio
+158
+5
+Figure 6.65 
+Removing power-in panel
+ASMB2889
+ASMB2890
+ASMB2892
+ASMB2891
+ASMB2891
+Figure 6.66 
+Mounting the power cables

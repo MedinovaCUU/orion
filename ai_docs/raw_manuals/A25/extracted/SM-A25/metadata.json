@@ -1,0 +1,31 @@
+{
+  "manufacturer": "Biosystems",
+  "equipment": "A25",
+  "aliases": [],
+  "document_type": "service_manual",
+  "language": "English",
+  "source_pdf": "/Users/ricardomontanezmiranda/Documents/BioSys Diagnostico/data/manuals/A25/SM-A25.pdf",
+  "source_filename": "SM-A25.pdf",
+  "source_sha256": "e1fc748a9ea6a77b188f2a02d0ef586dac23a36c5ae381207f042275419a0a3b",
+  "page_count": 201,
+  "pdf_metadata": {
+    "format": "PDF 1.4",
+    "title": "",
+    "author": "",
+    "subject": "",
+    "keywords": "",
+    "creator": "Adobe InDesign 17.3 (Windows)",
+    "producer": "Adobe PDF Library 16.0.7",
+    "creationDate": "D:20221223170118+01'00'",
+    "modDate": "D:20221223170340+01'00'",
+    "trapped": "",
+    "encryption": null
+  },
+  "title_lines": [
+    "Service",
+    "Manual",
+    "English"
+  ],
+  "revision_date": "December 2022",
+  "manual_code": "TESE000015-11-ENG"
+}

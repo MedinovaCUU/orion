@@ -1,0 +1,47 @@
+Manual usuario 
+ 
+ 
+ 
+Manual usuario 
+ 
+ 
+ 
+90
+90
+Biosystems
+Biosystems
+ 
+Nivel 
+Introduzca el nivel que tendrá el usuario: supervisor o operador. El nivel de 
+supervisor únicamente se puede crear cuando se ha accedido como usuario 
+administrador.
+ 
+Nombre 
+Nombre del usuario.
+ 
+Apellido 
+Apellido del usuario.
+ 
+Contraseña 
+Introduzca una contraseña 
+ 
+Confirmación contraseña 
+Introduzca otra vez la misma contraseña para asegurar que se ha introducido 
+correctamente.
+10.2.9. Cambio de usuario
+Pantalla que permite realizar el cambio de usuario dentro de la aplicación sin tener 
+que salir y volver a entrar.
+10.2.10. 
+Mantenimiento tipos de muestra
+Pantalla que permite la personalización de los nombres de los tipos de muestras.
+Permite modificar tanto el código del tipo de muestra como la descripción.
+Tiene hasta 30 tipos de muestra diferentes que puede configurar según sus nece­
+sidades.
+Ilustración 53 
+Pantalla de mantenimiento de los tipos de muestra
+10.3. Programación
+Desde este menú se accede a las diferentes opciones para programar los paráme­
+tros necesarios para realizar las medidas de concentración con el analizador. Las 
+diferentes opciones de programación son:
+Parámetros de las técnicas, técnicas calculadas, contaminaciones, perfiles, calibra­
+dores, controles, datos de paciente, técnicas ISE y técnicas externas.

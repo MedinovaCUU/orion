@@ -1,0 +1,37 @@
+Versión del 
+manual 
+Fecha de la revisión
+Modificación
+02
+Abril 2020
+Añadido capítulos: Avisos y advertencias licencia
+Modificados los capítulos: 3, 5.2.7, 6, 7, AII, AIII, AV, 
+AVI
+01
+Noviembre 2017
+Modificación capítulo 1.4, 4.2.3.4, 4.2.7 y AV
+00
+Mayo 2017
+Modificación para el modelo con nevera
+ 
+Código manual TESE000015-02-ESP
+ 
+Dirección del fabricante 
+BIOSYSTEMS
+ 
+ 
+c/Costa Brava 30, 
+ 
+ 
+08030 Barcelona
+ 
+ 
+SPAIN
+ 
+ 
+http://www.biosystems.es
+ 
+ 
+El analizador A15/A15C cumple con la directiva 98/79/CE de la Unión Europea
+El analizador Y15/Y15C cumple con la directiva de seguridad eléctica 2014/35/EU 
+y la directiva de compatibilidad electromagnética 2014/30/EU de la Unión Europea.

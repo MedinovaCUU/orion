@@ -1,0 +1,28 @@
+102
+Manual de servicio
+con esta pantalla se configura la aplicación con el funcionamiento con contraseñas.
+La primera vez que se activa el programa obliga al usuario cambiar la contraseña inicial.
+Se pueden crear tres tipos de usuario con diferentes niveles de acceso:
+• Operador, es el usuario con menor nivel de acceso a la aplicación. Sólo puede realizar sesiones de trabajo, 
+informes de resultados actuales e históricos, y validar resultados de control de calidad. En las pantallas de 
+programación de técnicas y contaminaciones, puede consultar valores de programación pero no puede modificar 
+ningún parámetro. No puede borrar resultados ni alarmas. Este usuario tiene acceso total a la programación 
+de racks y perfiles y a la configuración del analizador (excepto cambios de filtros). Puede cambiar su propia 
+contraseña.
+• Supervisor, es el usuario con un nivel medio de acceso. Este usuario tiene los mismos privilegios que el 
+usuario operador y además tienen permisos para modificar la programación de técnicas en los parámetros de 
+calibración y los valores de los controles. Puede crear un número restringido de técnicas nuevas, definido en 
+el momento de crear dicho usuario y que por defecto son 5. También puede modificar la programación de las 
+contaminaciones y cambiar los filtros del analizador. Puede cambiar su propia contraseña.
+• Administrador, es el usuario con acceso total a las funciones del analizador. Puede crear nuevos usuarios, 
+tanto a nivel supervisor como operador, eliminar o modificar usuarios. En el momento de crear usuarios su-
+pervisor tiene que indicar el número máximo de técnicas nuevas que pueda crear. Puede activar o desactivar 
+Trabajar Sin Contraseñas (opción dentro del menu Configuración). También puede activar/desactivar el trabajar 
+sin la detección de tapas, esta opción sirve para que el servicio técnico pueda realizar comprobaciones sin 
+nececesidad de tener la tapa bajada. Esta opción únicamente se activa cuando hay activas las contraseñas.
+Cuando se crean usuarios se limita el acceso a diferentes partes del programa. Al arrancar el programa se 
+pide una identificación del usuario, mediante el nombre del usuario y una contraseña, y el programa automá-
+ticamente restringirá las diferentes partes del programa en función del nivel de acceso a que tenga permiso. 
+Siempre que se quiera, se pude cambiar el usuario mediante la opción de Cambio de usuario del menú Usuarios.
+también se permite suprimir usuarios ya creados. Cada usuario tiene la capacidad de poder cambiar su con-
+traseña. Todas estas opciones se puede acceder desde el menú de usuarios.

@@ -1,0 +1,74 @@
+Manual usuario 
+ 
+ 
+ 
+Manual usuario 
+ 
+ 
+ 
+200
+200
+Biosystems
+Biosystems
+Reactivos refrigerados
+Sí
+Margen de temperatura de la nevera
+6 °C a 11 °C (a temperatura 
+ambiente de 21 °C)
+Detector de código de barras
+Sí
+Brazos de reactivos 
+2 (R1, R2)
+Volumen de reactivos R1
+120 mL a 450 mL
+Volumen de reactivos R2
+10 mL a 300 mL
+Tipo de jeringa de la bomba de reactivos
+Pistón cerámico de bajo 
+mantenimiento
+Diámetro del pistón
+8 mm
+Resolución del dosificado
+1 mL
+Detección de nivel
+Sí
+Lavado de la punta
+Interior y exterior
+Detector de colisión vertical
+Sí
+Punta termostatada
+Sí
+14.4. Rotor reacciones
+Volumen de reacción mínimo
+180 mL
+Volumen de reacción máximo
+600 mL
+Número de cubetas
+120
+Material cubetas
+Metacrilato UV
+Tipo de incubación
+Seca
+Tiempo dispensación del 2º reactivo
+5 min (fijo)
+Temperatura cubeta reacción
+37 °C
+Veracidad de la temperatura
+±0,2 °C
+Estabilidad de la temperatura
+±0,1 °C
+Agitadores
+2
+14.5. Sistema lavado cubetas
+Número de puntas del sistema de lavado
+7
+Número de puntas con solución de lavado
+2
+Aclarados con agua
+3
+Secados
+2
+Volumen de lavado por punta
+711 mL
+Consumo de la solución de lavado
+1.42 mL/ciclo

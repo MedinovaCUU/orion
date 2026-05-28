@@ -1,0 +1,27 @@
+10
+11
+Ilustración 8.50 
+Cambio conjunto manifold predosificado
+Herramientas: 1 llaves allen de 2.5
+Desmontaje:
+1. Quite la brida que sujeta los tubos y desconéctelos. 
+1. Quite los 2 tornillos (10)
+2. Quite las bridas que sujetan los tubos de las bombas al manifold predosificado. Gire el conjunto y quite los tor­
+nillos (11) que sujetan cada bomba.
+Montaje:
+1. Cambie el manifold de predosificado.
+2. Atornille las bombas y conecte los tubos de las bombas al manifold.
+3. Atornille el conjunto a la chapa de fluídica con el tornillo (10)
+4. Conecte los tubos, bridas y cables.
+5. Verifique el funcionamiento con el programa de servicio de las electroválvulas del manifold y de las bombas.
+8.10.7. AC16581 - Bomba de membrana de dispensación / AC16582 - Bomba de aspiración
+Herramientas: 1 llaves allen de 2.5
+Desmontaje:
+1. Seleccione la bomba a sustituir.
+2. Quite la brida (13) que sujeta los tubos y desconéctelos. 
+3. Quite los 2 tornillos (14) que sujetan la bomba.
+Montaje:
+1. Sustituya la bomba.
+2. Coloque el aislante (12) y la nueva bomba. Sujételo con los 2 tornillos (14).
+3. Conecte los tubos, bridas (13) y cables.
+195

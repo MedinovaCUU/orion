@@ -1,0 +1,22 @@
+3
+1
+2
+4
+Ilustración 8.9 
+Desmontaje bandeja superior
+8.2. 
+Desmontaje brazo muestra, reactivos y agitadores
+1
+Ilustración 8.10 
+Desmontaje brazo
+1. Quite la tapa superior.
+ 
+) Véase capítulo 8.1.6
+2. Quite la tapa trasera, para poder acceder al cableado interior.
+ 
+) Véase capítulo 8.1.1
+3. Quite las bridas que sujetan los cables y tubos que salen por la parte inferior del brazo que quiera desmontar.
+4. Quite los 3 tornillos (1) que sujetan el conjunto brazo. Utilice un destornillador con alargo para acceder a los 
+tornillos.
+Manual de servicio
+154

@@ -1,0 +1,60 @@
+59
+59
+1. Recoja la muestra por punción venosa en un tubo sin tratar. Llene el tubo al 
+menos hasta 2/3 del volumen total.
+2. Deje reposar la sangre durante 20-30 min para permitir la formación del 
+coágulo.
+3. Centrifugue el tubo durante 10-15 min, o siga las instrucciones del fabricante 
+del tubo primario.
+ 
+NOTE
+ 
+Para obtener resultados precisos, las muestras deben estar libres de cualquier 
+coágulo, fibrina, etc, lo que podría obstruir la punta de muestras o el canal del 
+lector del módulo ISE. También verifique que el suero está libre de burbujas.
+Si utiliza un tubo con gel separador de suero, verifique que tenga suficiente volu­
+men de suero para evitar la inserción de la punta de dosificación en la capa de gel. 
+Esto puede obstruir la punta.
+Evite en todos los casos posicionar muestras extremedamente lipémicas y/o he­
+molizadas
+ 
+Tubos primarios de plasma 
+Para aquellos laboratorios donde el factor tiempo es primordial, deben utilizar 
+plasma en vez de suero. Proceda con la fase preanalítca de las muestras con tubo 
+de plasma de la siguiente manera:
+1. Recoja la muestra por punción venosa en un tubo de recogida de sangre con 
+algún anticoagulante. El anticoagulante utilizado debe ser compatible con las 
+determinaciones que se desean realizar.
+Si con esta muestra quiere medir determinaciones ISE debe usar como 
+anticoagulante heparina de sodio. El nivel de heparina no debe exceder de 
+15 UI/ml de volumen del tubo. No utilice heparina de amonio, heparina de 
+litio, EDTA, ni tubos NaF.
+2. Mezcle la muestra invirtiendo el tubo varias veces. No lo agite.
+3. Centrifugue la muestra durnate 10-15 min dentro de la hora de la recolec­
+ción. Retire con cuidado la capa de plasma superior para el análisis. Utilice 
+una pipeta Pasteur o una jeringa equipada con una aguja de punta roma para 
+este procedimiento. Asegúrese que la fase celular ha quedado bien separada 
+de la fase acuosa.
+También puede seguir las instrucciones del fabricante del tubo de plasma para la 
+fase preanalítica.
+ 
+Dilución de orinas para ISE 
+Cuando se quiera realizar determinaciones de ISE en orina, la orina se tiene que 
+diluir. Realice la dilución manualmente fuera del analizador con un factor de 
+dilución 1/10 con el diluyente código 5412 o 5408. 
+• 
+El analizador utiliza 200 µL para realizar una determinación de ISE en orina. 
+Prepare una cantidad superior de orina diluida.
+• 
+Coja una parte de orina y pipetéela en un tubo primario o vial pediátrico
+• 
+Coja nueve partes del diluyente de orina (lo encontrará en la caja de accesorios 
+del módulo ISE) y dispénselos en el mismo tubo primario de la orina.
+• 
+Mézclelo y posiciónelo en el rotor de muestras. 
+ 
+Solución de lavado para ISE 
+Cada día que realice determinaciones con ISE tiene que realizar una limpieza 
+del módulo para desproteinizar el canal fluídico. Se recomienda realizar dicha 
+limpieza al finalizar el día.
+NOTE

@@ -1,0 +1,20 @@
+141
+4
+3
+5
+Figure 6.38 
+6.4.4. 
+AC13304 - Rotor centering device
+Disassembly
+1. Take out the fridge cover and the front cover
+2. Loosen the stud (6) that holds the rotor centering
+3. Stretch out the centering device
+Mounting
+1. Replace rotor centering device
+2. Replace the grub screw (6) with new one
+3. Place the rotor centering unit aligned with the notch (7) on the shaft
+4. Tighten the grub screw (6)
+5. Readjust positioning of dispensing and optical reading
+7
+6
+Figure 6.39

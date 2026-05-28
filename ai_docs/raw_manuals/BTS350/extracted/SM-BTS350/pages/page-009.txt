@@ -1,0 +1,49 @@
+—  9  —
+2.1.3. - Physical description
+The optical system (see Figure 2.2) is comprised of a plastic-injected support (1) upon which all the components are 
+mounted: interferential filters (2), light beamsplitters (3), lenses (4) and mirror (5). The interferential filters are placed 
+inside a series of capsules and these are screwed to the optical bench support. Electronic components of the optical system: 
+the LEDs (6) and photodiodes (7) are welded directly to the electronic board. The whole optical bench is also mounted 
+on the electronic board, with the positions of the LEADs and photodiodes coinciding with those of the optical bench. 
+The optical bench support holds the cuvette holder (8), into which the flow cuvettes or macro cuvettes are inserted from 
+outside. The cuvette holder is comprised of a metal part to facilitate the thermostatation of the flow cuvette.
+2.1.4. - Adjustment
+The optical system and A/D converter unit is linear, meaning it is not necessary to make any adjustments for absorbances. It 
+is only necessary to adjust the integration times for each wavelength and the currents entering each LED. This adjustment 
+serves to optimise the quantity of light that reaches both photodiodes. The objective is to have enough light to measure 
+up to 3 absorbances without saturating either of the photodiodes. This adjustment is controlled by the A/D converter 
+integration time and the current passing through the LED. See section 3.2.2. - Photometric parameters for the purpose 
+of making this adjustment. 
+2.2. - Suctioning system
+2.2.1. - Elements comprising it
+In Figure 2.3 is a diagram showing the 
+suctioning system, which consists of 
+the following elements:
+• 
+One aspiration tube (1).
+• 
+One continuous flow cuvette (2).
+• 
+One peristaltic pump (3).
+• 
+One waste bottle (4).
+2.2.2. - Description of the system
+The sample is suctioned through the aspiration tube (1). This tube, made of Teflon, has a predefined length for which the 
+instrument is adjusted. The suctioned sample passes to the cuvette (2) where the readings are taken. The aspiration process 
+is executed with a peristaltic pump (3) formed by a silicone-dispensing tube and a rotor with four rollers, operated by a 
+stepper motor with a resolution of 200 steps per revolution. The sample finally passes through the pump towards the waste 
+bottle (4) where it is discarded.
+Figure 2.2 
+1
+2
+3
+4
+Figure 2.3 
+1
+2
+3
+4
+5
+6
+7
+8

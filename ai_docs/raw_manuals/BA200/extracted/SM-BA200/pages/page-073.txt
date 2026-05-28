@@ -1,0 +1,86 @@
+Manual de servicio
+73
+Conector
+Función
+Pin
+CN23
+Electroválvula E2F
+Pin 1: 24 V
+Pin 2: Señal activación
+CN24
+Electroválvula E3F
+Pin 1: 24 V
+Pin 2: Señal activación
+CN26
+Motor bomba de dispensación estación de 
+lavado
+Pin 1: Coil 1
+Pin 2: Coil 1
+Pin 3: Coil 2
+Pin 4: Coil 2
+CN27
+Detección inicio bomba dispensación de la 
+estación de lavado
+Pin 1: Detección
+Pin 2: GND
+Pin 3: 5V
+CN28
+Termostato de la termostatización del agua de 
+la estación de lavado
+Pin 1: salida 1
+Pin 2: GND
+CN29
+Activación bomba B2M
+Pin 1: 24 V
+Pin 2: Señal activación
+CN30
+Activación bomba B1M
+Pin 1: 24 V
+Pin 2: Señal activación
+CN31
+Activación electroválvula EV1M
+Pin 1: 24 V
+Pin 2: Señal activación
+CN32
+Activación electroválvula EV4M
+Pin 1: 24 V
+Pin 2: Señal activación
+CN33
+Activación electroválvula EV3M
+Pin 1: 24 V
+Pin 2: Señal activación
+CN38
+Activación electroválvula EV2M
+Pin 1: 24 V
+Pin 2: Señal activación
+CN34
+Motor dispensación bomba R-M
+Pin 1: Coil 1
+Pin 2: Coil 1
+Pin 3: Coil 2
+Pin 4: Coil 2
+CN35
+Detección inicio R-M
+Pin 1: Detección
+Pin 2: GND
+Pin 3: 5V
+CN36
+Sensor presión
+Pin 1: 5 V
+Pin 2: Sensor
+Pin 3: GND
+CN37
+Alimentación LED manifold
+Pin 1: 24 V
+Pin 2: GND
+CN40
+Alimentación ventilador driver
+Pin 1: 5V
+Pin 2: Diagnóstico 
+ventilador
+Pin 3: Activación 
+ventilador
+CN43
+Alimentación desgasificador
+Pin 1: 24 V
+Pin 2: GND

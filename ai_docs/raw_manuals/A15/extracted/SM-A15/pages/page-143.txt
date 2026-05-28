@@ -1,0 +1,57 @@
+Manual de servicio
+144
+7.2.6. Proceso de verificación del analizador
+Este es un proceso estándar para verificar el funcionamiento correcto del instrumento después de realizar 
+una intervención.
+Este proceso se puede aplicar a las siguientes operaciones:
+• 
+Recepción de instrumentos (en la oficina, antes de la instalación)
+• 
+Mantenimiento
+• 
+Después de una reparación
+El objetivo es estandarizar el proceso de verificación y los criterios de aceptación.
+El tiempo de duración del proceso es: 1,5 horas.
+7.2.6.1. Material necesario
+Use reactivos y controles de Biosystems o códigos equivalentes, use siempre nuevos calibradores y con-
+troles reconstituidos.
+Modelo
+A15 / A25
+Código
+Descripción
+21503/23503 
+Glucosa 50 ml
+21531/23531 
+AST-GOT 50 + 20mL
+21518/23518 
+Fósforo 50 + 20mL
+18011/18044 
+Calibrador bovino / humano 5 ml
+18009/18043 
+Suero de control bovino / humano I 5 ml
+18010/18042 
+Suero de control bovino / humano II 5 ml
+Pipeta de 100-1000 µm (calibrada)
+Puntas de pipeta desechables
+Agua destilada tipo II
+Modelo
+Y15 / Y25
+Código
+Descripción
+12800
+D-Glucose-D-Fructose 50 ml
+12810
+Acido Acetico
+12877
+Glycerol
+12807
+PAN
+Cada kit incorpora su calibrador
+12818 Nivel 2
+Multical
+12818 Nivel 4
+Multical
+Pipeta de 100-1000 µm (calibrada)
+Puntas de pipeta desechables
+Agua destilada tipo II
+Use una plantilla de Excel para hacer todo el cálculo de los resultados:

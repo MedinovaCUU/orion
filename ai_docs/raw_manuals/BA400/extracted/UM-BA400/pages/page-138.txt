@@ -1,0 +1,43 @@
+Manual usuario 
+ 
+ 
+ 
+Manual usuario 
+ 
+ 
+ 
+138
+138
+Biosystems
+Biosystems
+• 
+Posible solución
+Las alarmas se ordenan por fecha y hora de llegada, pero se pueden ordenar por 
+cualquier otro criterio. Pulse en la cabecera de la columna por la cual se quiera 
+ordenar. En la primera pulsación se ordenará por orden creciente, en la segunda 
+pulsación se ordenará por orden decreciente.
+10.7. Resultados
+Opción del menú principal para acceder a la pantalla de resultados de la sesión 
+actual (acabado o en curso).
+Ilustración 93 
+Pantalla resultados
+A la izquierda aparece la lista de pacientes y técnicas realizadas en la sesión (sepa­
+radas en dos pestañas). Permite visualizar todos los resultados de cada paciente o 
+todos los resultados de cada técnica. Seleccione un elemento de la lista para ver 
+los resultados en las tablas de la derecha.
+ 
+ 
+En la parte superior de la lista hay un campo que permiten realizar búsquedas 
+rápidas. Introduzca el texto a buscar y pulse el icono para ejecutar la búsqueda. 
+Se mostrarán todos los pacientes que contengan el valor introducido.
+ 
+Ordenación 
+La lista de pacientes se puede ordenador por diferentes criterios:
+• 
+Ordenación ascendente
+• 
+Ordenación descendente
+• 
+Ordenación como se ha solicitado en la pantalla de solicitud de muestras
+Seleccione el cabecero de la lista de pacientes y aparecerá una pantalla emergente 
+para poder seleccionar una de las 3 opciones anteriores. Véase Ilustración 94

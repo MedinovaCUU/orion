@@ -1,0 +1,32 @@
+Manual de servicio
+42
+Conector
+Función
+Pins
+J1
+Conexión de la placa 
+CPU(CIIM0026)
+1- GND POWER
+2-12V analógicos
+3- Sensor nivel
+4- Home Z
+5- GND POWER
+6- Termistor
+7- Earth
+8- GND POWER
+9- Resistencias termo
+10- Resistencias termo
+TP1 - Señal punta
+TP2 - Salida preamplificador señal punta
+TP3 - Salida amplificador señal termistor
+TP4 - Termistor
+12V - Tensión 12 V
+5V - Tensión 5V
+AGND - GND
+4.5. Placa fotometría (CIIM00027)
+Se halla en esta placa el corazón dels sistema de medición de absorbancias de las muestras a analizar. 
+Está constituida por un fotodetector y una circuiteria asociada de conversión analógico/digital (DDC112).
+JP1 - puente de soldadura - Soldar únicamente si no estan el oscilador local y la báscula U4 y U5 respec-
+tivamente
+JP2 - puente de soldadura - Igual que JP1
+JP3 - puente de soldadura - une las dos masas analógica y digital

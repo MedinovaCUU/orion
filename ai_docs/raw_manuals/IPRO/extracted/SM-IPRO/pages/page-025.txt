@@ -1,0 +1,20 @@
+25
+3.2.3  Ajuste del lector del código de barras de muestras y reactivos
+En caso de sustituir el lector del código de barras de muestras y reactivos es necesaria la configuración 
+del mismo. Antes se debe instalar el programa de control del lector.
+Instrucciones para la instalación del programa de control del código de barras:
+Acceder a la página principal de Leuze (https://www.leuze.com). Navegar hasta la página del producto 
+BCL 148 V 340 B - Stationary bar code reader.
+En el apartado Downloads descargar el siguiente software:
+Descomprimir las dos carpetas para proceder a la instalación. Instalar primero el Sensor Studio. Para 
+realizar la configuración y verificación del lector seguir las siguientes instrucciones:
+El preparador iPRO sólo cuenta con un único puerto de comunicaciones en el que se multiplexan todos 
+los canales de comunicaciones. En el momento de conectar el preparador, el operario puede comprobar 
+en el administrador de dispositivos de Windows que se generan 4 puertos COM. El lector de código de 
+barras de muestras y reactivos normalmente estara conectado al tercer puerto asignado al instrumento.
+Configuración
+1. Abrir el programa de control del código de barras SENSOR STUDIO instalado previamente y 
+seleccionar la opción de “Abrir un proyecto ya guardado” tal y como indica la siguiente figura. 
+Seleccionar el fichero iPRO.fdx.
+2. Pulsar al botón de conectar 
+3. Seleccionar el puerto COM correspondiente.

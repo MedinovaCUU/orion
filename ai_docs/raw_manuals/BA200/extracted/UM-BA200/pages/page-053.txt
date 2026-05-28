@@ -1,0 +1,38 @@
+53
+53
+4.12.3.11. Configuración de un sistema VPN
+Para aquellos sistemas que sea necesario la privacidad de los datos durante las 
+comunicaciones con el host utilice acitve en el sistema windows el VPN (Virtual 
+Private Network) para realizar las comunicaciones encriptadas con el host.
+Siga los pasos siguientes:
+• 
+Seleccione Todas las configuraciones
+• 
+Seleccione Red e internet
+• 
+Seleccione VPN
+• 
+Seleccione Agregar una conexión VPN y configure las opciones de la configu­
+ración según los datos del administrador de sistemas o del proveedor de VPN.
+4.13. Instalación del módulo ISE (Opcional)
+1
+2
+3
+Ilustración 29 
+Orden de colocación de los diferentes electrodos
+ 
+Instalación de los electrodos Una vez abierta la tapa frontal, se accede directamente al módulo ISE. Ver Ilus­
+tración 29. 
+1. Apague la alimentación del módulo ISE con el interruptor.
+2. Desenrosque con la mano los dos tornillos (1), y retire la tapa (2) para acceder 
+al compartimento para la colocación de los electrodos.
+3. Desembale cada uno de los electrodos. Asegúrese que tiene el anillo sellador 
+(O-ring) colocado. Seque con cuidado los restos de líquido.
+4. Primero coloque el electrodo de referencia. Retire el hilo identificado con una 
+etire el hilo identificado con una 
+etiqueta que está insertado en el canal de circulación del electrodo. Verifique 
+etiqueta que está insertado en el canal de circulación del electrodo. Verifique 
+que no hay restos de sales en el canal. Guarde el hilo con la etiqueta por si 
+que no hay restos de sales en el canal. Guarde el hilo con la etiqueta por si 
+quiere desinstalar el electrodo. 
+quiere desinstalar el electrodo.

@@ -1,0 +1,61 @@
+Manual de servicio
+150
+Autoajuste de posición
+SISTEMA DE TERMOSTATIZACIÓN DE LA PUNTA
+Actuador
+Elementos resistivos
+Control
+PID
+Temperatura de dispensación
+37 °C
+Repetibilidad
+± 0.5 °C
+BOMBA DOSIFICADORA
+Pistón cerámico con retén de PTFE-grafito
+Diámetro del pistón
+8 mm
+Volumen de dispensación
+3 µL - 1250 µL
+Volumen de reactivo programable
+10 µL - 440 µL
+Volumen de muestra programable
+3 µL - 40 µL
+SISTEMA DE LAVADO DE LA PUNTA
+Consumo de líquido de sistema
+aprox. 2.4 mL por preparación
+Volumen del contenedor de líquido de sistema
+3000 mL
+Volumen del contenedor de residuos
+3000 mL
+Control de nivel de agua y residuos capacitivo
+ROTOR DE REACCIONES Y LECTURA
+ROTOR DE POCILLOS
+Rotor extraible de metacrilato semidesechable
+Número de pocillos
+120
+Volumenes de reacción admitidos
+180 µL - 800 µL 
+Longitud de paso de luz
+6 mm
+SISTEMA DE TERMOSTATIZACIÓN DEL ROTOR
+Actuadores
+4 celdas Peltier
+Control 
+PID
+Temperatura de trabajo
+37 °C
+Veracidad
+± 0.2 °C
+Estabilidad
+± 0.1 °C
+SISTEMA ÓPTICO
+Lámpara halógena 
+6 V, 10 W
+Selección de longitud de onda con filtros 
+interferenciales compensados
+Sistema de detección con fotodiodo de silicio e 
+integrador-conversor AD de 20 bits
+Rango de medida
+de -0.05 A hasta 3.0 A 
+Velocidad de lectura
+1.25 lecturas/s

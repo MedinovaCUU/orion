@@ -1,0 +1,50 @@
+Manual usuario 
+ 
+ 
+ 
+Manual usuario 
+ 
+ 
+ 
+192
+192
+Biosystems
+Biosystems
+3. Utilice lejía comercial. Verifique que tenga una concentración de hipoclorito 
+sódico entre un 5 % y 6 %.
+4. Rellene una jeringa con 5 mL de lejía y conéctela en el conector en forma de 
+L retirado previamente.
+5. Impulse despacio la jeringa para rellenar el tubo de residuos con la lejía. Deje 
+actuar durante 6 minutos la lejía en el interior del tubo. 
+6. Saque la jeringa del conector en L y rellénela con agua destilada.
+7. Vuelva a introducir la jeringa en el conector en L para enjuagar el circuito de 
+residuos.
+8. Saque la jeringa del conector en L y enchufe el conector en L al módulo. 
+9. Vuleva a introducir el tubo de residuos en la bomba peristáltica.
+10. Realice un par de cebados de CAL A.
+13.3. Mantenimiento
+13.3.1. Cambio del rotor de reacciones
+El analizador automáticamente realiza una lectura óptica antes de usar cada 
+cubeta del rotor para determinar su estado. Si la lectura sobrepasa unos niveles 
+determinados se descarta la cubeta y no se utiliza. El programa avisa de las cubetas 
+descartadas. Si repetidamente aparecen varias cubetas descartadas se aconseja el 
+cambio del rotor de reacciones. 
+ 
+NOTE
+NOTE
+ 
+Se aconseja como mínimo cambiar cada semana el rotor de reacciones.
+Pasos a seguir para el cambio del rotor
+1. Ir al menú de utilidades y ejecutar la opción de cambio de rotor. Pulse el botón 
+de elevar la estación de lavado para poder retirar la tapa del rotor.
+2. Quite la tapa del rotor de reacciones. Vaya con cuidado en no tocar con la 
+tapa las puntas de la estación de lavado.
+3. Desenrosque el tornillo central que sujeta el rotor.
+4. Quite el rotor. Manipúlelo con guantes y protección.
+5. Trate el rotor como material con riesgo biológico.
+6. Coja un nuevo rotor de la caja de accesorios.
+7. Inserte el rotor en su alojamiento.
+8. Enrosque el tornillo hasta el final.
+9. Ponga la tapa del rotor de reacciones.
+10. Pulse de botón de finalizar en la opción de cambio de rotor del programa de 
+usuario.

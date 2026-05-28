@@ -1,0 +1,48 @@
+Manual usuario 
+ 
+ 
+ 
+Manual usuario 
+ 
+ 
+ 
+74
+74
+Biosystems
+Biosystems
+Icono
+Nombre
+Descripción 
+Abortar sesión
+Botón para abortar o parar la sesión de 
+trabajo sin posibilidad de continuarla. 
+Recomendado únicamente cuando no se 
+desea continuar la sesión o hay problemas 
+que impidan su ejecución
+Tabla 5 Descripción de los botones de acciones
+10. Procedimiento de trabajo
+10.1. Arranque del programa
+ 
+ 
+Para iniciar el programa, haga doble clic sobre el icono que encontrará en el 
+escritorio.
+Al iniciar el programa aparece una pantalla de bienvenida y a continuación una 
+pantalla de identificación del usuario (introduzca el nombre del usuario y la con­
+traseña)
+Ilustración 41 
+Pantalla inicial
+La primera vez que se inicia el programa el nombre de usuario y contraseña que 
+se tienen que introducir son:
+Parámetro
+Valor
+Nombre usuario
+Admin
+Contraseña
+BA400
+Tabla 6 Nombre y contraseña inicial
+ 
+ 
+Al hacer clic en el icono se accede a modificar la contraseña. Desde la pantalla 
+inicial sólo se permite modificar la contraseña del usuario introducido.
+En la Ilustración 42 se muestra la pantalla para modificar la contraseña. Introduzca 
+los diferentes valores requeridos para realizar el cambio de contraseña.

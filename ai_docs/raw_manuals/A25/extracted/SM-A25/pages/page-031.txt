@@ -1,0 +1,23 @@
+31
+3.2.3.1.  Container level control scales
+The analyzer has two scales to control the level of the distilled water and waste containers by weight. Each of these 
+scales has a load cell (1) as a weighing component. One of the ends of the cell is fastened to the base of the instru­
+ment. The support of the base (2) is screwed to the other free end. The base (3) is the stainless steel board on which 
+the containers stand. The base of the analyzer has 4 adjustable maximums (4) for regulating the maximum allowed 
+deformation of the load cell. The maximums prevent the cells from deteriorating if the user puts the containers on the 
+scales in a brusque manner.
+1
+2
+3
+Figure 3.11 
+1 – Load cell
+2 – Base support
+3 – Base
+4 – Adjustable maximums
+Reference Figure 3.11
+3.2.3.2.  Racks tray with integrated washing station
+The plastic injection tray (1) is fastened directly to the base of the instrument. In the centre is the stainless steel was­
+hing station (2), covered by the lid (3). The sheeting (4) enables the detection of the level of the dispensing needle. 
+The electronic board (5) detects the rack type placed in each of the 6 positions of the tray. The PVC tube (6) connects 
+the washing station to the flow volume limiter of the washing pump. The PVC tube (7) connects the washing station 
+drain to the waste extraction pump.

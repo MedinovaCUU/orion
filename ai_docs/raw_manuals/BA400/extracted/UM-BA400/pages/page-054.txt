@@ -1,0 +1,79 @@
+Manual usuario 
+ 
+ 
+ 
+Manual usuario 
+ 
+ 
+ 
+54
+54
+Biosystems
+Biosystems
+Paso
+Acción 
+Repeti­
+ciones 
+Descripción
+1
+Inicializar 
+Módulo 
+ISE
+1
+2
+Activar kit 
+de reactivos
+1
+Si no se activa el icono de ejecución al 
+seleccionar esta opción, verifique que se trata 
+de un kit nuevo. Si el kit ya se ha activado con 
+anterioridad esta opción no estará disponible, 
+sin embargo podrá efectuar una lectura con la 
+opción Leer Kit de reactivos. Si este es el caso, 
+salte a la siguiente instrucción. Si se trata de 
+un nuevo kit, compruebe que el conector está 
+colocado correctamente, sepárelo de nuevo y 
+vuélvalo a conectar. 
+3
+Leer kit de 
+reactivos
+1
+4
+Cebar B
+9
+Saque la tapa inferior del brazo de muestras, 
+le permitirá observar la copa de dispensación. 
+Observe la copa y verifique que el vaciado es 
+efectivo, es decir, que cada vez que las bombas 
+del módulo dispensan líquido en la copa, esta 
+se vacía antes de la siguiente dispensación. 
+Si las bombas no dispensan líquido, vuelva 
+a ejecutar la acción anterior. Si después de 
+repetir varias veces no observa dispensación 
+de líquido desconecte y vuelva a conectar el 
+adaptador del kit y repita la acción. 
+5
+Cebar A
+9
+Proceda de igual manera que en el paso 
+anterior
+6
+Fecha ins­
+talación de 
+los tubos
+1
+7
+Calibrar 
+bombas
+1
+Si no obtiene un resultado satisfactorio 
+compruebe la correcta instalación de los tubos 
+y ejecute las acciones desde el paso 4.
+8
+Activar 
+electrodos
+1
+Indique la fecha de instalación. Si alguno 
+de los electrodos no es nuevo, vuelva a 
+registrarlos con la fecha de instalación 
+original.

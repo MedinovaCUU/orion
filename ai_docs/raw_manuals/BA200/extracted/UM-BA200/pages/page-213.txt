@@ -1,0 +1,47 @@
+213
+213
+
+
+
+ 
+
+
+
+
+ 
+
+
+ 
+!
+Ilustración 129 
+ Representación del método de cálculo cinética
+El cálculo de la absorbancia es la siguiente:
+A=[
+ABS
+min ]
+principal
+ 
+(7)
+15.3. Cálculo de concentraciones
+Para determinar la concentración del analito de una muestra, es necesario calcular 
+su absorbancia según algún modo de análisis descrito anteriormente y utilizar una 
+función de calibración.
+ 
+La función de calibración 
+Relaciona los valores calculados de la absorbancia, con las concentraciones de 
+analitos de muestras conocidas, esta relación puede ser lineal o no lineal.
+Para calcular la función de calibración se miden una o varias muestras con una 
+concentración conocida de analito y se obtiene una curva de calibración. Ver Ilus­
+tración 130 y Ilustración 131. En el caso de que la relación sea lineal se mide 
+únicamente un calibrador y se calcula la recta de calibración. Si la relación es no 
+lineal serán necesarios varios calibradores y se calculará con un procedimiento de 
+regresión la curva de calibración. También se mide el blanco que será la señal me­
+dida por el analizador en ausencia de analito. En la curva de calibración el blanco 
+corresponderá al punto de concentración igual a cero.
+ 
+Blanco 
+El blanco es la absorbancia en ausencia de analito. Se mide empleando una 
+muestra que no contiene analito. Generalmente se usa agua purificada como 
+muestra aunque también se puede utilizar solución salina. Para medir correcta­
+mente la absorbancia del blanco de reactivo es necesario seguir el mismo modo 
+de análisis que el utilizado con las muestras.

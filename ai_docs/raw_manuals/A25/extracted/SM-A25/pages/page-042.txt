@@ -1,0 +1,35 @@
+42
+Service manual
+1
+2
+3
+4
+5
+6
+8
+10
+11
+7
+9
+Figure 3.23 
+1 – Cast aluminium base
+2 – Cable guide channel
+3 – Needle verification bracket
+4 – Auxiliary devices conduit cover
+5 – Fastening for auxiliary devices
+6 – Clamp support
+7 – X carriage chain terminal
+8 – Fan grill
+9 – Front cover of the electronics
+10 – Microprocessor board
+11 – Power supply board
+12 – Front indicator board
+13 – Adjustable leg
+14 – Legs
+Reference Figure 3.23
+3.2.10.  Housing
+The front housing (1) is screwed to the base and can be removed very easily without the need for removing any other 
+analyzer component. The rear housing (2) is also screwed to the base. The main cover (3) is screwed to the hinges. 
+The methacrylate (4) makes it possible to observe the functioning of the analyzer with the cover closed. The housing 
+(5) covers the Y carriage and the Z carriage of the analyzer. The cover (6) gives access to the optical system, making 
+it possible to change the lamp and filters with ease. The cover (7) covers the reactions rotor and readings.

@@ -1,0 +1,66 @@
+Manual usuario 
+ 
+ 
+ 
+Manual usuario 
+ 
+ 
+ 
+56
+56
+Biosystems
+Biosystems
+16. Ejecute la utilidad de cambio de rotor.
+17. En caso de disponer de módulo ISE, realice la instalación de los electrodos y 
+kit de reactivos.
+18. Rellene los campos de las concentraciones de los calibradores y controles de 
+aquellas técnicas que va a utilizar.
+19. Realice una lista de blancos, calibradores y controles.
+4.15. Precauciones durante el funcionamiento
+• 
+En aquellos analizadores que tengan instalado el módulo ISE, no apague nunca 
+el interruptor del módulo. Periódicamente y de manera automática el módulo 
+realiza un ciclo de mantenimiento. Cuando quiera apagar el módulo ISE siga 
+los pasos indicados en el capítulo 13.3.2.4 Para mantener los reactivos refrige­
+rados con el analizador apagado, deje el interruptor de la nevera en posición 
+de encendido para que la nevera refrigere.
+• 
+Cuando el analizador esté en funcionamiento no abra la tapa principal sin 
+pulsar previamente el botón de Parada. En caso de que se abra la tapa princi­
+pal inesperadamente, el analizador parará cualquier acción que esté en curso, 
+perdiendo las preparaciones iniciadas y que aún no se le haya dispensado la 
+muestra.
+• 
+Asegúrese de que las tapas de muestras, de reactivos y de reacción están colo­
+cadas durante el funcionamiento. El analizador no iniciará ninguna acción si 
+falta alguna de estas tapas.
+• 
+Mantenga la superficie de trabajo del analizador libre de obstáculos que puedan 
+ser causa de colisión para los brazos de preparación o agitación.
+• 
+Coloque correctamente y bien centradas las etiquetas de los códigos de barras 
+en los tubos de muestra. Éstas deben ir bien alineadas a lo largo del tubo. Si 
+la etiqueta tiene un código de barras con pocos dígitos colóquela centrada 
+longitudinalmente evitando posicionarla en la parte superior del tubo. Posi­
+cione el tubo de muestras con la etiqueta del código de barras mirando hacia 
+el exterior del rotor.
+• 
+Tenga la precaución de no duplicar ningún código identificador de tubo de 
+muestra en las etiquetas del código de barras durante una misma sesión. En el 
+caso de que varios tubos de muestras tengan el mismo identificador de código de 
+barras mientras el equipo esté habilitado para trabajar con las comunicaciones 
+con LIS, el analizador no asignará automáticamente ninguna técnica a dichos 
+tubos y mostrará un aviso en pantalla para indicar esta situación. En el caso 
+de funcionamiento manual (sin comunicaciones LIS), el analizador pipeteará 
+primero el tubo que se encuentre en la posición menor del rotor de muestras.
+• 
+Cuando realice una parada de la sesión de trabajo para acceder al rotor de 
+muestras o de reactivos tenga la precaución de no cambiar de posición ningún 
+tubo de muestras o botella de reactivo. 
+• 
+Cuando utilice tubos de muestra de 15 mm de Ø o 15 mL de capacidad, no 
+los rellene con la muestra hasta el borde. Rellénelos como máximo con 14 mL 
+para poder detectar correctamente la muestra.
+NOTE
+NOTE
+NOTE

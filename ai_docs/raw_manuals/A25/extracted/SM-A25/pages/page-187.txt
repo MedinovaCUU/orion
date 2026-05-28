@@ -1,0 +1,20 @@
+187
+List of spare parts
+Code
+Representation 
+Description
+AC15615
+Refrigerator set
+MO13363
+AC16594
+Motor dosing pump + piston
+ME13359
+Dosing pump without manifold 
+ME14670
+Manifold
+AC11527
+Dosing pump stop
+AC17317
+Manifold tube
+AC14213
+Countershaft Y axis and Z axis

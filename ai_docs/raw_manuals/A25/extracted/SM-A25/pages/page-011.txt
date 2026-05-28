@@ -1,0 +1,64 @@
+11
+Symbol
+Description 
+NOTE
+Safety prevention for technical assistance service personnel
+Wear gloves and protective clothing to manipulate the analyzer.
+Before performing any manipulation, empty the analyzer of 
+biological material: samples, deposits, etc.
+Be cautious when you have to repair analyzer points that have 
+dangerous voltages such as parts related to the power supplies.
+Use caution when handling points that have contact with biological 
+material, such as tips, pipes and fittings where highly contaminated 
+waste flows.
+Be sure to follow the instructions in the manual when you have 
+to replace parts or perform maintenance to ensure the safety of 
+the service personnel as well as the operator once the repair is 
+complete.
+NOTE
+Spare power cables
+If you are going to use a network cable that is not supplied by the 
+manufacturer, make sure that it supports the power of the analyzer, 
+that it is approved and that it complies with the CE regulations.
+NOTE
+Operations after a repair
+After a repair make sure that you have replaced all the disassembled 
+parts following the relevant instructions and that you have carried out 
+the verification tests with the service program.
+NOTE
+Use of consumables
+Before using the consumables (cleaning solutions and system fluids) 
+check the expiration date. If it has expired, remove the product and 
+use a new one with the current expiration date.
+Abbreviations and units shown in the manual
+Abbreviation
+Definition
+∅
+Diameter
+EC
+European Community
+EMC
+Electromagnetic compatibility
+CRTL
+Control key on the computer keyboard
+EN
+European norm
+F
+Fast (fuse type)
+FUS
+Fuse
+IVD
+In Vitro Diagnostics
+LED
+Light-emitting diode
+LIS
+Laboratory information system
+WEEE
+Waste Electrical and Electronic 
+Equipment
+TAS
+Technical assistance service
+SD
+Standard deviation
+ES
+Electrical safety

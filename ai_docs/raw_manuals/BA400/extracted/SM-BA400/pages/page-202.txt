@@ -1,0 +1,33 @@
+Ilustración 8.58 
+Desmontaje del sensor de temperatura
+Herramientas: destornillador, Llave fija del 7
+Desmontaje:
+1. Con un destornillador desenrosque el sensor de temperatura por la parte interna de la nevera (5)
+1. Quite el aislante térmico (6). Estírelo hacía fuera con la ayuda de unos alicates.
+2. Desenrosque el sensor de temperatura (7) con la llave fija.
+3. Desconecte el cable de la placa electrónica.
+Montaje:
+1. Cambie el sensor (7). Ponga silicona térmica en la rosca. Enrósquelo en el agujero del sensor. Apriételo con la 
+llave fija.
+2. Inserte el aislante (6) hasta el final. 
+3. Conecte el cable del sensor.
+8.11.6. AC16626 - Ventilador nevera
+8
+ 
+9
+10
+Ilustración 8.59 
+Desmontaje ventilador nevera antes y después de la modificación
+Herramientas: Llave allen 3
+Desmontaje:
+ 
+) Véase el capítulo AII para saber a partir de que número de serie se ha implementado el cambio del conector aéreo para los ventiladores.
+1. Los analizadores con números de serie anteriores a la modificación, desconecte el cable del ventilador de la placa 
+electrónica y libere el cable de las diferentes bridas que los sujetan.
+2. Los analizadores con números de serie posteriores a la modificación, desconecte el conector aéreo (10) del 
+ventilador.
+3. Quite los 4 tornillos (8) o (9) que sujetan al ventilador.
+Montaje:
+1. Introduzca los 4 tornillos (8) o (9) en el ventilador.
+Manual de servicio
+202

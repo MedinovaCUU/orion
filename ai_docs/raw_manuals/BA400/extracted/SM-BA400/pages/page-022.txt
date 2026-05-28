@@ -1,0 +1,45 @@
+Manual de servicio
+22
+Hay 2 tipos de botella, las que tienen una capacidad de 60 mL y las que tienen una capacidad de 20 mL.
+En la corona externa únicamente se pueden colocar las botellas de 20 mL.
+En la corona interna se pueden colocar tanto las botellas de 60 como las de 20 mL.
+El rotor está refrigerado, la temperatura media en el interior del rotor está por debajo de los 8 °C. La nevera lleva 
+un sistema de alimentación independiente con su propio interruptor para que cuando se apague el analizador la 
+nevera pueda seguir funcionando.
+2.3. Rotor de reacciones
+El rotor de reacciones consiste en un rotor con 120 posiciones y de una tapa. Todo el conjunto está termostatado.
+El rotor es una única pieza de metacrilato con 120 posiciones donde se realizan las reacciones de las mezclas de 
+muestras y reactivos. Durante la reacción se realiza las diferentes lecturas ópticas. El material de metacrilato es 
+transparente a la radiación UV.
+El rotor se mantiene a una temperatura estable de 37°C gracias a un sistema de termostatización basado en peltiers.
+El volumen de la reacción va de 180 µL hasta 600 µL.
+Cada brazo dispensa en una posición diferente del rotor. Las posiciones de dispensación son las siguientes:
+• 
+Ciclo 1: dispensación R1
+• 
+Ciclo 31: dispensación S (Muestra)
+• 
+Ciclo 32: agitación R1+S
+• 
+Ciclo 33: Inicio lecturas fotométricas
+• 
+Ciclo 66: Dispensación R2 y agitación del reactivo 2
+• 
+Ciclo 100: Finalización de las lecturas
+• 
+Ciclo 101 –111: Eliminación de la reacción terminada y limpieza del pocillo en la estación de lavado.
+2.4. Sistema óptico 
+El sistema óptico está ubicado en el rotor de reacción debajo de la estación de lavado. 
+Está formado por un conjunto de leds, de filtros, de divisores de haz (beamsplitters), el rotor de reacción y de dos 
+fotodiodos. 
+Hay el fotodiodo de lectura principal y el fotodiodo de referencia que permite corregir las perturbaciones que se 
+puedan generar en la fuente de luz
+El analizador BA400 dispone de 8 longitudes de onda: 340, 405, 505, 535, 560, 600, 635, 670
+El analizador Y400 dispone de 11 longitudes de onda: 340, 405, 420, 430, 505, 520, 560, 600, 620, 635, 750
+El rango de medida es de -0.2 Abs hasta 3.5 Abs.
+La resolución de la medida es de 0.0001 Abs.
+El sistema automáticamente realiza un blanco de cubeta antes de dispensar el reactivo. Este valor del blanco de 
+absorbancia sirve para corregir los valores de absorbancia medidos en la cubeta. 
+Si este valor supera un límite establecido se descarta la cubeta.
+2.5. Estación de lavado
+La estación de lavado consiste en un conjunto de 7 puntas colocado encima del rotor de reacciones.

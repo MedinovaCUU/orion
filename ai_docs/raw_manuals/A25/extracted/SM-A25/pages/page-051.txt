@@ -1,0 +1,38 @@
+51
+Connector
+Function
+Pins
+J2
+CPU board connection (CIIM00006) for the Peltier
+1 - Peltier
+2 - Peltier
+3 - Chassis
+J3
+Thermistor
+1 - GND
+2 - Thermistor
+J4
+Peltier
+1 - Peltier, red
+2 - Peltier, black
+J5
+Fan
+1 - Fan control
+2 - 12V
+J6
+Needle connection for level detection
+1 - needle
+TP1 - Needle signal
+TP2 - Output preamplifier needle signal
+TP3 - Output amplifier thermistor signal
+TP4 - Thermistor
+12V - 12V voltage
+5V - 5V voltage
+AGND - GND
+4.5. 
+Photometry Board (CIIM00009)
+This board also has the heart of the absorbance measuring system for the samples to be analyzed. It is made up of 
+a photodetector and an associated analogical-digital conversion circuitry (DDC112).
+JP1 - soldering bridge - Solder only if the local oscillator and the U4 and U5 flip-flop, respectively, are not present.
+JP2 - soldering bridge - The same than JP1
+JP3 - soldering bridge - joins together the analogical and digital ground

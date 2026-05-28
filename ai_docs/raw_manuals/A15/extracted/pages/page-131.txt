@@ -1,0 +1,15 @@
+Manual de servicio
+132
+2
+3
+Ilustración 6.36 Desmontaje placa CPU o alimentación DC/DC
+6.5.3. TR13389 - Fuente alimentación principal / AC17324 - Fuente alimentación refrigerador
+Desmontaje:
+1. Abatir la tapa trasera de la electrónica.
+2. Extraer los conectores de entrada y salida aflojando los tornillos de las fuentes (4).
+3. Cortar las bridas (7)
+4. Extraer los 2 tornillos (5) que sujetan la fuente del refrigerador.
+5. Extraer los 5 tornillos (6) que sujetan la fuente principal
+6. Extraer la fuente
+Montaje:
+1. Seguir el órden inverso al desmontaje

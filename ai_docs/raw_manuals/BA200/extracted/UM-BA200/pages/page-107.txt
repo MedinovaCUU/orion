@@ -1,0 +1,45 @@
+107
+107
+Ilustración 65 
+Pantalla introducción información de los perfiles
+ 
+)
+Véase el funcionamiento de los iconos de creación, edición, borrado e impresión de la 
+pantalla de las técnicas en el capítulo 10.3.1.
+Parámetros a programar en los perfiles:
+ 
+Nombre 
+Nombre del perfil.
+ 
+Tipo de muestra 
+Seleccione el tipo de muestra que tendrá el perfil.
+ 
+Tipo de técnica 
+Seleccione el tipo de técnica, pueden ser: técnicas estándar, técnicas calculada, 
+ISE, o externas. Sirve para filtrar el número de técnicas a mostrar en la columna 
+de selección. 
+ 
+ 
+Seleccione las diferentes técnicas que quiera que formen el perfil. Puede usar las 
+teclas CRTL y MAYUSCULAS para realizar una selección múltiple.
+ 
+ 
+Añade al perfil las técnicas seleccionadas.
+ 
+ 
+Elimina una técnica del perfil.
+ 
+ 
+Añade al perfil todas las técnicas a la vez.
+ 
+ 
+Elimine del perfil todas las técnicas a la vez.
+10.3.5. Calibradores
+ 
+CAUTION
+ 
+Verifique los valores introducidos de concentración de los calibradores con los 
+de los valores de las instrucciones de uso (IFU) del suero calibrador. Asegúrese 
+de introducir los valores con las unidades de la programación de la técnica.
+Pantalla donde se programan los diferentes parámetros de los calibradores: nombre, 
+lote, fecha de caducidad, concentración.

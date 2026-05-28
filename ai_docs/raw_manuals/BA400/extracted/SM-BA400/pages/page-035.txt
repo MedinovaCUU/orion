@@ -1,0 +1,13 @@
+6. Coloque un rotor de reactivos con un tubo de muestras en la posición 1 con etiqueta de código de barras. Ajuste 
+el ángulo de la posición vertical (8) para conseguir que el haz del láser cubra toda la etiqueta y el inicio del láser 
+quede en la posición superior del tubo como indica la Ilustración 3.19
+7. Ajuste el ángulo del láser (7) para que el haz quede centrado con el eje, ver Ilustración 3.19
+8. Con el programa de servicio ajuste con los controles la posición 1 central con un tubo, para después verificar 
+las lecturas del rotor completo.
+ 
+5
+6
+Ilustración 3.16 
+7
+Ilustración 3.17 
+35

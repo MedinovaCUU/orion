@@ -1,0 +1,27 @@
+Lista de recambios
+Código
+Conjunto
+Representación 
+Descripción
+AC16554
+Conjunto interruptores
+AC17283
+Placa CPU
+AC16556
+Placa Distribución
+AC16557
+Placa Brazo
+AC16558
+Placa Punta
+AC16559
+Placa Control Fotometría
+AC16560
+Placa fotometría modelo BA200
+AC17362
+Placa fotometría modelo Y200
+AC17302
+Placa detección de nivel
+AC16562
+Placa rotor reactivos
+Manual de servicio
+236

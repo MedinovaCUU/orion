@@ -1,0 +1,71 @@
+103
+5.7.2. Consumo reactivos
+Para acceder al consumo de reactivos es necesario primero configurar el programa con la opción de trabajar 
+con contraseñas. Solamente puede acceder a este menú el usuario administrador, para cualquier otro usuario 
+está opción está desactivada.
+Para generar una lista del consumo de reactivos el administrador tiene que introducir las fechas entre las cuales 
+quiere conocer el consumo. Para ello aparece una pantalla como esta:
+dicha opción genera dos ficheros de resultados uno en formato texto .txt y el otro en formato excel .xls. Estos 
+ficheros estarán ubicados en el directorio Reagents dentro del directorio de la aplicación, generalmente será:
+Ubicación hasta la versión v5.4
+c:\Archivos de programa\A15\Reagents
+Ubicación a partir de la versión v5.5
+c:\Users\Public\Documents\A15\Reagents\
+y el contenido del fichero es parecido a este:
+REAGENT CONTROL CONSUME REPORT 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+Initial Date: 02/11/2004 
+Final Date: 02/12/2004 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+Test 
+Blank Prep. 
+Calibrator Pre Control Prep. Patient Prep. Total Prep. 
+Vol. R1 (uL) Vol. R2 
+(uL) 
+ 
+glucose 
+1 
+0 
+0 
+5 
+6 
+1332 
+0
+alt 
+1 
+0 
+0 
+3 
+4 
+888 
+0
+bilirrubin 
+9 
+0 
+0 
+23 
+32 
+7104 
+3552

@@ -1,0 +1,29 @@
+Ilustración 6.16 
+Pantalla ajuste balanzas
+Ajuste del sistema de detección de los depósitos internos
+Desde esta pantalla permite ajustar los valores máximo y mínimo de detección de los depósitos internos de agua y 
+residuos.
+Pulse el bobón de ajuste. El proceso es automático y tarda unos 10 minutos en finalizar. El sistema fluídico se pone 
+en marcha para vaciar los dos depósitos intermedios, primero se vacía el depósito de residuos (asegurarse que la 
+salida de residuos está conectada) y después el de agua. Con los depósitos totalmente vacíos se determina el valor 
+mínimo de detección de las varillas. En el caso del depósito de residuos el vaciado se realiza mediante la bomba B5 
+y en el caso del de agua mediante las estaciones de lavado (bombas B1 y B2). El ajuste es totalmente automático y 
+funciona a tiempo fijo.
+6.5.4. Verificación de las bombas de dispensación, bombas y válvulas.
+Desde esta pantalla se pueden verificar el estado fluídico del analizador. Todo el circuito fluídico se ha dividido en 
+partes funcionales. Cada una de las partes se verifica con los mismos botones.
+1. Seleccione uno de los circuitos a verificar (1):
+• Circuito dosificación interna
+• Circuito lavado externo de puntas
+• Aspiración estación de lavado
+• Dispensación estación de lavado
+• Entrada/salida fluidos
+• Test de colisión de la punta
+2. Seleccione si quiere realizar un único ciclo o ciclos continuos (2)
+3. Pulse sobre la electroválvula que quiera activar. Pasará de color gris a verde para indicar que está activa (3).
+4. Pulse sobre la bomba que quiera hacer funcionar, pasará de color gris a verde (4)
+5. Introduzca en el recuadro de ajuste (5) el número de pasos que quiera que realice las bombas de dispensación. 
+6. Verifique en el analizador que los líquidos entran y salen en función de la electroválvulas y bombas activadas.
+7. Al salir del test, se desactivarán todas las electroválvulas y bombas que hayan quedado activas.
+Manual de servicio
+96

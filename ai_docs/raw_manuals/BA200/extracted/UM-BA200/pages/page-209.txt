@@ -1,0 +1,43 @@
+209
+209
+15.2.3. Diferencial
+Las técnicas diferenciales realizan dos lecturas, la primera antes de dispensar el 
+reactivo B, y la segunda lectura al finalizar la reacción. Estas técnicas sirven, por 
+ejemplo, para sustraer posibles efectos de turbidez en la muestra o para sustraer 
+posibles niveles de absorbancia que tenga el reactivo A.
+Primero se dispensa el reactivo A y la muestra en el ciclo 1, en el siguiente ciclo 
+se agita y empieza la reacción. Anteriormente a la dispensación del reactivo B se 
+realiza la lectura L1. En el ciclo 18 se dispensa el reactivo B, en el ciclo siguiente 
+se agita y empieza la segunda parte de la reacción. Cuando la segunda reacción 
+alcanza el equilibrio se realiza la lectura L2. 
+
+
+ 
+
+
+
+
+
+
+
+
+Ilustración 125 
+Representación del método de cálculo diferencial
+En el cálculo de la absorbancia se aplica la siguiente fórmula:
+A=ABSL2
+λ principal−(ABSL1
+λ principal∗
+V M+V R1
+V M+V R1+V R2
+)
+ 
+(5)
+15.2.4. Tiempo fijo monoreactivo
+En las técnicas programadas con el modo de cálculo de tiempo fijo, la velocidad 
+de reacción es directamente proporcional al sustrato consumido. A medida que el 
+sustrato es consumido la velocidad de reacción disminuye provocando un cambio 
+en la absorbancia. Así, en un intervalo fijo de tiempo, el cambio de la concentración 
+del sustrato es directamente proporcional a la concentración inicial. En el intervalo 
+de tiempo el cambio de absorbancia es proporcional a la concentración del analito.
+En este modo de cálculo se realizan dos lecturas y la absorbancia resultante es la 
+diferencia de las dos lecturas.

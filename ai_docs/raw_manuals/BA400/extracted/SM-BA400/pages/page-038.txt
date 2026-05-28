@@ -1,0 +1,59 @@
+11
+12
+15
+16
+17
+13
+14
+19
+18
+Ilustración 3.22 
+Conjunto transmisión del rotor de reacción
+11 – Radiador
+12 – Ventilador
+13 – Encoder de lectura
+14 – Rueda transmisora
+15 – Motor giro del rotor
+16 – Piñón del motor
+17 – Correa transmisora
+18 – Fotodetector del encoder
+19 – Columna de soporte del conjunto rotor
+1 – Tapa rotor de reacción 
+2 – Rotor de reacción
+3 – Canal calefactor
+4 – Estación de lavado
+5 – Sistema óptico
+6 – Aislante canal calefactor
+7 – Tornillo de sujeción del rotor
+8 – Centrador rotor
+9 – Detector de inicio del rotor
+10 – Peltier
+Referencias de las Ilustración 3.20, Ilustración 3.21 y Ilustración 3.22:
+El rotor de metacrilato (2) se centra mediante unas pestañas de tamaño diferente al centrador rotor (8) y se sujeta 
+firmemente con el tornillo (7). El fotodetector de inicio (9) sirve para detectar la posición inicial del rotor.
+El canal calefactor (4) está aislado (6). El canal se termostatiza a 37 °C mediante 4 peltiers (10), con sus radiadores 
+(11) y sus ventiladores (12).
+El eje del rotor está unido a una polea (14) que transmite el movimiento del motor (15) a través de una correa 
+(17) y de un piñón (16). El disco encoder (13) es solidario a la polea. El fotodetector (18) envía el movimiento del 
+encoder a la placa electrónica.
+La maniobra de lavado está formada por 10 ciclos. En cada ciclo entra un par de puntas, donde la más larga sirve 
+para aspirar, y la corta para dispensar. 
+• 
+Ciclo 1(26): Aspira la mezcla de la reacción y dispensa solución de lavado. El residuo aspirado va a parar direc­
+tamente a la botella de residuos de alta contaminación. 
+• 
+Ciclo 2 (27): Aspira la solución de lavado y dispensa otra vez solución de lavado. 
+• 
+Ciclo 3: Ciclo de espera para lavar correctamente el pocillo
+• 
+Ciclo 4 a 6 (28): Enjuague, aspira el líquido y dispensa agua destilada
+• 
+Ciclo 7: Ciclo de espera
+• 
+Ciclo 8: Comprobación óptica del pocillo
+• 
+Ciclo 9 (29): Aspira el agua destilada
+• 
+Ciclo 10 (30): Seca el pocillo.
+Manual de servicio
+38

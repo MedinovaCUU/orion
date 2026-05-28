@@ -1,0 +1,61 @@
+—  25  —
+3.2.3.3. - Checking method
+• 
+Sample volume: Fill a test tube with distilled water and weight it in an analytical precision balance. After the aspiration 
+cycle, weight it again. The volume in µl is equal to the difference in weight in grams.
+• 
+Positioning: When the aspiration cycle is completed, check that the sample tail not entering the cuvette is approximately 
+5 mm (0-10 mm). 
+3.2.3.4. - Manual mode
+Place the flow cuvette in the holder, ensuring that it is in the correct position.
+• 
+SAMPLE VOLUME: This corresponds to the aspired volume adjustment. Enter the number of quarter steps the pump 
+must make to suction 5 ml and press ENTER. The theoretic value is 18340, equivalent to 1.09 ml per step (the 
+motors operates in quarter steps: 0.2725 ml per quarter step). The number to be entered is an estimate and must be 
+determined using the “trial and error” method through the function key TEST in the ADJUST PUMP menu.
+• 
+POSITIONING: This corresponds to the adjustment of the sample positioning. Input the number of quarters of step 
+needed for the sample to be positioned into the cuvette with a tail of only 5 mm (0 – 10 mm) without entering into 
+the cuvette and press ENTER. The theoretical value is 600 quarters of step. The number to be entered is an estimate 
+and must be determined using the “trial and error” method through the function key TEST in the ADJUST PUMP menu.
+• 
+PUMP RETARD: The time elapsed between the suctioning cycle and the flow cuvette positioning cycle. Input the 
+number of seconds (recommended 2) and press ENTER.
+The manual adjustment is completed. To check it, use the volume adjustment tool, filled with water until the upper mark 
+(3 mL).
+• 
+Press the function key CHECK.
+• 
+Input 2000 as sample volume (2 mL).
+• 
+Perform an aspiration cycle with the volume adjustment tool filled with water until the upper mark (3 mL).
+• 
+The sample tail that has not entered the cuvette is 0 – 10 mm long.
+• 
+The level of water remaining in the tool is between the two lower marks (equivalent to 1 mL ± one tolerance).
+• 
+Press EXIT: The programme will ask whether you wish to save the new values and shows a window for selecting YES or 
+NO. Select one of these two options depending on whether you want to save the adjustment or not, and press ENTER. 
+Press EXIT again to return to the main menu.
+3.2.3.5. - Automatic mode
+Place the flow cuvette in the holder, ensuring it is in the correct position.
+• 
+Press the function key AUTOMATIC.
+Adjust sample volume:
+• 
+Press the function key SAMPLE VOLUME. The message line will show “Insert tube with 5 ml water and press PUMP”.
+• 
+Pipette exactly 5 ml of distilled water into a test tube and position at the sample input so that the end of the Teflon 
+tube as at the bottom of the test tube and press the PUMP button.
+• 
+Approximately 4 mL are suctioned at normal speed and then it continues slowly. Then, the following message is 
+displayed on the screen: “On suctioning the last drop press ENTER”.
+• 
+Carefully observe the bottom of the test tube and, when the last drop is drawn up into the suctioning tube, press 
+ENTER.
+Adjust position:
+• 
+Press the function key POSITION. The message line will show “Insert tube with water and press PUMP”.
+• 
+Position the test tube containing distilled water at the sample input and press PUMP. The pump is activated and, after 
+a few seconds, the following message is displayed on the screen: “Remove the tube and press ENTER”.

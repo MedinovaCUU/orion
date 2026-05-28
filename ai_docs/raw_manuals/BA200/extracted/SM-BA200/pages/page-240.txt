@@ -1,0 +1,33 @@
+Lista de recambios
+Código
+Conjunto
+Representación 
+Descripción
+AC17298
+Bomba 
+cerámica
+Manifol bomba cerámica.
+AC17299
+Bomba 
+cerámica
+Conjunto bomba cerámica
+AC17289
+Estación de 
+lavado
+Punta aspiración estación de lavado
+AC17290
+Estación de 
+lavado
+Punta aspiración+secador estación de 
+lavado
+AC16597
+Estación de 
+lavado
+ 
+Muelle puntas estación lavado (4)
+AC17309
+Estación de 
+lavado
+Detector de desbordamiento
+Manual de servicio
+240

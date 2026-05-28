@@ -1,0 +1,60 @@
+Manual usuario 
+ 
+ 
+ 
+Manual usuario 
+ 
+ 
+ 
+152
+152
+Biosystems
+Biosystems
+Adicionalmente, cuando el modo de cálculo es estadístico y los resultados utili­
+zados para calcular los valores objetivos están incluidos en el grupo de resultados 
+visualizados, se muestra el símbolo Xm a la izquierda del número de serie ejecutada.
+ 
+ 
+Abre la pantalla auxiliar que permite introducir manualmente una nueva serie, 
+informando fecha, hora y valor del resultado para uno o más de los controles 
+disponibles. 
+Los resultados añadidos son mostrados con el icono de resultado modificado en 
+la tabla de Resultados individuales detallados
+ 
+)
+En la Ilustración 100 se muestra la pantalla de introducción de nuevos resultados.
+ 
+ 
+Abre la pantalla auxiliar que permite modificar el valor del resultado selecciona­
+do (sólo el valor, no se permite modificar la fecha) o excluirlo temporalmente 
+del cálculo y la validación. Un resultado excluido puede posteriormente volver 
+a incluirse.
+En la tabla de Resultados individuales detallados, los resultados modificados se 
+muestran con el correspondiente icono, y los resultados excluidos se muestran 
+tachados y con fondo gris.
+ 
+)
+En la Ilustración 101 se muestra la pantalla de edición de resultados.
+ 
+ 
+Permite eliminar de forma permanente los resultados seleccionados.
+ 
+ 
+Abre la pantalla auxiliar que permite visualizar los resultados de forma gráfica, 
+pudiendo escoger el tipo de visualización: Levey-Jennings o Youden. También 
+se pueden seleccionar los controles a graficar: entre 1 y 3 para Levey-Jennings y 
+entre 1 y 2 para Youden.
+Para la gráfica de Levey-Jenning, los valores del eje Y dependerán del número de 
+controles graficados: 
+• 
+Si se grafica un único control, mostrará valores de concentración, y la escala 
+en múltiplos de la desviación estándar.
+• 
+Si se grafican varios controles, mostrará los valores de la escala, expresada en 
+múltiplos de la desviación estándar.
+ 
+)
+En las Ilustración 102 y Ilustración 103 se muestra las pantallas de las gráficas de Levi-
+Jenning y Youden respectivamente.
+Ilustración 100 
+Pantalla entrada resultados de control de calidad

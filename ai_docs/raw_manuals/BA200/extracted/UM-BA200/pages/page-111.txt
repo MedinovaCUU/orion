@@ -1,0 +1,23 @@
+111
+111
+Ilustración 69 
+Pantalla de cambio de lote de un control
+10.3.7. Datos de paciente
+Pantalla desde la cuál se introducen los datos de los pacientes: el código de pa­
+ciente, el nombre, el sexo, etc. Una vez introducidos los datos y con los resultados 
+de las concentraciones de los analitos se puede generar el informe por paciente. 
+Tener introducidos los datos de paciente facilita la organización y búsqueda en el 
+histórico. De esta manera se pueden agrupar los resultados de un mismo paciente 
+realizados en períodos diferentes.
+Ilustración 70 
+Pantalla para la programación de los datos de paciente
+En la parte inicial de la pantalla aparece un listado con todos los pacientes intro­
+ducidos. 
+ 
+)
+Véase el funcionamiento de los iconos de creación, edición, borrado e impresión en el 
+capítulo 10.3.1.
+ 
+Identificación de paciente 
+Introduzca un identificador de paciente para poder asociar los datos de paciente 
+a los resultados.

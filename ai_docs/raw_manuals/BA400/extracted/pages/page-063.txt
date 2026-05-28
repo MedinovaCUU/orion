@@ -1,0 +1,28 @@
+Service Manual 
+63
+5. Fluidic elements
+The analyser operates with 4 tanks for processing fluids. These tanks are: the distilled water tank, low contamination 
+waste tank, washing solution tank and high contamination waste tank. 
+The distilled water and low contamination waste tanks are located at the bottom rear part of the analyser, and can 
+only be accessed by the technical service. Full and empty level control is executed through a double-buoy system.
+The washing solution and high contamination waste tanks are located at the front bottom part of the analyser. They 
+can be accessed directly by the user. 
+• 
+Once the determination has been made, the reagent and sample mixtures are sent to the high contamination 
+waste tank. The tank has a capacity of 5 L and autonomous operation of at least 20 h.
+• 
+The tank that contains washing solution has a capacity of 5 L and autonomous operation of at least 8 h. The 
+washing solution is used in the wash station to clean the reaction rotor and during the analyser initialisation 
+and finalisation processes.
+• 
+All the waste from the reaction rotor wash station is deposited in the low contamination waste tank, in addition 
+to the waste from the tip and stirrer wash stations. The tank has a capacity of 5 L and automatically empties the 
+content outside the apppliance through a buoy control process. The system uses the SF1-B5 pump to empty 
+the tank.
+• 
+The internal distilled water tank has a capacity of 5 L. The water is used to prime the pipetting system, wash the 
+inside and outside of the sample and reagent tips and wash the reaction rotor. The tank has two water inlets that 
+are selected by the software. One inlet is from an external tank. For this purpose the analyser uses the SF1-EV2 
+and the SF1-B4 pump. The other inlet is through a water mains connection. When the water mains connection 
+is selected, in the event that there is pressure, only one SF1-EV1 electro valve is used.
+The analyser fluidic diagram is shown below.

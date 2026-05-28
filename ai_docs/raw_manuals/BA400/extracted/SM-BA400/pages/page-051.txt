@@ -1,0 +1,29 @@
+3.10. Estructura 
+Cada subconjunto del analizador se sujeta a la estructura (1). Los subconjuntos del rotor de muestras, rotor de 
+reactivos, rotor de reacciones, los brazos de muestra, de reactivos y los agitadores se sujetan por la parte superior. El 
+subconjunto de las bombas y de la fluídica se sujeta en la parte inferior derecha. La electrónica y fuentes de alimen­
+tación están ubicadas en la parte inferior izquierda. 
+El módulo ISE (2) está ubicado en el centro de la parte superior, el kit de reactivos del modulo ISE (6) se coloca en 
+la parte central inferior. Ver ilustración 3.18.
+Las botellas de solución de lavado (5) y residuos de alta contaminación (4) están ubicadas en la parte central infe­
+rior. Para conocer el volumen de las botellas se realiza mediante pesaje. Hay una balanza (7) debajo de cada botella.
+Los ventiladores generales (12), (13) están sujetos directamente a la estructura. El ventilador (3) va sujeto a la plan­
+cha frontal.
+Las estaciones de lavado para cada una de las puntas y agitadores (10) se sujetan directamente a la estructura. Los 
+tubos de evacuación van conectados directamente a la botella de residuos de baja contaminación. Por la parte trasera 
+inferior se accede a las botellas de agua destilada (14) y de residuos de baja contaminación (15). Para detectar los 
+niveles máximo y mínimo de cada contenedor se utilizan sensores de boya doble.
+El interruptor principal está en la parte trasera inferior derecha (16), y los interruptores parciales en el lateral (11).
+Las conexiones fluídicas externas están ubicadas en la parte inferior trasera de la izquierda (17).
+9
+4
+6
+1
+3
+5
+2
+8
+7
+Ilustración 3.41 
+Vista de la estructura por delante
+51

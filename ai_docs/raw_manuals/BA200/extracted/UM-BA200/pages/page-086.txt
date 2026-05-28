@@ -1,0 +1,63 @@
+Manual usuario 
+ 
+ 
+ 
+Manual usuario 
+ 
+ 
+ 
+86
+86
+Biosystems
+Biosystems
+• 
+ASTM: TCPIP-Client, TCPIP-Server
+• 
+HL7: TCPIP-Client, TCPIP-Server, TCPIP-transitory connection
+ 
+Nombre del host 
+Únicamente rellene este campo cuando haya seleccionado en la opción de tipo 
+de transmision de datos: TCPIP-Client. Introduzca la IP del ordenador donde 
+se ejecuta el LIS con el que se realizará la conexión.
+ 
+Puerto TCP 
+Número del puerto TCP-IP por el que se realiza la conexión con LIS
+Cuando se selecciona el tipo de transmisión TCPIP-Transitory Connection de 
+HL7, se requiere configurar 2 puertos distintos: puerto cliente y puerto servidor. 
+ 
+Puerto TCP del cliente 
+Número del puerto del cliente en una conexión TCP.
+ 
+Puerto TCP del servidor 
+Número del puerto del servidor en una conexión TCP.
+Ilustración 49 
+Configuración de las comunicaciones del LIS
+10.2.6.3. Configuración del protocolo
+Pantalla para configurar los parámetros necesarios para los protocolos de comuni­
+caciones con LIS a bajo nivel
+ 
+Nombre del protocolo 
+Seleccione el tipo de protocolo que quiera usar en las comunicaciones: HL7 o 
+ASTM.
+ 
+Código de página para las 
+transmisiones
+ 
+Seleccione el tipo de codificación de los mensajes que se transmitirán entre 
+analizador y LIS. Se aplica en la transmisión y recepción de los mensajes. Debe 
+configurar el código de página usado por su sistema LIS.
+ 
+Identificador del servidor 
+Identificador que usa la aplicación de LIS.
+ 
+Proveedor del servidor 
+Nombre del proveedor de la aplicación de LIS.
+ Identificador del instrumento 
+Nombre que identifica el instrumento, dicho campo se transmite en cada 
+mensaje.
+ 
+Proveedor del instrumento 
+Nombre del proveedor del instrumento.
+ 
+Cumple IHE Seleccione esta opción cuando la transmisión de los mensajes siga estrictamente 
+la norma IHE de comunicaciones.

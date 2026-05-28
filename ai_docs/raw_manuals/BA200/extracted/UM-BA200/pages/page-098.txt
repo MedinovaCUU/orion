@@ -1,0 +1,42 @@
+Manual usuario 
+ 
+ 
+ 
+Manual usuario 
+ 
+ 
+ 
+98
+98
+Biosystems
+Biosystems
+10.3.1.5. Parámetros técnicas: control de calidad
+Ilustración 58 
+Pantalla parámetros técnicas, control de calidad
+ 
+Control de calidad activo 
+Marque esta opción cuando quiera activar el control de calidad para esta 
+técnica.
+ 
+Replicados de control 
+Número de replicados para medir los controles. El margen va de 1 a 3.
+ 
+Criterio de rechazo 
+Introduzca el criterio de rechazo para controlar la activación de las alarmas en 
+la gestión del control de calidad. Este valor se calcula en desviaciones estándar 
+(SD). El margen va de 0.1 a 4.
+ 
+Modo de cálculo 
+El modo de cálculo puede ser manual o estadístico. Indica cómo calcular los 
+márgenes para representar la gráfica de Levy-Jennings y activar las alarmas de las 
+reglas de Westgard.
+Modo de 
+cálculo
+Descripción
+Manual
+Utiliza los márgenes teóricos de los valores de asentamiento 
+del suero control, introducidos al dar de alta un control. 
+Permanecen inalterables, a no ser que se desee asignar nuevos 
+valores acumulados.
+ 
+) Véase capítulo 10.8.4

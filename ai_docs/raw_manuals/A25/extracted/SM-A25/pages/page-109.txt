@@ -1,0 +1,95 @@
+109
+Location of the folder up to version v5.4
+c:\Program Files\A25\Reagents
+Location of the folder from version v5.5
+c:\Users\Public\Documents\A25\Reagents\
+and the contents of the file shows similar this:
+REAGENT CONTROL CONSUME REPORT 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+Initial Date: 02/11/2004 
+Final Date: 02/12/2004 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+Test 
+Blank Prep. 
+Calibrator Pre Control Prep. Patient Prep. Total Prep. 
+Vol. R1 (uL) Vol. R2 
+(uL) 
+ 
+glucose 
+1 
+0 
+0 
+5 
+6 
+1332 
+0
+alt 
+1 
+0 
+0 
+3 
+4 
+888 
+0
+bilirrubin 
+9 
+0 
+0 
+23 
+32 
+7104 
+3552
+Reagents 
+5.7.3. 
+Location of the different software files
+Here is where to locate the different files used by the software.
+Address of the folders
+Description
+c:\Program Files (x86)\A25\
+c:\Program Files (x86)\Y25\
+Software installation folder
+c:\ProgramData\A25\
+c:\ProgramData\Y25\
+Folder where the databases and files generated 
+by the software are saved
+c:\Users\Public\Documents\A25\ReportSAT
+c:\Users\Public\Documents\Y25\ReportSAT
+Folder where the ReportSAT are saved
+c:\Users\Public\Documents\A25\RestorePoints\
+c:\Users\Public\Documents\Y25\RestorePoints\
+Folder where the RestorePoints are saved, The 
+RestorePoint is a backup of the database
+c:\Users\Public\Documents\A25\Reagents\
+c:\Users\Public\Documents\Y25\Reagents\
+Folder where reagent consumption files are stored
+c:\Users\Public\Documents\A25\Export\
+c:\Users\Public\Documents\Y25\Export\
+Folder where the export files are saved
+c:\Users\Public\Documents\A25\Import\
+c:\Users\Public\Documents\Y25\Import\
+Folder where the import files are saved
+To be able to access the folder of c:\ProgramData, you have to change the hiding folder option of the operating 
+system, for this follow the following steps, See Figure 5.1:
+• 
+Open windows explorer
+• 
+Select the View menu option
+• 
+Select the option of hidden files

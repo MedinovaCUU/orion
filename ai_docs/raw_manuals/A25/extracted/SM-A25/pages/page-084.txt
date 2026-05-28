@@ -1,0 +1,25 @@
+84
+Service manual
+5.3.1. 
+Motor tests
+Through these tests, the technician can check the correct functioning of all the analyzer motors step by step. 
+The screen makes it possible to choose the motor to be tested and the test that is to be carried out. The ana­
+lyzer uses the following motors step by step:
+• 
+X axis of the operating arm.
+• 
+Y axis of the operating arm.
+• 
+Z axis of the operating arm.
+• 
+Dispensing pump
+• 
+Rotor
+• 
+Filter wheel
+All the motor tests can be performed without the covers and housing of the analyzer. After the verifications, 
+the operating arm always returns to its resting position. To test the motor of the dispensing pump, the arm is 
+positioned over the washing station. It is convenient for the dispensing system to be primed so that the piston 
+does not function dry. The following is a description of the different tests that can be performed.
+5.3.1.1. Initialization test
+This test verifies the start detector of each of the motors.

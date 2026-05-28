@@ -1,0 +1,21 @@
+157
+157
+Ilustración 100 
+Pantalla con la gráfica de Youden
+Los botones situados en la parte inferior de la pantalla están siempre disponibles:
+ 
+ 
+Abre la pantalla que permite acumular los resultados actuales de control de 
+calidad por control y técnica.
+ 
+)
+Véase capítulo 10.8.4.1
+10.8.4. Resultados acumulados de control de calidad
+10.8.4.1. Acumular resultados de control de calidad diarios
+Una vez finalizado un periodo de tiempo determinado en el que el usuario ha 
+empleado unas mismas condiciones de trabajo, puede acumular los resultados de 
+control de rutina para compararlos con resultados históricos de series anteriores, 
+y al mismo tiempo, poderlos comparar con próximas series. 
+Para cada control y técnica se pueden almacenar un máximo de 500 acumulados, 
+por lo que, cuando se almacena el acumulado 501, el acumulado 1 se elimina de 
+manera automática.

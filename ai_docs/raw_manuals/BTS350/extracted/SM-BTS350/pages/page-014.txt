@@ -1,0 +1,24 @@
+—  14  —
+Service manual
+it indicates this through the DVALID signal. The microprocessor has the function of reading the acount numbers through 
+the DOUT and DCLOCK signals. 
+2.5.3. - Temperature sensor
+The temperature sensor connects to J15. The sensor signal is converted to digital directly, through the microprocessor A/D 
+converter. 
+2.5.4. - Peltier cell control
+Circuits U1, U2 and U32, form a bridge of transistors in H. The Peltier cell is connected to the centre of that bridge. The 
+bridge is controlled through the signals IN1 and IN2, and the control options are the following: Peltier cell deactivated, 
+cell heating cuvette holder, Peltier cell cooling cuvette holder.
+Connector J5 is connected to the fan that is mounted on the Peltier heatsink. When the Peltier cell has to cool the cuvette 
+holder, this fan is activated through the ActivaVentilador signal. This fan also has another signal, SensatVentPeltier, that 
+indicates the fan operation. If the fan breaks down, this is detected by the semi-automatic analyzer programme.
+2.5.5. - Pump motor control
+U21 is the circuit that controls the stepper motor to activate the peristaltic pump. The microprocessor generates the signals 
+standard for circuit U21 to activate and deactivate the correct coil for making the motor turn, at any given time. Through 
+the elements R97 and R98, the current in each coil is detected.
+2.5.6. - Keyboard circuit
+The keyboard circuit is comprised mainly of the keyboard itself, and a few protective diodes. The keyboard structure is a 
+matrix of push buttons divided into rows and columns. Through the CPLD, the microprocessor generates the standard for 
+activating the rows on the keyboard. The microprocessor reads the keyboard column signals directly, and decides which 
+key has been pressed. 
+Figure 2.9

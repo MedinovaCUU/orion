@@ -1,0 +1,39 @@
+Manual usuario 
+ 
+ 
+ 
+Manual usuario 
+ 
+ 
+ 
+44
+44
+Biosystems
+Biosystems
+Ilustración 19 
+Actualización del java
+4.12.2.3. Configuración de los servicios del sistema operativo
+Anule los servicios innecesarios para la ejecución de la apliacación. Siga los pasos 
+siguientes:
+Siga los pasos siguientes para modificar las opciones de servicios:
+1. Acceda a Inicio, y ejecite el programa msconfig
+2. Seleccione la pestaña de Servicios
+3. Desactive los siguientes servicios:
+Nombre visble
+Nombre del servicio
+Adobe Acrobat Update Service
+AdobeARMservice
+Aplicación auxiliar IP
+iphlpsvc
+Archivos sin conexión
+CscService
+Cliente de seguimiento de vínculos distribuidos
+TrkWks
+Publicación de recurso de detección de función
+FDResPub
+Servicio de directivas de diagnóstico
+DPS
+Windows Search
+WSearch
+4. Guarde los cambios. 
+5. Reinicie el ordenador.

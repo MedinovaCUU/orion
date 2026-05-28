@@ -1,0 +1,51 @@
+57
+57
+4.16. Preanalítica y preparación de soluciones adicionales
+ 
+Reactivos 
+Siga las instrucciones de uso y de seguridad que indica en los IFU (Instrucciones 
+de Uso) de los reactivos para su preparación y manipulación.
+Antes de usar por primera vez el reactivo, verifique la programación de la técnica 
+con la programación suministrada con el reactivo.
+Para aquellos reactivos que tenga que homogeneizar su contenido, hágalo suave­
+mente sin agitar. Si se han formado burbujas en la superficie del reactivo, elimínelas. 
+Cuando cambie el lote de reactivo, asegúrese de realizar el blanco y la calibración 
+de la técnica.
+Se recomienda realizar un blanco de reactivo cuando se cambia de botella de 
+reactivo.
+Se puede formar condensación en las paredes de las botellas de reactivo, en el 
+cuello de la botella o en las etiquetas de los códigos de barra. Si la condensación 
+está presente, elimínela con una toalla de papel secante.
+ 
+Tubos primarios de suero 
+Para el buen funcionamiento del analizador proceda con la fase preanalítca de 
+las muestras con los tubos de suero de la siguiente manera:
+1. Recoja la muestra por punción venosa en un tubo sin tratar. Llene el tubo al 
+menos hasta 2/3 del volumen total.
+2. Deje reposar la sangre durante 20-30 min para permitir la formación del 
+coágulo.
+3. Centrifugue el tubo durante 10-15 min, o siga las instrucciones del fabricante 
+del tubo primario.
+Para obtener resultados precisos, las muestras deben estar libres de cualquier coá­
+gulos, fibrina, etc, lo que podría obstruir la punta de muestras o el canal del lector 
+del módulo ISE. También verifique que el suero está libre de burbujas.
+Si utiliza un tubo con gel separador de suero, verifique que tenga suficiente volumen 
+de suero para evitar la inserción de la punta de la muestra en la capa de gel. Esto 
+puede obstruir la punta de la muestras.
+ 
+Tubos primarios de plasma 
+Para aquellos laboratorios donde el factor tiempo es primordial, deben utilizar 
+plasma en vez de suero. Proceda con la fase preanalítca de las muestras con los 
+tubos de plasma de la siguiente manera:
+1. Recoja la muestra por punción venosa en un tubo de recogida de sangre con 
+algún anticoagulante. El anticoagulante utilizado debe ser compatible con las 
+determinaciones que se desean realizar.
+Si con esta muestra quiere medir determinaciones ISE debe usar como 
+anticoagulante heparina de sodio. El nivel de heparina no debe exceder de 
+15 UI/ml de volumen del tubo. No utilice heparina de amonio, heparina de 
+litio, EDTA, ni tubos NaF.
+2. Mezcle la muestra invirtiendo el tubo varias veces. No lo agite.
+3. Centrifugue la muestra durante 10-15 min dentro de la hora de la recolec­
+ción. Retire con cuidado la capa de plasma superior para el análisis. Utilice 
+una pipeta Pasteur o una jeringa equipada con una aguja de punta roma para 
+este procedimiento.

@@ -1,0 +1,16 @@
+Montaje correa:
+1. Ponga una correa nueva, insértela en la polea 
+2. Ajuste la tensión de la correa según las indicaciones del montaje del motor.
+Montaje motor:
+1. Monte el motor (27) con los 4 tornillos (30) a la placa (28).
+2. Inserte la placa (28) montada con el motor en los 4 tornillos (29). Ponga las tuercas (31) y arandelas sin apretarlos.
+3. Coloque la correa (25) en la polea del motor.
+4. Ajuste la tensión de la polea tirando del motor hacía fuera. La tensión de la polea se ajusta a 5.5 Kg. Apriete 
+los tuercas (31) en cruz.
+27
+28
+25
+Ilustración 8.67 
+Identificación de los elementos de la transmisión
+Manual de servicio
+178

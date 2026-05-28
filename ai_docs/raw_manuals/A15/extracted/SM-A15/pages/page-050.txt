@@ -1,0 +1,116 @@
+51
+ 
+Baud Rate: 38400
+ 
+Número de bits: 8
+ 
+Stop bits: 1
+ 
+Paridad: none
+Una vez configurado y conectado el hiperterminal 
+encender el analizador. En este momento iran apare-
+ciendo en dicha pantalla información sobre el estado 
+del analizador y los diferentes estados por donde 
+ejecuta. Al inicializar el analizador hace un chequeo 
+de los diferentes elementos, si alguno tuviera algún 
+error entonces por dicha pantalla aparece el dispo-
+sitivo inicando si se ha inicializado correctamente 
+o con error. En las siguientes líneas se muestra un 
+ejemplo de las instrucciones de inicialización (esta 
+información puede cambiar con la actualización de 
+las versiones):
+ 
+ BIOSYSTEMS A15 
+Firmware initialization 
+ Firmware Version: A15 User V3.12 
+ Serial Number: 831050311
+ FLASH functions transferred to RAM
+ Interrupt Vectors transferred to RAM
+ Interrupts enabled
+ Checking firmware integrity
+ Checking program checksum:
+ Checksum correct! Program Checksum=0x5039 Size=427100
+ Checking A15 configuration checksum:
+ Checksum correct! Configuration Checksum=0x179C Size=856
+ Checking A15 configuration backup checksum:
+ Checksum correct! Configuration backup Checksum=0x179C 
+Size=856
+ Loading A15 Configuration from FLASH
+ Configuration in FLASH is correct
+ Adjustments loaded:
+ Temperature correction for Rotor=0.50
+ Temperature correction for Probe=0.00
+ System Liquid Detection=30 
+ Waste Detection=29 
+ Sensitivity of level detection=110
+ Origin X=60
+ Origin Y=280
+ Origin Z=430
+ Tray Reference X=675
+ Tray Reference Y=10
+ Washing station X=360
+ Washing station Y=5
+ Washing station Z=450
+ Washing station Ext X=360
+ Washing station Ext Y=95
+ Washing station Ext Z=540
+ Reactions Rotor X=110
+ Reactions Rotor Y=1044
+ Reactions Rotor Z=600
+ Rotor Distance between the dispensation point and the optic sys-
+tem=610
+ Rotor Position correction regard to the dispensation point=98
+ Rotor Position correction regard to the optic system=-4
+ Filters Wheel correction=0
+ Filters and their Integration Times:
+ Filter 1=000 Integration Time= 20ms ( 40) Reference Time= 
+0ms ( 0)
+ Filter 2=340 Integration Time=205ms (400) Reference Time= 
+0ms ( 0)
+ Filter 3=405 Integration Time= 51ms (100) Reference Time= 
+0ms ( 0)
+ Filter 4=505 Integration Time= 51ms (100) Reference Time= 
+0ms ( 0)
+ Filter 5=535 Integration Time= 51ms (100) Reference Time= 
+0ms ( 0)
+ Filter 6=560 Integration Time= 51ms (100) Reference Time= 
+0ms ( 0)
+ Filter 7=600 Integration Time= 51ms (100) Reference Time= 
+0ms ( 0)
+ Filter 8=635 Integration Time= 51ms (100) Reference Time= 
+0ms ( 0)
+ Filter 9=670 Integration Time= 51ms (100) Reference Time= 
+0ms ( 0)
+ Filter 10=000 Integration Time= 20ms ( 40) Reference Time= 
+0ms ( 0)
+ TI/LB Hystoric:
+F[01]: 00000000 00000000 00000000 00000000 00000000 00000000 
+00000000 00000000 00000000 00000000 
+F[02]: 00000000 00000000 00000000 00000000 00000000 00000000 
+00000000 00000000 00000000 00000000 
+F[03]: 00000000 00000000 00000000 00000000 00000000 00000000 
+00000000 00000000 00000000 00000000 
+F[04]: 00000000 00000000 00000000 00000000 00000000 00000000 
+00000000 00000000 00000000 00000000 
+F[05]: 00000000 00000000 00000000 00000000 00000000 00000000 
+00000000 00000000 00000000 00000000 
+F[06]: 00000000 00000000 00000000 00000000 00000000 00000000 
+00000000 00000000 00000000 00000000 
+F[07]: 00000000 00000000 00000000 00000000 00000000 00000000 
+00000000 00000000 00000000 00000000 
+F[08]: 00000000 00000000 00000000 00000000 00000000 00000000 
+00000000 00000000 00000000 00000000 
+F[09]: 00000000 00000000 00000000 00000000 00000000 00000000 
+00000000 00000000 00000000 00000000 
+F[10]: 00000000 00000000 00000000 00000000 00000000 00000000 
+00000000 00000000 00000000 00000000 
+F[01]: 000 000 000 000 000 000 000 000 000 000 
+F[02]: 000 000 000 000 000 000 000 000 000 000 
+F[03]: 000 000 000 000 000 000 000 000 000 000 
+F[04]: 000 000 000 000 000 000 000 000 000 000 
+F[05]: 000 000 000 000 000 000 000 000 000 000 
+F[06]: 000 000 000 000 000 000 000 000 000 000 
+F[07]: 000 000 000 000 000 000 000 000 000 000 
+F[08]: 000 000 000 000 000 000 000 000 000 000 
+F[09]: 000 000 000 000 000 000 000 000 000 000 
+F[10]: 000 000 000 000 000 000 000 000 000 000

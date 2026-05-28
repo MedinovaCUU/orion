@@ -1,0 +1,17 @@
+12
+13
+14
+Ilustración 8.51 
+Cambio bomba aspiración y dispensación
+Hay un cambio de modelo de la bomba de aspiración. Véase AII para saber a partir de que número de serie se 
+aplica el cambio.
+Montaje nuevo modelo de bomba:
+1. Coloque la nueva bomba en la posición. Para este modelo no es necesario el aislante.
+2. Sujete la bomba con 3 tornillos (18) por la parte trasera
+3. Conecte los tubos a la bomba. Vigile las conexión de entrada y salida de la bomba. Estas son diferentes respecto 
+al otro modelo de bomba.
+17
+Ilustración 8.52 
+Conexión de los tubos de la bomba de aspiración
+Manual de servicio
+196

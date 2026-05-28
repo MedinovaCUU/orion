@@ -1,0 +1,39 @@
+Service Manual
+47
+Figure 4.13 
+Photometric control board silk printing
+Connector
+Function
+Pin
+CN1
+CAN bus connection 
+Pin 1: 24V
+Pin 2: GND
+Pin 3: NC
+Pin 4: CAN_H
+Pin 5: CAN_L
+CN3
+Rotor cover detection
+Pin 1: 5V
+Pin 2: Cover detection
+CN4
+Wash station collision detection
+Pin 1: GND
+Pin 2: Wash station detection
+Pin 3: GND
+Pin 4: Wash station collision
+CN5
+Photometric board connection
+CN6
+Rotor motor
+Pin 1: Coil 1
+Pin 2: Coil 1
+Pin 3: Coil 2
+Pin 4: Coil 2
+CN7
+Rotor encoder
+Pin 1: GND
+Pin 2: C channel encoder 
+Pin 3: A channel encoder
+Pin 4: 5 V
+Pin 5: B channel encoder

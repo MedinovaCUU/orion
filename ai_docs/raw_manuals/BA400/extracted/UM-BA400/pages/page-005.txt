@@ -1,0 +1,54 @@
+5
+Versión 
+del 
+manual
+Fecha de 
+la revisión
+Versión de 
+software
+Modificación
+3.1
+Octubre 
+2014
+V3.1
+Modificación de los capítulos: 10.3.1.1, 
+10.3.6, 10.3.8, 10.7.1, 14.27, 14.2.8
+3.0
+Febrero 
+2014
+V3.0
+Modificación de los capítulos: 4.6, 4.11, 
+4.15, 9.1.4, 10.2.1, 10.4.4, 10.6.3, 14.2.3, 
+16.4
+2.2
+Julio 2013
+V2.1
+Modificación capítulo 17
+2.1
+Junio 
+2013
+V2.0
+Modificación de los capítulos 4.12, 4.14, 
+10.2.6, 10.4, 10.6, 17.0
+2.0
+Diciembre 
+2012
+V1.2
+Modificación de los capítulos: 2.1, 10.7, 
+14.2.2
+1.0
+ Junio 
+2012
+V1.0
+Versión inicial
+Los cambios en comparación con versiones anteriores se resaltan con barras verti­
+cales de color amarillo en el margen del documento.
+Declaración de conformidad
+ 
+ 
+El analizador BA400 cumple con la directiva 98/79/CE y 2011/65/EU de la 
+Unión Europea
+ 
+ 
+Uso para Diagnóstico In Vitro 
+NOTE

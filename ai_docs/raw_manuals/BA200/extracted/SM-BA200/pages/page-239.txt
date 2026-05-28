@@ -1,0 +1,39 @@
+Lista de recambios
+Código
+Conjunto
+Representación 
+Descripción
+AC16586
+Bomba 
+pistones
+Motor bombas estación lavado
+AC16587
+Bomba 
+pistones
+Cámara superior con retén 
+AC16588
+Bomba 
+pistones
+Conjunto bomba estación de lavado
+AC16817
+Bomba 
+pistones
+Abrazadera estación de lavado
+AC16816
+Bomba 
+pistones
+Conjunto pistones y soporte
+AC17307
+Bomba 
+pistones
+Check valves bomba pistones
+AC11527
+Bomba 
+cerámica
+Reten pistón diámetro Ø8
+AC16594
+Bomba 
+cerámica
+ 
+Pistón cerámico + motor
+239

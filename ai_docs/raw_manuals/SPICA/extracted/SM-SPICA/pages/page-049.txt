@@ -1,0 +1,18 @@
+SERVICIO
+Manual de Usuario BioSystems SPICA
+49
+Manual de Usuario BioSystems SPICA | Versión 2.8 - Agosto 2024
+1. ELEMENTOS DE HARDWARE
+1.6 Ensamblaje de la bomba de dispensación
+La bomba es accionada por un motor conectado a un huso de torsión. El eje eleva o baja el soporte del 
+pistón donde el pistón se adjunta. Un tope sella la succión en la cámara. Los tubos están conectados al 
+colector mediante accesorios de conexión.
+1.7 Desgasificador (opcional)
+El agua utilizada por el sistema de dosificación del analizador pasa por el circuito de desgasificación para 
+eliminar las burbujas que pueda haber en el agua.
+El sistema se compone de una membrana que succiona aire del agua. Esta membrana está posicionada 
+para operar en un circuito.
+Para asegurar el correcto funcionamiento de la membrana, ésta funciona bajo vacío, utilizando una bomba 
+de membrana y un circuito de control para monitorear la presión del vacío.
+La salida de la bomba de diafragma pasa a través de una válvula de no retorno conectada a través de un 
+accesorio de interconexión en forma de T a la salida de residuos de baja contaminación.

@@ -1,0 +1,45 @@
+6.1.1. Listado de iconos comunes
+En la siguiente tabla se muestra el significado de los iconos comunes:
+Icono
+Nombre
+Descripción 
+Editar
+Permite editar valores.
+Borrar
+Elimina un elemento.
+Ajuste
+Inicia el proceso de ajuste.
+Guardar
+Guarda el ajuste realizado
+Deshacer
+Deshace y recupera el último ajuste.
+Cerrar
+Cierra la ventana.
+Aceptar
+Acepta los cambios y cierra la ventana.
+Imprime
+Lanza una petición de impresión.
+6.1.2. Listado iconos barra vertical
+La lista de iconos de la barra vertical son iconos que realizan acciones directamente en el analizador. La siguiente 
+tabla muestra la descripción de cada uno de ellos.
+Icono
+Nombre
+Descripción
+Conectar
+Icono de conexión de programa con el analizador. 
+Shut down
+Icono para ejecutar el parado y apagado del analizador.
+Recupera 
+analizador
+Pulsar este icono cuando se produzca un error del analizador, como una colisión 
+del brazo.
+Alarmas
+Icono para visualizar las alarmas aparecidas en el analizador.
+ 
+)
+Véase capítulo AIII para tener la descripción del código de la alarma
+6.1.3. Explicación del recuadro de ajuste
+El siguiente recuadro es común para todo el programa de servicio.
+Sirve para realizar los movimientos de las posiciones de los elementos mecánicos del analizador, tales como los 
+brazos, los rotores, etc
+105

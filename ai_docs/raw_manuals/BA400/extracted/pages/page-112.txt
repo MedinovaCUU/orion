@@ -1,0 +1,25 @@
+LIST OF SPARES PARTS
+Code
+Representation 
+Description
+DVD Service programme and Service Manual
+AC16534
+Reaction rotor screw
+AC16535
+Reaction rotor cover
+AC16536
+Sample rotor cover
+AC16537
+Reagent rotor cover
+AC16538
+Arm cover
+AC16539
+Top cover of wash station
+AC16540
+Lower cover of wash station
+AC16541
+Lower cover of arm
+AC16542
+Lower cover of stirrers
+Service Manual
+112

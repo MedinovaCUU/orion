@@ -1,0 +1,22 @@
+Manual de servicio
+120
+17
+Ilustración 6.18 
+6.3.3. AC16594 - Motor bomba cerámica
+Herramientas: Llave allen de 2 y llave fija del 2.5, grasa ELESA NT1
+Desmontaje:
+1. Siga los pasos de desmontaje según el capítulo 6.3.1
+2. Desmonte el detector de inicio.
+3. Quite los 4 tornillos con las tuercas que sujetan el cuerpo de la bomba (18) con el motor.
+4. Extraiga la cuerpo bomba (18).
+5. Desenrosque el pistón con el soporte girándolo.
+Montaje:
+1. Sustituya la pieza defectuosa (motor + husillo) o pistón cerámico
+2. Engrase la guía del soporte pistón. Ponga suficiente grasa en el orificio del soporte por donde entra 
+el husillo.
+3. Enrosque el soporte pistón con el husillo. Retire la grasa sobrante con un paño. 
+4. Coloque la cámara de la bomba. Alinee la ranura del soporte (20) con el sistema de antigiro del cuerpo 
+(19).
+5. Coloque los tornillos y las tuercas para sujetar el cuerpo con el motor.
+6. Coloque el detector de inicio.
+7. Siga los pasos de montaje del manifold según el capítulo 6.3.1

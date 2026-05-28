@@ -1,0 +1,45 @@
+—  27  —
+4. - Checking test
+4.1. - Activation of a test
+The program includes a set of test programs that enable the performance verification of diverse parts of the instrument 
+and gives assistance in trouble-shooting. To perform a test, follow the path:
+UTILITIES / SERVICE (Password) / TESTS
+The tests available are described in the following sections.
+4.2. - Fan
+On executing this test, each time the ENTER key is pressed, successively run the following fans:
+• 
+The main fan
+• 
+The thermostatization fan
+• 
+Stop both fans
+4.3. - Screen
+On executing this test, an operation is performed on screen every time ENTER is pressed. First, a series of horizontal 
+strips are shown, then a series of vertical ones, then a table of characters and the contrast of the screen changes from the 
+minimum to the maximum value. At the end of the test, the LED on the front of the appliance changes from red to green, 
+in succession.
+Check visually that the operations performed are uniform and that no anomaly is evident on the display.
+4.4. - Beep
+When performing this test, the internal beeper sounds several times.
+4.5. - Keyboard
+Each time a key is pressed, the beeper sounds and the key is displayed. To exit press the EXIT key (F5) twice.
+4.6. - Printer
+A set of characters is printed and then 10 rows of asterisks with the 10 programmable intensities.
+Check that the characters listed are clear and legible and that the scale of intensities is growing and regular.
+4.7. - Serial channel
+Connect a USB cable to a computer. Execute a hiperterminal in the computer and configure with the appropriate COM.
+Each time a key is pressed, the corresponding character is shown in the section of the display corresponding to the 
+characters sent, and the same character should appear in the section of characters received. Exit by pressing F5. 
+Through this test it is possible to modify the communication configuration parameters.
+4.8. - Loss of peristaltic pump steps
+To perform the test, proceed as follows:
+• 
+Turn the roller holder with your hand until the arrow marked on it coincides with the one on the support. 
+• 
+Press ENTER. The pump will make several turns.
+• 
+Check that the turn is performed on centre and with no abnormal noises.
+• 
+After stopping the roller holder, check that both arrows maintain the same position opposite each other.
+• 
+Press ENTER several times for the pump to perform successive operations.

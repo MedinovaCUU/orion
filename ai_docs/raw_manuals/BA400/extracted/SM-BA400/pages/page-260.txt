@@ -1,0 +1,50 @@
+• 
+Verifique que la zona de contacto entre el conector y el pack está limpia.
+• 
+Presione con la mano el lateral del pack de reactivos para evitar una posible obstrucción del CAL A o CAL B 
+debido al relleno de la bolsa de residuos.
+• 
+Verifique que el frente del líquido en los tubos de teflón del CAL A y del CAL B no se trocea. En caso de encon­
+trar el frente troceado, es indicativo de que el pack se está finalizando o de que entra aire en el circuito fluídico.
+• 
+Compruebe si el líquido se desplaza por los tubos después de que las bombas se hayan detenido. Este desplaza­
+miento puede indicar la entrada de aire en algún punto del sistema fluídico o su obturación.
+• 
+Verifique que los electrodos están bien colocados y que no haya fugas de líquido.
+• 
+Verifique que las juntas tóricas están bien colocadas entre los electrodos.
+• 
+Verifique que haya las juntas tóricas en el pack de reactivos en cada uno de los orificios.
+• 
+Verifique que el codo inferior de los electrodos no se salga y está bien colocado.
+• 
+Verifique que las bombas peristálticas giran correctamente.
+• 
+Realice las siguientes calibraciones: Bomba peristáltica, detector de burbujas, y calibración de electrodos. Veri­
+fique que los resultados están dentro de los márgenes.
+9.3.3. Pasar un fiador de nylon por el orificio
+En caso de que el orificio del electrodo esté obturado, límpielo con un paño humedecido con agua destilada y en 
+caso de no conseguirlo pase un fiador para desobturar el orificio del electrodo.
+Si el fiador de nylon no es suficientemente rígido para desobturar el orificio, puede utilizar una punta fina de la 
+jeringa subministrada con la caja de accesorios. 
+Vaya con cuidado de no dañar con el fiador las paredes de la membrana del electrodo. No fuerce en exceso el fiador.
+Si no puede eliminar la obturación provocada por la solución salina del electrodo de referencia, aplique agua templada 
+durante unos quince minutos para favorecer la disolución de las sales y vuelva a probar con el fiador.
+Si la obturación es debida a restos de muestra, es necesario realizar la maniobra de limpieza una vez eliminada la 
+obturación. 
+Si la obturación es muy recurrente, incremente la frecuencia de uso de la solución de limpieza.
+Después de cualquier obturación, es importante comprobar que los resultados de las calibraciones son estables. 
+Podrían quedar restos de muestra en la membrana que afectaran al resultado.
+9.3.4. Limpiar con un hisopo los orificios y contactos metálicos de los electrodos y del módu­
+lo ISE
+Los electrodos tienen en su interior soluciones salinas con una alta concentración. A veces restos de líquido de los 
+calibradores se secan y dejan restos de sales invisibles en los contactos o en el orificio, los cuales pueden causar un 
+cortocircuito o interferir en las lecturas.
+Apague el analizador y extraiga los electrodos, limpie el contacto metálico y el orificio de la membrana con un paño 
+humedecido con agua destilada en cada uno de los electrodos. Asegúrese que la zona está completamente seca antes 
+de reinstalar los electrodos.
+9.3.5. Limpiar la copa de restos de muestra
+Una vez a la semana, limpie la copa con un hisopo empañado con agua destilada para evitar que se pueda obstruir 
+el orificio de entrada de la copa del módulo ISE.
+Manual de servicio
+260

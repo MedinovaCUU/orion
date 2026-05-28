@@ -1,0 +1,43 @@
+Manual usuario 
+ 
+ 
+ 
+Manual usuario 
+ 
+ 
+ 
+80
+80
+Biosystems
+Biosystems
+Ilustración 41 
+Configuración de las opciones del analizador
+ 
+Selección de entrada de agua 
+Seleccione el modo de entrada de agua en el analizador.
+La entrada de agua puede venir por vías diferentes y excluyentes entre ellas:
+• 
+Agua de depósito
+• 
+Agua de red
+ 
+)
+Véase capítulo 4.4 para la instalación del agua purificada.
+ Sonido de alarma desactivado 
+Marque está opción cuando no quiera que suene el zumbador al aparecer una 
+alarma.
+10.2.1.3. Configuración general: comunicaciones
+En la Ilustración 42 se muestra la pantalla para configurar las comunicaciones.
+Ilustración 42 
+Configuración de las comunicaciones
+ 
+Automática 
+Seleccione esta opción para que el programa busque automáticamente el puerto 
+de salida del ordenador para comunicarse con el analizador.
+ 
+Manual 
+Seleccione esta opción para escoger manualmente el puerto. 
+Puerto:
+• 
+Seleccione el puerto COM disponible, el USB utiliza un puerto COM virtual. 
+t

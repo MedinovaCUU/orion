@@ -1,0 +1,26 @@
+Manual de servicio
+146
+6.4.9. 
+AC13375 - Filter drum body / MO11547 - Filter drum motor
+Disassembly Motor and filter drum body
+1. Take out the fridge cover and the front cover
+2. Disassemble the rotor assembly. See chapter 6.4.1
+3. Remove the 4 screws (17) to separate the protection plate
+4. Remove the 2 grub screw (19) that hold the filter drum body with the motor shaft. Rotate the motor to gain access 
+to the grub screw.
+5. Remove the 4 screws (18) that hold the motor
+6. Stretch motor (20) out to free shaft from filter drum body (21)
+7. Remove the filter drum body (21) laterally. Be careful when removing the body so not to collide with the home 
+photodetector.
+Motor mount and filter drum body
+1. Replace motor or filter drum body
+2. Fit the body and motor. Insert the body into the motor shaft. Be careful not to collide the body with the home 
+photodetector.
+3. Place the 4 screws (18) with their washers to fix the motor.
+4. Fit the 2 grub screw to fasten the body to the motor shaft. Make the flat part of the shaft coincide with the tight­
+ening of the grub screw.
+5. Mount the protection cover with its screws
+6. Mount the rotor subassembly to the analyzer
+7. Check the operation of the motor and filter drum.
+17
+Figure 6.45

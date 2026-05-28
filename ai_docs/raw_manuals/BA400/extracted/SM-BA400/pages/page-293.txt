@@ -1,0 +1,42 @@
+JEX
+Code
+Description
+700
+Sample Pump Home Error
+701
+Reagent 1 Pump Home Error
+702
+Reagent 2 Pump Home Error
+710
+Clot Detector Hardware Error
+711
+Sample Fluidics Obstructed
+720
+Error detected in B1
+721
+Error detected in B2
+722
+Error detected in B3
+723
+Error detected in B4
+724
+Error detected in EV1
+725
+Error detected in EV2
+726
+Error detected in EV3
+727
+Error detected in EV4
+728
+Error detected in EV5
+729
+Error detected in EV6
+730
+Error detected in EV7
+731
+Error detected in EV8
+798
+JE1 Board doesn’t answer
+799
+JE1 Board Reset
+293

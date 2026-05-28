@@ -1,0 +1,11 @@
+71
+71
+participación del brazo de muestras. El programa de usuario emitirá un mensaje 
+con esta periodicidad a modo de recordatorio.
+Adicionalmente, para cada determinación el módulo realiza una medida de uno 
+de los dos líquidos desde el kit de reactivos: A para las determinaciones en suero 
+y plasma y B para las determinaciones en orina.
+Tanto el líquido A como el B se suministran conjuntamente en el kit de reactivos. 
+Dicho kit se conecta directamente al módulo ISE. 
+El kit se suministra como accesorio y se accede a su alojamiento desde la puerta 
+frontal del analizador.

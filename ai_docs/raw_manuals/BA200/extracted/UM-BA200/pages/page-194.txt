@@ -1,0 +1,74 @@
+Manual usuario 
+ 
+ 
+ 
+Manual usuario 
+ 
+ 
+ 
+194
+194
+Biosystems
+Biosystems
+Paso
+Acción 
+Repeti­
+ciones 
+Descripción
+1
+Cebado B
+1
+Chequee, a través de la ventana que queda al 
+retirar la tapa del agitador, si se está llenando 
+y vaciando la copa de ISE consecutivamente
+2
+Cebado A
+1
+Chequee, a través de la ventana que queda al 
+retirar la tapa del agitador, si se está llenando 
+y vaciando la copa de ISE consecutivamente.
+Si obtiene algún error en la pantalla de 
+resultados, vuelva a ejecutar las dos primeras 
+acciones. Si el problema continúa verifique 
+que los electrodos están bien posicionados 
+y se han insertado correctamente. Si es 
+necesario extráigalos y vuélvalos a instalar. 
+Recuerde que el procedimiento de extraerlos 
+y volverlos a instalar se debe hacer con la 
+fuente de alimentación del módulo ISE 
+apagado.
+3
+Calibrar 
+bombas 
+1
+4
+Activar 
+electrodos
+1
+Indique la fecha de instalación. Si no ha 
+reemplazado alguno de los electrodos, vuelva 
+a registrar el electrodo antiguo con la fecha de 
+instalación original
+5
+Cebar B
+1
+6
+Cebar A
+1
+7
+Calibrar 
+electrodos
+1
+8
+Espere 5 
+minutos
+Realice las 4 últimas acciones 3 veces. En caso de que la calibración no sea satis­
+factoria, espere 5 minutos y repita las últimas 4 acciones.
+LI+
+Cl−
+Na+
+K+
+REF
+WASTE
+Ilustración 119 
+Orden de colocación de los diferentes electrodos

@@ -1,0 +1,60 @@
+Periodici­
+dad
+Paso Acciones del servicio técnico
+Fecha 
+realizado
+Fecha 
+realizado
+Fecha 
+realizado
+Fecha 
+realizado
+Anual
+10
+Cambiar los tubos de teflon del 
+módulo ISE
+11
+Cambiar la membrana del 
+desgasificador
+12
+Cambie el filtro de agua y solución 
+de lavado de la estación de lavado
+13
+Revisar la bomba de pistones de la 
+estación de lavado
+14
+Revisar la tensión de las correas de 
+los 2 brazos (pipeteo y agitador) y la 
+estación de lavado
+15
+Revisar el sistema antichoque del 
+brazo
+16
+Revisar el rozamiento del agitador 
+en el rotor de reacciones
+17
+Revisar la correa y tensión de los 
+rotores de reactivos y reacciones
+18
+Revisar la colocación y el 
+posicionamiento del detector de la 
+tapa de reactivos y de reacciones
+19
+Revisar el encaje y colocación de los 
+rotores de reactivos y muestras.
+20
+Revisar el giro de los ventiladores
+21
+Revisar que la tapa general se 
+sostenga correctamente y no se 
+caiga.
+Bianual
+22
+Cambiar las correas de transmisión 
+vertical del brazo de pipeteo, del 
+agitador y de la estación de lavado
+23
+Cambio de las peltiers de la nevera
+Firma operario
+Firma del cliente
+121

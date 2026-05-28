@@ -1,0 +1,13 @@
+64
+Manual de servicio
+Si algún elemento hardwware presenta algún problema de funcionamiento, en la pantalla se presentará «Hard-
+ware no iniciado completamente», y se indicará el elemento que no está funcionando correctamente.
+Para cerrar la pantalla y continuar trabajando pulsar el botón Aceptar.
+Para obtener copia impresa de este report de inicialización pulsar el botón imprimir.
+NOTA: Si se ha reportado un error y el técnico continua trabajando con el programa de servicio, debe tener en 
+cuenta que hay un elemento hardware que no está funcionando correctamente.
+5.2. Ajustes 
+Permiten realizar diferentes ajustes de parámetros necesarios para el correcto funcio namiento del analizador. 
+Todos los valores a ajustar tienen unos determinados rangos acotados, indicados por el programa de servicio. 
+Estos valores se muestran también en un apéndice al final de este manual. Si variando alguno de los paráme-
+tros dentro de su rango permitido no se consigue poner a punto el analizador, este hecho es indicativo de que

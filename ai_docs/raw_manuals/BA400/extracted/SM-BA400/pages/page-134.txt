@@ -1,0 +1,28 @@
+Filtro
+Descripción
+Acciones
+Aparecerá un listado de acciones en función de la tarea 
+escogida. Cuando hay muchas acciones realizadas, 
+sirve para visualizar únicamente la acción escogida.
+Una vez seleccionados los campos de los filtros, el programa muestra una lista en forma de tabla con la información 
+filtrada.
+En la columna de comentarios el usuario puede introducir texto para realizar alguna indicación sobre la acción 
+seleccionada. Pulse en el interior de la casilla de comentarios para introducir el texto. Al finalizar pulse el botón de 
+guardar o deshacer. 
+Cuando quiera borrar una acción del histórico, seleccione la acción y pulse el botón de borrar.
+Ilustración 6.32 
+Pantalla de información histórica
+6.7.2. Informes SAT
+Desde esta pantalla permite realizar un informe para el servicio técnico. 
+Pulse el botón de “guardar ReportSAT” y automáticamente realizará una copia de la base datos de las acciones de 
+histórico.
+Encontrará el fichero generado en la siguiente carpeta:
+c:\Users\Public\Documents\BA400\
+También permite borrar ReportSAT antiguos. 
+6.8. Salir
+Para salir del programa, vaya al menú salir y escoja una de las dos opciones:
+• 
+Salir apagando el analizador: Opción que cierra el programa e indica al analizador que también se apague, 
+realizando el proceso de cierre.
+Manual de servicio
+134

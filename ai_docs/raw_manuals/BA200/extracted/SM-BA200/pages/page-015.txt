@@ -1,0 +1,59 @@
+15
+Abreviatura
+Definición
+SD
+Desviación estándar
+SE
+Seguridad eléctrica
+UV
+Ultravioleta
+Unidades
+Definición
+“
+Pulgada
+˚C
+Grados centígrados
+A
+Amperio / Absorbancia
+GB
+Gigabyte
+h
+Hora
+Hz
+Hercio
+Kg
+Kilogramo
+L
+Litro
+MB
+Megabyte
+m
+Metro
+min
+Minuto
+mL
+Mililitro
+mm
+Milímetro
+mmol
+Milimol
+mV
+Milivolt
+nm
+Nanometro
+Nm
+Newton Metro
+prep
+Preparación
+s
+Segundo
+VA
+Voltamperio
+V
+Voltio
+W
+Vatio
+μL
+Microlitro
+μm
+Micrómetro

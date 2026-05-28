@@ -1,0 +1,20 @@
+43
+4.  OPERACIONES DE MANTENIMIENTO
+4.1.  AC17407 - Tapa / AC71409 - Pistón de la tapa
+Desmontaje pistón:
+1. Quitar las arandelas de seguridad (1)
+2. Separar el pistón del poste de guiaje. El pistón está precargado. Sujete fuertemente el pistón en el 
+momento de sacarlo de su ubicación para evitar que se desplace de golpe.
+Desmontaje tapa:
+1. Quitar los dos pistones (1)
+2. Quitar los 4 tornillos (2) y sus arandelas de cada lado para separar la tapa del analizador
+Montaje tapa:
+1. Siga los pasos del desmontaje en sentido inverso 
+2. Siga los pasos del montaje del pistón
+Montaje pistón:
+1. Coloque en el poste inferior el pistón con su arandela de seguridad (1) y una arandela de goma
+2. Precargue el pistón comprimiéndolo. Vaya con mucho cuidado al manipular el pistón precargado.
+3. Coloque el otro extremo del pistón al poste superior.
+4. Coloque la arandela de seguridad
+1
+Ilustración 4.1.  Desmontaje pistón tapa

@@ -1,0 +1,23 @@
+Manual de servicio
+114
+11
+12
+Ilustración 6.10 Desmontaje muelle
+6.2.5. AC14307 - Manguera brazo / AC13360 - Racor apriete punta
+Desmontaje Manguera:
+1. Extraer la carcasa superior. Ver capítulo 6.1.5
+2. Desenroscar el racor de aprieta (14)
+3. Cortar todas las bridas que sujetan al tubo
+4. Desconectar el tubo de teflón en sus dos extremos (punta y electroválvula) (13)
+5. Desconectar el conector que va a la placa CPU y la toma de tierra
+6. Retirar la manguera del brazo
+Desmontaje racor apriete:
+1. Extraer la carcasa superior. Ver capítulo 6.1.5
+2. Desenroscar el racor de aprieta (14)
+3. Desconectar el tubo de teflón de la punta de termostatización
+4. Extraer el racor de apriete.
+Montaje racor o manguera:
+1. Sustituir el elemento averiado 
+2. Siga los pasos en órden inverso
+3. Realice unos ciclos de estress con el programa de servicio para verificar que se ha realizado correc-
+tamente el montaje

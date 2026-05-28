@@ -1,0 +1,19 @@
+159
+159
+ 
+Electrodos 
+Esta opción únicamente está disponible en la pestaña de electrodos. Las opciones 
+posibles son: Na+, K+, Cl- y Li+
+ 
+Tipo 
+Esta opción únicamente está disponible en la pestaña de Bombas. Las opciones 
+posibles son: Bombas, burbujas y limpieza
+Los resultados se mostrarán en una tabla ordenados por la fecha. 
+ 
+ 
+Pulse este icono para mostrar una gráfica del histórico de los resultados de las 
+calibraciones de los electrodos ISE. Véase Ilustración 108.
+Ilustración 107 
+Pantalla de histórico de calibraciones de los electrodos ISE
+Ilustración 108 
+Visualización gráfica de las calibraciones

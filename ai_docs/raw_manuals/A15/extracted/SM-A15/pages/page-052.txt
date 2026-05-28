@@ -1,0 +1,88 @@
+53
+ 161 133 117 112 112 116 125 154 
+ 169 140 123 121 118 122 133 161 
+ 190 155 134 133 128 134 146 176 
+Reactivos:
+Rack 1 2 3 4 
+ 163 151 152 183 
+ 156 141 143 174 
+ 152 138 140 173 
+ 150 134 137 172 
+ 154 135 138 176 
+ 156 139 143 181 
+ 160 138 145 187 
+ 166 145 149 194 
+ 173 150 156 204 
+ 194 172 173 228 
+ Initializating Motors
+ - Axis Z in HOME
+ - Axis Y in HOME
+ - Axis X in HOME
+ - ROTOR in HOME
+ - FILTERS WHEEL in HOME
+ - CERAMIC PUMP in HOME
+ Motors Initializated
+ Optics Initialization
+ - Filter correction=0 
+ - Rotor correction=98 Rotor Lect. correction=-4
+ - Used wells:0 
+ - Check DDC112..OK (FPGA 8Mhz Clock: OFF)
+ - DDC112 test: OK! (Result => 0046387) 
+ Optics Initializated
+ Generating Pattern: 1 1 1 1 1 1 1 1 1 1 1 0 0 0 0 0 0 0 0 0 
+ Generating Gate: 0 0 0 0 1 1 1 1 0 0 0 0 0 0 0 1 1 0 0 0 
+ OK
+ Z Axis Initialization
+ - Axis Z in HOME
+ Z Axis initializated
+Penc:111111111000000000| OK
+ Z Axis Initialization
+ - Axis Z in HOME
+ Z Axis initializated
+ Probe AA
+ - X:X=Xcal+-1“
+ - Y:Y=Ycal+0“
+ AAEnd
+ Peltier Cells and Drivers Test
+ - Probe Peltier Driver Test: Ok! (Not implemented)
+ - Rotor Peltiers Driver Test: Ok!
+ Hardware Initializated
+Hay una pequeña interacción con el hiperterminal, al 
+apretar algunas teclas el analizador da información 
+sobre algún elemento, las siguentes teclas tienen 
+la función de:
+H - help, muestra un texto de ayuda 
+R - muestra la temperatura del rotor
+P - muestra la temperatura de la punta
+S - muestra la lectura de las balanzas en % 
+A - muestra los resultados o errores del test de es-
+tresamiento global
+L - Muestra el valor del detector de nivel de sensi-
+blidad
+N - Activa información adicional del detector de nivel 
+(para uso interno)
+K - Desactiva la fuente de alimentación 
+B - Activa el zumbador
+b - Desactiva el zumbador
+E - Generar un error de encoder (para uso interno)
+I - Activar la interrupción de encoder (para uso in-
+terno)
+1- incrementar una posición el tambor de filtros
+2- Decrementar una posición el tambor de filtros
+9 - Realizar un lectura paso a paso de todo el rotor
+G - Una vez realizada una lista de trabajo, al pulsar 
+G vuelca por el hiperterminal información más 
+detallada de la gestión de la lista de trabajo
+D - Segun el número de veces que pulsa la tecla D, 
+cambia los resultados mostrados
+1ª pulsación : activa el test interno del DDC112 
+(conversor A/D del fotodiodo), siem-
+pre muestra el mismo número de 
+cuentas
+2ª pulsación: activa el modo de lectura normal del 
+DDC112, dará el número de lecturas 
+del fotodiodo
+3ª pulsación: desactiva el modo de lectura del 
+DDC112
++ : incrementa en 0.5 ms el tiempo de integración
+- : decrementa en 0.5 ms el tiemo de integración

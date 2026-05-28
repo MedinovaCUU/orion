@@ -1,0 +1,41 @@
+Componentes a cambiar
+Cambiar los siguientes componentes:
+• 
+Tubos aspiración estación de lavado
+• 
+Filtros botellas de agua destilada, solución de lavado
+• 
+Tubos de la bomba peristáltica del módulo ISE
+• 
+Filtros de los ventiladores y cambio de los ventiladores
+Actualizar firmware y software
+Proceso de verificación o ajuste
+Realizar las siguientes verificaciones, consultar el manual de servicio (capítulo 6) para realizar las verificaciones. Si 
+una verificación no entra dentro de los valores, ajustar de nuevo.
+1. Verificación de la termostatización de las puntas de reactivo
+2. Verificación de la termostatización del rotor de reacciones
+3. Verificación de la termostatización de la estación de lavado
+4. Verificación de las posiciones de los brazos
+5. Test de fotometría
+6. Cuentas de oscuridad
+7. Repetibilidad
+8. Estabilidad
+Verificación final funcional
+Ejecutar con el programa de usuario y siguiendo el proceso de verificación. Siga las instrucciones en el capítulo 7.3.6.
+Guarde e imprima los resultados.
+Para el Y400, siga las instrucciones:
+Para realizar la verificación funcional utilizar los siguientes reactivos y materiales de referencia de BioSystems: 
+Modelo Y400
+Reactivo de Glucosa-Fructosa (21800)
+Reactivo de A. Acético (21810)
+Reactivo de Fosfate (12877)
+Vino control blanco (12821)
+Vino control Negro (12822)
+Programar una lista de trabajo con dos pacientes / muestras para realizar los 3 reactivos. Programar 20 replicados 
+para cada muestras.
+Ejecutar la lista. El analizador realizará el blanco, calibrador y los 20 replicados de cada nivel de control. Una vez 
+haya finalizado mostrará los resultados.
+Con los 20 replicados por resultado calcular el CV.
+El CV se calcula cómo: 
+ 
+301

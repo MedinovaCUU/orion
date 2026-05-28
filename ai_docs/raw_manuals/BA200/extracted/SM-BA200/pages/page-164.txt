@@ -1,0 +1,28 @@
+Conexión de entrada (8)
+Conexión de salida (9)
+Ilustración 8.47 
+Conexiones de las checkvalves
+8.12.3. AC16582 - Bomba de aspiración
+Herramientas: 1 llaves allen de 2.5 y de 3, alicates planos
+Desmontaje:
+1. Quite la carcasa lateral izquierda
+ 
+) Véase Capítulo 8.1.2
+2. Desmonte el desgasificador.
+3. Desmonte la bomba cerámica.
+4. Quite los 6 tonillos (10) que sujetan la chapa con todas las bombas de aspiración.
+5. Levante la chapa (12) de soporte para acceder en la parte posterior
+6. Quite los 4 tornillos (13) que sujetan la bomba que quiera reemplazar.
+7. Quite los tubos de entrada y salida. Ayúdese de unas alicates para aflojar las abrazaderas (11) que sujetan los tubos.
+8. Quite la bomba (15) y el aislante (SilentBlock)(14)
+ 
+) Véase Ilustración 8.48, Ilustración 8.49, Ilustración 8.50 y Ilustración 8.51
+Montaje:
+1. Sustituya la bomba.
+2. Coloque el aislante (14) y la nueva bomba (15). Sujételo con los 4 tornillos (13).
+3. Coloque en su posición la chapa (12) y sujétela con los 6 tornillos (10)
+4. Conecte los tubos con las abrazaderas (11).
+5. Monte la bomba de cerámica y el desgasificador.
+6. Verifique el funcionamiento de la bomba de aspiración con el programa de servicio.
+Manual de servicio
+164

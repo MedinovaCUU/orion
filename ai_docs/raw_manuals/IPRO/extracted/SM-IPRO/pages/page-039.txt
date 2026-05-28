@@ -1,0 +1,17 @@
+39
+Cuando se tenga que cambiar algún elemento físico del procesador, p.e. la correa del eje Z, se tendrá 
+que inicializar el contador a cero para que corresponda el número de ciclos almacenados en el pro­
+cesador con la realidad. Parar realizar dicha operación debe de seleccionar la casilla del elemento a 
+inicializar y introducir el número de ciclos en la casilla activada. Luego pulsar el botón Cargar ciclos.
+También desde esta misma pantalla y con el botón Cargar Ajustes se permite al técnico seleccionar un 
+fichero de ajustes y cargarlo en el procesador. En le momento de cargar los ajustes también se cargan 
+los ciclos. Realizar esta operación cuando se tenga que cambiar una placa CPU, así no se tiene que 
+ajustar de nuevo todo el procesador.
+3.5  REGISTRO
+Varias funciones permiten la gestión del histórico de ajustes, tests, incidencias, re­para­cio­nes y opera­
+ciones de mantenimiento.
+3.5.1  Introducción del número de serie del procesador
+El técnico puede introducir el número de serie del procesador para que aparezca en los informes de 
+servicio impresos. Si se cambia un número de serie introducido anterior­mente, los históricos de servicio 
+se reinician. En este caso el técnico puede guardar todos los datos anteriores en un fichero.
+El técnico puede introducir su nombre para que aparezca en los informes de servicio impresos.

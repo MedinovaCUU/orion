@@ -1,0 +1,19 @@
+147
+18
+19
+Figure 6.46 
+20
+21
+Figure 6.47 
+6.4.10. AC14708 - Lenses
+Lens Disassembly
+1. The lighting system consists of 2 lenses. Both lenses are the same
+2. Follow the steps to remove the motor and body. See chapter 6.4.9
+3. Remove the 2 screws (22) that hold the lighting assembly
+4. Separate the lighting assembly (23) from the rest of the rotor assembly
+5. Remove the 2 screws (24) that hold the lens support with the lighting assembly
+6. With the help of the lens wrench (AC14763) separate the nut (25) from the lens.
+7. Remove the 2 screws (26) to separate the lens holder from the rotor assembly
+8. Turn the lens holder and with the help of the wrench (AC14763) separate the nut (27) from the lens.
+Lens mount
+1. Replace the lens or both lenses.

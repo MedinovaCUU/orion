@@ -1,0 +1,25 @@
+Ilustración 6.21 
+Puntos de medición en el rotor de reacciones
+6.5.5.3. Ajuste de la termostatización de la punta
+Las puntas de reactivo R1 y R2, aspiran los reactivos de la nevera. Antes de dispensar el reactivo en el rotor este se 
+termostatiza a una temperatura más próxima a la del rotor. Desde esta pantalla se realiza el ajuste de la termostati­
+zación para cada uno de los brazos.
+ 
+) Véase Ilustración 6.22
+Siga los pasos para realizar el proceso de ajuste:
+1. Seleccione el brazo que quiera ajustar.
+2. Pulse el botón de ajuste del apartado 2 para realizar un acondicionamiento fluídico de la punta. 
+3. Ponga el útil de medición de la temperatura con la sonda del termómetro en la estación de lavado de la punta.
+ 
+) Véase Ilustración 6.23
+4. Pulse el botón de ajuste del apartado 3 para que el analizador realice un ciclo de dispensación de un volumen 
+de agua en la estación de lavado.
+5. Introduzca el valor de la temperatura medida con el termómetro en la casilla del apartado 3. Realice varios ciclos 
+de dispensaciones para verificar que la temperatura es estable.
+6. Pulse el botón de ajuste del apartado 4 para modificar la consigna del sistema de regulación si el valor medido 
+está fuera de los márgenes.
+ 
+) Véase capítulo AV para ver los márgenes de aceptación del ajuste de la termostatización de la punta.
+7. Guarde el valor del ajuste.
+Manual de servicio
+124

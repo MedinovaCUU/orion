@@ -1,0 +1,28 @@
+129
+129
+tubo, colocar el tubo correctamente, extraer el tapón de la botella de reactivo, 
+etc.
+ 
+ 
+Al pulsar el botón se abre una ventana emergente, la cuál permite rellenar los 
+datos adicionales de paciente de la lista de trabajo. 
+ 
+)
+En el capítulo 10.5.2 se explica cómo introducir los datos adicionales de paciente.
+ 
+ 
+Ese campo permite realizar búsquedas rápidas de muestras. Introduzca el texto a 
+buscar y pulse el icono para ejecutar la búsqueda. Se mostrarán/destacarán todas 
+las muestras que contengan el valor introducido y se mostrará su posicionamien­
+to en el rotor. Véase Ilustración 83
+Ilustración 83 
+Búsqueda en pantalla de posicionamiento de muestras
+10.5.4. Creación de la lista de trabajo desde la pantalla de posicionamiento 
+de las muestras
+Cuando se realiza una lectura de códigos de barras de los tubos de muestra posicio­
+nados en el rotor y no hay técnicas solicitadas para alguna de las muestras, se abre 
+automáticamente esta pantalla que permite completar la sesión de trabajo solici­
+tando la información a LIS mediante un Query por espécimen o manualmente. 
+También permite añadir técnicas a tubos posicionados pero que no tengan técnicas 
+asignadas (los tubos que están en color gris). Se pueden añadir técnicas manual­
+mente o mediantes la consulta al host Query.

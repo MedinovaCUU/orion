@@ -1,0 +1,70 @@
+—  16  —
+Service manual
+continuous current at the input to 5V. The input voltage may come from the external power source or battery pack. There 
+is a second DC/DC converter that converts the 5V voltage into 12V to supply the LED diodes and the peristaltic pump 
+motor. The U35 circuit regulates the voltage to generate 3.3V voltage for the USB. 
+2.6. - List of board connectors and wiring diagram
+Connector
+Description
+J1
+USB type A connector 
+J2
+Power supply connector
+J3
+Battery pack connector
+J4
+Main fan
+J5
+Peltier heatsink fan
+J6
+Display
+J8
+Peltier
+J9
+Peristaltic pump motor
+J10
+Printer
+J11
+USB type B connector
+J13
+Display backlight
+J15
+Temperature sensor
+J17
+Reserved
+J18
+Keyboard
+J19
+CPLD recording connector
+JP1
+FLASH/EPROM switch selection
+SW1
+Peristaltic pump push button
+FAS1
+GND connector
+U1
+EPROM socket
+In the Figure 2.10 shows the wiring diagram of the board.
+2.7. - Installing a programme release through EPROM
+Steps to be followed for installing a new programme release:
+• 
+Open the top housing of the semi-automatic analyzer. 
+• 
+Insert the EPROM with the new release in base U1 of the board. See the insertion of the EPROM into the base.
+• 
+Connect the two terminals to the JP1 connector on the plate.
+• 
+Turn on the semi-automatic analyzer.
+• 
+Wait for the recording process to end. This process takes a few minutes. A message will appear on screen indicating 
+the process has ended.
+• 
+Turn off the semi-automatic analyzer.
+• 
+Carry out the same steps with the other EPROM memories.
+• 
+Remove the EPROM from the base and from the JP1 connector.
+• 
+Replace the top housing of the semi-automatic analyzer.
+• 
+Check the new programme release has been correctly installed. The initial screen shows the programme release.

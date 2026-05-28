@@ -1,0 +1,47 @@
+59
+ This tests performs continuous
+ readings with the DDC112.
+ Remember stop the test for 
+ continue working.
+ A25 Auto-Check
+ J: Last results
+ Caution: Dont’t abuse of this functions while the
+ analizer is running.
+ System Monitor 
+ O: Power Supply Monitor
+ I: Reagent Refrigerator Monitor
+ W: EV&PUMP Diagnostic
+[A25V2]
+ 
+There are a few keys that work with the Hyperterminal, to press some keys the analyser give information about some 
+element, the following keys has the function:
+H: Help, help, shows the help text 
+R: Rotor Temperature, shows the rotor temperature 
+P: Probe Temperature, shows the needle temperatare 
+S: Level Scales, shows the scales mesures in % 
+A: Last A25 Stress Results
+L: Actual Sensibility of Level Detection
+N: Activate additional information of level detection (only internal use)
+K: Deactivate the power supply
+B: Activate the buzzer
+b: Deactivate the buzzer
+E: Generate an encoder error (only internal use)
+I: Activate the encoder interrupt (only internal use)
+1: Increase the filter wheel position
+2: Decrease the filter wheel position
+9: Mesure the whole rotor, step by step
+G: Once finish a work list, push the G and send to the hyperteminal more detailed information of the work list man­
+agement
+D: Show the mesure depending on the number of key pressed
+ 
+1st press: activate the internal test DDC112, always show the same count number
+ 
+2nd press: activate the normal mesure DDC112, show the count number mesured
+ 
+3th press: stop the DDC112 mesure
++: Increase the integration time in 0.5ms
+-: Decrease the intergration tie in 0.5ms
+J- Shows the last result of the list
+O- Shows the extra information of the power supply voltatge
+I – Shows the information about the state, cover and temperature of the fridge
+W- Shows the information about the state of the electrovalve and membrane pumps.

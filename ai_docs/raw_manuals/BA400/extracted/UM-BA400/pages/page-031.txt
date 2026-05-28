@@ -1,0 +1,36 @@
+31
+31
+2. Presione el botón central del asa para desbloquear el rotor.
+3. Saque el rotor de su alojamiento. Tenga cuidado de que el rotor de reactivos 
+si está lleno de botellas puede llegar a pesar hasta 5 Kg.
+4. Al introducir otra vez el rotor en su alojamiento, pulse el botón de desbloqueo 
+y descienda el rotor hasta el final. Gírelo hasta que la pestaña de posiciona­
+miento coincida en la base y asienta correctamente.
+5. Cuando introduzca el rotor de reactivos lleno en su alojamiento, desciéndalo 
+con cuidado sin dejarlo caer, de esa manera evitará que golpee fuertemente 
+con la base y que las botellas de reactivo puedan salpicar.
+6. Coloque la tapa del rotor en su alojamiento. Compruebe que está bien asentada 
+en su alojamiento, tiene una posición única. Fíjese que el dibujo serigrafiado 
+de la tapa concuerde con el de la superficie del analizador. El dibujo ayuda a 
+colocar correctamente la tapa en su posición.
+4.6. Instalación del rotor de muestras
+Los analizadores pueden utilizar uno de los dos rotores siguientes para las muestras: 
+• 
+Rotor de muestras entero. Véase Ilustración 8
+• 
+Rotor de muestras segmentado. Véase Ilustración 9. Contacte con su provee­
+dor si desea utilizar un rotor de muestras segmentado (ver referencia en el 
+capítulo 11)
+El rotor de muestras entero consta de 135 posiciones, repartidas en 3 coronas.
+Las muestras posicionadas en las 2 primeras coronas, 90 posiciones en total, pueden 
+leerse el código de barras.
+A priori, se reservan por defecto las posiciones de la corona interna para calibradores 
+y controles, siendo éstas modificables. Podemos instalar también muestras, siendo 
+posiciones sin poder leer código de barras.
+El analizador pipetea las muestras en el orden creciente de la numeración del rotor, 
+empezando por la corona externa y siguiendo con la corona interna. Podemos 
+condicionar el orden de pipeteo en función de las urgencias posicionadas.
+Ilustración 8 
+Rotor de muestras entero
+NOTE
+NOTE

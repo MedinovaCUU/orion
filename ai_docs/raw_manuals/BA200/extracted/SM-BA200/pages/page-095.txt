@@ -1,0 +1,35 @@
+• 
+Promedio
+• 
+Desviación estándar de todas las medidas
+• 
+Coeficiente de variación
+• 
+Absorbancia máxima
+• 
+Absorbancia mínima
+Lectura de absorbancia
+Permite realizar la medida de absorbancia para un pocillo seleccionado para todas las longitudes de onda.
+Seleccione la longitud de onda en el cuadro de selección para mostrar el resultado de la absorbancia.
+Si el resultado muestra un valor de -1 indica que la medida de absorbancia ha superado el límite del margen fotométrico.
+6.5.3. Balanzas, botellas y depósitos
+6.5.3.1. Ajuste balanzas para la determinación de nivel.
+La determinación del nivel de las botellas de solución de lavado y residuos de alta contaminación se realiza mediante 
+pesada. Para ajustar las balanzas proseguir de la siguiente manera:
+Ajuste botella de solución de lavado
+1. Coloque la botella de solución de lavado llena.
+2. Pulse el botón de ajuste de LLENO.
+3. Coloque la botella de solución de lavado vacía.
+4. Pulse el botón de ajuste de VACÍO
+5. Guarde los resultados
+Ajuste de la botella de residuos de alta contaminación
+1. Coloque la botella de residuos llena.
+2. Pulse el botón de ajuste de LLENO.
+3. Coloque la botella de residuos vacía.
+4. Pulse el botón de ajuste de VACÍO
+5. Guarde los resultados
+Verificación del nivel de las botellas de solución de lavado y residuos de alta contaminación
+Para verificar si el ajuste del nivel de la botella es correcto, ponga en la botella de solución de lavado o en la botella 
+de residuos un nivel de líquido conocido, verifique el valor que muestre en la pantalla (ver Ilustración 6.16) del 
+interior de las botellas si corresponde con el nivel de la botella real.
+95

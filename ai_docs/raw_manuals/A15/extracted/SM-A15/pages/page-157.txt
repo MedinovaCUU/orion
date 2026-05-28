@@ -1,0 +1,22 @@
+Manual de servicio
+158
+Lista de accesorios
+Código
+Representación
+Descripción 
+FI11488
+Filtros del contenedor de líquido de sistema (2)
+BO13189
+Contenedor de líquido de sistema con tapón
+BO13191
+Contenedor de solución de lavado con tapón
+BO13192
+Contenedor de residuos con tapón y rácor
+AC13369
+Tapón y racor contenedor de residuos
+FU13194
+Conjunto de fusibles 2 A (F2L250V) (10)
+LA10429
+Lámpara halógena 6V/10W (5)
+AC17355
+Tapa del rotor de reacciones

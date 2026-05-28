@@ -1,0 +1,59 @@
+97
+LEDs
+Función (Condición de encendido)
+LD1
+Arranque microprocesador
+LD2
+Tensión 3.3 V
+LD3
+Activación bomba 1
+LD4
+Activación bomba 2
+LD5
+Activación electroválvula 1
+LD6
+Activación electroválvula 2
+LD7
+Activación electroválvula 3
+LD8
+Activación electroválvula 4
+LD9
+Activación bomba 1
+LD10
+Activación bomba 2
+LD11
+Activación electroválvula 1
+LD12
+Activación electroválvula 2
+LD13
+Activación electroválvula 3
+LD14
+Activación electroválvula 4
+LD15
+Detección inicio motor reactivo 2
+LD16
+Detección inicio motor reactivo 1
+LD17
+Detección inicio motor muestra
+4.11. Placa detección de nivel - CIIM00069
+Mejora recogida en el BA400v2.
+El detector de desbordamiento de líquidos de la estación de lavado se conecta a la placa de detección de nivel 
+CIIM00069. La detección se realiza por la medida de la variación de la capacidad al detectar un líquido respecto 
+cuando no hay líquido.
+CIIM00069
+CIIM00050
+CN18
+OVERFLOW DETECTION
+CN1
+1
+2
+3
+4
+CN3
+1
+2
+3
+4
+5
+Ilustración 4.26 
+Conexiones de la placa de detección

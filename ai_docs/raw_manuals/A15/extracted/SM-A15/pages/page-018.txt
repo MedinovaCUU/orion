@@ -1,0 +1,55 @@
+19
+• 
+Placa del sistema fotométrico
+• 
+Placa de acondicionamiento de la punta 
+• 
+Placa interconexión sistema fluídico
+• 
+Placa interconexión brazo
+• 
+Placa interconexión rotor
+• 
+Placa de la fuente de alimentación
+• 
+Placa de control refrigerador de reactivos(Solo modelos A15C/Y15C)
+2.1.5. Programa de aplicación
+El programa de aplicación permite controlar todas las operaciones del anali zador. Des de este programa el usuario 
+puede monitorizar el estado del analizador y de la sesión de trabajo, programar parámetros, por ejemplo de técnicas, 
+preparar la sesión de trabajo, elaborar informes de resultados, configurar diversas opciones el analizador, activar 
+varias utilidades de test, preparación y mantenimiento del instrumento y realizar el control de calidad interno. No es 
+el objetivo de este manual explicar el funciona mien to del programa de usuario. Para obtener información detallada 
+del mis mo debe con sultarse el Manual de Usuario incluido con el analizador.
+2.2. Funcionami ento del analizador
+El A15 es un analizador automático de acceso aleatorio especialmente diseñado para realizar análisis clínicos de 
+bioquímica y turbidimetría. El analizador lleva a cabo los análisis paciente a paciente y permite la introducción conti-
+nua de muestras. El control del analizador se realiza desde un ordenador personal dedicado, en permanente co mu-
+nicación con el instrumento. El programa de aplicación, instalado en el ordenador, mantiene al usuario constantemente 
+informado del estado del analizador y del progreso de los análisis. A medida que van obteniéndose resultados, el 
+orde na dor los muestra inmediatamente al usuario.
+Cuando se inicia una Sesión de Trabajo, el ana li zador propone la realización de los blancos, calibra dores y controles 
+programados para los procedimientos de medida que debe llevar a cabo. El usuario puede escoger realizar o no los 
+blancos y los calibrado res. Si no los realiza, el analizador utiliza los últimos datos disponibles. Los controles también 
+pueden activarse o no. Durante una sesión, mientras el analizador está trabajando, el usuario puede introducir nue-
+vas muestras a analizar, normales o urgentes. Cada vez que se añade una nueva muestra, el analizador propone 
+automáti ca mente los posibles nuevos blancos, calibradores o controles que sea necesario realizar. Una sesión de 
+trabajo puede permanecer abierta durante uno o más días. Cuando se cierra una sesión y vuelve abrirse otra nueva, 
+el analizador propone de nuevo la realización de blancos, calibradores y controles. Se recomienda reiniciar la sesión 
+en cada jornada de trabajo.
+El analizador determina las concentraciones de los analitos a partir de medidas de absorbancia óptica. Para la me-
+dida de la concentración de un cierto analito en una muestra, el analizador pipetea un volumen determinado de la 
+muestra y del reactivo correspondiente, los termostatiza rápidamente dentro de la misma punta y los dispensa en 
+el rotor de reacciones. La propia velocidad de dispensación junto con la geometría del pocillo de reacción provocan 
+la agitación de la mezcla y se inicia la reacción química. En los modos bireactivos la reacción se inicia cuando el 
+analizador posteriormente dispensa un segundo reactivo en el mismo pocillo de reacción. Las reacciones pueden 
+ser de bioquímica o de turbidimetria. En ambos casos, la reacción o la cadena de reacciones producidas generan 
+substancias que atenuan ciertas lon gi tudes de onda de la luz, ya sea por absorción o por dispersión. Comparando 
+la inten si dad luminosa de una determinada longitud de onda que atraviesa un pocillo cuando hay reacción y cuando 
+no hay reacción, puede determinarse la concentración del analito correspondiente. Esta comparación se cuantifica 
+con la magnitud física llamada absorbancia. En algunos casos la concentración es función directamente de la absor-
+bancia, en otros casos es función de la variación de la absorbancia en el tiempo, dependiendo del modo de análisis.
+2.3. Transporte y reexpedición del analizador
+En caso de que sea necesario reexpedir el analizador, o bien moverlo haciendo uso de un vehículo de transporte, es 
+importante bloquear el brazo manipulador y usar el embalaje original para asegurar que el aparato no sufra ningún 
+daño. Para embalar el instrumento, es recomendable seguir las siguientes indicaciones: (de la hoja de ins trucciones 
+de desembalaje.)

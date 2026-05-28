@@ -1,0 +1,20 @@
+Manual usuario 
+ 
+ 
+ 
+Manual usuario 
+ 
+ 
+ 
+156
+156
+Biosystems
+Biosystems
+En esta pantalla se muestran los resultados acumulados. Véase Ilustración 105 
+e Ilustración 106.
+Ilustración 105 
+Pantalla de acumulado del control de calidad - Vista tabular
+Ilustración 106 
+Pantalla de acumulado del control de calidad - Vista gráfica
+A la izquierda se muestra la lista de técnicas con resultados acumulados de con­
+trol de calidad. Al seleccionar una técnica de la lista, a la derecha de la pantalla se

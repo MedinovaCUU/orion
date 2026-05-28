@@ -1,0 +1,44 @@
+17
+Uso previsto
+• 
+El analizador BA200 sirve para determinar las concentraciones de analitos mediante medidas in vitro de bioquímica, 
+turbidimetría y electrolitos sobre muestras humanas de suero, orina, plasma, líquido cefalorraquídeo o sangre total. 
+El Analizador BA200 está optimizado para trabajar con la línea de reactivos de bioquímica, turbidimetría y electro­
+litos de BioSystems. Los Reactivos no incluidos en la validación del analizador BA200 realizada en BioSystems SA, 
+requerirán la validación completa y detallada por parte del usuario o del laboratorio. 
+Se recomienda encarecidamente validar el funcionamiento global del analizador y de los reactivos en el ámbito del 
+laboratorio, teniendo en cuenta la fase pre analítica y cualquier otro aspecto relevante.
+El analizador es exclusivamente para uso profesional, es decir, para usuarios con una formación y capacidad adecuada 
+para su utilización. Conjuntamente a la instalación del instrumento se instruye a los usuarios de la operatoria del 
+analizador y del software que lo acompaña. 
+Las condiciones ambientales de funcionamiento del analizador son las normales de un laboratorio de análisis clínicos, 
+estas condiciones se detallan en el capítulo de especificaciones.
+• 
+El analizador Y200 sirve para determinar las concentraciones de analitos en vinos, bebidas, alimentos y muestras de 
+cultivos biológicos mediante análisis bioquimicos.
+El Analizador Y200 está optimizado para trabajar con la línea de reactivos FoodQuality de BioSystems. Los Reactivos 
+no incluidos en la validación del analizador Y200 realizada en BioSystems SA, requerirán la validación completa y 
+detallada por parte del usuario o del laboratorio. 
+Se recomienda encarecidamente validar el funcionamiento global del analizador y de los reactivos en el ámbito del 
+laboratorio, teniendo en cuenta la fase pre analítica y cualquier otro aspecto relevante.
+El analizador es exclusivamente para uso profesional, es decir, para usuarios con una formación y capacidad adecuada 
+para su utilización. Conjuntamente a la instalación del instrumento se instruye a los usuarios sobre el funcionamiento 
+del analizador y del software que lo acompaña. 
+Las condiciones ambientales de funcionamiento del analizador son las normales de un laboratorio de análisis, estas 
+condiciones se detallan en el capítulo de especificaciones.
+1. Introducción
+El analizador BA200/Y200 es un analizador automático de acceso aleatorio que realiza lecturas a 200 determinacio­
+nes por hora. Está especialmente diseñado para realizar análisis clínicos de bioquímica, turbidimetría y lectura de 
+electrolitos. El funcionamiento del instrumento se gestiona en tiempo real desde un ordenador externo conectado 
+(on-line) al equipo. El ordenador debe ser de uso dedicado para nuestra aplicación.
+El analizador está compuesto por un brazo que aspira y dispensa el reactivo y la muestra y segundo brazo que agita 
+la mezcla de reactivo y muestra.
+Hay un rotor para posicionar los reactivos y las muestras. Este rotor está refrigerado e incorpora un lector de códigos 
+de barra.
+Hay un segundo rotor, el de reacciones, donde se realiza la mezcla del reactivo y muestra. También es donde se reali­
+zan las lecturas fotométricas mientras evoluciona la reacción. El rotor de reacción está termostatado e incorpora una 
+estación de lavado para vaciar las reacciones finalizadas, lavar y secar las cubetas que serán utilizadas en la próxima 
+vuelta preparaciones. Esto permite realizar un flujo continuo de preparaciones.
+A nivel de seguridad, el analizador incorpora los siguientes elementos: detector de colisión vertical en el brazo de 
+aspiración de muestras y reactivos, detector de coágulo en la bomba cerámica y detectores de presencia en todas las 
+tapas.

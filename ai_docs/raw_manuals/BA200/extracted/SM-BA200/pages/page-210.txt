@@ -1,0 +1,14 @@
+1
+2
+Ilustración 8.100 Desmontaje ventilador
+8.16.2. AC17097 Filtro de entrada
+Herramientas: 2 llaves inglesas
+Desmontaje del filtro:
+1. Con la ayuda de la llave inglesa desmonte la pieza (4). Véase Ilustración 8.101.
+2. Saque el filtro metálico (3)
+Montaje del ventilador:
+1. Cambie el filtro o límpielo con agua y jabón, asegúrese de que la malla no está obstruida
+2. Coloque el filtro en su alojamiento y ponga la pieza (4). Asegúrese de que el filtro está concéntrico con el soporte 
+y no quede torcido. Apriete la pieza (4) con la llave inglesa.
+Manual de servicio
+210

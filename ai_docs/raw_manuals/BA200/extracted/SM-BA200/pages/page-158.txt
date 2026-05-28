@@ -1,0 +1,29 @@
+3. Ajuste la tensión de la correa según las indicaciones del montaje del motor.
+Montaje motor:
+1. Inserte el motor en su alojamiento.
+2. Ponga los 4 tornillos (10) y (11) con sus arandelas y tuercas sin apretarlos.
+3. Coloque la correa en la polea del motor.
+4. Ajuste la tensión de la correa a 4 Kg, estirando el motor hacía fuera. Empiece apretando los tornillos (11) y 
+luego los tornillos (10) para fijar fuertemente el motor.
+5. Conecte el cable del motor.
+6. Realice los ajustes del brazo con el programa de servicio. 
+9
+8
+11
+10
+12
+Ilustración 8.40 
+Montaje correa y motor polar
+8.11.6. AC16598 - Correa vertical / AC16600 - Motor vertical
+Herramientas: Llave allen de 2.5 mm y de 3 mm, llave fija de 7
+Desmontaje motor:
+1. Desconecte el cable del motor.
+2. Quite los 4 tornillos (15) y (16) que sujetan al motor.
+Desmontaje correa:
+1. Afloje los tornillos (15) y (16) que sujetan al motor.
+2. Quite el tornillo (14) y la pieza que sujeta la correa. 
+Montaje correa:
+1. Corte 7 dientes de la correa. Realice el corte haciendo coincidir el inicio y fin del hilo de acero con el trozo que 
+se descarta.
+Manual de servicio
+158

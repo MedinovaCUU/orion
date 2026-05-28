@@ -1,0 +1,23 @@
+171
+171
+Lista de accesorios
+Código
+Representación
+Descripción 
+AC16 361
+Adaptador cerrado para tubos primarios (45)
+AC16 362
+Botellas de reactivo de 60 mL (10)
+AC16 363
+Botellas de reactivo de 20 mL (10)
+AC16 364
+Botellas marrón de reactivo de 60 mL (10)
+AC16 365
+Botellas marrón de reactivo de 20 mL (10)
+AC16 366
+Tubos de conexión para la botella de agua purificada (3 m), 
+tubo delgado y tubo grueso.
+AC16 367
+Tubo de conexión para los residuos (3 m)
+AC16 368
+Botella de solución de lavado con tapón

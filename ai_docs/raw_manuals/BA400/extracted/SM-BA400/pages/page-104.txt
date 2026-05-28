@@ -1,0 +1,37 @@
+6. Programa de servicio
+El programa de servicio permite el ajuste y verificado del analizador, así como también ayuda a la búsqueda de 
+averías que pueda tener el analizador. 
+6.1. Identificación de las partes del programa.
+La pantalla del programa se divide en partes que son comunes a todos los menús. Ver Ilustración 6.1
+1
+2
+3
+4
+5
+6
+6
+1 – Barra de menús
+2 – Panel de ayuda
+3 – Barra lateral
+4 – Cuadro de ajuste 
+5 – Iconos de estado
+6 – Líneas de mensajes
+Ilustración 6.1 
+Pantalla formato
+Nombre
+Descripción
+Barra de menús
+Se accede a los diferentes menús del programa.
+Panel de ayuda
+Ayuda incrustada, indica paso a paso el proceso de ajuste para cada tipo de ajuste.
+Barra lateral
+Iconos de actuación sobre el analizador.
+Cuadro de ajuste
+Cuadro con las diferentes opciones para el ajuste de posicionamiento.
+Iconos de estado
+Iconos que muestran permanentemente el estado de algunos elementos del analizador.
+Línea de mensajes
+Línea de estado que muestra mensajes de ejecución de acciones. Hay 2 ubicaciones 
+donde muestra mensajes.
+Manual de servicio
+104

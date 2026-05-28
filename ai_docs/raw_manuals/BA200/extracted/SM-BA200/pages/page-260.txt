@@ -1,0 +1,54 @@
+Número de cuentas fotodiodo principal
+Mínimo
+Máximo
+Longitud de onda 635
+450 000
+950 000
+Longitud de onda 750
+450 000
+950 000
+Número de cuentas fotodiodo 
+de referencia
+Mínimo
+Máximo
+Longitud de onda 340
+100 000
+400 000
+Longitud de onda 405
+400 000
+950 000
+Longitud de onda 420
+400 000
+950 000
+Longitud de onda 430
+400 000
+950 000
+Longitud de onda 505
+400 000
+950 000
+Longitud de onda 520
+300 000
+950 000
+Longitud de onda 560
+400 000
+950 000
+Longitud de onda 600
+200 000
+950 000
+Longitud de onda 620
+Longitud de onda 635
+Longitud de onda 750
+Medidas realizadas a la longitud de onda de 
+505 nm
+Parámetro
+Valor
+Repetibilidad medida a 0 Abs
+Desviación 
+estándar 
+< 0.0002 Abs
+Estabilidad a 0 Abs
+Rango
+< 0.0015 Abs
+ 
+Manual de servicio
+260

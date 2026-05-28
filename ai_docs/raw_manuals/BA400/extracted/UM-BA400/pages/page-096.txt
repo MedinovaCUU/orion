@@ -1,0 +1,53 @@
+Manual usuario 
+ 
+ 
+ 
+Manual usuario 
+ 
+ 
+ 
+96
+96
+Biosystems
+Biosystems
+ 
+Modo de cálculo 
+El modo de cálculo puede ser manual o estadístico. Indica cómo calcular los 
+márgenes para representar la gráfica de Levy-Jennings y activar las alarmas de las 
+reglas de Westgard.
+Modo de calculo
+Descripción
+Manual
+Utiliza los márgenes teóricos de los valores de 
+asentamiento del suero control, introducidos al dar de 
+alta un control. Permanecen inalterables, a no ser que se 
+desee asignar nuevos valores acumulados.
+Estadístico
+Utiliza los márgenes calculados a partir de la media y la 
+SD de las series anteriores. 
+El número mínimo de series indica el número de 
+controles medidos por el analizador antes de empezar a 
+calcular la media y la SD. Durante estas primeras series 
+se utiliza internamente el modo manual. El número 
+mínimo de series a programar es de 5. 
+Diversas normativas de calidad en el laboratorio 
+recomiendan asignar 20 series mínimas al empezar a 
+utilizar un determinado lote de control.
+ 
+Reglas a aplicar 
+Seleccione que reglas de Westgard quiere que se apliquen a los controles de 
+calidad para está técnica.
+ 
+ 
+Sirve para dar de alta los controles con sus valores de lotes y concentración. 
+ 
+)
+Véase como dar de alta un control en el capítulo 10.3.6 
+ 
+Selección de los controles 
+En esta tabla muestra los diferentes controles dados de alta para la técnica. En la 
+casilla active que controles va a usar, ya que puede tener varios controles crea­
+dos. Puede activar hasta 3 controles a la vez.
+10.3.1.6. Parámetros técnicas: opciones
+Pantalla donde se programan los valores límites para dar avisos y alarmas al usuario 
+en función de los resultados.

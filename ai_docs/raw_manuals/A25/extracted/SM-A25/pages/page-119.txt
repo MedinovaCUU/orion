@@ -1,0 +1,19 @@
+119
+Motor mounting:
+1. Put the new motor in its location
+2. Fit the 4 screws (5) and (6), the nuts and washers loosely
+3. Place the belt on the motor pulley
+4. Adjust the belt tension to 60N, stretching the motor out. Start by tightening the screws (6) and then the screws 
+(5) to firmly fix the motor.
+5. Connect the cable to the Y motor 
+6. Perform arm adjustments with service program and test runs
+Belt mount:
+1. Put the new belt in place, between the motor and the pulley
+2. Lower the carriage Z to gain access to the screw housings (7)
+3. Put the belt clamp in position and screw in the screws (7) to fasten the belt clamp to the Y carriage
+4. Adjust the belt tension to 60N, stretching the motor out. Start by tightening the screws (6) and then the screws 
+(5) to firmly fix the motor.
+5. Perform arm adjustments with service program and test runs
+5
+6
+Figure 6.11

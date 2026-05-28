@@ -1,0 +1,79 @@
+Campo
+Valor modelo BA200
+Valor modelo Y200
+Nombre Usuario
+SERVICE
+SERVICE
+Contraseña
+BA200
+Y200
+6.3. Descripción de los menús funcionales
+La tabla siguiente muestra el contenido de cada uno de los menús del programa
+Nombre Menú
+Descripción
+Configuración
+Se accede a las diferentes opciones de configuración del programa
+• 
+General
+• 
+Idioma
+• 
+Código de barras
+• 
+Usuarios
+• 
+Cambio de usuario
+Ajustes/Test
+Se accede a las diferentes opciones para ajustar y verificar los diferentes subconjuntos del 
+analizador
+• 
+Posicionamiento
+• 
+Fotometría
+• 
+Balanzas botellas, depósitos
+• 
+Motores, válvulas y bombas
+• 
+Termostatización
+• 
+Detección de desbordamiento en rotor
+• 
+Código de barras
+• 
+Módulo ISE
+• 
+Modo estrés
+Utilidades
+Se accede al conjunto de utilidades: 
+• 
+Modo demostración 
+• 
+Información del analizador
+• 
+Actualización del firmware
+• 
+Cambio de rotor
+• 
+Crear ReportSAT
+Históricos
+Se accede a las opciones de informes
+• 
+Informes históricos
+Ayuda
+Opciones de ayuda
+• 
+Manuales
+• 
+Acerca de
+Salir
+Opciones de salida
+• 
+Con Apagado
+• 
+Sin Apagado
+6.4. Configuración
+6.4.1. Analizador
+Permite la configuración de las siguientes opciones:
+Manual de servicio
+84

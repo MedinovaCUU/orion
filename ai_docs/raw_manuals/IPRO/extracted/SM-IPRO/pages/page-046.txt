@@ -1,0 +1,26 @@
+46
+Manual de servicio
+4.3.  AC17418 - Carcasa del brazo
+Desmontaje:
+1. Quitar los 3 tornillos (8)
+2. Quitar la tapa del brazo (9)
+Montaje:
+1. Siga los pasos del desmontaje en sentido inverso
+8
+9
+Ilustración 4.6.  Desmontaje tapa brazo
+4.4.  AC17407 - Detector de la tapa / PC11555 - Placa de led de estado
+Desmontaje detector de tapa:
+1. Quitar la tapa lateral izquierda. Ver capítulo 4.2
+2. Acceder por el lateral y quitar los 2 tornillos (10) para quitar la chapa de sujeción del detector (11) 
+3. Quitar el cable de conexión del detector de la tapa
+Desmontaje placa de led de estado:
+1. Quitar la tapa lateral izquierda. Ver capítulo 4.2
+2. Acceder por el lateral y quitar las 2 tuercas (13) 
+3. Quitar la placa del led de estado (12)
+Montaje detector de tapa:
+1. Conectar el cable al nuevo detector (11).
+2. Colocar el detector alineándolo correctamente en su ubicación
+3. Sujetar el detector con la chapa superior y presionarlo con los 2 tornillos (10)
+4. Colocar la tapa lateral
+5. Verificar el funcionamiento del detector

@@ -1,0 +1,48 @@
+Manual usuario 
+ 
+ 
+ 
+Manual usuario 
+ 
+ 
+ 
+210
+210
+Biosystems
+Biosystems
+A=[
+ABS
+min ]
+principal
+ 
+(10)
+RA
+S
+L1
+Time (Cycles)
+ABS
+1
+31
+KINETIC − MonoReagent
+L2
+Ilustración 133 
+ Representación del método de cálculo cinética
+15.2.7. Cinética bireactiva
+En este modo de funcionamiento es el analizador que prepara el reactivo de trabajo 
+en cada preparación.
+Primero se dispensa el reactivo A, en el ciclo 31 se dispensa la muestra, en el siguiente 
+ciclo se agita, en el ciclo 66 se dispensa el reactivo B, se agita y empieza la reacción. 
+En el tiempo L1 el analizador empieza a tomar lecturas hasta el tiempo L2. 
+RA
+S
+L1
+Time (Cycles)
+ABS
+1
+31
+KINETIC − BiReagent
+L2
+66
+RB
+Ilustración 134 
+ Representación del método de cálculo cinética

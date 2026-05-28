@@ -1,0 +1,74 @@
+42
+Connector
+Function
+Pin
+CN16
+CAN bus connection 
+Pin 1: 24V
+Pin 2: GND
+Pin 3: NC
+Pin 4: CAN_H
+Pin 5: CAN_L
+CN7
+Vertical motor 
+Pin 1: Coil 1
+Pin 2: Coil 1
+Pin 3: Coil 2
+Pin 4: Coil 2
+CN10
+Horizontal motor 
+Pin 1: Coil 1
+Pin 2: Coil 1
+Pin 3: Coil 2
+Pin 4: Coil 2
+CN14
+Horizontal start-up detection Pin 1: Detection
+Pin 2: GND
+Pin 3: 5V
+CN15
+Vertical start-up detection
+Pin 1: Detection
+Pin 2: GND
+Pin 3: 5V
+Test point
+Function
+TP1
+Horizontal motor reference voltage
+TP2
+Horizontal stepper motor 
+TP3
+Vertical motor reference voltage
+TP4
+Board selection. Direction 1 
+TP5
+5 V
+TP6
+24 V
+TP7
+Board selection. Direction 2 
+TP8
+3.3 V
+TP9
+Vertical stepper motor
+TP10
+Board selection. Direction 3 
+TP11
+CAN_H (bus signal)
+TP12
+24 V (bus voltage)
+TP13
+GND (bus voltage)
+TP14
+CAN_L (bus signal)
+TP15
+Board selection. Direction 4 
+LEDs
+Function (on condition)
+LD2
+Board start-up status
+LD6
+3.3 V voltage
+LD7
+Vertical arm start-up detection
+LD8
+Horizontal arm start-up detection

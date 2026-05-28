@@ -1,0 +1,56 @@
+Manual de servicio
+14
+Símbolo
+Descripción 
+BIOHAZARD
+Prevención de riesgo biológico por manipulación de residuos líquidos
+Manipule con cuidado el contenedor de residuos de alta contaminación. 
+Utilice guantes y vestimenta de protección al manipular el contenedor.
+Deshágase de los residuos de acuerdo con la legislación de su gobierno 
+nacional o local para la eliminación de residuos biológicos peligrosos y 
+consultar al fabricante o distribuidor de los reactivos para más detalles.
+BIOHAZARD
+Prevención de riesgo biológico por manipulación de residuos sólidos
+Manipule con cuidado las partes del analizador que se conviertan en residuos 
+tales como el rotor de reacción, tubos de muestras, botellas de reactivo.
+Utilice guantes y vestimenta de protección al manipular dichos residuos.
+Deshágase de los residuos de acuerdo con la legislación de su gobierno 
+nacional o local para la eliminación de residuos biológicos peligrosos y 
+consultar al fabricante o distribuidor de los reactivos para más detalles.
+NOTE
+Prevención de interferencias electromagnéticas
+El analizador cumple con los requisitos de emisión e inmunidad descritos 
+en la norma UNE -EN 61326-2-6:2006. Este equipo ha sido diseñado y 
+ensayado para la clase B de la norma UNE-EN 55022:2000. En un entorno 
+doméstico puede causar interferencias de radio, en cuyo caso, puede ser 
+necesario tomar medidas para mitigar la interferencia. 
+No usar el analizador en las proximidades de fuentes de radiación 
+electromagnética fuerte (por ejemplo aparatos de centrifugación, transmisores 
+de radio, teléfonos móviles), ya que estas pueden interferir con el 
+funcionamiento adecuado.
+Prevención de un riesgo de emisión de una luz láser
+El analizador incorpora dos lectores de códigos de barra que emiten luz láser. 
+La luz láser es de categoría II. Los lectores únicamente funcionan cuando el 
+analizador está en modo de ejecución y tiene las tapas de los rotores colocadas. 
+En caso de avería o durante el ajuste por parte del personal de asistencia 
+técnica puede activarse el haz sin tener la tapa colocada, en estos casos no mire 
+directamente a la luz láser. 
+Prevención al final de la vida útil del instrumento
+Una vez finalice la vida del instrumento, la retirada del producto debe 
+realizarse de acuerdo con las leyes medioambientales de cada país. Si se 
+pertenece a algún país de la unión europea debe seguirse la directiva RAEE de 
+aparatos eléctricos y electrónicos. Es decir al final de la vida útil del aparato se 
+convierte en residuo y debe separarse de la basura doméstica para su correcto 
+reciclaje, para ello contacte con el distribuidor para realizar el correcto 
+reciclaje.
+Use guantes para manipular cualquier parte del analizador que ha estado en 
+contacto con material biológico: puntas, contenedores, tubos, etc
+Deshágase de este material de acuerdo con la legislación vigente para la 
+eliminación de residuos biológicos peligrosos de su gobierno nacional o local.
+NOTE
+Prevención al desactivar el sensor de las tapas
+La opción de desactivar las tapas únicamente sirve para facilitar al servicio 
+técnico que pueda realizar acciones de mantenimiento o reparación. Una vez 
+finalizado el mantenimiento o reparación, el técnico tiene que volver a activar 
+el sensor de las tapas. Los detectores de tapas son unos elementos de seguridad 
+del analizador.

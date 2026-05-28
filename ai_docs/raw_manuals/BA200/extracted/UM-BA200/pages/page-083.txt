@@ -1,0 +1,37 @@
+83
+83
+Ilustración 46 
+Pantalla para la ordenación de las técnicas
+ 
+ 
+ 
+ 
+ 
+Seleccione una técnica o grupo de técnicas y pulse uno de los botones hasta 
+situar la técnica en la posición deseada.
+ 
+ 
+Pulse este botón para restablecer las técnicas en orden alfabético.
+10.2.5. Código de barras
+Pantalla desde la cuál se configura las opciones del lector de códigos de barra. 
+La Ilustración 47 muestra la pantalla con las diferentes opciones que se pueden 
+configurar.
+ 
+Desactivación del código de 
+Barras
+ 
+Seleccione esta opción para desactivar el lector de código de barras.
+ 
+Tipo de código 
+Seleccione el tipo de código de barras para realizar las lecturas de los códigos de 
+las muestras. Puede seleccionar más de un tipo de código de barras. El código de 
+barras impreso en las etiquetas de los tubos primarios tiene que coincidir con el 
+código seleccionado en la configuración.
+ 
+Activación de los campos 
+del código de barras
+ 
+Cuando este campo no está activado el lector del código de barras identifica 
+todo el código de barras como el identificador de muestra, y el lector podrá leer 
+cualquier código con una longitud entre 1 y 30 caracteres. En una misma sesión 
+se pueden mezclar códigos con distinta longitud.

@@ -1,0 +1,53 @@
+Service manual
+200
+• 
+Photometry test
+• 
+Integration times
+• 
+Number of accounts
+• 
+Dark accounts
+• 
+Repeatability without moving filter drum
+• 
+Stability at 505 nm
+• 
+Repeatability by moving filters
+Final functional verification
+To carry out the functional verification of the instrument, follow the detailed instructions in chapter 6.2.6 and fill in the 
+Excel sheet with the verification data and then print it for registration.
+Ask the technical service department for the Excel file.
+Finalitation
+• 
+Place an indelible label to the refurbished analyzer. The label contains the following information (check with the 
+national legislation of each country):
+1. The name and address of the company responsible for implementing and refurbishing
+2. The date of last revision
+3. The number of refurbish performed
+4. Indication that it is a renewed equipment
+5. Lifetime after refurbishing.
+• 
+Add a new box of accessories (AC16064).
+• 
+Use original packaging. Previously check it the status and if it is deteriorated then replace by a new one.
+• 
+Send completed record to the Bioystems service technician (pdf) sat@biosystems.es
+AVI. Removal of equipment from use for repair or disposal 
+of waste
+In the event that the equipment must be removed for repair or disposal, follow the instructions below:
+• 
+Use gloves and protection for the user who is going to carry out the disinfection process. Treat consumables (ro­
+tor, reagent bottles, sample tubes) as potentially infectious.
+• 
+Check if there is any reaction rotor in its housing and reagent bottles. If so, discard them.
+• 
+Empty the waste and liquid containers from the system
+• 
+Clean the exterior of the equipment with a damp cloth and neutral soap. In case of splashes, clean locally with 
+alcohol.
+• 
+In case of changing or disposing of the tip, use the tip change utility of the service program. Treat it as potentially 
+infectious.
+• 
+Follow current national regulations to dispose of waste considered potentially infectious.

@@ -1,0 +1,72 @@
+Manual usuario 
+ 
+ 
+ 
+Manual usuario 
+ 
+ 
+ 
+24
+24
+Biosystems
+Biosystems
+3. 
+Identificación de los componentes 
+principales
+Las partes principales constituyentes del analizador aparecen identificadas y nu­
+meradas en las siguientes figuras y sus listas asociadas:
+1
+2
+3
+11
+11
+5
+4
+10
+10
+9
+6
+8
+7
+12
+12
+Ilustración 1 
+Componentes principales
+1 – 
+1 – Tapa general
+Tapa general
+2 – 
+2 – Agitador R2
+Agitador R2
+3 – 
+3 – Rotor de reacciones
+Rotor de reacciones
+4 – 
+4 – Rotor de muestras
+Rotor de muestras
+5 – 
+5 – Rotor de reactivos
+Rotor de reactivos
+6 – 
+6 – Brazo de reactivo 1
+Brazo de reactivo 1
+7 – 
+7 – Agitador R1
+Agitador R1
+8 – 
+8 – Tapa de acceso al 
+Tapa de acceso al módulo 
+módulo ISE
+ISE
+9 – 
+9 – Brazo de reactivo 2
+Brazo de reactivo 2
+10 – 
+10 – Brazo de muestra
+Brazo de muestra
+11 – 
+11 – Estación de lavado
+Estación de lavado
+12 – 
+12 – Puertas de acceso a las botellas
+Puertas de acceso a las botellas

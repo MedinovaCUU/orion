@@ -1,0 +1,47 @@
+Lista de recambios
+Código
+Conjunto
+Representación 
+Descripción
+AC17334
+Estación de 
+lavado
+Conjunto estación de lavado sin puntas 
+de aspiración
+AC16598
+Brazo
+Correa movimiento vertical
+AC16599
+Brazo
+Correa movimiento polar
+AC16600
+Brazo, rotor 
+de lecturas
+Motor brazo, rotor de reacciones y 
+estación de lavado
+AC17291
+Agitador
+Motor de continua y pala del agitador
+AC16805
+Agitador
+Cable de los motores para los agitadores 
+(2)
+AC17292
+Brazo
+Punta
+AC16605
+Brazo
+Muelle punta
+FI15128
+Rotor lectura
+Filtro 340
+FI15129
+Rotor lectura
+Filtro 405
+FI15130
+Rotor lectura
+Filtro 505
+FI15131
+Rotor lectura
+Filtro 535
+241

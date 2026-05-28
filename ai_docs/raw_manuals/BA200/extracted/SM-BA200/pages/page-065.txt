@@ -1,0 +1,78 @@
+Manual de servicio
+65
+Conector
+Función
+Pin
+CN1
+Conexión placa fotometría
+Banda plana de 16 pins
+Test point
+Función
+TP3
+Tensión de LED
+TP4
+Tensión de LED
+TP6
+Decodificador 1
+TP7
+Decodificador 2
+TP8
+Decodificador 3
+TP9
+Decodificador 4
+TP10
+Activación LED 1
+TP11
+Activación LED 2
+TP12
+Activación LED 3
+TP13
+Activación LED 4
+TP14
+Activación LED 5
+TP15
+Activación LED 6
+TP16
+Activación LED 7
+TP17
+Activación LED 8
+TP18
+Activación LED 9
+TP19
+Activación LED 10
+TP20
+Activación LED 11
+TP21
+Activación LED 12
+LEDs
+Función (Condición de encendido) modelo BA200
+LD1
+LED de 340 nm
+LD2
+LED de 560 nm
+LD3
+LED de 670 nm
+LD4
+LED de 600 nm
+LD5
+LED de 535 nm
+LD6
+LED de 505 nm
+LD7
+LED de 635 nm
+LD8
+LED de 405 nm
+LD9
+Posición libre
+LD10
+Posición libre
+LD11
+Posición libre
+LD12
+Indicador del decodificador de I2C
+LEDs
+Función (Condición de encendido) modelo Y200
+LD1
+LED de 340 nm
+LD2
+LED de 620 nm

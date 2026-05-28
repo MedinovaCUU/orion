@@ -1,0 +1,45 @@
+4. Conecte los cables de la punta de la siguiente manera:
+Nombre conector
+HP
+TP
+DN
+Reactivos
+Reactivos
+Reactivos
+Muestra
+Código cable
+PLMA0329
+PLMA0330
+PLMA0328
+Color cable
+Amarillo
+Blanco
+Negro
+5. Ponga una brida para sujetar los cables. Asegúrese de que los cables no sobresalgan por la parte superior de la 
+placa electrónica.
+6. Ajuste el potenciómetro de detección con el destornillador de ajuste. 
+7. Véase capítulo 6.5.1 del manual de servicio 
+8. Seleccione el conmutador de la placa en función del brazo donde lo instale: 
+Placa
+Código
+Selector
+Detección 
+muestra 1
+DM1
+0110
+Detección reactivo 
+DR1
+1110
+Detección 
+reactivo 2
+DR2
+0001
+9. Verifique que la chapa de colisión de la punta entra y sale correctamente del fotodetector. En el caso de que la 
+chapa esté cortando el fotodetector suba un poco la placa de detección.
+8.9.3. 
+AC16603 - Punta muestras / AC16604 - Punta reactivos
+Hay dos modelos homologados de punta. Se diferencian por el diámetro del encapsulado negro superior. Un modelo 
+tiene el diámetro del encapsulado de 10 mm y el otro de 13 mm.
+El recambio viene con el muelle (4) y el fijador muelle (2) apropiado a la punta.
+Encapsulado negro
+177

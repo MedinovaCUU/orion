@@ -1,0 +1,25 @@
+Lista de recambios
+Código
+Representación 
+Descripción
+AC16561
+Placa rotor muestras
+AC16562
+Placa rotor reactivos
+AC16563
+Placa fluidos
+AC16564
+Placa Jeringas
+AC17302
+Placa detección de nivel
+AC16565
+Placa fotobarreras
+AC16634
+Placa Entrada Ac
+AC17285
+Placa Leds Manifold
+AC17308
+Placa doble fotodetector
+AC17423
+LED estatus
+271

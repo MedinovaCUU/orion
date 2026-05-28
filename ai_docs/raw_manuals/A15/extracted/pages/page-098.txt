@@ -1,0 +1,12 @@
+99
+5.5.2. Informes de Servicio
+El programa permite visualizar e imprimir varios informes de servicio. En los informes impresos aparece el 
+número de serie del analizador y el nombre del técnico actual.
+Se guardan informes organizados por: Ajustes, Test, Utilidades, Monitor y Resumen de acciones y tareas 
+realizadas.
+Se puede en todos los casos seleccionar las acciones realizadas en un rango de fechas que decide el técnico.
+El técnico puede introducir en el cuadro Obsrvaciones descripciones breves de las incidencias que pueden 
+su ceder en el analizador y de las reparaciones y operaciones de mantenimiento que pue de realizar sobre el 
+instrumento. 
+5.5.3. Cambio de idioma
+Permite elegir el idioma del programa de servicio.

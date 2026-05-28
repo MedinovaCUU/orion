@@ -1,0 +1,72 @@
+Código
+Descripción del recambio
+AC16617
+Centrador rotor
+AC17216
+Detector de tapa rotor de reacción
+AC16620
+Sensor de temperatura rotor reacción
+AC16597
+Muelle puntas estación de lavado
+AC17289
+Punta aspiración estación de lavado
+AC17290
+Punta aspiración + secador estación de lavado
+AC17334
+Conjunto estción de lavado sin puntas de aspiración
+AC16565
+Placa fotobarrera
+AC16619
+Correa vertical estación lavado
+AC16618
+Motor elevación estación lavado
+AC16575
+Columna de soporte rotor de reacción
+AC16615
+Correa rotor de reacción 
+AC16621
+Conjunto ventiladores termostatización rotor
+AC16616
+Motor rotor de reacción
+AC16622
+Conjunto peltiers rotor de reacción
+AC16614
+Conjunto banco óptico sin filtros
+AC16560
+Placa fotometría
+AC16559
+Placa control de fotometría
+FI15128
+Filtro 340
+FI15129
+Filtro 405
+FI15130
+Filtro 505
+FI15131
+Filtro 535
+FI15132
+Filtro 560
+FI15133
+Filtro 600
+FI15134
+Filtro 635
+FI15135
+Filtro 670
+AC17226
+Conjunto rotor de reacción
+AC17308
+Placa doble detector de inicio
+AC17309
+Detector de desbordamiento
+AC17302
+Placa detector de nivel de desbordamiento
+8.15.1. AC16617 - Centrador rotor
+Herramientas: Llave allen de 2 y Loctite 243
+Desmontaje:
+1. Desatornille el espárrago (1) del centrador rotor. Ver Ilustración 8.78
+2. Tire hacía arriba el centrador rotor para desmontarlo. 
+Montaje:
+1. Sustituya el espárrago (1) por uno de nuevo. No lo aproveche.
+2. Ponga un poco de loctite 243 (fijatornillos) en la rosca del espárrago (1).
+Manual de servicio
+188

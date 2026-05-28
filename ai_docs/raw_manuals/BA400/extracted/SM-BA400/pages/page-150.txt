@@ -1,0 +1,16 @@
+5
+4
+Ilustración 8.2 
+Desmontaje pistón 
+6
+Ilustración 8.3 
+Desmontaje tornillos tapa
+8.1.3. 
+Desmontaje carcasas laterales
+Para desmontar la carcasa lateral derecha siga los pasos siguientes:
+1. Quite los 3 tornillos del lateral de la bandeja superior (1).
+2. Abra la puerta derecha y quite los 2 tornillos internos (2).
+3. Quite los 3 tornillos exteriores (3).
+4. Levante un poco la carcasa y extráiga el lateral del soporte.
+Manual de servicio
+150

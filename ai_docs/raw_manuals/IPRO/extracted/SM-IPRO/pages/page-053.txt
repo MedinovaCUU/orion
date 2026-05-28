@@ -1,0 +1,18 @@
+53
+Montaje motor:
+1. Colocar el nuevo motor en su ubicación
+2. Colocar los 3 tornillos (1) y (2) , las tuercas y arandelas sin apretar
+3. Colocar la correa en la polea del motor
+4. Ajustar la tensión de la correa a 45 N, estirando el motor hacía fuera. Empezar apretando los tor­
+nillos (2) y luego los tornillos (1) para fijar fuertemente el motor.
+5. Conectar el cable del motor a la placa CPU
+6. Realizar los ajustes del brazo con el programa de servicio y los test de funcionamiento
+Montaje correa:
+1. Colocar la nueva correa en su ubicación, entre el motor y la contrapolea
+2. Colocar la abrazadera de la correa con su tornillo (3) y apretarlo bien
+3. Ajustar la tensión de la correa a 45 N, estirando el motor hacía fuera. Empezar apretando los tor­
+nillos (2) y luego los tornillos (1) para fijar fuertemente el motor.
+4. Realizar los ajustes del brazo con el programa de servicio y los test de funcionamiento
+1
+2
+Ilustración 4.17.  Desmontaje motor X

@@ -1,0 +1,32 @@
+16. Coloque un conector T (16) en medio del tubo de residuos de alta contaminación y conecte la salida del tubo 
+de residuos del modulo ISE 
+17. Conecte a la banda plana del modulo el cable de alimentación y el de las comunicaciones RS-232
+18. Consulte en el manual de usuario en el capítulo de instalación del módulo ISE como conectar los diferentes 
+tubos, así como instalar los electrodos y el kit de calibradores.
+19. Vuelva a montar todas las tapas y carcasas.
+12
+13
+16
+14
+15
+Ilustración 8.24 
+Montaje de los tubos 
+8.7. 
+Recambios bomba estación de lavado
+ 
+AC16587
+AC16816
+AC16817
+AC16586
+AC16588
+ 
+AC16585
+AC16587
+1
+2
+4
+3
+5
+(2)+(3)+(4)+(5)
+(3)+(5)
+163

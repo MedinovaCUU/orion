@@ -1,0 +1,80 @@
+177
+F6 600 nm 
+F6 600 nm (Y25)
+[6,26]
+F7 635 nm 
+F7 620 nm (Y25)
+[6,26]
+F8 670 nm 
+F8 635 nm (Y25)
+[6,26]
+F9 670 nm (Y25)
+[6,26]
+Number of counts
+F1 340 nm
+[750000,960000]
+F2 405 nm
+[840000,940000]
+F3 505 nm 
+F3 520 nm (Y25)
+[840000,940000]
+F8 670 nm 
+F9 670 nm (Y25) 
+[840000,940000]
+Darkness counts
+F1 340 nm
+[3700,4300]
+F2 405 nm
+[3700,4300]
+F3 505 nm 
+F3 520 nm (Y25)
+[3700,4300]
+F8 / F9 (Y25) 670 nm 
+[3700,4300]
+SMF repeatability (Noise) 
+SD F0 Covered
+≤ 55
+SD F1 340 nm
+≤ 0.0004
+SD F2 405 nm
+≤ 0.0006
+SD F3 (A25) 505 nm 
+SD F4 (Y25) 420 nm
+≤ 0.0004
+SD F8 / F9 (Y25) 670 nm
+≤ 0.0007
+Stability at 505 nm
+SD F3 505 nm
+SD F4 420 nm (Y25)
+≤ 0.0008
+Max. NC
+[840000,940000]
+Min. NC
+[840000,940000]
+Max NC / Min NC
+≤ 1.006
+Repeatability MF (Repeatability)
+SD F1 340 nm
+≤ 0.0008
+SD F2 405 nm
+≤ 0.0006
+SD F3 505 nm 
+SD F3 420 nm (Y25)
+≤ 0.0005
+SD F4 535 nm
+SD F4 520 nm (Y25)
+≤ 0.0005
+SD F5 560 nm
+SD F5 560 nm (Y25)
+≤ 0.0005
+SD F6 600 nm
+SD F6 600 nm (Y25)
+≤ 0.0005
+SD F7 635 nm
+SD F7 620 nm (Y25)
+≤ 0.0008
+SD F8 670 nm
+SD F8 635 nm (Y25)
+≤ 0.0008
+SD F9 670 nm (Y25)
+≤ 0.0008

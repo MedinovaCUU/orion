@@ -1,0 +1,30 @@
+Manual de servicio
+142
+6.4.5. 
+AC15329 - Rotor fan
+Disassembly
+1. Take out the fridge cover and the front cover
+2. Disassemble the rotor assembly. See chapter 6.4.1
+3. Loosen the 4 screws (9) of the fan to be replaced
+4. Remove the fan (8)
+Mounting
+1. Replace the fan
+2. Place the fan blowing towards the radiator
+3. Place the 4 screws (9) that hold the fan
+9
+8
+6.4.6. 
+CE14758 - Peltier rotor
+Disassembly
+1. Take out the fridge cover and the front cover
+2. Disassemble the rotor assembly. See chapter 6.4.1
+3. Disassemble the transmission assembly
+4. Remove the 4 fans from the rotor. See chapter 6.4.5
+5. Remove the 4 screws (12) that hold the radiators and peltiers
+6. Disconnect the peltier cable (10) from the CPU and remove the 4 peltiers
+Mounting
+1. Replace the 4 peltiers
+2. Clean the thermal silicone of the heating channel and the radiator with alcohol.
+3. Place a thin layer of thermal silicone on both sides of the peltier (10)
+4. Orient the 4 peltiers as indicated in Figure 6.41
+5. Fit each peltier with its radiator and the 4 screws (12).

@@ -1,0 +1,39 @@
+127
+127
+tubos identificados con el lector de código de barras como tubos de muestra a los 
+que manualmente se ha asignado un código de barras. 
+ 
+Ilustración 87 
+Pantalla de creación de la lista de trabajo desde posicionamiento
+También aparece esta pantalla cuando se realiza un Host Query. 
+ 
+)
+Véase capítulo 16 para los detalles del Host Query.
+En la pantalla aparece una tabla con la siguiente información:
+Nombre de las 
+columnas
+Descripción de los campos 
+Tic
+Selección del espécimen.
+Posición
+Posición dentro del rotor del espécimen.
+Código de barras
+Información leída del código de barras del espécimen.
+Identificador de 
+muestra
+Identificador de la muestra, en función de la 
+configuración del código de barras puede ser que 
+coincida con los dígitos del código de barras.
+Tipo
+Indica el tipo de muestra del espécimen. Su introducción 
+proviene de la lista de trabajo o de la información del 
+LIS. En los especímenes que contenga esta misma 
+información en el código de barras se verifica que dicha 
+información coincida. En los casos en que el tipo de 
+muestra no forme parte del código de barras y se lean 
+varios especímenes con el mismo código aparecerá 
+un aviso para determinar cada espécimen a que tipo 
+pertenece.
+Urgente
+Indica si la muestra es urgente. Su introducción proviene 
+de la lista de trabajo o de la información del LIS

@@ -1,0 +1,34 @@
+75
+5.2.6. Ajuste de los sensores de control de nivel
+Esta pantalla permite realizar el tarado de los sensores de control de nivel con los contenedores de agua des-
+tilada y de residuos vacíos (0% de su capacidad) y llenos (100% de su capacidad). La capacidad máxima de 
+los contenedores es aproxi madamente 3 L. El técnico debe elegir si desea tarar la balanza del con tenedor de 
+líquido de sistema o bien la del contenedor de residuos, con el contenedor respectivo vacío o lleno. Según el 
+ajuste solicitado, debe colocarse el contenedor correspon dien te, vacío o lleno, y pulsar el botón Ajustar. A partir 
+de los tarados realizados el anali za dor ajusta automáticamente las balanzas. Pulsando el botón Guardar, el 
+anali za dor guarda los nuevos valores de los parámetros ajustados. Pulsando el botón Cancelar, se mantienen 
+los últimos valores guardados y no se guardan los valores actuales.
+5.2.7. Ajuste de la sensibilidad de la detección de nivel
+Esta pantalla permite ajustar la sensibilidad del sistema de detección de nivel capa citi vo de la punta.
+Para realizar dicho ajuste primero seleccionar el tipo de rack: racks con carga metálica(color gris) o racks de 
+plático (color negro).
+Luego seleccionar el tipo: pediátrico, diámetro 13/15mm, reactivo o colector de heces
+En la posición 2 de la bandeja de racks (empezando por la izquierda) debe colo carse el rack seleccionado con 
+la configuración siguiente dependiendo del tipo de rack:
+• 
+Rack pediátrico: poner 4 copas pediátricas en las posiciones 6, 7, 18 y 19 con 150 µL de líquido de sistema.
+• 
+Rack diámetro 13/15 mm: poner 4 tubos en las posiciones 6, 7, 18 y 19 con 1000 µL de líquido de sistema.
+• 
+Rack reactivo: poner 2 botellas de 20 mL en las posiciones 5 y 6 con 2 mL de líquido de sistema.
+Se puede ver gráficamente el posicionado de los tubos/botellas y racks en la foto de la pantalla según el rack 
+seleccionado. 
+ 
+ 
+Al pulsar el botón Ajustar el brazo manipulador hace lecturas de sensibilidad automáticamente hasta detectar 
+el agua en cada uno de los tubos. Una vez finalizada esta operación, el brazo se aparca en su posición de 
+origen y muestra los resultados de las sensibilidades de cada uno de los tubos. El programa calcula la media 
+de todas las sensibilidades, el resultado final es la sensibilidad media. El técnico se ha de fijar que los valores 
+de sensibilidad de cada tubo tienen que ser parecidos, en caso contrario repetir toda la medida.
+También se puede introducir un valor de sensibilidad manualmente en la casilla correspondiente para cada 
+tipo de rack.

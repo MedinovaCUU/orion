@@ -1,0 +1,59 @@
+119
+119
+ 
+Arrastrar y copiar 
+Existe la utilidad de seleccionar y arrastrar para copiar y generar números conse­
+cutivos de los códigos de pacientes, para ello siga los pasos siguientes:
+1. Seleccione la fila a partir de que código quiere copiar.
+2. Posicione el cursor del ratón en la columna de paciente/muestra. 
+3. Pulse el botón derecho y arrastre el cursor hasta la fila que quiera copiar. Al 
+pulsar el botón del ratón verá que el icono del cursor cambia.
+4. El código de paciente se copia tantas veces como muestras haya seleccionado, 
+creando el código con una numeración consecutiva a partir del número inicial 
+del que partía.
+ 
+Copiar y pegar 
+También puede copiar una lista de códigos creada desde otro programa y luego 
+pegarla en la pantalla de creación de listas. Siga los pasos siguientes:
+1. Crea una lista de códigos de muestra. Sólo la lista de códigos sin ninguna 
+técnica ni código de barras
+2. Cópiela. CRTL+C
+3. Seleccione el programa del BA400
+4. Seleccione la fila a partir de donde quiera modificar los códigos de muestras
+5. Pegue la lista. CRTL+V
+ 
+ 
+Este botón permite eliminar de la sesión de trabajo técnicas y muestras. Selec­
+cione primero la fila a eliminar y luego pulse el botón. Los blancos y calibra­
+dores se eliminan automáticamente si no hay ningún paciente más con dicha 
+técnica. Los controles también se pueden eliminar.
+ 
+ 
+Permite guardar una sesión para recuperarla posteriormente. El programa le 
+pedirá que introduzca un nombre para la sesión.
+ 
+ 
+Permite cargar una sesión previamente guardada. El programa le dejará seleccio­
+nar el nombre de una lista de sesiones guardadas.
+ 
+ 
+Pulse este botón para enviar las muestras y reactivos a posicionar en los rotores. 
+El programa le cambiará automáticamente de pantalla. Una vez las muestras 
+están enviadas a la pantalla de posicionamiento éstas quedarán marcadas en gris.
+ 
+)
+Ver capítulo 10.5.3 para el procedimiento del posicionamiento en el rotor.
+ 
+ 
+Pulse el botón para abrir una pantalla desde la cuál le permite introducir los 
+resultados de todos los pacientes que tengan técnicas externas. 
+10.5.2. Entrada adicional de información de paciente
+Desde esta pantalla se realiza la introducción de los datos de paciente de las mues­
+tras que haya en la sesión en curso o de las muestras que hayan sido seleccionadas 
+desde la pantalla de históricos. Cuando se usa esta pantalla fuera de históricos, 
+es necesario que exista una sesión de trabajo creada, es decir, códigos de muestra 
+introducidos y técnicas solicitas a estas muestras
+La introducción de los datos de paciente se puede realizar en cualquier momento, 
+antes, durante o al finalizar la ejecución de la sesión de trabajo. De esta forma, 
+el usuario puede preparar una sesión e inmediatamente iniciar la ejecución de la 
+misma en el analizador y posteriormente introducir los datos adicionales.

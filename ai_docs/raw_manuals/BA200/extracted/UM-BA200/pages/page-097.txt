@@ -1,0 +1,33 @@
+97
+97
+Ilustración 57 
+Pantalla parámetros técnicas, calibración y blancos
+ 
+Replicados blanco 
+Número de replicados para realizar el blanco. El margen va de 1 a 3. En el cál­
+culo de la concentración se usa la media de los replicados.
+ 
+Factor 
+Si la técnica no dispone de calibrador, introduzca el valor del factor multiplicati­
+vo para calcular la concentración.
+ 
+Calibrador experimental 
+Introduzca los datos del calibrador así cómo su concentración. Pulse el icono de 
+nuevo para abrir directamente la pantalla de calibración y poder introducir los 
+parámetros del calibrador. 
+ 
+)
+Véase cómo introducir los parámetros del calibrador en el capítulo 10.3.5
+ 
+Replicados calibrador 
+Número de replicados para realizar el calibrador. El margen va de 1 a 3. En el 
+cálculo del factor se usa la media de los replicados.
+ 
+Usar calibrador alternativo 
+Cuando una técnica tiene varios tipos de muestra creados, generalmente se cali­
+bra para un tipo (por ejemplo suero) y los otros tipos de muestra (por ejemplo 
+orina) utilizan la calibración del primer tipo (suero). Seleccione en este campo el 
+tipo de muestra de donde obtendrá la calibración.
+ Valores y curva de calibración Muestra los valores del calibrador asignados a la técnica. Sólo se muestran a ni­
+vel informativo. Para crear nuevos calibradores y/o modificarlos, edítelos desde 
+la pantalla de calibradores.

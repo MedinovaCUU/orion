@@ -1,0 +1,47 @@
+95
+95
+genes de los tiempos van del ciclo 3 al 35. El tiempo de lectura 2 siempre debe 
+ser superior al tiempo de lectura 1.
+ 
+Diluyente 
+Seleccione con que diluyente quiere que se realice la dilución. Puede escoger 
+entre agua destilada, solución salina o un diluyente genérico. Esta botella se 
+utilizará tanto para las prediluciones como para realizar las repeticiones y deberá 
+ser instalada en el rotor de reactivos.
+ 
+Factor de predilución 
+Active esta opción cuando la muestra requiera de una predilución. La predilu­
+ción se puede realizar automáticamente con el analizador o posicionar la mues­
+tra ya prediluida manualmente en el rotor de muestras. Los parámetros necesa­
+rios son:
+Parámetro de predilución
+Descripción
+Analizador/usuario
+Seleccione quien quiere que realice la 
+predilución: el analizador automáticamente o 
+manualmente por el usuario.
+Factor
+Introduzca el factor de predilución. El margen 
+que puede introducir va de 2 a 200.
+Misma dilución para 
+controles
+Active esta opción cuando quiera que el 
+control también se diluya exactamente igual 
+que la muestra
+Hemólisi
+Active esta opción cuando quiera realizar la 
+maniobra de hemólisi automática. Con esta 
+maniobra seleccionada se profundiza más la 
+punta dentro de los tubos de muestras en el 
+momento de realizar la aspiración.
+ 
+Repetición automática 
+Active esta opción cuando quiera que se realicen repeticiones automáticas cuan­
+do se ha obtenido un resultado de concentración fuera del límite de linealidad o 
+del límite de detección. 
+ 
+Factor de postdilución 
+Introduzca el factor reducido y aumentado. Al realizar repeticiones automáticas 
+las preparaciones se harán con estos ratios de postdilución. Las repeticiones ma­
+nuales muestran estos valores por defecto, pero permiten al usuario introducir 
+un factor de dilución distinto antes de enviarlas.

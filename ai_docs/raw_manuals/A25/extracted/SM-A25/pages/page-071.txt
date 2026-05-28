@@ -1,0 +1,97 @@
+71
+Esquema de Sistema Nevera
+Refrigerator System Scheme
+RACKS BOARD
+CIIM00010
+CPU BOARD
+CIIM00006
+FAN x3
+REFRIG.
+TEMP.
+SENSOR
+1 2 3 4
+1 2 3 4
+1 2 3 4
+1 2 3 4 5 6
+1 2
+1 2
+1 2
+1
+1
+16 pins
+16 pins
+1 2 3 4
+4 3 2 1
+Negro/Black
+Azul/Blue
+Blanco/White
+Rojo/Red
+1
+Rojo/Red
+Negro/Black
+Rojo/Red
+Negro/Black
+Rojo/Red
+Negro/Black
+Rojo/Red
+Negro/Black
+Rojo/Red
+Negro/Black
+Rojo/Red
+Negro/Black
+Rojo/Red
+Negro/Black
+Rojo/Red
+Negro/Black
+Rojo/Red
+Negro/Black
+Verde/Green
+Verde/Green
+Rojo/Red
+Negro/Black
+Negro/Black
+Rojo/Red
+Negro/Black
+Rojo/red
+Negro/Black
+Rojo/Red
+Azul/Blue
+Blanco/White
+Rojo/Red
+J9
+J10
+J11
+J12
+J3
+J8
+J2
+J7
+J5
+J4
+J1
+J34
+J39
+J15
+REFRIGERATOR PELTIER CELL x3
+REFRIG.
+COVER
+SENSOR
+REFRIG.
+STATUS
+LED
+REFRIG. PLATE
+TRAY PLATE
+PLMA00202
+PLMA00023
+PLMA00194
+PLMA00197
+PLMA00205
+PLMA00191
+PLMA00196
+PLMA00001
+PLMA00192
+PLMA00193
+PLMA00201
+PLMA00200
+PLMA00199
+Figure 4.11

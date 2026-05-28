@@ -1,0 +1,9 @@
+70
+Manual de servicio
+ 
+El refrigerador de reactivos solo se ajustará en las posiciones 1 y 2 y se ajusta de manera similar que un rack 
+de reactivos. Para ello seleccionar XYZ Tray-fridge.
+5.2.3.3. Ajuste del eje Z de los tubos
+Cuando se selecciona el ajuste de la bandeja de racks pediátricos aparece otro ajuste, la relación de Z entre 
+pediátricos y tubo.
+Para realizar dicho ajuste seguir los pasos siguientes:

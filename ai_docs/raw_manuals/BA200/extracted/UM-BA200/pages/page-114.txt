@@ -1,0 +1,42 @@
+Manual usuario 
+ 
+ 
+ 
+Manual usuario 
+ 
+ 
+ 
+114
+114
+Biosystems
+Biosystems
+Ilustración 73 
+Pantalla de programación de los parámetros ISE
+ 
+Decimales Número de decimales en que se mostrarán los valores de la concentración.
+ 
+Función slope Introduzca los parámetros a y b de la fórmula Y=aX+b. Estos parámetros 
+modifican el valor de la concentración del resultado de manera lineal. Esta 
+opción sirve para equiparar los resultados de diferentes analizadores. Donde X 
+será sustituida por el valor de concentración e Y será el valor de concentración 
+modificada.
+ 
+Control de calidad 
+Introduzca los valores para el control de calidad
+ 
+)
+Véase cómo introducir los valores del control de calidad en el capítulo 10.3.1.5
+ 
+Rangos de referencia 
+Introduzca los valores de referencia. 
+ 
+)
+Véase cómo introducir los valores de referencia en el capítulo 10.3.1.6.
+10.3.9. Técnicas externas
+Las técnicas externas son aquellas técnicas cuyo resultado no es medido por el 
+analizador pero que interesa que aparezca en el informe por paciente o en el his­
+tórico del paciente. Cuando se asigna una de estas técnicas en la sesión de trabajo 
+se podrán introducir los resultados relativos a estas técnicas desde la pantalla de 
+creación de la sesión o desde la de visualización de los resultados.
+Toda la información introducida en la técnica podrá ser mostrada en el informe 
+por paciente.

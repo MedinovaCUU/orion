@@ -1,0 +1,12 @@
+—  17  —
+2.8. - Battery pack (optional)
+The battery pack is an optional element of the semi-automatic analyzer. This element is placed under the appliance in a 
+compartment designed for this purpose, and connected to the main plate through the J3 connector.
+That pack is comprised of a set of NiMH batteries and an electronic circuit to control the battery charge and discharge. 
+When the semi-automatic analyzer is plugged in to the main power supply and has a battery pack connected, the circuit 
+charges the batteries to their maximum capacity. 
+If for any reason there is a failure in the main power supply, the semi-automatic analyzer electronics are automatically 
+switched to the secondary battery power supply, without the user realising it. 
+The electronics of the charge circuit ensures that the batteries are not left to run down to the minimum, to prevent the 
+battery cells from being damaged. 
+The battery capacity on full charge will supply power to the semi-automatic analyzer for two hours.

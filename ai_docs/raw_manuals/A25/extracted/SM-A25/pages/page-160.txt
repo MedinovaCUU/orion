@@ -1,0 +1,13 @@
+Manual de servicio
+160
+Refrigerator Power
+12 V power supply
+12V lamp power supply
+36V Power supply
+Figure 6.69 
+36V and 12V cable
+Fans
+Lamp
+5V cable 
+Figure 6.70 
+Cable connections at the output of power supplies

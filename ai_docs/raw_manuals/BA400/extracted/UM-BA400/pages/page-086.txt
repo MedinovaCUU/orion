@@ -1,0 +1,70 @@
+Manual usuario 
+ 
+ 
+ 
+Manual usuario 
+ 
+ 
+ 
+86
+86
+Biosystems
+Biosystems
+Elemento
+Descripción
+CALC
+Técnica calculada
+STD
+Técnica estándar
+ISE
+Técnica ISE
+TEST-UNIT
+Unidades
+SAMPLE_TYPE
+Tipo de muestra.
+OFF-SYSTEM
+Técnica externa
+• 
+En la segunda columna muestra el nombre del elemento tal como aparece en 
+el analizador.
+• 
+En la tercera columna muestra el nombre del elemento que se utiliza en la 
+comunicación con LIS (mensajes recibidos y enviados). Es imprescindible 
+editar estos nombres para ajustarlos a cada LIS. Cuando se instala aparecen 
+los mismos nombres que se usan en el analizador.
+ 
+Elementos mapeados LIS 
+Caja de selección que permite filtrar los elementos mostrados por uno de los 
+tipos.
+10.2.8. Usuarios
+Permite la creación, edición y borrado de los nombres de los usuarios que acceden 
+a la aplicación.
+Hay tres niveles de usuarios. El nivel administrador, el nivel supervisor y el nivel 
+operador.
+Nivel
+Descripción 
+Administrador
+Tiene acceso total a la aplicación. A este usuario se le 
+permite crear el usuario supervisor.
+Desde este nivel de permisos se accede a la pantalla de 
+configuración de la visualización de técnicas. Los usuarios 
+de supervisor y operador no tienen acceso a esta pantalla.
+Supervisor
+Tiene acceso limitado. A este usuario se le permite crear los 
+usuarios con permiso de operador. Se le da permiso para 
+modificar los valores de los calibradores y controles y de 
+crear un número limitado de técnicas.
+Operador
+Es el nivel de acceso más restrictivo. Este usuario sólo se le 
+permite ejecutar listas, visualizar e imprimir resultados y 
+consultar los parámetros de las técnicas.
+Tabla 7 Niveles de usuarios
+En la Ilustración 55 se muestra la pantalla de creación y mantenimiento de los 
+usuarios.
+ 
+ 
+Haga clic en el icono para acceder a la creación de nuevos usuarios. Se activan 
+los campos para introducir los datos del usuario.
+ 
+ID usuario 
+Introduzca un nombre para identificar al usuario en la aplicación.

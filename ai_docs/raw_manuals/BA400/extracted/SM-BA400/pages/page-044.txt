@@ -1,0 +1,32 @@
+Punta Reactivos
+Punta Muestra
+Volumen máximo contenido en 
+el interior
+500 mL
+40 mL
+Termostatización
+Sí
+No
+Sensor de temperatura
+Sí
+No
+Detección de líquidos
+Sí 
+Sí
+La placa de control de la punta CIIM00049 (2), es la misma para el brazo de reactivos y para el brazo de muestra.
+3.7. Mejoras en los brazos de pipeteo. BA400v2
+En el subconjunto de los brazos se ha modificado las siguientes partes:
+• 
+Mejora en el cableado y tubos que van al brazo. 
+• 
+Mejora en el sistema de colisión de la punta en el brazo
+1
+2
+3
+4
+5
+6
+Ilustración 3.31 
+Sujección del brazo
+Manual de servicio
+44

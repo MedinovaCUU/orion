@@ -1,0 +1,41 @@
+3
+ESPAÑOL
+vvvVerificación de
+elementos mecánicos
+1. Introducción
+Para el correcto funcionamiento del microscopio imLD, se
+recomienda realizar las siguientes operaciones de mante-
+nimiento preventivo como mínimo una vez al año.
+2. Verificación de elementos
+mecánicos
+a. Verificar el ajuste de la platina , con los controles de
+posicionamiento de muestra, la cual debe mantener la
+posición fijada.
+- Si es necesario lubricar proceder de la siguiente manera:
+- Eje X:
+- Limpiar las guías (1) del rodamiento con un trapo seco.Para
+acceder totalmente a ellas mover la platina hacia adelante
+y hacia atrás.Mediante un pequeño pincel aplicar grasa de
+silicona en las guías (1) del rodamiento. Para extender
+bién la grasa mover la platina. Limpiar el exceso de grasa
+con un trapo.No poner grasa en los dientes del piñón y
+cremallera.
+- Eje Y:
+- Repetir la operación de engrase en las guías del roda-
+miento Y (2). No poner grasa en los dientes del piñón y
+cremallera.
+S
+6
+2
+b. Verificar el movimiento vertical de la platina con los con-
+troles macrométricos y micrométricos asegurándose que
+la platina se mantiene en la posición deseada. En caso de
+no ser correcto ajustar la tensión de los controles con el
+anillo de ajuste de tensión del control de enfoque (3).
+- Para lubricar utilizar el mismo tipo de grasa que en los
+casos anteriores. Limpiar las guías (4) con un trapo seco,
+para acceder a su totalidad subir y bajar la bandeja
+portamuestras, limpiandolas por debajo y por encima de la
+3
+1
+4

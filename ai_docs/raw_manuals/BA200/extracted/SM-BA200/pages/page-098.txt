@@ -1,0 +1,26 @@
+Ilustración 6.18 
+Pantalla ajuste de la termostatización de la estación de lavado
+1
+Ilustración 6.19 
+Punto de medición de la temperatura del calefactor de la estación de lavado
+6.5.5.2. Ajuste de la termostatización del rotor de reacción
+Para la correcta realización de las reacciones de muestra y reactivo, es necesario que el rotor de reacción este a una 
+temperatura estable. Desde esta pantalla se realiza el ajuste de la termostatización del rotor de reacción.
+ 
+) Véase Ilustración 6.20
+Siga los pasos para realizar el proceso de ajuste:
+1. Ponga 2 botellas de reactivo llenas con agua destilada atemperada a la temperatura del refrigerador en las po­
+siciones 45 y 46 del rotor de reactivos y un tubo de muestras lleno de agua en la posición 1 (no use un pocillo 
+pediatrico).
+2. Asegúrese de rellenar como mínimo los siguientes volúmenes:
+Botella
+Volúmen
+Posición
+R1
+14 mL
+45
+R2
+5 mL
+46
+Manual de servicio
+98

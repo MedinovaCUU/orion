@@ -1,0 +1,25 @@
+100
+Manual de servicio
+5.5.4. Usuarios
+Se pueden crear 2 tipos de usuario con diferentes niveles de acceso:
+•SAT, este usuario tiene acceso total al programa. Este usuario es el que tiene permiso para crear otros usua-
+rios y/o eliminarlos. 
+•Operador, este usuario tiene acceso restringido al programa. Únicamente puede realizar los test y ejecutar 
+las utilidades. No puede realizar ningún ajuste ni cargar ningún fichero previamente guardado de ajustes, ni 
+cambiar la versión del firmware del analizador.
+Desde el menú de usurios se puede crear, eliminar y cambiar de usuario. La opción de modificar la contraseña, 
+es cada usuario que se puede modificar su propia contraseña.
+5.6. Monitor
+Estas funciones permiten la comunicación de bajo nivel con el analizador para cargar nue vas versiones del 
+programa del microprocesador (firmware) en la memoria flash del analizador o bien para restaurar valores de 
+ajuste por defecto. 
+El firmware del analizador reside en una memoria permanente de tipo flash. El cambio de este programa 
+puede realizarse a través del ordenador sin necesidad de cambiar el chip de memoria. Una vez cambiado 
+el programa, el analizador se reiniciará con la nueva versión de programa. Mientras se realiza el proceso de 
+copia la pantalla indica el tanto por ciento de carga realizada. Para cargar la nueva versión debe pulsarse el 
+botón Iniciar, previamente indicar dónde está ubicado el progra ma mediante el botón Abrir. Primero se borra 
+el contenido actual de la memoria flash y luego se carga automáticamente el nuevo pro grama. Esta operación 
+puede durar algunos minutos.
+Existe la opción de Restaurar Ajustes por Defecto, seleccionando la opción y pulsando Iniciar.
+Si en algún caso el técnico desea que el analizador entre en modo monitor (por ejemplo porque el analizador 
+no responde por haber cargado mal el firmware), puede hacerlo apagando el analizador, pulsando el botón

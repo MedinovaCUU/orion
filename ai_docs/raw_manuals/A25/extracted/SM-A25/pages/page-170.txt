@@ -1,0 +1,51 @@
+Service manual
+170
+Laboratory name:
+Analyzer Model:
+Serial number:
+Name of the technical manager:
+Instalation date:
+Steps Technical service actions
+Done
+1
+Location / Analyzer fixing / Leveling
+2
+Unlocking the manipulator arm
+3
+Installation of waste containers, system liquid and washing solution
+4
+Preparation of the washing solution
+5
+Preparation of the system liquid
+6
+Reactor rotor installation
+7
+Connection to the electric power
+8
+Connecting the communication cable to the computer
+9
+Installation of the user program on the computer
+10
+Set up background programs: energy saving, Windows update, ...
+11
+Install the service program on the computer and launch a stress of 10 
+min.
+12
+Verify that the stress result is satisfactory
+13
+Installing the sample / reagent racks and fridge rack
+14
+Verify the analyzer serial number for those units that have special 
+settings or specifications. Write down only if applicable
+Actions of the product specialist
+14
+Install reagents
+15
+Enter the calibration values and control ranges
+16
+Perform the analyzer verification process. Follow the instructions in 
+chapter 7.2.6
+Operator signature and date
+Customer signature and date
+Installation sheet 
+record

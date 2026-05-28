@@ -1,0 +1,21 @@
+72
+Manual de servicio
+5.2.4. Ajuste del posicionamiento del rotor
+Esta pantalla permite ajustar el posicionamiento del rotor de pocillos respecto al punto de dispensación (Paso 
+1) y respecto al sistema óptico (Paso 2). Para asegurar un correcto ajuste de la posición del rotor deben rea-
+lizarse ambos ajustes: primero respecto al punto de dispensación y después respecto a la óptica. 
+5.2.4.1. Centrado del rotor respecto al punto de dispensación
+Ponga el útil AC15920 en el primer pocillo del rotor. Asegurar que la pieza está posicionada hasta el fondo del 
+pocillo. El punto de dispensación del rotor está indicado con el agujero del útil.
+El analizador inicia el rotor y posiciona el primer pocillo del rotor en la posición de dispennsación actualmente 
+programada. El técnico dispone de botones para mover el rotor paso a paso para ajustar, si es necesario, esta 
+posición y de botones para ajustar de forma más fina la coordenada X del brazo sobre el punto de dispensa-
+ción. La pantalla muestra la coordenada actual del ajuste de posición respecto al punto de dispensación y la 
+de posición del eje X, y las coordenadas iniciales de entrada a la pantalla como información para el técnico. 
+Cuando se han ajustado ambos puntos satisfactoriamente se puede pasar directamente al Paso 2 en el que 
+se ajustará la posición del rotor respecto a la óptica pulsando el botón Aceptar (no se guardan estos valores 
+aún en el analizador); o bien se puede pulsar el botón Cancelar en cuyo caso se vuelve a condiciones iniciales 
+de entrada a la pantalla.
+Si se vuelve a esta pestaña (Paso 1) una vez se ha pulsado el botón Guardar en la pestaña de Paso2, sólo 
+se pueden consultar los valores del los ajustes y no se permite volver a ajustar respecto al punto de dispen-
+sación

@@ -1,0 +1,46 @@
+Manual usuario 
+ 
+ 
+ 
+Manual usuario 
+ 
+ 
+ 
+68
+68
+Biosystems
+Biosystems
+Ilustración 34 
+Brazo agitador
+ 
+Ciclos Los ciclos en qué actúan cada uno de los brazos 
+• 
+Ciclo 2: Agitación R1 y Muestra.
+• 
+Ciclo 19: Agitación R2 .
+Una vez se ha agitado la mezcla el brazo agitador se desplaza hasta la estación de 
+lavado para limpiar la paleta.
+8.7. Brazo de dosificado
+El analizador dispone de un brazo para el dosificado de las muestras y de los 
+reactivos. 
+Con el brazo se dosifican las muestras y los reactivos 1 y 2.
+El brazo dispone de una estación de lavado para limpiar la punta por dentro y 
+por fuera.
+ 
+Volúmenes de dispensación Volúmenes mínimo y máximo que puede dosificar el brazo:
+• 
+Muestras: de 2 μL a 40 μL
+• 
+Reactivo 1: de 90 μL a 300 μL
+• 
+Reactivo 2: de 10 μL a 100 μL
+ 
+Sistemas de detección 
+El brazo dispone de un sistema de detección de nivel. 
+También hay un sistema de detección de colisión vertical para evitar dañar la punta 
+cuando hay alguna colisión accidental. 
+ 
+Detector de coágulo 
+El brazo también dispone de un detector de coágulo. Este sistema avisa al usua­
+rio cuando la punta queda obstruida. La obstrucción puede estar causada por 
+restos de coágulo que estén presentes en la muestra.

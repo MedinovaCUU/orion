@@ -1,0 +1,17 @@
+4. Tense la correa y el motor según el punto 4 y 5 del montaje del motor.
+31
+30
+28
+29
+Ilustración 8.87 
+Cambio del motor de la estación de lavado
+8.15.10. AC16575 - Columna de soporte rotor de reacción
+Herramientas: Allen 3
+Desmontaje:
+1. Desatornille el tornillo (32)
+2. Quite la columna (33)
+Montaje:
+1. Sustituya la columna.
+2. Fíjese en la orientación de la columna. Tiene un posicionador (34)
+3. Coloque la arandela y el tornillo (32), apriételo.
+197

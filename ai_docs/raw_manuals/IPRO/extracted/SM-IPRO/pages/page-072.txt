@@ -1,0 +1,56 @@
+72
+Manual de servicio
+AI.  ESPECIFICACIONES TÉCNICAS
+ATENCIÓN
+El fabricante no se hace responsable de los daños causados por una incorrecta utilización del 
+aparato.
+ESPECIFICACIONES GENERALES
+• 
+Procesador para portaobjetos de inmuno fluorescencia 
+• 
+Ciclo de preparación de predilución 21 s (con 2 mL de solución de lavado)
+• 
+Ciclo de dispensación de muestra 15 s (con 2 mL de solución de lavado)
+• 
+Volumen de reactivo mínimo 25 μL en pasos de 1 μL
+• 
+Volumen de muestra mínimo 3 μL en pasos de 1 μL
+• 
+Sistema de lavado Dispensación y aspiración mediante dos puntas independientes
+• 
+Dimensiones (tapa cerrada) 780 x 610 x 540 mm
+• 
+Dimensiones (tapa abierta) 780 x 610 x 910 mm 
+ 
+(long. x prof. x altura)
+• 
+Peso 83 kg
+ 
+ÁREA DE TRABAJO
+• 
+6 racks para muestras de 11 posiciones cada una. Total de 66 muestras.
+• 
+1 rack para conjugados de 5 posiciones. Opcional 1 rack adicionales.
+• 
+1 rack para controles de 19 posiciones.
+• 
+2 gradilla para diluciones de 96 posiciones cada uno. Total 192 posiciones.
+• 
+Tubos de muestras de ø13 mm, de ø15 mm (altura máx. 100 mm), pocillo pediátrico ø10 mm
+• 
+2 bandejas para portaobjetos con 8 portaobjetos. Total de 16 portaobjetos.
+• 
+Frascos de conjugados de 15 mL
+• 
+Lector de código de barras para muestras, reactivos y controles con identificación positiva 
+de muestra.
+• 
+Lector de código de barras bidimensional para identificación de portaobjetos.
+SISTEMA DE DISPENSACIÓN
+PUNTAS
+• 
+Recorrido vertical 110 mm
+• 
+Detección de nivel por conductividad
+• 
+Autoajuste de posición fotoeléctrico

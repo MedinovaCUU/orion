@@ -1,0 +1,55 @@
+El detector de inicio (12) asegura con una pestaña de la polea la posición inicial del rotor de muestras.
+Exteriormente el vaso se cubre con una tapa (1). Hay un detector de efecto Hall (8) que indica la presencia de la 
+tapa en el analizador.
+Referencias de la ilustración 3.1, 3.2 y 3.3:
+1 – Tapa rotor de muestras
+2 – Adaptadores para tubo y pocillo pediatrico
+3 – Rotor de muestras
+4 – Conjunto rotor
+5 – Pulsador anclaje rotor
+6 – Posicionador rotor
+7 – Bolas de anclaje del rotor
+8 – Detector de tapa
+9 – Vasija del rotor
+10 – Soporte del conjunto rotor
+11 – Motor del movimiento circular del rotor
+12 – Detector de inicio del rotor
+13 – Correa transmisora
+14 – Polea
+15 – Ventana de protección del lector de código de barras
+16 – Lector de código de barras
+17 – Placa electrónica CIIM00052
+18 – Tornillo de ajuste para la orientación angular del lector 
+código de barras
+19 – Tornillo de ajuste para la altura del lector de código de 
+barras
+20 – Tornillo de ajuste de la proximidad del lector código de 
+barras
+15
+16
+17
+8
+9
+10
+11
+12
+13
+14
+Ilustración 3.2 
+Detalle conjunto rotor de muestras
+El lector del código de barras (16) está sujeto con un soporte a la estructura del subconjunto. Está colocado a la 
+altura correspondiente para que el haz ilumine correctamente los tubos colocados en el rotor.
+Hay una ventana de protección que aísla el lector del exterior.
+La posición del lector de código de barras se puede ajustar mecánicamente.
+ 
+) Ver capítulo 6 para proceder con el programa de servicio el ajuste del lector y vea Ilustración 3.3.
+• 
+Para ajustar la orientación angular, afloje los tornillos (18) y mueva manualmente el lector hasta conseguir 
+lecturas correctas. Apriete los tornillos (18).
+• 
+Para ajustar la altura del lector, afloje los tornillos (19) y mueva manualmente hacía arriba o abajo el lector. Una 
+vez el lector lea correctamente, apriete los tornillos (19).
+• 
+Para ajustar la proximidad del lector, afloje los tornillos (20) y mueva manualmente hacía adelante o atrás el 
+lector. Una vez el lector lea correctamente, apriete los tornillos (20).
+27

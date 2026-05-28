@@ -1,0 +1,16 @@
+65
+el sistema correspondiente está averiado y debe ser reparado.
+5.2.1. Ajuste del sistema de termostatización de la punta
+Esta pantalla permite ajustar el sistema de termostatización de la punta de forma que la temperatura de dis-
+pensación de las reacciones sea lo más cercana posible a 37°C. Para realizar este ajuste el analizador debe 
+estar inicializado y colocar el útil de temperatura en la posición indicada en la figura. El líquido a dispensar 
+al principio se toma del contenedor del líquido de sistema para calentar los tubos y el útil, haciendo varias 
+mediciones seguidas, luego se selecciona una de la botellas del rack (p.e. líquido 1, rack fijo) para realizar el 
+ajuste. El técnico debe medir la temperatura del líquido dispensado con un termómetro calibrado a 37°C. El 
+programa muestra la temperatura de consigna del control, que es el parámetro que debe ajustarse para que 
+la temperatura de dispensación sea la correcta. Este parámetro puede ser distinto a 37°C. Cuando el técnico 
+lo indica, el analizador realiza dispensaciones de agua destilada termostatizada sobre una cierta posición del 
+útil (ver figura).
+El técnico debe medir con el termómetro calibrado la temperatura del agua dispensada e introducir esta 
+tempera tura en la pantalla. El analizador modifica automáticamente la temperatura de consigna en función de 
+la temperatura medida con el termómetro para conseguir que la temperatura de dispensación sea 37°C. El téc-

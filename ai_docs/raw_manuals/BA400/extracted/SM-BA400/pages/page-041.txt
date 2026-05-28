@@ -1,0 +1,42 @@
+Referencias de la Ilustración 3.25 y Ilustración 3.26
+41 – Banco óptico
+42 – Placa CIIM00051
+43 – Sensor de tapa
+44 – Sensor de temperatura
+45 – Placa CIIM000050
+46 – Tornillos abertura banco óptico
+47 – Tapa banco óptico
+48 – Junta banco óptico
+49 – Divisores de haz para cada longtiud de onda
+50 – Lentes y portalentes
+51 – Rotor 
+52 – Soporte del banco óptico
+53 – Filtros para cada longitud de onda
+54 – Portafiltros
+55 – Leds para cada longitud de onda
+56 – Fotodetetores, principal y de referencia
+El banco óptico se sujeta directamente sobre la placa CIIM00051 (42). Los diferentes LEDS (55) para cada longitud 
+de onda como los fotodiodos (56) principal y de referencia están soldados en la placa CIIM00051 (42). Los filtros 
+(53) para cada longitud de onda van insertados en el portafiltros (54) y roscados en el soporte del banco óptico (52). 
+Para que cada haz de luz de cada longitud de onda incida en el rotor (51) hay los divisores de haz (49) y las lentes 
+(50). Todo el conjunto está sellado con una junta de goma (48) y una tapa (47).
+3.5. Mejoras en el rotor de reacciones. BA400v2
+En el rotor de reacciones se ha modificado las siguentes partes:
+• 
+En el conjunto de las puntas de la estación de lavado se ha añadido un sensor de desbordamiento y se ha mo­
+dificado la pieza del secador de pocillos
+• 
+La pieza de soporte para alojar la placa de detección de nivel para el desbordamiento.
+• 
+Cambio de ubicación del sensor de colisión de la estación de lavado.
+ 
+) Véase el capítulo AII para saber a partir de que números de serie se ha implementado los cambios.
+A continuación se muestran los cambios realizados en el subconjunto:
+1
+2
+3
+4
+5
+Ilustración 3.27 
+Vista con las mejoras del rotor de reacciones
+41

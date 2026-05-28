@@ -1,0 +1,24 @@
+111
+6. 
+Explanation of spare parts
+In this chapter, firstly, the different operations necessary for both preventive maintenance and repair of the analyzer 
+are described step by step. Below are some basic recommendations for preventive maintenance of the instrument. 
+Finally, a series of indications for its care and cleaning are exposed.
+6.1. 
+Covers and housing
+6.1.1. 
+CA11550 - Arm housing
+1. Remove the side screws that hold the housing (1).
+2. Pull the housing upwards.
+1
+Figure 6.1 
+Removing the arm housing
+6.1.2. 
+CA15533 - Refrigerator housing
+Disassembly:
+1. Remove the reagent bottles separation grid (2).
+2. Remove the 6 screws (3) that hold the top housing of the refrigerator
+3. Lift the upper housing to disconnect the lid detection cables (4) and the refrigerator status led cables
+Mounting:
+1. Follow disassembly steps in reverse order
+2. Replace the screws with new ones to avoid wear on the screw head

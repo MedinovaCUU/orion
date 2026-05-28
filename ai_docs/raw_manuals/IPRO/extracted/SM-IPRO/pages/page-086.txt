@@ -1,0 +1,38 @@
+86
+Manual de servicio
+AV.  INSTRUCCIONES PARA EL 
+REACONDICIONAMIENTO
+AV.1.  Condiciones generales
+AV.1.1  Vida útil
+Si se mantienen las instrucciones del fabricante en cuanto al uso y mantenimiento contenidas en el 
+Manual de Usuario, y utilizando los recambios originales, no hay limitación para la vida útil. BioSys­
+tems manten­drá el servicio de recambios hasta 5 años después de la fabricación del último analizador 
+del mismo modelo.
+AV.1.2  Número de veces que se puede reacondicionar: 
+Se puede reacondicionar tantas veces cómo sea necesario, siempre y cuando se sigan las instrucciones 
+de reacondicionamiento descritas en este apartado y se utilicen los recambios originales.
+AV.1.3  Accesorios utilizados en los aparatos reacondicionados: 
+Cualquier analizador reacondicionado utilizará accesorios suministrados por el fabricante. Cualquier 
+resto de fungible sobrante del anterior uso, tales cómo rotores, botellas extra de reactivo, solución de 
+limpieza, líquido de sistema, etc. será desechado.
+AV.1.4  Personal:
+ El reacondicionamiento lo realizará personal autorizado por Biosystems, normalmente será el personal 
+de servicio técnico del distribuidor, o que haya recibido la formación adecuada. 
+AV.2.  Instrucciones
+AV.2.1  Limpieza y desinfección
+• 
+Utilizar guantes y protección para el técnico que va a realizar el proceso de desinfección. 
+Tratar aquel material consumible (botellas de reactivo, tubos de muestra,etc) como poten­
+cialmente infeccioso.
+• 
+Realizar el proceso de desinfección : Para ello proceder tal como se indica en el apartado 5.2 
+de este manual «Lavado exhaustivo de los circuitos y las puntas»
+• 
+Vaciar los contenedores de residuos y líquido de sistema
+• 
+Retirar los racks de portaobjetos. Lavarlos con abundante agua y jabón, Secar bien y reservar. 
+• 
+Limpiar el exterior del equipo, incluyendo el área de trabajo, con un paño húmedo y jabón 
+neutro. En caso de haber salpicaduras limpiar localmente con alcohol.
+• 
+Seguir la normativa nacional vigente para deshacerse de los residuos considerados potencial­

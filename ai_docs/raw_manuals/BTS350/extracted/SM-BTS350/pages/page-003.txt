@@ -1,0 +1,35 @@
+Manual version 
+Revision date
+Change
+3.0
+February 2017
+Add information about Y-350
+Update chapter 3.3
+Added chapter 5.11
+Update chapters annex I, VI and VII
+2.0
+April 2010
+Add chapter of version change
+1.0
+ May 2009
+Initial version
+ 
+Manual code TESE000010-03-ING
+ 
+Manufacturer’s address 
+BIOSYSTEMS
+ 
+ 
+c/Costa Brava 30, 
+ 
+ 
+08030 Barcelona
+ 
+ 
+SPAIN
+ 
+ 
+http://www.biosystems.es
+ 
+ 
+The BTS-350 semi analyser is compliant with European Union directive 98/79/EC

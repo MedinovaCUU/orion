@@ -1,0 +1,57 @@
+117
+117
+La información está separada en dos pestañas: la información de los pacientes y la 
+información de los blancos/calibradores/controles.
+En la pestaña de los pacientes muestra la siguiente información:
+Nombre de las 
+columnas
+Descripción de los campos de la pestaña de pacientes
+Seleccionado
+Por defecto cada paciente añadido a la sesión aparece 
+seleccionado. Si está activado, al presionar el botón 
+de posicionar envía las muestras a la pantalla de 
+posicionamiento. Si se anula la selección no las envía y 
+quedan pendientes. No se ejecutarán.
+Paciente/Muestra
+Indica el código de paciente. Éste código se puede 
+modificar, pulse sobre el código y pasará a modo edición.
+Urgente
+Un icono indica si el paciente es urgente o normal:
+ Paciente normal
+ Paciente urgente
+(Vacía)
+Indica si la técnica es una técnica ISE o externa (OFF)
+Técnica
+Nombre de la técnica.
+Tipo
+Tipo de muestra.
+Replicados
+Indica el número de replicados de la técnica a realizar. 
+Por defecto aparece el número de replicados programado 
+en la técnica. Puede modificar los replicados de cada 
+muestra.
+Tubo
+Indica el tipo de tubo cuando se vaya a posicionar. Puede 
+ser pediátrico o tubo. Puede modificar el tipo de tubo 
+seleccionándolo de la lista desplegable.
+Técnicas calculada
+Si la técnica pertenece a una técnica calculada, en este 
+campo se muestra el nombre de la técnica calculada.
+Fórmula
+Este campo va asociado con el anterior. Muestra la 
+fórmula de la técnica calculada.
+Perfil
+Si la técnica pertenece a un perfil, en este campo se 
+muestra el nombre del perfil.
+En la pestaña de los blancos/calibradores muestra la siguiente información:
+Nombre de las 
+columnas
+Descripción de los campos de la pestaña de blancos/
+calibradores
+Seleccionado
+Los blancos y calibradores aparecen seleccionados por 
+defecto cuando no hay resultados previos memorizados. 
+Los elementos seleccionados se envían a la pantalla de 
+posicionamiento. Los elementos no seleccionados no se 
+envían y quedan pendientes (no se incluyen en la sesión 
+de trabajo)

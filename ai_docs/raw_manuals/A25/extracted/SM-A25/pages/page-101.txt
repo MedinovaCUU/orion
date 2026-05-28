@@ -1,0 +1,22 @@
+101
+always contain a covered filter so that the analyzer can perform the darkness adjustment. Positions 1 to 9 can 
+be used for optical filters. All the positions of the wheel must be occupied for it to work correctly. The positions 
+that do not contain an optical filter must be occupied by a covered filter. The analyzer includes as standard 8 
+optical filters in positions 1 to 8 and two covered filters in positions 0 to 9. If one of the filters is to be changed, 
+select the desired position of the wheel and press the Change Filter button. The analyzer automatically posi­
+tions the filter wheel appropriately so that the technician can change the filter through the window of the optical 
+system. Next, if it is different, introduce the wavelength of the new filter that has been installed. If the filter is 
+covered, introduce value 0. On closing the screen, the analyzer asks if the filters have actually been physically 
+changed and a series of warnings are given to the technician telling him he must bear in mind whether or not 
+he has changed a filter.
+5.4.6. 
+ Demonstration mode
+On pressing the Start button, the analyzer activates some of its mobile components, imitating functioning during 
+a work routine. The activated mechanical components are the operating arm, the reactions rotor and the filter 
+wheel. On pressing the Cancel button, the analyzer finishes the current cycle and returns to its rest position.
+5.4.7. 
+Read/load adjustments and cycles
+From this screen, it is possible to read the current adjustments that the analyser is using by pressing the button 
+Read Adjustments. 
+It is allowed to save these adjustments in a file. The technician selects the name and location of this file. 
+Also from this same screen and with the button Load Adjustments, the technician is allowed to select an ad­

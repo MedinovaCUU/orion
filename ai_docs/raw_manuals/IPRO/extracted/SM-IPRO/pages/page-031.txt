@@ -1,0 +1,29 @@
+31
+3.2.7  Comprobación de los sensores de los racks
+Con la ayuda del programa de usuario, verificar el correcto funcionamiento de los sensores de los racks 
+a partir de las siguientes instrucciones:
+1. Abrir el programa de usuario
+2. En condiciones normales, la máquina aún no tiene la tapa general montada. En tal caso, el pro­
+grama no permite conectar con la máquina con el estado tapa abierta (estado por defecto). Para 
+poder continuar se debe pulsar el interruptor de tapa manualmente para habilitar el botón “Iniciar 
+instrumento”
+3. Pulsar el botón “Iniciar instrumento”
+4. Por cada una de las 8 posiciones de racks disponibles, la máquina dispone de un sensor situado en 
+el inicio y final del rack. En el programa de usuario, a cada sensor le corresponde un led indicador 
+de color verde tal y como puede observarse en la siguiente imagen. Una vez finalizado el proceso 
+de inicialización presentar un rack en cada una de las 8 posiciones. A medida que se va insertando 
+el rack, observar que el led indicador correspondiente se activa:
+3.3  TESTS
+Varios tests permiten comprobar que los diferentes elementos del procesador funcionan correctamente.
+3.3.1  Tests de motores
+Mediante estos tests el técnico puede comprobar el correcto funcionamiento de todos los motores 
+paso a paso del procesador. La pantalla permite escoger qué motor se desea probar y qué test se desea 
+realizar. El procesador utiliza los siguientes motores paso a paso:
+• 
+Eje X del brazo manipulador
+• 
+Eje Y del brazo manipulador
+• 
+Eje Z del brazo manipulador
+• 
+Bomba dosificadora

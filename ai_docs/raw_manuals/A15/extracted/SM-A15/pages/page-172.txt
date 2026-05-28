@@ -1,0 +1,50 @@
+173
+• 
+Tiempos de integración
+• 
+Número de cuentas
+• 
+Cuentas de oscuridad
+• 
+Repetibilidad sin mover tambor de filtros 
+• 
+Estabilidad a 505 nm
+• 
+Repetibilidad moviendo filtros
+Verificación funcional final
+Para realizar la verificación funcional del instrumento, siga las instrucciones detalladas del capítulo 7.2.6 y rellene la 
+hoja excel con los datos de la verificación y luego imprímela para tenerla de registro.
+Solicite al departamento de servicio técnico el archivo de Excel.
+Finalización
+• 
+Colocar una etiqueta indeleble al equipo reacondicionado. La etiqueta contendrá la siguiente información (verificar 
+la legislación nacional de cada país):
+1. La razón social y dirección de la compañía responsables de la ejecución y reacondicionamiento
+2. La fecha de la última revisión
+3. El número de reacondicionamientos realizados
+4. Indicación de que es un equipo renovado
+5. Vida útil: sin limitación siempre que se sigan las instrucciones del fabricante (uso y mantenimiento). 
+• 
+Añadir una nueva caja de accesorios (AC16065).
+• 
+Utilizar el embalaje original. Previamente verificar su estado y en caso de claro deterioro sustituirlo por uno nuevo.
+• 
+Enviar el registro rellenado al servicio técnico de Bioystems, (en formato pdf) sat@biosystems.es
+AVI. Retirada del equipo del uso por reparacion o 
+eliminación de residuos
+En caso de que el equipo deba ser retirado para su reparación o eliminación seguir las siguientes instrucciones:
+• 
+Utilizar guantes y protección para el usuario que va a realizar el proceso de desinfección. Tratar el material con-
+sumible (rotor, botellas de reactivo, tubos de muestra) como potencialmente infeccioso.
+• 
+Verificar si hay algún rotor de reacción en su alojamiento y botellas de reactivo. En caso afirmativo desecharlos. 
+• 
+Vaciar los contenedores de residuos y líquido de sistema
+• 
+Limpiar el exterior del equipo con un paño húmedo y jabón neutro. En caso de haber salpicaduras limpiar local-
+mente con alcohol.
+• 
+En caso de cambiar o deshechar la punta, utilizar la utilidad de cambio de punta del programa de servicio. Tratarla 
+como potencialmente infecciosa.
+• 
+Seguir la normativa nacional vigente para deshacerse de los residuos considerados potencialmente infecciosos.

@@ -1,0 +1,23 @@
+LIST OF SPARES PARTS
+Code
+Representation 
+Description
+AC16616
+Reaction rotor motor
+AC16617
+Rotor centring device
+AC16618
+Wash station elevation motor
+AC16619
+Wash station vertical movement belt
+AC16620
+Reaction rotor temperator sensor
+AC16621
+Reaction rotor thermostatting fan assemblyl (3 
+wires)
+AC16622
+Reaction rotor peltier assembly
+AC16623
+Reaction/sample rotor motor
+Service Manual
+120

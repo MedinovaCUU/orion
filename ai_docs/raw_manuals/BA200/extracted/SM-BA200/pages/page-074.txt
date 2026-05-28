@@ -1,0 +1,42 @@
+74
+Conector
+Función
+Pin
+CN44
+Sensor de detección de nivel de la botella de 
+residuos
+Pin 1: 5V
+Pin 2: Señal activación
+Pin 3: Detección nivel 
+mínimo
+Pin 4: Detección nivel 
+máximo
+Pin 5: GND
+CN45
+Sensor de detección de nivel de la botella de 
+agua destilada
+Pin 1: 5V
+Pin 2: Señal activación
+Pin 3: Detección nivel 
+mínimo
+Pin 4: Detección nivel 
+máximo
+Pin 5: GND
+Ilustración 4.44 
+Serigrafía de la placa de fluidos
+Test point
+Función
+TP1
+24 V (Tensión en el bus)
+TP2
+GND (Tensión en el bus)
+TP4
+5 V
+TP5
+CAN_H (Señal en el bus)
+TP6
+CAN_L (Señal en el bus)
+TP8
+Tensión DC agitadores
+TP9
+3.3 V

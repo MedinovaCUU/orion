@@ -1,0 +1,31 @@
+47
+Conector
+Función
+Pins
+J8
+Conexión sensor tapa rotor
+1 - Cable 1
+2 - cable 2
+J9
+Conexión termistor
+1 - Cable 1
+2 - cable 2
+J10
+Conexión Led frontal
+1 - Led frontal, rojo
+2 - Led frontal, negro
+3 - Led frontal, verde
+J11
+Conexión Home motor filtros
+1 - Fotodetector, amarillo
+2 - Fotodetector, negro
+3 - Fotodetector, rojo
+J12
+Conexión Home rotor
+1 - Fotodetector, amarillo
+2 - Fotodetector, negro
+3 - Fotodetector, rojo
+J13
+Conexión ventiladores
+1- Ventilador, negro
+2- Ventilador, rojo

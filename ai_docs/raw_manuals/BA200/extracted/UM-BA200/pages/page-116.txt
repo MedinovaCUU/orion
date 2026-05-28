@@ -1,0 +1,52 @@
+Manual usuario 
+ 
+ 
+ 
+Manual usuario 
+ 
+ 
+ 
+116
+116
+Biosystems
+Biosystems
+se oye un “bip” y el LED de estado está en color naranja, indica que el analizador 
+está listo para realizar la conexión con el programa de usuario.
+Enciada el programa de usuario y la conexión de las comunicaciones se realiza 
+automáticamente. 
+En caso de no comunicar con el analizaodr revise la configuración de las comuni­
+caciones y pulse el botón de conectar.
+ 
+)
+Véase capítulo 10.2.1
+Una vez establecida la conexión, el analizadoar entra en modo reposo (Stand by). 
+En este estado se permite acceder a cualquier parte del programa a excepción de las 
+partes que actúen con el analizador (iniciar lista de trabajo, cambio de rotor, etc). 
+Pulse el botón de inicialización del analizador para poder actuar con él. 
+ 
+ 
+El proceso de inicialización es un proceso automático que consite de los siguien­
+te pasos:
+• 
+Proceso de verificaciones previas del estado del analizador y cebado del sistema 
+fluídico.
+• 
+Espera de 20 minutos para estabilizar la temperatura del rotor de lecturas.
+• 
+Inicialización de la línia de base del rotor de lecturas. Este proceso consiste 
+en rellenar los 120 pocillos del rotor con agua destilada, realizar las lecturas 
+fotométricas con todas las longitudes de onda en cada pocillo y vaciar y secar 
+el rotor de lecturas. Las lecturas fotométricas servirán para compensar las 
+lecturas de las determinaciones. Si alguna lectura está fuera de unos márgenes 
+preestablecidos, éste pocillo se descarta. Si hay más de 10 pocillos descartados 
+el programa sugiere cambiar el rotor de lecturas. Todo este proceso dura unos 
+15 minutos.
+El programa gestiona las diferentes caducidades de los elementos del analizador. 
+Los elementos con caducidades son: 
+1. Línia de base con una caducidad de 24 horas. 
+2. Cambio de rotor con una caducidad de 7 días.
+Cuando coinciden las dos caducidades aparece una pantalla de recordatorio para 
+poder realizar el cambio de rotor sin tener que realizar dos veces el proceso de 
+línia de base.
+Se puede cambiar la fecha de caducidad forzando la ejecución del cambio de rotor 
+o de la línea de base en el menú de utilidades. Ver capitulo 10.9.1 y 10.9.3

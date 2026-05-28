@@ -1,0 +1,45 @@
+Service manual
+44
+4.  Electronic system and fluids
+1. CPU Board (CIIM00006)
+2. Power DC/DC (CIIM00090)
+3. Needle Board (CIIM00008)
+4. Photometry Board (CIIM00009)
+5. Racks Board (CIIM00010)
+6. LED Board (CIIM00011)
+7. Communications Board (CIIM00019)
+8. List of components
+9. Auxiliar channel information
+10. Interconnection between boards
+11. Schematic liquid circuit
+4.1. 
+Description of the electronics of the A25 analyzer.
+The electronics of the analyzer are made up of different boards located at different points in the analyzer and dedicated 
+to specific functions. Their different locations correspond to functionality and performance criteria for the functioning 
+of the analyzer.
+There are 7 different boards, which correspond to:
+DC/DC board (CIIM0090)
+CPU Board (CIIM00006)
+Needle Board (CIIM00008)
+Photometry Board (CIIM00009)
+Racks Board (CIIM00010)
+LED Board (CIIM00011)
+Communications Board (CIIM00019)
+4.2. 
+CPU Board (CIIM00006)
+This is the brain of the machine, containing the microprocessor (H8/3003), responsible for controlling all the compo­
+nents of the machine. The board has different data storage systems using either static RAM (U21), FLASH memory 
+(U18) or EPROM (U20). The slot associated with the EPROM is used to check the functionality of the board and the 
+recording of the MONITOR program in the production phases of the analyzer. The other two memories are associ­
+ated with the normal functioning of the analyzer. The FLASH memory holds the application itself as well as different 
+databases related to factory settings, adjustments, state of the rotor and possible extensions to the application.
+The U34 device also exists on the board. This is a logical programmable device (FPGA) dedicated to the control of 
+motors, mapped in register memory associated with end-of-run control, electrovalves, decoding of racks (CIIM00010), 
+level sensing and control of the photometry-associate board (CIIM00009).
+The control of the motors acts directly with the L6208 driver. There are one driver for each motor. The regulation of 
+the current of each axis can be configured by means of a DAC that sets the current set point independently (U5). The 
+sequencers are supplied through the U17 regulator and the drivers take their supply through the J16 connector, which 
+corresponds to the 36V input on the CIIM00006 board.
+The action on the thermostatation systems of the analyzer (needle and rotor) is carried out through H-shaped bridges 
+based on MOS technology (U29 and U30) and controlled directly from the microprocessor. The heating elements are 
+connected to J27 (needle) and J28 (rotor), respectively.

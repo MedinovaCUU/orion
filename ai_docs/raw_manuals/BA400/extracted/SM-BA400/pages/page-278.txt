@@ -1,0 +1,25 @@
+Lista de recambios
+Código
+Representación 
+Descripción
+AC16617
+Centrador rotor
+AC16619
+Correa movimiento vertical estación lavado
+AC16620
+Sensor temperatura rotor reacción
+AC16621
+Conjutno ventiladores termostatización rotor 
+reacción (3 hilos)
+AC16622
+Conjunto peltiers del rotor de reacciones
+AC16623
+Motor rotor de reactivos/muestras
+AC17239
+Motor rotor de reactivos/muestras (Nuevo 
+modelo, ver AII para saber el número de série a 
+partir de su implementación)
+AC16624
+Correa dentada rotor reactivos
+Manual de servicio
+278

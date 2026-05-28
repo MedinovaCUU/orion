@@ -1,0 +1,26 @@
+LIST OF SPARES PARTS
+Code
+Representation 
+Description
+AC16552
+Wheels
+AC16553
+Filter and network connector
+AC16554
+Switch assembly
+AC16555
+CPU board
+AC16556
+Distribution board
+AC16557
+Arm board 
+AC16558
+Tip board
+AC16559
+Photometry Control Board
+AC16560
+Photometry board
+AC16561
+Sample rotor board
+Service Manual
+114

@@ -1,0 +1,24 @@
+Botella
+Volúmen
+Posición
+Muestra
+1 mL
+1
+3. Pulse el botón de ajuste del apartado 1 para realizar un acondicionamiento fluídico del sistema, este acondicio­
+namiento tarda unos 15 minutos. El llenado del rotor lo realiza de manera automática. 
+4. Una vez finaliza la termostatización de las cubetas, ponga inmediatamente la sonda del termómetro en cada uno 
+de los 5 pocillos que se visualizan por el orificio de la tapa del rotor de reacciones.
+ 
+) Véase Ilustración 6.21 para ver el punto de medición.
+5. Introduzca el valor de la temperatura medida con el termómetro de cada pocillo en cada una de las casillas del 
+apartado 2.
+6. Pulse el botón de ajuste del apartado 3 para modificar la consigna del sistema de regulación si el valor medido 
+está fuera de los márgenes.
+ 
+) Véase capítulo AV para ver los márgenes de aceptación del ajuste del rotor de reacción.
+7. Guarde el valor del ajuste.
+Ilustración 6.20 
+Pantalla ajuste de la termostatización del rotor
+Ilustración 6.21 
+Puntos de medición en el rotor de reacciones
+99

@@ -1,0 +1,20 @@
+3. Coloque el espárrago en su posición en el centrador rotor (2).
+4. Oriente el centrador rotor (2) por el lado del espárrago con la ranura del eje (3).
+5. Apriete el espárrago (1) 
+1
+ 
+2
+3
+Ilustración 8.78 
+Montaje y desmontaje centrador rotor
+8.15.2. AC17216 - Detector de tapa 
+Herramientas: Loctite 454
+Desmontaje:
+1. Presionar con un destornillador por el agujero (4) hasta que el detector (5) se desprenda.
+2. Limpie los restos de cola que queden en el agujero.
+3. Desconecte el cable de la placa electrónica.
+Montaje:
+1. Ponga un poco de loctite 454 en el lateral del detector. Inserte el detector por el agujero y presiónelo hasta el final. 
+2. Conecte el cable en la placa electrónica.
+3. Verifique su funcionamiento con el programa de servicio.
+189

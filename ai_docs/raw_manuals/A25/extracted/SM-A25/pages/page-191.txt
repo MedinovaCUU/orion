@@ -1,0 +1,39 @@
+191
+List of spare parts
+Code
+Representation 
+Description
+AC11545
+Rotor cover detector
+MO11544
+Rotor motor
+ME11543
+Rotor belt
+AC13310
+Rotor crown
+AC17358
+Set of internal cables
+AC16064
+Accessories boxes
+AC16068
+Packaging
+AC13362
+Upper chamber for old ceramic dosing pump
+AC13361
+Old dosing pump stop
+AC15529
+Kit to adapt dosing pump in old instruments.
+List of required tools
+Code
+Representation
+Description
+Set of metric Allen keys.
+Thermally conductive silicone grease or similar
+Welder
+Screwdrivers or two Allen keys of 3mm diameter
+AC13694
+Torx wrench set
+AC15212
+Loctites set: 243, 641, 415
+AC13935
+Fluke thermometer

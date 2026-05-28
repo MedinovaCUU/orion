@@ -1,0 +1,23 @@
+8. Pulse el botón de editar para acceder a la pantalla de memorización de las corrientes de referencia. Ver Ilustra­
+ción 6.14.
+9. Las corrientes de referencia son aquellos valores de corriente que se han memorizado en su inicio y sirven para 
+comparar con los valores obtenidos en cada línea de base. De esa manera se verifica la variación de la intensidad 
+luminosa para cada led. Este proceso de comparación es automático y únicamente da un aviso al usuario cuando 
+los valores comparados son muy dispares.
+10. Debido a la larga vida de los leds y de los filtros “Hard Coating”, sólo se dará el aviso en caso de avería. Cuando 
+algún led o filtro se haya estropeado.
+11. Por motivo de avería se haya tenido que cambiar algún filtro o led, entonces el técnico tendrá que memorizar 
+de nuevo la corriente de referencia. 
+12. Seleccione la longitud de onda que haya realizado la intervención y pulse el botón de guardar.
+Ilustración 6.14 
+Pantalla memorización de las corrientes de referencia.
+6.5.2.2. Metrología
+Desde esta opción se puede verificar el estado de la fotometría del analizador. Ver Ilustración 6.15.
+Se puede realizar las siguientes verificaciones:
+• 
+Repetibilidad de las lecturas.
+• 
+Estabilidad de las lecturas.
+• 
+Lectura de absorbancias.
+93

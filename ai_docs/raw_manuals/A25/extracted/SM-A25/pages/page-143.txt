@@ -1,0 +1,16 @@
+143
+6. Place the fans
+7. Make rotor position and temperature adjustments
+12
+11
+10
+Figure 6.40 
+Figure 6.41 
+Orientation of the peltiers
+6.4.7. 
+MO11544 - Rotor motor / ME11543 - Rotor Belt / AC13310 - Rotor gear
+Motor Disassembly
+1. Take out the fridge cover and the front cover
+2. Disassemble the rotor assembly. See chapter 6.4.1
+3. Remove the 4 screws holding the motor
+4. Take out the motor

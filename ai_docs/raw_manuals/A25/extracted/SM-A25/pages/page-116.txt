@@ -1,0 +1,35 @@
+Manual de servicio
+116
+11
+12
+12
+13
+14
+15
+Figure 6.7 
+Removing the hinge spring
+6.2. 
+ Manipulator arm
+6.2.1. 
+MO14620 - X Motor / ME14628 - X Belt / AC14714 - X Pulley
+Motor disassembly:
+1. Remove the refrigerator and front covers
+2. Remove the front plate that protects the CPU board
+3. Disconnect X motor cable
+4. Unscrew the 3 screws (1) and (2) that hold the motor
+Belt removal:
+1. Remove the refrigerator and front covers
+2. Loosen the 3 screws (1) and (2) that hold the motor
+3. Remove the screw (3) that secures the belt to the carriage X
+4. Remove the belt
+Pulley removal:
+1. Remove the refrigerator and front covers
+2. Loosen the 3 screws (1) and (2) that hold the motor
+3. Remove the screw (4) that holds the counter pulley
+4. Remove the counter pulley
+Motor mounting:
+1. Put the new motor in its location
+2. Fit the 3 screws (1) and (2), the nuts and washers loosely
+3. Place the belt on the motor pulley
+4. Adjust the belt tension to 45N, stretching the motor out. Start by tightening the screws (2) and then the screws 
+(1) to firmly fix the motor.

@@ -1,0 +1,94 @@
+Número de serie
+Cambios
+834001500
+Principales mejoras aplicadas en el BA400v2
+• 
+Eliminación placa distribución AC - CIIM00056
+• 
+Nueva versión de placa CPU - CIIM00046-03
+• 
+Nueva versión de placa de fluidos - CIIM00053-03
+• 
+Nueva versión de placa control de fotometría - CIIM00050-02
+• 
+Cambio distribución posicionamiento bombas de membrana
+• 
+Cambio del calefactor de los tubos de la estación de lavado
+• 
+Sustitución de las electroválvulas por checkvalve en la bomba de pistones. Se 
+han añadido unos filtros antes de las checkvalves
+• 
+Añadidos unos filtros frontales a los ventiladores
+• 
+Abertura frontal para visualizar la copa del módulo ISE
+• 
+Añadido un detertor de desbordamiento en la estación de lavado
+• 
+Cambio en el guiaje de los tubos de los brazos
+834001579
+Cambio del modelo de bomba de aspiración
+834001588 
+Cambio en la botella de solución de lavado de dos tubos a uno
+834001697
+Cambio del modelo de la estación de lavado 
+834001892
+830400108
+Cambio de modelo del rotor de reactivos por uno de colores
+Relación de cambios en las versiones de software y firmware para BA400
+Fecha
+Versión de 
+Software
+Versión de 
+Firmware
+Cambios
+15/6/2012
+1.0
+1.0
+• 
+Primera versión
+20/6/2013
+2.0.0
+1.20
+• 
+Nuevo protocolo de comunicaciones ASTM para LIS
+15/10/2013
+2.1.1
+1.26
+• 
+Nuevo protocolo de comunicaciones HL7 para LIS. 
+• 
+Añadido idioma turco
+11/3/2014
+2.1.2
+1.30
+• 
+Corrección menor de bugs
+8/5/2014
+3.0
+2.06
+• 
+Nueva funcionalidad de la pausa de sesión
+20/6/2014
+3.0.1
+2.08
+• 
+Corrección menor de bugs
+10/7/2014
+3.0.2
+2.10
+• 
+Corrección menor de bugs y correcciones de informes.
+2/12/2014
+3.1
+2.14
+• 
+Nuevos parámetros de programación para las técnicas ISE.
+• 
+Reenvio manual de resultados a LIS.
+• 
+Reordenación de las técnicas en la pantalla de selección.
+• 
+Añadidos nuevos informes en pantalla de históricos de blanco y 
+calibración
+Manual de servicio
+288

@@ -1,0 +1,54 @@
+Manual usuario 
+ 
+ 
+ 
+Manual usuario 
+ 
+ 
+ 
+164
+164
+Biosystems
+Biosystems
+10.8.6. Histórico alarmas del analizador
+Pantalla donde se muestra el histórico de alarmas.
+En la parte superior de la pantalla hay varios campos que permiten introducir cri­
+terios de selección para restringir la visualización de los resultados. Puede escoger 
+más de un criterio de selección a la vez.
+ 
+ 
+Una vez realizada la selección, pulse el icono para ejecutar la búsqueda y visuali­
+zar los resultados en la parte inferior de la pantalla.
+ 
+Rango de fechas 
+Introduzca la fecha inicial y la fecha final para realizar la selección de los resulta­
+dos por un rango de fechas.
+ 
+Tipo 
+Las opciones posibles son: Todo, error y advertencias.
+Los resultados se mostrarán en una tabla ordenados por la fecha. Si pulsa en el 
+cabecero de alguna de las columnas de la tabla entonces se reordenarán los resul­
+tados por dicha columna.
+ 
+ 
+Pulse este icono para mostrar los resultados de la página siguiente.
+ 
+ 
+Pulse este icono para mostrar los últimos resultados.
+ 
+ 
+Pulse este icono para mostrar los resultados de la página anterior.
+ 
+ 
+Pulse este icono para mostrar los primeros resultados.
+ 
+ 
+Pulse este icono para eliminar los resultados seleccionados. Una vez eliminados 
+no se podrán recuperar.
+Ilustración 107 
+Pantalla de histórico de alarmas
+10.9. Utilidades
+10.9.1. Cambio del rotor
+Cuando quiera cambiar el rotor por mantenimiento preventivo o porque aparece 
+un aviso que indica que hay demasiadas cubetas descartadas, utilice la opción de 
+cambio de rotor del menú de utilidades. Ver Ilustración 108.

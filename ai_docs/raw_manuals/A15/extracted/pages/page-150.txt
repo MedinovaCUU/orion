@@ -1,0 +1,60 @@
+151
+Número máximo de filtros
+9
+Configuración base del tambor de filtros para el 
+A15
+340, 405, 505, 535, 560, 600, 635, 670 nm 
+Configuración base del tambor de filtros para el 
+Y15
+340, 405, 420, 480, 520, 560, 600, 620, 635 nm 
+Exactitud de longitud de onda
+± 2 nm
+Ancho de banda
+10 ± 2 nm
+Resolución digital
+< 0.0001 A
+Estabilidad de la línea base
+máx. 0.004 A en 30 min, a 505 nm
+REQUISITOS MÍNIMOS DEL ORDENADOR
+Sistema operativo
+Windows® 7 64 bits (x64)
+Windows® 10 64 bits (x64)
+CPU
+Equivalente a Intel Core i3 @3.10 GHz o superior
+Memoria RAM
+512 Mbytes
+Disco duro
+20 Gbytes
+CD-ROM
+si
+Monitor VGA
+Resolución mínima de 640x480
+Ratón (mouse)
+Conector serie
+USB
+El nivel de aislamiento del canal de comunicaciones del analizador A15 es reforzado (el aislamiento 
+del canal de comunicaciones del ordenador ha de ser también reforzado)(1)
+(1) Se entiende como aislamiento reforzado aquel que asegura una protección igual o superior al doble 
+del proporcionado por el aislamiento principal. 
+Aislamiento principal es aquel cuyo fallo podría causar un riesgo de choque eléctrico (EN 61010-
+1:2010).
+REQUISITOS ELÉCTRICOS
+Tensión de entrada
+125 Vac - 230 Vac, ±10%, 50/60 Hz
+Potencia
+150 VA (200VA)*
+Categoría de la instalación eléctrica (categoría de 
+sobrevoltaje)
+II
+La toma de red tiene que ser homologada segun norma UNE EN 61010-1, con toma de tierra y el 
+cable con una sección mínima de 1.5mm2.
+*A15C(Versión con refrigerador de reactivos)
+CONDICIONES AMBIENTALES
+Uso interior
+Altitud 
+< 2500 m 
+Temperatura
+10 °C - 35 °C 
+Humedad relativa 
+< 75%
+El fabricante se reserva el derecho de modificar cualquier especificación técnica sin previo aviso.

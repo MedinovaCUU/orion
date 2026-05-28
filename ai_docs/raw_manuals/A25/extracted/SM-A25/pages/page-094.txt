@@ -1,0 +1,15 @@
+94
+Service manual
+5.3.2.6. Absorbance measurement
+This test enables individual absorbance readings. The technician can choose the rotor well on which he wishes 
+to take the readings and fill it with the liquid he desires. He can choose which wavelength he wishes to use. 
+The screen shows the count number obtained, the absorbance with regard to the corresponding base line, the 
+value of the base line.
+5.3.2.7. Reactions rotor check
+The user can use this test to check the optical status of a reactions rotor. He or she can choose the optical filter 
+with which the test is to be performed. The technician must place the rotor in the analyzer and press the Test 
+button. If the Automatic Fill option has been chosen, the analyzer fills the 120 rotor wells with distilled water 
+and then makes a base line on each well with the chosen filter. The analyzer graphically displays the absorb­
+ances related to the average of all the wells and tells the technician the state of the rotor (optimal, adequate or 
+unusable). After the test, the user must remove the rotor of the analyzer, empty it and dry it completely before 
+using it for analyses.

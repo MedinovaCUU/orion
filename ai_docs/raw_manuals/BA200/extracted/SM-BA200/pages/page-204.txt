@@ -1,0 +1,12 @@
+Montaje del conjunto rotor de reacciones al instrumento:
+7. Coloque el conjunto rotor en la posición dentro del instrumento.
+8. Coloque y atornille fuerte los tornillos en el siguiente orden: primero los 5 tornillos (59), y después los 2 tor­
+nillos (58).
+9. Al final atornille con un par de apriete de 3.8 Nm, los tornillos (58)
+10. Coloque el tornillo (60) y apriételo para conectar la toma de tierra a la base del instrumento.
+11. Conecte el tubo de desagüe.
+58
+59
+Ilustración 8.95 
+Manual de servicio
+204

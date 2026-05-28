@@ -1,0 +1,22 @@
+Ilustración 9.7 
+Reinicio Explorador de windows
+9.3. Mantenimiento del módulo ISE
+Capítulo explicativo para realizar los procesos de mantenimiento del módulo ISE y para solucionar posibles pro­
+blemas de éste.
+9.3.1. Cambio de electrodos
+Al cambiar los electrodos seguir las instrucciones del manual. Tenga en cuenta de realizar un ciclo de mantenimiento 
+antes de retirar los electrodos. Este ciclo realiza un vaciado del líquido en el canal fluídico evitando que haya restos 
+de calibrador cuando se extraigan los electrodos. 
+Una vez retirados secar inmediatamente los electrodos para evitar que restos de calibrador y/o sales vayan a parar a 
+los contactos.
+Al realizar las calibraciones del proceso de instalación, verifique que no hay una deriva significativa (>2 unidades) 
+entre ellas. Si esto ocurre las membranas de los electrodos necesitan más tiempo para alcanzar su funcionamiento 
+óptimo. No se recomienda realizar medidas hasta que esta deriva desaparezca. Se puede acelerar el proceso haciendo 
+circular sueros control (realizar determinaciones ISE).
+9.3.2. Verificar que el sistema fluídico funciona correctamente. 
+• 
+Verifique que el pack de reactivos no está agotado.
+• 
+Verifique la correcta colocación del conector al pack de reactivos. Verifique que el conector no está un poco 
+levantado dificultando el contacto del conector con el pack.
+259

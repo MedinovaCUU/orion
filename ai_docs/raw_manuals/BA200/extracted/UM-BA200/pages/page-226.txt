@@ -1,0 +1,47 @@
+Manual usuario 
+ 
+ 
+ 
+Manual usuario 
+ 
+ 
+ 
+226
+226
+Biosystems
+Biosystems
+Descripción 
+Causa
+Petición duplicada
+El mismo identificador de técnica / tipo 
+de muestras ha sido ya solicitado para un 
+mismo paciente que su resultado aún no 
+ha sido enviado.
+17. Árbol de menús
+Para poder acceder a las diferentes opciones del programa, éste está estructurado 
+a base de menús. Para facilitar la navegación por el sistema, sólo hay dos niveles 
+de menús. El menú principal tiene las siguentes opciones:
+Menú principal
+Descripción
+Configuración 
+Menú para acceder a las diferentes opciones de 
+configuración del programa.
+Programación
+Menú para acceder a las diversas opciones de 
+programación que permite el programa.
+Sesión de trabajo
+Menú para acceder a la creación de la sesión actual.
+Estado actual
+Menú para acceder a las opciones del estado actual de 
+la sesión de trabajo.
+Históricos
+Menú para acceder a visualizar el histórico de 
+resultados y alarmas.
+Utilidades
+Menú para acceder a las diferentes utilidades del 
+programa.
+Ayuda
+Menú para acceder a la información del sistema.
+Salir
+Menú para acceder a la salida de la aplicación.
+A continuación se muestras las opciones de los submenús:

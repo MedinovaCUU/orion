@@ -1,0 +1,34 @@
+8.13.8. AC16627 - Peltier nevera
+Herramientas: Llaves allen del 2.5
+Desmontaje:
+Las peltiers van unidas dos a dos. Al cambiar una peltier tendrá que cambiar dos unidades.
+1. Afloje los tornillos (16) para desmontar el radiador (15)
+2. Corte un poco la junta de poliuretano (17) para liberar el cableado de la peltier y poder sacar la peltier. 
+3. Verifique el estado de la junta de poliuretano (17) y del interfaz térmico de grafito (20). Si están deteriorados 
+arránquelos. Limpie los restos de cola de la junta y el interfaz, en caso necesario utilice un papel de lija fino.
+Montaje:
+1. Coloque alineados el interfaz térmico de grafito (18), la peltier (19) y un segundo interfaz térmico (18), según 
+indica la Ilustración 8.63. 
+2. MUY IMPORTANTE . Limpie con alcohol la superficie del bloque metálico (21), sin que queden restos de 
+silicona térmica, limpie también las superficies de la peltier (19). 
+3. El interfaz térmico de grafito (20) es autoadhesivo. Quite el papel protector y engánchelo con cuidado al bloque 
+térmico.
+4. Coloque la peltier (19) encima del interfaz térmico con las caras bien limpias. 
+5. Enganche la junta de poliuretano (17), quedando la peltier en su centro y enrasando la peltier con la junta. 
+6. Enganche el segundo interfaz térmico a la peltier.
+7. Coloque el conjunto radiador y ventilador y atornille el conjunto con los tornillos (16).
+8. Conecte el ventilador y la peltier a la placa electrónica.
+9. Verifique con el tester qeu el voltaje que alimenta a las peltiers es el mismo para todas.
+10. Verifique con el programa de servicio que el conjunto nevera funciona correctamente.
+15
+17
+18
+19
+20
+13
+16
+14
+21
+Ilustración 8.63 
+Desmontaje conjunto peltier
+175

@@ -1,0 +1,7 @@
+Ilustración 8.121 
+13. Montar de nuevo el brazo en la máquina, conectar a la PCB y rehacer el ruteado del cable
+14. Verificar que el ruteado permite el movimiento del brazo sin que quede pinzado en ningún punto.
+15. Conectar cable de CAN y reajustar la posición de los brazos.
+Ilustración 8.122 
+Manual de servicio
+252

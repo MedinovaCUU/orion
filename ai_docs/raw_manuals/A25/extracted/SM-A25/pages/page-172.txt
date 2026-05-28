@@ -1,0 +1,63 @@
+172
+AI. Technical specifications
+PLEASE NOTE
+The manufacturer accepts no liability for damage caused by incorrect use of the apparatus.
+GENERAL SPECIFICATIONS
+Automatic random access analyser
+Preparation cycle time
+15 s (up to 240 prep/h)
+Warm-up time
+25 mins
+Reading time for each preparation
+Every 15 s, up to 10 mins
+REAGENTS AND SAMPLES TRAY
+Positions for unrefrigerated racks
+3
+Positions for racks
+3
+Capacity of refrigerated zone
+30 reagent bottles (20 or 50mL) 
+Capacity of the sample racks
+24
+Maximum number of samples
+72
+Sample tubes 
+Paediatric well
+ø13 mm, ø15 mm (max. height 100 mm)
+ø13 mm paediatric well
+Capacity of the reagent racks
+10
+Maximum number of reagents 
+50 (plus 3 auxiliary fixed positions)
+20 ml and 50 ml reagent bottles
+Possible configurations:
+Sample racks
+Reagent racks
+Number of samples
+Number of reagents
+1
+2
+24
+50 (30 refrigerated)
+2
+1
+48
+40 (30 refrigerated)
+3
+0
+72
+30 refrigerated
+REAGENT COOLER
+Cooling capacity
+10 ºC under ambient temperature (Ambient 
+temperature of de 25 ºC)
+Electrical power of refrigeration
+75 W
+Power supply independent of analizer. Dedicated power source and switch.
+Open lid sensor and indicator power led.
+DISPENSING SYSTEM (NEEDLE)
+Detachable tip
+Vertical length
+110 mm
+Capacity level detection
+Self-adjustment of position

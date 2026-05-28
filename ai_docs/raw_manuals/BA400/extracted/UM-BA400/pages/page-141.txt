@@ -1,0 +1,53 @@
+141
+141
+Esta opción se desactiva si en la pantalla de configuración del LIS se ha seleccionado 
+la opción de repetición sólo para LIS.
+ 
+)
+Véase las diferentes opciones de repetición en el capítulo 10.7.4
+10.7.2. Resultados por técnica
+Seleccione la pestaña de técnicas para ver el listado de las técnicas realizadas de 
+la sesión.
+Seleccione una técnica de la lista y en la derecha aparecerán cuatro pestañas con 
+todos los resultados de la técnica. Seleccione la pestaña en función de la información 
+que quiera visualizar: Blancos, Calibradores, Controles y Pacientes.
+En las tablas de resultados se muestran todos los replicados y la media resultante.
+Puede descartar los replicados pulsando sobre la fila que desea anular, esto mostrará 
+el replicado tachado y recalculará la media resultante sin este replicado. Puede 
+volver a activarlo pulsando nuevamente sobre la fila del replicado.
+La tabla de resultados de blancos contiene la siguiente información:
+Campo
+Descripción
+ 
+Botones que permiten desplegar o plegar 
+los replicados de un resultado.
+Sólo aparece uno de los dos iconos, 
+cada vez que pulse encima del 
+icono se cambiará uno por el otro 
+alternativamente. 
+OK
+Indica que el resultado ha sido aceptado. 
+Será enviado al histórico y a LIS. 
+Cuando se realizan repeticiones, se 
+acepta siempre por defecto el último 
+resultado. 
+Permite acceder a la gráfica de la cinética 
+de reacción.
+Número
+Indica la numeración del replicado, 
+cuando hay más de un replicado
+Absorbancia
+Valor de la absorbancia del blanco 
+que intervendrá en el cálculo de la 
+concentración.
+Absorbancia del filtro principal
+Muestra el valor de la absorbancia del 
+blanco del filtro principal. Únicamente 
+se mostrará en aquellas técnicas con 
+programación bicromática.
+Absorbancia de reactivo
+Muestra el valor de la absorbancia del 
+reactivo. Únicamente se mostrará en 
+aquellas técnicas con programación 
+diferencial.
+Pestaña de blancos

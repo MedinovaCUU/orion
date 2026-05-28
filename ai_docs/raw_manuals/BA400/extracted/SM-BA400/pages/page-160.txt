@@ -1,0 +1,21 @@
+Componente
+Descripción
+Pasamuros
+Conector y tubos
+Módulo ISE
+1. Desmonte las carcasas laterales.
+2. Desmonte la tapa superior. Quite de la tapa el tapón del orificio para dispensar la muestra al módulo ISE(1). 
+Véase Ilustración 8.19
+3. Desmonte la carcasas delantera superior conjuntamente con la tapa ISE (2)
+4. Desmonte el conjunto de los interruptores (5). Véase Ilustración 8.20
+5. Quite la tapa del interruptor (3)
+6. Inserte el interruptor para el ISE.
+7. Conecte el cable de alimentación en el interruptor. El cable de entrada ya está premontado, conéctelo al inte­
+rruptor. Conecte también el cable de salida (6), bájelo por la columna (7). Sujételo con bridas.
+8. Cierre el conjunto de interruptores, con la caja de protección (4) y colóquelo en su lugar. Véase Ilustración 8.20.
+1
+2
+Ilustración 8.19 
+Desmontaje de las tapas
+Manual de servicio
+160

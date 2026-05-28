@@ -1,0 +1,10 @@
+Ilustración 6.22 
+Pantalla ajuste de la termostatización de la punta
+Ilustración 6.23 
+Útil para el ajuste de la termostatización de las punta
+6.5.6. Detección de desbordamiento en rotor
+Desde esta pantalla permite realizar la verificación del desbordamiento en el rotor de lecturas. La detección de des­
+bordamiento del rotor se realiza mediante la medida de sensibilidad de una varilla situada en la estación de lavado.
+Ilustración 6.24 
+Pantalla ajuste detección desbordamiento
+125

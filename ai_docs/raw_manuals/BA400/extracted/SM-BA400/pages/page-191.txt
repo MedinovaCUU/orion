@@ -1,0 +1,15 @@
+Ilustración 8.45 
+Conexiones tubos de las electroválvulas
+9
+Ilustración 8.46 
+Desmontaje electroválvula
+8.10.4. AC16578 - Electroválvula estación de lavado
+Herramientas: Llave allen de 2.5
+Desmontaje:
+1. Quite los 2 tornillos que sujetan el conjunto de las 5 electroválvulas (8).
+2. Quite todos los tubos que conectan las electroválvulas. Vaya con cuidado al quitar los tubos para no deformarlos. 
+Para sacar los tubos de su alojamiento, no los estire por el punto medio sino cójalo por el extremo. En caso de 
+que se deformen, cambielos por unos nuevos.
+3. Dale la vuelta al conjunto para acceder a los tornillos traseros.
+4. Quite los tornillos que sujetan la electroválvula. (9)
+191

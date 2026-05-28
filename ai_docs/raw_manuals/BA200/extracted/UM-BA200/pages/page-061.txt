@@ -1,0 +1,33 @@
+61
+61
+5. 
+Transporte y reexpedición
+El analizador pesa 166 kg. El analizador dispone de unas patas fabricadas con 
+plástico duro para facilitar el deslizamiento del analizador sobre una superfície lisa 
+cuando se tenga que acceder a la parte posterior.
+En caso de que sea necesario reexpedir el analizador, o bien moverlo haciendo 
+uso de un vehículo de transporte, es importante que bloquee los brazos polares y 
+use el embalaje original para asegurar que el aparato no sufra ningún daño. Para 
+volver a embalar el analizador, siga las indicaciones en proceso inverso de la hoja 
+de desembalaje.
+Utilice medios mecánicos (carretilla elevadora o transpalet) para transportar el 
+analizador embalado.
+6. 
+Manipulación y almacenamiento
+Cuando manipule el analizador, tenga en cuenta que es un instrumento de precisión 
+y como tal préstele atención y tenga especial cuidado
+Si el analizador debe almacenarse durante un periodo largo de tiempo siga las 
+siguientes recomendaciones:
+1. Vacíe el depósito de residuos de alta contaminación y de solución de lavado.
+2. Retire y guarde los electrodos del módulo ISE. 
+3. Retire los tubos de las bombas peristálticas del módulo ISE
+ 
+)
+Véase capítulo 13.3.2 mantenimiento del módulo ISE.
+4. Deseche el rotor de reacción.
+5. Proteja el analizador del polvo y agresiones ambientales, así cómo de la luz 
+solar directa y de la humedad excesiva.
+Condiciones ambientales para el almacenamiento:
+ Temperatura de almacenamiento 10 °C a 40 °C
+ Humedad de almacenamiento 
+< 85 % sin condensación

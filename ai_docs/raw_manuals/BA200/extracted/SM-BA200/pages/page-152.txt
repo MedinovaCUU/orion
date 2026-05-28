@@ -1,0 +1,16 @@
+Paso 1 
+Paso 2 
+Paso 3 
+Paso 4
+Paso 5 
+Paso 6
+Paso 7
+Paso 8
+Ilustración 8.36 
+Programación del conmutador de vacío
+10. Seleccionar con botón azul
+11. Presionar el botón azul durante 3s para salir.
+12. Verificar el funcionamiento del sistema de vacío taponando las dos salidas de la membrana y verificando que la 
+conexión se realiza a: 65.0 y la desconexión a: 50.0 (paso 8)
+Manual de servicio
+152

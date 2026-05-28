@@ -1,0 +1,18 @@
+8.6. 
+Desmontaje bomba cerámica
+1. Quite la carcas lateral izquierda
+ 
+) Véase capítulo 8.1.2
+2. Quite la chapa trasera
+ 
+) Véase capítulo 8.1.3
+3. Desenchufe los conectores del motor, detector de inicio y placa led del manifold. 
+4. Desconecte los tubos de entrada de agua (3), solución de lavado (2) y el racor (1) que va a la punta. Véase 
+Ilustración 8.19
+5. Desatornille los 2 tornillos (5) que sujetan la bomba a la estructura. 
+2
+1
+3
+Ilustración 8.18 
+Conexión de los tubos a la bomba cerámica
+135

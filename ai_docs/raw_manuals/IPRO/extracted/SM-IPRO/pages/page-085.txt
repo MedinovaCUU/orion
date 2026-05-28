@@ -1,0 +1,22 @@
+85
+CÓDIGO
+DESCRIPCIÓN
+AC15427
+Conjunto tubos
+AC17422
+Caja accesorios
+AIV.  LISTA DE HERRAMIENTAS NECESARIAS
+Código
+Descripción
+Juego de llaves métricas Allen y Torx
+Juego de alicates
+Estaño de soldadura y estacion de soldadura
+Destornilladores.
+AC14759
+Útil de ajuste Zmax de portaobjetos
+AC14828
+Galgas de prueba para la Zmax de los portaobjetos
+AC15212
+Conjunto Loctites: 243, 641, 415
+AC13079
+Grasa ELESA NT1 (solo para bomba cerámica)

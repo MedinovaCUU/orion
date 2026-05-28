@@ -1,0 +1,53 @@
+Registro mantenimiento 
+preventivo
+Nombre del laboratorio:
+Modelo de analizador:
+Número de serie:
+Nombre del responsable técnico:
+Fecha de instalación:
+Periodici­
+dad
+Paso Acciones del servicio técnico
+Fecha 
+realizado
+Fecha 
+realizado
+Fecha 
+realizado
+Fecha 
+realizado
+semestral
+1
+Cambiar los tubos de silicona de las 
+bombas peristálticas del módulo ISE
+2
+Cambiar los electrodos del módulo 
+ISE
+3
+Verificar o cambiar el filtro de 150 
+µm externo de la toma de agua 
+destilada
+4
+Verificar o cambiar el filtro de 150 
+µm de la botella de solución de 
+lavado
+5
+Limpiar de polvo las placas 
+electrónicas y los ventiladores
+6
+Revisar las conexiones fluídicas 
+internas y que ninguna pierda 
+líquido
+7
+Limpiar los contenedores interiores 
+de agua destilada y residuos de baja 
+contaminación
+8
+Limpiar externamente las puntas de 
+los brazos, los agitadores y las puntas 
+de la estación de lavado
+9
+Limpiar la ventana del lector del 
+código de barras (Rotor de reactivos 
+y muestras)
+147

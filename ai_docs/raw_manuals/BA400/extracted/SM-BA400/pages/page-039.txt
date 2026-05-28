@@ -1,0 +1,36 @@
+En los dos últimos ciclos si las puntas colisionan con el rotor, hay un detector (21) que lo detectaría y pararía la 
+maniobra. 
+Todo el conjunto de las puntas se fija mecánicamente utilizando el tornillo (22).
+La estación de lavado incorpora un sistema para bloquear la entrada de luz por las aberturas de la tapa, pieza (25). 
+Esta pieza siempre está en la posición inferior tocando la tapa. Cuando la estación de lavado sube y baja, dicha pieza 
+(25) se mantiene en su posición de contacto con la tapa mediante unos guiajes (23) y unos muelles (24).
+El conjunto puntas de la estación de lavado está unido a un eje (31). Este eje es arrastrado por la correa (37) a través 
+de la pieza (34). A su vez, el motor (38) transmite el movimiento a la correa (37) mediante la polea (39).
+La polea de transmisión está protegida por la pieza (40).
+La pestaña (35) y el fotodetector (36) sirven para detectar la posición de inicio de la estación de lavado.
+20
+24
+25
+26
+27
+29
+30
+28
+23
+22
+21
+Ilustración 3.23 
+Conjunto puntas de la estación de lavado
+31
+35
+36
+37
+38
+40
+39
+34
+33
+32
+Ilustración 3.24 
+Sistema elevación de la estación de lavado
+39

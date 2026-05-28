@@ -1,0 +1,35 @@
+129
+129
+Ilustración 88 
+Pantalla recordatorio de elementos caducados al iniciar la lista
+ 
+ 
+Pulse este botón si quiere parar la lista de trabajo para añadir muestras sin 
+esperar al final de sesión o para corregir alguna alarma de volumen de la sesión, 
+por ejemplo rellenar alguna botella de reactivo vacía o añadir más especímenes 
+al rotor de muestras. Para continuar con la sesión de trabajo en curso tiene que 
+pulsar otra vez el botón de iniciar, inmediatamente el analizador continuará 
+con la ejecución de la lista en el punto donde había parado. Si el analizador está 
+conectado a un sistema LIS, al pulsar el botón iniciar después de la pausa, el 
+analizador leerá los códigos de barra y hará una petición al LIS de los especíme­
+nes y las nuevas preparaciones las añadirá a la sesión de trabajo.
+Para acceder al rotor de muestras o de reactivos, primero tiene que pulsar el botón 
+de pausa y esperar a que el software le indique cuando pueda acceder. Entonces 
+puede levantar la tapa principal y sacar la tapa del rotor de muestras o reactivos 
+según necesite y acceder a las muestras o reactivos. Vuelva a colocar las tapas antes 
+de pulsar el botón de continuar. Las tapas incorporan un sensor de detección y el 
+analizador no continuará sin tener las tapas colocadas. Las tapas son una medida 
+de seguridad para el usuario.
+ 
+NOTE
+NOTE
+ 
+Cuando esté en modo parada, minimice el tiempo de las pausas. En algunos 
+casos la reacción en curso puede verse afectada por la pausa, entonces aparecerá 
+un aviso que recomendará al usuario no realizar la pausa en ese momento sino al 
+finalizar las preparaciones de los reactivos críticos.
+ 
+ 
+Pulse este botón cuando quiera parar o abortar la sesión de trabajo. Una vez 
+pulsado el botón, aparece la pantalla de la Ilustración 89.
+Seleccione una de las opciones:

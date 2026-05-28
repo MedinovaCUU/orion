@@ -1,0 +1,44 @@
+91
+Conector
+Función
+Pin
+CN22
+Electroválvula E1
+Pin 1: 24 V
+Pin 2: Señal activación
+CN23
+Electroválvula E2
+Pin 1: 24 V
+Pin 2: Señal activación
+CN24
+Electroválvula E3
+Pin 1: 24 V
+Pin 2: Señal activación
+CN26
+Motor dispensación agua de la estación lavado Pin 1: Coil 1
+Pin 2: Coil 1
+Pin 3: Coil 2
+Pin 4: Coil 2
+CN27
+Detección inicio dispensación agua de la 
+estación de lavado
+Pin 1: Detección
+Pin 2: GND
+Pin 3: 5V
+CN28
+Termostato de la termostatización del agua de 
+la estación de lavado
+Pin 1: salida 1
+Pin 2: GND
+Ilustración 4.22 
+Serigrafía de la placa control de fluidos
+Test point
+Función
+TP1
+24 V (Tensión en el bus)
+TP2
+GND (Tensión en el bus)
+TP4
+5 V
+TP5
+CAN_H (Señal en el bus)

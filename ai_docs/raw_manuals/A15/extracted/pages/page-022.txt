@@ -1,0 +1,29 @@
+23
+1 – Placa control ejes
+2 – Posición fotodetetor X
+3 – Carro X
+4 – Motor X
+5 – Eje dentado X superior
+6 – Soporte ejes
+7 – Rodamiento inferior X
+8 – Eje X inferior 
+Referencias de la Ilustración 3.1
+El conjunto punta soporta la punta termostatizada y puede desplazarse sobre el carro Y, que a su vez puede des-
+plazarse sobre los ejes Y (14). Los ejes Y están soportado por el carro X (3), el cual se desplaza sobre los ejes X 
+(8). De esta forma la punta puede desplazarse en las tres direcciones cartesianas X, Y, Z. La manguera aloja en su 
+interior el tubo de dosificación de teflón y todas las man gue ras eléctricas del brazo. 
+3
+5
+1
+4
+7
+8
+6
+2
+Ilustración 3.1. Conjunto eje X
+El guiaje X consiste en dos soportes (6) que sujeta los ejes de acero (5) y (8) sobre los que se desplaza el carro X. El 
+fotodetector (2) indica la posición de inicio del movimiento del carro X. El motor X (4) se mueve mediante cremallera. 
+El carro X se apoya sobre el segundo eje (2) mediante un rodamiento (7).
+El cuerpo del carro X (3) se desplaza a lo largo de los dos ejes (5) y (8). El eje superior (5) sirve de cremallera. El 
+motor X (5) dotado de un piñon mueve el carro mediante esta. El carro X también soporta la PCB de interconexión 
+y el motor Z (12). Para facilitar el desplazamiento utiliza rodamientos lineales (7).

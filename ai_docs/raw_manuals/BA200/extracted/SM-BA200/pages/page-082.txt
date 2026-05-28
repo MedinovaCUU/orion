@@ -1,0 +1,50 @@
+6.1.3. Explicación del cuadro de mando para realizar los ajustes
+El siguiente recuadro es común para todo el programa de servicio.
+Sirve para realizar los movimientos de las posiciones de los elementos mecánicos del analizador, tales como los 
+brazos, los rotores, etc
+Elemento
+Nombre
+Descripción
+Range
+Margen 
+permitido
+Indica el margen permitido en las unidades mostradas.
+Steps
+Unidades
+Indica las unidades de la magnitud. Generalmente serán pasos.
+Posición inicial
+Mueve el elemento mecánico a su posición inicial.
+x1
+Incrementos 
+unitarios
+Realizará los incrementos de uno en uno
+x10
+Incrementos por 
+decenas
+Realizará los incrementos de diez en diez
+x100
+Incrementos por 
+centenas
+Realizará los incrementos de cien en cien
+Pasos izquierda
+Realiza un movimiento del elemento mecánico hacía la izquierda, uno, diez o 
+cien pasos en función de la selección anterior.
+Pasos derecha
+Realiza un movimiento del elemento mecánico hacía la derecha, uno, diez o cien 
+pasos en función de la selección anterior.
+Pasos arriba
+Realiza un movimiento del elemento mecánico hacía arriba, uno, diez o cien 
+pasos en función de la selección anterior.
+Pasos abajo
+Realiza un movimiento del elemento mecánico hacía abajo, uno, diez o cien 
+pasos en función de la selección anterior.
+Aceptar valor
+Ejecuta un movimiento absoluto. Se puede introducir directamente un valor 
+numérico en la casilla y luego ejecutar el movimiento pulsando este botón.
+6.1.4. Descripción de la información de estado
+En la parte inferior de la pantalla constantemente aparece información del analizador. Ver Ilustración 6.2
+Ilustración 6.2 
+Iconos de estado
+En la tabla siguiente indica el significado de cada elemento:
+Manual de servicio
+82

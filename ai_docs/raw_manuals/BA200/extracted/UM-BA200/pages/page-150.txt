@@ -1,0 +1,62 @@
+Manual usuario 
+ 
+ 
+ 
+Manual usuario 
+ 
+ 
+ 
+150
+150
+Biosystems
+Biosystems
+ 
+Tipo de técnica 
+Las opciones posibles son: Todo, estándar, calculada, ISE, externas
+ 
+Tipo de muestra 
+Las opciones posibles son: Todo, SER, URI, PLM, WBL, CSF, SEM, LIQ.
+ 
+Nombre de la técnica 
+Introduzca el nombre de la técnica para realizar la selección.
+Ilustración 94 
+Pantalla históricos de resultados de paciente
+Los resultados se mostrarán en una tabla ordenados por la fecha. Si pulsa en el 
+cabecero de alguna de las columnas de la tabla entonces se reordenarán los resul­
+tados por dicha columna.
+ 
+ 
+Pulse este icono para mostrar los resultados de la página siguiente.
+ 
+ 
+Pulse este icono para mostrar los últimos resultados.
+ 
+ 
+Pulse este icono para mostrar los resultados de la página anterior.
+ 
+ 
+Pulse este icono para mostrar los primeros resultados.
+ 
+ 
+Pulse este icono para imprimir los resultados que haya seleccionado previamen­
+te. Si quiere seleccionar todos los resultados, pulse el recuadro de selección del 
+cabecero.
+ 
+ 
+Seleccione este icono para realizar la impresión de resultados con um informe 
+compacto, es decir sin cabecero de paciente y todos los resultados seguidos.
+ 
+ 
+Pulse este icono para enviar los resultados seleccionados a un sistema de infor­
+mación de laboratorio LIS. Esta es una exportación manual.
+ 
+ 
+Pulse este icono para eliminar los resultados seleccionados. Una vez eliminados 
+no se podrán recuperar.
+ 
+ 
+Al pulsar el botón se abre una ventana emergente, la cual permite rellenar y mo­
+dificar los datos adicionales de paciente de los resultados histórico seleccionados.
+ 
+)
+En el capítulo 10.5.2 explica cómo introducir los datos adicionales de paciente.

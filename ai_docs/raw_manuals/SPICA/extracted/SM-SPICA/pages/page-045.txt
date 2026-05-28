@@ -1,0 +1,20 @@
+SERVICIO
+Manual de Usuario BioSystems SPICA
+45
+Manual de Usuario BioSystems SPICA | Versión 2.8 - Agosto 2024
+1. ELEMENTOS DE HARDWARE
+1.2 Rotor de reactivos
+El rotor de PMMA se coloca en el dispositivo de centrado del rotor y se asegura firmemente con un perno. El 
+rotor se coloca en el dispositivo de centrado en una posición, distinguido por dos lengüetas, cada una de un 
+tamaño diferente. El fotosensor de arranque detecta la posición inicial del rotor. El bucle de calentamiento 
+se mantiene a 37°C por medio de 4 enfriadores Peltier.
+Para permitir que los refrigeradores Peltier funcionen, cada 
+refrigerador requiere una unidad de radiador y una unidad 
+de ventilador. Para mantener la temperatura, el circuito de 
+calefacción está protegido por un aislante. El sensor de 
+temperatura se utiliza para establecer la temperatura del 
+circuito.
+Opción de resistencia para espacios con 
+una temperatura ambiente inferior a 15ºC
+Opción Resistence
+Opción Peltier

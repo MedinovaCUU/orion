@@ -1,0 +1,60 @@
+Manual usuario 
+ 
+ 
+ 
+Manual usuario 
+ 
+ 
+ 
+58
+58
+Biosystems
+Biosystems
+También puede seguir las instrucciones del fabricante del tubo de plasma para la 
+fase preanalítica.
+ 
+Dilución de orinas para ISE 
+Cuando se quiera realizar determinaciones de ISE en orina, la orina se tiene que 
+diluir. Realice la dilución manualmente fuera del analizador con un factor de 
+dilución 1/10. 
+• 
+El analizador utiliza 200 µL para realizar una determinación de ISE en orina. 
+Prepare una cantidad superior de orina diluida (por ejemplo prepare unos 
+300 µL).
+• 
+Coja una parte de orina y pipetéela en un tubo primario.
+• 
+Coja nueve partes del diluyente de orina (lo encontrará en la caja de accesorios 
+del módulo ISE) y dispénselos en el mismo tubo primario de la orina.
+• 
+Mézclelo y posiciónelo en el rotor de muestras. 
+ 
+Solución de lavado para ISE 
+Cada día que realice determinaciones con ISE tiene que realizar una limpieza 
+del módulo para desproteinizar el canal fluídico. Se recomienda realizar dicha 
+limpieza al finalizar el día.
+En la caja de accesorios del módulo ISE encontrará el kit de solución de limpie­
+za para el módulo ISE. En su interior vienen 6 frascos con el polvo de limpieza 
+(peptina) y un diluyente.
+• 
+Agregue el diluyente hasta llenar el frasco de peptina (12 mL), agítelo bien y 
+anote la fecha de preparación
+• 
+Cuando no esté en uso, guárdelo en el refrigerador.
+• 
+Deséchelo 4 semanas después de prepararlo.
+ 
+Soluciones de lavado 
+Las soluciones de lavado que vienen con el equipo son de 3 tipos, la Solución de 
+lavado (WS) que se usa en el lavado interno de las puntas y del rotor de reaccio­
+nes, la solución de lavado ácido (WS1) y la solución de lavado alcalina (WS2) 
+que se usa para evitar las contaminaciones y para el lavado de los agitadores.
+La solución de lavado (WS) se prepara en la botella de 5 L ubicada en la parte 
+frontal inferior del equipo.
+La solución de lavado ácida (WS1) y la alcalina (WS2) se instalan en el rotor de 
+reactivos. Su presentación vienen en botellas de reactivos de 20 mL.
+También existe una solución de lavado alcalina elevada (WS3) que se aplica para 
+lavar la contaminación de los triglicéridos sobre la lipasa.
+Manipule dichas soluciones con precaución y use vestimenta y guantes apropiados. 
+No mezcle nunca las dos soluciones de limpieza ya que pueden provocar gases 
+peligrosos.

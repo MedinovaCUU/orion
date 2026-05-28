@@ -1,0 +1,51 @@
+5
+ESPAÑOL
+4. Limpieza
+Material necesario:
+- Mezcla de 70% de alcohol y 30% de eter.
+- Papel para limpieza de lentes.
+- Pera de caucho para soplar aire
+- Pincel suave.
+- Bastoncillos de algodón.
+Procedimiento
+a. Limpieza del cuerpo del microscopio.
+- Utilizar un paño humedecido con una solución de agua y
+jabón neutro. No utilizar nunca detergentes ni abrasivos.
+b. Limpieza de los elementos externos del microscopio.
+- Normas generales
+ Una vez desmontados los componentes ópticos exter-
+nos (oculares, condensador, objetivos) proceder del siguien-
+te modo:
+- Mediante el pincel suave eliminar las motas de polvo y
+otras partículas. Usar la pera asegurar de queden libres de
+polvo. Para eliminar el polvo adherido, utilizar el papel óp-
+tico realizando un pequeño movimiento circular. Si hubie-
+ran huellas dactilares o restos de grasa utilizar un baston-
+cillo de algodón e impreganrlo en la solución de alcohol/
+eter. Atención: No usar la solución de alcohol eter para
+limpiar el filtrode luz de día, en su lugar utilizar agua desti-
+lada y secar con un paño suave.
+c. Limpieza de las lentes internas.
+ - Si se detecta suciedad en las lentes internas, éstas
+deben desmontarse y ser limpiadas con el pincel y el aire
+comprimido o pera. No se recomienda desmontar los ele-
+mentos ópticos pués después sería necesario volverlos a
+ajustar.
+Lista de accesorios para limpieza
+suministrados por Bioystems
+Código
+Descripción
+AC15506
+Soplador de polvo
+AC15504
+Papel limpieza lentes
+AC15505
+Bastoncillos de algodón
+AC15503
+Pincel para lentes
+AC15507
+Kit completo de limpieza:
+- Soplador de polvo
+- Papel limpieza lentes
+- Bastoncillos de algodón
+- Pincel para lentes

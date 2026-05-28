@@ -1,0 +1,69 @@
+Manual usuario 
+ 
+ 
+ 
+Manual usuario 
+ 
+ 
+ 
+76
+76
+Biosystems
+Biosystems
+10.2.1.1. Configuración general: sesión de trabajo
+En la Ilustración 43 muestra la pantalla de las diferentes opciones de configuración 
+de la sesión de trabajo.
+Ilustración 43 
+Configuración de la sesión de trabajo
+ Tubo de Muestras por defecto 
+Seleccione el tipo de tubo que por defecto aparezca en el momento de crear la 
+lista de pacientes. Puede ser: tubo o pediátrico.
+ 
+Verificación del código de 
+barras antes sesión de trabajo
+ 
+Marque esta opción si quiere que el analizador verifique automáticamente el 
+posicionamiento de las botellas de reactivos y de los tubos de muestras con el 
+código de barras antes de iniciar la sesión.
+ Reset de la sesión descarga solo 
+tubos de paciente del Rotor de 
+Muestras
+ 
+Marque esta opción cuando quiera eliminar únicamente los tubos del rotor de 
+muestras al realizar el reset de la sesión. La información y posición de los poci­
+llos pediátricos (calibradores y controles) se conservarán para la siguiente sesión.
+ 
+Proceso automático de 
+Repeticiones
+ 
+Marque esta opción si quiere que las repeticiones se puedan realizar automática­
+mente. En caso contrario se podrán realizar de forma manual.
+ 
+Impresión automática de 
+resultados de pacientes
+ 
+Marque esta opción cuando quiera que se impriman automáticamente los resul­
+tados de un paciente finalizado. Al seleccionar esta opción se activa las opciones 
+de tipo de informe y la frecuencia.
+ 
+Tipo 
+Seleccione el tipo de informe en que se imprimirá los resultados de paciente.
+• 
+Compacto - Informe sin cabecero de paciente y con los resultados de todos los 
+pacientes seguidos, sin saltos de página.
+• 
+Individual - Informe individual por paciente. Cada informe está impreso en 
+páginas separadas y con cabecero de paciente.
+ 
+Frecuencia 
+Seleccione la frecuencia con la que se imprimen los resultados.
+• 
+Al reiniciar la sesión de trabajo
+• 
+Al finalizar cada sesión
+• 
+Al finalizar cada paciente
+ 
+Tipo de rotor 
+Seleccione el modelo de rotor que va a utilizar para el posicionamiento de las 
+muestras. Las opciones disponibles son:

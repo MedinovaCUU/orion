@@ -1,0 +1,35 @@
+66
+Manual de servicio
+nico puede modificar esta temperatura de consigna propuesta por el programa. Al pulsar Ajustar, el analizador 
+termostatiza la punta con la nueva consigna y, cuando el técnico lo solicita, realiza nuevas dispensa ciones. 
+Cada vez que se modifica la temperatura de consigna, antes de realizar dispensaciones debe esperarse 1 
+minuto para que la temperatura de la punta se estabilice. El técnico debe repetir iterativamente este proceso 
+hasta que la temperatura de dispensación sea lo más cercana posible a 37°C. Pulsando el botón Guardar, 
+el analizador guarda el valor actual de la temperatura de consigna ajustado. Pulsando el botón Cancelar, se 
+mantiene el último valor guardado y no se guarda el valor actual. Pulsando el botón Restaurar, se restaura el 
+valor inicial de entrada a la pantalla. 
+5.2.2. Ajuste del sistema de termostatización del rotor
+Esta pantalla permite ajustar el sistema de termostatización del rotor de forma que la temperatura de las re-
+acciones sea 37°C. Para realizar este ajuste debe colocarse un rotor de pocillos y el analizador debe estar 
+inicializado. El rotor puede llenarse de agua destilada automática mente pulsando el botón correspondiente. 
+Una vez lleno, el técnico debe esperar unos minutos para que el agua del rotor se termostatice. Debe medirse 
+la temperatura dentro de los pocillos del rotor con un termómetro cali brado a 37°C, a través del orificio de 
+dispensación de la tapa del rotor. Un botón permite girar el rotor, en incrementos de 15 pocillos, para cambiar 
+el pocillo sobre el cual se realiza la medición. El programa muestra la temperatura de consigna del control, 
+que es el parámetro que debe ajustarse para que la temperatura del rotor sea la correcta. Este parámetro 
+puede ser distinto a 37°C. El técnico debe medir con el termómetro calibrado la temperatura del agua en los 
+pocillos e introducir esta tempera tura en la pantalla. El analizador modifica automáticamente la temperatura 
+de consigna en función de la temperatura medida con el termómetro para conseguir que la temperatura del 
+rotor de reacciones sea 37°C. El técnico puede modificar esta temperatura de consigna propuesta por el pro-
+grama. Al pulsar Ajustar, el analizador termostatiza el rotor con la nueva consigna. Cada vez que se modifica 
+la temperatura de consigna, antes de realizar mediciones debe esperarse 5 minutos para que la temperatura 
+del rotor se estabilice. El técnico debe repetir iterativamente este proceso hasta que la temperatura del rotor 
+de reac ciones sea 37°C. Pulsando el botón Guardar, el analizador guarda el valor actual de la temperatura de 
+consigna ajustado. Pulsando el botón Cancelar, se mantiene el último valor guardado y no se guarda el valor 
+actual. Pulsando el botón Restaurar, se restaura el valor inicial de entrada a la pantalla. 
+5.2.3. Ajuste del posicionamiento del brazo manipulador
+Esta pantalla permite ajustar el posicionamiento horizontal (X,Y) del brazo. Debe desmontarse la carcasa del 
+brazo para ver la posición de la punta. Antes de realizar los ajustes, comprobar visualmente la verticalidad 
+de la punta. Si es necesario, enderezarla cuidadosamente, procurando no dañarla. Debe seleccionarse en la 
+pantalla el punto donde se desea ajustar el posicionamiento horizontal. Al pulsar la tecla Ajustar el brazo se 
+inicializa y se coloca sobre este punto. El técnico dispone de botones para mover el brazo paso a paso sobre

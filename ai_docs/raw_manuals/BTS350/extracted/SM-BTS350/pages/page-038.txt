@@ -1,0 +1,82 @@
+—  38  —
+Y-350
+WAVELENGTH
+MINIMUM 
+VALUE
+MAXIMUM 
+VALUE
+280 nm
+80
+130
+340 nm
+60
+130
+405 nm
+100
+130
+420 nm 
+100
+130
+505 nm
+100
+130
+520 nm
+100
+130
+560 nm
+20
+130
+620 nm
+60
+130
+635 nm
+60
+130
+670 nm
+40
+130
+750 nm
+30
+130
+I.2. - Darkness
+These margins serve for both the principal photodiode and for the reference photodiode.
+Integration times
+MIN. VALUE
+MAX. VALUE
+6
+3500
+4500
+15
+3500
+4500
+50
+3500
+4500
+150
+3500
+4500
+500
+3500
+4500
+I.3. - Thermostatation adjustment
+After calibrating the thermostatation, the temperature must be maintained with a stability of:
+ 
+ 
+ 
+ 
+± 0.2 °C
+I.4. - Ajusting the peristaltic pump
+The sample tail that must be inside the suctioning tube without entering the flow cuvette is:
+ 
+ 
+ 
+ 
+0 to 15 mm
+If these values are not obtained, change to the MANUAL procedure.
+I.5. - Acceptance range in the stability test
+Level
+CV
+Neutral Filter Nº 1 (~0.2 ABS) a 505nm
+<1 %
+Neutral Filter Nº 4 (~2 ABS) a 505nm
+<0.1 %

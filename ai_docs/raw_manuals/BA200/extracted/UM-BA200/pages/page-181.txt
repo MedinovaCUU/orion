@@ -1,0 +1,119 @@
+181
+181
+Tipo de 
+alarma
+Alarma/Error
+Causa del problema
+Solución propuesta
+Aviso de error de 
+lectura del código 
+de barras
+Posible humedad en la ventana 
+óptica de la lectura del código de 
+barras
+Limpie con un paño la ventana de 
+lectura del código de barras.
+Avisos de 
+avería del 
+analizador
+Error de 
+comunicaciones
+Ha habido un problema con las 
+comunicaciones entre el ordenador 
+y el analizador.
+Revise el cable de comunicaciones. 
+Pulse el botón de conectar.
+Revise que el puerto COM no está en 
+uso por otro programa.
+Alarma de la 
+temperatura del 
+rotor de reacciones 
+fuera de límites
+La temperatura del rotor de 
+reacciones ha estado fuera de 
+límites durante demasiado tiempo. 
+Esta alarma no detiene la lista de 
+trabajo.
+Pulse el botón de recuperación. En 
+caso de persistir la alarma avise al 
+servicio técnico.
+Alarma de 
+temperatura del 
+brazo fuera de 
+límites
+La temperatura del brazo ha estado 
+fuera de límites durante demasiado 
+tiempo. Esta alarma no detiene la 
+lista de trabajo.
+Pulse el botón de recuperación. En 
+caso de persistir la alarma, avise al 
+servicio técnico.
+Alarma de la 
+temperatura del 
+refrigerador fuera 
+de límites
+La temperatura del refrigerador 
+ha estado fuera de límites durante 
+demasiado tiempo. Esta alarma no 
+detiene la lista de trabajo.
+Cierre la tapa del rotor de reactivos 
+y muestras. Pulse el botón de 
+recuperación. En caso de persistir la 
+alarma avise al servicio técnico.
+Alarma de la 
+temperatura de la 
+estación de lavado 
+fuera de límites
+La temperatura de la estación de 
+lavado ha estado fuera de límites 
+durante demasiado tiempo. Esta 
+alarma no detiene la lista de 
+trabajo.
+Pulse el botón de recuperación. En 
+caso de persistir la alarma avise al 
+servicio técnico.
+Ventiladores 
+refrigerador 
+averiados
+Los ventiladores del refrigerador no 
+funcionan correctamente.
+Avise al servicio técnico.
+Ventiladores rotor 
+de reacciones 
+averiados
+Los ventiladores del rotor 
+de reacciones no funcionan 
+correctamente.
+Avise al servicio técnico.
+Error en la 
+detección de inicio 
+de algún motor
+Ha fallado la detección de inicio de 
+un motor
+Pulse el botón de recuperación. En 
+caso de persistir la alarma, avise al 
+servicio técnico.
+Reinicio de una 
+placa electrónica
+Se ha reinicializado una placa interna 
+electrónica
+Pulse el botón de recuperación. En 
+caso de persistir la alarma, avise al 
+servicio técnico.
+Alarmas del 
+módulo ISE
+Aviso estado 
+módulo ISE 
+Módulo ISE instalado pero 
+apagado
+Encienda el módulo ISE
+Alarma estado 
+módulo ISE
+Módulo ISE averiado
+Llame al servicio técnico
+Módulo apagado de larga duración
+Reactive el módulo 
+Alarma en los 
+electrodos
+Electrodo no instalado
+Instale un nuevo electrodo.

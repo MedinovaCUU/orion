@@ -1,0 +1,61 @@
+12
+3
+8
+1
+4
+13
+9
+5
+2
+14
+15
+10
+11
+6
+7
+16
+17
+18
+19
+20
+21
+22
+23
+24
+Ilustración 3.46 
+Conjunto del sistema fluídico
+Referencias de la Ilustración 3.46
+1 – Placa SF1 - control del sistema fluídico
+2 – Placa JE1 - control de las Jeringas 
+3 – Calentador tubos estación de lavado
+4 – Bomba SF1-B10
+5 – Bomba SF1-B3
+6 – Bomba SF1-B2
+7 – Bomba SF1-B1
+8 – Bomba SF1-B9
+9 – Bomba SF1-B8
+10 – Bomba SF1-B7
+11 – Bomba SF1-B6
+12 – Electroválvula SF1-EV1
+13 – Electroválvula SF1-EV2
+14 – Bomba SF1-B4
+15 – Bomba SF1-B5
+16 – Colector 
+17 – Electroválvula SF1-GE1
+18 – Bomba de la estación de lavado
+19 – Motor de la estación de lavado
+20 – Electroválvula JE1-EV4
+21 – Electroválvula JE1-EV5
+22 – Bomba JE1-B1
+23 – Bomba JE1-B2
+24 – Bomba JE1-B3
+La entrada de agua al analizador se puede realizar de dos maneras:
+• 
+Por un sistema de agua de red a presión
+• 
+Por un contenedor externo de gran capacidad
+En el programa de usuario es donde se realizará la selección de la entrada de agua. En el primer caso el programa 
+activará la electroválvula (12) y llenará el depósito intermedio de agua destilada.
+En el segundo caso, el programa activará la electroválvula (13) y la bomba (14), para aspirar el agua del depósito 
+externo. 
+55

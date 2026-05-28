@@ -1,0 +1,44 @@
+—  20  —
+Service manual
+3.1.1. - TESTS option
+Access the tests menu for failure diagnostics. These tests are listed below. Chapter 4 describes how they function.
+• 
+FAN
+• 
+SCREEN
+• 
+BUZZER
+• 
+KEYBOARD
+• 
+PRINTER
+• 
+SERIAL PORT
+• 
+LOSS OF PERISTALTIC PUMP STEPS
+• 
+CUVETTE TEMPERATURE
+• 
+CONTAMINATION
+• 
+PHOTOMETRIC
+• 
+LIGHT INTENSITY
+• 
+DARKNESS
+• 
+STABILITY OF READINGS
+• 
+PRECISION
+• 
+ACCURACY
+• 
+OPEN/CLOSE QUALITY TESTS
+3.1.2. - ADJUSTMENTS option
+The utility programmes are accessed to make the following adjustments:
+• 
+Thermostatation 
+• 
+Photometric parameters
+• 
+Peristaltic pump

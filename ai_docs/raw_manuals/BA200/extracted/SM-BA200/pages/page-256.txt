@@ -1,0 +1,68 @@
+ROTOR REACCIONES
+Temperatura cubeta reacción
+37 °C
+Veracidad de la temperatura
+±0,2 °C
+Estabilidad de la temperatura
+±0,1 °C
+Agitadores
+1
+SISTEMA LAVADO CUBETAS
+Número de puntas del sistema de lavado
+7
+Número de puntas con solución de lavado
+2
+Aclarados con agua
+3
+Secados
+2
+Volumen de lavado por punta
+711 mL
+Consumo de la solución de lavado
+1.42 mL/ciclo
+SISTEMA ÓPTICO
+Fuente de luz
+LED+Filtro Hard Coating
+Nº de longitudes de onda
+8
+Longitudes de onda, modelo BA200
+340­ – 405 – 505 – 535 – 560 – 600 – 635 – 670 nm
+Longitudes de onda, modelo Y200
+340­ – 405 – 420 – 430 – 505 – 520 – 560 – 600 – 620 – 635 – 
+750 nm
+Ancho de banda de los filtros
+10 nm ± 2 nm
+Veracidad de la longitud de onda
+± 2 nm
+Rango fotométrico
+-0.2 A a 3.5 A
+Resolución interna
+0.0001
+Detector 
+Fotodiodo principal + fotodiodo de referencia
+Precisión de la medida (para 340 nm, 
+405 nm y 505 nm)
+CV < 1 % a 0.1 A
+CV < 0.1 % a 2 A
+MÓDULO ISE (opcional)
+Tipo de muestra
+Suero, Plasma u Orina
+Tipo de electrodos
+Na+, K+, Cl-. Li+ (opcional)
+Tipo de medición 
+ISE directo
+Volumen de muestra
+Suero: 100 mL 
+Orina: 200 mL
+REQUERIMIENTOS AMBIENTALES
+Temperatura ambiente
+10 °C a 35 °C
+10 °C a 30 °C (con módulo ISE)
+Humedad relativa
+< 85 % sin condensación
+Altitud máxima
+< 2 500 m
+Grado de polución
+2
+Manual de servicio
+256

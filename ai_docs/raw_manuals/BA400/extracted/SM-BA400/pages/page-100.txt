@@ -1,0 +1,27 @@
+Manual de servicio
+100
+4.13. Carga del firmware
+El proceso de carga del firmware se realiza a través del programa de servicio.
+ 
+) Véase capitulo 6.6.3.2 Actualización del firmware.
+Se distribuirá un único fichero, el cuál contendrá todos los firmwares individuales de cada una de las placas. El pro­
+ceso consiste en enviar primero el fichero a la placa principal, la CPU, y lo guarda en una memoria flash, llamada 
+repositorio. Una vez se ha verificado que el fichero enviado es correcto, el programa de servicio pregunta al usuario 
+la confirmación del inicio del proceso de la actualización del firmware de la placa CPU. Una vez la placa CPU se 
+ha actualizado, verifica la compatibilidad de las versiones de cada una de las placas con las del repositorio. En caso 
+de haber alguna placa con una versión no compatible con la del repositorio actualiza el firmware de dicha placa.
+Mientras se transmite el fichero del firmware con el programa de servicio, el led de estado del analizador parpadeará 
+cambiando de color.
+Todos los ajustes del analizador están guardados en la memoria de la placa CPU. En el momento de inicializar el 
+analizador, se produce un envío de los ajustes necesarios para cada una de las placas.
+NOTE
+Como medida de precaución es conveniente antes de realizar una intervención al analizador, reali­
+zar una salvaguarda de los ajustes.
+ 
+) Véase capitulo 6.6.3.1 Guardar y recuperar ajustes.
+Cuando el servicio técnico tenga que realizar una reparación y cambiar alguna placa, entonces el técnico inicializa 
+el programa de servicio para que acepte el proceso de actualización del firmware y de los ajustes para la nueva placa.
+Desde el programa de servicio también habrá la posibilidad de restaurar los valores iniciales de los ajustes. 
+Si realiza dicho proceso, el técnico tendrá que reajustar todo el analizador.
+ 
+) Véase capitulo 6.6.3.1 Restaurar valores iniciales

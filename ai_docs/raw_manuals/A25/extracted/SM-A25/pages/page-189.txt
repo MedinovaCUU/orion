@@ -1,0 +1,27 @@
+189
+List of spare parts
+Code
+Representation 
+Description
+MO11522
+Fan tip
+AC11521
+Temperature tip sensor
+MO14620
+Motor X
+AC14710
+X Guide with skate
+ME14628
+X belt
+AC14714
+Countershaft X
+MO11516
+Y motor
+AC14711
+Y Guidance with skate
+ME11513
+Y belt
+AC14707
+Reactor rotor set
+ZO13309
+Lampholder

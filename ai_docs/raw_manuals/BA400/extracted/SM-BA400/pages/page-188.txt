@@ -1,0 +1,30 @@
+1
+2
+3
+4
+Ilustración 8.41 
+Placas de fluidos y jeringas
+8.10.1. AC16563 - Placa fluidos / AC16564 - Placa jeringas
+Desmontaje: 
+1. Quite el tornillo (2) con la mano y descienda la plancha con las placas electrónicas.
+2. Desconecte todos los cables de la placa a cambiar
+3. Quite la placa electrónica de los separadores (4).
+Montaje: 
+1. Cambie la placa electrónica.
+2. Colóquela en su posición.
+3. Conecte cada uno de los cables a la placa.
+4. Suba la plancha y coloque el tornillo (2) con la mano.
+8.10.2. AC16563 - Placa fluidos / AC16564 - Placa jeringas. BA400v2
+Desmontaje: 
+1. Quite los 5 tornillos (1)
+2. Quite la chapa de protección transparente (2)
+3. Desconecte todos los cables de la placa a cambiar. Placa de fluidos CIIM00053 (3) y placa de jeringas 
+CIIM00054 (4)
+4. Quite la placa electrónica de los separadores.
+Montaje: 
+1. Cambie la placa electrónica.
+2. Colóquela en su posición.
+3. Conecte cada uno de los cables a la placa.
+4. Vuelva a coloar la chapa de protección con los tornillos.
+Manual de servicio
+188

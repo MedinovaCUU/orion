@@ -1,0 +1,13 @@
+163
+163
+Los resultados se mostrarán en una tabla ordenados por la fecha. 
+ 
+ 
+Pulse este icono para mostrar una gráfica del histórico de los resultados de las 
+calibraciones de los electrodos ISE. Véase Ilustración 105
+Ilustración 104 
+Pantalla de histórico de calibraciones de los electrodos ISE
+Ilustración 105 
+Visualización gráfica de las calibraciones
+Ilustración 106 
+Pantalla de histórico de calibraciones de las bombas

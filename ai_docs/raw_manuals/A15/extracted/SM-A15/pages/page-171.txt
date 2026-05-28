@@ -1,0 +1,62 @@
+Manual de servicio
+172
+AV. Instrucciones para el reacondicionamiento
+Este capítulo explica las instrucciones para el reacondicionamiento y control de los instrumentos comercializados en 
+forma de alquiler o comodato o transmitidos de segunda mano.
+Condiciones generales
+• 
+Vida útil: Si se mantienen las instrucciones del fabricante en cuanto al uso y mantenimiento contenidas en el 
+Manual de Usuario, y utilizando los recambios originales, no hay limitación para la vida útil. BioSystems manten-
+drá el servicio de recambios hasta 5 años después de la fabricación del último analizador del mismo modelo.
+• 
+Número de veces que se puede reacondicionar: Se puede reacondicionar tantas veces cómo sea necesario, 
+siempre y cuando se sigan las instrucciones de reacondicionamiento descritas en este apartado y se utilicen los 
+recambios originales.
+• 
+Accesorios utilizados en los aparatos reacondicionados: Cualquier analizador reacondicionado utilizará 
+accesorios suministrados por el fabricante. Cualquier resto de fungible sobrante del anterior uso, tales cómo 
+rotores, botellas extra de reactivo, solución de limpieza, líquido de sistema, etc. será desechado.
+• 
+Personal: El reacondicionamiento lo realizará personal autorizado por Biosystems, normalmente será el personal 
+de servicio técnico del distribuidor, o que haya recibido la formación adecuada. 
+Instrucciones
+Limpieza y desinfección
+• 
+Utilizar guantes y protección para el usuario que va a realizar el proceso de desinfección. Tratar el material con-
+sumible (rotor de reacción, botellas de reactivo, tubos de muestra) como potencialmente infeccioso.
+• 
+Verificar si hay algún rotor de reacción en su alojamiento y botellas de reactivo en el analizador. En caso afirma-
+tivo desecharlos. 
+• 
+Vaciar los contenedores de residuos y líquido de sistema.
+• 
+Limpiar el exterior del equipo con un paño húmedo y jabón neutro. En caso de haber salpicaduras limpiar local-
+mente con alcohol.
+• 
+Seguir la normativa nacional vigente para deshacerse de los residuos considerados potencialmente infecciosos. 
+Componentes a cambiar
+• 
+Cambiar la punta. (AC11500) Utilizar la utilidad de cambio de punta del programa de servicio. Desechar la punta. 
+Tratarla como potencialmente infecciosa. Para manipular la punta utilizar guantes para protección del usuario.
+• 
+Cambio de los tubos internos de teflón (AC13365 y TU13366)
+• 
+Cambio de la lámpara y el portalámparas. (LA13195 y ZO13374). Utilizar la utilidad de cambio de lampara del 
+programa de servicio.
+• 
+Cambio del retén de la bomba cerámica (AC13361).
+• 
+Actualizar firmware y software.
+Proceso de verificación y ajuste
+Realizar las siguientes verificaciones, consultar el manual de servicio (capítulo 3) para realizar las verificaciones. Si 
+una verificación no entra dentro de los valores, ajustar de nuevo
+• 
+Verificación de las posiciones del brazo XYZ
+• 
+Verificación de las posiciones del rotor de lecturas y del tambor de filtros
+• 
+Verificaicón de la sensibilidad detección de nivel con los diferentes botellas y tubos
+• 
+Verificación de la termostatización de la punta y del rotor
+• 
+Test de fotometría

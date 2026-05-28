@@ -1,0 +1,67 @@
+Manual de servicio
+12
+Símbolo
+Descripción 
+NOTE
+Cables de red de recambio
+Si va a usar un cable de red que no sea suministrado por el fabricante, asegúre-
+se de que soporte la potencia del analizador, que sea homologado y que cumpla 
+con la normativa CE.
+NOTE
+Operaciones después de una reparación
+Después de una reparación asegúrese de que ha vuelto a colocar todas las pie-
+zas desmontadas siguiendo las instrucciones pertinentes y de que ha realizado 
+los test de verificación con el programa de servicio. 
+NOTE
+Uso de consumibles
+Antes de usar las sustancias consumibles (soluciones de limpieza y líquidos de 
+sistema) verifique su fecha de caducidad. En caso de haberse caducado retire el 
+producto y utilice uno nuevo con la fecha de caducidad vigente.
+WARNING
+Operaciones que puedan comprometer la seguridad el equipo
+Cualquier uso indebido (negligencia, condiciones de red eléctrica fuera de 
+tolerancia, condiciones ambientales o de ubicación inadecuadas, etc.) Así 
+como una manipulación interna del analizador por personal no autorizado por 
+Biosystems o el uso de consumibles y recambios no originales (rotores, fusibles, 
+etc.) pueden comprometer la protección asegurada por el analizador.
+Las representaciones de pantallas mostradas en este manual tienen únicamente carácter ilustrativo. Las pantallas 
+no reflejan necesariamente datos válidos.
+Abreviaturas y unidades que aparecen en el manual
+Abreviatura
+Definición
+Ø
+Diámetro
+CE
+Comunidad Europea
+CEM
+Compatibilidad electromagnética
+CRTL
+Tecla control del teclado del ordenador
+EN
+Norma europea
+F
+Rápido (tipo de fusible)
+FUS
+Fusible
+IVD
+Diagnóstico In Vitro
+LED
+Diodo emisión de luz
+LIS
+Sistema de información de laboratorios
+R1
+Reactivo 1
+R2
+Reactivo 2
+RAEE
+Residuos de aparatos eléctricos y electrónicos
+S
+Muestra
+SAT
+Servicio asistencia técnica
+SD
+Desviación estándar
+SE
+Seguridad eléctrica
+UV
+Ultravioleta

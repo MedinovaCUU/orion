@@ -1,0 +1,25 @@
+8.14.3. AC17429 - Manifold racord
+Desmontaje:
+1. Desmonte el manifold según el capítulo 8.12.2
+2. Desenrosque el racord con una llave fija hasta extraerlo
+Montaje:
+1. Enrosque a mano el racord hasta el tope
+2. Utilice una llave dinanométrica y enrosque el racord con un par de 55Ncm. 
+3. Una vez montado el manifold, verifique la estanqueidad del racord
+28
+Ilustración 8.75 
+Cambio racord manifold
+8.14.4. AC16590 - Retén pistón
+Herramientas: 
+Desmontaje:
+1. Siga los pasos de desmontaje según el capítulo 8.14.2
+2. Separe el retén del adaptador retén. 
+Montaje:
+1. Siga los pasos del montaje según el capítulo 8.14.2
+2. Antes de realizar el punto 7, cambie el retén (23) por uno nuevo. Humedezca con WS (Washing Solution) el 
+adaptador retén y el retén para facilitar la inserción del retén en su alojamiento. Ayúdese de una pieza plana 
+para realizar la presión del retén. 
+3. Verifique que el retén está correctamente nivelado con el adaptador retén.
+4. Continúe los pasos de montaje según el capítulo 8.14.2
+Manual de servicio
+184

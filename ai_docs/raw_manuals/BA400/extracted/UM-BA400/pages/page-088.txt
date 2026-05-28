@@ -1,0 +1,33 @@
+Manual usuario 
+ 
+ 
+ 
+Manual usuario 
+ 
+ 
+ 
+88
+88
+Biosystems
+Biosystems
+Ilustración 56 
+Pantalla de mantenimiento de los tipos de muestra
+10.3. Programación
+Desde este menú se accede a las diferentes opciones para programar los paráme­
+tros necesarios para realizar las medidas de concentración con el analizador. Las 
+diferentes opciones de programación son:
+Parámetros de las técnicas, técnicas calculadas, contaminaciones, perfiles, calibra­
+dores, controles, datos de paciente, técnicas ISE y técnicas externas.
+10.3.1. Técnicas
+ 
+CAUTION
+ 
+Verifique la programación de los parámetros de las técnicas con los valores de las 
+instrucciones de uso (IFU) para cada reactivo. 
+Desde esta opción del programa podrá crear, modificar, eliminar y listar las técnicas 
+y sus parámetros.
+La pantalla está divida en dos partes, en la parte de la izquierda hay una lista de 
+todas las técnicas y en la parte de la derecha muestra los diferentes parámetros con 
+sus valores. Los parámetros están agrupados en varias pestañas: general, procedi­
+miento, calibración y blanco, control de calidad y opciones.
+Pulse sobre el nombre de la pestaña para acceder a cada grupo de parámetros.

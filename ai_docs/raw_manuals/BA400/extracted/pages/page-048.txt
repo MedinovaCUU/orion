@@ -1,0 +1,82 @@
+48
+Connector
+Function
+Pin
+CN8
+Rotor start-up detection
+Pin 1: Detection
+Pin 2: GND
+Pin 3: 5V
+CN9
+Wash station motor
+Pin 1: Coil 1
+Pin 2: Coil 1
+Pin 3: Coil 2
+Pin 4: Coil 2
+CN10
+Wash station detection
+Pin 1: Detection
+Pin 2: GND
+Pin 3: 5V
+CN11
+Tip temperature sensor 
+Pin 1: 3.3 V
+Pin 2: Sensor
+CN12
+Fan
+Pin 1: 24 V
+Pin 2: Detection diagnostic
+Pin 3: Activation
+CN13
+Fan
+Pin 1: 24 V
+Pin 2: Detection diagnostic
+Pin 3: Activation
+CN14
+Fan
+Pin 1: 24 V
+Pin 2: Detection diagnostic
+Pin 3: Activation
+CN15
+Fan
+Pin 1: 24 V
+Pin 2: Detection diagnostic
+Pin 3: Activation
+CN16
+Peltier
+Pin 2: Peltier activation
+Pin 3: Peltier activation
+CN17
+Peltier
+Pin 2: Peltier activation
+Pin 3: Peltier activation
+Test point
+Function
+TP1
+24 V
+TP2
+GND
+TP3
+CAN_H (bus signal)
+TP4
+CAN_L (bus signal)
+TP5
+GND
+TP6
+GND
+TP14
+12 V insulated
+TP16
+3.3 V
+TP17
+5 V
+TP18
+24 V
+TP19
+GND
+TP27
+Rotor motor reference voltage
+TP28
+Stepper motor driver voltage
+TP40
+Wash station motor reference voltage

@@ -1,0 +1,29 @@
+8.9.3. 
+AC16817 - Abrazadera
+Herramientas: Llave allen 2.5 para los tornillos (11) y llave allen 3 para los tornillos (10)
+Desmontaje:
+1. Quite la abrazadera, quitando los tornillos (10) y (11).
+Montaje:
+1. Coloque la nueva abrazadera.
+2. Desplace la cremallera en su posición inferior.
+3. Coloque la abrazadera y posicione los tornillos (10) y (11) sin apretar.
+4. Coloque el soporte de los pistones a 15.4 mm de distancia respecto a la pieza que sujeta el motor (14).
+5. Apriete los tornillos en este orden, primero (11) y después el (10).
+8.9.4. 
+AC16586 - Motor Bomba
+Herramientas: Llave allen de 3 mm y llave fija de 7
+Desmontaje:
+1. Quite los 4 tornillos que sujetan el motor (12).
+Montaje:
+1. Cambie el motor. 
+2. Coloque los tornillos sin apretarlos para sujetar el motor. 
+3. Desplace la cremallera en su posición inferior.
+4. Coloque la abrazadera y posicione los tornillos (10) y (11) sin apretar.
+5. Coloque el soporte de los pistones a 15.4 mm de distancia respecto a la pieza que sujeta el motor (14).
+6. Apriete los tornillos en este orden, primero (11) y después el (10).
+7. Verifique el movimiento de subida y bajada de los pistones.
+14
+Ilustración 8.32 
+Montaje motor bomba pistones
+Manual de servicio
+148

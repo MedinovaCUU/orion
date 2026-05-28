@@ -1,0 +1,28 @@
+2. Ponga los 4 tuercas con sus arandelas que sujetan la ventana.
+3. Conecte el cable del calefactor.
+8.13.3. AC16625 - Lector del código de barras
+Herramientas: 1 llaves allen de 2.5
+Desmontaje:
+1. Quite el tornillo (2). Ver Ilustración 8.54
+2. Corte las bridas que sujetan el cable y desconecte el lector de la placa electrónica.
+Montaje:
+1. Ponga el tornillo que sujeta el lector a la pieza de sujeción.
+2. Inserte el cable y ponga las bridas para guiar al cable por el soporte.
+8.13.4. Ajuste del lector del código de barras
+Inicialice el analizador con el programa de servicio y seleccione el menú de ajuste del lector de códigos de barras. 
+1. Ajustes /test / Código de Barras
+2. Monte la escuadra de soporte del lector en la posición (1).
+3. Coloque el lector en la posición media del coliso en los 3 ajustes (2), (3) y (4). Ver Ilustración 8.55 y Ilustración 
+8.56
+4. Con el programa de servicio ponga el lector en modo ajuste para encender el haz láser del lector. Ajuste el haz 
+del láser lo más paralelo posible al eje del rotor mediante los tornillos (2) que sujetan la escuadra. Con la ayuda 
+de una escuadra o útil verifique el paralelismos del haz. Ver Ilustración 8.57
+5. Coloque un rotor de reactivos con una botella en la posición 1 con una etiqueta. Ajuste el ángulo de la posición 
+vertical (4) para conseguir que el haz del láser cubra toda la etiqueta y el inicio del láser quede en la posición 
+superior de la botella como indica la Ilustración 8.58
+6. Ajuste el ángulo del láser (3) para que el haz quede entre 12 y 14 mm desviado del centro del eje, ver Ilustra­
+ción 8.59.
+7. Con el programa de servicio ajuste con los controles la posición central de la botella número 1, para después 
+verificar las lecturas del rotor completo.
+Manual de servicio
+170

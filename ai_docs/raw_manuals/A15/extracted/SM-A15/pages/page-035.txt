@@ -1,0 +1,62 @@
+Manual de servicio
+36
+4. Sistemas electrónicos y fluídos
+4.1. Descripción de la electrónica del analizador
+La electrónica del analizador se compone de diferentes placas ubicadas en diferentes puntos del analiza-
+dor y dedicadas a funciones específicas. Su diferente ubicación corresponde a criterios de funcionalidad 
+y prestaciones para el funcionamiento del analizador.
+Existen 8 placas diferenciadas y que corresponden a:
+• 
+Placa CPU (CIIM00026)
+• 
+Placa Fuente de Alimentación y fuente de alimentación (SP150 & CIIM00015)
+• 
+Placa Punta (CIIM00017)
+• 
+Placa Fotometria (CIIM00027)
+• 
+Placa Interconexión carro XYZ(CIIM00018)
+• 
+Placa Interconexión Rotor (CIIM00029)
+• 
+Placa Interconexión fluidos(CIIM00028)
+• 
+Placa Comunicaciones (CIIM00019)
+• 
+Placa Refrigerador de reactivos(CIIM00075) (sólo para los modelos A15C e Y15C)
+4.2. Placa CPU (CIIM00026)
+En ella reside el microprocesador (H8/3003) encargado del control de todos los elementos del analizador. 
+La placa consta de diferentes sistemas de almacenamiento de datos bien a través de RAM estática (U11 y 
+U47), memoria FLASH (U10) o EPROM (U9). El zócalo asociado a la EPROM es utilizado para la verifica-
+ción funcional de la placa y la grabación del programa MONITOR en la fase productivas del analizador. Las 
+otras dos memorias están las asociadas al funcionamiento normal del analizador. En la memoria FLASH 
+reside la aplicación propiamente dicha así como diferentes bancos de datos relativos a configuraciones 
+de fábrica, ajustes, estado del rotor y posibles ampliaciones de la aplicación.
+Existe también sobre la placa el dispositivo U21 se trata de un dispositivo lógico programable (FPGA) que 
+está dedicado al control de motores, mapeado en memoria de registros asociados al control de finales 
+de carrera, electroválvulas, sensado de nivel y control de la placa asociada a la fotometria (CIIM00027).
+El control de los motores actúa directamente sobre los drivers correspondientes a cada uno de los ejes 
+del analizador ( U28,U29,U30,U24,U25,U27) para actuar sobre el motor. El driver está constituido por el 
+integrado L6228. La regulación de corriente de cada eje es configurable y se realiza a través de una DAC 
+que fija la consigna de corriente de forma independiente ( U26). 
+La actuación sobre el sistema de termostatización del rotor se realiza a través de un puente en H basados 
+en tecnología MOS ( U45) y controlados directamente desde el microprocesador. La actuación sobre el 
+sistema de termostatización de la punta se realiza a través del transistor Q4. 
+Conector
+Función
+Pins
+J1
+No disponible
+J2
+Conexión a la placa de comunicaciones 
+(CIIM00036)
+1 - Vcc
+2 - GND
+3 - Tx0
+4 - GND
+5 - Rx0
+6 - GND
+7 - GND
+8 - Tx1
+9 - GND
+10 - Rx1

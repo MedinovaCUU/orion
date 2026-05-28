@@ -1,0 +1,22 @@
+100
+Service manual
+5.4.4. 
+Changing the lamp
+When entering the screen, it is possible to choose between: Changing or checking the lamp. When a new 
+lamp is installed, this utility must be used to notify the analyzer that the lamp has been changed and optimize 
+the luminosity of the photometric system. The lamp must be changed with the analyzer in sleeping mode. If 
+the analyzer is on standby mode, the program shuts it down automatically. The lamp must never be touched 
+with fingers. Once the new lamp has been installed and the covers of the optic and rotor put back, access the 
+change lamp utility and press the Test button. The program starts up the analyzer, checks the light intensity of 
+the optical system, shuts down the analyzer and then requests the technician to remove the lamp holder again 
+and replace it again turning it 180º on the axis of the lamp. If the temperature of the lamp holder is high, wait until 
+it cools down or use pincers to hold it. The program starts up the analyzer again, measures the light intensity 
+of the optical system again, compares the light intensity in both possible positions and chooses the greatest 
+luminosity. If it is the current position, it tells the technician that the test is complete. If the best position were 
+the previous one, the program shuts down the analyzer and asks the technician to remove the lamp holder and 
+replace it, turning it 180º on the axis of the lamp, returning the lamp to its initial position. If the option selected 
+at the beginning was to Check the Lamp, the process is the same but without shutting down the analyzer at 
+the beginning.
+5.4.5. 
+Configuration of the filter wheel
+This screen enables the modification of the analyzer filter wheel. The wheel has 10 positions. Position 0 must

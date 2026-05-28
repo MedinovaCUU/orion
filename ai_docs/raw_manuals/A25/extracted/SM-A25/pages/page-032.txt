@@ -1,0 +1,24 @@
+32
+Service manual
+1
+3
+2
+5
+4
+6
+7
+Figure 3.12 
+1 – Tray
+2 – Washing station
+3 – Washing station cover
+4 – Level detection sheeting
+5 – Electronic racks detection board
+6 – Washing water pvc tube
+7 – Waste extraction pvc tube
+Reference Figure 3.12
+3.2.3.3.  Washing pumps
+The needle washing system has two diaphragm pumps, one for the washing water (1) and another for waste extrac­
+tion (7). The PVC tube (2) connects the washing pump to the 2-way electrovalve (3), which is used to prevent the 
+washing station from unloading and to establish the precise amount of washing water. The PVC tube (5) connects the 
+electrovalve to the flow volume limiter (6). The electrovalve has stainless steel fittings for the connection of the PVC 
+tubes. The support (8) fastens the pumps and the electrovalve to the base of the instrument.

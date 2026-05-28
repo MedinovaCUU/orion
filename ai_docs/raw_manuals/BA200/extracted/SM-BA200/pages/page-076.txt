@@ -1,0 +1,61 @@
+76
+CIIM00069
+CIIM00050
+CN18
+OVERFLOW DETECTION
+CIIM00064
+CN41
+LEVEL DETECTION
+CIIM00069
+LEVEL DETECTION
+CIIM00069
+CN42
+CIIM00064
+SENSOR WATER
+SENSOR WASTE
+CN1
+1
+2
+3
+4
+CN46
+1
+2
+3
+4
+5
+CN3
+1
+2
+3
+4
+5
+CN44
+1
+2
+3
+4
+5
+CN47
+1
+2
+3
+4
+CN45
+1
+2
+3
+4
+Ilustración 4.45 
+Conexiones de las placas de detección
+Ilustración 4.46 
+Serigrafía de la placa detección
+Conector
+Función
+Pin
+CN1
+Conexión con las varillas
+Pin 1: Detección nivel 1
+Pin 2: Inyección señal 1
+Pin 3: Detección nivel 2
+Pin 4: Inyección señal 2

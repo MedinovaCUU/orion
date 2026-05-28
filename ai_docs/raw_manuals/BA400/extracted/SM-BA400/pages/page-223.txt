@@ -1,0 +1,32 @@
+2. Suba el tornillo guía (16) lo suficiente para retirar el muelle (17) defectuoso.
+Montaje muelle pisador:
+1. Sustituya el muelle (17) por uno nuevo.
+2. Coloque el tornillo guía (16) hasta el pisador (18).
+3. Atornille el tornillo (19) 
+4. Verifique que el pisador sube y baja con suavidad y sin tropiezos.
+14
+16
+19
+15
+18
+17
+Ilustración 8.80 
+Desmontaje muelles estación de lavado
+8.13.6. AC16595 - Punta aspiración estación de lavado / AC16596 - Punta aspiración + 
+secador estación de lavado
+Herramientas: Allen 1.5, loctite 243, loctite 495
+Desmontaje tubo aspiración y dispensación:
+1. Desconecte los 2 tubos de silicona del tubo a sustituir.
+2. Desatornille el espárrago (21).
+3. Quite el tubo (20) de aspiración y dispensación.
+Montaje tubo:
+1. Cambie el tubo por uno nuevo (20).
+2. Ponga una gota de loctite 243 en la rosca del espárrago.
+3. Oriente el tubo (20) por la cara plana para presionar con el espárrago (21).
+4. Enrase el tubo a la misma profundidad (22) que sus vecinos.
+Desmontaje secador:
+1. Estire la pieza secador (25) hasta que se desprenda.
+2. Si también tiene que cambiar los tubos, desatornille los espárragos (24) para liberar los tubos (23).
+Montaje secador:
+1. Sustituya el tubo (23) por unos nuevos.
+223

@@ -1,0 +1,59 @@
+Service Manual 
+10
+Symbol
+Description
+BIOHAZARD
+Preventing biological risks in handling liquid waste
+Handle the high contamination waste container with care. Wear gloves and 
+protective clothing when handling the container.
+Dispose of the waste in accordance with national or local legislation for 
+disposing of dangerous biological waste, and consult the reagent manufacturer 
+or distributor for more details.
+BIOHAZARD
+Preventing biological risks in handling solid waste
+Take care in handling parts of the analyser that are converted to waste such as 
+the reactor rotor, sample tubes and reagent bottles.
+Wear gloves and protective clothing when handling such waste.
+Dispose of the waste in accordance with national or local legislation for 
+disposing of dangerous biological waste, and consult the reagent manufacturer 
+or distributor for more details.
+NOTE
+Prevention of electro magnetic interferences
+The analyser complies with the requirements with respect to emissions 
+and immunity set forth in the standard UNE -EN 61326-2-6:2006. This 
+equipment has been designed and tested for class B of standard UNE-EN 
+55022:2000. In a household environment, it may cause radio interference, 
+in which case the necessary measures must be taken to mitigate such 
+interference. 
+Do not use the analyser near strong electro magnetic radiation sources (such 
+as centrifuge appliances, radio transmitters, mobile telephones), as they could 
+interfere with its correct operation.
+Preventing laser light emission risks
+The analyser has two barcode readers that emit laser light. The readers only 
+function when the analyser is in execution mode and its rotor covers are in 
+place. In the event of a failure or during adjustment by technical maintenance 
+staff, the light beam could be activated without the cover in place; in such 
+cases, do not look directly at the laser beam. 
+Prevention at the end of the useful life of the analyser
+At the end of the useful life of the analyser, the product must be disposed of 
+in accordance with the environmental legislation in force in each country. 
+If that country is a EU member state, the terms of the WEEE directive 
+on electrical and electronic appliances will apply. In other words, when 
+the appliance's useful life has ended, it is converted into waste and must 
+be separated from household waste for correct recycling. For this purpose, 
+contact the distributor for the product to be properly recycled.
+Abbreviations and units shown in the manual
+Abbreviation
+Definition
+∅
+Diameter
+EC
+European Community
+EMC
+Electromagnetic compatibility
+CRTL
+Control key on the computer keyboard
+EN
+European norm
+F
+Fast (fuse type)

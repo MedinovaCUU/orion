@@ -1,0 +1,65 @@
+67
+CPU BOARD
+CIIM00006
+Esquema de Sistema Fluídico
+Fluidic System Scheme
+2/2
+1 2 3 4 5 6 7 8
+Azul/Blue
+Verde/Green
+Blanco/White
+Rojo/Red
+1 2 3 4
+Azul/Blue
+Verde/Green
+Blanco/White
+Rojo/Red
+Negro/Black
+Blanco/White
+Rojo/Red
+Azul/Blue
+Negro/Black
+Blanco/White
+Rojo/Red
+1 2 3 4
+J19
+Azul/Blue
+1 2
+Negro/Black
+Rojo/Rede
+PLMA00167
+PLMA00166
+Azul/Blue
+Rojo/Red
+Rojo/Red
+Negro/Black
+PLMA00006
+LEVEL CONTROL GAUGES
+PLMA00007
+J44
+WASHING
+SOLUTION
+DETECTOR
+SOURCE IN PUMP
+1 2
+Rojo/Red
+Negro/Black
+PLMA00161
+Negro/Black
+Rojo/Red
+1 2
+Rojo/Red
+Negro/Black
+PLMA00162
+Negro-Amarillo/
+Black-Yellow
+Rojo/Red
+SOURCE OUT PUMP
+PLMA00160
+J8
+J11
+INTERIOR
+A25
+OUTSIDE
+A25
+Figure 4.7

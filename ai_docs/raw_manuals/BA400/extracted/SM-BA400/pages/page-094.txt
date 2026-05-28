@@ -1,0 +1,251 @@
+Manual de servicio
+94
+CIIM00054
+CAN BUS
+REAGENT 1
+PUMP
+DETECTOR
+REAGENT 1
+PUMP
+MOTOR
+JE1
+HOME REAG1
+REAG1
+EV
+EV1-JE1
+CLOT
+DETECTOR
+SENSOR JE1
+HOME REAG2
+REAG2
+HOME SAMPLE
+SAMPLE
+REAGENT 2
+PUMP
+DETECTOR
+REAGENT 2
+PUMP
+MOTOR
+SAMPLE
+PUMP
+DETECTOR
+SAMPLE
+PUMP
+MOTOR
+EV
+EV4-JE1
+EV
+EV3-JE1
+EV
+EV2-JE1
+EV
+EV5-JE1
+EV
+JE1-GE3-FAN
+EV6-JE1
+EV
+B2-JE1
+PUMP
+B3-JE1
+PUMP
+PUMP
+B1-JE1
+PLMA00244
+LED MANIFOLD
+LED
+MANIFOLD
+SAMPLE
+HOME
+SAMPLE
+REAG2
+HOME
+REAG2
+REAG1
+HOME
+REAG1
+CAN BUS
+CLOT
+SENSOR
+B3
+GE1
+B1
+B2
+EV6
+GE2
+GE3
+EV5
+EV2
+EV3
+EV4
+EV1
+CN21
+CN21
+1
+2
+3
+1
+6
+2
+5
+4
+1
+6
+2
+5
+4
+1
+2
+CN15
+CN15
+1
+2
+CN9
+CN9
+1
+2
+CN16
+CN16
+1
+2
+3
+4
+CN11
+CN11
+1
+2
+1
+2
+3
+4
+5
+6
+CN17
+CN17
+1
+2
+3
+CN5
+CN5
+1
+2
+1
+2
+PS4
+PS4
+1
+2
+CN6
+CN6
+1
+2
+1
+2
+3
+4
+5
+6
+1
+2
+3
+4
+5
+6
+CN12
+CN12
+1
+2
+1
+2
+CN2
+CN2
+1
+2
+3
+CN3
+CN3
+1
+2
+3
+4
+5
+CN13
+CN13
+1
+2
+CN7
+CN7
+1
+2
+1
+2
+1
+6
+2
+5
+4
+CN10
+CN10
+1
+2
+CN18
+CN18
+1
+2
+3
+4
+CN14
+CN14
+1
+2
+CN8
+CN8
+1
+2
+CN19
+CN19
+1
+2
+3
+CN20
+CN20
+1
+2
+3
+4
+CN4
+CN4
+1
+2
+CN22
+CN22
+1
+2
+Ilustración 4.24 
+Conexiones de la placa de control de jeringas
+Conector
+Función
+Pin
+CN2
+Sensor presión
+Pin 1: 5 V
+Pin 2: Sensor
+Pin 3: GND
+CN3
+Conexión del bus CAN 
+Pin 1: 24V
+Pin 2: GND
+Pin 3: NC
+Pin 4: CAN_H
+Pin 5: CAN_L
+CN4
+Activación bomba B2
+Pin 1: 24 V
+Pin 2: Señal activación
+CN5
+Activación bomba B1
+Pin 1: 24 V
+Pin 2: Señal activación
+CN6
+Activación electroválvula EV1
+Pin 1: 24 V
+Pin 2: Señal activación

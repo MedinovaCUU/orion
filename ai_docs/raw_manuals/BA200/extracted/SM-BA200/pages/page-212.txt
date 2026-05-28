@@ -1,0 +1,26 @@
+5
+6
+Ilustración 8.102 Desmontaje filtro de la estación de lavado
+8.16.4. AC17286 Depósito de agua destilada / AC17288 Depósito de residuos
+Herramientas: Allen 2.5 y llave torx T20
+Desmontaje del depósito:
+1. Vacíe los depósitos internos con el programa de servicio. Para vaciar el depósito de agua, tendrá que hacer re­
+circular el agua por las estaciones de lavado de las puntas y esperar a que se vacíe. 
+2. Acceda por la parte inferior del analizador y posterior.
+3. Quite los 4 tornillos (8). Se pueden desatornillar con la mano.
+4. Quite la tapa inferior (7).
+5. El depósito exterior es el depósito de agua destilada (11), el que está ubicado en el interior es el depósito de 
+residuos (9).
+6. Los depósitos quedaran colgando y sujetos por los tubos. Véase Ilustración 8.104. Desenchufe el conector CN1 
+de la placa CIIM00069 donde se conectan la varillas de detección.
+7. Vaya quitando todos los tubos uno a uno. Para extraer los tubos, no los estire por fuera de la conexión, sáquelos 
+por el extremo (12) 
+Montaje del depósito:
+1. Cambie el depósito.
+2. Coloque cada uno de los tubos uno a uno, insertándolos a presión. 
+3. Coloque el depósito en su ubicación y súbalo hasta las varillas de sujeción (10). Conecte el cable a la placa 
+CIIM00069.
+4. Coloque la tapa inferior, las varillas (10) se apoyan en la tapa (7).
+5. Coloque los 4 tornillos (8).
+Manual de servicio
+212

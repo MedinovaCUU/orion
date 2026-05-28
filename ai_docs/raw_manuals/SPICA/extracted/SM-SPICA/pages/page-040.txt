@@ -1,0 +1,41 @@
+INSTALACIÓN
+40
+Manual de Usuario BioSystems SPICA
+Manual de Usuario BioSystems SPICA | Versión 2.8 - Agosto 2024
+1. INTRODUCCIÓN
+Esta guía de instalación trata los siguientes temas:
+• Descripción física
+• Requisitos del sitio
+• Requisitos eléctricos
+• Necesidades de suministro de agua
+Para más información sobre operaciones especiales de funcionamiento o preguntas sobre el procedimiento 
+para preparar el lugar de instalación, por favor contacte con su representante local de BioSystems.
+Para consultas, vaya a http://www.biosystems.global para más detalles sobre los analizadores y consumibles 
+y reactivos de BioSystems. Si tiene alguna pregunta sobre la información contenida en este documento o si 
+tiene algún comentario o sugerencia para futuras ediciones, por favor consulte a su distribuidor.
+2. EMBALAJE Y ENTREGA
+2.1 Número de paquetes
+El analizador está empaquetado en dos cajas separadas. La caja más grande contiene el analizador, y la 
+más pequeña contiene los diferentes accesorios suministrados con el analizador.
+Los tamaños de los paquetes son los siguientes:
+2.2. Equipo necesario para la instalación
+La caja del analizador debe ser movida usando una transpaleta o una carretilla elevadora. Las características 
+mínimas de la transpaleta o la carretilla elevadora son las siguientes:
+• Capaz de mover pesos de 150 kg.
+• Horquillas con una longitud de al menos 1150 mm.
+2.3. Espacio para desenbalar
+Se requiere un área desocupada para la descarga, con una superficie de 5 m2 para el desembalaje y la 
+manipulación de las cajas. El analizador está sujeto a una paleta.
+Compruebe el área por la que se moverá la paleta y elimine todos los obstáculos.
+UNIDAD
+Caja SPICA
+Caja Accesorios
+TAMAÑO (mm) (axpxa) 
+1200 x 800 x 930
+370 x 605 x 135
+TAMAÑO (in) (axpxa) 
+47,24 x 31,49 x 36,61
+14,56 x 23,81 x 5,31
+PESO (KG)
+110
+3

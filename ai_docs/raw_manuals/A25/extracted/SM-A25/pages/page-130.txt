@@ -1,0 +1,29 @@
+Manual de servicio
+130
+9
+12
+13
+7
+8
+10
+11
+Figure 6.24 
+Disassembly of the manifold
+Mounting:
+1. Replace the manifold.
+2. Orient each part correctly (9) according to Figure 6.25
+3. Rotate the manifold holding the pieces (14).
+4. Verify that the O-ring (14) is clean. Put it in your accommodation. Check that it has been inserted correctly and 
+does not come out of the guides (15). See Figure 6.26
+5. Check that the bubble suppressor (16) is free of burrs and dirt. Place it on top of the O-ring. Once assembled, 
+verify that the O-ring is not visible. See Figure 6.26
+6. Orient the seal and seal adapter (17) correctly. The flat face of the adapter must coincide with the window of the 
+manifold (18). See Figure 6.27
+7. Screw in the 4 screws (19) with a tightening torque of 30 Ncm and crosswise. See Figure 6.27
+8. Lubricate piston and seal with WS (Washing Solution)
+9. Orient the manifold correctly with the pump. The window of the manifold (21) has to coincide with the guide screw 
+(22) of the pump. See Figure 6.28
+10. Insert the piston into the seal
+11. Tighten the manifold against the pump, position the 4 screws (20) and cross tighten with a torque of 60 Ncm.
+12. Mount the pump on the instrument. Connect the motor and home detector cable. Connect the tubes
+13. Check the operation of the pump with the service program.

@@ -1,0 +1,25 @@
+25
+24
+29
+28
+30
+26
+27
+Ilustración 3.10 
+Sistema elevación de la estación de lavado
+La estación de lavado es el sistema para lavar cada pocillo del rotor de reacciones. Hay un conjunto de puntas que 
+realizan el proceso de lavado, enjuague y secado. Para poder girar el rotor de reacciones en cada ciclo el conjunto de 
+puntas (24) se elevan y descienden. El movimiento ascendente y descendente se realiza con un motor (30) que está 
+unido con un piñón (29) a una correa de transmisión (27) y ésta a través de un eje de transmisión (25) al conjunto 
+de puntas (24). 
+Para indicar la posición de inicio de la estación de lavado hay el fotodetector de inicio (26) y la pestaña (28). Junto 
+al fotodetector de inicio hay un segundo fotodetector que sirve para detectar si hay colisión en la estación de lavado.
+El conjunto de las puntas de la estación de lavado está cubierta por una carcasa (31). Cada una de las 7 puntas están 
+sujetas por prisioneros a la pieza de soporte (33) que se sujeta al eje de transmisión (25). Cada punta consta de dos 
+tubos, uno para succionar el líquido y el segundo para dispensar agua o solución de lavado.
+La punta (34) aspira la mezcla de reactivo y muestra hasta la botella de residuos de alta contaminación y dispensa 
+solución de lavado. La punta (35) aspira la solución de lavado y dispensa por segunda vez solución de lavado.
+Las 3 puntas (36) aspiran y dispensan agua destilada para realizar el enjuague. La punta (38) aspira el agua destilada 
+para realizar el vaciado y la punta (39) realiza un aspirado para secar el pocillo. 
+Manual de servicio
+30

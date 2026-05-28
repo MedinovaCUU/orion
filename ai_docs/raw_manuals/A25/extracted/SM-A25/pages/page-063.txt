@@ -1,0 +1,5 @@
+63
+Instrument connection diagram with serial number after to:
+A25: 831015800
+Y25: 831020152
+Figure 4.3

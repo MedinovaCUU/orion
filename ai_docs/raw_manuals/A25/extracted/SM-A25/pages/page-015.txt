@@ -1,0 +1,33 @@
+15
+appli­cation program (User Program). The separation of both programs enable it to be maintai­ned separately and the 
+extensions and improvements of one do not affect the other. The user does not have the service program. The Tech­
+nical Service must install it on the user’s computer in order to carry out the service requirements. Once said tasks 
+have been carried out, the Technical Service must uninstall the program. Chapter 5 offers instructions for the different 
+mainte­nance, rep­air and cleaning operations that can be carried out by the Technical Service. The annexes contain 
+a summary of the technical specifications of the analyzer, the adjustment margin tables, the lists of accessories and 
+spares, a list of software versions and their compatibility and a software troubleshooting guide.
+2.1. 
+General description of the analyzer
+The A25/Y25 analyzer is made up of three basic components: the operating arm, the dispensing system and the read­
+ing and reactions rotor. The electronic system of the instrument controls said components and communicates with the 
+external computer containing the application program. Through this program, the user can control all the operations 
+of the analyzer. The analyzer may be fitted with the option of an external module for measuring ion concentration.
+2.1.1. 
+Operating arm
+This is a three-axis XYZ Cartesian mechanism. The X and Y axes move the dis­pens­ing needle over the analyzer hor­
+izontally and the Z axis moves it vertically. It is operated by three step-by-step motors. In each 15-second preparation 
+cycle, the operating arm performs the following actions: first of all, it sucks in the reagent from the corresponding bottle. 
+Next, the needle is washed externally in the washing station and sucks in the sample from the corresponding tube. It is 
+washed externally again and dispenses the sample and the reagent into the reactions rotor. Finally, it is exhaustively 
+washed internally and externally before proceeding with the next preparation. The arm has a system for controlling 
+vertical movement to detect whether or not the needle has collided into anything on descending. If a collision occurs, 
+as may be the case if, for example, a lid has been left on a bottle of reagent, the arm automatically restarts, verifies the 
+straightness of the needle and continues working issuing the corresponding alert to the user. A vertical axis retention 
+system prevents the needle from falling in the case of a power cut, avoiding injury from the needle to the user or the 
+needle being bent by an attempt to move the arm manually. The operating arm only makes the preparations if the 
+general cover of the analyzer is closed. If the cover is raised while it is functioning, the arm automati­cally aborts the 
+task in progress and returns to its parked position to avoid injury to the user.
+2.1.2. 
+Dispensing system
+This system consists of a thermostatised needle, supported and displaced by an operating arm and conne­ct­ed to a 
+dispensing pump. The needle is detachable to enable cleaning and replacement. The analyzer has capacity level

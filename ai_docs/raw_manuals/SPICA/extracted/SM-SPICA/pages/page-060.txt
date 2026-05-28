@@ -1,0 +1,39 @@
+VERSIÓN 
+Manual de Usuario BioSystems SPICA
+60
+Manual de Usuario BioSystems SPICA | Versión 2.8 - Agosto 2024
+2.6
+2.7
+Setiembre 2022
+Mayo 2024
+Índice:
+Actualización de capítulos y páginas. 
+Guía do Usuario: 
+1.1 Avisos y advertencias (texto Norma FCC)
+8. Accessorios y Repuestos - capítulo eliminado
+Especificaciones técnicas:
+Texto de Bluetooth eliminado
+2.10 Precauciones de seguridad al operar el equipo:
+Añadida distancia mínima de manipulación
+2.8 Comunicaciones en Spica:
+Banda WI-FI cambiada a 2.4 GHz
+3.4 Mesa opcional: capítulo eliminado
+Referencia IVD eliminada
+VERSIÓN
+ MANUAL
+FECHA DE 
+REVISIÓN
+CAMBIOS
+Código manual UM-SPICAv2.8-ES
+CUALQUIER CAMBIO REALIZADO EN EL INSTRU-
+MENTO POR EL CLIENTE ANULARÁ Y DEJARÁ SIN 
+EFECTO LA GARANTÍA.
+NOTE
+2.8
+Agosto 2024
+Normas exentas RSS de Industria de Canadá
+BioSystems S.A.
+C/ Costa Brava 30,
+08030 - Barcelona 
+SPAIN
+www.biosystems.global

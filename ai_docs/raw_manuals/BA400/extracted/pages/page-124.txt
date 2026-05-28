@@ -1,0 +1,74 @@
+REAGENT CONTROL
+Pipetting resolution
+1 mL
+Level detection
+Yes
+Washing of tip
+Interior and exterior
+Vertical collision detector
+Yes
+Thermostatted tip
+Yes
+REACTION ROTOR
+Minimum reaction volume
+200 μL
+Maximum reaction volume
+600 μL
+Number of cuvettes
+120
+Cuvette material
+UV methacrylate
+Type of incubation
+Dry
+Fixed dispensing time for 2nd reagent
+5 min (fixed)
+Reaction cuvette temperature
+37 °C
+Temperature accuracy
+±0.2° C
+Temperature stability
+±0.1° C
+Stirrers
+2
+CUVETTE WASHING SYSTEM
+Number of washing system tips
+7
+Number of tips with washing solution
+2
+Rinsing with water
+3
+Drying
+2
+Washing volume
+711 μL
+Washing solution consumption
+1.42 mL/cycle
+OPTICAL SYSTEM
+Light source
+LED+Hard Coating Filter
+No. of wavelengths
+8
+Wavelengths
+340­ – 405 – 505 – 535 – 560 – 600 – 635 – 670 
+nm
+Filter band width
+10 nm ± 2 nm
+Wavelength accuracy
+± 2 nm
+Photometric range
+-0.2 A to 3.5 A
+Internal resolution
+0.0001
+Detector
+Principal photodiode + reference photodiode
+Measurement precision (for 340 nm, 405 nm and 
+505 nm)
+CV < 1 % at 0.1 A
+CV < 0.1 % at 2 A
+ISE MODULE (optional)
+Type of sample
+Serum, Plasma or Urine
+Type of electrode
+Na+, K+, Cl-. Li+ (optional)
+Service Manual
+124

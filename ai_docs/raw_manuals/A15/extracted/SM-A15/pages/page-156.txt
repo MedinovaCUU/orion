@@ -1,0 +1,35 @@
+157
+Lista de accesorios
+Código
+Representación
+Descripción 
+FI13812
+Conjunto de filtro de 520 nm
+FI11490
+Conjunto de filtro de 535 nm
+FI11491
+Conjunto de filtro de 560 nm
+FI10708
+Conjunto de filtro de 570 nm
+FI16339
+Conjunto de filtro de 580 nm
+FI11566
+Conjunto de filtro de 600 nm
+FI13816
+Conjunto de filtro de 620 nm
+FI11567
+Conjunto de filtro de 635 nm
+FI11568
+Conjunto de filtro de 670 nm
+AC16355
+Conjunto de filtro de 700 nm
+FI16423
+Conjunto de filtro de 750 nm
+FI15673
+Conjunto de filtro de 880 nm
+FI11498
+Conjunto de filtro tapado
+AC12446
+Varilla metálica para la limpieza de la punta (10)
+AC12223
+Llave allen 2mm

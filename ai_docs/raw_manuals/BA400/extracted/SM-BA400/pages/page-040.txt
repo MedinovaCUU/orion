@@ -1,0 +1,80 @@
+Referencias de la Ilustración 3.23 y Ilustración 3.24:
+20 – Caracasa estación de lavado
+21 – Detector de colisión de las puntas
+22 – Tornillo fijador
+23 – Eje guiador del pisador
+24 – Muelle
+25 – Pisador
+26 – Aspiración residuos
+27 – Aspiración solución de lavado
+28 – Enjuague agua 
+29 – Aspiración agua
+30 – Secado
+31 – Eje elevación estación lavado
+32 – Soporte sujeción eje estación lavado
+33 – Contrapolea
+34 – Pieza sujeción eje con la correa
+35 – Pestaña detección de inicio
+36 – Fotodetector de detección de inicio
+37 – Correa
+38 – Motor estación de lavado
+39 – Polea de transmisión
+40 – Protector polea de trasmisión 
+43
+44
+45
+42
+41
+Ilustración 3.25 
+Vista banco óptico
+48
+49
+50
+47
+46
+52
+53
+54
+55
+56
+51
+Ilustración 3.26 
+Explosionado del banco óptico
+Órden de colocación de los leds en el banco óptico según el modelo de instrumento
+Pos 1
+Pos 2
+Pos 3
+Pos 4
+Pos 5
+Pos 6
+Pos 7
+Pos 8
+Pos 9
+Pos 10
+Pos 11
+Modelo BA400
+340
+560
+670
+600
+535
+505
+635
+405
+---
+---
+---
+Modelo Y400
+340
+620
+600
+560
+750
+420
+505
+635
+405
+520
+430
+Manual de servicio
+40

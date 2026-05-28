@@ -1,0 +1,23 @@
+69
+4.19.  AC25427 - Conjunto tubos
+Desmontaje:
+1. Desmontar la carcasa. Ver capítulo 4.2
+2. Abrir la cadena portacables
+3. Cortar las bridas de sujeción de los cables
+4. Extraer por ambos extremos los tubos de PCV y de teflón.
+Montaje:
+1. Sustituir el tubo defectuoso
+2. Seguir los pasos del desmontaje en sentido inverso
+4.20.  AC17432 - Lector de código bidimensional de portaobjetos
+Herramientas: Llave allen de 2, alicate de corte y brida de 2.5mm
+Desmontaje:
+1. Quitar la tapa del brazo. Ver capítulo 4.3
+2. Cortar brida de sujeción de cable del lector al conjunto del brazo manipulador (1).
+3. Desconectar conector areo del cable del lector.
+4. Quitar los 2 tornillos (2).
+5. Quitar el lector.
+Montaje:
+1. Seguir los pasos del desmontaje en sentido inverso, reponiendo la brida cortada.
+1
+2
+Ilustración 4.41.  Desmontaje lector de código de portaobjetos

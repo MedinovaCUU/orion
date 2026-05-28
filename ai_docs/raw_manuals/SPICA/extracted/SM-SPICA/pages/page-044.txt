@@ -1,0 +1,22 @@
+SERVICIO
+Manual de Usuario BioSystems SPICA
+44
+Manual de Usuario BioSystems SPICA | Versión 2.8 - Agosto 2024
+1. ELEMENTOS DE HARDWARE
+Opción básica
+Con lector de código de 
+barras (opcional y 
+actualizable)
+Con unidad de refrigeración 
+(opcional y actualizable)
+1.1 Rotor de muestras y reactivos 
+Todos los tubos de muestra y vasos pediátricos, calibradores, controles de calidad y reactivos se colocan 
+en el mismo rotor.
+Hay diferentes configuraciones de rotor de muestras y reactivos:
+1.2 Rotor de reactivos
+El rotor de reacción es el lugar donde la muestra se mezcla con el reactivo. El rotor tiene 120 pozos de 
+PMMA. El rotor está instalado en un lazo de calentamiento mantenido a 37°C y fijado en su lugar por un 
+perno. Todo el conjunto está protegido por una cubierta para mantener su temperatura y evitar que entre la 
+luz. El conjunto tiene un detector de cubierta que funciona mediante un sensor de efecto Hall. El sistema 
+funciona de forma continua, y para ello dispone de una estación de lavado opcional que vacía y lava los 
+pozos del rotor.

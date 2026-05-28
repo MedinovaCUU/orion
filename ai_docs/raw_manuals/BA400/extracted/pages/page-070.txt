@@ -1,0 +1,78 @@
+Menu Name
+Description
+Adjustments/Test
+Gives access to the different options for adjusting and checking the different analyser 
+subassemblies
+• 
+Positioning
+• 
+Photometry
+• 
+Bottle level
+• 
+Motors, valves and pumps
+• 
+Thermostatting
+• 
+Level detection
+• 
+Barcode
+• 
+ISE module
+• 
+Clot sensor
+• 
+Stress mode
+Utilities
+Gives access to the utilities assembly: 
+• 
+Conditioning
+• 
+Demo mode 
+• 
+Analyser information
+• 
+Hardware versions
+• 
+Updating of firmware
+Recording and 
+maintenance
+Gives access to the report options
+• 
+Historical reports
+• 
+TAS report
+• 
+Preventive maintenance
+Exit
+Exit options
+• 
+With Shutdown
+• 
+Without Shutdown
+Help
+Help options
+• 
+Manuals
+• 
+About
+6.4. Setup
+6.4.1. Analyser
+Enables the following options to be configured:
+Selection of the water inlet: Select the water inlet mode for the analyser. The water may enter through two dif­
+ferent channels which are mutually exclusive:
+• 
+Water tank
+• 
+Water mains
+Deactivate buzzer: Check this option if you do not want the buzzer to sound when an alarm is indicated.
+Deactivate other elements: Allows you to deactivate or activate the following elements separately. These values 
+are stored in the analyser memory and applied when the user programme is executed.
+• 
+General cover of the analyser
+• 
+Reaction rotor cover
+• 
+Sample rotor cover
+Service Manual 
+70

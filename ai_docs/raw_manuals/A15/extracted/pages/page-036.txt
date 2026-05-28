@@ -1,0 +1,58 @@
+37
+Conector
+Función
+Pins
+J4
+Conexión a la placa interconexión 
+XYZ(señales de home y encoder)
+1 -Vcc
+2 - GND
+3 - Encoder punta
+4 -Home motor Y
+5 -Home motor X
+6- GND
+J5
+Conexión a la placa interconexión 
+XYZ(Señales de los motores)
+1 - bobina 2 motor X
+2 - bobina 2 motor X
+3 - bobina 1 motor Y
+4 - bobina 1 motor X
+5 - bobina 1 motor Y
+6 - bobina 1 motor X
+7 - bobina 2 motor Y
+8 - bobina 2 motor Z
+9 - bobina 2 motor y
+10 - bobina 2 motor Z
+11 - bobina 1 motor Z
+12 - bobina 1 motor Z
+J6
+Conexion a la placa interconexión 
+Rotor(señales de home de los motores 
+y señales de control de la placa de 
+fotometría)
+1 - 12 V
+2 - GND
+3 - DVALID
+4 - DCLK
+5 - DOUT
+6 - DXMIT
+7 - RANGE2
+8 - RANGE1 
+9 - RANGE0
+10 - TEST
+11 - CONV
+12 - GND
+13 - CLKAD
+14 - GND
+15 -GND
+16 - Vcc
+17 - Vcc
+18 - Tapa rotor
+19 - GND
+20 - Termistor rotor
+21 - Home motor tambor de filtros
+22 - GND
+23 - Home motor rotor
+24 - Led frontal color rojo
+25 - Led frontal color verde

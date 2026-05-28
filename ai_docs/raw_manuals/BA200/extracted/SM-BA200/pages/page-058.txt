@@ -1,0 +1,50 @@
+58
+4.5. Placa detección punta - CIIM00049
+Placa situada en la parte superior del brazo de pipeteo. Esta placa controla a través de un microcontrolador (U10) 
+los siguientes elementos:
+• 
+Sistema de detección del líquido
+• 
+Detector de colisión de la punta
+• 
+Sistema termostatización de la punta, a ravés de la resistencia calefactora y el sensor de temperatura
+• 
+Protecciones contra ESD de la punta.
+DR1
+PROBE
+TEMPERATURE
+SENSOR
+PROBE
+HEATER
+LEVEL DETECTION
+CIIM00049
+TP
+HP
+DN
+TP
+HP
+DN
+CAN BUS
+CN4
+1
+2
+3
+CN1
+1
+2
+3
+4
+5
+CN3
+1
+2
+1
+2
++tº
+1
+2
+CN2
+1
+2
+Ilustración 4.36 
+Conexiones de la placa punta

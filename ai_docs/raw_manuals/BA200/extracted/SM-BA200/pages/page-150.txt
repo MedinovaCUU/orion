@@ -1,0 +1,20 @@
+1
+ 
+2
+4
+3
+ 
+5
+6
+7
+Ilustración 8.33 
+Conexiones de la membrana del desgasificador
+8.10.3. AC17220 - Cambio placa de control del desgasificador
+16
+15
+17
+18
+Ilustración 8.34 
+Placa control desgasificador
+Manual de servicio
+150

@@ -1,0 +1,33 @@
+15
+Manual de servicio
+15
+2. Introducción
+El analizador A15 es un analizador automático de acceso aleatorio especialmente diseñado para realizar análisis 
+clínicos de bioquímica y turbidimetría. El control del instrumento se realiza on-line en tiempo real desde un ordenador 
+PC externo dedicado. 
+El modelo A15C es el mismo que el A15 con un refrigerador de reactivos.
+El modelo Y15 es un analizador automático de acceso aleatorio derivado del analizador A15 especialmente dirigido 
+al análisis alimentario. 
+El modelo Y15C es el mismo que el Y15 con un refrigerador de reactivos.
+El Analizador A15 y A15C también puede ser utilizado para la medida de analitos en heces. En el capítulo 1.4 indica 
+cómo modificar el analizador para determinar los analitos en heces.
+En cada uno de los elementos del analizador, BioSystems ha utilizado la tec nología más avanzada para conseguir 
+óptimas prestaciones analíticas, sin olvidar la eco no mía, la robustez, la sencillez de manejo y la facilidad de mante-
+nimiento. Un brazo manipulador cartesiano de tres ejes lleva a cabo la preparación de las reacciones. La dosificación 
+se realiza mediante una bomba dosificadora de pistón cerámico a través de una punta desmontable termostatizada. 
+Una estación de lavado garantiza que la punta se mantenga perfectamente limpia durante todo el proceso. Las reac-
+ciones tienen lugar dentro de un rotor termostatizado, en el que directamente se realizan las lecturas de absorbancia 
+mediante un sistema óptico integrado. 
+Este manual contiene la información necesaria para conocer, mantener y reparar el analizador automático A15. Debe 
+ser utilizado por el Servicio Técnico co mo documen tación de aprendizaje y de consulta para el mantenimiento o la 
+reparación del instru mento. En el capítulo 2 se describen los diferentes elementos mecánicos que constituyen el 
+analizador y su funcionalidad y en el capítulo 3, el sistema electrónico. En el capítulo 4 se describe el Programa de 
+Servicio. Todos los ajustes y comprobaciones del analiza dor se realizan mediante este programa, que es indepen-
+diente del programa de apli cación (Programa de Usuario). La separación de ambos programas permite que sean 
+mante nidos por separado y las ampliaciones y mejoras de uno no afecten al otro. El usuario no dispone del programa 
+de servicio. El Servicio Técnico debe instalarlo en el ordenador del usuario para poder realizar las tareas de servicio. 
+Una vez concluidas estas tareas, el Servicio Técnico debe desinstalar el programa. En el capítulo 5 se proporcionan 
+instrucciones para las diferentes operaciones de mante nimiento, repara ción y limpieza que puede realizar el Servicio 
+Técnico. Los anexos contienen un resumen de las especificaciones técnicas del analizador, las tablas de márgenes 
+de ajuste, las listas de accesorios y recambios, un listado de versiones de software y su compatibilidad y una guía 
+de resolución de problemas de software.

@@ -1,0 +1,67 @@
+Manual de servicio
+14
+Símbolo
+Descripción 
+WARNING
+Uso de consumibles
+Antes de usar las sustancias consumibles (soluciones de limpieza y líquidos de 
+sistema) verifique su fecha de caducidad. En caso de haberse caducado retire el 
+producto y utilice uno nuevo con la fecha de caducidad vigente.
+WARNING
+Cables de red de recambio
+Si va a usar un cable de red que no sea suministrado por el fabricante, 
+asegúrese de que soporte la potencia del analizador, que sea homologado y que 
+cumpla con la normativa CE.
+WARNING
+Operaciones de seguridad después del mantenimiento
+Para proceder con seguridad y dejar el instrumento en un estado seguro 
+durante las operaciones de mantenimiento, siga los pasos descritos en el 
+manual de usuario para cada una de las operaciones. Asegúrese de volver a 
+colocar los diferentes elementos de protección que haya quitado, así como de 
+no dejar ningún elemento de limpieza en el instrumento.
+WARNING
+Operaciones que puedan comprometer la seguridad el equipo
+Cualquier uso indebido (negligencia, condiciones de red eléctrica fuera de 
+tolerancia, condiciones ambientales o de ubicación inadecuadas, etc.) Así 
+como una manipulación interna del analizador por personal no autorizado 
+por Biosystems o el uso de consumibles y recambios no originales (rotores, 
+fusibles, etc.) pueden comprometer la protección asegurada por el analizador.
+Las representaciones de pantallas mostradas en este manual tienen únicamente carácter ilustrativo. Las pantallas no 
+reflejan necesariamente datos válidos.
+Abreviaturas y unidades que aparecen en el manual
+Abreviatura
+Definición
+∅
+Diámetro
+CE
+Comunidad Europea
+CEM
+Compatibilidad electromagnética
+CRTL
+Tecla control del teclado del ordenador
+EN
+Norma europea
+F
+Rápido (tipo de fusible)
+FUS
+Fusible
+ISE
+Electrodo selectivo de iones
+IVD
+Diagnóstico In Vitro
+LED
+Diodo emisión de luz
+LIS
+Sistema de información de laboratorios
+R1
+Reactivo 1
+R2
+Reactivo 2
+RAEE
+Residuos de aparatos eléctricos y electrónicos
+REF
+Solución de referencia para la unidad ISE
+S
+Muestra
+SAT
+Servicio asistencia técnica

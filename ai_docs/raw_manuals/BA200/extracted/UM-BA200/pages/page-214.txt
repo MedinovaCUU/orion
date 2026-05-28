@@ -1,0 +1,55 @@
+Manual usuario 
+ 
+ 
+ 
+Manual usuario 
+ 
+ 
+ 
+214
+214
+Biosystems
+Biosystems
+ 
+Calibrador 
+El calibrador es una muestra con la concentración conocida del analito que 
+queremos determinar. Es un patrón o material de referencia. Para medir correc­
+tamente la absorbancia del calibrador es necesario seguir el mismo modo de 
+análisis que el utilizado para las muestras.
+Cuando la relación entre la absorbancia del analito y su concentración es lineal 
+entonces la función de calibración es una recta. Entonces únicamente será necesario 
+medir el blanco y un calibrador.
+CONC
+ABS
+Ccalibrator
+Csample
+Ablank
+Asample
+Acalibrator
+Ilustración 130 
+ Curva de calibración lineal
+Para las funciones de calibración lineal tendremos como origen de ordenadas la 
+absorbancia del blanco y como pendiente el inverso del factor.
+El factor se calcula de la siguiente manera:
+F=
+C calibrador
+Acalibrador−Ablanco 
+(8)
+Y aplicaremos la siguiente fórmula para calcular las concentraciones:
+Cmuestra= F*(Amuestra-Ablanco) 
+(9)
+Para las funciones de calibración que no son lineales entonces utilizaremos varios 
+calibradores de concentración conocida y aproximaremos la curva mediante fun­
+ciones de regresión.
+Podemos programar las siguientes funciones de regresión:
+Tipo de función 
+Descripción
+Poligonal
+Une cada punto mediante rectas
+Regresión lineal
+Realiza una regresión lineal con todos los puntos
+Regresión parabólica
+Realiza una regresión parabólica con todos los 
+puntos
+Spline
+Traza una curva que pasa por cada punto

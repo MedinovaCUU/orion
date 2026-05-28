@@ -1,0 +1,48 @@
+Manual usuario 
+ 
+ 
+ 
+Manual usuario 
+ 
+ 
+ 
+212
+212
+Biosystems
+Biosystems
+CONC
+ABS
+Ccalibrator
+Csample
+Ablank
+Asample
+Acalibrator
+Ilustración 135 
+ Curva de calibración lineal
+Para las funciones de calibración lineal tendremos como origen de ordenadas la 
+absorbancia del blanco y como pendiente el inverso del factor.
+El factor se calcula de la siguiente manera:
+F=
+C calibrador
+Acalibrador−Ablanco 
+(12)
+Y aplicaremos la siguiente fórmula para calcular las concentraciones:
+Cmuestra= F*(Amuestra-Ablanco) 
+(13)
+Para las funciones de calibración que no son lineales entonces utilizaremos varios 
+calibradores de concentración conocida y aproximaremos la curva mediante fun­
+ciones de regresión.
+Podemos programar las siguientes funciones de regresión:
+Tipo de función 
+Descripción
+Poligonal
+Une cada punto mediante rectas
+Regresión lineal
+Realiza una regresión lineal con todos los puntos
+Regresión parabólica
+Realiza una regresión parabólica con todos los 
+puntos
+Spline
+Traza una curva que pasa por cada punto
+Para calcular la concentración en una curva no lineal se realiza el cálculo de la 
+función inversa de la curva de aproximación.

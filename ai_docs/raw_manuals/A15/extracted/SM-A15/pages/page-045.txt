@@ -1,0 +1,65 @@
+Manual de servicio
+46
+Conector
+Función
+Pins
+J3
+Conexión con la placa de fotometria CIIM00027
+1 - 12 V
+2 - GND
+3 - DVALID
+4 - DCLK
+5 - DOUT
+6 - DXMIT
+7 - RANGE2
+8 - RANGE1 
+9 - RANGE0
+10 - TEST
+11 - CONV
+12 - GND
+13 - CLKAD
+14 - GND
+15 -GND
+16 - Vcc
+J4
+Conexión motor filtros
+1 - Bobina 1
+2 - Bobina 1
+1 - Bobina 2
+2 - Bobina 2
+J5
+Conexión peltiers
+1- Peltier, negro
+2- Peltir, rojo
+J6
+Conexión ventiladores
+1- Ventilador, negro
+2- Ventilador, rojo
+J7
+Conexión señal con placa CIIM00026
+1 - 12 V
+2 - GND
+3 - DVALID
+4 - DCLK
+5 - DOUT
+6 - DXMIT
+7 - RANGE2
+8 - RANGE1 
+9 - RANGE0
+10 - TEST
+11 - CONV
+12 - GND
+13 - CLKAD
+14 - GND
+15 -GND
+16 - Vcc
+17 - Vcc
+18 - Sensor tapa rotor
+19 - GND
+20 - Señal termistor
+21 - Home tambor filtros
+22 - GND termistor
+23 - Home rotor
+24 - Led frontal(rojo)
+25 - Led frontal(verde)
+26 - Sensor ambiente

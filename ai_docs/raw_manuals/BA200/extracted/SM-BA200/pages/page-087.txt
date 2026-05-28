@@ -1,0 +1,32 @@
+Pulse en el icono de nuevo para acceder a la creación de nuevos usuarios. Se activan los campos para introducir los 
+datos del usuario.
+• 
+ID usuario: Introduzca un nombre para identificar al usuario en la aplicación.
+• 
+Nombre: Introduzca el nombre del usuario.
+• 
+Apellido: Introduzca el apellido del usuario.
+• 
+Contraseña: Introduzca una contraseña 
+• 
+Confirmación contraseña: Introduzca otra vez la misma contraseña para confirmar que se ha introducido 
+correctamente.
+Pulse grabar para guardar el usuario o deshacer para descartar el usuario o los cambios.
+Ilustración 6.7 
+Pantalla de creación de usuarios
+6.4.6. Cambio de usuario
+Pantalla que permite cambiar de usuario sin tener que salir de la aplicación. Desde esta pantalla permite la modifi­
+cación de la contraseña para el usuario en curso.
+6.5. Ajuste / Test
+6.5.1. Ajuste posicionamiento
+Desde este menú se accede a las pantallas del ajuste de las posiciones de los diferentes elementos mecánicos del 
+analizador, tales como los brazos, rotores, etc
+Hay algún elemento que para ajustarlo totalmente es necesario realizar primero un ajuste mecánico y después un 
+ajuste con el programa de servicio.
+6.5.1.1. Ajuste del centrado de la óptica
+Este ajuste sirve para que cada pocillo del rotor de lecturas queda centrado respecto al haz de luz del sistema óptico, 
+también se ajusta el punto de disparo en que se realiza la lectura respecto al centrado del rotor. 
+En la pantalla se muestra el perfil de lectura de 5 pocillos. Mediante el recuadro de ajuste se tiene que situar las 
+líneas verticales en el centro de los pocillos. Para ello mueva el rotor paso a paso hasta situar el punto de lectura en 
+el centro de los pocillos.
+87

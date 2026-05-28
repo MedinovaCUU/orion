@@ -1,0 +1,35 @@
+89
+89
+Ilustración 52 
+Pantalla de creación de usuarios.
+Hay tres niveles de usuarios. El nivel administrador, el nivel supervisor y el nivel 
+operador.
+Nivel
+Descripción 
+Administrador
+Tiene acceso total a la aplicación. A este usuario se le 
+permite crear el usuario supervisor y/u operador. 
+Desde este nivel de permisos se accede a la pantalla de 
+configuración de la visualización de técnicas. Los usuarios 
+de supervisor y operador no tienen acceso a esta pantalla.
+Supervisor
+Tiene acceso limitado. A este usuario se le permite crear los 
+usuarios con permiso de operador. Se le da permiso para 
+modificar los valores de los calibradores y controles y de 
+crear un número limitado de técnicas establecido por el 
+Administrador. Sólo se puede crear un usuario supervisor.
+Operador
+Es el nivel de acceso más restrictivo. Este usuario sólo se 
+le permite ejecutar listas, visualizar e imprimir resultados 
+y consultar los parámetros de las técnicas. Se pueden crear 
+tantos usuarios como se quiera.
+Tabla 7 Niveles de usuarios
+En la Ilustración 52 se muestra la pantalla de creación y mantenimiento de los 
+usuarios.
+ 
+ 
+Haga clic en el icono para acceder a la creación de nuevos usuarios. Se activan 
+los campos para introducir los datos del usuario.
+ 
+ID usuario 
+Introduzca un nombre para identificar al usuario en la aplicación.

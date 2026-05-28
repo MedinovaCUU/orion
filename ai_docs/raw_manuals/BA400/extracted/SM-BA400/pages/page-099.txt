@@ -1,0 +1,43 @@
+99
+CIIM00074
+CIIM00053 CN30
+PUMP
+ELECTROVALVE
+CN4
+1
+2
+CN2
+1
+2
+CN3
+1
+2
+Ilustración 4.28 
+Conexiones de la placa de desgasificador
+Ilustración 4.29 
+Serigrafía de la placa de desgasificador
+Conector
+Función
+Pin
+CN2
+Tensión de alimentación 
+Pin 1: 5V
+Pin 2: GND
+CN3
+Conexión con la bomba
+Pin 1: 24V
+Pin 2: Activación
+CN4
+Conexión con la electrovalvula
+Pin 1: 24V
+Pin 2: Activación
+LEDs
+Función (Condición de encendido)
+LD1
+Rojo: Microcontrolador activado
+LD2
+Verde: Presión dentro de límites 
+correctos
+LD3
+Rojo: Presión fuera de límites, 
+bomba activada para realizar el vacío

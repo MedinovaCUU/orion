@@ -1,0 +1,55 @@
+—  39  —
+Service manual
+Appendix II. - Default configuration
+CONFIGURATION
+LANGUAGE 
+: ENGLISH
+SCREEN CONTRAST 
+: 5
+DEFAULT PRINTER 
+: ACTIVATED
+PRINTER CONTRAST 
+: 7
+REPORT HEADLINE 
+: SUMMARISED
+BUZZER 
+: ACTIVATED
+WASHING MODE 
+: 0
+PATIENT CODE 
+: DEACTIVATED
+LABORATORY NAME 
+: (blank)
+WAVELENGTH TABLE
+1..................340
+2..................405
+3..................505
+4..................535
+5..................560
+6..................600
+6..................635
+7..................670
+UNITS TABLE
+0 - mg/dL 
+1 - U/L
+2 - g/L 
+3 - mkat/L 
+4 - mmol/L 
+5 - mmol/L 
+6 - mg/L 
+7 - nkat/L
+8 - g/dL 
+9 - mg/dL 
+10 - IU/mL
+11 - mg/L 
+12 - %
+COMMUNICATIONS
+CONFIG. RS-232:
+- Bauds: 
+ 
+9600
+- Timeout: 
+ 
+0
+- Terminal number: 
+0

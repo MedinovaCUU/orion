@@ -1,0 +1,31 @@
+3.6. Dispensing assembly
+The dispensing pump assembly is comprised of three pumps. Each pump is independent and they are connected 
+to the reagent and sample arm tips. 
+The pistons of the two pumps for pipetting the reagent have a diameter of 8 mm, while the piston of the sample 
+pump has a diameter of 3 mm.
+The fluidic system of the three pumps with the input electro valves is comprised of a PMMA manifold (1). 
+In the fluidic chamber of the sample pump the manifold has a pressure sensors that detects whether the sample tip 
+is blocked (3).
+All three pumps are identical, except for the sample pump, in which the piston has a smaller diameter. They are 
+operated by a motor (13) attached to a multi-twisting spindle (12). The spindle raises or lowers the piston support 
+(11) where it is attached to the piston. The suctioning chamber is sealed by a retaining element (10). The tubes are 
+connected to the manifold by connection fittings (7).
+Figure 3.16 
+Dispensation pump assembly
+6
+4
+2
+5
+1
+3
+Figure 3.17 
+Detail of dispensation pumps
+13
+12
+10
+7
+9
+11
+8
+Service Manual 
+28

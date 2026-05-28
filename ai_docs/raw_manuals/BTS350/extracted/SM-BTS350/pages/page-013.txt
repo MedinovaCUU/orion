@@ -1,0 +1,42 @@
+—  13  —
+2.4.2. - Communication characteristics
+To establish communication, it is necessary to have the PC-Photometer programme that is supplied together with the 
+semi-automatic analyzer. The communications programme uses a send and wait protocol. Every time the transmitter sends 
+a section, it waits to receive another from the receiver, confirming that it has received it correctly. If the transmitter fails 
+to receive this section, it resends it after a certain time (timeout). If the receiver receives the section in error, it does not 
+send the confirmation section, and the transmitter will resend the same section. The protocol uses an error-detector code, 
+CRC-16.
+This protocol functions as a master-slave system, and so it can communicate with several semi-automatic analyzers at 
+one time. To do this, the semi-automatic analyzer must be identified by means of a terminal number. This parameter is 
+configured with the communications configuration values. (main menu / configuration / communications).
+The communication is always started by the master computer. The semi-automatic analyzer always remains alert and only 
+responds if it receives a slave information (request).
+The information sent by the semi-automatic analyzer is the following:
+• 
+Quality control values
+• 
+Samples concentration values
+• 
+Updating the semi-automatic analyzer programme
+To establish communication between the computer and semi-automatic analyzer, the appropriate link programme is 
+required, which is executed from the computer. The programme stores the information received from the semi-automatic 
+analyzer in a file that can be viewed from a text editor or using a spread sheet such as excel.
+2.4.3. - USB Connector type A
+This is used to connect an external USB memory. To configure it, go to the CONFIGURATION/PRINTER menu and select 
+the option USB. Every time the semi-automatic analyzer prints a document, it generates a results file. This is stored in the 
+USB memory, instead of leaving through the printer. When printing a graph, the programme generates another file with 
+the graph in bitmap format. The names of the files generated for the text file start with the letters PR, followed by the date 
+in the YY-MM-DD format. Example: “PR090620.txt”. A new file is generated every day. The name of the graph file has the 
+following format: “CON00001.bmp”. When printing out several graphs, the number of the file will gradually be increased.
+2.5. - Block diagram
+The block diagram gives a functional and global picture of the different electronic circuit components.
+In Figure 2.9 there is a block diagram for that circuit.
+2.5.1. - LED control
+Circuit controlling the current of these LEDs. It is comprised of the CI: U14, U15 and transistors Q7 to Q18. The D/A 
+converter output of the microprocessor generates a voltage of between 0 and 2.5V. This voltage enters the operational U14 
+and generates a current of between 0 and 30mA depending on the LED that is to be turned on. U15 is a decoder that 
+polarises one of the 11 transistors to select a LED. The current programmed by the current source circulates through that 
+LED.
+2.5.2. - Analogical‑digital converter
+The circuit that makes the A/D conversion of both photodiodes. U18 is a double-ramp converter, with a current input. It is 
+informed of the integration time through the length of the CONV signal. Once the device has completed the conversion,

@@ -1,0 +1,58 @@
+173
+NEEDLE THERMOSTATATION SYSTEM
+Actuator
+1 peltier cell
+Control
+Fuzzy logic
+Dispensation temperature
+37 °C
+Repeatability
+± 0.5 °C
+DISPENSING PUMP
+Ceramic piston with PTFE-graphite seal
+Piston diameter
+8 mm
+Dispensing volume
+2 µL - 1250 µL
+Programmable R1 reagent volume
+10 µL -440 µL
+Programmable R2 reagent volume
+10 µL -200 µL
+Programmable sample volume
+3 µL - 40 µL
+NEEDLE WASHING SYSTEM
+System liquid consumption
+approx. 5 ml per preparation
+System liquid container volume
+2700 ml
+Waste container volume
+2700 ml
+Washing solution container volume
+2700 mL
+Waste and water level control per weighing (load cells)
+AUTOMATIC CONDITIONING SYSTEM OF SYSTEM FLUID
+A system of valves that enables the fluid dispensing system to be filled with system liquid, air or 
+washing solution.
+3L bottle of washing solution external to instrument equipped with minimum level detector.
+Connections of bottle of washing solution with quick antidrip plug for liquid and jack connector for signal 
+level. Both on the back panel of the instrument.
+REACTIONS ROTOR AND READING
+WELL ROTOR
+Semi-disposable extractable methacrylate rotor
+Number of wells
+120
+Accepted reaction volumes
+180 µL - 800 µL 
+Light path length
+6 mm
+ROTOR THERMOSTATATION SYSTEM
+Actuators
+4 Peltier cells
+Control 
+4 peltier cell
+Working temperature
+37 °C
+Trueness
+± 0.2 °C
+Stability
+± 0.1 °C

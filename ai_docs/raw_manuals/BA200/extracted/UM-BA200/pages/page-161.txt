@@ -1,0 +1,60 @@
+161
+161
+el botón de búsqueda para recargarlas. La información de los controles con 
+series acumuladas para la técnica dentro del rango de fechas especificado se 
+muestra en una tabla con la siguiente estructura: 
+Parámetros
+Descripción
+N
+Número de series acumuladas
+Media
+Media ponderada de los resultados acumulados.
+Se calcula como:
+Media=
+∑
+i=1
+n
+Mediai⋅ni
+∑
+i=1
+n
+ni
+Siendo Mediai la media de cada serie acumulada y ni 
+el número de resultados diarios usados en el cálculo de 
+cada serie acumulada.
+Unidades
+Unidad de medida de los resultados
+SDobtenido
+Desviación estándar de las N series acumuladas
+CV
+Coeficiente de variación
+CV =
+SD
+Media⋅100
+Rango
+Rango de valores admisibles:
+Rango=Media±Criteriode rechazo⋅SD
+Fechas
+Rango de fechas en el que se realizaron las medidas de 
+control de las N series acumuladas
+Con el tic se activa/desactiva la visualización del detalle de las series acumuladas 
+para el control/lote. Se puede seleccionar un máximo de 3 controles. 
+ 
+Rango de fechas Rango de fechas de los resultados acumulados a visualizar. El rango de fechas 
+informado por defecto es el que permite mostrar todos los resultados acumula­
+dos de la técnica seleccionada.
+ 
+ 
+Ejecuta la búsqueda y validación de resultados aplicando los criterios de cálculo 
+seleccionados
+ 
+ 
+Ejecuta la actualización de los valores objetivo definidos para la técnica y con­
+trol/lote seleccionados, asignándoles los últimos valores estadísticos acumulados. 
+Funcionalidad disponible sólo para el lote de control activo y para usuarios con 
+nivel Supervisor.
+• 
+Detalle de series acumuladas: únicamente para los controles seleccionados 
+en la tabla anterior, muestra el detalle de las series acumuladas dentro del 
+rango de fechas seleccionado, en forma tabular y gráfica. En la vista tabular, 
+la información que se visualiza para cada control es la siguiente:

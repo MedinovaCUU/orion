@@ -1,0 +1,36 @@
+8.16. Recambios fluídica
+AC17097
+AC17304
+AC16571
+AC17286
+AC17288
+Código
+Descripción
+AC16571
+Ventilador general
+AC17286
+Depósito de agua destilada
+AC17288
+Depósito de residuos baja 
+contaminación
+AC17097
+Filtro entrada de agua
+AC17304
+Filtro de la estación de lavado
+Código
+Descripción
+AC17302
+Placa detección de nivel de los 
+depósitos
+8.16.1. AC16571 Ventilador general
+Herramientas: Allen 2.5, alicates de corte, alicates de punta plana
+Desmontaje del ventilador:
+1. Quite la tapa trasera 
+2. Corte las 4 piezas de goma (1) que sujetan al ventilador (2).
+3. Desconecte el ventilador
+Montaje del ventilador:
+1. Coloque un ventilador nuevo.
+2. Inserte piezas de goma (1) nuevas en el soporte del ventilador y en ventilador. Véase Ilustración 8.100. Ayúdese 
+con unas alicates de punta plana.
+3. Conecte el ventilador y verifique el funcionamiento encendiendo el analizador.
+209

@@ -1,0 +1,60 @@
+36
+USUARIO
+Manual de Usuario BioSystems SPICA | Versión 2.8 - Agosto 2024
+Manual de Usuario BioSystems SPICA
+10. ESPECIFICACIONES TÉCNICAS
+CARACTERÍSTICAS GENERALES
+GESTIÓN DE MUESTRAS Y REACTIVOS
+Fotometria, turbidimetria
+acesso aleatório com carregamento de amostras 
+contínuo 
+150 prep/h. (Monorreactivo) Tenga en cuenta 
+que la velocidad puede variar en función de los 
+procedimientos de tratamiento previo o si el 
+procedimiento es monorreactivo o birreactivo.
+10°C por debajo de la temperatura ambiente 
+(a temperatura ambiente de 21 °C)
+105 posiciones (7 racks x 15 posiciones) 
+Opcional 
+70 
+Diámetro 12 mm to 16 mm (altura máxima 100 mm) 
+Diámetro del pocillo pediátrico de muestra 13,5 mm
+20 ml, 60 ml , 10ml, 40ml
+Opcional (muestras y reactivos)
+Pistón de cerámica de bajo mantenimiento 
+8 mm 
+2 uL to 80 uL
+0.1 uL 
+1:1 to 1:400
+10 uL to 500 uL
+10 uL to 500 uL
+0.1 uL 
+Sí
+Interior y exterior 
+Opcional 
+Sí 
+Sí 
+Princípios de análise
+Tipo de analisador
+Velocidade
+Capacidad del rotor de muestras y reactivos
+Lector de Código de Barras
+Número de muestras con códigos de barras
+Tamaño de los tubos primarios
+Tamaño del vial pediátrico
+Volumen de las botellas de reactivos
+Unidad de refrigeración
+Rango de temperatura del refrigerador
+Tipo de jeringa dosificadora
+Diámetro de Pistón
+Volumen de muestra dispensado
+Resolución de pipeteo de muestra
+Relación de Dilución 
+Volumen de pipeteo de R1
+Volumen de pipeteo de R2 
+Resolución de pipeteo de reactivo
+Detección de nivel
+Lavado de la punta
+Detector de coágulos
+Detector de colisión vertical
+Punta termostática

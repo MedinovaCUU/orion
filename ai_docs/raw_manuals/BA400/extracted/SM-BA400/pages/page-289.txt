@@ -1,0 +1,87 @@
+Fecha
+Versión de 
+Software
+Versión de 
+Firmware
+Cambios
+10/2015
+3.2
+2.20
+• 
+Posibilidad de creación de técnicas calculadas con técnicas ISE 
+y externas. Ejemplo de anion gap y creatinina clearance.
+• 
+Posibilidad de creación de técnicas con calibración decreciente. 
+Ejemplo UIBC.
+• 
+Compatibilidad con windows 8.1 y windows 10.
+• 
+Cambio de prioridad y/o tipo de tubo en muestras enviadas 
+por LIS
+• 
+Aumento capacidad de memorización de los controles internos 
+de calidad.
+• 
+Mejora en la introducción de los datos de paciente
+• 
+Lectura del lector del código de barras del rotor de muestras y 
+reactivo al mismo instante.
+• 
+Recuperación automática de los brazos tras una colisión.
+• 
+Borrado parcial de las muestras posicionadas que están 
+finalizadas.
+13/5/16
+3.3
+2.40
+• 
+Poder realizar prediluciones en los controles.
+• 
+Aumentar el factor de dilución en la repetición de las muestras
+• 
+Mejorar el tiempo de inicio al realizar un start de sesión
+19/7/16
+3.3.1
+ 2.42.1
+• 
+Mejora el proceso de inicialización del analizador
+14/10/16
+3.3.2
+2.52
+• 
+Corrección de bugs
+30/11/16
+3.4.1
+2.52
+• 
+Incorporación nueva pantalla en el programa de servicio para 
+dar informacion sobre el estado de las peltiers de la nevera.
+21/12/16
+3.4.2
+2.52
+• 
+Mejora en el programa de servicio. Añadido opción en la 
+pantalla de configuración para poder activar y desactivar el 
+módulo ISE
+2/8/17
+3.4.3
+2.60
+• 
+Cambio versión de firmware. Mejora en la gestión de los 
+ajustes de las corrientes de los LEDs
+2/4/18
+5.1.1
+3.60.2
+• 
+Poder realizar las curvas de calibración de manera automática.
+• 
+Opción de guardar y recuperar un fichero de los parámetros de 
+las técnicas
+• 
+Mejora en la ejecución de la línia de base. 
+• 
+Incorporación de un sistema de auditoría
+• 
+Programa de servicio: Selección del modelo de analizador 
+(BA400 y BA400v2)
+289

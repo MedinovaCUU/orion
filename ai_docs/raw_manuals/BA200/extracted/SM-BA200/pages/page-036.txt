@@ -1,0 +1,17 @@
+El agitador está formado por una paleta plana(4). La paleta está encolada al eje del motor de corriente continua (1). 
+El motor (1) se sujeta al soporte del cabezal (3) mediante el adaptador (2).
+Referencias de la Ilustración 3.16
+1 – Motor corriente continua
+2 – Adaptador
+3 – Soporte cabezal
+4 – Paleta agitadora
+1
+4
+2
+3
+Ilustración 3.16 
+Cabezal brazo agitador
+5
+6
+Manual de servicio
+36

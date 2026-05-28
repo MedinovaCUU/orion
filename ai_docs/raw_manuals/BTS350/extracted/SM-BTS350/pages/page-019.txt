@@ -1,0 +1,12 @@
+—  19  —
+3. - Checking and adjustments
+To facilitate the failures diagnosis and performing of adjustments to the instrument, this range of semi-automatic analyzers 
+has a set of tests that make it possible to analyse the greater part of the applicance's functionality and assist in failure 
+diagnosis. There are also programmes that permit the adjustment of the different systeems.
+Except for adjusting the peristaltit pump, which can be done by users, the tests and adjustments indicated can be accessed 
+through the UTILITIES/SERVICE menu.
+To enter those menus, the appliance requests an access code:
+Enter the access code (appendix V). A series of asterisks will appear on screen as you type. If you make a mistake type “C” 
+to repeat.
+3.1. - Service menu
+On selecting this option, the programme shows a screen like the one below:

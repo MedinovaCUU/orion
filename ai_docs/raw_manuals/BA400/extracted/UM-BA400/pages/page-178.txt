@@ -1,0 +1,131 @@
+Manual usuario 
+ 
+ 
+ 
+Manual usuario 
+ 
+ 
+ 
+178
+178
+Biosystems
+Biosystems
+Tipo de 
+alarma
+Alarma/Error
+Causa del problema
+Solución propuesta
+Aviso de cambio 
+de rotor de 
+reacciones
+Demasiadas cubetas del rotor de 
+reacciones rechazadas. Este aviso no 
+bloquea la ejecución de la lista de 
+trabajo.
+Cambie el rotor de reacciones.
+Aviso de error de 
+lectura del código 
+de barras
+Posible humedad en la ventana 
+óptica de la lectura del código de 
+barras
+Limpie con un paño la ventana de 
+lectura del código de barras.
+Posicionamiento 
+automático 
+erróneo de un 
+tubo de muestra 
+leído con el 
+código de barras
+Posicionado un tubo de muestras 
+en la tercera corona del rotor 
+de muestras con la etiqueta del 
+código de barras por encima de 
+la superficie y estando vacías las 
+posiciones de la primera y segunda 
+corona.
+No orientar la etiqueta del código de 
+barras de los tubos colocados en la 
+tercera corona hacía el lector.
+Colocar siempre tubos en la tercera 
+corona siempre y cuando estén 
+ocupadas las dos primeras coronas.
+Avisos de 
+avería del 
+analizador
+Error de 
+comunicaciones
+Ha habido un problema con las 
+comunicaciones entre el ordenador 
+y el analizador.
+Revise el cable de comunicaciones. 
+Pulse el botón de conectar.
+Alarma de la 
+temperatura del 
+rotor de reacciones 
+fuera de límites
+La temperatura del rotor de 
+reacciones ha estado fuera de 
+límites durante demasiado tiempo. 
+Esta alarma no detiene la lista de 
+trabajo.
+Pulse el botón de recuperación. En 
+caso de persistir la alarma avise al 
+servicio técnico.
+Alarma de 
+temperatura del 
+brazo de reactivos 
+R1 o R2 fuera de 
+límites
+La temperatura del brazo de 
+reactivos R1 o R2 ha estado fuera 
+de límites durante demasiado 
+tiempo. Esta alarma no detiene la 
+lista de trabajo.
+Pulse el botón de recuperación. En 
+caso de persistir la alarma, avise al 
+servicio técnico.
+Alarma de la 
+temperatura de 
+la nevera fuera de 
+límites
+La temperatura de la nevera ha 
+estado fuera de límites durante 
+demasiado tiempo. Esta alarma no 
+detiene la lista de trabajo.
+Cierre la tapa del rotor de reactivos. 
+Pulse el botón de recuperación. En 
+caso de persistir la alarma avise al 
+servicio técnico.
+Alarma de la 
+temperatura de la 
+estación de lavado 
+fuera de límites
+La temperatura de la estación de 
+lavado ha estado fuera de límites 
+durante demasiado tiempo. Esta 
+alarma no detiene la lista de 
+trabajo.
+Pulse el botón de recuperación. En 
+caso de persistir la alarma avise al 
+servicio técnico.
+Ventiladores 
+nevera averiados
+Los ventiladores de la nevera no 
+funcionan correctamente.
+Avise al servicio técnico.
+Ventiladores rotor 
+de reacciones 
+averiados
+Los ventiladores del rotor 
+de reacciones no funcionan 
+correctamente.
+Avise al servicio técnico.
+Error en la 
+detección de inicio 
+de algún motor
+Ha fallado la detección de inicio de 
+un motor
+Pulse el botón de recuperación. En 
+caso de persistir la alarma, avise al 
+servicio técnico.

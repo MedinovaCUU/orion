@@ -1,0 +1,15 @@
+98
+Service manual
+5.4. 
+Utilities 
+The program contains various technical utilities. These utilities are also accessible from the user program. 
+5.4.1. 
+Disassembly of the dispensing needle
+On clicking on the Disassemble Needle button, the operating arm positions itself over the rack tray. The program 
+alerts the technician to remove any object positioned under the arm. On clicking OK, the needle descends 
+and the technician can remove it to work with it or change it. To remove the needle, unscrew it by holding the 
+top fitting. If, while handling the needle, the carriage rises due to the pressure made by the technician, press 
+the Lower Needle button for the needle to descend once again. Once the needle has been reassembled on 
+the analyzer, press the Park button for the needle to rise. It performs the self-centering test and the arm finally 
+returns to its parked position. These operations must be done with utmost care since they are carried out with 
+the analyzer cover open and the needle may be contaminated. Laboratory gloves must always be used.

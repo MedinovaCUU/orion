@@ -1,0 +1,28 @@
+Lista de recambios
+Código
+Representación 
+Descripción
+AC17236
+ 
+ 
+ 
+ 
+Fijaciones de plástico (24)
+AC17373
+Tapón de los tornillos de la nevera (20)
+AC17429
+Racord del manifold (20)
+AC17254
+Manifol bomba cerámica muestras. (Nuevo 
+modelo, ver AII para saber el número de série a 
+partir de su implementación)
+AC17255
+Manifold bomba cerámica reactivos. (Nuevo 
+modelo, ver AII para saber el número de série a 
+partir de su implementación)
+AC17259
+Conjunto manifold. (Nuevo modelo, ver AII 
+para saber el número de série a partir de su 
+implementación)
+Manual de servicio
+284

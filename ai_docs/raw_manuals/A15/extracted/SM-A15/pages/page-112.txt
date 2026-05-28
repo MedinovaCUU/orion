@@ -1,0 +1,26 @@
+113
+6
+8
+7
+10
+9
+Ilustración 6.9 Desmontaje motor Z
+6.2.4. ME13355 - Conjunto resorte
+Desmontaje:
+1. Extraer la carcasa superior. Ver capítulo 6.1.5
+2. Extraer la correa Y. Ver capitulo 6.2.3
+3. Quitar los 2 tornillos (12) que sujetan el eje Y
+4. Quitar los 2 tornillos (11). Ir con cuidado y desenroscar fuertemente en el momento de aflojar los tor-
+nillos porque llevan fijatornillos.
+5. Quitar el conjunto muelle.
+Montaje:
+1. Colocar el conjunto muelle
+2. Colocar los 2 tornillos (11) sin apretarlos. Antes de apretarlos, verificar que los 2 ejes están perfecta-
+mente alineados.
+3. Ajustar el piñón del motor con la cremallera y luego apretar los 4 tornillos (1)
+4. Volver a colocar la correa y tensarla. Ver capitulo 6.2.3
+5. Colocar los 2 tornillos (12) sin apretar. 
+6. Tensar el muelle: 
+a. Mantener el conjunto punta en la posición superior
+b. Mediante una llave girar la polea en sentido en contra de las agujas del reloj. Dar entre 3 y 4 vueltas
+c. Apretar los tornillos (12), coincidiendo estos con la parte plana del eje.

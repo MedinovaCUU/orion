@@ -1,0 +1,82 @@
+79
+Conector
+Función
+Pin
+CN8
+Detección inicio rotor
+Pin 1: Detección
+Pin 2: GND
+Pin 3: 5V
+CN9
+Motor estación lavado
+Pin 1: Coil 1
+Pin 2: Coil 1
+Pin 3: Coil 2
+Pin 4: Coil 2
+CN10
+Detección estación lavado
+Pin 1: Detección
+Pin 2: GND
+Pin 3: 5V
+CN11
+Sensor temperatura punta
+Pin 1: 3.3 V
+Pin 2: Sensor
+CN12
+Ventilador
+Pin 1: 24 V
+Pin 2: Diagnóstico detección
+Pin 3: Activación
+CN13
+Ventilador
+Pin 1: 24 V
+Pin 2: Diagnóstico detección
+Pin 3: Activación
+CN14
+Ventilador
+Pin 1: 24 V
+Pin 2: Diagnóstico detección
+Pin 3: Activación
+CN15
+Ventilador
+Pin 1: 24 V
+Pin 2: Diagnóstico detección
+Pin 3: Activación
+CN16
+Peltier
+Pin 2: Activación peltier
+Pin 3: Activación peltier
+CN17
+Peltier
+Pin 2: Activación peltier
+Pin 3: Activación peltier
+Test point
+Función
+TP1
+24 V
+TP2
+GND
+TP3
+CAN_H (Señal en el bus)
+TP4
+CAN_L (Señal en el bus)
+TP5
+GND
+TP6
+GND
+TP14
+12 V aislados
+TP16
+3.3 V
+TP17
+5 V
+TP18
+24 V
+TP19
+GND
+TP27
+Tensión referencia motor rotor
+TP28
+Tensión paso driver motor
+TP40
+Tensión referencia motor estación lavado

@@ -1,0 +1,26 @@
+23
+4
+3
+6
+1
+7
+2
+5
+Figure 3.2 
+1 – X guide profile
+2 – X track rails
+3 – X start photodetector
+4 – Return pulley
+5 – Bearing
+6 – Operating pulley
+7 – X motor
+Reference Figure 3.2
+3.2.1.2.  X carriage
+The X carriage can run over the X guide. The body of the X carriage (1) supports the aluminium profile (2) that holds 
+the steel rails (3) on which the Y carriage runs. The photodetector (4) indicates the start position of the movement 
+of the Y carriage. The motor (12) operates the Y carriage belt by means of the pulley (11). The pulley (9), fitted on 
+the bearing (10), returns the belt operated by the motor. The barrier (5) obstructs the X start photodetector when the 
+X carriage reaches its start position. The X carriage runs on its guide using the linear slide unit (6) fastened to the 
+carriage body. The belt (7) operates the X carriage. It is held to the body of the X carriage by means of the fastening 
+(8). The support (13) holds the terminal of the X carriage chain (14). The Y carriage chain terminal (15) is screwed 
+directly onto the X carriage. The rubber protection (16) prevents the Y guide from injuring the user.

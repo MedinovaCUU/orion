@@ -1,0 +1,9 @@
+Caption                                     CSName           Description      FixComments  HotFixID   InstallDate  InstalledBy          InstalledOn  Name  ServicePackInEffect  Status  
+http://support.microsoft.com/?kbid=4534170  DESKTOP-MMN6AFD  Update                        KB4534170                                    4/20/2020                                       
+http://support.microsoft.com/?kbid=4537759  DESKTOP-MMN6AFD  Security Update               KB4537759                                    4/20/2020                                       
+http://support.microsoft.com/?kbid=4545706  DESKTOP-MMN6AFD  Security Update               KB4545706                                    4/20/2020                                       
+https://support.microsoft.com/help/4598481  DESKTOP-MMN6AFD  Security Update               KB4598481               NT AUTHORITY\SYSTEM  11/29/2022                                      
+https://support.microsoft.com/help/5003791  DESKTOP-MMN6AFD  Update                        KB5003791               NT AUTHORITY\SYSTEM  11/29/2022                                      
+https://support.microsoft.com/help/5018482  DESKTOP-MMN6AFD  Update                        KB5018482               NT AUTHORITY\SYSTEM  11/29/2022                                      
+                                            DESKTOP-MMN6AFD  Update                        KB5018506               NT AUTHORITY\SYSTEM  11/29/2022                                      
+

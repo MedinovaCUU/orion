@@ -1,0 +1,80 @@
+Manual usuario 
+ 
+ 
+ 
+Manual usuario 
+ 
+ 
+ 
+228
+228
+Biosystems
+Biosystems
+Menú
+Submenú
+Descripción
+Sesión de Trabajo
+Solicitud de Muestras
+Pantalla para programar la 
+sesión de trabajo
+Posicionamiento en 
+Rotores
+Pantalla para posicionar las 
+muestras y reactivos de la sesión 
+de trabajo
+Información adicional 
+de muestras
+Pantalla para introducir los 
+datos de paciente de la sesión 
+de trabajo
+Cargar sesión
+Opción para cargar una sesión 
+previamente memorizada
+Guardar sesión
+Opción para guardar una 
+sesión.
+Borrar sesión
+Opción para borrar una sesión.
+Borrar rotores
+Opción para borrar el 
+posicionamiento de los rotores
+Menú
+Submenú
+Descripción
+Estado actual
+Monitor
+Menú para acceder a la 
+información actual de la sesión
+Resultados Sesión de 
+trabajo
+Menú para acceder a visualizar 
+los resultados actuales
+Menú
+Submenú
+Descripción
+Históricos
+Resultados de 
+paciente
+Menú para acceder al histórico 
+de resultados de los pacientes
+Resultados Blancos y 
+Calibradores
+Menú para acceder al histórico 
+de resultados de los blancos y 
+calibradores
+Resultados QC
+Menú para acceder al histórico 
+de resultados de controles
+Resultados 
+acumulados QC
+Menú para acceder al histórico 
+de resultados del acumulado de 
+controles
+Resultados ISE
+Menú para acceder al histórico 
+de resultados de la calibración 
+de los ISE
+Histórico Alarmas del 
+analizador
+Menú para acceder al histórico 
+de alarmas

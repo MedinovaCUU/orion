@@ -1,0 +1,35 @@
+34
+USUARIO
+Manual de Usuario BioSystems SPICA | Versión 2.8 - Agosto 2024
+Manual de Usuario BioSystems SPICA
+7. GUÍA DE SOLUCIÓN DE PROBLEMAS
+7.1 Pre-análisis y preparación de soluciones de lavado
+REACTIVOS 
+Siga las instrucciones de uso y seguridad establecidas en las IFU (Instrucciones de Uso) de los reactivos 
+para su preparación y manejo.
+• 
+Antes de usar el reactivo por primera vez, compruebe la programación de la prueba con la programación 
+suministrada con el reactivo. 
+• 
+Si lo contenido de los reactivos deben ser homogeneizados, hágalo suavemente, sin agitarlos. Si se han 
+formado burbujas de aire en la superficie del reactivo, elimínelas.
+• 
+Cuando cambie el lote de reactivos, asegúrese de realizar el blanco y calibrar la prueba.
+• 
+Se recomienda realizar un blanco de reactivo cuando se cambie el frasco de reactivo y/o siguiendo la 
+frecuencia establecida por el IFU.
+• 
+La condensación podría formarse en las paredes de la botella de reactivos, en el cuello de la botella, 
+en las etiquetas de los códigos de barras. Si hay condensación, elimínela con una toalla de papel 
+absorbente.
+SOLUCIONES DE LAVADO
+Con el equipo se suministran tres tipos de soluciones de lavado: una solución de lavado (SL) para el lavado 
+interno de las puntas y el rotor de reacción, una solución de lavado ácida (SL1) y una solución de lavado 
+alcalina (SL2), que se utiliza para prevenir la contaminación. 
+La solución de lavado (WS) se prepara en el frasco de 1 L situado en el lado izquierdo del frente del equipo.
+Los otros tipos de soluciones de lavado se instalan en el rotor de reactivos. Se suministra en botellas de 
+reactivo. Maneje estas soluciones con cuidado y use la ropa y los guantes adecuados. Nunca mezcle ambas 
+soluciones de lavado ya que podrían desprender gases peligrosos.
+7.2 Alarmas
+La aplicación BioSystems SPICA comunica todos los avisos que requieren la asistencia del usuario. El 
+usuario debe proceder a ayudar al analizador a seguir trabajando.

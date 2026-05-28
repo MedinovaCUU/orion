@@ -1,0 +1,26 @@
+Lista de recambios
+Código
+Representación 
+Descripción
+AC17223
+Cables para los brazos (3)
+AC17347
+Conjunto estructura brazo sin motores ni correas
+AC17226
+Conjunto rotor de reacción, modelo BA400
+AC17227
+Conjunto rotor de muestras
+AC17231
+Tubos azul, rojo, verde (5 m)
+AC17232
+Tubos de la estación de lavado
+AC17233
+ 
+ 
+ 
+ 
+ 
+Conexiones fluídicas (20)
+AC17234
+Fijaciones del ventilador (100)
+283

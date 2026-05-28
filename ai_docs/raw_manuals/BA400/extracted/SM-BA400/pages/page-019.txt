@@ -1,0 +1,41 @@
+19
+Uso previsto
+• 
+El analizador BA400 sirve para determinar las concentraciones de analitos mediante medidas in vitro de bioquímica, 
+turbidimetría y electrolitos sobre muestras humanas de suero, orina, plasma, líquido cefalorraquídeo o sangre total. 
+El Analizador BA400 está optimizado para trabajar con la línea de BioSystems de reactivos de bioquímica, turbidi­
+metría y electrolitos. Los Reactivos no incluidos en la validación del analizador BA400 realizada en BioSystems SA, 
+requerirán la validación completa y detallada por parte del usuario o del laboratorio. 
+Se recomienda encarecidamente validar el funcionamiento global del analizador y de los reactivos en el ámbito del 
+laboratorio, teniendo en cuenta la fase pre analítica y cualquier otro aspecto relevante.
+El analizador es exclusivamente para uso profesional, es decir, para usuarios con una formación y capacidad adecuada 
+para su utilización. Conjuntamente a la instalación del instrumento se instruye a los usuarios de la operatoria del 
+analizador y del software que lo acompaña. 
+Las condiciones ambientales de funcionamiento del analizador son las normales de un laboratorio de análisis clínicos, 
+estas condiciones se detallan en el capítulo de especificaciones.
+• 
+El analizador Y400 sirve para determinar las concentraciones de analitos en vinos, bebidas, alimentos y muestras de 
+cultivos biológicos mediante análisis bioquimicos.
+El Analizador Y400 está optimizado para trabajar con la línea de reactivos FoodQuality de BioSystems. Los Reactivos 
+no incluidos en la validación del analizador Y400 realizada en BioSystems SA, requerirán la validación completa y 
+detallada por parte del usuario o del laboratorio. 
+Se recomienda encarecidamente validar el funcionamiento global del analizador y de los reactivos en el ámbito del 
+laboratorio, teniendo en cuenta la fase pre analítica y cualquier otro aspecto relevante.
+El analizador es exclusivamente para uso profesional, es decir, para usuarios con una formación y capacidad adecuada 
+para su utilización. Conjuntamente a la instalación del instrumento se instruye a los usuarios sobre el funcionamiento 
+del analizador y del software que lo acompaña. 
+Las condiciones ambientales de funcionamiento del analizador son las normales de un laboratorio de análisis, estas 
+condiciones se detallan en el capítulo de especificaciones.
+1. Introducción
+El analizador BA400/Y400 es un analizador automático de acceso aleatorio que realiza lecturas a 400 prep/h. El 
+control del instrumento se realiza on-line en tiempo real desde un ordenador PC externo dedicado. 
+El analizador está compuesto por 5 brazos: 2 brazos que manipulan reactivos, 1 brazo que manipula las muestras y 
+2 brazos que agitan la mezcla de reactivo y muestra.
+Hay dos rotores, en uno se posicionan los reactivos y en el otro las muestras.
+El rotor de reactivos está refrigerado y ambos rotores incorporan lectores de código de barras.
+El tercer rotor, el de reacciones, es donde se realiza la mezcla del reactivo y muestra. También es donde se realizan las 
+lecturas fotométricas mientras evoluciona la reacción. El rotor de reacción está termostatado e incorpora una estación 
+de lavado para vaciar las reacciones finalizadas, lavar y secar las cubetas para la próxima vuelta de preparación. Así 
+realiza un flujo continuo de preparaciones.
+A nivel de seguridad el analizador incorpora los siguientes elementos: detector de colisión vertical en los brazos de 
+manipulación, detector de coágulo en la punta de muestra, detectores en todas las tapas.

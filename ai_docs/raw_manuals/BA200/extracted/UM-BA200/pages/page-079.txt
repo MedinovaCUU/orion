@@ -1,0 +1,56 @@
+79
+79
+10.2.1.1. Configuración general: sesión de trabajo
+En la Ilustración 40 muestra la pantalla de las diferentes opciones de configuración 
+de la sesión de trabajo.
+Ilustración 40 
+Configuración de la sesión de trabajo
+ Tubo de Muestras por defecto 
+Seleccione el tipo de tubo que por defecto aparezca en el momento de crear la 
+lista de pacientes. Puede ser: tubo o pediátrico.
+ 
+Verificación del código de 
+barras antes sesión de trabajo
+ 
+Marque esta opción si quiere que el analizador verifique automáticamente el 
+posicionamiento de las botellas de reactivos y de los tubos de muestras con el 
+código de barras antes de iniciar la sesión.
+ Reset de la sesión descarga solo 
+tubos de paciente
+ 
+Marque esta opción cuando quiera eliminar únicamente los tubos de muetra del 
+rotor al realizar el reset de la sesión. La información y posición de los pocillos 
+pediátricos (calibradores y controles) se conservarán para la siguiente sesión.
+ 
+Proceso automático de 
+Repeticiones
+ 
+Marque esta opción si quiere que las repeticiones se realicen automáticamente. 
+En caso contrario se tendrán que realizar de forma manual.
+ 
+Impresión automática de 
+resultados de pacientes
+ 
+Marque esta opción cuando quiera que se impriman automáticamente los resul­
+tados de un paciente finalizado. Al seleccionar esta opción se activa las opciones 
+de tipo de informe y la frecuencia.
+ 
+Tipo 
+Seleccione el tipo de informe en que se imprimirá los resultados de paciente.
+• 
+Compacto - Informe sin cabecero de paciente y con los resulados de todos los 
+pacientes seguidos, sin saltos de página.
+• 
+Individual - Informe individual por paciente. Cada informe está impreso en 
+páginas separadas y con cabecero de paciente.
+ 
+Frecuencia 
+Seleccione la frecuencia con la que se imprimen los resultados.
+• 
+Al reiniciar la sesión de trabajo
+• 
+Al finalizar cada sesión
+• 
+Al finalizar cada paciente
+10.2.1.2. Configuración general: opciones del analizador
+La Ilustración 41 muestra la pantalla de la configuración del analizador.

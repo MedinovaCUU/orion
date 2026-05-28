@@ -1,0 +1,27 @@
+Service manual
+178
+AIII. List of consumables, accessories and spares
+If any of the components of the analyzer deteriorate of if any of the perishable materials are required, always use 
+original BioSystems material. The following table shows lists of components that may be required. To purchase said 
+components, please contact your usual distributor and order each component using its corresponding code. This will 
+simplify work and minimise errors. 
+List of accessories
+Code
+Representation 
+Description
+AC14691 
+CD User Program
+CA10455
+European mains cable
+CA10456
+American mains cable
+FI14226
+USB Cable
+AC10770
+Pediatric reaction wells (1000)
+AC14554
+Adapter tubes (80 units)
+AC11485
+Reaction rotor (10 units) 
+AC11486
+Reactions rotor fastering screw

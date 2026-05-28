@@ -1,0 +1,27 @@
+Manual de servicio
+112
+3
+5
+4
+Ilustración 6.8 Desmontaje motor Y
+6.2.3. MO13354 - Motor Z / AC13765 - Encoder eje Z
+Desmontaje encoder:
+1. Extraer la carcasa superior. Ver capítulo 6.1.5
+2. Aflojar los 4 prisioneros (8) que sujetan el encoder (9)
+3. Estire hacia afuera el eje (10) para poder liberar el encoder
+Desmontaje encoder:
+1. Quitar primero el encoder 
+2. Quitar los 4 tornillos (6) que sujetan el motor (7)
+3. Desconectar el cableado del motor Z
+4. Quitar los 4 tornillos (8) que sujetan el encoder (9)
+5. Extraer hacia el lateral el motor (7) 
+Montaje motor:
+1. Colocar el nuevo motor Z
+2. Colocar los 4 tornillos (8) para sujetar el motor (7)
+3. Colocar el encoder (9)
+Montaje encoder:
+1. Colocar el encoder en el motor (7) y el eje (10)
+2. Ajuste el encoder para que quede centrado con el fotodetector
+3. Apriete los 4 prisioneros (8)
+4. Realice unos ciclos de estress con el programa de servicio para verificar que se ha realizado correc-
+tamente el montaje

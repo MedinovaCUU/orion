@@ -1,0 +1,53 @@
+203
+203
+15. Procedimientos de medida y cálculo
+En este capítulo se describen los diferentes modos de análisis del analizador y los 
+cálculos que se realizan para obtener los resultados analíticos, es decir, los valores 
+de concentración de los diferentes analitos de las muestras. En cada caso se indican 
+las diversas fórmulas utilizadas. Los controles son tratados igual que las muestras 
+de pacientes en todos los cálculos. 
+Símbolos utilizados en las fórmulas
+Símbolo
+Descripción
+ABS
+Valor de absorbancia leído en un instante de la reacción.
+A
+Valor de absorbancia calculada en función del modo de 
+análisis escogido.
+[...]λprincipal
+Valor de absorbancia a la longitud de onda principal
+[...]λreferencia
+Valor de absorbancia a la longitud de onda de referencia
+[...]L1
+Valor de absorbancia en el tiempo L1
+[...]L2
+Valor de absorbancia en el tiempo L2
+DABS
+Incremento de absorbancia
+VM
+Volumen muestra
+VR1
+Volumen reactivo 1
+VR2
+Volumen reactivo 2
+C
+Concentración del analito
+F
+Factor
+ABlanco
+Absorbancia del blanco
+ACalibrador
+Absorbancia del calibrador
+Amuestra
+Absorbancia de la muestra
+Ccalibrador
+Concentración conocida del calibrador
+15.1. Secuencia de operaciones. Ciclos de preparación y 
+lectura
+En la Ilustración 127se muestra los ciclos en que se realiza el dosificado, la dis­
+pensación del reactivo 1 y 2 y las lectura realizadas por el analizador. 
+Cada ciclo del analizador dura 9 segundos. El tiempo máximo total de lectura para 
+una preparación puede llegar hasta los 10.35 minutos.
+El ciclo de dispensación de los reactivos 1 y 2 y de dispensación de la muestra es 
+fijo. Sólo se programa si se dispensa o no el segundo reactivo y los tiempos en que 
+realiza las lecturas o el intervalo de lecturas (cinética) L1 y L2.

@@ -1,0 +1,64 @@
+33
+33
+4.7. Especificaciones de las etiquetas de los códigos de 
+barra
+Para conseguir una buena detección con el lector de códigos de barras, las etiquetas 
+de los tubos de muestras tienen que cumplir con la siguiente especificación para 
+su colocación.
+
+
+
+
+
+ 
+ 
+
+ 
+ 
+
+
+Ilustración 11 
+Posicionamiento de la etiqueta en el tubo primario
+• 
+Respete los márgenes de colocación de la etiqueta del código de barras, según 
+indica la Ilustración 11.
+• 
+Es recomendable tener una anchura mínima de 3.5 mm entre el borde de la 
+etiqueta y el inicio del código de barras.
+• 
+Se recomienda que la mínima altura del código de barras sea de 10 mm.
+• 
+La etiqueta se colocará con las barras perpendicularmente al eje del tubo. La 
+inclinación de la etiqueta deberá ser menor de ± 7,5% o ± 4,2 ° con respecto 
+al eje del contenedor de la muestra.
+• 
+Es aconsejable la utilización del código CODE128 para el código de barras.
+4.8. Colocación de las etiquetas identificativas
+En la caja de accesorios vienen unas etiquetas identificativas que sirven para 
+identificar a las soluciones adicionales. Colóquelas en los tubos o en las botellas 
+de reactivos auxiliares. La siguiente tabla muestra el código de colores y la identi­
+ficación para cada tipo de solución.
+Color 
+etiqueta
+Nombre en la 
+etiqueta
+Descripción
+Colocación de la 
+etiqueta
+Azul
+DI H20
+Agua purificada
+Tubo / Botella
+Amarillo
+SAL. SOL.
+Solución salina
+Tubo
+Morado
+ISE DET
+Solución de lavado 
+para el ISE
+Tubo
+Gris
+DIL1
+Diluyente
+Botella

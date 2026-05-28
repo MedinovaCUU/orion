@@ -1,0 +1,15 @@
+63
+Para tener acceso total introducir las siguientes claves:
+Modelo
+A15
+Y15
+nombre(login)
+SAT
+SAT
+password
+A15
+A15
+Una vez identificado el operador correctamente, el programa de servicio empezará a inicializar el analizador.
+Pantalla que se hace visible al técnico cuando el analizador ha acabado las operaciones previas que realiza 
+para entrar en modo SERVICIO. Si todo el hardware del analizador está en correctas condiciones se presenta 
+el resultado «Hardware iniciado correctamente».

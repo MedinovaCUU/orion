@@ -1,0 +1,67 @@
+55
+55
+ Instalación del kit de reactivos Desembale el kit, retire los tres tapones rojos de protección de las conexiones y 
+la etiqueta roja de advertencia. Guarde los tapones por si quiere desinstalar el 
+kit de reactivos. Posicione el conector orientado correctamente y presione con 
+una ligera fuerza hasta oír un “clic”. Escriba en el lateral del kit la fecha de la 
+instalación.
+No presione con fuerza los laterales de la caja ni ponga boca abajo el kit de reactivos 
+sin los tapones porque puede derramar el reactivo. Se recomienda usar guantes 
+para esta operación.
+Coloque el kit en su alojamiento.
+Ejecute las acciones, en número y orden indicado, con el programa de usuario, en 
+el apartado de utilidades ISE, la opción Instalación/Activación.
+ 
+)
+Véase capítulo 10.9.4
+Paso
+Acción 
+Repeti­
+ciones 
+Descripción
+1
+Inicializar 
+Módulo 
+ISE
+1
+2
+Activar 
+kit de 
+reactivos
+1
+Si no se activa el icono de ejecución al 
+seleccionar esta opción, verifique que se trata 
+de un kit nuevo. Si el kit ya se ha activado con 
+anterioridad esta opción no estará disponible, 
+sin embargo podrá efectuar una lectura con la 
+opción Leer Kit de reactivos. Si este es el caso, 
+salte a la siguiente instrucción. Si se trata de 
+un nuevo kit, compruebe que el conector está 
+colocado correctamente, sepárelo de nuevo y 
+vuélvalo a conectar. 
+3
+Leer 
+kit de 
+reactivos
+1
+4
+Cebar B
+9
+Saque la tapa inferior del agitador, le permitirá 
+observar la copa de dispensación. Observe la 
+copa y verifique que el vaciado es efectivo, es 
+decir, que cada vez que las bombas del módulo 
+dispensan líquido en la copa, esta se vacía antes 
+de la siguiente dispensación. Si las bombas no 
+dispensan líquido, vuelva a ejecutar la acción 
+anterior. Si después de repetir varias veces no 
+observa dispensación de líquido desconecte y 
+vuelva a conectar el adaptador del kit y repita la 
+acción. 
+ 
+) Véasae capítulo 13.2.9
+5
+Cebar A
+9
+Proceda de igual manera que en el paso anterior
+NOTE

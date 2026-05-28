@@ -1,0 +1,38 @@
+6
+4
+2
+5
+1
+3
+Ilustración 3.34 
+Conjunto bombas dispensación
+13
+12
+10
+7
+9
+11
+8
+Ilustración 3.35 
+Detalle de las bombas de dispensación
+Referencias de la Ilustración 3.34 y Ilustración 3.35
+1 – Manifold con las electroválvulas
+2 – Placa con el led de iluminación
+3 – Sensor de presión
+4 – Bomba para muestra
+5 – Bomba para reactivo 1
+6 – Bomba para reactivo 2
+7 – Racor de salida
+8 – Pistón de 3 mm para muestras
+9 – Pistón de 8 mm para reactivos
+10 – Retén
+11 – Soporte pistón
+12 – Husillo bomba
+13 – Motor bomba
+3.9.2. 
+Nuevo disño del conjunto bombas de dispensación
+Con el nuevo conjunto de bombas se ha separado cada bomba con su manifold y en la bomba de muestra se ha 
+integrado el premanifold con sus electroválvulas.
+ 
+) Véase el capítulo AII para saber a partir de que números de serie se ha implementado.
+47

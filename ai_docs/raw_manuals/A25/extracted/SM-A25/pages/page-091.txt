@@ -1,0 +1,9 @@
+91
+automatically adjusts the integration times and makes a base line with each of the available filters in each of 
+the 3 wells. The program shows the current integration times for each of the filters and the average for the 3 
+wells of the count numbers obtained with each filter. The screen shows the corresponding alarms in the case 
+of anomaly. It is also possible to access a screen where it is possible to manually vary the integration times 
+to check their effect on the count numbers. And another screen where it is possible to assign calculated in­
+tegration times as reference integration times for each filter. This screen is recommended when a filter or the 
+lamp is physically changed. After performing the test, the analyzer continues to take optical readings using the 
+automatically adjusted integration times.

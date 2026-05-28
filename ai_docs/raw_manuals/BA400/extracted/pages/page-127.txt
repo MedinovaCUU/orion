@@ -1,0 +1,57 @@
+Number of counts of main photodiode
+Minimum
+Maximum
+Wavelength 560
+550 000
+950 000
+Wavelength 600
+750 000
+950 000
+Wavelength 635
+850 000
+950 000
+Wavelength 670
+450 000
+950 000
+Number of counts of reference 
+photodiode
+Minimum
+Maximum
+Wavelength 340
+100 000
+400 000
+Wavelength 405
+400 000
+800 000
+Wavelength 505
+400 000
+800 000
+Wavelength 535
+400 000
+800 000
+Wavelength 560
+400 000
+950 000
+Wavelength 600
+300 000
+800 000
+Wavelength 635
+400 000
+800 000
+Wavelength 670
+200 000
+950 000
+Measurements taken at the 
+505 nm wavelength
+Parameter
+Value
+Repeatability measured at
+ 0 Abs
+Standard 
+deviation
+< 0.0002 Abs
+Stability at 0 Abs
+Range
+< 0.0015 Abs
+ 
+127

@@ -1,0 +1,114 @@
+Rev 1 - Octubre 2011 
+1
+Nombre de la empresa:
+Número de serie:
+Fecha reacondicionamiento
+PROCESO DE LIMPIEZA Y DESINFECCION
+Desinfección
+Ok / No Ok
+Lavado de rackcs 
+de portaobjetos y 
+limpieza general 
+equipo
+Ok / No Ok
+PROCESO DE CAMBIO DE PIEZAS
+1. Piezas a Cambiar
+Cambio retén 
+bomba
+Ok / No Ok
+Cambio cartucho 
+bomba peristáltica
+Ok / No Ok
+Actualizar firmware 
+y software
+Ok / No Ok
+PROCESO AJUSTE
+Puntos a ajustar
+2. Origen-
+Autoajuste
+Tolerancias
+Valor
+X
+1500
+1550
+Y
+1375
+1425
+3. Referencia de 
+bandeja
+Tolerancias
+Valor
+X
+1025
+1075
+Y
+25
+75
+Z
+400
+570
+4. Z Portaobjetos
+Valor
+Rack1-Pos 1
+Rack1-Pos 2
+Rack1-Pos 3
+Rack1-Pos 4
+Rack1-Pos 1
+Rack1-Pos 2
+Rack1-Pos 3
+Rack1-Pos 4
+Diferencia entre 
+puntos 
+Tolerancias
+Valor
+Rack 1
+< 5
+Rack 2
+< 5
+Test de Z 
+portas(Con Porta 
+Biosystems 4)
+Tolerancias
+Valor
+Rack 1 Porta 1 
+Pocillo 1
+0.7 mm - 0.95 mm
+Rack 1 Porta 1 
+Pocillo 4
+0.7 mm - 0.95 mm
+Rack 1 Porta 8 
+Pocillo 1
+0.7 mm - 0.95 mm
+Rack 1 Porta 8 
+Pocillo 4
+0.7 mm - 0.95 mm
+Rack 2 Porta 1 
+Pocillo 1
+0.7 mm - 0.95 mm
+Rack 2 Porta 1Po­
+cillo 1
+0.7 mm - 0.95 mm
+Rack 2 Porta 1 
+Pocillo 4
+0.7 mm - 0.95 mm
+Rack 2 Porta 8 
+Pocillo 1
+0.7 mm - 0.95 mm
+Rack 1 Porta 8 
+Pocillo 4
+0.7 mm - 0.95 mm
+FINALIZACIÓN
+Etiqueta 
+identificativa
+Ok / No Ok
+Cajas nuevas de 
+accesorios
+Ok / No Ok
+Bandejas de 
+portaobjetos
+Ok / No Ok
+Fijación brazo 
+manipuladors
+Ok / No Ok
+Embalaje 
+Original / Nuevo

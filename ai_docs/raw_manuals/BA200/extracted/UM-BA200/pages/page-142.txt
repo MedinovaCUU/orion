@@ -1,0 +1,40 @@
+Manual usuario 
+ 
+ 
+ 
+Manual usuario 
+ 
+ 
+ 
+142
+142
+Biosystems
+Biosystems
+ 
+)
+Véase Ilustración 91
+Ilustración 91 
+Ordenación de la lista de resultados de pacientes
+ 
+ 
+Botón accesible desde la opción Controles en la pestaña Técnicas. Permite cal­
+cular los resultados de las reglas de Westgard sobre los controles de la sesión 
+en curso. La línea de resultado del control aparece coloreada en función de la 
+severidad de la regla de Westgard incumplida. Los resultados de las alarmas 
+aparecen en el campo de observaciones. Únicamente activo en Standby
+10.7.1. Resultados por paciente
+Seleccione primero la pestaña de los pacientes y debajo en la columna izquierda 
+aparece una lista con todos los pacientes con resultados.
+Seleccione un paciente y en la derecha se mostrará toda la información relativa al 
+resultado del paciente.
+Campo
+Descripción
+ 
+Botones que permiten desplegar o plegar los 
+replicados que tenga un resultado.
+Si pulsa el icono del cabecero despliega o pliega 
+todas las técnicas del paciente. 
+Sólo aparece uno de los dos iconos, cada vez que 
+pulse encima del icono se cambiará uno por el otro 
+alternativamente. 
+Pestaña de pacientes

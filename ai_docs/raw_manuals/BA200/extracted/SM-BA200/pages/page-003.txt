@@ -1,0 +1,46 @@
+Versión del manual Fecha de la revisión
+Modificación
+6.0
+Febrero 2020
+Modificación capítulos: 7.3.6, AI, AII, 
+AVII
+5.0
+Abril 2019
+Añadido el modelo Y200
+Modificación capítulos: 1, 3.4, 4.7, 6.2
+4.0
+Enero 2019
+Modificación capítulo: 6.5.5.2, 6.9, AV
+Añadidos los capítulos: 8.16.6 y 8.16.7
+3.0
+Abril 2018
+Modificación capítulos: 6.4.1, 6.5.1.3, 
+6.6.3, 6.6.4, 6.6.6, 7, 9.2, AII
+2.0
+Abril 2017
+Cambios en capítulos: AI y AII
+1.0
+ Noviembre 2016
+Versión inicial
+ 
+Código manual TESE000013-06-ESP
+ 
+Dirección del fabricante 
+BIOSYSTEMS
+ 
+ 
+c/Costa Brava 30, 
+ 
+ 
+08030 Barcelona
+ 
+ 
+SPAIN
+ 
+ 
+http://www.biosystems.es
+ 
+ 
+El analizador BA200 cumple con la directiva 98/79/CE de la Unión Europea
+El analizador Y200 cumple con la directiva de seguridad eléctica 2014/35/EU y la directiva 
+de compatibilidad electromagnética 2014/30/EU de la Unión Europea.

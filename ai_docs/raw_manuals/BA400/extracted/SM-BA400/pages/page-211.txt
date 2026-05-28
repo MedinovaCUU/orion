@@ -1,0 +1,24 @@
+Montaje: 
+1. Sustituya el manifold.
+2. Oriente correctamente cada una de las piezas (9) según Ilustración 8.69.
+3. Gire el manifold sujetando las piezas (14).
+4. Verifique que la junta tórica (14) está limpia. Colóquela en su alojamiento. Verifique que se ha insertado co­
+rrectamente y no se sale de las guías (15). Ver Ilustración 8.70
+5. Verifique que el supresor burbujas (16) está sin rebabas ni suciedad. Colóquelo encima de la junta tórica. Una 
+vez montado verifique que no se ve la junta tórica. Ver Ilustración 8.70
+6. Oriente correctamente el adaptador retén y retén (17). La cara plana del adaptador tiene que coincidir con la 
+ventana del manifold (18). Ver Ilustración 8.71
+7. Atornille los 4 tornillos (19) con un par de apriete de 30 Ncm y en cruz. Ver Ilustración 8.71
+8. Lubrique el pistón y el retén con WS (Washing Solution)
+9. Oriente correctamente el manifold con la bomba. La ventana del manifold (21) tiene que coincidir con el tornillo 
+de guiaje (22) de la bomba. Ver Ilustración 8.72
+10. Introduzca el pistón en el retén
+11. Apriete el manifold contra la bomba, posicione los 4 tornillos (20) y apriete en cruz con un par de apriete de 
+60 Ncm.
+12. Monte la bomba en el instrumento. Conecte el cable del motor y del detector de inicio. Conecte los tubos 
+13. Verifique el funcionamiento de la bomba con el programa de servicio.
+9
+9
+Ilustración 8.69 
+Montaje piezas sujeción cámara
+211

@@ -1,0 +1,45 @@
+Service Manual
+57
+Connector
+Function
+Pin
+CN22
+E1 electro valve
+Pin 1: 24 V
+Pin 2: Activation signal
+CN23
+E2 electro valve
+Pin 1: 24 V
+Pin 2: Activation signal
+CN24
+E3 electro valve
+Pin 1: 24 V
+Pin 2: Activation signal
+CN26
+Wash station water dispensation motor
+Pin 1: Coil 1
+Pin 2: Coil 1
+Pin 3: Coil 2
+Pin 4: Coil 2
+CN27
+Wash station water dispensation start-up 
+detection
+Pin 1: Detection
+Pin 2: GND
+Pin 3: 5V
+CN28
+Wash station water thermostatting thermostat
+Pin 1: output 1
+Pin 2: GND
+Figure 4.18 
+Fluid control board silk printing
+Test point
+Function
+TP1
+24 V (bus voltage)
+TP2
+GND (bus voltage)
+TP4
+5 V
+TP5
+CAN_H (bus signal)

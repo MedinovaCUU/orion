@@ -1,0 +1,34 @@
+18
+Service manual
+included with the analyzer.
+2.2. 
+Functioning of the analyzer
+The A25/Y25 analyzer is an automatic random access analyzer specially designed for performing biochemical and 
+turbidimetric clinical analyses. The analyzer performs patient-by-patient analyses and enables the continual introduction 
+of samples. The analyzer is controlled from a dedicated PC that is permanently com­muni­cated to the instrument. The 
+program, installed on the computer, keeps the user constantly informed of the status of the analyzer and the progress 
+of the analyses. As results are obtained, the com­pu­ter shows them to the user immediately.
+When a Work Session is begun, the analyzer proposes performing the blanks, calibra­tors and controls program for the 
+measurement procedures it is to carry out. The user may choose between performing the blanks and the calibra­tors or 
+not. If they are not performed, the analyzer uses the last available memorized data. The controls can also be activated 
+or not. During a session, while the analyzer is working, the user can introduce new normal or urgent samples to be 
+analyzed. Each time a new sample is added, the analyzer automa­tical­ly proposes the possible new blanks, calibrators 
+or controls to be performed. A work session can remain open for one or more days. When a session is closed and 
+another new session is opened (Reset Session), the analyzer again proposes performing the blanks, calibrators and 
+controls. It is recommended that the session is reset each working day.
+The analyzer determines the concentrations of the analytes based on optical absorbance measurements. To measure 
+the concentration of a certain analyte in a sample, the analyzer uses a pipette to take a specific volume of the sample 
+and the corresponding reagent, quickly thermostatises them in the needle itself and dispenses them into the reactions 
+rotor. The very dispensing speed together with the geometry of the reaction well causes the mixture to be shaken and 
+the chemical reaction begins. In the bireagent modes, the reaction begins when the analyzer later dispenses a second 
+reagent in the same reaction well. The reactions can be biochemical or turbidimetric. In both cases, the reaction or 
+the chain of reactions produced generate substances that attenuate certain wave­len­gths, either by absorption or by 
+dispersion. Comparing the light in­ten­sity of a certain wavelength that crosses a well when there is a reaction and when 
+there is not a reaction can determine the concentration of the corresponding analyte. This comparison is quantified with 
+the physical magnitude called absorbance. In some cases, the concentration is a direct function of the absorbance, 
+and in other cases, it is a function of the variation of the absorbance over time, depending on the analysis mode.
+2.3. 
+Transport and reshipment of the analyzer
+If the analyzer is to be reshipped or moved using a transport vehicle, it is important to block the operating arm and 
+use the original packaging to ensure that the apparatus is not damaged. To package the instrument, we recommend 
+you follow the following instructions: (on the unpackaging instruc­tions sheet).

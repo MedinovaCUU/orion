@@ -1,0 +1,53 @@
+8.15.17. AC17232 - Tubos de la estación de lavado
+Herramientas: 
+Desmontaje de los tubos:
+1. Demonte la chapa superior 
+2. Desmonte todos los tubos del instruemnto excepto el cable del detector de desbordamiento que va por el agujero 
+de la posición (12)
+Montaje de los tubos:
+1. Con el recambio vienen dos tipos de tubo. Corte los tubos según las medidas de la siguiente tabla:
+Posición
+Tipo de tubo
+Longitud
+1
+Tubo poliuretano transparente
+550 mm
+2
+Tubo poliuretano transparente
+550 mm
+3
+Tubo poliuretano transparente
+550 mm
+4
+Tubo poliuretano transparente
+550 mm
+5
+Tubo poliuretano transparente
+550 mm
+6
+Tubo Tygon, (marcas de color verde)
+850 mm
+7
+Tubo Tygon, (marcas de color verde)
+850 mm
+8
+Tubo poliuretano transparente
+850 mm
+9
+Tubo poliuretano transparente
+850 mm
+10
+Tubo poliuretano transparente
+850 mm
+11
+Cable detector desbordamiento
+12
+Tubo poliuretano transparente
+850 mm
+13
+Tubo poliuretano transparente
+850 mm
+2. Insertar los tubos por la parte superior de la carcasa hasta llegar a la posición 
+3. Colocar los tubos según indica la Ilustración 8.100
+4. Coloca todos los tubos dentro de la guía de tubos negro
+207

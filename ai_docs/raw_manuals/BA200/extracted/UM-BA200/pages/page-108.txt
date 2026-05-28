@@ -1,0 +1,22 @@
+Manual usuario 
+ 
+ 
+ 
+Manual usuario 
+ 
+ 
+ 
+108
+108
+Biosystems
+Biosystems
+Ilustración 66 
+Introducción de la información del calibrador
+Ilustración 67 
+Introducción de las concentraciones del calibrador
+En la primera pestaña se introduce la información general del calibrador. Hay una 
+lista de todos los calibradores con los iconos de nuevo, editar e imprimir.
+La información a introducir por el usuario es la siguiente:
+ 
+Nombre del calibrador 
+Introducir un nombre del calibrador

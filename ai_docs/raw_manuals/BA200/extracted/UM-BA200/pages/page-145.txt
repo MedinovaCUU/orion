@@ -1,0 +1,67 @@
+145
+145
+Campo
+Descripción
+Absorbancia del filtro 
+principal
+Muestra el valor de la absorbancia del blanco del 
+filtro principal. Únicamente se mostrará en aquellas 
+técnicas con programación bicromática.
+Reactivo de trabajo
+Muestra el valor de la absorbancia del reactivo 
+de trabajo. Únicamente se mostrará en aquellas 
+técnicas con programación diferencial.
+Límite de absorbancia 
+del blanco
+Valor límite del blanco, este valor viene programado 
+en la técnica. Sirve para verificar que el reactivo está 
+en buen estado. Si el valor de la absorbancia supera 
+dicho límite el programa muestra una aviso en 
+observaciones. 
+Observaciones
+Muestra las alarmas que pueden aparecer en los 
+resultados. 
+ 
+) Véase las posibles alarmas en el capítulo 12 
+Fecha
+Fecha en que se ha entregado el resultado
+Modo de repetición
+Muestra el modo en que se ha repetido la muestra.
+La tabla de resultados de calibaradores contiene la siguiente información:
+Campo
+Descripción
+ 
+Botones que permiten desplegar o plegar los 
+replicados de un resultado.
+Sólo aparece uno de los dos iconos, cada vez que 
+pulse encima del icono se cambiará uno por el otro 
+alternativamente. 
+OK
+Indica que el resultado ha sido aceptado. Será 
+enviado al histórico y a LIS. Cuando se realizan 
+repeticiones, se acepta siempre por defecto el 
+último resultado. Si lo desea, puede aceptar varios 
+resultados o ninguno.
+Nuevo 
+Permite realizar una repetición de la preparación.
+ 
+) Véase las diferentes opciones de repetición en el 
+capítulo 10.7.4
+Nombre
+Nombre del calibrador
+Lote
+Lote del calibrador
+Tipo
+Tipo de la muestra.
+Permite acceder a la visualización de la gráfica de la 
+cinética de reacción.
+Número
+Indica la numeración del replicado, cuando hay 
+más de un replicado
+Absorbancia
+Valor de la absorbancia del calibrador que 
+intervendrá en el cálculo del factor.
+Concentración teórica
+Valor de concentración que tiene el calibrador. Este 
+valor proviene de la programación de la técnica.
+Pestaña de calibradores

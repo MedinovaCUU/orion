@@ -1,0 +1,22 @@
+Manual de servicio
+162
+Lista de recambios
+Código
+Representación
+Descripción 
+FO11562
+fotodetectores (5)
+AC17324
+Fuente alimentación refrigerador
+TR13389
+Fuente de alimentación principal
+MO13358
+Ventilador caja electrónica
+AC16581
+Bomba de residuos
+AC17315
+Bomba dosificadora completa
+AC17316
+Manifold
+AC11527
+Retén bomba dosificadora

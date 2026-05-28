@@ -1,0 +1,38 @@
+—  15  —
+2.5.7. - Printer control
+The printer is connected to the J10 connector. The power signals for the thermal points activated through the Q3 transistor 
+arrive through this connector. The printer motor is activated through circuit U10. The data to be printed reach the printer 
+through the signals DataInPrinter and CLKprint. The microprocessor reads the printer signals: paper sensor and printer 
+head temperature sensor.
+2.5.8. - Screen circuit
+The CPLD, circuit U20, generates the standards for refreshing the screen. The display itself generates the Vee voltage 
+and that voltage is reduced to make it adjustable through transistors Q2 and Q23. This way, the display contrast can be 
+controlled. The display backlight cable is connected to connector J13. It is supplied directly from the 5V.
+2.5.9. - USB connector type B
+The USB connector is controlled by circuit U34, which is a microcontroller specialising in managing the USB protocol. It 
+is connected to the main microprocessor through a serial channel.
+2.5.10. - Fan control
+Both fans have an operation detection signal. The sensor in each fan is connected directly to the microprocessor.
+2.5.11. - Microprocessor
+This is responsible for linking and controlling all the semi-automatic analyzer systems, through its programme. The 
+microprocessor system also contains the ram memory, flash memory and control over an eprom to load the programme 
+in flash. It also contains the reset generator circuit. It is comprised of circuits U11, U1, U2, F1, F2 and U8.
+2.5.12. - Day/time generator circuit
+The U13 circuit is the TRC. This circuit is responsible for generating and maintaining the semi-automatic analyzer date 
+and time. This circuit needs a crystal to generate the internal frequency and a cell battery to maintain the date and time. It 
+is connected to the microprocessor through bus I2C, signals SCL and SDA.
+2.5.13. - Temperature sensors on the plate
+The plate has 2 temperature sensors, U3 and U4. These are located near the power elements, such as the Peltier control 
+drivers and power supply regulators. These sensors are connected to the microprocessor thorugh the I2C bus.
+2.5.14. - Status indicator LEDs
+The semi-automatic analyzer has 2 status indicator lamps. One red and one green. Each lamp is activated through the Q19 
+and Q20 transistors and U33 decoder. The decoder is connected to the microprocessor through the I2C bus.
+2.5.15. - Buzzer and pump button
+The buzzer is activated through transistor Q1. The pump button, SW1, has a polarisation element R51 that is read directly 
+by the microprocessor.
+2.5.16. - USB connector type A
+The USB connector is controlled by circuit U34, which is a microcontroller specialising in managing the USB protocol. It 
+is connected to the main microprocessor through a serial channel.
+2.5.17. - Power supply
+This supplies the necessary voltages to the different parts of the appliance. There is an external power source that converts 
+alternating current into continuous 15V current. The plate has a circuit, U23, that is a DC/DC converter, and converts the

@@ -1,0 +1,73 @@
+Manual usuario 
+ 
+ 
+ 
+Manual usuario 
+ 
+ 
+ 
+158
+158
+Biosystems
+Biosystems
+• 
+Detalle de series acumuladas: únicamente para los controles seleccionados 
+en la tabla anterior, muestra el detalle de las series acumuladas dentro del 
+rango de fechas seleccionado, en forma tabular y gráfica. En la vista tabular, 
+la información que se visualiza para cada control es la siguiente:
+Parámetro
+Descripción
+Número de serie acumulada
+Control
+Nombre del control
+Número Lote
+Número del lote de control
+Fecha
+Fecha y hora de creación de la serie acumulada
+n
+Número de resultados individuales acumulados en la serie
+Media
+Media estadística de los resultados acumulados en la serie
+Unidad 
+Unidad de medida de los resultados
+SD
+Desviación estándar de los resultados acumulados en la serie
+CV
+Coeficiente de variación de los resultados acumulados en la 
+serie
+Rango
+Rango de valores admisibles para los resultados acumulados 
+en la serie
+ 
+ 
+Permite eliminar de forma permanente las series acumuladas seleccionadas. 
+Funcionalidad disponible sólo para usuarios con nivel supervisor.
+Cuando el detalle de las series acumuladas se visualiza en modo gráfico, los valores 
+del eje Y dependerán del número de controles graficados: 
+• 
+Si se grafica un único control, mostrará valores de concentración, y la escala 
+en múltiplos de la desviación estándar.
+• 
+Si se grafican varios controles, mostrará los valores de la escala, expresada en 
+múltiplos de la desviación estándar.
+10.8.5. Resultados ISE
+Pantalla que muestra el histórico de las calibraciones de los electrodos ISE y el 
+histórico de las calibraciones de las bombas del módulo ISE.
+ 
+Electrodos 
+Seleccione esta pestaña para visualizar el histórico de las calibraciones de los 
+electrodos ISE.
+ Bombas, burbujas y limpiezas 
+Seleccione esta pestaña para visualizar el histórico de las calibraciones de la bom­
+ba peristáltica, del detector de burbujas y de los ciclos de limpieza.
+En la parte superior de la pantalla hay varios campos que permiten introducir cri­
+terios de selección para restringir la visualización de los resultados. Puede escoger 
+más de un criterio de selección a la vez.
+ 
+ 
+Una vez realizada la selección, pulse el icono para ejecutar la búsqueda y visuali­
+zar los resultados en la parte inferior de la pantalla.
+ 
+Rango de fechas 
+Introduzca la fecha inicial y la fecha final para realizar la selección de los resulta­
+dos por un rango de fechas.

@@ -1,0 +1,54 @@
+AII. Modificaciones de hardware y software
+Relación de cambios de hardware del analizador 
+Número de serie
+Cambios
+834000271
+Añadido filtros de 150 µm a las entradas de los tubos de agua destilada
+834000290
+Incorporado el conjunto de desgasificador en línea
+834000290
+Cambiado el modelo de bomba de membrana B10. Bomba aspiración de residuos 
+de alta contaminación
+834000390
+Cambio de diseño de la pieza Cuerpo filtro de la botella interna de agua destilada
+834000341
+Cambio conexión en Y de los tubos de residuos por uno con conexión rápida
+834000409
+Cambio del adaptador reten y eliminación del supresor de burbujas en los pistones 
+de la bomba de lavado
+834000434
+Cambio de la tensión de la correa de la transmisión rotor de muestras y reactivos a 
+55N (5.5 Kg)
+834000417
+Cambio del modelo de separadores de plástico que sujetan las peltiers en el rotor 
+de reactivos
+834000480, 834000481, 
+834000482, 834000483, 
+834000484, 834000485, 
+834000486, 834000487, 
+834000488, 834000489, 
+a partir del 834000519.
+Cambio del subconjunto de las bombas cerámicas. Se han individualizado cada 
+bomba con su manifold y se ha incorporado el premanifold en el manifold de la 
+bomba de muestras.
+834000480
+Incorporación de la salida del desgasificador al desagüe del analizador.
+834000480
+Incorporación de la salida de residuos del módulo ISE a la botella de residuos de 
+alta contaminación.
+834000451
+Cambio del sistema de sujeción del lector de código de barras. Homologación de 
+una segunda fuente de lector de código de barras.
+834000530
+Mejora del montaje de las peltiers de la nevera. Incorporación de los conectores 
+aéreos en los ventiladores de las peltiers.
+834000530
+Mejora del montaje de la transmisión en el rotor de reactivos y de muestras.
+834000748
+Cambio paleta y motor de los agitadores.
+834000775
+Nuevo sistema de control de las peltiers (nueva placa de rotores CIIM00052A-02) 
+y nuevo sensor de temperatura
+834000940
+Nuevo sistema de control del desgasificador
+287

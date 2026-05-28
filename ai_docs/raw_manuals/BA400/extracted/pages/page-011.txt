@@ -1,0 +1,73 @@
+11
+Abbreviation
+Definition
+FUS
+Fuse
+ISE
+Ion-selective electrode
+IVD
+In Vitro Diagnostics
+LED lamp
+Light-emitting diode
+LIS
+Laboratory information system
+WEEE
+Waste Electrical and Electronic Equipment
+REF
+Reference solution for the ISE unit
+TAS
+Technical assistance service
+SD
+Standard deviation
+ES
+Electrical safety
+UV
+Ultraviolet
+Units
+Definition
+“
+Inch
+˚ C
+Degrees centigrade
+A
+Ampere / Absorbance
+GB
+Gigabyte
+h
+Time
+Hz
+Hertz
+kg
+Kilogram
+L
+Litre
+MB
+Megabyte
+m
+Metre
+min
+Minute
+mL
+Millilitre
+mm
+Millimetre
+mmol
+Millimol
+mV
+Millivolt
+nm
+Nanometre
+prep
+Preparation
+s
+Second
+VA
+Volt-ampere
+V
+Volt
+W
+Watt
+μL
+Microlitre
+μm
+Micrometre

@@ -1,0 +1,8 @@
+40
+Manual de servicio
+3.5.2  Cambio de idioma
+Permite elegir el idioma del programa de servicio.
+3.5.3  Usuarios
+Se pueden crear 2 tipos de usuario con diferentes niveles de acceso:
+•SAT, este usuario tiene acceso total al programa. Este usuario es el que tiene permiso para crear otros 
+usuarios y/o eliminarlos.

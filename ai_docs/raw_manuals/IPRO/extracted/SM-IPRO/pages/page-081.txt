@@ -1,0 +1,19 @@
+81
+CÓDIGO
+DESCRIPCIÓN
+ZO14621
+Portafusibles
+AC17406
+Conector y filtro de alimentación
+ AC17408
+Interruptor alimentación
+MO11558
+Ventilador caja electrónica
+AC17421
+Placa cpu
+AC17420
+Placa alimentación
+AC17405
+Placa comunicaciones
+PC14626
+Placa conjunto puntas

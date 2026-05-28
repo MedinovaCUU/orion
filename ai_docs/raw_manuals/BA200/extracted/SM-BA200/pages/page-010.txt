@@ -1,0 +1,29 @@
+Manual de servicio
+10
+A quién va dirigido este manual
+Este manual va dirigido a los profesionales del servicio técnico que realizarán las tareas de mantenimiento preventivo 
+y de reparación del analizador BA200/Y200. Estos profesionales habrán recibido un curso específico de formación 
+que les capacitará para poder realizar las tareas descritas anteriormente.
+El presente manual describe las características mecánicas, electrónicas y del software de servicio para ayudar al técnico 
+a realizar las tareas de mantenimiento y reparación. También describe los pasos para el desmontaje y cambio de los 
+diferentes elementos que componen el analizador.
+Avisos y advertencias
+Explicación de los símbolos de seguridad que puede encontrar en el analizador o en este manual.
+Símbolo
+Descripción 
+WARNING
+El símbolo le advierte de riesgos de operación que pueden causar lesiones 
+personales.
+BIOHAZARD
+El símbolo le advierte de un posible riesgo biológico.
+CAUTION
+El símbolo le advierte de un posible daño al sistema o de resultados poco 
+fiables.
+NOTE
+El símbolo le advierte que la información requiere su atención.
+Riesgo de choque eléctrico
+El símbolo le advierte de un posible riesgo de emisión de radiación láser
+Explicaciones de los símbolos usados en las etiquetas del analizador y en el manual
+Símbolo
+Descripción 
+Este producto cumple con la directivas de la unicón europea

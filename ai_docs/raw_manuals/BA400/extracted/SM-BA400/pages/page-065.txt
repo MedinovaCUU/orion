@@ -1,0 +1,46 @@
+65
+N
+E
+P
+N
+E
+P
+FN 284-10-06
+UNIVERSAL INPUT
+115V - 230V 
+500W
+PLMA00258
+FRIDGE PS
+MAIN PS
+ISE
+FA
+FRIDGE
+FA
+MAIN
+FA
+ISE
+SPV-150-12
+4-7,5V 12,5A
+SP-320-24
+24V 10A
+RS-35-24
+24V 1,5A
+FA FRIDGE
+FA SF1
+FA ISE
+FA MAIN
+FA MAIN
+EMC
+FA
+FRIDGE
+RS-25-24
+FA CONTROL FRIDGE
+24V 1,1A
+Ilustración 4.3 
+Esquema con la modificaicón de la conexión de la entrada de alimentación
+4.2. Placa distribución - CIIM00047
+La placa distribución es la encargada de realizar la conexión para cada una de las diferentes placas. Las conexiones 
+se realizan por el bus CAN. El cable del bus distribuye la alimentación para cada placa y las señales CAN.
+Las dos placas de distribución son iguales y se ha serigrafiado en cada conector que subconjuntos se conectan.
+Cada conector lleva dos serigrafías, la utilizada para la placa A y la utilizada para la placa B. La placa de distribución 
+A es la placa situada en la posición superior, la placa de distribución B es la placa situada en la posición inferior.

@@ -1,0 +1,33 @@
+Manual de servicio
+18
+2.1.3. Rotor de reacciones y lectura
+Las preparaciones se dispensan dentro de un rotor de reacciones de metacrilato de calidad óptica termos tatizado 
+a 37 °C. Las lecturas ópticas de absorbancia se realizan directamente sobre este rotor. Cada reacción puede ser 
+leida durante 10 minutos. Las lecturas se realizan según estén programadas en cada procedimiento de medida. Los 
+pocillos de reacción han sido diseñados para facilitar la mezcla de la muestra y el reactivo durante la dispensación. 
+Cada rotor dispone de 120 pocillos de reacción. La longitud del paso de luz es de 6 mm. El volumen mínimo necesario 
+para poder realizar la lectura óptica es de 180 uL. Los pocillos tienen una capacidad útil máxima de 800 uL. Cuando 
+el rotor de reacciones está totalmente lleno, el usuario debe cambiarlo por uno vacío, limpio y seco. El acciona miento 
+del rotor se realiza mediante un motor paso a paso con reductora. Un sistema Peltier con control PID se encarga de 
+la termostatización del rotor a 37 °C.
+Un sistema óptico integrado en el rotor realiza las lecturas directamente sobre los pocillos de reacción. La fuente de luz 
+es una lámpara halógena de 10 W. El detector es un fotodiodo de silicio. La selección de la longitud de onda se realiza 
+mediante un tambor con 9 posiciones disponibles para filtros ópticos. Los filtros son fácilmente inter cam biables por el 
+usuario desde el exterior del analizador, sin necesidad de desmontar el tambor de filtros. Un motor paso a paso es el 
+encargado de posicionar el tambor. El sistema óptico es capaz de realizar 1.25 lecturas por segundo, con o sin cambio 
+de filtro entre ellas. El haz de luz de la lámpara pasa a través de un filtro interferencial compensado para seleccionar 
+la longitud de onda deseada. A continuación pasa a través del pocillo del rotor y finalmente llega al fotodiodo donde 
+la señal luminosa se convierte en una señal eléctrica. Un sofisticado sistema integrador-conversor analógico digital 
+convierte la señal eléctrica en un valor digital con el cual el analizador obtiene los valores de absorbancia. El sistema 
+óptico sigue funcionando cuando la tapa general del ana lizador está abierta, por lo que el analizador puede seguir 
+realizando lecturas mientras el usuario manipula, por ejemplo, los tubos de muestras o los frascos de reactivos. La 
+tapa del rotor debe estar colo ca da para que el sistema óptico pueda funcionar correctamente. 
+Un detector indica al analizador la presencia de la tapa. El analizador aborta las lectu ras si el usuario retira la tapa 
+del rotor mientras el sistema óptico está realizando medidas fotométricas. Si el rotor no está tapado, el analizador 
+avisa al usuario para que coloque la tapa del rotor cuando éste envie muestras a analizar.
+2.1.4. Sistema electrónico
+Los elementos descritos están controlados por un sistema electrónico basado en micropro cesador. El microproce-
+sador dispone de dos canales de comunicacion exter nos que permiten enlazar el instrumento con el ordenador que 
+contiene el pro grama de aplicación . El sistema electrónico está constituido por las siguientes placas independientes:
+• 
+Placa del microprocesador

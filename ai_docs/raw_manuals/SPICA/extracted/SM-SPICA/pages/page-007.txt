@@ -1,0 +1,49 @@
+7
+USUARIO
+Manual de Usuario BioSystems SPICA | Versión 2.8 - Agosto 2024
+Manual de Usuario BioSystems SPICA
+1. INTRODUCCIÓN
+1.1 Avisos y advertencias
+PREVENCIÓN DE CHOQUE ELÉCTRICO
+Para reducir el riesgo de descargas, no quite la cubierta del analizador. No hay 
+piezas en el interior que puedan ser reparadas por el usuario, por lo que es 
+necesario ponerse en contacto con el servicio de asistencia técnica.
+PREVENCION EN LA MANIPULACIÓN DE REACTIVOS
+Manipule los reactivos y las soluciones de lavado con cuidado, contienen 
+sustancias que podrían ser corrosivas. En caso de que los reactivos o soluciones 
+de lavado entren en contacto con la piel, lávese inmediatamente con abundante 
+agua y busque consejo médico.
+Consulte la ficha de datos de seguridad del reactivo o de la solución de lavado y 
+siga las instrucciones de seguridad. Es aconsejable seguir las buenas prácticas 
+de laboratorio.
+PREVENCIÓN DE INTERFERENCIAS ELECTROMAGNÉTICAS Y 
+PROTECCIÓN ELECTRICA Y ELECTRONICA DEL EQUIPO 
+El analizador cumple con los requisitos con respecto a las emisiones y 
+la inmunidad establecidos en la Directiva estándar de compatibilidad 
+electromagnética (EMC) 2014/30, la Directiva de baja tensión (LVD) 2014/35, 
+(UE) 2015/863 y la Directiva 2011/65 / UE RoHS, Directiva de equipos de radio 
+(RED) 2014/53 / UE. En un entorno doméstico, puede causar interferencias de 
+radio, en cuyo caso se deben tomar las medidas necesarias para eliminarlas.
+No utilice el analizador cerca de fuentes de radiación electromagnética fuerte 
+(como centrífugas, transmisores de radio, teléfonos móviles), ya que podrían 
+interferir con su correcto funcionamiento.
+PREVENCION DE LOS RIESGOS DE EMISIÓN DE LUZ LÁSER
+El analizador tiene un lector de código de barras que emite luz láser. El láser 
+es de clase II. El lector sólo funciona cuando el analizador está en modo de 
+ejecución y sus tapas de rotor están en su lugar. En caso de fallo o durante el 
+ajuste por parte del personal técnico de mantenimiento, el rayo de luz podría 
+activarse sin la cubierta en su lugar; en tales casos, no mire directamente al rayo 
+láser.
+ 
+Símbolos | Precauciones de seguridad | Abreviaturas y unidades 
+USO DE LOS CONUMIBLES
+Antes de utilizar los consumibles (soluciones de limpieza y líquidos de sistemas) 
+compruebe la fecha de caducidad. Si ha caducado, retire el producto y utilice 
+uno nuevo con la fecha de caducidad actual.
+CABLES DE RED DE REPUESTO
+Si va a utilizar un cable de red que no sea suministrado por el fabricante, asegúrese 
+de que soporta la potencia del analizador, que está aprobado y que cumple con 
+las normas de la CE.
+ATENCIÓN
+NOTA
+ATENCIÓN

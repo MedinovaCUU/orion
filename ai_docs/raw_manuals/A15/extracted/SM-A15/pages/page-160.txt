@@ -1,0 +1,23 @@
+161
+Lista de recambios
+Código
+Representación
+Descripción 
+IN11557
+Interruptor principal 
+PC13384
+Placa de comunicaciones
+PC13386
+Placa de interconexión rotor
+PC13385
+Placa de interconexión XYZ
+PC13383
+Placa de la fuente de alimentación
+AC17323
+Placa refrigerador
+PC13381
+Placa del sistema fotométrico
+PC13387
+Placa interconexión bombas
+PC13380
+Placa microprocesador

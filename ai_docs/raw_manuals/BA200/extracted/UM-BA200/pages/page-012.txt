@@ -1,0 +1,45 @@
+Manual usuario 
+ 
+ 
+ 
+Manual usuario 
+ 
+ 
+ 
+12
+12
+Biosystems
+Biosystems
+Garantía
+El plazo de garantía de este analizador es de un año a partir de la fecha de compra.
+Nuestra empresa no será responsable de los siguientes fallos y daños ocasionados 
+durante el período de garantía.
+1. Fallo / daño causado por el mal uso (caída, neglicencia, condiciones de red 
+eléctrica fuera de tolerancias, condiciones ambientales o de ubicación inade­
+cuadas, etc.)
+2. Fallo / daño causado por la reparación o la modificación realizada por cual­
+quier persona que no sea Biosystems S.A. o autorizado por Biosystems, S.A.
+3. Fallos / daños causados ​por la utilización de consumibles (rotores, fusibles, 
+liquidos de limpieza, etc) y recambios no originales.
+4. Fallos / daños causados por condiciones distintas a las condiciones de funcio­
+namiento normales de este analizador indicadas en el capítulo de instalación.
+5. Fallos / daños causados ​por incendios, terremotos, inundaciones u otros fe­
+nómenos naturales.
+6. Fallos / daños causados por el traslado o transporte por personal no capacitado 
+ni autorizado por Biosystems, S.A después de nuestra instalación.
+Marcas comerciales
+Todos los nombres de productos y marcas registradas de Biosystems son propiedad 
+de Biosystems, S.A., de sus subsidiarias o afiliadas. El uso de cualquier marca regis­
+trada, nombre comercial, imagen comercial o nombre de producto de Biosystems 
+no puede hacerse sin la autorización previa por escrito de Biosystems, excepto para 
+identificar el producto o servicio de Biosystems. 
+Windows® 7, Windows® 10 y Microsoft .NET FrameWork2.0 son marcas regis­
+tradas de Microsoft Corporation.
+Intel es una marca comercial de Intel Corporation en los EE. UU. Y / o en otros 
+países.
+Todos los nombres de compañías y de productos descritos en este manual son 
+marcas comerciales o marcas registradas de cada fabricante.
+Derechos de autor
+Los programas del software, el sistema y la documentación del BA400 está pro­
+tegida por derechos de autor y pertenece a Biosystems, S.A. Todos los derechos 
+estan reservados.

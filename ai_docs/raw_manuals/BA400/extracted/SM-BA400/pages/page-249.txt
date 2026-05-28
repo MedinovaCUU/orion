@@ -1,0 +1,14 @@
+8.15.5. AC17224 - Recambio brazo punta / AC17225 - Recambio brazo agitador
+El brazo del BA400 v2 es compatible con el brazo del BA400 v1 con unos pequeños cambios que se pueden realizar 
+in situ.
+La única diferencia entre los dos brazos está en la parte inferior, que es la salida del cable y la diferencia entre tubo 
+de aluminio o tubo de silicona.
+También se deberá tener en cuenta la posición del HOME vertical, la posición del home vertical se encuentra en 
+una posición inferior en los agitadors que en los brazos.
+Ilustración 8.116 
+1. Aflojar los dos prisioneros (9) que sujetan la pieza blanca de acople y el tubo de silicona al resto del brazo.
+2. Soltar la brida de fijación que mantiene en su lugar la media luna (10) que hace de clip y la guardaremos para 
+montarla de nuevo posteriormente.
+3. Retirar el cuerpo del conector del cable CAN o cable agitador en función del brazo (11) de la parte superior del 
+brazo y estirar el cable para extraerlo completamente del tubo.
+249

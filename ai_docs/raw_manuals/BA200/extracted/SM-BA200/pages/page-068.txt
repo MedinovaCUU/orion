@@ -1,0 +1,21 @@
+68
+Ilustración 4.42 
+Serigrafía de la placa rotor
+Conector
+Función
+Pin
+CN1
+Conexión del bus CAN 
+Pin 1: 24V
+Pin 2: GND
+Pin 3: NC
+Pin 4: CAN_H
+Pin 5: CAN_L
+CN2
+Alimentación independiente de la nevera 
+Pin 1: 24 V Nevera
+Pin 2: GND Nevera
+CN3
+Desempañador
+Pin 1: 24 V
+Pin 2: Activación

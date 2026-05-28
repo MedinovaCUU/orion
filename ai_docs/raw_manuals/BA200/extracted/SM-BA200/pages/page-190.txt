@@ -1,0 +1,17 @@
+4
+5
+Ilustración 8.79 
+Cambio detector de tapa
+8.15.3. AC16620 - Sensor de temperatura
+Herramientas: Allen 2.5, silicona térmica
+Desmontaje:
+1. Desatornille el tornillo (9). 
+2. Quite el sensor (7) con la plancha (8) que lo sujeta.
+Montaje:
+1. Cambie el sensor (7) por uno nuevo.
+2. Limpie de restos de silicona el agujero (6) del sensor
+3. Ponga un poco de silicona térmica en el agujero (6).
+4. Coloque el sensor (7) de temperatura con la plancha (8) y coloque el tornillo (9) en su alojamiento 
+5. Verifique y ajuste con el programa de servicio la temperatura del rotor.
+Manual de servicio
+190

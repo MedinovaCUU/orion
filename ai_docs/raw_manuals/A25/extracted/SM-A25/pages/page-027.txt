@@ -1,0 +1,31 @@
+27
+1
+9
+2
+3
+4
+5
+6
+Figure 3.7 
+1 – Electronic needle conditioning board
+2 – Board support
+3 – Linear slide unit
+4 – Z carriage chain terminal
+5 – Z carriage body
+6 – Geared belt
+7 – Belt fastening
+8 – Thermostated needle
+Reference Figure 3.7
+3.2.2.  Dispensing system
+The dispensing pump dispenses the preparations through the thermostated needle. The needle is washed internally 
+and exter­nally at the washing station. The racks tray makes it possible to position the samples to be analyzed and 
+the required re­a­gents. The level of the distilled water and waste containers is controlled by the analyzer by weight.
+3.2.2.1.  Thermostated needle
+The spiral unit (3) is made up of a spiral tube with fittings at both ends, welded to a copper plate. This unit is housed 
+in the interior of the plastic body (6). The thermistor (2) is held between these two parts and is the sensor used to 
+control the system temperature. The lower end of the tube of the spiral unit is firmly fastened to the body by the nut 
+(4). The removable needle (5) is screwed to this end of the tube. The upper end of the spiral tube is connected to the 
+Teflon dispensing tube of the operating arm. Tthe fastening fitting (7) ensures said connection. The Peltier cell (1) that 
+controls the temperature is in contact with the copper plate of the spiral unit. The radiator (8), which is screwed to the 
+plastic body, closes the system. The bolts that hold the radiator fan (9) are bushing bolts and are used to fasten the 
+entire needle unit to the Z carriage of the operating arm.

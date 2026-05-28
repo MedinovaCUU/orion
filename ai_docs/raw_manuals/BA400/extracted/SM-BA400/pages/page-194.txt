@@ -1,0 +1,18 @@
+3
+4
+2
+5
+ 
+7
+9
+6
+8
+Ilustración 8.49 
+Conexión tubos de solución de lavado y agua destilada
+8.10.6. AC16579 - Manifold predosificado
+Conjuntamente a la modificación del conjunto de bombas de dispensación también se modifica el conjunto ma­
+nifold de predosificado.
+ 
+) Véase el capítulo AII para saber a partir de que números de serie se ha implementado.
+Manual de servicio
+194

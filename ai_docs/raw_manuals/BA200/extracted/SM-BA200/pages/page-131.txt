@@ -1,0 +1,15 @@
+2
+3
+1
+Ilustración 8.12 
+Desmontaje rotor de lecturas
+8.3. 
+Desmontaje brazo agitador
+1. Quite la tapa superior.
+ 
+) Véase capítulo 8.1.7
+2. Desenchufe el conector (3) del agitador y quite los 2 tornillos (2) del pasamuros (1). Ver Ilustración 8.13
+3. Desatornille los 3 tornillos (4) que sujetan el conjunto agitador. 
+4. Desenchufe el conector del bus CAN de la placa CIIM00048.
+5. Quite el conjunto agitador
+131

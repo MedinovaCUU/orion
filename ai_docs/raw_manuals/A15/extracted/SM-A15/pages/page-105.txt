@@ -1,0 +1,25 @@
+Manual de servicio
+106
+6. Explicación de los recambios
+6.1. Carcasas y tapas
+6.1.1. AC17350 - Carcasa inferior del brazo / AC17349 - Carcasa superior del brazo
+Desmontaje:
+1. Extraer los tornillos laterales que sujetan la carcasa (1).
+2. Extraer la carcasa superior hacia arriba 
+3. Extraer la carcasa inferior hacia abajo, vaya con cuidado con la punta de no doblarla
+Montaje:
+1. Coloque la carcasa inferior 
+2. Coloque los 4 tornillos (1) que la sujetan
+3. Coloque la carcasa superior
+4. Coloque los 4 tornillos (1) que la sujetan
+1
+Ilustración 6.1 Desmontaje carcasa punta
+6.1.2. AC17352 - Carcasa frontal
+Desmontaje:
+1. Extraer las 2 gomas pasamuros que guían los cables (2)
+2. Extraer los 4 tornillos que sujetan la carcasa (3).
+3. Extraer la carcasa frontal tirando hacía arriba y adelante
+Montaje:
+1. Coloque la carcasa frontal
+2. Coloque los 4 tornillos (3) que la sujetan la carcasa frontal
+3. Coloque las gomas pasamuros (2) que guían los cable en su alojamiento

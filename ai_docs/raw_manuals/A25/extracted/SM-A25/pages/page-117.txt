@@ -1,0 +1,19 @@
+117
+5. Connect the motor cable to the CPU board
+6. Perform arm adjustments with service program and test runs
+Belt mount:
+1. Put the new belt in place, between the motor and the pulley
+2. Place the belt clamp with its screw (3) and tighten it well
+3. Adjust the belt tension to 45N, stretching the motor out. Start by tightening the screws (2) and then the screws 
+(1) to firmly fix the motor.
+4. Perform arm adjustments with service program and test runs
+Pulley mounting:
+1. Put the new pulley in place and also put the belt
+2. Fit and tighten the screw (4) to hold the over pulley.
+3. Verify that the pulley rotates freely.
+4. Adjust the belt tension to 45N, stretching the motor out. Start by tightening the screws (2) and then the screws 
+(1) to firmly fix the motor.
+5. Perform arm adjustments with service program and test runs
+1
+2
+Figure 6.8

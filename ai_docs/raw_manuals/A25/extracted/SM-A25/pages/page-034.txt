@@ -1,0 +1,22 @@
+34
+Service manual
+channel. The plastic part (9) thermally insulates both parts from each other. The barrier obstructing the photodetector 
+(11) when the rotor reaches its start position forms part of the centerer (8). The pulley (19), fastened to the motor 
+(18), acts, by means of the belt (14), on the pulley (14) fastened to the rotor. The gear ratio is 1:12. The spacer (17) 
+makes it possible to move the motor on its support (16) to adjust the belt tension correctly. The electronic board of the 
+photometric system (24) is housed in a cavity in the heating channel. The upper cover of this cavity (20) supports the 
+electronic board. The seal (21) keeps the cavity hermetically closed in the case of possible liquid spillage. The cavity 
+is closed at the bottom by the cover (22). The photodiode is welded onto the board on the spacer (25). The part (23) 
+centers the photodiode with regard to the lighting system and also acts as a grill to prevent the incidence of unwanted 
+light. The grill (26) limits the light hitting the reactions rotor. The detector (29) tells the analyzer if the rotor cover is in 
+position or not. The part (30) connects the heating CHANNEL to the instrument frame. The tubes (31) drain the rotor 
+of any possible liquid spillage. The columns (32) fasten the rotor to the base of the analyzer.
+1
+2
+3
+7
+27
+28
+29
+32
+Figure 3.14

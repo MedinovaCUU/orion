@@ -1,0 +1,18 @@
+Ilustración 3.14 
+Verificación del posicionamiento del haz láser
+De 12 mm a 14 mm
+Ilustración 3.15 
+Verificación del posicionamiento del haz láser
+3.3.2. 
+Ajuste del lector del rotor de muestras
+Inicialice el analizador con el programa de servicio y seleccione el menú de ajuste del lector de códigos de barras. 
+1. Ajustes /test / Código de Barras
+2. Seleccione el tipo de rotor: Muestras
+3. Monte la escuadra de soporte del lector en la posición (5).
+4. Coloque el lector en la posición media del coliso en los 3 ajustes (6), (7) y (8). Ver Ilustración 3.16, Ilustración 
+3.17 y Ilustración 3.18
+5. Con el programa de servicio ponga el lector en modo ajuste para encender el haz láser del lector. Ajuste el haz 
+del láser lo más paralelo posible al eje del rotor mediante los tornillos (6) que sujetan la escuadra. Con la ayuda 
+de una escuadra o útil verifique el paralelismos del haz. Ver Ilustración 3.19
+Manual de servicio
+34

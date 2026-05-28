@@ -1,0 +1,32 @@
+133
+6.3.3. 
+AC11527 - Piston seal
+Tools:
+Disassembly:
+1. Follow the disassembly steps according to chapter 6.3.2
+2. Detach the seal from the seal adapter.
+Mounting:
+1. Follow the mounting steps according to chapter 6.3.2
+2. Before performing point 7, replace the seal (23) with a new one. Dampen the seal adapter and seal with WS 
+(Washing Solution) to facilitate insertion of the seal into its housing. Use a flat piece to press the seal.
+3. Verify the seal is properly leveled with the seal adapter.
+4. Continue the assembly steps according to chapter 6.3.2
+23
+Figure 6.29 
+Montaje retén 
+6.3.4. 
+AC16594 - Ceramic piston + motor
+Tools: 2 and 3 Allen wrench and 7 open end wrench, ceramic pump grease
+Disassembly:
+1. Follow the disassembly steps according to chapter 6.3.2
+2. Remove the home detector.
+3. Remove the 4 screws with nuts that secure the pump body (24) to the motor.
+4. Pull out the pump body (24).
+Mounting:
+1. Replace the defective part.
+2. Unscrew the piston support from the spindle to grease the thread.
+3. Grease the guide of the piston support. Put enough grease in the hole in the bracket where the spindle enters.
+4. Screw in the piston support with the spindle. Wipe off excess grease with a cloth.
+5. Place the pump chamber. Align the groove in the bracket (26) with the body anti-rotation system (25).
+6. Install the screws and nuts to secure the body with the motor.
+7. Place the home detector.

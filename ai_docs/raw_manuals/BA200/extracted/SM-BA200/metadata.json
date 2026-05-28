@@ -1,0 +1,30 @@
+{
+  "manufacturer": "Biosystems",
+  "equipment": "BA200",
+  "aliases": [],
+  "document_type": "service_manual",
+  "language": "Spanish",
+  "source_pdf": "/Users/ricardomontanezmiranda/Documents/BioSys Diagnostico/data/manuals/BA200/SM-BA200.pdf",
+  "source_filename": "SM-BA200.pdf",
+  "source_sha256": "0fb07d9f1fe4c1bd60ad9e14f4e11693ceb24ef6ad4a9445734a4fdc254e2949",
+  "page_count": 264,
+  "pdf_metadata": {
+    "format": "PDF 1.4",
+    "title": "",
+    "author": "",
+    "subject": "",
+    "keywords": "",
+    "creator": "Adobe InDesign 15.0 (Windows)",
+    "producer": "Adobe PDF Library 15.0",
+    "creationDate": "D:20200217130452+01'00'",
+    "modDate": "D:20200217130555+01'00'",
+    "trapped": "",
+    "encryption": null
+  },
+  "title_lines": [
+    "Manual",
+    "de servicio",
+    "Espa\u00f1ol"
+  ],
+  "manual_code": "TESE000013-06-ESP"
+}

@@ -1,0 +1,19 @@
+Lista de recambios
+Código
+Representación 
+Descripción
+AC16625
+Lector código de barras
+AC16626
+Conjunto ventiladores nevera (3 hilos) 
+(4 unidades)
+AC16627
+Conjunto peltiers nevera
+AC16628
+Calefactor ventana código de barras
+AC16629
+Ventana lector código de barras
+AC16630
+Detector tapas del rotor de reactivos, muetras y 
+reacciones
+279

@@ -1,0 +1,44 @@
+Manual usuario 
+ 
+ 
+ 
+Manual usuario 
+ 
+ 
+ 
+114
+114
+Biosystems
+Biosystems
+10.5. Sesión de trabajo
+Desde este menú se accede a las opciones de creación de la sesión de trabajo y de 
+posicionamiento de las muestras y reactivos.
+10.5.1. Petición de muestras
+Desde esta pantalla se crea o importa la sesión de trabajo. A medida que se va 
+creando la lista de pacientes se asignan las diferentes técnicas a ejecutar. El pro­
+grama automáticamente incorpora los blancos y calibradores asociados a cada 
+técnica. También incorpora los controles para aquellas técnicas que los tengan 
+programados.
+Ilustración 79 
+Pantalla introducción de nuevas muestras
+La pantalla está divida en dos zonas. En la parte superior se encuentran los campos 
+para introducir los pacientes y técnicas. En la parte inferior se visualiza en formato 
+lista los pacientes entrados. Hasta que la lista no está posicionada en el rotor, se 
+puede editar y borrar los pacientes o técnicas individuales.
+ 
+Clase muestra 
+Con este campo se selecciona el tipo de muestra a introducir. Las clases pueden 
+ser: paciente, blanco, calibrador o control. Sirve para poder realizar una lista 
+únicamente de blancos y calibradores o únicamente de controles.
+ 
+Urgente 
+Se utiliza para indicar que la muestra es urgente. Sólo disponible para muestra 
+de clase paciente. Los pacientes urgentes son los primeros en realizarse. Si se 
+interrumpe una sesión de trabajo y se añaden pacientes urgentes se realizarán en 
+cuanto el instrumento finalice las preparaciones en curso. 
+ 
+Paciente/Muestra 
+Campo donde se introduce el código de paciente. Este código puede ser alfa­
+numérico. Si no introduce ningún código, éste se genera automáticamente. El 
+código automático empieza con el carácter #, seguido por la fecha en formato 
+numérico y un número correlativo.

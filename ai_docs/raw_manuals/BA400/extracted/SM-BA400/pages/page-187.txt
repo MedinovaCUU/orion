@@ -1,0 +1,43 @@
+22
+23
+24
+25
+Ilustración 8.40 
+Montaje motor y paleta agitadora
+8.10. Recambios conjunto fluídica
+ 
+AC16581
+AC16576
+AC16580
+AC16563
+AC16564
+AC16577
+AC16578
+AC16579
+AC16582
+Código
+Descripción
+AC16563
+Placa fluidos
+AC16564
+Placa Jeringas
+AC16577
+Calefactor estación 
+de lavado
+AC16578
+Electroválvula 
+estación de lavado
+AC16579
+Predosificado 
+manifold
+AC16581
+Bomba 
+dispensación
+AC16582
+Bomba aspiración
+AC16576
+Colector
+AC16580
+Válvula entrada 
+agua
+187

@@ -1,0 +1,30 @@
+Manual de servicio
+101
+5. Elementos fluídicos
+El analizador usa para su funcionamiento 4 depósitos para manipular líquidos. Los depósitos son de agua destilada, 
+de residuos de baja contaminación, de solución de limpieza y de residuos de alta contaminación. 
+Los depósitos de agua destilada y residuos de baja contaminación están localizados en la parte inferior trasera del 
+analizador y únicamente son accesibles por el servicio técnico. El control del nivel para llenarlo y vaciarlo se realiza 
+mediante un sistema de doble boya.
+Los depósitos de solución de limpieza y de residuos de alta contaminación están localizados en la parte inferior 
+delantera del analizador. Estos son accesibles directamente por el usuario final. 
+• 
+Al depósito de residuos de alta contaminación van a parar las mezclas de reactivo y muestras una vez ha finalizado 
+la determinación. El depósito tiene una capacidad de 5 L y una autonomía mínima de 20 h.
+• 
+El depósito de solución de limpieza contiene la solución de limpieza, tiene una capacidad de 5 L y una auto­
+nomía mínima de 8 h. La solución de limpieza se usa en la estación de lavado para limpiar el rotor de reacción 
+y durante el proceso de inicialización y finalización del analizador.
+• 
+En el depósito interior de residuos de baja contaminación van a parar todos los residuos provenientes de la 
+estación de lavado del rotor de reacción y de los residuos de las estaciones de lavado de las puntas y agitadores. 
+El depósito tiene una capacidad de 5 L y mediante el control de las boyas automáticamente vacía el contenido 
+hacía al exterior. El sistema utiliza la bomba SF1-B5 para realizar el vaciado del depósito.
+• 
+El depósito interior de agua destilada tiene una capacidad de 5 L. El agua se utiliza para cebar el sistema de 
+pipeteo, para limpiar internamente y externamente las puntas de muestras y reactivos y para limpiar el rotor 
+de reacción. El depósito tiene dos entradas de agua que se seleccionan por el software. Una entrada es de un 
+depósito externo, para utilizarlo el analizador utiliza la válvula SF1-EV2 y la bomba SF1-B4. La otra entrada es 
+por una toma de agua de red. Cuando se selecciona el agua de red, al tener presión, únicamente se utiliza una 
+electroválvula SF1-EV1.
+A continuación se muestra el esquema de fluidos del analizador.

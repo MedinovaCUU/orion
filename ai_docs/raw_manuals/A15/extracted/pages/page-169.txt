@@ -1,0 +1,124 @@
+Manual de servicio
+170
+ 
+ 
+ 
+ 
+Shade=A520/A620
+ 03/09/09 
+4.2.0 
+Cambio nombre aplicación por la de Y15.
+ 
+ 
+ 
+Cambio criterio de repetición en las técnicas multicalibrador con regre-
+sión lineal. Con esta versión no se repite hasta el límite de linealidad.
+ 14/05/10 
+4.4.0 
+Mejora en la gestión de técnicas bireactivas con tiempo de lectura de 
+600s
+ 
+ 
+ 
+Nueva opción de poder compartir posiciones en el rack de reactivos 
+con técnicas diferentes.
+ 
+ 
+ 
+Visualización de la curva cinética de los calibradores
+ 
+ 
+ 
+Añadir nuevas técnicas en muestras con identificador autonumérico.
+ 
+1/8/11 
+4.6.1 
+Nuevas adaptaciones.
+ 
+ 
+ 
+Muestra la recta de regresión y el coeficiente de correlacion en las 
+técnicas con curvas de calibración y regresión lineal.
+ 
+ 
+ 
+Posibilidad de anular puntos en las técnicas con curva de calibración 
+y regresión lineal.
+ 19/3/12 
+4.7 
+Posibilidad de posicionar tubos y pocillos pediátricos en un mismo 
+rack.
+ 
+ 
+ 
+Nueva funcionalidad de realización automática de la curva de calibra-
+ción por dilluciones a partir de un único calibrador.
+ 
+7/9/12 
+4.7.1 
+Corección de bugs
+ 29/1/15 
+4.8.2 
+Nueva pantalla de ordenación de técnicas
+ 
+ 
+ 
+Mejora en la búsqueda de la pantalla de históricos
+ 
+ 
+ 
+En la pantalla de nueva muestra se pueden introducir el número de 
+replicados 
+ 12/3/15 
+4.8.3 
+Incorporació de nuevas técnicas
+ 15/7/15 
+4.9.1 
+Mejora en la detección de la prozona
+ 22/12/15 
+4.9.3 
+Corrección de bugs
+ 15/6/16 
+5.0 
+Poder realizar carga contínua de muetras sin pulsar el botón pausa
+ 2/11/17 
+5.2 
+Software necesario para intrumentos con nevera
+ 
+ 
+ 
+Nueva alarma de sustrato consumido con método de cálculo de punto 
+final
+ 
+ 
+ 
+Mejora en la selección de diluyente en las prediluciones
+ 
+ 
+ 
+Nuevas técnicas calculadas con parámetros externos
+ 
+7/6/18 
+5.2.4 
+Nuevas metódicas
+ 18/7/19 
+5.4 
+Cambio pantalla inicial
+ 
+ 
+ 
+Nueva opción para realizar autopausa al finalizar la lista de trabajo.
+ 
+ 
+ 
+Poder crear técnicas calculadas de calculadas
+ 
+ 
+ 
+Añadir un mensaje de aviso al finalizar el rotor avisando de que lo 
+saque del equipo
+ 
+ 
+ 
+Poder seleccionar el orden en que se muestran los pacientes/muestras 
+en la pantalla de resultados

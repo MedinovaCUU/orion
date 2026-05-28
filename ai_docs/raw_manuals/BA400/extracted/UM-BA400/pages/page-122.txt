@@ -1,0 +1,46 @@
+Manual usuario 
+ 
+ 
+ 
+Manual usuario 
+ 
+ 
+ 
+122
+122
+Biosystems
+Biosystems
+(listas para ejecutarse). Si alguna de las muestras escaneadas no tiene técnicas 
+asignadas, el usuario puede introducirlas con la pantalla auxiliar (ver Ilustración 
+83) o solicitar las técnicas a LIS. Si a alguna de las muestras escaneadas le falta 
+información del tipo de muestra, el usuario deberá introducir esta información.
+Las muestras que van en pocillos pediátricos y los elementos colocados en el tercer 
+anillo el lector no los leerá y el usuario deberá posicionarlos con el arrastre manual 
+o botón de autoposicionar. 
+Si hay códigos de barras de muestras que no se corresponden con las muestras de 
+la sesión de trabajo el usuario puede introducir la información adicional necesaria: 
+tipo de muestra y técnica que desea realizar a cada muestra. 
+En caso de que el programa detecte un código de barras que sea erróneo se indica 
+con un icono sobre la posición del rotor. Puede corregir manualmente los códigos 
+de barras con error.
+ 
+ 
+Pulse este botón cuando quiera que el analizador automáticamente identifique 
+las muestras de la sesión posicionadas en el rotor, estas muestras aparecerán de 
+color amarillo. Los códigos de barras escaneados que no hayan podido relacio­
+narse con alguna de las peticiones de la lista, aparecen de color gris, el usuario 
+puede asignar las técnicas usando la pantalla de la Ilustración 83. Aquellos 
+elementos que vayan en pocillos pediátricos, tales como calibradores y controles, 
+los tendrá que posicionar manualmente o con el botón autoposicionar. 
+Ilustración 83 
+Pantalla de posicionamiento de reactivos y muestras
+ 
+ 
+Botón de avisos relativos a elementos requeridos para la sesión de trabajo, al 
+pulsar este botón aparecerá un mensaje emergente informando de todos los ele­
+mentos que faltan por posicionar. Este mismo mensaje aparecerá cuando cierre 
+la pantalla de posicionamiento y falte algún elemento por posicionar.
+ 
+ 
+El programa bloqueará cualquier técnica/muestra si falta algún componente ne­
+cesario para su ejecución. Para optimizar el tiempo de trabajo, conviene resolver

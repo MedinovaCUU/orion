@@ -1,0 +1,70 @@
+Service manual
+164
+7. 
+Preventive maintenance
+In this chapter, firstly it describes step by step the different operations necessary for both preventive maintenance
+and repair of the analyzer. Then, it gives some basic recommendations for preventive maintenance of the instrument.
+Finally, a series of indications for its care and cleaning are exposed.
+7.1. 
+Maintenance and periodicity actions
+Actions to be done by the instrument operator.
+Actions at the beginning of the day
+1
+Fill the bottle with liquid system
+2
+Initialize the analyzer. Warm up with the user program
+3
+Perform 2 conditioning cycles (only when analyzer is off for several days)
+4
+Check the reaction rotor temperature
+5
+Check the volume of the reagent
+6
+Install the previous day’s rotor or a new rotor.
+Actions at the end of the day
+1
+Turn off the analyzer by performing the Shut-down with the program
+2
+Empty waste bottle
+3
+Remove calibrators, controls and samples from the sample rotor
+4
+Remove the reaction rotor from the instrument. Throw it out if all the rotor wells are used.
+Actions to be carried out each semester
+1
+Clean the work surface
+2
+Externally clean the aspiration probe with alcohol
+3
+Clean the insides of the containers of distilled water and waste.
+Actions to be done by the technical service people
+Annual maintenance
+1
+Clean electronic boards and fans from dust
+2
+Check the fluidic connections from the pump to the probe and the connections of the washing station, Check 
+the tightness of the fittings and that none of them leaks liquid.
+3
+Check the seal of the dosing pump. Verify that there are no leaks and that no bubbles are produced.
+4
+Clean the filters in the distilled water container
+5
+Clean the washing station
+6
+Disassemble and clean the probe. Check your status.
+7
+Check the arm (Check the wear of the belts and their tension)
+8
+Check probe shock detection and protection system
+9
+Check the condition of the heating channel
+10
+Check belt and reaction rotor tension
+11
+Clean filters, slit and photodiode
+12
+Check placement and detector of general cover and reaction cover
+13
+Check that the general cover is properly supported and does not fall.
+14
+Carry out the tests with the service program

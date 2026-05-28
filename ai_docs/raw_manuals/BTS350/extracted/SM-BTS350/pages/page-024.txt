@@ -1,0 +1,43 @@
+—  24  —
+Service manual
+• 
+LED - allows the label of a LED to be entered/changed. That label is the one shown during the programme when it is 
+necessary to select a wavelength.
+• 
+Tint - Allows an integration time between 3 and 999 to be entered. 
+• 
+DAC - Allows a DAC value to be entered for the current of the LED, between 0 and DAC MAX.
+• 
+DAC MAX - Allows the DAC MAX value to be entered, between 0 and 255.
+• 
+DELETE LED - eliminates the wavelength label. This wavelength will no longer appear when selecting the wavelengths 
+in the rest of the programme.
+• 
+RESTORE CONFIGUR. - This restores the factory configuration for all the LED values, Tint, DAC and DMX.
+• 
+AUTOADJUST - Self-adjusts the Integration time and that of the DAC in the selected LED.
+• 
+AUTOADJUST ALL- This self-adjusts the Integration time and that of the DAC for all the LED.
+• 
+READ ALL - This reads all the LED.
+3.2.3. - Aspiration system adjustment
+This procedure indicates the steps to be taken to adjust the peristaltic pump flow and positioning of the sample in the flow 
+cuvette. The pump flow depends on the number of steps of the motor and inner diameter of the dosing tube. This means 
+that, with the same number of steps, different tubes have different flows, due to the tolerances of their inner diameters. 
+Other factors that also influence the tiny variations in flow are the deformations that develop in the dosing tube with use, 
+due to aging and the tolerances in length and diameter of the Teflon suction tube. This adjustment offsets the variations 
+caused by the tolerances or aging of the tubes.
+3.2.3.1. - Required material
+• 
+Tool for adjusting the volume
+• 
+5 ml pipette (0.05 ml/division)
+• 
+Analytical precision balance (optional)
+3.2.3.2. - General remarks
+This procedure describes two alternative process methods: manual and automatic. It is advisable to use the automatic one.
+The function TEST allows a volume of fluid of between 100 and 5000 µl to be input, which are checked by aspiration cycles. 
+On selecting this option, the cursor will go to the first line.
+Type in the volume in µl that is to be checked and press ENTER. The message line will show “Insert tube with water and 
+press PUMP”.
+Place a test tube with distilled water in the aspiration position and press PUMP.

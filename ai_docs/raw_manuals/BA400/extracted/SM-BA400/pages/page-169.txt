@@ -1,0 +1,37 @@
+8.8. 
+Recambio desgasificador
+AC17094
+AC17092
+AC17220
+ 
+Código
+Descripción de los códigos
+AC17094
+Desgasificador
+AC17092
+Membrana de recambio del 
+desgasificador
+AC17220
+Placa control desgasificador
+8.8.1. 
+AC17094 - Instalación del módulo desgasificador
+Herramientas: Llave allen 2.5
+Montaje: 
+1. Coloque el desgasificador (4)
+2. Atornille la base. En caso de no haber agujeros en la plancha inferior utilice cinta de doble cara para sujetar el 
+módulo desgasificador (4).
+3. Saque el tubo (1) que conecta el “Water In” al premanifold.
+4. Conecte los tubos a la entrada (2) y salida (3) de la membrana del desgasificador.
+5. Conecte el cable que acompaña al modulo al conector CN5 de la placa electrónica del módulo (5).
+6. Pase el cable por el interior del analizador hasta alcanzar las fuentes de alimentación.
+7. Conecte el otro extremo del cable en la fuente de alimentación del analizador de la siguiente manera (6) y (7):
+Color cables 
+Fuente alimentación
+Blanco
+Terminal positivo
+Marrón
+Terminal negativo
+8. El regulador de presión ya viene programado. No se tiene que tocar.
+9. Ponga en marcha el analizador y la bomba de vacío del desgasificador debe estar funcionando unos segundos 
+para realizar el vacío en la membrana.
+169

@@ -1,0 +1,112 @@
+—  37  —
+Service manual
+Appendix I. - Adjustment value margins
+I.1. - Integration times and DAC for each wavelength of the filters
+These values are obtained wtih the flow cuvette filled with distilled water.
+Integration times
+BTS-350
+WAVELENGTH
+MINIMUM 
+VALUE
+MAXIMUM 
+VALUE
+340 nm
+6
+94
+405 nm
+6
+77
+450 nm (optional)
+6
+84
+505 nm
+6
+55
+535 nm
+6
+154
+560 nm
+6
+110
+600 nm
+6
+110
+635 nm
+6
+66
+670 nm
+6
+176
+Y-350
+WAVELENGTH
+MINIMUM 
+VALUE
+MAXIMUM 
+VALUE
+280 nm
+6
+30
+340 nm
+6
+30
+405 nm
+6
+30
+420 nm 
+6
+110
+505 nm
+6
+110
+520 nm
+6
+80
+560 nm
+6
+20
+620 nm
+6
+40
+635 nm
+6
+20
+670 nm
+6
+50
+750 nm
+6
+20
+DAC Analogical/Digital Converter 
+BTS-350
+WAVELENGTH
+MINIMUM 
+VALUE
+MAXIMUM 
+VALUE
+340 nm
+50
+90
+405 nm
+50
+130
+450 nm (optional)
+75
+140
+505 nm
+75
+140
+535 nm
+10
+140
+560 nm
+15
+120
+600 nm
+75
+140
+635 nm
+30
+140
+670 nm
+20
+140

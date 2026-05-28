@@ -1,0 +1,33 @@
+3
+Versión del manual 
+Fecha de la revisión
+Modificación
+1
+Diciembre 2019
+Versión inicial
+2
+Octubre 2020
+Incluye ajustes del lector 
+de código de portaobjetos. 
+Modificación de los capítulos: 
+1, 3, 4, AI, AIII
+ 
+Código manual TESE00016-02-ESP
+ 
+Dirección del fabricante 
+BIOSYSTEMS
+ 
+ 
+c/Costa Brava 30
+ 
+ 
+08030 Barcelona
+ 
+ 
+SPAIN
+ 
+ 
+http://www.biosystems.es
+ 
+ 
+El analizador IPro cumple con la directiva 98/79/CE de la Unión Europea

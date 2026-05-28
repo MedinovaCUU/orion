@@ -1,0 +1,58 @@
+Manual de servicio
+146
+Modelo Y15 / Y25
+Control
+Multical
+500
+19. Coloque las botellas y las muestras en las posiciones donde las colocó en el software.
+20. Prepara la solución de lavado
+21. Ejecuta la sesión
+22. Exportar los resultados
+23. Cuando termine, vaya a la pantalla de resultados de la prueba, presione la opción TEST. Presione el 
+botón imprimir resultado actual
+24. Exportar los resultados de la resultado actual en formato .txt
+25. Copie el contenido del archivo a la hoja “Datos” del archivo de Excel
+26. Introduzca el resto de los datos en la hoja de “instrucciones y lote” del archivo de Excel
+27. En el “resumen” y en los “resultados de la verificación” obtendrá todos los resultados y el resultado final.
+28. Guarde e imprima el archivo de Excel con el número de serie como nombre. Deseche el resto de las 
+muestras y la calibración.
+La siguiente tabla muestra los criterios de aceptación de la verificación:
+Valores del coeficiente de variación
+Modelo: A15/A25
+GLUCOSE
+AST
+PHOSPHORUS
+SCI
+SCII
+SCI
+SCII
+SCI
+SCII
+Tolerancia (CV%)
+3.00
+3.00
+5.00
+3.00
+5.00
+3.00
+Modelo: Y15/Y25
+Glucose-Fructose
+Acido acetico
+Glycerol
+PAN
+N2
+N4
+N2
+N4
+N2
+N4
+N4
+Tolerancia (CV%)
+3.00
+3.00
+5.00
+3.00
+3.00
+3.00
+3.00
+Además, todos los resultados de concentración deben estar dentro del rango del control.

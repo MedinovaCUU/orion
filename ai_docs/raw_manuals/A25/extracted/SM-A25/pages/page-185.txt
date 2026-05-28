@@ -1,0 +1,31 @@
+185
+List of spare parts
+Code
+Representation 
+Description
+PC15061
+Microprocessor board
+FO11562
+photodetectors (5)
+FO14717
+Start photodetector (2)
+ME14728
+AC10754
+A25v1 Electronic box hinge
+A25v2 Electronic box hinge
+CE11540
+Load cell
+ME10490
+Fan protection grid
+MO11558
+Electronic box fan
+AC16581
+Waste pump
+AC11534
+External cleaning tip pump
+ME14671
+2-way solenoid valve
+AC11536
+Restrictor washing station
+AC11538
+Washing station lid

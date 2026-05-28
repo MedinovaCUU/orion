@@ -1,0 +1,60 @@
+135
+135
+10.6.4. Estado rotor de reactivos
+Pantalla de información del estado de cada una de las botellas del rotor de reac­
+tivos. El usuario puede pulsar sobre cualquier botella para ver la información de 
+identificación.
+Hay un código de colores para identificar el estado de botella.
+Código de 
+colores
+Nombre
+Descripción de la identificación de las 
+botellas
+Reactivos
+Botella de reactivos y usada en la sesión de 
+trabajo
+Soluciones 
+adicionales
+Botellas de solución de lavado, agua 
+purificada, solución salina, etc
+Vacío 
+insuficiente / 
+Bloqueado por 
+colisión
+Botella de reactivo que el analizador ha 
+detectado volumen insuficiente o colisión 
+para realizar la preparación. El programa blo­
+queará todas las preparaciones siguientes que 
+utilizan dicho reactivo. Para desbloquearla 
+las botellas debido a volumen insuficiente 
+el usuario debe insertar una botella nueva y 
+leer el código de barras.
+Para desbloquear las botellas debido a una 
+colisión, el usuario debe revisar las posiciones 
+de la botella con colisión, y pulsar el botón de 
+desbloqueo para volver a utilizar esta botella.
+Poco volumen
+Aviso de que en breve se terminará el 
+volumen de la botella.
+No utilizado
+Reactivo posicionado pero no usado en la 
+sesión de trabajo
+Error lectura 
+cód.
+Error en la lectura del código de barras
+Desconocido
+Botella posicionada pero no identificada
+Seleccionado
+Botella seleccionada
+Esta pantalla es solo para consulta de estados y no permite realizar modificaciones 
+de posición de reactivos ni solucionar las alarmas de volumen, para ello debe utilizar 
+la pantalla de Posición de rotor de reactivos.
+ 
+)
+Véase apartado 10.5.3
+10.6.5. Estado rotor de reacción
+Pantalla de información del estado de cada uno de las cubetas de reacción. El 
+usuario puede pulsar sobre cualquier cubeta para ver la información detallada del 
+contenido de la cubeta o de la preparación que contiene. También permite acceder 
+a la curva de reacción cuando la cubeta contiene una preparación. 
+Hay un código de colores para identificar el estado de cada cubeta.

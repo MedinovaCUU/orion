@@ -1,0 +1,58 @@
+Manual usuario 
+ 
+ 
+ 
+Manual usuario 
+ 
+ 
+ 
+102
+102
+Biosystems
+Biosystems
+Ilustración 61 
+Pantalla creación técnicas calculadas
+En la parte izquierda de la pantalla tiene una lista de las técnicas calculadas y en la 
+parte derecha hay los parámetros a introducir para cada técnica calculada. 
+ 
+)
+Véase el funcionamiento de los iconos de creación, edición, borrado e impresión de la 
+pantalla de las técnicas en el capítulo 10.3.1.
+ 
+Nombre 
+Nombre para la técnica calculada.
+ 
+Nombre corto 
+Nombre abreviado de la técnica calculada.
+ 
+Tipo de muestra 
+Indica los tipos de muestra que se van a usar para seleccionar las técnicas 
+estándar.
+Tipo de muestra 
+Descripción
+Simple
+En esta opción las técnicas estándar son de un único tipo 
+de muestra
+Múltiple
+En esta opción las técnicas estándar pueden ser de 
+diferentes tipos de muestra. 
+ 
+Unidad 
+Unidad en que se mostrarán los resultados de las técnicas calculadas. Esta uni­
+dad puede ser diferente al de las técnicas estándar.
+ 
+Decimales 
+Número de decimales en que se mostrarán los valores de la concentración de las 
+técnicas calculadas. El número de decimales puede ser diferente al de las técnicas 
+estándar.
+ 
+Imprimir técnicas 
+experimentales
+ 
+Marque está opción cuando en el informe por paciente quiera mostrar tam­
+bién los resultados de las técnicas estándar además del resultado de la técnica 
+calculada.
+ 
+Definición fórmula 
+Fórmula que relaciona la técnica calculada con las técnicas estándar. Para intro­
+ducir la fórmula, seleccione las técnicas estándar, otras técnicas calculadas, los

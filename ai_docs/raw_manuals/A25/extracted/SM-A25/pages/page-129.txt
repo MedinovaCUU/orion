@@ -1,0 +1,36 @@
+129
+6.3.1. 
+Ceramic pump connections
+4
+2
+3
+5
+1
+Figure 6.23 
+Connections of the ceramic pump
+Reference
+Input / Output
+Connection
+1
+Interconnection
+Pump interconnect tube
+2
+Inlet
+Connection of the washing solution bottle
+3
+Outlet
+Connection to the tip
+4
+Inlet
+Connection of the system liquid bottle
+5
+Interconnection Pump interconnection tube
+6.3.2. 
+ME14670 - Manifold
+Tools: Allen key number 2.5, T10 torx wrench, flat screwdriver
+Disassembly:
+1. We turn the set to empty any possible water left in the chamber.
+2. Unscrew the 4 screws (7) and separate the manifold (8) from the rest of the pump. Carefully stretch the manifold 
+to remove the piston from the seal that comes with the manifold.
+3. Turn the manifold around and unscrew the 4 screws (13) to separate the parts holding the chamber (9), the O-ring 
+(10), the bubble suppressor (11) and the adapter seal with the seal (12).

@@ -1,0 +1,44 @@
+103
+103
+10.3.3.3. Contaminaciones de cubeta
+Para evitar las contaminaciones entre técnicas en una misma cubeta del rotor de 
+reacciones, el analizador aplica un procedimiento de lavado estándar de las cubetas 
+a través de la estación de lavado. Pero en ciertos casos, el procedimiento de lavado 
+estándar no es suficiente para evitar la contaminación entre técnicas.
+Para cada técnica contaminante el programa permite editar el procedimiento de 
+limpieza de la cubeta de reacción. Se pueden programar los siguientes campos:
+ 
+Técnica contaminada 
+Indica qué técnica es contaminada, para evitar dispensarla la próxima vez en el 
+pocillo.
+ 
+Lavado 
+Indica con que solución de lavado se utiliza para limpiar la cubeta: Agua, solu­
+ción de lavado1 o solución de lavado 2.
+ 
+Ciclos de lavado 
+Indica el número de ciclos necesarios para limpiar la cubeta con solución de 
+lavado. Se pueden programar de 1 a 5 ciclos.
+ 
+Lavado de agua equivalente Esta opción permite dos valores:
+Opción
+Descripción
+Desactivado
+Para limpiar la cubeta únicamente se puede realizar con el 
+número de ciclos y con la solución de lavado programada 
+anteriormente.
+Activado
+Para limpiar la cubeta se puede realizar con el número de ciclos 
+y con la solución de lavado programados anteriormente o con 
+el número de ciclos de lavado con agua introducidos en la 
+programación.
+ 
+Ciclos de lavado con agua 
+Indica el numero de ciclos equivalentes de agua. Se pueden programar de 1 a 
+10 ciclos. En estos ciclos el programa dispensa cualquier reactivo o solución de 
+lavado excepto el reactivo de la técnica contaminante.
+ 
+)
+Véase Ilustración 67
+Ilustración 67 
+Pantalla programación de las contaminaciones de cubeta

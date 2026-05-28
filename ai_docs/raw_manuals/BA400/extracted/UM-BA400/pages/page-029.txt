@@ -1,0 +1,46 @@
+29
+29
+3. Verifique que el sistema central de producción de agua purificada incorpora un 
+filtro a su salida. En caso de no incorporar ningún filtro es necesario la instala­
+ción de uno entre el sistema de producción de agua purificada y el analizador.
+ 
+Especificación del filtro 
+Filtración < 5 μm
+ 
+Entrada agua de depósito 
+Para aquellos laboratorios que no dispongan de un sistema central de genera­
+ción de agua purificada, utilizar un depósito auxiliar para suministrar el agua 
+purificada
+1. Sitúe un depósito de agua purificada (60 L dan una autonomía de 4 h) al lado 
+del equipo. Éste depósito debe estar al mismo nivel que el analizador.
+2. Conecte el tubo delgado de color azul, se suministra con la caja de accesorios, 
+directamente al conector central (2). Este conector es de conexión rápida, 
+inserte el tubo directamente y presione un poco hacía atrás para enclavarlo. 
+La conexión está marcada como “WATER TANK INLET”. Inserte el otro extre­
+mo hasta el fondo del depósito externo. Para sacar el tubo, presione la corona 
+externa del conector y estire del tubo.
+1
+2
+3
+Ilustración 6 
+Conexiones para líquidos
+1 – 
+1 – Entrada del agua destilada de red
+Entrada del agua destilada de red
+2 – 
+2 – Entrada del agua destilada del 
+Entrada del agua destilada del 
+depósito externo
+depósito externo
+3 – 
+3 – Salida de residuos de baja 
+Salida de residuos de baja 
+contaminación
+contaminación
+4.3.1. Colocación de los tubos
+El analizador incorpora un sistema de conexión rápida para conectar los tubos de 
+agua y de residuos.
+ 
+)
+Véase Ilustración 7.
+NOTE

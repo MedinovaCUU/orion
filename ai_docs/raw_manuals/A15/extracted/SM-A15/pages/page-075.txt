@@ -1,0 +1,11 @@
+76
+Manual de servicio
+Pulsando el botón Guardar, el analizador guarda el nuevo valor de sensibilidad ajustado. Pulsando el botón 
+Cerrar, se mantiene el valor antiguo. Pulsando el botón Restaurar, se restaura el valor inicial de entrada a la 
+pantalla.
+5.2.8. Instrumentos con refrigerador de reactivos
+En los intrumentos dotados con refrigeración de reactivos el ajuste de copas pediáticas se hará en la posición 
+3, tal como muestra la figura. Lo mismo para ajustar la sensibilidad de detección de nivel para reactivos fuera 
+del refrigerador.
+Se debe ajustar la sensibilidad de la detección de nivel en el refrigerador de reactivos. Para ello poner 2 botellas 
+de 20mL en las posiciones 5 y 6 con 2mL de líquido de sistema.

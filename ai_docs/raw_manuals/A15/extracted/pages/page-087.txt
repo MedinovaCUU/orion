@@ -1,0 +1,14 @@
+88
+Manual de servicio
+5.3.7.5. Repetibilidad moviendo el tambor de filtros
+Este test realiza lecturas de absorbancia durante 10 minutos moviendo aleatoria mente el tambor de filtros. 
+El técnico puede elegir el pocillo del rotor sobre el que se realizan las lecturas y llenarlo con el líquido que 
+desee. Puede cancelarse el test en cualquier momento. Al finalizar las lecturas, para cada uno de los filtros, 
+la pantalla muestra gráficamente los números de cuentas obtenidos y las absorbancias respecto la línea base 
+corres pon dientes. El programa también muestra, para cada fil tro, los pro medios y las desviaciones estándard 
+de los nú meros de cuentas y de las absorbancias.
+5.3.7.6. Medida de absorbancia
+Este test permite realizar lecturas de absorbancia individuales. El técnico puede elegir el pocillo del rotor sobre 
+el que se realiza la lectura y llenarlo con el líquido que desee. Puede escoger qué longitud de onda desea 
+utilizar. La pantalla muestra el número de cuentas obtenido, la absorbancia respecto la línea base corres pon-
+diente, el valor de esta línea base.

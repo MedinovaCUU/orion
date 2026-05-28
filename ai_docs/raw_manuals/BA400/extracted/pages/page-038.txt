@@ -1,0 +1,22 @@
+38
+1. Place each of the pins (1) so that they compress the cable in the connector compartment (2). The pins have a 
+single position.
+2. Insert the pins as far as they will go. The pins must be anchored.
+3. Insert through the side of the connector (2) the extra anchoring (3) until it clicks into place.
+4.2. Main board (CPU) - CIIM00046
+This is the main board in which the tasks are distributed (in terms of the firmware) to each of the subassembly boards.
+This board also controls the following devices:
+• 
+The computer communications through RS-232 and USB
+• 
+The analyser status lamp
+• 
+The analyser main cover sensor.
+• 
+The general fans of the analyser. These fans have two wires.
+• 
+Control in sending the commands for controlling the ISE module and receiving the results thereof.
+The electronic control system for the RS-232 for communications and for the ISE module is electrically isolated 
+from the main electronic system. To supply it with power, use a special insulated regulator (U20 and U3).
+USB supplied by the computer and insulated from the equipment electronic system.
+Figure 4.6 CPU board silk printing

@@ -1,0 +1,37 @@
+Referencias de la Ilustración 3.31
+1 – Posicionamiento del detector de inicio para los brazos de pipeteo
+2 – Posicionamiento del detector de inicio para los brazos de agitación
+3 – Conector intermedio del cableado. 
+4 – Conector intermedio del tubo fluídico
+5 – Pieza que sujeta el tubo guiador de los cables a la base 
+6 – Tubo guiador del cableado
+3.8. Brazo agitador
+La parte del conjunto de los movimientos de elevación y rotación son iguales al conjunto del brazo de pipeteo. 
+ 
+) Ver apartado 3.6 para el detalle del conjunto.
+El agitador está formado por una paleta plana(5). La paleta se inserta al eje del motor de corriente continua (1) y se 
+aprieta a través de la tuerca abrazadera (4). El motor (1) se une al soporte del cabezal (3) mediante un adaptador (2).
+1
+2
+3
+4
+5
+Ilustración 3.32 
+Cabezal brazo agitador
+Referencias de la Ilustración 3.32
+1 – Motor corriente continua
+2 – Adaptador
+3 – Soporte cabezal
+4 – Tuerca abrazadera
+5 – Paleta agitadora
+3.8.1. 
+Modificación del agitador
+Modificación del montaje del motor con la paleta. La modificación consiste en encolar la paleta (8) con el motor 
+(6). Se modifica también la pieza de soporte del motor (7).
+ 
+) Véase el capítulo AII para saber a partir de que números de serie se ha implementado.
+Referencias de la Ilustración 3.33
+6 – Motor corriente continua
+7 – Adaptador 
+8 – Paleta agitadora
+45

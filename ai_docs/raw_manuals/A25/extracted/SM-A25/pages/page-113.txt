@@ -1,0 +1,27 @@
+113
+6.1.4. 
+CA11572 - Front housing
+Disassembly:
+1. Remove the upper housing of the refrigerator. See chapter 6.1.2
+2. Remove the screws (6) that hold the housing from the bottom of the base.
+3. Disconnect the containers and remove them from the analyzer.
+4. Remove the rotor cover and racks from the tray.
+5. Manually position the manipulator arm fully to the right.
+6. Remove the housing by pulling it forward.
+Mounting:
+1. Follow disassembly steps in reverse order
+6
+Figure 6.4 
+Removing the front housing
+6.1.5. 
+CA11580 - Main cover
+Disassembly:
+1. Close the analyzer lid.
+2. Remove the 2 screws (7) that hold the cover to each hinge.
+3. Lock the hinges in this position by inserting a metal pin about 3 mm in diameter through the side holes of the 
+hinges. For this you can use 2 screwdrivers or allen wrenches of suitable diameter.
+4. Vertically lift the cover to release it from the hinge. The cover is guided with the screw (8) of the housing.
+Mounting:
+1. Lock the hinges in the closed lid position with a pin
+2. Place the cover on the hinges by matching the screws (8) with the hinge guides
+3. Place the 4 screws (7) to fasten the cover to the hinges

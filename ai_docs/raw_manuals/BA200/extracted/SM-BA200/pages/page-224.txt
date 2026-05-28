@@ -1,0 +1,21 @@
+1. Seleccione el programa: Panel de control/Herramientas administrativas/Directiva de seguridad local
+2. Seleccione la opción de: Directiva de cuenta/Directiva de contraseñas
+3. Verifique que está desactivada la opción de: La contraseña debe cumplir los requisitos de complejidad. Ver Ilus­
+tración 9.6
+Ilustración 9.6 
+9.2. Problemas con el windows 10
+Se recomienda utilizar la versión más actual del window 10, la versión Fall creator update.
+Esta es una problemática del sistema operativo windows, donde la aplicación del BA200 no puede solucionar.
+Hay algunas situaciones que al usar la aplicación del BA200 el sistema operativo queda congelado. Por congelado se 
+entiende que no funciona la utilidad de conmutar los programas del segundo plano al primer plano con el teclado 
+(utilizar el ALT+TAB).
+Para solucionar dicha situación seguir los siguientes pasos:
+1. Abra el administrador de tareas. Pulse con el botón derecho sobre la barra de tareas y en la ventana que se abre 
+seleccione la opción de administrador de tareas. O pulse CRTL+ALT+DEL y seleccione la opción adminstrador 
+de tareas.
+2. Seleccione la opción de Procesos.
+3. Busque el programa Explorador de windows. Si no lo encuentre, desplace el cursor de la barra vertical hasta al 
+final de todo dentro del grupo de Procesos de windows.
+4. Una vez localizado, seleccione el programa Explorador de windows y pulse el botón de Reiniciar.
+Manual de servicio
+224

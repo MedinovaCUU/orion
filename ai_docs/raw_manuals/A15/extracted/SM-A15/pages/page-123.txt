@@ -1,0 +1,22 @@
+Manual de servicio
+124
+3
+4
+5
+Ilustración 6.23 Desmontaje del sensor de temperatura
+6.4.3. AC13373 - Detector de la tapa del rotor
+Desmontaje:
+1. Extraer la carcasa superior. Ver capítulo 6.1.5
+2. Extraer el conjunto rotor. Ver capitulo 6.4.1
+3. Aflojar el tornillo (5) que sujeta el aislante del rotor
+4. Extraer el prisionero (7) que sujeta el detector de tapa
+5. Extraer el detector estirando por la parte inferior o con la ayuda de un destornillador presionar en el 
+sentido de la flecha (6)
+Montaje:
+1. Seguir el órden inverso al desmontaje
+6
+7
+Ilustración 6.24 Desmontaje detector de la tapa
+6.4.4. AC14497 - Células Peltier del rotor / MO13357 - Ventilador del rotor
+Desmontaje ventilador:
+1. Extraer la carcasa superior. Ver 6.1.5

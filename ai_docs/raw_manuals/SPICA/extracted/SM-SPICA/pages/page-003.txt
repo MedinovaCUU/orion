@@ -1,0 +1,68 @@
+3
+Manual de Usuario BioSystems SPICA | Versión 2.8 - Agosto 2024
+Manual de Usuario BioSystems SPICA
+GUÍA DE INSTALACIÓN
+1. INTRODUCCIÓN
+2. EMBALAJE Y ENTREGA
+2.1 Número de paquetes
+2.2. Equipo necesario para la instalación
+2.3. Espacio para desenbalar
+3. DESCRIPCIÓN
+3.1 Dimensiones y peso
+3.2 Necesidades de espacio
+3.3 Soporte de mesa 
+4. REQUISITOS RELATIVOS A LAS INSTALACIONES
+4.1 Requisitos eléctricos 
+4.2 Requisitos fluídicos
+4.3 Condiciones Ambientales 
+GUÍA DE SERVICIO
+1. ELEMENTOS DE HARDWARE
+1.1 Rotor de muestras y reactivos 
+1.2 Rotor de reactivos
+1.3 Banco Óptico
+1.4 Brazo Dosificador
+1.5 Brazo Agitador
+1.6 Ensamblaje de la bomba de dispensación
+1.7 Desgasificador (opcional)
+1.8 Ensamblaje del sistema de fluidos
+1.9 Ensamblaje Electrónico
+2. ESQUEMA BÁSICO DE FLUIDEZ
+3. ESQUEMA BÁSICO DE ELECTRÓNICA (SIN OPCIONES)
+4. MANUAL ROBOT
+5. MANTENIMIENTO Y LIMPIEZA
+5.1 Actividades y frecuencia de mantenimiento 
+5.2 Limpieza
+5.3 Proceso de verificación del analizador
+6. COMO ACEDER A LOS SUBSISTEMAS
+VERSIÓN MANUAL
+40
+40
+40
+40
+40
+41
+41
+41
+41
+41
+41
+41
+42
+44
+44
+44
+47
+47
+48
+48
+49
+50
+50
+51
+52
+53
+54
+54
+54
+54
+55

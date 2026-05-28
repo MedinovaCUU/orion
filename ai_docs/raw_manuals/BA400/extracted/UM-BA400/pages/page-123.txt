@@ -1,0 +1,70 @@
+123
+123
+las situaciones de bloqueo antes de iniciar la sesión. A continuación se indican 
+los casos de bloqueo:
+Componente no 
+posicionado
+Rotor
+Bloqueos
+Agua destilada
+Muestras
+Bloqueará la técnica cuando sea la primera vez 
+que la realice y no tenga valores de resultados 
+de blanco.
+Calibrador
+Muestras
+Bloqueará la técnica cuando sea la primera vez 
+que la realice y no tenga valores de resultado 
+de factor.
+Botella de 
+diluyente
+Reactivos
+Se utiliza para realizar repeticiones 
+automáticas o manuales con dilución de 
+muestra. La técnica aparecerá bloqueada 
+cuando al activarse la repetición se detecta 
+que no existe diluyente (ya sea: botella no 
+posicionada o volumen insuficiente).
+Botella de 
+diluyente
+Reactivos
+Bloqueará la técnica que esté programada con 
+predilución.
+Se utiliza para realizar predilución de muestras 
+(caso de técnicas de ORINA u otros). Si no 
+está en el rotor, la técnica aparecerá bloqueada.
+ 
+ 
+Pulse este botón para ver los reactivos posicionados actualmente en el rotor, 
+puede imprimir este listado si lo desea. 
+ 
+ 
+Pulse este botón para memorizar los elementos posicionados en el rotor visible. 
+El programa solicita un nombre para identificar al rotor memorizado. 
+Cuando realiza un reset de sesión, los elementos posicionados en el rotor de reac­
+tivos se mantienen, sin embargo, del rotor de muestras se descargan los tubos de 
+paciente, manteniendo los tubos de controles y calibradores.
+ 
+ 
+Pulse este botón para cargar las posiciones de los elementos de un rotor memo­
+rizado previamente.
+ 
+ 
+Pulse este botón para borrar el posicionamiento visible de todos los elementos 
+del rotor.
+ 
+ 
+Pulse este botón para borrar el posicionamiento del rotor de aquellas muestras 
+que han finalizado su ejecución, las que están en color verde.
+ 
+ 
+Pulse sobre el selector de urgencia si desea que la muestra sea procesada de for­
+ma prioritaria
+ 
+ 
+Pulse este botón para indicar al programa que ha rellenado manualmente un 
+tubo de muestra, un calibrador o un control. Realice esta acción cuando salga 
+la alarma de finalización del volumen. Los reactivos con código de barras sólo 
+tiene que colocar una nueva botella en el rotor y pulsar el botón de lectura del 
+código de barras, la información de volumen de la nueva botella se actualizará 
+automáticamente.

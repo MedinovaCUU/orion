@@ -1,0 +1,41 @@
+29
+The Teflon tube (15) connects the chamber to the electrovalve. It is connected to each of these components by the 
+fittings (14) and (17). 
+1
+5
+3
+4
+2
+6
+10
+11
+9
+12
+14
+15
+16
+17
+8
+Figure 3.9 
+1 – Body
+2 – Fluidic chamber
+3 – Seal
+4 – Seal support
+5 – Ceramic piston
+6 – Piston support
+7 – Transmission protector
+8 – Start detection barrier
+9 – Worm
+10 – Axial bearing
+11 – Motor
+12 – Start photodetector
+13 – Pump support
+14 – Pump fitting
+15 – Pump-electrovalve teflon tube
+16 – 3-Channel electrovalve
+17 – Electrovalve fitting
+Reference Figure 3.9
+3.2.3.  Tubes and containers
+The Teflon tube (4) connects the distilled water container (1) to the electrovalve of the dispensing pump. This tube is 
+installed at the end of the filter container (5). It is connected to the electrovalve of the dispensing pump through the 
+fitting (6) The PVC tube (7) connects the distilled water container to the diaphragm pump of the washing water. This

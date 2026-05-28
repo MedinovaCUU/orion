@@ -1,0 +1,61 @@
+Manual usuario 
+ 
+ 
+ 
+Manual usuario 
+ 
+ 
+ 
+36
+36
+Biosystems
+Biosystems
+ 
+Tensión de alimentación 
+115 V a 230 V ±10% Vac
+ 
+Frecuencia de alimentación 
+50 Hz o 60 Hz
+ 
+Potencia 
+500 VA
+El analizador se adapta automáticamente a la tensión de la red eléctrica, sin tener 
+que seleccionar manualmente la tensión. Trabajar fuera del margen de tensiones 
+puede ocasionar un funcionamiento incorrecto del equipo y éste puede sufrir da­
+ños. La categoría de la instalación eléctrica debe ser II (categoría de sobrevoltaje)
+ 
+Fusible En la caja de accesorios viene un conjunto de fusibles de repuesto. Las caracte­
+rísticas son:
+Fusible
+Modelo
+Código recambio
+10A
+5SF10L250V
+AC16747
+1
+Ilustración 11 
+Localización del fusible
+1 – 
+1 – Interruptor principal
+Interruptor principal
+El fusible está localizado en el interruptor principal trasero (1). 
+ 
+)
+Véase Ilustración 11.
+ 
+Cambio de fusibles 
+Quite la tapa de protección (1) y sustituya los dos fusibles por los que vienen en 
+la caja de accesorios. Siempre sustituya los dos fusible a la vez.
+ 
+WARNING
+ 
+Asegúrese de que el analizador ha permanecido a temperatura ambiente de fun­
+cionamiento al menos durante 12 horas antes de su puesta en marcha. A pesar 
+de que el analizador no requiere unas condiciones especiales de almacenamiento 
+y transporte, puede haber estado sometido a bajas temperaturas y provocado 
+condensación en su interior.
+Se aconseja la utilización de un sistema de alimentación ininterrumpida (SAI) 
+para proteger al analizador y al ordenador. Las características recomendadas son:
+ 
+Modelo 
+SAI continuo (on-line)

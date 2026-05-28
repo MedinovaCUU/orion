@@ -1,0 +1,58 @@
+Service Manual
+10
+Symbol
+Description 
+BIOHAZARD
+Preventing biological risks in handling the samples
+Inappropriate handling of samples, controls and calibrators could 
+cause biological infection. Do not touch the samples, mixtures or 
+waste with your hands. Wear gloves and protective clothing when 
+necessary.
+In the event that the samples come into contact with the skin, wash 
+immediately with abundant water and seek medical advice. It is 
+advisable to follow good laboratory practices.
+WARNING
+Prevention in handling reagents
+Handle reagents and washing solutions with care, they contain 
+substances that could be corrosive.
+In the event that the reagents or washing solutions come into 
+contact with the skin, wash immediately with abundant water and in 
+the event of a reaction, seek medical advice. 
+Consult the reagent or washing solution adaptation sheet and follow 
+the safety instructions.
+It is advisable to follow good laboratory practices.
+BIOHAZARD
+Preventing biological risks in handling solid waste
+Take care in handling parts of the analyser that are converted to 
+waste such as the reactor rotor, sample tubes and reagent bottles.
+Wear gloves and protective clothing when handling such waste.
+Dispose of the waste in accordance with national or local legislation 
+for disposing of dangerous biological waste, and consult the reagent 
+manufacturer or distributor for more details.
+NOTE
+Prevention of electro magnetic interferences
+The analyser complies with the emission and immunity 
+requirements set out in standard UNE-EN 61326-2-6:2006. This 
+equipment has been designed and tested for class B of standard 
+UNE-EN 55022:2000. In a domestic environment, it may cause 
+radio interference, in which case it may be necessary to take 
+measures to mitigate the interference. 
+Do not use the analyser near strong electro magnetic radiation 
+sources (such as centrifuge appliances, radio transmitters, mobile 
+telephones), as they could interfere with its correct operation.
+Prevention at the end of the useful life of the analyser
+At the end of the useful life of the analyser, the product must be 
+disposed of in accordance with the environmental legislation in force 
+in each country. If that country is a EU member state, the terms 
+of the WEEE directive on electrical and electronic appliances will 
+apply. In other words, when the appliance's useful life has ended, 
+it is converted into waste and must be separated from household 
+waste for correct recycling. For this purpose, contact the distributor 
+for the product to be properly recycled.
+NOTE
+Prevention when deactivating the cover sensor
+The option to deactivate the covers sensor only serves to facilitate 
+the technical service that can carry out maintenance or repair 
+actions. Once the maintenance or repair is finished, the technician 
+has to reactivate the covers’ sensor again. The covers’ sensor are 
+elements of security of the analyser.

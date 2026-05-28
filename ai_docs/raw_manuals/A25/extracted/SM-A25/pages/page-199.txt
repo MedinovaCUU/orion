@@ -1,0 +1,59 @@
+199
+AV. Refurbish instructions
+This chapter explains the instructions for the refurbish and control of the instruments traded as rental or loan, or 
+second hand.
+Terms
+• 
+Life: Analyzers have the functionality for life as long as they keep maintenance conditions specified by the manu­
+facturer and the use of original spare parts. Note that the manufacturer is obliged to provide spare parts up to 5 
+years after discontinuing the analyzer.
+• 
+Number of times can be refurbished: You can refurbish as many times as necessary, provided the overhaul 
+following the instructions described in this section and the use of original spare parts.
+• 
+Accessories used in refurbished devices: Any accessories used in refurbished analyzer are provided by the 
+manufacturer. Any fungible remaining from the last use such as rotors, extra reagent bottles, cleaning solution, 
+fluid system, and so on, will discarded.
+• 
+Staff: The refurbishment will be done by personnel authorized by Biosystems. It will normally be the distributor 
+service staff, or someone who has received the appropriate training.
+Instructions
+Cleaning and disinfection
+• 
+Users carrying out disinfection processes must wear gloves and protective apparel. All consumable materials 
+(reaction rotor, reagent bottles, sample tubes) will be treated as potentially infectious waste.
+• 
+Check whether there are any reaction rotors in their compartments or reagent bottles in the refrigerator. If there 
+are, dispose of them. 
+• 
+Empty the high contamination waste tank and washing solution tank.
+• 
+Wash the inside of the equipment using a damp cloth and neutral soap. If there are splashes, wash them with 
+alcohol.
+• 
+Follow the applicable national guidelines for disposing of waste that is considered potentially infectious. 
+Components to change
+• 
+Change the tip. (AC11500) Use the utility change the tip of the service program. Discard the tip. Treat as potentially 
+infectious. To manipulate the tip wear gloves to protect the user.
+• 
+Changing the inner tubes of Teflon (AC11569)
+• 
+Changing the lamp and he lamp socket. (ZO13309) Use the utility lamp replacement of the service program.
+• 
+Changing the pump seal ceramic (AC11527)
+• 
+Changing the electronics (MO11558) and optics (AC17326) fan
+• 
+Update firmware and software
+Verification and adjustment process
+Carry out the following checks, consult the service manual (chapter 3) to carry out the verifications. If a verification 
+does not fit within the values, adjust again
+• 
+Verification of XYZ arm positions
+• 
+Verification of readings rotor positions and filter wheel
+• 
+Verification of the sensibility level detection with the different bottles and tubes
+• 
+Verification of the thermostatization of the tip and rotor

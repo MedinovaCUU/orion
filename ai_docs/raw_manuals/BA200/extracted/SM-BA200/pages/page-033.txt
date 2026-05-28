@@ -1,0 +1,73 @@
+45
+49
+48
+50
+46
+47
+51
+53
+52
+54
+55
+Ilustración 3.13 
+Vista banco óptico
+Referencias de la Ilustración 3.12 y Ilustración 3.13
+41 – Banco óptico
+42 – Placa CIIM00051
+43 – Placa detector de desbordamiento
+44 – Placa CIIM000050
+45 – Tornillos abertura banco óptico
+46 – Tapa banco óptico
+47 – Junta banco óptico
+48 – Divisores de haz para cada longtiud de onda
+49 – Lentes y portalentes
+50 – Rotor 
+51 – Soporte del banco óptico
+52 – Filtros para cada longitud de onda
+53 – Portafiltros
+54 – Leds para cada longitud de onda
+55 – Fotodetetores, principal y de referencia
+Órden de colocación de los leds en el banco óptico según el modelo de instrumento
+Pos 1
+Pos 2
+Pos 3
+Pos 4
+Pos 5
+Pos 6
+Pos 7
+Pos 8
+Pos 9
+Pos 10
+Pos 11
+Modelo BA200
+340
+560
+670
+600
+535
+505
+635
+405
+---
+---
+---
+Modleo Y200
+340
+620
+600
+560
+750
+420
+505
+635
+405
+520
+430
+3.3. Brazo de pipeteo
+El brazo de pipeteo sirve para aspirar y dispensar líquidos. El brazo manipula reactivos y muestras. El brazo de pipe­
+teo está formado por una carcasa (1) que cubre las conexiones de la punta (6) y la placa electrónica (2). El conjunto 
+punta y placa unidos a un soporte es el conjunto móvil del brazo. El conjunto se eleva mediante un tubo guía (9) 
+por el interior del cual pasan los cables y los tubos que van conectados a la punta. La elevación se realiza con un 
+motor (10) que transmite el movimiento a través de una polea (11) a una correa (8), que está solidaria con el tubo 
+guía (9). El movimiento angular se realiza con el motor (4) a través de una correa (3) que hace girar al tubo guía (9).
+33

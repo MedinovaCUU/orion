@@ -1,0 +1,74 @@
+Manual usuario 
+ 
+ 
+ 
+Manual usuario 
+ 
+ 
+ 
+196
+196
+Biosystems
+Biosystems
+Paso
+Acción 
+Repeti­
+ciones 
+Descripción
+4
+Cebado B
+9
+Ejecute 9 repeticiones de esta instrucción 
+para asegurar que la solución del nuevo kit 
+reemplaza completamente a la del kit anterior 
+en toda la sección de tubos y electrodos. Es 
+posible que alguna de las repeticiones de error 
+de falta de líquido. Asegúrese que los tres 
+últimos cebados han finalizado con éxito. Si no 
+es el caso, ejecute los cebados necesarios para 
+que esto ocurra.
+5
+Cebado A
+9
+Proceda de igual manera que en el paso anterior
+6
+Calibrar 
+electrodos
+2
+Ejecute esta acción para calibrar los electrodos 
+con la nueva solución y verificar que está 
+en buenas condiciones. Si el resultado no es 
+aceptable por presencia de aire, verifique que las 
+soluciones circulan correctamente repitiendo 
+los pasos 2 o 3 según el error reportado. Si las 
+calibraciones finalizan pero los resultados no 
+son aceptables repita estas instrucciones un par 
+de veces.
+13.3.2.3. Cambio de los tubos de la bomba peristáltica
+Abra las puertas delanteras y la tapa del módulo ISE.
+Realice un vaciado de los tubos.
+1. Con el programa de usuario en el apartado de utilidades ISE, realice 5 ciclos 
+de Mantenimiento, para vaciar el canal y los tubos.
+Extraiga los tubos de cada una de las bombas peristálticas. Libere la presión del 
+cabezal estirando de la abrazadera marcada en color amarillo.
+ 
+BIOHAZARD
+BIOHAZARD
+ 
+Separe por las dos uniones cada uno de los tres tubos y deséchelos. Use guantes 
+para manipular los tubos. Trate este material cómo potencialmente infeccioso. 
+Deshágase de los residuos de acuerdo con la legislación vigente para la elimina­
+ción de residuos biológicos peligrosos de su gobierno nacional o local.
+Desembale los nuevos tubos.
+Inserte un tubo en cada bomba peristáltica. Para insertar el tubo en el cabezal 
+de la bomba peristáltica libere la presión del cabezal estirando hacía el lateral la 
+abrazadera (1), véase la Ilustración 120. 
+Cada tubo tiene dos etiquetas. Las etiquetas ayudan a orientar correctamente el 
+tubo en la bomba peristáltica. Tiene que coincidir la numeración de la etiqueta 
+de cada tubo con la numeración de la etiqueta de la bomba.
+• 
+Los tubos marcados con la A se instalarán en la bomba (2) y el orden de co­
+locación empezando por abajo es A2 y A1.
+• 
+Los tubos marcados con la B se instalarán en la bomba (3) y el orden de co­
+locación empezando por abajo es B2 y B1.

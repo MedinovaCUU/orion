@@ -1,0 +1,27 @@
+Manual usuario 
+ 
+ 
+ 
+Manual usuario 
+ 
+ 
+ 
+186
+186
+Biosystems
+Biosystems
+Tipo de 
+alarma
+Alarma/Error
+Causa del problema
+Solución propuesta
+Posible muestra 
+con prozona
+Este mensaje aparecerá para 
+técnicas programadas como 
+turbidimétricas. 
+Si aparece el mensaje indica 
+que la muestra puede tener la 
+concentración en prozona.
+Repita el ensayo diluyendo la 
+muestra.

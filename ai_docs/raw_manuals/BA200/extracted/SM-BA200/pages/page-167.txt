@@ -1,0 +1,22 @@
+Desmontaje:
+1. Quite la carcasa lateral izquierdo y la chapa trasera
+ 
+) Véase Capítulo 8.1.2
+2. Desmonte el desgasificador.
+3. Desmonte la bomba cerámica.
+4. De las 2 electroválvulas, seleccione la que quiera desmontar. La electroválvula para la entrada de agua de red 
+(16) o la electroválvula para la entrada de agua de depósito (17).
+5. En función de la electroválvula quite los tornillos (18) o (19)
+6. Al final quite los tubos de entrada y salida de las electroválvulas. Las conexiones van con rácores rápidos.
+Montaje:
+1. Sustituya la electroválvula.
+2. Conecte los tubos de entrada y salida a la electroválvula
+3. Atornille la electroválvula con los tornillos (18) o (19)
+4. Monte la bomba cerámica
+5. Monte le desgasificador
+6. Verifique el funcionamiento de la electroválvula con el programa de servicio.
+16
+17
+Ilustración 8.52 
+Cambio electroválvula de entrada de agua
+167

@@ -1,0 +1,39 @@
+18
+Manual de servicio
+3.  PROGRAMA DE SERVICIO
+El programa de servicio se emplea para el ajuste, verificación y mantenimiento de los diferentes elemen­
+tos del procesador. No se suministra con el instrumento, sólo se su­mi­nistra a los servicios de asistencia 
+técnica autorizados. El personal de servicio debe instalarlo en el ordenador del usuario para poder 
+realizar las tareas necesarias. Una vez concluidas estas tareas, el programa debe ser desinstalado. Para 
+instalar el programa de­ben seguirse las instrucciones del CD-ROM de insta­lación deno­mi­nado Service. 
+La contraseña original para poder utilizar este programa es ipro. Puede cambiarse la contraseña desde 
+el propio programa de servicio. Si el personal de servicio olvida la contraseña, puede retornarse a la 
+contraseña original eliminando el fichero oculto info.bin del directorio de la aplicación y volviendo a 
+ejecutar el programa. Una vez introducida la contraseña, se informa del Nº de serie del procesador y 
+se pide que introduzca el nombre del operador (por defecto SAT). Pulsando el botón Aceptar aparece 
+el menú principal del programa. Las diferentes funciones del programa de servicio están clasificadas 
+en las siguientes categorías:
+• 
+Ajustes: Permiten realizar diferentes ajustes de parámetros necesarios para el correcto fun­
+cionamiento del procesador.
+• 
+Tests: Tests para comprobar el funcionamiento del procesador.
+• 
+Utilidades: Utilidades técnicas diversas, como por ejemplo, lavado o cebado del sis­tema de 
+dosificación o cambio de un filtro óptico. 
+• 
+Registros: Permiten la gestión del histórico de ajustes, tests, incidencias, repara­cio­nes y 
+mantenimiento del instrumento.
+• 
+Monitor: Permiten la comunicación de bajo nivel con el procesador para cargar nue­vas versio­
+nes del programa en la memoria flash del procesador (firmware) o bien consultar parámetros 
+internos del instrumento.
+• 
+Usuarios. Permite administrar usuarios a nivel de operador. Es decir, con permisos restringidos.
+En todo momento estará accesible un botón de paro de emergencia (STOP con fondo rojo) que al ser 
+pulsado apaga el procesador y cierra la aplicación de forma rápida.
+3.1  INICIALIZACIÓN DEL PROCESADOR
+Para inicializar el procesador en modo Servicio, primero arrancar la aplicación iPro Service. El pro­
+grama pide primero una identificación del técnico o usuario que usará el programa, dependiendo del 
+tipo de usuario que se identifique tendrá mayor o menor acceso a las diferentes partes del programa. 
+Para ello aparece la pantalla siguiente:

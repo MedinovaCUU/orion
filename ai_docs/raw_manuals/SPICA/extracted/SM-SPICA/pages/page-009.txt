@@ -1,0 +1,108 @@
+9
+USUARIO
+Manual de Usuario BioSystems SPICA | Versión 2.8 - Agosto 2024
+Manual de Usuario BioSystems SPICA
+ABBREVIATIONS
+UNITS
+DECLARACIÓN DE INTERFERENCIAS
+Este dispositivo cumple el apartado 15 de las Normas FCC y las normas exentas 
+RSS de Industria de Canadá. Su funcionamiento está sujeto al cumplimiento de 
+las dos condiciones siguientes:
+• Este dispositivo no puede generar interferencias perjudiciales
+• Este dispositivo debe aceptar cualquier interferencia recibida,incluso aquellas 
+que puedan ocasionar un funcionamiento indeseado.
+DISTANCIA DE USO DEL DISPOSITIVO 
+Este dispositivo cumple los límites FCC e ISED de exposición a radiofrecuencia. 
+El equipo se tiene que instalar y manipular a una distancia mínima de 20 cm del 
+cuerpo humano.
+1. INTRODUCCIÓN
+1.1 Avisos y advertencias
+Diámetro
+Sociedad Americana de Pruebas y Materiales 
+(www. astm.org) 
+Comunidad Europea
+Compatibilidad electromagnética
+Tecla de control en el teclado de la computadora
+Normativa europea
+Rápido (tipo de fusible)
+Fuse
+Nivel de Salud Siete (www.hl7.org)
+Integrating the Healthcare Enterprise (www.ihe.net)
+Diodo emisor de luz
+Sistema de información del laboratorio
+Desechos de equipos eléctricos y electrónicos
+Fuente de energía ininterrumpida
+Servicio de asistencia técnica
+Desviación estândar
+Seguridad eléctrica
+Bus serie universal 
+Ultravioleta 
+Inch 
+Grados centígrados 
+Amperios/Absorcion
+Gigabyte
+Horas/Tiempo
+Hertz
+Kilogramo 
+Litro 
+Megabyte
+Metro 
+Minuto 
+Mililitro 
+Milímetro 
+Millimole
+Milivoltio
+Nanometro
+Segundo 
+Volt-ampere
+Volt
+Watt 
+Microlitro 
+Micrómetro
+ø
+ASTM 
+EU 
+EMC 
+CTRL 
+EN 
+F 
+FUS 
+HL7 
+IHE 
+LED 
+LIS 
+WEEE 
+UPS 
+TAS 
+SD 
+ES 
+USB 
+UV 
+“ 
+˚C 
+A 
+GB 
+h 
+Hz 
+Kg 
+L 
+MB 
+m 
+min 
+mL 
+mm 
+mmol 
+mv 
+nm 
+s 
+VA 
+V 
+W 
+μL 
+μm 
+ 
+Símbolos | Precauciones de seguridad | Abreviaturas y unidades 
+Este dispositivo se ha sometido a los ensayos oportunos y ha demostrado que 
+cumple los límites de un dispositivo digital, con arreglo a las Normas ACMA.
+Norma Oficial Mexicana NOM-208-SCFI-2016 (IFT-008-2015) para sistemas 
+de radiocomunicación.

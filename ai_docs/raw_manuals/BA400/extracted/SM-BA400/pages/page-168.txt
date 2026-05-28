@@ -1,0 +1,20 @@
+8.7.5. 
+AC17307 - Check valves bomba pistones
+Desmontaje:
+1. Extraiga los tubos por la parte superior de la checkvalve. Vaya con cuidado al quitar los tubos para no defor­
+marlos. Para sacar los tubos de su alojamiento, no los estire por el punto medio sino cógelo por el extremo. En 
+caso de que se deformen, cámbielos por unos nuevos.
+2. Desenrosque el conjunto de la checkvalve (15)
+Montaje:
+1. Sustituya la checkvalve (15)
+2. Enrosque la checkvalve en la cámara superior hasta hacer tope.
+3. Conecte los tubos tal como indica la Ilustración 8.29
+15
+Ilustración 8.28 
+Desmontaje checkvalve
+ Conexión de entrada (16)
+Conexión de salida (17)
+Ilustración 8.29 
+Conexiones de las checkvalves
+Manual de servicio
+168

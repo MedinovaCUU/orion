@@ -1,0 +1,56 @@
+Manual usuario 
+ 
+ 
+ 
+Manual usuario 
+ 
+ 
+ 
+6
+Biosystems
+Biosystems
+Tabla de contenido
+Tabla de contenido
+Identificación......................................................................................4
+Registro de cambios............................................................................4
+Declaración de conformidad...............................................................5
+Garantía............................................................................................12
+Marcas comerciales...........................................................................12
+Derechos de autor.............................................................................12
+Descargo de responsabilidad.............................................................13
+Asistencia técnica y solucitud de componentes.................................13
+A quién va dirigido este manual........................................................14
+Avisos y advertencias.........................................................................14
+Licencia de uso para el software........................................................21
+1. Uso previsto................................................................................22
+2. Contenido...................................................................................22
+2.1. 
+Contenido de la caja de accesorios.......................................................22
+3. Identificación de los componentes principales............................25
+4. Instalación..................................................................................27
+4.1. 
+Ubicación.............................................................................................27
+4.2. 
+Apertura de la puerta frontal................................................................28
+4.3. 
+Instalación de los contenedores de residuos y solución de lavado........29
+4.3.1. 
+Preparación de la solución de lavado............................................................. 29
+4.3.2. 
+Vaciado del contenedor de residuos de alta contaminación........................... 30
+4.4. 
+Conexión de agua purificada...............................................................30
+4.4.1. 
+Colocación de los tubos................................................................................ 31
+4.5. 
+Conexión de los residuos de baja contaminación.................................32
+4.6. 
+Instalación del rotor para las muestras y reactivos................................32
+4.7. 
+Especificaciones de las etiquetas de los códigos de barra......................34
+4.8. 
+Colocación de las etiquetas identificativas...........................................34
+4.9. 
+Instalación del rotor de reacciones.......................................................35
+4.10. Conexión a la red eléctrica y puesta en marcha....................................35
+4.11. Conexión al ordenador........................................................................37

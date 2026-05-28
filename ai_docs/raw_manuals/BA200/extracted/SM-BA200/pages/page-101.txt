@@ -1,0 +1,33 @@
+1. Pulse el botón de inicio para la verificación . 
+2. El test consiste en bajar y subir la estación de lavado mientras verifica el estado de la varilla.
+3. Cuando el pocillo esté vacío, el resultado indicará no detección
+4. Llene completamente hasta el borde superior el pocillo, vuelva a realizar el test. El resultado tiene que ser de 
+detección.
+6.5.7. Ajuste del lector de código de barras
+Desde esta pantalla permite realizar el ajuste del posicionamiento del lector del código de barras.
+ 
+) Véase Ilustración 6.24
+1. Quite la tapa y ponga una botella con un código de barras en la posición 1 del rotor para tener la referencia 
+del haz a ajustar.
+2. Mueva el rotor paso a paso con el recuadro de ajuste hasta que el haz del lector quede bien centrado en el código 
+de barras.
+3. Guarde el valor ajustado.
+4. Verifique en el siguiente apartado que el lector recibe correctamente las lecturas. El valor indicado tiene que ser 
+superior al 60%.
+5. Para realizar el test del lector de código de barras, ponga varios tubos o botellas en el rotor y pulse el botón de 
+test del apartado de test. En la tabla aparecerá los códigos de barras leídos y las posiciones donde se ha colocado 
+los tubos/botellas.
+Ilustración 6.24 
+Pantalla ajuste del lector de código de barras
+6.5.8. Módulo ISE
+Desde este menú se pueden lanzar las diferentes acciones para realizar el mantenimiento del módulo ISE.
+Puede realizar las siguientes utilidades:
+• 
+Calibrar
+• 
+Instalar un kit de reactivos
+• 
+Instalar los electrodos
+• 
+Desactivar el módulo para una larga duración
+101

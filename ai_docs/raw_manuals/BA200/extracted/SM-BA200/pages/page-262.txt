@@ -1,0 +1,52 @@
+Seguir la normativa nacional vigente para deshacerse de los residuos considerados potencialmente infecciosos. 
+Componentes a cambiar
+Cambiar los siguientes componentes:
+• 
+Tubos aspiración estación de lavado
+• 
+Secador de la estación de lavado
+• 
+Cambiar los filtros siguientes: 
+• 
+Interior de la botella de solución de lavado 
+• 
+Toma de entrada de agua destilada (Toma por depósito y toma por red)
+• 
+Los 2 filtros interiores que van a las puntas de dispensación de la estación de lavado (para la solución de 
+lavado y para el agua destilada)
+• 
+Tubos de la bomba peristáltica del módulo ISE
+Actualizar firmware y software
+Proceso de verificación o ajuste
+Realizar las siguientes verificaciones, consultar el manual de servicio (capítulo 6) para realizar las verificaciones. Si 
+una verificación no entra dentro de los valores, ajustar de nuevo.
+• 
+Verificación de la termostatización de las puntas de reactivo
+• 
+Verificación de la termostatización del rotor de reacciones
+• 
+Verificación de la termostatización de la estación de lavado
+• 
+Verificación de las posiciones de los brazos
+• 
+Test de fotometría
+• 
+Cuentas de oscuridad
+• 
+Repetibilidad
+• 
+Estabilidad
+Ejecutar con el programa de usuario.
+Ejecutar con el programa de usuario y siguiendo el proceso de verificación. Siga las instrucciones en el capítulo 7.3.6.
+Guarde e imprima los resultados.
+Para realizar la verificación funcional utilizar los siguientes reactivos y materiales de referencia de BioSystems: 
+Modelo Y200
+Reactivo de Glucosa-Fructosa
+Reactivo de A. Acético
+Reactivo de Fosfate (12877)
+Vino control blanco (12821)
+Vino control Negro (12822)
+Programar una lista de trabajo con dos pacientes / muestras para realizar los 3 reactivos. Programar 20 replicados 
+para cada muestras.
+Manual de servicio
+262

@@ -1,0 +1,21 @@
+73
+5.2.4.2. Centrado del rotor respecto al sistema óptico
+Este ajuste sólo está accesible si se ha realizado el Paso 1 (4.1.4.1.) Este ajuste debe realizarse con la tapa 
+del rotor colocada. El analizador inicializa el rotor y llena los tres primeros pocillos con agua destilada (sólo si 
+es la primera vez que se realiza este ajuste desde que se entra en la pantalla). A continuación, realizan lectu-
+ras ópticas a través de estos pocillos paso a paso, a la longitud de onda selec cionada por el técnico. Una vez 
+terminadas las lecturas, el programa muestra una gráfica de la intensidad luminosa medida frente a los pasos 
+del rotor. Sobre esta gráfica el programa indica en qué puntos se realizan las lecturas ópticas sobre cada uno 
+de los 3 pocillos al realizar análisis, con la coordenada del punto de lectura del primer pocillo actualmente pro-
+gramada en el analizador. El técnico, si es necesario, puede desplazar sobre la gráfica los puntos de lectura 
+conjuntamente mediante dos botones. El punto óptimo de lectura es aquel que maximiza la intensidad luminosa 
+globalmente para el conjunto de los 3 pocillos. La pantalla muestra en todo momento la coor de na da actual 
+de lectura en el primer pocillo y la última coordenada guardada, como información adicional para el técnico. 
+Cuando la posición es satisfactoria, puede pulsarse el botón Guardar que guardará en el analizador los ajustes 
+actuales de posición respecto al punto de dispensación, ajuste fino del eje X y de posición respecto a la ópti-
+ca. Al pulsar el botón Guardar tambien se da la opción de volver a la pestaña del Paso 1 y consultar el ajuste 
+actual (ya guardado) de posición respecto al punto de dispensación y fino del eje X. Por otro lado, pulsando el 
+botón Cancelar (Paso 2) se mantiene el ajuste inicial respecto a la óptica y se vuelve a la situación de entrada 
+al Paso 2, siendo posible volver a ajustar la posición respecto a la óptica.Si se cancela el test el analizador 
+acaba el ciclo en curso, así, el programa tarda unos segundos en activar el botón Aceptar. Pulsando este botón 
+Aceptar, se cierra el cuadro de resultados y habilita el botón Cerrar para salir de la pantalla.

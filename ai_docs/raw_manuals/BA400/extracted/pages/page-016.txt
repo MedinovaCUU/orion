@@ -1,0 +1,46 @@
+Service Manual 
+16
+• 
+Cycle 4: Suctioning of the washing solution and dispensing of distilled water
+• 
+Cycles 5 and 6: Suctioning and dispensing of distilled water
+• 
+Cycle 7: Distilled water rest phase
+• 
+Cycle 8: Optical scanning of cuvette
+• 
+Cycle 9: Suctioning of distilled water
+• 
+Cycle 10: Drying of cuvette
+The distilled water for rinsing and the washing solution are thermostatted so that they do not interfere with the 
+rotor temperature.
+When the last rinse is made, an optical reading is taken of the rotor sample well, in order to verify the state of the 
+well. If it is scratched or in poor condition, the well is discarded and not used for performing reactions.
+In the event of there being a large number of wells in poor condition, the programme warns that the reaction rotor 
+needs to be replaced.
+2.6. Waste, distilled water and washing solution containers
+The analyser has 4 containers for storing waste, distilled water and washing solution. These containers are located 
+inside it. 
+The high contamination waste and washing solutions containers can be accessed from the front. 
+The capacity of both containers is 5 L. This capacity allows for 8 hours of continuous autonomous operation. 
+Detection of whether the bottle is full or empty is done by weighing.
+The low contamination waste and distilled water containers are located inside the analyser, at the rear, and cannot 
+be accessed by the user. These containers have a buoy system that informs the analyser when they are full or empty. 
+They are automatically filled and emptied from the exterior.
+The external distilled water inlet may come from a pressurised distilled water inlet or an external tank with a larger 
+capacity.
+The low contamination waste leaves the appliance through a drainage pipe that goes directly to a tank or sump.
+2.7. Stirring arm
+The analyser has two arms for stirring the reaction. These arms have a small blade that rotates inside the reaction 
+cuvettes, to ensure the proper mixing of the reagent and sample.
+One of the stirring arms is inserted into the cuvette after dispensing the sample and the other stirring arm is inserted 
+after the second reagent is dispensed in reactions with two reagents.
+After mixing, the arm is washed in the wash station provided for that purpose.
+2.8. Dispensing arm 
+The analyser has 3 arms for dispensing samples and reagents.
+One arm is for dispensing serum and urine samples and the other two are for dispensing the reagents. One is used 
+to dispense reagent 1 and the other to dispense reagent 2, only in bireactive reactions.
+Each arm has a wash station for washing the interior and exterior of the tip.
+The volumes dispensed by each arm are the following:
+• 
+Sample arm: from 2 μL to 40 μL

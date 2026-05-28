@@ -1,0 +1,7 @@
+Ilustración 9.4 
+9.1.8. Problemas con la instalación del SQLServer
+Cuando aparezca una ventana de error en el momento de instalar la base de datos del SQL server como la de la Ilus­
+tración 9.5, revise los siguientes permisos de usuario del sistema operativo Windows.
+Ilustración 9.5 
+Mensaje de error en la instalación de la base de datos SQL
+257

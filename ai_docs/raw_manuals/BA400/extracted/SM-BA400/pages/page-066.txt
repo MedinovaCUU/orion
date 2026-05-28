@@ -1,0 +1,46 @@
+Manual de servicio
+66
+Ilustración 4.4 
+Serigrafía de la placa de distribución
+Conector
+Función
+CN1 A
+CN1 B
+Conexión a la placa CPU
+CN2 A
+CN2 B
+Conexión a la placa JE1
+Conexión a la placa GLF
+CN3 A
+CN3 B
+Conexión a la placa SF1
+Conexión a la placa AG1
+CN4 A
+CN4 B
+Conexión a la placa DM1
+Conexión a la placa AG2
+CN5 A
+CN5 B
+Conexión a la placa DR2
+Conexión a la placa BR1
+CN6 A
+CN6 B
+Conexión a la placa DR1
+Conexión a la placa BM1
+CN7 A
+CN7 B
+Conexión a la placa RR1
+Conexión a la placa BR2
+CN8 A
+CN8 B
+Conexión a la placa RM1
+CN9
+Interconexión de placas de 
+distribución, únicamente para el CAN
+CN20
+Conexión con la fuente de 
+alimentación
+LEDs
+Función (Condición de encendido)
+LD1
+Tensión de 24 V

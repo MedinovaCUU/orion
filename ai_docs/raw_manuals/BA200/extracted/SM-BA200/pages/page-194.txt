@@ -1,0 +1,25 @@
+2. Suba el tornillo guía (20) lo suficiente para retirar el muelle (19) defectuoso.
+3. Evite quitar el tornillos guía (20) de su cojinete para no dañar las bolas del cojinete.
+Montaje muelle pisador:
+1. Sustituya el muelle (19) por uno nuevo.
+2. Coloque el tornillo guía (20) hasta el pisador.
+3. Atornille el tornillo (21) 
+4. Verifique que el pisador sube y baja con suavidad y sin tropiezos.
+8.15.6. AC17289 - Punta aspiración estación de lavado
+Herramientas: Allen 1.5, loctite 243
+Desmontaje tubo aspiración y dispensación:
+1. Desconecte los 2 tubos de silicona del tubo a sustituir.
+2. Desatornille el espárrago (23).
+3. Quite el tubo (22) de aspiración y dispensación.
+Montaje tubo:
+1. Cambie la punta por una nueva (22).
+2. Ponga una gota de loctite 243 en la rosca del espárrago (23).
+3. Oriente la punta (22) por la cara plana para presionar con el espárrago (23).
+4. Enrase la punta a la misma profundidad (24) que sus vecinos.
+23
+22
+24
+Ilustración 8.84 
+Cambio tubo de dispensación
+Manual de servicio
+194

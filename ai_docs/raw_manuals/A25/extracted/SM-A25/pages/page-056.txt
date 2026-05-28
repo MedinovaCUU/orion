@@ -1,0 +1,53 @@
+Service manual
+56
+ Checking A25 configuration checksum:
+ Checksum correct! Configuration Checksum=0xE04E Size=932
+ Checking A25 configuration backup checksum:
+ Checksum correct! Configuration backup Checksum=0xE04E Size=932
+ Loading A25 Configuration from FLASH
+ Configuration in FLASH is correct
+ Adjustments loaded:
+ Analyzer S/N: 831013000
+ Extended S/N: 00000000000000000000
+ Temperature correction for Rotor=-0.31
+ Temperature correction for Probe=-0.64
+ System Liquid Low Level=432 (0%)
+ System Liquid High Level=648 (100%)
+ Waste Low Level=576 (0%)
+ Waste High Level=844 (100%)
+ Sensitivity of level detection:
+ - Tube 13/15mm=112
+ - Pediatric=101
+ - Reagent=46
+ - Fridge Reagent=46
+ Origin X=14
+ Origin Y=29
+ Origin Z=465
+ Tray Reference X=1345
+ Tray Reference Y=344
+ Washing station X=1347
+ Washing station Y=23
+ Washing station Z=275
+ Fridge Reference X=1721
+ Fridge Reference Y=1316
+ Fridge Reference Z=0
+ Reactions Rotor X=2873
+ Reactions Rotor Y=679
+ Reactions Rotor Z=415
+ Rotor Distance between the dispensation point and the optic system=1427
+ Rotor Position correction regard to the dispensation point=-2
+ Rotor Position correction regard to the optic system=-7
+ Filters Wheel correction=-4
+ Filters and their Integration Times:
+ Filter 1=000 Integration Time= 10ms ( 98) Reference Time= 10ms ( 97)
+ Filter 2=340 Integration Time= 70ms (684) Reference Time= 70ms (683)
+ Filter 3=405 Integration Time= 18ms (178) Reference Time= 18ms (177)
+ Filter 4=505 Integration Time= 17ms (163) Reference Time= 16ms (161)
+ Filter 5=535 Integration Time= 16ms (153) Reference Time= 15ms (151)
+ Filter 6=560 Integration Time= 18ms (179) Reference Time= 18ms (177)
+ Filter 7=600 Integration Time= 18ms (179) Reference Time= 18ms (178)
+ Filter 8=635 Integration Time= 20ms (193) Reference Time= 20ms (191)
+ Filter 9=670 Integration Time= 23ms (228) Reference Time= 23ms (226)
+ Filter 10=000 Integration Time= 10ms ( 98) Reference Time= 10ms ( 97)
+ TI/LB Hystoric:
+F[01]: 00004018 00004046 00004064 00004008 00004000 00004051 00004042 00004111 00004060 00004029

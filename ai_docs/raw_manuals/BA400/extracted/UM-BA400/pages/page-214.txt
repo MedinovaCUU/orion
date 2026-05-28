@@ -1,0 +1,91 @@
+Manual usuario 
+ 
+ 
+ 
+Manual usuario 
+ 
+ 
+ 
+214
+214
+Biosystems
+Biosystems
+Criterio
+Tipo de repetición
+Resultado concentración < Mínimo rango de 
+repetición
+No repite
+Resultado concentración > Máximo de repetición
+No repite
+Resultado concentración < Mínimo rango de 
+pánico
+Repetición con 
+postdilución aumentada
+Resultado concentración > Máximo rango de 
+pánico
+Repetición con dilución
+Mínimo rango de pánico >Resultado concentración 
+> Máximo rango de pánico
+No repite
+
+
+ 
+
+
+
+ 
+
+ 
+
+
+
+
+
+
+ 
+
+ 
+
+
+ 
+
+
+
+
+
+ 
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+ 
+
+
+ 
+
+Ilustración 137 
+Esquema de criterios de repetición
+15.5. Cálculo de la concentración de los iones ISE
+El módulo ISE mide el litio, sodio, potasio y cloro en suero, plasma y orina, usan­
+do una tecnología de electrodos selectivos de iones. El electrodo de sodio de flujo 
+continuo usa una membrana selectiva, formulada específicamente para detectar 
+iones de sodio. Los electrodos de potasio, litio y cloro emplean un diseño parecido 
+con materiales apropiados para las membranas selectivas. El potencial para cada 
+electrodo es medido relativo a un potencial fijo y estable establecido por un elec­
+trodo de referencia de doble unión de plata/cloruro de plata. El electrodo de ion 
+selectivo desarrolla un voltaje que varia en función de la concentración del ion al 
+cuál responde. La relación entre el voltaje desarrollado y la concentración sensada 
+es logarítmica, tal cómo expresa la ecuación de Nernst.

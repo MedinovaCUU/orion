@@ -1,0 +1,76 @@
+Manual usuario 
+ 
+ 
+ 
+Manual usuario 
+ 
+ 
+ 
+118
+118
+Biosystems
+Biosystems
+Nombre de las 
+columnas
+Descripción de los campos de la pestaña de blancos/
+calibradores
+Clase
+Indica el tipo de información, puede ser:
+ Blanco
+ Calibrador
+Calibrador
+Indica el nombre del calibrador utilizado
+Lote
+Indica el lote del calibrador
+Nº Calibradores
+Indica el número de calibradores
+Técnica
+Nombre de la técnica
+Tipo
+Indica el tipo de muestra
+Replicados
+Por defecto aparece el número de replicados programado 
+en la técnica. Puede modificar los replicados de los 
+blancos y los calibradores.
+Tubo
+Indica el tipo de tubo cuando se vaya a posicionar. Puede 
+ser pediátrico o tubo. Puede modificar el tipo de tubo 
+seleccionándolo de la lista desplegable.
+Nuevo
+Indica si se va a realizar nuevo blanco o calibrador en 
+la sesión de trabajo. Aparece desactivado por defecto 
+cuando hay resultados memorizados de blancos y/o 
+calibradores. 
+Absorbancia
+Valor de absorbancia del blanco o calibrador 
+memorizado.
+Fecha
+Fecha en que se realizó el blanco o calibrador.
+Factor
+Valor del factor memorizado.
+En la pestaña de los controles muestra la siguiente información:
+Nombre de las 
+columnas
+Descripción de los campos de la pestaña de controles
+Seleccionado
+Los controles aparecen deseleccionados. Al pulsar el 
+botón de posicionar sólo se envían los controles y 
+técnicas seleccionadas. 
+Control
+Nombre del control
+Lote
+Lote del control
+Técnicas
+Nombre de la técnica
+Tipo
+Indica el tipo de muestra
+# Rep
+Por defecto aparece el número de replicados programado 
+en la técnica. Puede modificar los replicados de los 
+controles.
+Tubo
+Indica el tipo de tubo cuando se vaya a posicionar. Puede 
+ser pediátrico o tubo. El usuario puede modificar el tipo 
+de tubo seleccionándolo de la lista desplegable.
+Fecha Exp.
+Indica la fecha de caducidad del lote del control.

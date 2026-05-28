@@ -1,0 +1,16 @@
+87
+5.3.7.3. Repetibilidad sin mover el tambor de filtros
+Para realizar este test y los siguientes es necesario haber realizado previamente los tests de línea base y de 
+cuentas de oscuridad. Este test realiza lecturas de absor bancia durante 1 minuto con el tambor de filtros fijo. El 
+técnico puede elegir el pocillo del rotor sobre el que se realizan las lecturas y llenarlo con el líquido que desee. 
+Puede escoger qué longitud de onda desea utilizar. También puede realizarse el test con el filtro ta pado. Al 
+finalizar las lecturas, la pantalla muestra gráficamente los números de cuentas obtenidos y las absorbancias 
+respecto la línea base correspon dientes. El programa también muestra los promedios ylas desviaciones es-
+tándard de los números de cuentas y de las absorbancias.
+5.3.7.4. Es ta bilidad
+Este test realiza lecturas de absorbancia durante 30 minutos con el tambor de filtros fijo. El técnico puede ele-
+gir el pocillo del rotor sobre el que se realizan las lecturas y llenarlo con el líquido que desee. Puede escoger 
+qué longitud de onda desea utilizar. También puede realizarse el test con el filtro ta pado. Puede cancelarse el 
+test en cualquier momento. Al finalizar las lecturas, la pantalla muestra gráficamente los números de cuentas 
+obtenidos y las absorbancias respecto la línea base corres pon dientes. El programa también muestra los pro-
+medios y las desviaciones estándard de los números de cuentas y de las absorbancias.

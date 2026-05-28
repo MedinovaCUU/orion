@@ -1,0 +1,75 @@
+73
+Conector
+Función
+Pin
+CN16
+Conexión del bus CAN 
+Pin 1: 24V
+Pin 2: GND
+Pin 3: NC
+Pin 4: CAN_H
+Pin 5: CAN_L
+CN7
+Motor vertical
+Pin 1: Coil 1
+Pin 2: Coil 1
+Pin 3: Coil 2
+Pin 4: Coil 2
+CN10 
+Motor horizontal
+Pin 1: Coil 1
+Pin 2: Coil 1
+Pin 3: Coil 2
+Pin 4: Coil 2
+CN14
+Detección inicio horizontal
+Pin 1: Detección
+Pin 2: GND
+Pin 3: 5V
+CN15
+Detección inicio vertical
+Pin 1: Detección
+Pin 2: GND
+Pin 3: 5V
+Test point
+Función
+TP1
+Tensión de referencia del motor horizontal
+TP2
+Paso del motor horizontal
+TP3
+Tensión de referencia del motor vertical
+TP4
+Selección de placa. Dirección 1 
+TP5
+5 V
+TP6
+24 V
+TP7
+Selección de placa. Dirección 2
+TP8
+3.3 V
+TP9
+Paso del motor vertical
+TP10
+Selección de placa. Dirección 3
+TP11
+CAN_H (Señal en el bus)
+TP12
+24 V (Tensión en el bus)
+TP13
+GND (Tensión en el bus)
+TP14
+CAN_L (Señal en el bus)
+TP15
+Selección de placa. Dirección 4
+LEDs
+Función (Condición de encendido)
+LD2
+Estado arranque placa
+LD6
+Voltaje de 3.3 V
+LD7
+Detección inicio carrera brazo vertical
+LD8
+Detección inicio carrera brazo horizontal

@@ -1,0 +1,19 @@
+8.1.3. 
+Desmontaje tapa trasera
+Para desmontar la tapa trasera es necesario antes desmontar las carcasa laterales.
+1. Quite todos 13 tornillos (2) torx.
+2. Sujete la plancha trasera (3) por las 2 agarraderas (1) para desmontar la tapa.
+2
+3
+1
+Ilustración 8.5 
+Desmontaje tapa trasera
+8.1.4. 
+Desmontaje de la puerta frontal
+Para desmontar la puerta frontal siga los pasos siguientes:
+1. Abra la puerta frontal hasta su tope.
+2. Con una llave torx de T20, quite el tornillo (2) y arandelas que sujeta la varilla con la puerta.
+3. Con una llave allen M2.5, quite los 2 tornillos (1) y arandelas que sujetan los ejes.
+4. Quite los 2 ejes (3).
+5. Quite la puerta.
+125

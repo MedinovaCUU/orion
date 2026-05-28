@@ -1,0 +1,67 @@
+Manual usuario 
+ 
+ 
+ 
+Manual usuario 
+ 
+ 
+ 
+128
+128
+Biosystems
+Biosystems
+Nombre de las 
+columnas
+Descripción de los campos 
+Estatus
+Únicamente aparece información cuando se realiza un 
+Host Query. Indica el estado de las peticiones al LIS. 
+Tiene los siguientes estados:
+• 
+ASKING: Petición enviada al LIS
+• 
+PENDING: Petición ya enviada y esperando la 
+recepción de la lista de trabajo para la muestra.
+• 
+REJECTED: Petición rechazada por el LIS. 
+• 
+NO INFO: El LIS no dispone de información sobre 
+esta muestra.
+ 
+ 
+Permite realizar una selección de los especímenes para pedir al LIS la orden de 
+trabajo o crear manualmente la lista de trabajo.
+ 
+ 
+Botón que permite realizar un Query All al LIS directamente de esta pantalla 
+auxiliar.
+La parte inferior de la pantalla permite crear manualmente la lista de trabajo una 
+vez se ha leído los códigos de barras de los especímenes. Para ello seleccione el es­
+pécimen o grupo de especímenes y asigne el tipo de muestra, si es urgente y asignar 
+técnicas a través del botón de TEST. Una vez finalizado pulse el botón guardar y 
+continúe con el siguiente espécimen. 
+En el caso de que el tipo de muestra no esté codificado en el código de barras tendrá 
+que asociar manualmente el tipo a todas los especímenes. Para ello seleccione todas 
+los especímenes o un grupo de especímenes y asigne el tipo de muestra desde la 
+caja desplegable de la parte inferior de la pantalla.
+10.5.6. Ejecución lista de trabajo
+Una vez se ha creado la sesión de trabajo y se ha posicionado en el rotor puede 
+ejecutar la sesión.
+ 
+ 
+Pulse el botón de inicio para ejecutar la sesión de trabajo y el analizador empe­
+zará a ejecutar la lista. 
+Si el equipo está conectado a un sistema LIS sin tener ninguna lista de trabajo 
+puede pulsar directamente el botón iniciar, entonces el analizador leerá los códigos 
+de barras de los especímenes, creará la sesión de trabajo bajada del LIS e iniciará 
+la ejecución de la misma.
+ 
+)
+Véase capítulo 16.1 para ver los detalles de funcionamiento con el LIS
+Si en el momento de iniciar la ejecución de la lista de trabajo hay algún elemento 
+caducado (cambio de rotor o línea de base), aparece una pantalla recordatorio 
+donde el usuario pueda seleccionar que quiere realizar en este momento:
+1. Realizar el cambio de rotor
+2. Realizar la línea de base 
+3. Ejecutar directamente la lista de trabajo sin realizar ninguna de las operaciones 
+anteriores.

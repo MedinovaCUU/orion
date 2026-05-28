@@ -1,0 +1,11 @@
+80
+Manual de servicio
+5.3.1.4. Test de estresamiento
+Este test permite realizar de forma continua una cierta secuencia de movimientos. El técnico puede programar 
+la duración del test, que puede ser cancelado en cualquier momento. Dependiendo del motor seleccionado 
+hay un tiempo mínimo de estresamiento (pero en ningún caso supere los 50 segundos).
+5.3.1.5. Test de los sistemas de segu ri dad del eje Z
+El eje Z del brazo manipulador dispone de un encoder para detectar si ha habido pérdida de pasos debido a 
+una colisión de la punta. En caso de fallo del suministro eléctrico, un sistema mecánico eleva automá ticamente 
+la punta. Seleccionando las opciones correspondientes, el analizador comprueba el fun ciona miento de cada 
+uno de estos dispositivos.

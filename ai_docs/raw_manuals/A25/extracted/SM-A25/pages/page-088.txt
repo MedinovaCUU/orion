@@ -1,0 +1,19 @@
+88
+Service manual
+5.3.1.10. 
+Needle self-centering system test
+This test makes it possible to check the functioning of the needle self-centering system. During its initialisation, 
+the analyzer uses this system to check the presence of the needle and its verticality and automatically correct 
+small deviations. The test consists of simply running this process. The technician can remove the housing of 
+the arm to observe the test. On the finalisation of the test, the program shows the deviation (x, y) found in the 
+motor steps.
+5.3.1.11. 
+Needle level detection system test
+This test checks the functioning of the system for detecting the capacity of the needle in bottles of reagent and 
+sample tubes. 
+This test checks the functioning of the system for detecting the capacity of the needle in reagent bottles and 
+sample wells. The test can be performed in any position on the tray.
+First select the rack type, then the position of the rack on the tray and, finally, the position of the bottle/well on 
+the rack. Press the Test button and the program will move the arm to the indicated position and check whether 
+or not liquid is detected, depending on whether the bottle is full or empty.
+Repeat the test as many times as the user considers necessary.

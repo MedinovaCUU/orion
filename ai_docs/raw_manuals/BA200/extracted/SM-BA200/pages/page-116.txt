@@ -1,0 +1,55 @@
+2. Cargue el satreport apropiado basado en el analizador BA400 o BA200. Herramientas -> Cargar satreor
+3. NO cargue este reportsat en la PC del usuario, hágalo en otro. Perderá todos los datos del historial (resultados, 
+calibraciones, controles de calidad, etc.). De lo contrario si utiliza el PC del usuario realice un restorepoint y 
+después del proceso de verificación cargue otra vez el restorepoint de lbackup.
+4. Conecta e inicia el calentamiento
+5. Haga clic en el botón de conexión (flechas)
+6. Haga clic en el botón de calentamiento (tecla)
+7. Puede preparar todo el software y los líquidos durante el tiempo de calentamiento.
+8. Descargue los valores de calibración del sitio web de BioSystems u obténgalos de la “Hoja de valores”
+• 
+ www.biosystems-sa.com
+• 
+ www.biosystems.es
+9. Si no recuerda su acceso o no lo tiene, póngase en contacto con customersupport@biosystems.es
+10. Use el código y el número de lote para buscar en la “Hoja de valores”
+11. Hacer un reset de la sesión.
+12. Cargue la sesión memorizada: “Sesión de verificación”. Sesión de trabajo -> Cargar sesión de trabajo, seleccione 
+“Sesión de verificación”, Posicionar muestras seleccionadas “
+13. Posicionar automáticamente las muestras
+14. Coloque manualmente las botellas de reactivo.
+15. Puede usar la misma botella de agua destilada del cliente
+16. Busque espacios vacíos en el rotor. Intente no eliminar los reactivos del cliente del rotor.
+17. Llene los vasos y las botellas con los siguientes líquidos, puede llenar los vasos con más volumen, pero en ese 
+caso, no comprobará el ajuste correcto de la muestra para el volumen muerto.
+18. Posicionar los reactivos y las muestras.
+Llene las tazas con estos volúmenes mínimos 
+para las muestras:
+(uL)
+Calibrador 
+CAL 
+220
+SCI 
+Control de suero nivel I 
+870
+SCII 
+Control de suero nivel II 
+1080 (con ISE)
+870 (sin ISE)
+SCII-2 
+Suero control nivel II 
+270
+SC-Dummy 
+agua destilada 
+270
+19. Coloque las botellas y las muestras en las posiciones donde las colocó en el software.
+20. Prepare el módulo ISE (solo para analizadores con ISE). Realice todo el proceso para la instalación del módulo 
+ISE en su PC
+21. Prepara la solución de lavado
+22. Ejecuta la sesión
+23. Exportar los resultados
+• 
+Cuando termine, vaya a la pantalla de resultados de la prueba, presione la opción PRUEBA. Presione el 
+botón imprimir prueba actual
+Manual de servicio
+116

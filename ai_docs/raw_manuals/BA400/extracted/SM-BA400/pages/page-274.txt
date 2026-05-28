@@ -1,0 +1,24 @@
+Lista de recambios
+Código
+Representación 
+Descripción
+AC16580
+Válvula entrada agua
+AC16581
+Bombas de dispensación
+AC16582
+Bombas de aspiración
+AC17304
+Filtro de agua estación de lavado
+AC16584
+Adaptador entrada de tanque de agua
+AC16586
+Motor bombas estación lavado
+AC16587
+Cámara superior
+AC16588
+Conjunto bomba estación de lavado
+AC16817
+Abrazadera estación de lavado
+Manual de servicio
+274

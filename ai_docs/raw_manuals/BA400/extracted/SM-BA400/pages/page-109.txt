@@ -1,0 +1,28 @@
+Desactivar otros elementos: Permite desactivar o activar independientemente los siguientes elementos. Estos 
+valores quedan memorizados en el analizador y se aplican durante la ejecución del programa de usuario.
+• 
+Tapa general del analizador
+• 
+Tapa del rotor de reacciones
+• 
+Tapa del rotor de muestras
+• 
+Tapa del rotor de reactivos
+• 
+Detección de coágulo
+Módulo ISE: Permite realizar la activación o desactivación del módulo ISE para cuando se quiera incorporar un 
+módulo ISE a un analizador sin él.
+Versión de Hardware: Seleccione si el analizador lleva electroválvulas (BA400v1) o válvulas de retención (BA400v2)
+para la bomba de pistones. Normalmente está opción ya vendrá preseleccionada de fábrica y no se tendrá que modificar.
+Ilustración 6.4 
+Pantalla de configuración del analizador
+6.4.2. Comunicaciones
+Permite configurar el canal de comunicaciones entre el programa de servicio y el analizador. Escoja las siguientes 
+opciones:
+Automática: Seleccione esta opción para que el programa busque automáticamente el puerto de salida del orde­
+nador para comunicarse con el analizador.
+Manual: Seleccione esta opción para escoger manualmente el puerto de una lista desplegable de los puertos dis­
+ponibles. 
+Pulse el botón 
+ para verificar que las comunicaciones funcionan correctamente.
+109

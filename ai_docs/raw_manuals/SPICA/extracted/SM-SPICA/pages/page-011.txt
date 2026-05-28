@@ -1,0 +1,51 @@
+11
+USUARIO
+Manual de Usuario BioSystems SPICA | Versión 2.8 - Agosto 2024
+Manual de Usuario BioSystems SPICA
+1. INTRODUCCIÓN
+1.2 Acuerdo de licencia de usuario final 
+d) Derecho aplicable
+Este acuerdo del EULA, y cualquier disputa que surja de o en relación con este acuerdo del EULA, se regirá 
+e interpretará de acuerdo con las leyes de España.
+e) Licencias de software aplicables
+• Núcleo do Linux - https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/tree/COPYING?h=v5.2.5
+GPL-2.0 WITH Linux-syscall-note
+• Armbian - https://github.com/armbian/build/blob/master/LICENSE - GNU General Public License v2.0
+• Python 3.7 - https://docs.python.org/3/license.html - PSF LICENSE AGREEMENT
+ 
+- Flask - BSD - https://github.com/opentracing-contrib/python-flask/blob/master/LICENSE
+ 
+- Flask-Injector - BSD - https://github.com/alecthomas/flask_injector/blob/master/COPYING
+ 
+- cketIO - MIT - https://github.com/socketio/socket.io/blob/master/LICENSE
+ 
+- Gevent - MIT - https://github.com/gevent/gevent/blob/master/LICENSE
+ 
+- Python-escpos - MIT https://github.com/BbotLLC/python-escpos/blob/master/LICENSE
+ 
+- Eventlet - MIT - https://github.com/eventlet/eventlet/blob/master/LICENSE
+• Material-ui - MIT - https://github.com/mui-org/material-ui/blob/master/LICENSE
+• React - MIT - https://github.com/facebook/react/blob/master/LICENSE
+• Redux - MIT - https://github.com/reduxjs/redux/blob/master/LICENSE.md
+• Redux-saga - MIT - https://github.com/redux-saga/redux-saga/blob/master/LIC
+1.3. Uso previsto
+El analizador SPICA se utiliza para determinar las concentraciones de analito en diferentes tipos de 
+muestras, así como matrices, según su uso previsto:
+El analizador SPICA no-IVD determina las concentraciones de 
+analito haciendo mediciones colorimétricas, turbidimétricas 
+y de electrolitos en muestras de diferentes tipos de alimentos 
+(p. ej., carne o pescado) o bebidas (p. ej., vinos, zumos, leche), 
+muestras veterinarias o muestras de cultivos biológicos. 
+El analizador SPICA está optimizado para funcionar con reactivos BioSystems. Los reactivos no incluidos 
+en la validación SPICA llevada a cabo en BioSystems SA se deberán someter a una validación exhaustiva 
+y detallada por parte de los usuarios y laboratorios.
+Exclusivo para 
+uso profesional 
+en laboratorios 
+analíticos.
+83100
+CÓDIGO
+Uso previsto
+Usuarios previstos
+SPICA
+NOME

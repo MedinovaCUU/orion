@@ -1,0 +1,48 @@
+31
+USUARIO
+Manual de Usuario BioSystems SPICA | Versión 2.8 - Agosto 2024
+Manual de Usuario BioSystems SPICA
+5. PROCEDIMIENTOS DE MEDICIÓN
+5.4 Control de calidad interno
+1. Base 
+El resultado obtenido para un material de control se compara con un intervalo de valor admisible y se toma 
+una decisión:
+• El resultado está dentro del intervalo: Se considera que el procedimiento de medición mantiene su precisión 
+dentro de ciertos límites (es estable) y se aceptan los resultados de la serie.
+• El resultado está fuera del intervalo: Se considera que el procedimiento de medición devuelve un error que está 
+los niveles tolerables y se rechazan los resultados de la serie
+2. Intervalo de valores admisibles 
+La mejor manera de obtener el intervalo de valor admisible en el material de control es mediante una 
+estimación estadística:
+• Realizar por lo menos 20 mediciones, cada una en una serie diferente, utilizando el procedimiento de 
+medición que debe ser controlado. 
+• Calcular el valor medio (Xm) y la desviación estándar (s) de los resultados obtenidos. Se recomienda 
+revisar estas primeras estimaciones si se dispone de más resultados.
+La dispersión de los resultados obtenidos se debe a la imprecisión del procedimiento de medición 
+entre series. Esta dispersión debe tener una distribución normal caracterizada por los valores medios y 
+la desviación estándar. Por lo tanto, es posible establecer un intervalo de valores con una probabilidad 
+conocida de que el resultado se incluya en ese intervalo. Como se requiere que la probabilidad sea alta, es 
+común seleccionar intervalos entre Xm ± 2s y Xm ± 3s.
+El criterio seleccionado para establecer el intervalo de valores admisibles es un criterio basado en una 
+decisión o una regla de control. El control interno se basa en la idea de que no es muy probable que se 
+obtenga un resultado fuera de los límites establecidos.
+Las normas de control basadas en las estadísticas gaussianas suelen representarse con la expresión Ans, 
+en la que “A” es el número de resultados de control y “ns” es el límite admisible seleccionado. También 
+pueden utilizarse diferentes resultados de control pertenecientes a un material de control o más. Asimismo, 
+los resultados del control pueden haberse obtenido en una serie o en varias series consecutivas.
+Las reglas más complejas pueden introducirse con diversos resultados de control.
+Los más utilizados son los siguientes:
+• Serie 2-2s rechazada cuando se obtienen 2 resultados que superan los 2s del mismo tipo (positivos o negativos). 
+• Serie 4-1s rechazada si se obtienen 4 resultados que superen 1s del mismo tipo.
+• Serie 10X rechazada si se obtienen 10 resultados en el mismo lado de la media.
+• La serie R4s se rechaza si un resultado excede el límite de +2s y el otro excede el límite de -2s.
+Las reglas de varios resultados de control también pueden dar una pista sobre la posible causa del aumento 
+del error. Las reglas 2-2, 4-1 y 10X son particularmente sensibles al error sistémico, mientras que la regla R4 
+es mejor para detectar el aumento de las imprecisiones.
+Otra opción interesante es la combinación de varias reglas en una secuencia lógica o algorítmica. La 
+combinación más conocida se conoce como el algoritmo de Westgard o reglas para dos resultados de 
+control. En algunos casos no es posible hacer una estimación estadística de la dispersión de los resultados 
+y aplicar reglas de control, porque no hay materiales de control accesibles o porque el procedimiento de 
+medición no se utiliza con mucha frecuencia. En tales situaciones, es común utilizar un material de control 
+suministrado por el proveedor de los reactivos o del sistema de medición, para el que se indica un intervalo 
+de valores admisibles (modo manual).

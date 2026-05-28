@@ -1,0 +1,37 @@
+20
+USUARIO
+Manual de Usuario BioSystems SPICA | Versión 2.8 - Agosto 2024
+Manual de Usuario BioSystems SPICA
+3. DESCRIPCIÓN
+3.1 Descripción de los componentes
+4. Tapa del rotor de reacción
+Esto le permite acceder al rotor de reacción. Este rotor es donde se hacen las reacciones y se toman las 
+lecturas fotométricas. Este rotor tiene una temperatura regulada de 37º C. La cubierta tiene un detector 
+que permite al analizador detectar la presencia de la cubierta.
+5. Rotor de reacción
+El rotor de reacción consiste en un canal regulado que contiene un rotor de plástico óptico de alta calidad 
+que permite la transmisión de la luz UV. Hay 120 posiciones. El reactivo y la muestra se dispensan en cada 
+cubeta. Mientras la mezcla reacciona, se toma la lectura óptica para obtener la absorbancia. El volumen de 
+reacción está entre 180 μL y 440 μL. El rotor se mantiene a una temperatura estable de 37 °C mediante un 
+sistema termostático basado en Peltier.
+6. Brazo agitador 
+El analizador tiene un brazo para agitar la reacción. Este brazo tiene una pequeña paleta que gira dentro 
+de las cubetas de reacción, para fomentar la mezcla e iniciar la reacción correctamente. Una vez que ha 
+agitado la mezcla, el brazo agitador se mueve a la estación de lavado, y lava la paleta.
+7. Brazo dispensador
+El analizador tiene un brazo para dispensar las muestras y los reactivos. El brazo tiene una estación de lavado 
+para lavar el interior y el exterior de la punta. El brazo tiene un sistema de detección de nivel. También hay 
+un sistema de detección de colisión vertical para evitar daños en la punta en caso de colisión accidental.
+En caso de que su analizador tenga un detector de coágulos, el sistema advierte al usuario si la punta está 
+bloqueada. El bloqueo podría deberse a los restos de sangre coagulada presentes en la muestra.
+Volúmenes mínimos y máximos que pueden ser dispensados por el brazo:
+• Muestras: de 2 μL a 40 μL
+• Reactivo 1: de 90 μL a 300 μL
+• Reactivo 2: de 10 μL a 100 μL
+8. Ventiladores y filtros
+The Analyzer has 2 inlet fans with filters. These fans keep the internal temperature of the Analyzer in proper 
+conditions. Please keep the entrance of the air free of obstacles.
+4
+7
+6
+5

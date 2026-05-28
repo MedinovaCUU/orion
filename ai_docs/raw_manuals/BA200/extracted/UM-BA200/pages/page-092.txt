@@ -1,0 +1,53 @@
+Manual usuario 
+ 
+ 
+ 
+Manual usuario 
+ 
+ 
+ 
+92
+92
+Biosystems
+Biosystems
+ 
+ 
+Pulse este icono para realizar una copia de una técnica. Se obliga a cambiar el 
+nombre de la nueva técnica.
+Puede eliminar o imprimir varias técnicas a la vez, realice una selección múltiple 
+del listado de técnicas.
+ Selección múltiple no consecutiva Seleccione una técnica, mantenga la tecla CONTROL del teclado presionada 
+mientras seleccione las siguientes técnicas.
+ Selección múltiple consecutiva 
+Para realizar una selección consecutiva de varias técnicas, seleccione una técnica 
+inicial, pulse la tecla MAYÚSCULAS y seleccione la técnica final. Todas las técni­
+cas entre la inicial y final quedarán seleccionadas.
+ 
+Ordenación de técnicas Pulse el cabecero del listado de técnicas para ordenar las técnicas en orden ascen­
+dente. Al pulsar una segunda vez se ordenará en orden descendente.
+ 
+ 
+Este icono aparecerá cuando falte por introducir algún parámetro obligatorio o 
+cuando haya algún error en la introducción del valor.
+10.3.1.1. Ordenación de técnicas
+Desde esta pantalla se permite la ordenación de las técnicas de la pantalla de se­
+lección de técnicas cuando se crea la lista de trabajo.
+Ilustración 55 
+Pantalla ordenación de las técnicas
+ 
+ 
+ 
+ 
+ 
+Seleccione una técnica o grupo de técnicas y pulse uno de los botones hasta 
+situar la técnica en la posición deseada.
+ 
+ 
+Pulse este botón para restablecer las técnicas en orden alfabético.
+ 
+ 
+Pulse este icono para anular o activar una técnica.
+10.3.1.2. Parámetros técnicas: general
+ 
+Nombre Nombre de la técnica, este nombre servirá para identificar a la técnica en el 
+programa. La longitud máxima es de 16 caracteres.

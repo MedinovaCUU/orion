@@ -1,0 +1,26 @@
+76
+Manual de servicio
+AIII.  LISTA DE ACCESORIOS Y RECAMBIOS
+Si cualquiera de los componentes del procesador se deteriorara o si necesitara cualquier material con­
+sumible, siempre usar materiales BioSystems. La siguiente tabla muestra la lista de los componentes 
+que pueden ser pedidos. Para adquirir dichos componentes, por favor póngase en contacto con su dis­
+tribuidor habitual y haga el pedido utilizando su código correspondiente. Esto simplificará el trabajo 
+y minimizará errores.
+Lista de recambios de usuario,consumibles y accesorios
+CÓDIGO
+DESCRIPCIÓN
+AC17402
+ CD - software usuario
+AC12446
+Varilla metálica para la limpieza de la 
+punta (10)
+FI14226
+Cable USB
+CA10456
+Cable de Red americano
+CA10455
+Cable de red Europeo
+AC14694 
+Cable de red inglés
+FU13194
+Juego de fusibles de 2 A

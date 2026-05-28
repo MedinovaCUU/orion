@@ -1,0 +1,52 @@
+Manual usuario 
+ 
+ 
+ 
+Manual usuario 
+ 
+ 
+ 
+110
+110
+Biosystems
+Biosystems
+ 
+Nombre de control 
+Introduzca el nombre del control.
+ 
+Tipo de muestra 
+Introduzca el tipo de muestra que va a usar este control.
+ 
+Nivel 
+Introduzca el nivel (1, 2 o 3) del control. Sirve para facilitar la selección de todo 
+un nivel en la pantalla de solicitud de muestras.
+ 
+Numero de lote 
+Introduzca el número de lote de este control
+ 
+ 
+Pulse este icono cuando quiera dar de alta un nuevo lote de control. También 
+permite recuperar los datos del último lote memorizado una vez haya cambia­
+do de lote. Cada vez que cambie de lote, los valores del control de calidad se 
+acumularan. 
+ 
+)
+Véase Ilustración 69.
+ 
+Fecha de activación 
+Es la fecha a partir del primer uso del control.
+ 
+Fecha de caducidad 
+Introduzca la fecha de caducidad. El programa da un aviso en el momento de 
+usar un control con la fecha de caducidad superada.
+ 
+Técnicas 
+Pulse este botón para asignar o eliminar las técnicas asociadas a un nivel de 
+control. Aparece una pantalla auxiliar que contiene sólo las técnicas del mismo 
+tipo de muestra y con el control de calidad activado (por defecto las técnicas al 
+crearlas tienen el control de calidad desactivado). 
+ 
+)
+Véase Capítulo 10.3.1.5 para activar el Control de Calidad
+Ilustración 68 
+Pantalla de programación de los sueros controles

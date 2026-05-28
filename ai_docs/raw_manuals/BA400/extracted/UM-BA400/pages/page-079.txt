@@ -1,0 +1,23 @@
+79
+79
+ 
+Modo protegido 
+Seleccione este modo cuando no quiera que el usuario supervisor y operador 
+puedan modificar y visualizar los parámetros principales de las técnicas. Está 
+opción no estará visible para los usuarios supervisor ni operador.
+10.2.2. Idioma
+Permite seleccionar el idioma de la aplicación.
+Ilustración 47 
+Pantalla para seleccionar el idioma de la aplicación.
+10.2.3. Informes
+Permite la configuración del formato del informe de pacientes. Permite modificar 
+el cabecero, el pie de página e incorporar logos.
+Ilustración 48 
+Pantalla configuración de los informes de paciente
+Hay dos tipos de diseño por defecto, uno en formato vertical y el otro en formato 
+horizontal.
+Puede crear tantos informes como quiera, al crear un informe introduzca el nombre 
+y seleccione el tipo de formato: horizontal o vertical.
+ 
+Plantilla por defecto Seleccione esta casilla para que el programa aplique el informe escogido de la lis­
+ta, sólo hay un informe horizontal y otro vertical con esta opción seleccionada.

@@ -1,0 +1,45 @@
+209
+209
+A=ABS L2−ABS L1
+ 
+(8)
+Cuando la reacción es bicromática, se realizan dos lecturas en el tiempo L1 y dos 
+lecturas en el tiempo L2. La absorbancia es la diferencia entre las dos longitudes 
+de onda a cada tiempo de lectura.
+A=ABS L2
+principal−ABS L2
+referencia−ABS L1
+principal−ABS L1
+referencia 
+(9)
+RA
+S
+L2
+Time (Cycles)
+ABS
+FIXED TIME − BiReagent
+RB
+1
+31
+66
+L1
+Ilustración 132 
+Representación del método de cálculo tiempo fijo bireactivo
+15.2.6. Cinética monoreactiva
+En las técnicas programadas con el modo de cálculo cinético, la velocidad de reac­
+ción se mantiene constante durante el proceso de reacción. Como resultado, a una 
+longitud de onda, la absorción de los analitos cambia de una manera uniforme, y 
+el cambio de absorbancia por minuto (DABS/min) es directamente proporcional 
+a la concentración de los analitos. El método cinético es usado para medir la ac­
+tividad de los enzimas.
+Para este modo de cálculo se programa un tiempo inicial y otro final. Entre estos 
+dos tiempos se toman varias lecturas y se calcula la regresión lineal de las lecturas. 
+Cómo absorbancia resultante se toma el valor de la pendiente de la regresión lineal. 
+También se verifica la linealidad de las lecturas, para ello se calcula el coeficiente 
+de correlación.
+Si el coeficiente de correlación r < 0.9 entonces el programa informa de que el 
+resultado de la reacción cinética no es lineal. 
+Primero se dispensa el reactivo A, en el ciclo 31 se dispensa la muestra, se agita y 
+empieza la reacción. En el tiempo L1 el analizador empieza a tomar lecturas hasta 
+el tiempo L2. 
+El cálculo de la absorbancia es el siguiente:

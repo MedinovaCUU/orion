@@ -1,0 +1,33 @@
+67
+el plano horizontal (X,Y) y verticalmente (Z). También puede mover el brazo introduciendo un cierto número 
+de pasos de movimiento absoluto. Estos movimientos absolutos del brazo deben realizarse con la punta en 
+su posición más elevada para no dañarla (coordenada 0). El técnico debe bajar la punta para acercarse al 
+punto de ajuste y ajustar su posición horizontal. Cuando ésta es satisfactoria, puede guardar las coordenadas 
+(X,Y) actuales pulsando el botón Guardar. Pulsando el botón Cancelar, se mantienen los últimos valores de 
+ajuste guardados. Pulsando el botón Restaurar, se restauran los valores iniciales de entrada a la pantalla. La 
+pantalla muestra en todo momento para el punto seleccionado las coor de na das actuales del brazo, las últimas 
+coordenadas guardadas y las coordenadas iniciales de entrada a la pantalla, como información adicional para 
+el técnico. El técnico puede repetir el procedimiento para ajustar el posicionamiento del brazo en los diversos 
+puntos de ajuste posibles. Estos puntos son los siguientes:
+1. Origen. Vértice de la platina de autocentrado de la punta.
+2. Estación de lavado. Centro de la parte delantera de la estación de lavado.
+3. Rotor de reac ciones. Punto de dispensación en la tapa del rotor de reacciones.
+4. Ajuste de la bandeja con el rack de reactivo. Ajuste de cada uno de los puntos de la bandeja con los racks 
+de reactivo.
+5. Ajuste de la bandeja con el rack de pediátrico. Ajuste de cada uno de los puntos de la bandeja con los 
+racks de pediátrico.
+En el caso de seleccionar el punto de Origen, se permite pulsar el botón AutoAjuste. Éste realiza un ajuste 
+automático en esta posición (este proceso puede durar unos 3 minutos).
+5.2.3.1. Ajuste del posicionamiento X, Y y Z para rack de reactivos y rack pediátricos.
+Nota: El rack pediátrico es un rack de diámetro 15 con los adaptadores y los pocillos pediátricos.
+Este proceso sirve para ajustar individualmente cada rack en las tres coordenadas, X, Y y Z tanto para los 
+racks pediátricos como para los racks de reactivo. Para ello se ajustará cada rack de la bandeja las posiciones 
+1 y 12 para los racks pediátricos y 1 y 10 para los racks de reactivos.
+Para realizar este ajuste XYZ de la bandeja se pueden utilizar los botones de la pantalla o el teclado. Movi-
+mientos usando teclado:
+• 
+Movimientos Eje X: Teclas Cursor Derecha y Izquierda
+• 
+Movimientos Eje Y: Teclas Cursor Arriba y Abajo
+• 
+Movimientos Eje Z: Teclas Av Pág y Re Pág

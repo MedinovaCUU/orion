@@ -1,0 +1,38 @@
+6.5.5.2. Ajuste de la termostatización del rotor de reacción
+Para la correcta realización de las reacciones de muestra y reactivo, es necesario que el rotor de reacción este a una 
+temperatura estable. Desde esta pantalla se realiza el ajuste de la termostatización del rotor de reacción.
+ 
+) Véase Ilustración 6.20
+Siga los pasos para realizar el proceso de ajuste:
+1. Ponga 2 botellas de reactivo llenas con agua destilada atemperada a la temperatura del refrigerador en las po­
+siciones 45 y 46 del rotor de reactivos y un tubo de muestras lleno de agua en la posición 1 (no use un pocillo 
+pediatrico).
+2. Asegúrese de rellenar como mínimo los siguientes volúmenes:
+Botella
+Volúmen
+Posición
+R1
+30 mL
+45
+R2
+10 mL
+46
+Muestra
+2 mL
+1
+3. Pulse el botón de ajuste del apartado 1 para realizar un acondicionamiento fluídico del sistema, este acondicio­
+namiento tarda unos 15 minutos. El llenado del rotor lo realiza de manera automática. 
+4. Una vez finaliza la termostatización de las cubetas, ponga la sonda del termómetro inmediatamente en cada uno 
+de los 5 pocillos que se visualizan por el orificio de la tapa del rotor de reacciones.
+ 
+) Véase Ilustración 6.21 para ver los puntos de medición.
+5. Introduzca el valor de la temperatura medida con el termómetro de cada pocillo en cada una de las casillas del 
+apartado 2.
+6. Pulse el botón de ajuste del apartado 3 para modificar la consigna del sistema de regulación si el valor medio de 
+las medidas está fuera de los márgenes.
+ 
+) Véase capítulo AV para ver los márgenes de aceptación del ajuste del rotor de reacción.
+7. Guarde el valor del ajuste.
+Ilustración 6.20 
+Pantalla ajuste de la termostatización del rotor
+123

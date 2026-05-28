@@ -1,0 +1,33 @@
+3.4. Pipetting arms
+The pipetting arms are used to suction and dispense fluids. There are three arms, two for handling reagents and one 
+for handling samples.
+The pipetting arms are comprised of a housing (1) that covers the tip connections (6) and the electronic board (2). 
+The tip and board assembly, attached to a support, is the mobile part of the arm. The assembly is raised by a guide 
+tube (9) and the wires and tubes connected to the tip pass through this tube. The raising operation is executed with 
+a motor (10) that transmits the movement through a pulley (11) to a belt joined to the guide tube (9). The angular 
+movement is executed with the motor (4) by means of a belt (3) which makes the guide tube rotate (9).
+Figure 3.13 
+Pipetting arm assembly
+3
+4
+5
+2
+1
+8
+9
+10
+11
+6
+7
+Figure 3.14 
+Reagent tip
+15
+12
+14
+13
+2
+16
+17
+6
+Service Manual 
+26

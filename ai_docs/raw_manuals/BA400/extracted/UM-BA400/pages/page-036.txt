@@ -1,0 +1,69 @@
+Manual usuario 
+ 
+ 
+ 
+Manual usuario 
+ 
+ 
+ 
+36
+36
+Biosystems
+Biosystems
+ 
+Potencia 
+1.5 KW
+ 
+Capacidad de las baterías 
+Superior a 15 min
+ 
+WARNING
+ 
+Asegúrese de que el analizador ha permanecido a temperatura ambiente de fun­
+cionamiento al menos durante 12 horas antes de su puesta en marcha. A pesar 
+de que el analizador no requiere unas condiciones especiales de almacenamiento 
+y transporte, puede haber estado sometido a bajas temperaturas y provocado 
+condensación en su interior.
+ 
+Conexión eléctrica 
+Proceda de la siguiente manera:
+1. Compruebe que los tres interruptores situados en el lateral izquierdo están en 
+posición de desconectado (O) y el interruptor general de la toma de red (4) 
+también está en posición de desconectado.
+2. Conecte el cable de red, primero al aparato y después a la red.
+3. Conmute el interruptor general (4) a la posición de conectado (I).
+4. Hay tres interruptores independientes, uno para el analizador, otro para la 
+nevera y el último para el módulo ISE.
+5. Para poner en funcionamiento el analizador, conmute el interruptor (1) a la 
+posición de conectado (I).
+6. Para poner en funcionamiento la nevera, levante la tapa de protección y con­
+mute el interruptor (2) a la posición de conectado (I).
+7. Para poner en funcionamiento el módulo ISE, levante la tapa de protección 
+y conmute el interruptor (3) a la posición de conectado (I).
+4.11. Conexión al ordenador
+El ordenador tiene que estar totalmente dedicado durante el funcionamiento del 
+analizador. No se debe utilizar ninguna otra aplicación mientras el analizador está 
+en funcionamiento.
+La conexión se realiza por USB.
+ 
+Conexión por USB 
+Tenga el ordenador apagado.
+Conecte un extremo del cable USB al analizador y el otro a un puerto USB del 
+ordenador.
+No utilice ningún concentrador (hub) USB para realizar la conexión.
+ 
+)
+Véase instalación del driver USB en apartado 4.12
+ 
+)
+se configuración de las comunicaciones en el capítulo 10.2.1.3
+ 
+Conexión auxiliar USB 
+En la parte posterior del aparato hay 2 puertos auxiliares de uso restringido. 
+Estos puertos no sirven para realizar la comunicación entre el software y el 
+analizador.
+ 
+WARNING
+ 
+Vaya con cuidado cuando manipule líquidos para evitar cualquier salpicadura o 
+derrame que pudiera producirse sobre el PC que está conectado al analizador.

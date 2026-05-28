@@ -1,0 +1,38 @@
+Manual de servicio
+14
+o industrial, o sobre la información confidencial de BIOSYSTEMS y/o de los propietarios de los derechos sobre el 
+contenido recogido en este DVD.
+La licencia aquí concedida y constituida sobre estos términos y condiciones será interpretada de acuerdo con y go-
+bernada por las leyes españolas, y tendrán jurisdicción los juzgados y tribunales de Barcelona, España, renunciando 
+el usuario a cualquier otra legislación aplicable y/o jurisdicción competente si las hubiera.
+El usuario de la presente licencia conoce y acepta que la licencia de usuario no otorga derecho alguno sobre el uso de 
+programas de ordenador y/o aplicaciones informáticas de terceros, utilizadas o necesarias para el uso o funcionamiento 
+de la presente aplicación informática, de las cuales el usuario deberá recopilar la correspondiente legitimación de uso.
+1. Uso previsto
+• 
+El analizador A15/A15C sirve para determinar las concentraciones de analitos mediante medidas in vitro de bio-
+química, turbidimetría y electrolitos sobre muestras humanas de suero, orina, plasma, líquido cefalorraquídeo o 
+sangre total. 
+El Analizador A15/A15C está optimizado para trabajar con la línea de BioSystems de reactivos de bioquímica, 
+turbidimetría y electrolitos. Los Reactivos no incluidos en la validación del analizador A15/A15C realizada en 
+BioSystems SA, requerirán la validación completa y detallada por parte del usuario o del laboratorio. 
+Se recomienda encarecidamente validar el funcionamiento global del analizador y de los reactivos en el ámbito 
+del laboratorio, teniendo en cuenta la fase pre analítica y cualquier otro aspecto relevante.
+El analizador es exclusivamente para uso profesional, es decir, para usuarios con una formación y capacidad 
+adecuada para su utilización. Conjuntamente a la instalación del instrumento se instruye a los usuarios de la 
+operatoria del analizador y del software que lo acompaña. 
+Las condiciones ambientales de funcionamiento del analizador son las normales de un laboratorio de análisis 
+clínicos, estas condiciones se detallan en el capítulo de especificaciones.
+• 
+El analizador Y15/Y15C sirve para determinar las concentraciones de analitos en vinos, bebidas, alimentos y 
+muestras de cultivos biológicos mediante análisis bioquimicos.
+El Analizador Y15/Y15C está optimizado para trabajar con la línea de reactivos FoodQuality de BioSystems. 
+Los Reactivos no incluidos en la validación del analizador Y15/Y15C realizada en BioSystems SA, requerirán la 
+validación completa y detallada por parte del usuario o del laboratorio. 
+Se recomienda encarecidamente validar el funcionamiento global del analizador y de los reactivos en el ámbito 
+del laboratorio, teniendo en cuenta la fase pre analítica y cualquier otro aspecto relevante.
+El analizador es exclusivamente para uso profesional, es decir, para usuarios con una formación y capacidad 
+adecuada para su utilización. Conjuntamente a la instalación del instrumento se instruye a los usuarios sobre el 
+funcionamiento del analizador y del software que lo acompaña. 
+Las condiciones ambientales de funcionamiento del analizador son las normales de un laboratorio de análisis, 
+estas condiciones se detallan en el capítulo de especificaciones.

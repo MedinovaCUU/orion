@@ -1,0 +1,29 @@
+8
+Manual de servicio
+1.1.5  Área de trabajo
+El procesador iPro dispone de un área de trabajo de la cual destaca la extremada superficie plana en la 
+cual se disponen los distintos elementos. Los elementos situados en el área de trabajo son: los racks de 
+muestras y reactivos , las dos gradillas de diluciones, los racks de portaobjetos y la estación de lavado.
+Fuera del instrumento y a la izquierda se disponen las botellas de resíduos, solución de lavado y PBS. 
+En la parte lateral izquierda están los conectores de los detectores de nivel y los racores de conexión 
+a las botellas.
+El instrumento también dispone de un dispositivo para la lectura de los códigos de barras de la mues­
+tras y reactivos, situado a la parte izquierda del área de trabajo, y de un dispositivo para la lectura de 
+los códigos bidimensionales de los portaobjetos, alojado en el brazo manipulador. Eses dispositivos 
+permiten la trazabilidad de las muestras, reactivos y portaobjetos utilizados en las sesiones de trabajo 
+del procesador..
+1.1.6  Sistema electrónico
+Los elementos descritos están controlados por un sistema electrónico basado en micropro­cesador. El 
+microprocesador dispone de un canal USB de comunicación que permiten enlazar el instrumento con 
+el ordenador que contiene el pro­grama de aplicación. El sistema electrónico está constituido por las 
+siguientes placas independientes:
+• 
+Placa del microprocesador
+• 
+Placa de acondicionamiento de la punta 
+• 
+Placa del indicador frontal
+• 
+Placa de la fuente de alimentación
+• 
+Placa de comunicaciones

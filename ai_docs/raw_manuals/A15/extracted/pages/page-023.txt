@@ -1,0 +1,41 @@
+Manual de servicio
+24
+11
+12
+13
+14
+10
+9
+Ilustración 3.2. Eje Y
+9 – Detector inicio Y
+10 – Correa Y
+11 – Motor Y
+12 – Motor Z
+13 – Detector de colisión
+14 – Eje Y
+Referencias de la Ilustración 3.2
+El cuerpo del carro Y se desliza a lo largo de los dos ejes (14) mediante unos rodamientos lineales (17). Dichos ejes 
+se soportan en el carro X. El movimiento lo produce el motor Y (11) mediante la correa (10) y la polea de retorno (18). 
+El inicio del movimiento se controla mediante la pestaña (9) y el fotodetector de inicio que está situado en el carro X. 
+El cuerpo del carro Y también soporta el conjunto punta.
+3.2.2. Conjunto Punta
+El guiaje Z (1) soporta el tubo de termostatización (15) y la PCB de control que es donde están las resistencias de 
+calentamiento (15), el amplificador de la señal del termistor y detección de nivel y el fotodetector de inicio del eje Z 
+(20). La cremallera soporta a su vez el guiaje Z el cual atraviesa el carro Y mediante dos rodamientos. El motor Z 
+(12), fijado en el carro X, realiza el movimiento mediante un eje de transmisión dotado de un piñon que situado en el 
+carro Y actúa sobre la cremallera. Sobre el eje de transmisión, actúa el muelle de retorno (19) que evita que la punta 
+caiga en caso de falta de alimentación. En el mismo eje y en la parte del motor se haya el encoder (14) que detecta 
+cualquier obstrucción al movimiento de la punta terrmostatizada (21).
+15 – Tubo de termostatización
+16 – Eje Z
+17 – Rodamiento Y
+18 – Contrapolea Y
+19 – Muelle de retorno
+20 – Fotodetector de inicio eje Z
+21 – Punta
+Referencias de la Ilustración 3.3
+El tubo de termostatización (15) es el encargado de precalentar el reactivo en el momento de la dosificación. Esta 
+dotado por dos racors a sus extremos. En uno se conecta la punta desmontable (21) y en el otro se conectas el 
+tubo de dosificación de teflón, el cual se fija mediante el racor de apriete. En la PCB se hayan las resistencias de 
+termostatización, el termistor y circuitos asociados. En la manguera pasan las distintas señales del termistor y de 
+actuación de las resistencias.

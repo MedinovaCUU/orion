@@ -1,0 +1,25 @@
+175
+Contamination level 
+2
+COMPLIANCE WITH DIRECTIVES
+A25 model: 
+CE – IVD Regularation
+(EU) 2017/746
+Y25 model: 
+Low voltage directive 
+Electromagnetic compatibility directive
+2014/35/EU
+2014/30/EU
+A25/Y25
+Directive on restriction to the use of certain 
+dangerous substances in electrical and electronic 
+equipment.
+2011/65/EU
+MAXIMUM SIZE OF ANALYZER
+With the lid closed (Width, Depth and Height)
+1080 mm x 695 mm x 520 mm
+With the lid open (Width, profu Depth and Height)
+1080 mm x 695 mm x 1114 mm
+Weight
+70 Kg
+The manufacturer reserves the right to modify any technical specification without prior notice.

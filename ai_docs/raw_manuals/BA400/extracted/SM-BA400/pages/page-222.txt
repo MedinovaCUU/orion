@@ -1,0 +1,21 @@
+10
+11
+12
+ 
+13
+Ilustración 8.79 
+Cambio detector de colisión estación de lavado
+8.13.5. AC16597 - Muelle puntas estación de lavado
+Herramientas: Allen 2.5
+Desmontaje muelle secador:
+1. Desatornille el tornillo (14).
+2. Quite la arandela de seguridad y la arandela plana.
+3. Quite el muelle defectuoso (15).
+Montaje muelle secador:
+1. Cambie el muelle por uno nuevo (15).
+2. Coloque la arandela plana, la arandela de seguridad y el tornillo (14)
+3. Verifique que el secador sube y baja con suavidad y sin tropiezos.
+Desmontaje muelle pisador:
+1. Desatornille el tornillo (19).
+Manual de servicio
+222

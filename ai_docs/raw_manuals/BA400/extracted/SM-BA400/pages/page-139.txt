@@ -1,0 +1,38 @@
+7.2. Limpieza
+Material y herramientas necesarias para realizar la limpieza:
+• 
+Botella de aerosol de aire seco o pera de aire
+• 
+Llave torx T20, con una longitud mínima de 40 mm
+7.2.1. Limpieza de los alojamiento interiores
+Cada vez que se haga una intervención en el analizador es recomendable que se haga una limpieza de los comparti­
+mentos de la electrónica y de la fluídica.
+1. Desmonte las carcasas laterales
+2. Desmonte las chapas laterales 
+3. Sople el polvo de las placas electrónicas, de los componentes y de los ventiladores con aire seco. 
+7.2.2. Verificación de las conexiones fluídicas
+Verifique que todas las conexiones fluídicas, las conexiones que van a las electroválvulas y bombas no sufren ninguna 
+fuga.
+1. Desmonte las carcasas laterales
+2. Desmonte las chapas laterales
+3. Toque con la mano cada una de las conexiones para verificar que las uniones no pierden líquido. Verifique que 
+lso racors están apretados a un par de 33 Ncm. 
+4. Utilice el programa de servicio para abrir y cerrar las electroválvulas y accionar las bombas. Verifique si hay 
+pérdidas de líquido en los dos estados de cada elemento.
+7.2.3. Limpieza de los contenedores de agua y residuos de baja contaminación
+1. Desmonte la tapa trasera.
+2. Desmonte las abrazaderas que sujetan las botellas de agua destilada y residuos de baja contaminación.
+3. Vacíe el sistema de líquidos con el programa de servicio.
+4. Desenrosque cada una de las botellas.
+5. Limpie con agua y jabón neutro los contenedores de agua destilada y residuos de baja contaminación
+6. Verifique y cambie los filtros de las tomas de agua de cada contenedor. 
+7.2.4. Limpieza externa de las puntas
+WARNING
+Use guantes y vestimenta de protección al manipular las puntas.
+Con el analizador apagado, levante con las manos las 3 puntas, los 2 agitadores y la estación de lavado.
+Vaya con mucho cuidado en el momento de levantar las puntas. 
+1. Limpie con un paño bañado en solución de lavado cada una de las puntas, agitadores y las puntas de la estación 
+de lavado.
+2. Repita el proceso con alcohol de 70
+3. Inicialice el analizador con el programa de servicio y realice un lavado de las puntas mediante la utilidad de lavado.
+139

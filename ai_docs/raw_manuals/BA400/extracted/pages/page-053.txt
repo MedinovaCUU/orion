@@ -1,0 +1,80 @@
+Service Manual
+53
+Connector
+Function
+Pin
+CN7
+General fan
+Pin 1: 24 V
+Pin 2: GND
+CN8
+Cover sensor
+Pin 1: 5V
+Pin 2: Detection signal
+CN9
+Rotor motor
+Pin 1: Coil 1
+Pin 2: Coil 1
+Pin 3: Coil 2
+Pin 4: Coil 2
+CN11
+Rotor start-up detection
+Pin 1: Detection
+Pin 2: GND
+Pin 3: 5V
+CN12
+Peltier
+Pin 1: 24 V
+Pin 2: Peltier diagnostic
+Pin 3: Peltier diagnostic
+Pin 4: GND
+CN13
+Peltier
+Pin 1: 24 V
+Pin 2: Peltier diagnostic
+Pin 3: Peltier diagnostic
+Pin 4: GND
+CN14
+Fridge fan
+Pin 1: 24 V
+Pin 2: Detection diagnostic
+Pin 3: GND
+CN15
+Fridge fan
+Pin 1: 24 V
+Pin 2: Detection diagnostic
+Pin 3: GND
+CN16
+Temperature sensor 
+Pin 1: Sensor
+Pin 2: GND
+CN18
+Fridge fan
+Pin 1: 24 V
+Pin 2: Detection diagnostic
+Pin 3: GND
+CN19
+Fridge fan
+Pin 1: 24 V
+Pin 2: Detection diagnostic
+Pin 3: GND
+Test point
+Function
+TP1
+24 V
+TP2
+5 V
+TP3
+24 V (bus voltage)
+TP4
+GND (bus voltage)
+TP5
+CAN_H
+TP6
+Board selection. Direction 1 
+TP7
+CAN_H (bus signal)
+TP8
+Board selection. Direction 2 
+TP9
+CAN_L (bus signal)

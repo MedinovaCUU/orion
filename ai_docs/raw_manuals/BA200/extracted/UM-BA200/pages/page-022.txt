@@ -1,0 +1,45 @@
+Manual usuario 
+ 
+ 
+ 
+Manual usuario 
+ 
+ 
+ 
+22
+22
+Biosystems
+Biosystems
+1. 
+Uso previsto
+El analizador BA200 sirve para determinar las concentraciones de analitos mediante 
+medidas in vitro de bioquímica, turbidimetría y electrolitos sobre muestras humanas 
+de suero, orina, plasma, líquido cefalorraquídeo o sangre total. 
+El Analizador BA200 está optimizado para trabajar con la línea de reactivos de 
+bioquímica, turbidimetría y electrolitos de BioSystems. Los Reactivos no incluidos 
+en la validación del analizador BA200 realizada en BioSystems SA, requerirán la 
+validación completa y detallada por parte del usuario o del laboratorio. 
+Se recomienda encarecidamente validar el funcionamiento global del analizador y 
+de los reactivos en el ámbito del laboratorio, teniendo en cuenta la fase pre analítica 
+y cualquier otro aspecto relevante.
+El analizador es exclusivamente para uso profesional, es decir, para usuarios con 
+una formación y capacidad adecuada para su utilización. Conjuntamente a la 
+instalación del instrumento se instruye a los usuarios sobre el funcionamiento del 
+analizador y del software que lo acompaña. 
+Las condiciones ambientales de funcionamiento del analizador son las normales 
+de un laboratorio de análisis clínicos, estas condiciones se detallan en el capítulo 
+de especificaciones.
+2. 
+Contenido
+A continuación se relacionan los elementos que el usuario debe encontrar al des­
+embalar el analizador. Compruebe visualmente que ninguno de los elementos ha 
+sufrido daños perceptibles durante el transporte.
+1. Analizador.
+2. Hoja de instrucciones de desembalaje.
+3. Hoja de certificado de análisis (Instrument Release Certificate).
+4. Caja de accesorios (Viene separada en una caja diferente a la del analizador).
+2.1. Contenido de la caja de accesorios
+Accesorio
+Descripción
+Botellas vacías de reactivo de 60 mL (5)
+Botellas vacías de reactivo de 20 mL (5)

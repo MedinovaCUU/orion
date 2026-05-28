@@ -1,0 +1,50 @@
+Service manual
+58
+ Detecting Main Board version (CIIM00006-XX)
+... Main Board version will be detected at Warming Up
+ Setting racks layout
+ Tray Ref. X=1345 => Distance from tray reference to tray corner X=1082
+ Tray Ref. Y=344 => Distance from tray reference to tray corner Y=432
+ Absolute position of tray corner X=263 
+ Absolute position of tray corner Y=-88 
+ Generating Zmax Map:Ok
+ CPU settings: MDCR=c4;ABWCR=0;ASTCR=ff
+ BioSystems A25
+ Hello World
+ A25 MAGIC KEYS
+ H: Help
+ R: Rotor Temperature
+ P: Probe Temperature
+ S: Level Scales
+ A: Last A25 Stress Results
+ L: Actual Sensitivity of Level Detection
+ N: Enable Level Detection Debug
+ Buzzer Control
+ B: Buzzer On
+ b: Buzzer Off
+ Encoder 
+ Y: A15 Encoder profile (Press while booting)
+ Rotor Reading 
+ 1: Choose Filter +
+ 2: Choose Filter -
+ 9: Start Rotor Readings
+ Notes: Use only in Service Mode
+ after a Base Line Test.
+ Rotor Read 
+ 1: Choose Filter +
+ 2: Choose Filter -
+ Analyzer Memory Dump 
+ G: Memory Dump
+ Notes: Use only after a Worklist in 
+ Stand By.
+ This tests dumps all the preparations
+ parameters received and the photometric
+ readings.
+ DDC112/Photometry
+ D: Choose Mode
+ - DDC112 internal test mode
+ - DDC112 Photometry Mode
+ - Stop
+ +: Integration Time +0.5ms
+ -: Integration Time -0.5ms
+ Notes: Only works in Service Mode

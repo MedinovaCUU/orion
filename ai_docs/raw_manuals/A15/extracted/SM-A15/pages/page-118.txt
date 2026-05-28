@@ -1,0 +1,17 @@
+119
+16
+15
+14
+Ilustración 6.17 
+6.3.2. AC11527 - Retén bomba desificadora
+Herramientas: Llave allen número 2.5
+Desmontaje:
+1. Siga los pasos de desmontaje según el capítulo 6.3.1
+2. Separe el retén (17) del adaptador retén (11). 
+Montaje:
+1. Siga los pasos del montaje según el capítulo 6.3.1
+2. Antes de realizar el punto 6), cambie el retén (17) por uno nuevo. Humedezca con WS (Washing So-
+lution) el adaptador retén y el retén para facilitar la inserción del retén en su alojamiento. Ayúdese de 
+una pieza plana para realizar la presión del retén. 
+3. Verifique que el retén está correctamente nivelado con el adaptador retén.
+4. Continúe los pasos de montaje según el capítulo 6.3.1

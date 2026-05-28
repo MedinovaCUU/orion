@@ -1,0 +1,38 @@
+Manual usuario 
+ 
+ 
+ 
+Manual usuario 
+ 
+ 
+ 
+40
+40
+Biosystems
+Biosystems
+Ilustración 14 
+Opciones protector de pantalla
+4.12.1. Configuración de opciones de energía
+• 
+Seleccione Todas las configuraciones
+• 
+Seleccione Sistema
+• 
+Seleccione Inicio/apagado y suspensión 
+• 
+Seleccione Opciones de configuración relacionadas, Configuración adicional de 
+energía
+• 
+Seleccione Cambiar la configuración del plan
+• 
+Seleccione nunca en las opciones de Apagar la pantalla, Poner al equipo en 
+estado de suspensión
+• 
+Seleccione Cambiar la configuración avanzada de energía
+• 
+Seleccione Configuración de USB
+• 
+Seleccione la opción de Deshabilitado en la opción Configuración de suspen­
+sión selectiva de USB/Configuración
+• 
+Guarde los cambios

@@ -1,0 +1,38 @@
+35
+1 – Tapa superior
+2 – Carcasa superior
+3 – Carcasa del brazo
+4 – Protector frontal del brazo
+5 – Carcasa frontal
+6 – Tapa del rotor de reacciones
+7 – Tapa de la nevera
+8 – Carcasa inferior
+9 – Carcasa de la nevera
+10 – Pata 
+11 – Interruptor del analizador
+12 – Interruptor de la nevera
+13 – Fusibles
+14 – Enchufe
+15 – Conexión principal 
+16 – Conexión auxiliar
+17 – Chapa del detector de tapa
+18 – Detector de la tapa
+19 – Pistó hidroneumático
+20 – Chapa trasera
+21 – Etiqueta identificativa
+22 – Estructura de soporte de la tapa superior
+Referencias de la Ilustración 3.12, Ilustración 3.13 y Ilustración 3.14
+3.6. Refrigerador de reactivos (solo en los modelos A15C e Y15C)
+La placa (12) es enfriada por las células de peltier (6). Éstas están refrigeradas por los radiadores (5) y ventiladores 
+(4). Un sensor de temperatura (10) está conectado a la electrónica del equipo encargada de controlar la tempera-
+tura. Los aislantes (9) en la carcasa (2) impiden el flujo de calor hacia el interior. Un sensor de tapa (8) informa al 
+analizador si la tapa esta colocada. Este sensor de tapa está en serie con el sensor de la tapa general del analizador.
+2
+12
+9
+10
+6
+5
+4
+8
+Ilustración 3.15. Detalle del refrigerador

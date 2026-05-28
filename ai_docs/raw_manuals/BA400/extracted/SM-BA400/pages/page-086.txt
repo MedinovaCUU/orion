@@ -1,0 +1,80 @@
+Manual de servicio
+86
+Conector
+Función
+Pin
+CN7
+Ventilador general
+Pin 1: 24 V
+Pin 2: GND
+CN8
+Detector tapa
+Pin 1: 5V
+Pin 2: Señal detección
+CN9
+Motor rotor
+Pin 1: Coil 1
+Pin 2: Coil 1
+Pin 3: Coil 2
+Pin 4: Coil 2
+CN11
+Detección inicio rotor
+Pin 1: Detección
+Pin 2: GND
+Pin 3: 5V
+CN12
+Peltier
+Pin 1: 24 v
+Pin 2: Diagnóstico peltier
+Pin 3: Diagnóstico peltier
+Pin 4: GND
+CN13
+Peltier
+Pin 1: 24 v
+Pin 2: Diagnóstico peltier
+Pin 3: Diagnóstico peltier
+Pin 4: GND
+CN14
+Ventilador nevera
+Pin 1: 24 V
+Pin 2: Diagnóstico detección
+Pin 3: GND
+CN15
+Ventilador nevera
+Pin 1: 24 V
+Pin 2: Diagnóstico detección
+Pin 3: GND
+CN16
+Sensor temperatura
+Pin 1: Sensor
+Pin 2: GND
+CN18
+Ventilador nevera
+Pin 1: 24 V
+Pin 2: Diagnóstico detección
+Pin 3: GND
+CN19
+Ventilador nevera
+Pin 1: 24 V
+Pin 2: Diagnóstico detección
+Pin 3: GND
+Test point
+Función
+TP1
+24 V
+TP2
+5 V
+TP3
+24 V (Tensión en el bus)
+TP4
+GND (Tensión en el bus)
+TP5
+CAN_H
+TP6
+Selección de placa. Dirección 1
+TP7
+CAN_H (Señal en el bus)
+TP8
+Selección de placa. Dirección 2
+TP9
+CAN_L (Señal en el bus)

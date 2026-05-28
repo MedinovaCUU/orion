@@ -1,0 +1,19 @@
+21
+to. El técnico dispone de botones para mover el brazo paso a paso sobre el plano horizontal (X, Y) y 
+verticalmente (Z). También puede mover el brazo introduciendo un cierto número de pasos de movi­
+miento absoluto. Estos movimientos absolutos del brazo deben realizarse con la punta en su posición 
+mas elevada para no dañarla (coordenada 0). El técnico debe bajar la punta para acercarse al punto de 
+ajuste y ajustar su posición horizontal. Cuando ésta es satisfactoria, puede guardar las coordenadas 
+(X, Y) actuales pulsando el botón Guardar. Pulsando el botón Cancelar, se mantienen los últimos 
+valores de ajuste guardados. Pulsando el botón Restaurar, se restauran los valores iniciales de entrada 
+a la pantalla. La pantalla muestra en todo momento para el punto seleccionado las coor­de­na­das actua­
+les del brazo, las últimas coordenadas guardadas y las coordenadas iniciales de entrada a la pantalla, 
+como información adicional para el técnico. El técnico puede repetir el procedimiento para ajustar el 
+posicionamiento del brazo en los diversos puntos de ajuste posibles. Estos puntos son los siguientes:
+(1) Origen. Vértice de los fotodetectores de autocentrado de la punta. Ajusta la posición de auto 
+centrado. Realizar el ajuste mediante la opción de autoajuste. La opción manual sirve para hacer una 
+aproximación previa al ajuste automático.
+(2) Referencia de bandeja. Ajusta todos los puntos XYZ de la bandeja excepto la posición Z de los 
+portaobjetos. Para ello hacer coincidir la punta más larga sobre el vértice del posicionador de la estación 
+de lavado. Atención: En el momento de hacer el ajuste en Z, hacer tocar la punta en el mismo vértice 
+pero evitando dar más pasos de la cuenta.

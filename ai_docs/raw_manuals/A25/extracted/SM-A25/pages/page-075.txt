@@ -1,0 +1,16 @@
+75
+This screen appears when the analyser has finished the previous operations done to enter the SERVICE mode. If 
+the complete hardware of the analyzer is in correct conditions, the result “Hardware initiated correctly» displays. 
+If any hardware element presents an operational problem, it will appear “Hardware not initiated completely” in 
+the screen, and the element that is not working correctly will be shown. 
+In order to close the screen and continue working, you should press the Accept button. 
+In order to get a printed copy of this initialization report, you should press the Print button. 
+NOTE: If an error has been reported and the technician continues working with the service program, he must 
+consider that there is a hardware element that is not working properly.
+5.2. 
+Adjustments 
+These make it possible to make different parameter adjustments required for the correct functioning of the 
+analyzer. All the values to be adjusted have certain limited ranges, indicated by the service program. These 
+values are also given in an appendix at the back of this manual. If, after varying any of the parameters within 
+its permitted range, the analyzer is not tuned up, it indicates that the corresponding system is broken and in 
+need of repair.

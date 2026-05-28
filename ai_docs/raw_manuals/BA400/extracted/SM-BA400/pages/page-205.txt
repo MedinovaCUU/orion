@@ -1,0 +1,20 @@
+6. Monte la correa y el motor según las instrucciones del capítulo 8.11.9
+7. Verifique con el programa de servicio el funcionamiento del conjunto (motor, nevera, detector de tapa, sensor 
+de temperatura, lector de código de barras)
+20
+Ilustración 8.62 
+Desmontaje cuerpo nevera del centrador rotor
+22
+21
+Ilustración 8.63 
+Desmontaje aislamiento y escuadra soporte lector
+8.11.9. AC16623 - Motor del rotor / AC17239 - Motor del rotor / AC16624 - Correa
+Hay una modificación en el sistema de transmisión del motor del rotor. Esta modificación afecta al rotor de reactivos 
+y al rotor de muestras. 
+Utilice el código de recambio AC16623 para los analizadores con números de serie anteriores al indicado en el 
+capítulo AII y utilice el código AC17239 para los analizadores con numeros de serie posteriores.
+ 
+) Véase el capítulo AII para saber a partir de que número de serie se ha implementado el cambio del conjunto transmisión.
+Herramientas: Llaves allen del 3 y llave fija.
+Desmontaje del motor AC16623:
+205

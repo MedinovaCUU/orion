@@ -1,0 +1,70 @@
+64
+high cont waste
+washing solution
+H2O
+low cont waste
+Sample
+R1
+R2
+AG1
+AG2
+Sensor
+Pressure
+DOSING
+MANIFOLD
+PRE-DOSING
+MANIFOLD
+Air
+colector
+Liquid
+suction
+high cont
+Dry
+suction
+Liquid
+suction
+low cont
+Filling
+liquid
+WS
+Filling
+liquid
+H2O
+WASHING ROTOR
+x2
+x4
+x3
+x2
+x1
+Liquid
+suction
+low cont
+x1
+x2
+x3
+WASHING PUMP
+HEAT EXCHANGER
+x2
+x1
+x1
+x1
+H2O
+TANK STORAGE
+WASTE
+TANK STORAGE
+JE1-B3
+SF1-B3
+SF1-B2
+SF1-B1
+SP1-EV1
+SP1-B4
+SP1-EV2
+SP1-B5
+JE1-B2
+JE1-B1
+JE1-EV3
+JE1-EV2
+JE1-EV1
+JE1-EV5
+JE1-EV4
+Figure 5.1 Fluidic diagram

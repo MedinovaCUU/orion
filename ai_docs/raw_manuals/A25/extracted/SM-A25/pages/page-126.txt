@@ -1,0 +1,38 @@
+Manual de servicio
+126
+5. Be careful when disassembling the assembly so that the spring does not jump (5)
+6. Remove the peltier (7)
+Spiral disassembly:
+1. Remove the peltier assembly
+2. Loosen the screw (6) to release the spiral
+3. Remove the spiral
+4. Be careful when disassembling the spiral so that the spring does not fall (5)
+Temperature sensor disassembly:
+1. Remove the peltier
+2. Remove the temperature sensor (3)
+Mounting temperature sensor:
+1. Change temperature sensor (3)
+2. Put thermal silicone on the sensor
+3. Carefully place the sensor in its location next to the sensor guards (4)
+4. Follow the spiral mounting steps
+Spiral and peltier mounting:
+1. Put a thin layer of thermal silicone on both sides of the peltier.
+2. Place the spring, spiral and peltier and radiator as shown in Figure 6.22
+3. Screw in the 4 screws (10) to secure the assembly
+4. Tighten the screw (6) of the spiral
+5. Follow the steps to mount the fan
+Fan mounting:
+1. Change the fan
+2. Put the fan in position
+3. Follow the steps for mounting the end plate and assembly
+Mounting the probe board:
+1. Put the probe board in position
+2. Mount the assembly on the analyzer
+3. Screw in the 3 screws that hold the board
+4. Connect the ground terminal to one of the screws
+5. Connect all cables in the assembly to the board
+Assembly of the tip assembly:
+1. Secure the tip assembly with the 4 screws (1) and their washers
+2. Connect the fluid tube to the spiral
+3. Install the tip
+4. Make position and tip temperature adjustments with the service program

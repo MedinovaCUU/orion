@@ -1,0 +1,20 @@
+—  21  —
+3.1.3. - OPEN/CLOSE TESTS option
+This option allows the user to open/close the tests, selecting them individually or as a whole.
+In closed tests the parameters cannot be changed by the user.
+3.1.4. - OPEN/CLOSE appliance option
+This option opens/closes the instrument programming. On activating this option, the PROGRAMMING option in the main 
+menu disappears and neither the tests nor the units can be changed. On opening the appliance again, the test change 
+options are restored.
+3.2. - Adjustments
+3.2.1. - Thermostatation adjustment
+This procedure determines the method for adjusting the cuvette holder thermostatation circuit. Both the cuvette holder 
+thermostatation circuit temperature sensor and the associated electronic circuit have a series of margins that must be offset 
+to ensure that the cuvette holder temperature is adjusted to the programmed one. The adjustment makes it possible to 
+calculate the necessary correction coefficents for perfoming the offsetting, through a calibrated thermometer.
+3.2.1.1. - Material required
+Calibrated digital thermometer with a resolution of 1 decimal, of the “Fluke 51” type, and temperature sensor.
+3.2.1.2. - General remarks
+N.B.: Bear in mind the corrections indicated in the digital thermometers when taking and recording temperatures.
+3.2.1.3. - Development
+Select the option using the path UTILITIES / SERVICE (Password) / ADJUSTMENTS / THERMOSTATATION.

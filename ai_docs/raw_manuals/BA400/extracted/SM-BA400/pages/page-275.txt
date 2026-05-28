@@ -1,0 +1,26 @@
+Lista de recambios
+Código
+Representación 
+Descripción
+AC16816
+Conjunto pistones y soporte
+AC17307
+Check valves bomba pistones
+AC11527
+Reten pistón diámetro Ø8
+AC16591
+Reten pistón diámetro Ø3
+AC16594
+ 
+Pistón cerámico reactivo+motor
+AC16593
+Pistón cerámico muestra + motor
+AC17289
+Punta aspiración estación de lavado
+AC17290
+Punta aspiración+secador estación de lavado
+AC16596
+secador estación de lavado
+AC17240
+Fotodetector estación de lavado
+275

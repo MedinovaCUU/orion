@@ -1,0 +1,90 @@
+Service manual
+198
+ 
+ 
+ 
+Incorporation of predilutions in controls
+ 
+6/9/21 
+5.5.1 
+Incorporation of a new programming option: active mixing
+ 
+ 
+ 
+Improvement in the selection of the diluent to perform the blanks
+ 
+ 
+ 
+Detection limit management improvement
+ 3/17/22 
+5.5.2 
+New algorithm to verify results outside the calibration curve (High/Low 
+Turbidimetric Verification)
+ 
+ 
+ 
+New menu to save partial test
+ 12/22/2 
+5.5.4 
+New option to change the font size of the reports
+ 
+ 
+ 
+New option to visualize the techniques
+ 
+ 
+ 
+Software has been verified for windows 11
+Compatibilities table Y25
+Y25 User
+4.7.1
+4.8.3
+4.9.1
+4.9.3
+5.0
+5.2
+5.2.4
+5.4
+5.5
+5.5.1
+5.5.2
+5.5.4
+Firmware
+3.77
+x
+x
+x
+x
+x
+x
+x
+x
+x
+x
+x
+6.21
+x
+x
+x
+x
+x
+x
+x
+x
+x
+x
+x
+6.24
+x
+x
+x
+x
+x
+x
+x
+x
+x
+x
+x
+x
+It is advisable to always install the last existing version of firmware.

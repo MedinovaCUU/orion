@@ -1,0 +1,30 @@
+Manual de servicio
+140
+2
+1
+Figure 6.37 
+6.4.2. 
+AC11542 - Temperature sensor
+Disassembly
+1. Take out the fridge cover and the front cover
+2. Stretch the sensor protector insulation (4)
+3. Unscrew the sensor (3) from the rotor
+4. Disconnect the cable from the CPU board
+Mounting
+1. Replace temperature sensor
+2. Connect the sensor to the CPU board
+3. Clean the thermal silicone from the housing and put new thermal silicone on the end of the new probe.
+4. Screw the sensor (3) to the heating channel
+5. Put the insulator in position
+6. Readjust reaction rotor temperature
+6.4.3. 
+AC11545 - Cover detector
+Disassembly
+1. Take out the fridge cover and the front cover
+2. Press down on the top of the detector to disengage it from the channel
+3. Disconnect the cable from the CPU board
+Mounting
+1. Replace the cover detector
+2. Connect the detector to the CPU board
+3. Put Loctite to the detector and place it to its highest position
+4. Check the cover detector

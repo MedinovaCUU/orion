@@ -1,0 +1,23 @@
+Lista de recambios
+Código
+Conjunto
+Representación 
+Descripción
+AC16534
+Tornillo rotor reacción
+AC17275
+Tapa rotor reacción
+AC17276
+Tapa rotor muestras
+AC17277
+Tapa general
+AC16538
+Tapa brazo
+AC16539
+Tapa superior estación lavado
+AC17372
+Tapa inferior estación lavado
+AC16541
+Tapa inferior brazo
+Manual de servicio
+234

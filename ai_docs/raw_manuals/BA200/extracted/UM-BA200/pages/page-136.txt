@@ -1,0 +1,67 @@
+Manual usuario 
+ 
+ 
+ 
+Manual usuario 
+ 
+ 
+ 
+136
+136
+Biosystems
+Biosystems
+Código de color
+Descripción
+Estado de la técnica pendiente de preparar
+Técnica en curso de preparación y lectura
+Técnica finalizada y con resultados 
+ 
+ 
+Indica que la técnica o paciente ha finalizado correctamente.
+ 
+ 
+Indica que la técnica o paciente ha terminado con alarmas u observaciones.
+ 
+ 
+Botón para visualizar la curva de reacción. La visualización puede ser en tiempo 
+real o una vez finalizada la reacción.
+ 
+ 
+Indica que se ha imprimido el informe de paciente final porque ya ha finalizado.
+ 
+ 
+Indica que se han enviado los resultados a través del sistema LIS.
+ 
+ 
+Indica que la técnica o paciente está bloqueado. Puede ser debido a una alarma 
+de falta de muestra y/o reactivo, o problemas con el blanco o calibrador de la 
+técnica.
+ 
+ 
+Al realizar doble clic en la casilla de una técnica, bloquea temporalmente dicha 
+técnica para que no se realice. Volviendo a realizar doble clic sobre la misma téc­
+nica, la desbloquea. Únicamente se pueden bloquear las técnicas de los pacientes 
+o los pacientes enteros que aún no hayan iniciado la preparación.
+ 
+Estado de las técnicas 
+En este gráfico se informa del número total de preparaciones solicitadas y estado 
+de las mismas: acabadas, en proceso, pendientes, bloqueadas y acabadas con 
+alarmas.
+10.6.3. Estado rotor de muestras y reactivos
+Pantalla de información del estado de cada uno de los tubos de las muestras y de 
+las botellas de reactivo. Corresponde a la pestaña de muestras y reactivos de la 
+pantalla monitor.
+El usuario puede pulsar sobre cualquier tubo, pocillo o botella de reactivo para 
+ver la información detallada.
+Hay un código de colores para identificar el estado de cada tubo o pocillo de 
+muestra.
+Código de 
+colores
+Nombre 
+Descripción de la identificación de las 
+muestras
+Seleccionada
+Selección de una posición del rotor
+No utilizado
+Muestra posicionada pero sin asignar en la 
+sesión de trabajo

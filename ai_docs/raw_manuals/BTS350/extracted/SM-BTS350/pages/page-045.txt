@@ -1,0 +1,77 @@
+—  45  —
+Service manual
+Appendix VI. - Changes Firmware and board versions for BTS-350
+Relationship of changes in the firmware versions
+Date
+Version 
+Change
+17/06/2009
+1.02
+First version of Firmware
+18/03/2010
+1.10
+Added the following languages: French, Italian, Portuguese, Romanian, Polish, 
+Serbian, Czech, Bulgarian, Russian, Chinese and Korean.
+Ability to update the firmware and the test parameters from an external USB memory.
+Included the reagent consumptioner choice on the screen of history.
+Ability to print and save data in an external USB memory at once.
+05/10/2010
+1.20
+Correction of translation of some languages
+14/04/2011
+1.30
+Add the arabic language
+25/7/2012
+1.31
+Improve the management of peltier consumption.
+30/10/2012
+1.40
+Add the Indonesian language. Add the option to activate/deactivate the 
+concentration storage.
+9/06/2014
+1.42
+Make compatible the change in the electronic board CIIM00037-08
+30/4/2015
+2.40
+Add the new parameter dilution of sample for every calcultaion method
+Add the Ax+B comparation parameters.
+Add the blank to the calculation method kinethics and fixed time.
+Add for evety calculation method the multipoint calibration.
+19/12/16
+2.41
+Little internal modifications.
+Relationship of changes in electronic board
+Date
+Version 
+Change
+17/06/2009
+CIIM00037-07
+First version of board
+10/06/2014
+CIIM00037-08
+Change the flash chip model for obsolete. Change the RS-232 connector 
+to a USB type B. Improve the position of some components. Remove the 
+internal metallic paint of the cover 
+10/10/2014
+CIIM00037-09
+Improve the internal position of some components.
+Ability to print and save data in an external USB memory at once.
+Appendix VII. - Changes Firmware and board versions for Y-350
+Relationship of changes in the firmware versions
+Date
+Version 
+Change
+10/06/2014
+2.00
+First version of Firmware Y-350
+Relationship of changes in electronic board
+Date
+Version 
+Change
+10/06/2014
+CIIM00037-08
+First version of board
+10/10/2014
+CIIM00037-09
+Improve the internal psotion of some components.
+Ability to print and save data in an external USB memory at once.

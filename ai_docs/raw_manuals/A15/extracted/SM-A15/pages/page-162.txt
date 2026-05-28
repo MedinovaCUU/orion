@@ -1,0 +1,27 @@
+163
+Lista de recambios
+Código
+Representación
+Descripción 
+AC17317
+Tubo del manifold
+TU13368
+Tubos PVC residuos
+TU13366
+Conjunto tubos contenedores
+AC14307
+Manguera brazo
+AC13356
+Conjunto punta con termostatización
+AC13360
+Racor Apriete punta
+ME13355
+Conjunto resorte
+ME13352
+Correa eje Y
+AC15521
+Piñón guia del eje Z
+AC13765
+Encoder eje Z
+PC13382
+Indicador frontal

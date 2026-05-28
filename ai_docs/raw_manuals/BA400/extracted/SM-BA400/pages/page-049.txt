@@ -1,0 +1,35 @@
+Referencias de la Ilustración 3.37 y Ilustración 3.38
+9 – Conexión tubo entrada solución de lavado
+10 – Conexión tubo entrada de la cámara de la bomba de muestras
+11 – Placa electrónica iluminación LED 
+12 – Electroválvula premanifold JE1-EV4
+13 – Electroválvula premanifold JE1-EV5
+14 – Electroválvula commutación JE1-EV1
+15 – Conexión tubo entrada agua destilada
+16 – Conexión tubo salida del premanifold
+17 – Detector de coágulo
+18 – Conexión de entrada de la cámara de la bomba de reactivos
+19 – Placa electrónica iluminación LED 
+20 – Electroválvula commutación JE1-EV4
+21 – Tapa del manifold
+22 – Placa electrónica iluminación LED
+23 – Soporte pistón cerámico
+24 – Retén 
+25 – Porta retén
+26 – Detector de inicio
+24
+25
+26
+23
+22
+21
+Ilustración 3.38 
+Desmontaje de la bomba de muestras
+Las conexiones de los tubos van según indica las Ilustración 3.39 y Ilustración 3.40
+Del tubo (28) sale del premanifold y se conecta a una T de interconexión. 
+De la T salen 3 tubos que se conectan a cada una de las bombas de lavado interno de R2 (6), R1 (7) y muestras (8).
+Los tubos (29), (30) y (31) conectan las bombas de lavado interno con las bombas cerámicas.
+El premanifold tiene 2 entradas, una la entrada de agua destilada (27), que proviene de la salida del desgasificador. 
+Hay un adaptador (32) de diámetros de tubos.
+La otra entrada es la de washing solution que se conecta a la toma (34), también hay un adaptador de tubos (33)
+49

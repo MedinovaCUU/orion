@@ -1,0 +1,31 @@
+119
+119
+del paciente en entrada manual corresponde a la misma identificación de la 
+muestra.
+ 
+Número 
+Cuando quiera introducir varios muestras con el mismo perfil de técnicas, 
+introduzca el número de muestras en esta casilla. El código de muestra se genera 
+automáticamente y empieza por el carácter #, excepto si en el campo paciente/
+muestra hay un texto entrado; entonces el código de muestra se forma empe­
+zando por el texto y finalizando con la numeracion. Se generan tantos códigos 
+como números introducidos, si el texto finaliza con una numeración, los códi­
+gos se generan consecutivamente a partir del número entrado en el texto.
+ 
+)
+Ver un ejemplo de generación de códigos de muestra en la Ilustración 75
+Ilustración 78 
+Generación de códigos de muestras consecutivos
+ 
+Tipo de muestra 
+Seleccione el tipo de muestra antes de ir a la pantalla de selección de técnicas. 
+Para aquellos pacientes con varios tipos de muestra, tendrán tubos diferentes, 
+uno para cada tipo. (Por ejemplo: un paciente con una muestra de suero y la 
+otra de orina, posicionará dos tubos en el rotor. A cada tubo sólo se permite 
+asignar las técnicas del tipo de muestra seleccionado). 
+En los casos de realizar determinaciones de iones en orina, diluirla manualmente 
+y posicionar la dilución en un tubo diferente.
+ 
+Técnicas 
+Botón para acceder al listado de técnicas y hacer la asignación al paciente. Véa­
+se Ilustración 79.

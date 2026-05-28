@@ -1,0 +1,111 @@
+Manual usuario 
+ 
+ 
+ 
+Manual usuario 
+ 
+ 
+ 
+180
+180
+Biosystems
+Biosystems
+Tipo de 
+alarma
+Alarma/Error
+Causa del problema
+Solución propuesta
+Depósito de 
+agua purificada 
+demasiado tiempo 
+vacía
+Durante demasiado tiempo no 
+se ha llenado el depósito de agua 
+purificada. Esta acción bloquea la 
+lista de trabajo.
+Verifique la configuración de 
+entrada de agua está correcta. Si 
+tiene depósito externo, verifique que 
+está lleno. Resuelva el problema de 
+la falta de agua y pulse el botón de 
+confirmación de cambia de botella.
+Aviso de la tapa 
+del rotor de 
+reacciones está 
+abierta
+Se ha abierto la tapa del rotor de 
+reacciones durante el estado de 
+parado.
+Cierre la tapa del rotor de reacciones.
+Aviso de que 
+no hay rotor de 
+reacciones
+Ha iniciado una lista de trabajo sin 
+rotor de reacciones.
+Coloque un nuevo rotor de 
+reacciones con la utilidad de cambio 
+de rotor.
+Error de parada 
+del rotor de 
+reacciones
+La estación de lavado ha 
+colisionado. Esta acción detiene la 
+lista de trabajo.
+Verifique la colocación correcta del 
+rotor de reacciones. Verifique la 
+suspensión de la estación de lavado 
+no está bloqueada. Pulse el botón de 
+recuperación. En caso de persistir la 
+alarma avise al servicio técnico.
+Aviso de detección 
+de coágulo
+El analizador ha detectado una 
+obstrucción en la punta de 
+muestras.
+Centrifugue otra vez la muestra.
+El analizador tiene un problema 
+fluídico
+Revise las conexiones y la 
+configuración de la toma de agua. 
+Verifique que tenga suficiente agua 
+en el depósito externo.
+Aviso de falta 
+de volumen de 
+muestras
+No hay suficiente volumen de la 
+muestra o calibrador. El programa 
+bloquea las siguientes técnicas del 
+paciente en curso.
+Pulse el botón de pausa. Cuando el 
+programa le avise, acceda al rotor de 
+muestras y rellene la muestra. Pulse 
+el botón de continuar.
+Aviso de falta de 
+volumen en la 
+muestra diluida
+No hay suficiente volumen en la 
+cubeta del rotor donde se prepara la 
+dilución de la muestra. El programa 
+bloquea la muestra diluida en 
+curso.
+Pulse el botón de pausa. Revise el 
+volumen de la muestra o diluyente. 
+Pulse el botón de continuar.
+Error en el ajuste 
+de la linea base
+Valores del ajuste de la linea de base 
+fuera de límites. Esta acción se 
+realiza con el cambio de rotor.
+Cambie el rotor de reacciones. 
+Verifique que la estación de lavado 
+funciona correctamente. En caso de 
+persistir la alarma avise al servicio 
+técnico.
+Aviso de cambio 
+de rotor de 
+reacciones
+Demasiadas cubetas del rotor de 
+reacciones rechazadas. Este aviso no 
+bloquea la ejecución de la lista de 
+trabajo.
+Cambie el rotor de reacciones.

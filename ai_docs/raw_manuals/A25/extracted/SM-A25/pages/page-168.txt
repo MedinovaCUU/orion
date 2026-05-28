@@ -1,0 +1,69 @@
+Service manual
+168
+2. Load the appropiate sat-report based on analyzer A25/Y25. Tools -> Load Reportsat
+3. Do NOT load this sat report in the user PC, do it in another one. You will loose all the history data (results, calibra­
+tions, quality controls, etc). Otherwise previously have done a restorepoint and after the verification process load it.
+4. Connect and start the warm-up
+5. Click on connect button (arrows)
+6. Click on warm up button (key)
+7. You can prepare all the software and liquids during the warmup time
+8. Download the calibration values from the BioSystems website or get them from the “Values sheet”
+• 
+ www.biosystems-sa.com
+• 
+ www.biosystems.es
+9. If you don’t remember your access or you don’t have, contact customersupport@biosystems.es
+10. Use code and lot number to search the “Values sheet”
+11. Do a reset session
+12. Load the memorized session: “Verification session”. Worksession -> Load worksession, Select “Verification ses­
+sion” , Positioning selected samples” 
+13. Position automatically the samples
+14. Position manually the reagent bottles
+15. You can use same Distilled water bottle from the customer
+16. Look for empty spaces in the rotor. Try not to remove the customer’s reagents form the rotor
+17. Fill the cups and bottles with the following liquids, you can fill the cups with more volume, but in that case, you 
+will not check the correct adjustment of the sample for the dead volume.
+18. Position the reagents and samples
+Model A15 / A25
+Fill the cups with these minimum volume 
+for the samples:
+(µL)
+Calibrador 
+Calibrator
+220
+SCI 
+Serum control level I
+870
+SCII 
+Serum control level II
+870
+SCII-2 
+Serum control level II
+270
+SC-Dummy 
+Distllied water
+270
+Model Y15 / Y25
+Fill the cups with these minimum volume 
+for the samples:
+(µL)
+Calibrador 
+Glucose-fructose
+160
+Calibrador
+Acedit acid
+160
+Calibrador 
+Glycerol
+160
+Calibrador
+PAN
+160
+Control 
+Multical
+500
+Place the bottles and the samples in the positions where you positioned them in the software
+19. Prepare the washing solution
+20. Run the session
+21. Export the results
+22. When it finishes, go to the test result screen, press the option TEST. Press print current test button

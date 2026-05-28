@@ -1,0 +1,38 @@
+73
+73
+Icono
+Nombre
+Descripción 
+Nuevo
+Permite la creación de un elemento: técnica, 
+calibrador, control, usuario, etc.
+Editar
+Permite editar un elemento ya creado.
+Borrar
+Elimina un elemento.
+Imprimir
+Imprime información del elemento o elementos 
+seleccionados.
+Copiar
+Realiza una copia del elemento seleccionado.
+Guardar
+Guarda los datos.
+Deshacer
+Deshace los últimos cambios y recupera la información 
+previa del elemento en edición.
+Aceptar
+Acepta los cambios y cierra la ventana.
+Cerrar
+Cancela y cierra la ventana.
+Tabla 2 Descripción de los botones más comunes
+9.1.2. Listado de botones de acceso rápido
+Los botones de la barra horizontal son botones de acceso directo a los principales 
+menús del programa. La Tabla 3 muestra la descripción de cada uno de los botones.
+Icono
+Descripción del icono
+Acceso a la configuración general.
+Acceso a la programación de técnicas.
+Acceso a la programación de perfiles.
+Acceso a la creación de sesiones de trabajo.
+Acceso al posicionamiento de muestras y reactivos.
+Acceso a la pantalla monitor.

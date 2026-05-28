@@ -1,0 +1,229 @@
+77
+4.6. Placa control fotometría - CIIM00050
+Placa ubicada en el rotor de lecturas. Contiene un microcontrolador (U5) que controla los siguientes elementos:
+• 
+Detección de la tapa del rotor de reacciones(U7)
+• 
+Motor de la estación de lavado (U14)
+• 
+Detección de inicio de la estación de lavado (U10)
+• 
+Detección de colisión de la estación de lavado (U10)
+• 
+Conexión con la placa de fotometría
+• 
+Motor del rotor de reacción (U12)
+• 
+Detección de inicio del rotor de reacciones (U10)
+• 
+Detección del encoder del rotor de reacciones(13)
+• 
+Control de las peltiers para realizar la termostatización del rotor de reacciones (U18)
+• 
+Control de los ventiladores para la refrigeración de las peltiers (U17). Son ventiladores a 3 hilos.
+• 
+Control del sensor de temperatura de la termostatización del rotor de reacciones (U15 y U16)
+CIIM00050
+CAN BUS
+ROTOR
+DETECTOR
+ROTOR
+MOTOR
+GLF1
+PLMA00321
+PLMA00307
+PLMA00308
+PLMA00306
+WASHING
+STATION
+HOME
+WASHING
+STATION
+MOTOR
+PLMA00310
+TEMPERATURE
+SENSOR
+FAN
+PLMA00309
+FAN
+PLMA00311
+PELTIER
+PLMA00314
+ROTOR
+COVER 
+DETECTOR
+PLMA00320
+CIIM00051
+PLMA00316
+CN1
+CN5
+PLMA00318
+WASHING
+STATION
+COLLITION
+DETECTOR
+FAN
+PLMA00312
+FAN
+PLMA00313
+PELTIER
+PLMA00315
+ENCODER
+ROTOR
+CAN BUS
+PHOTOMETRY
+PHOTOMETRY
+ROTOR COVER
+FAN
+FAN
+HOME ROTOR
+ROTOR
+WS COLLISION
+HOME WASHING ST.
+WASHING STATION
+THERMISTOR
+ROTOR COVER
+FAN
+FAN
+FAN
+FAN
+THERMISTOR
+WASHING
+STATION
+HOME
+WASHING ST.
+WS COLISION
+ENCODER
+ROTOR
+HOME ROTOR
+PLMA00319
+ENCODER
+CN13
+CN13
+1
+2
+CN17
+CN17
+1
+2
+CN1
+CN1
+1
+2
+3
+4
+5
+1
+6
+2
+5
+4
+CN3
+CN3
+1
+2
+1
+2
+3
+4
+5
+6
++tº
++tº
+1
+2
+CN8
+CON3
+CN8
+CON3
+1
+2
+3
+CN12
+CN12
+1
+2
+1
+2
+3
+4
+5
+6
+CN14
+CN14
+1
+2
+1
+6
+2
+5
+4
+CN16
+CN16
+1
+2
+CN6
+CN6
+1
+2
+3
+4
+1
+6
+2
+5
+4
+CN9
+CN9
+1
+2
+3
+4
+1
+2
+CN7
+CN7
+1
+2
+3
+4
+5
+CN15
+CN15
+1
+2
+1
+6
+2
+5
+4
+CN4
+CON3
+CN4
+CON3
+1
+2
+3
+CN10
+CON3
+CN10
+CON3
+1
+2
+3
+CN11
+CN11
+1
+2
+1
+6
+2
+5
+4
+1
+6
+2
+5
+4
+Ilustración 4.14 
+Conexiones de la placa control de fotometría

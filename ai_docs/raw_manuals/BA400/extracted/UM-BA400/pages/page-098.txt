@@ -1,0 +1,51 @@
+Manual usuario 
+ 
+ 
+ 
+Manual usuario 
+ 
+ 
+ 
+98
+98
+Biosystems
+Biosystems
+opción de efecto prozona e introducir los 3 parámetros: Tiempo 1, Tiempo 2 y 
+el ratio en (%).
+El programa calcula los incrementos de absorbancia en los tiempos 1 y 2. Realiza 
+el cociente de los incrementos y compara el resultado con el ratio. Si el cociente 
+no supera el ratio entonces aparece una alarma indicando que la muestra puede 
+tener efecto prozona y tiene que ser el usuario que realice una repetición manual 
+con un factor de dilución para acabar de determinar el valor exacto de la muestra.
+ 
+CAUTION
+ 
+Los parámetros de la verificación del efecto prozona se han de determinar por 
+el usuario final. En caso de duda de la detección de la prozona, el usuario debe 
+realizar una dilución de la muestra para asegurar su correcto resultado.
+ 
+ 
+Función slope 
+Introduzca los parámetros a y b de la fórmula Y=aX+b. Estos parámetros 
+modifican el valor de la concentración del resultado de manera lineal. Esta 
+opción sirve para equiparar los resultados de diferentes analizadores. Donde X 
+será sustituida por el valor de concentración e Y será el valor de concentración 
+modificada.
+ 
+Sustrato consumido 
+Se aplica un algoritmo de cálculo para detectar reacciones donde el sustrato de 
+la muestra se ha agotado. Este algoritmo funciona para los siguientes modos de 
+cálculo, siendo distinto en función de cada tipo de reacción:
+• 
+Punto final creciente
+• 
+Cinética decreciente
+• 
+Tiempo fijo decreciente
+Los valores ya vienen introducidos por defecto en alguna de las técnicas.
+Si algún resultado de una réplica de un test se marca con la alarma de sustrato 
+consumido, y si el software y la prueba se han configurado para realiza la repeti­
+ción automática, se envía una repetición automática reducida para esta petición 
+(y repiten todos los replicados).
+Ilustración 63 
+Pantalla parámetros técnicas, rangos de referencia

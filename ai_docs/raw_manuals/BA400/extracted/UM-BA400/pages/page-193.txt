@@ -1,0 +1,75 @@
+193
+193
+ 
+)
+Véase capítulo 10.9.4
+Paso
+Acción 
+Repeti­
+ciones 
+Descripción
+1
+Activar 
+kit de 
+reactivos
+1
+Si no se activa el icono de ejecución al 
+seleccionar esta opción, verifique que se trata 
+de un kit nuevo. Si el kit ya se ha activado con 
+anterioridad esta opción no estará disponible, 
+sin embargo podrá efectuar una lectura con la 
+opción Leer Kit de reactivos. Si este es el caso, 
+salte a la siguiente instrucción. Si se trata de 
+un nuevo kit, compruebe que el conector está 
+colocado correctamente, sepárelo de nuevo y 
+vuélvalo a conectar. 
+2
+Purgar B
+3
+Saque la tapa inferior del brazo de reactivo 2, le 
+permitirá observar la copa de dispensación.
+ 
+)
+Véase Ilustración 121
+Observe la copa y verifique que el vaciado es 
+efectivo, es decir, que cada vez que las bombas 
+del módulo dispensan líquido en la copa, esta 
+se vacía antes de la siguiente dispensación. Si las 
+bombas no dispensan líquido, vuelva a ejecutar 
+la acción anterior. Si después de repetir 4 veces 
+no observa dispensación de líquido desconecte 
+y vuelva a conectar el adaptador del kit y repita 
+la acción. 
+3
+Purgar A
+3
+Proceda de igual manera que en el paso anterior
+4
+Cebado B
+9
+Ejecute 9 repeticiones de esta instrucción 
+para asegurar que la solución del nuevo kit 
+reemplaza completamente a la del kit anterior 
+en toda la sección de tubos y electrodos. Es 
+posible que alguna de las repeticiones de error 
+de falta de líquido. Asegúrese que los tres 
+últimos cebados han finalizado con éxito. Si no 
+es el caso, ejecute los cebados necesarios para 
+que esto ocurra.
+5
+Cebado A
+9
+Proceda de igual manera que en el paso anterior
+6
+Calibrar 
+electrodos
+2
+Ejecute esta acción para calibrar los electrodos 
+con la nueva solución y verificar que está 
+en buenas condiciones. Si el resultado no es 
+aceptable por presencia de aire, verifique que las 
+soluciones circulan correctamente repitiendo 
+los pasos 2 o 3 según el error reportado. Si las 
+calibraciones finalizan pero los resultados no 
+son aceptables repita estas instrucciones un par 
+de veces.

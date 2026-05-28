@@ -1,0 +1,10 @@
+1
+2
+Ilustración 8.55 
+Ajuste en alabeo del lector del código de barras
+ 
+3
+4
+Ilustración 8.56 
+Ajuste angular y de inclinación del lector del código de barras
+171

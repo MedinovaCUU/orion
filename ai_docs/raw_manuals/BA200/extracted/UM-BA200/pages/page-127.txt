@@ -1,0 +1,33 @@
+127
+127
+Las muestras que van en pocillos pediátricos no serán leídas por el lector de có­
+digo de barras y el usuario deberá posicionarlos con el arrastre manual o botón 
+de autoposicionar. 
+En caso de lectura automática de Código de Barras, cuando se presiona el botón 
+de inicio de sesión, (con Host Query activado), se leerán todas las posiciones del 
+rotor y se emparejarán los códigos con las órdenes pendientes de LIS.
+Cuando se haya posicionado más de una botella de un mismo reactivo, el órden 
+de pipeteo será el mismo que ocupe cada botella en el rotor.
+Si hay códigos de barras de muestras que no se corresponden con las muestras de 
+la sesión de trabajo el usuario puede introducir la información adicional necesaria: 
+tipo de muestra y técnica que desea realizar a cada muestra. 
+En caso de que el programa detecte un código de barras que sea erróneo se indica 
+con un icono sobre la posición del rotor. Puede corregir manualmente los códigos 
+de barras con error.
+Ilustración 82 
+Pantalla de posicionamiento de reactivos y muestras
+ 
+ 
+Pulse este botón cuando quiera que el analizador automáticamente identifique 
+las muestras de la sesión posicionadas en el rotor, estas muestras aparecerán de 
+color amarillo. Los códigos de barras escaneados que no hayan podido relacio­
+narse con alguna de las peticiones de la lista, aparecen de color gris, el usuario 
+puede asignar las técnicas usando la pantalla de la Ilustración 82. Aquellos 
+elementos que vayan en pocillos pediátricos, tales como calibradores y controles, 
+tendrán que ser posicionados manualmente o con el botón autoposicionar. 
+ 
+ 
+Botón de avisos relativos a elementos requeridos para la sesión de trabajo, al 
+pulsar este botón aparecerá un mensaje emergente informando de todos los ele­
+mentos que faltan por posicionar. Este mismo mensaje aparecerá cuando cierre 
+la pantalla de posicionamiento y falte algún elemento por posicionar.

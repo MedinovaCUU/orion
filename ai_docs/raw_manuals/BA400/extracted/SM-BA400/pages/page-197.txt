@@ -1,0 +1,15 @@
+18
+Ilustración 8.53 
+Montaje de la bomba
+8.10.8. AC16580 - Electroválvula de entrada
+Herramientas: 1 llaves allen de 2.5
+Desmontaje:
+1. Desconecte los tubos. En caso de dificultad para sacarlos, córtelos y sustitúyalos por unos nuevos.
+1. Quite los 2 tornillos (15)
+Montaje:
+1. Sustituya la electroválvula.
+2. Atornille la electroválvula.
+3. Conecte los tubos y cables.
+Ilustración 8.54 
+Cambio electroválvula de entrada
+197

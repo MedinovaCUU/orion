@@ -1,0 +1,28 @@
+157
+Origin
+Destination
+Connection
+Plug
+Fuse
+ASMB2890
+ASMB2889
+Fuse
+Network filter
+ASMB2891
+Mains filter
+Switches
+ASMB2892
+General switch
+36V and 12V power supply
+ASMB2883
+Refrigerator switch
+Refrigerator 12V supply
+ASMB2831
+2. Mount power-in panel, replacing the 4 screws (5). See Figure 6.65. Route the ASMB2883 and ASMB2881 cables 
+to power supplies compartment. 
+3. Connect the cables to the power supplies. See Figure 6.68 and Figure 6.69.
+4. Fix power supply board, replacing the 4 screws (3). See Figure 6.63.
+5. Connect output cables to board CIIM00090. Cable PLMA00215 should not be connected. See Figure 6.70.
+4
+Figure 6.64 
+Removing old power supply set

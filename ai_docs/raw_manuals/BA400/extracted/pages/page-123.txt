@@ -1,0 +1,65 @@
+AII. Technical characteristics
+WARNING
+The manufacturer declines all liability for damages caused by using the 
+appliance incorrectly.
+GENERAL CHARACTERISTICS
+Speed
+400 prep/h (without electrolytes)
+ISE module speed
+320 prep/h
+Analysis principles
+Colorimetry, turbidimetry.
+ISE module: Potentiometry (selective electrode 
+method): Na+, K+, Cl- (Li+ is optional)
+SAMPLE CONTROL
+Sample rotor capacity
+135
+Barcode detector
+Yes
+Number of samples with barcodes
+90
+Size of primary tubes 
+Diameter 12 mm to 16 mm (max. height 100 mm)
+Sample well
+Sample well diameter 13.5 mm
+Type of sample pump syringe
+Low-maintenance ceramic piston
+Piston diameter
+3 mm
+Pipetting volume
+2 μL to 40 μL
+Pipetting resolution
+0.1 μL
+Maximum ratio between sample and reagent volume
+1:2 to 1:200
+Level detection
+Yes
+Washing of tip
+Interior and exterior
+Clot sensor
+Yes
+Vertical collision detector
+Yes
+REAGENT CONTROL
+Reagent bottle volume
+20 mL, 60 mL
+Reagent rotor capacity
+88 (44 bottles of 20 mL or 
+60 mL + 44 bottles of 20 mL) 
+Refrigerated reagents
+Yes
+Maximum refrigerator temperature
+5° C to 8° C (at room temperature of 25° C)
+Barcode detector
+Yes
+Reagent arms
+2 (R1, R2)
+R1 reagent volume
+150 mL to 500 mL
+R2 reagent volume
+40 mL to 300 mL
+Type of reagent pump syringe
+Low-maintenance ceramic piston
+Piston diameter
+8 mm
+123

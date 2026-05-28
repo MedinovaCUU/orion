@@ -1,0 +1,83 @@
+Manual de servicio
+69
+Conector
+Función
+Pin
+CN4 
+Lector de código de barras
+Pin 1: Activación/desactivación
+Pin 2: Canal lectura 1
+Pin 3: Transmisión 1
+Pin 4: GND
+Pin 6: Canal lectura 2
+Pin 9: Disparo lectura
+Pin 10: Transmisión 2
+CN6
+Ventilador general
+Pin 1: 24 V
+Pin 2: GND
+CN7
+Ventilador general
+Pin 1: 24 V
+Pin 2: GND
+CN8
+Detector tapa
+Pin 1: 5V
+Pin 2: Señal detección
+CN9
+Motor rotor
+Pin 1: Coil 1
+Pin 2: Coil 1
+Pin 3: Coil 2
+Pin 4: Coil 2
+CN11
+Detección inicio rotor
+Pin 1: Detección
+Pin 2: GND
+Pin 3: 5V
+CN12
+Peltier
+Pin 1: 24 v
+Pin 2: Diagnóstico peltier
+Pin 3: Diagnóstico peltier
+Pin 4: GND
+CN13
+Peltier
+Pin 1: 24 v
+Pin 2: Diagnóstico peltier
+Pin 3: Diagnóstico peltier
+Pin 4: GND
+CN14
+Ventilador nevera
+Pin 1: 24 V
+Pin 2: Diagnóstico detección
+Pin 3: GND
+CN15
+Ventilador nevera
+Pin 1: 24 V
+Pin 2: Diagnóstico detección
+Pin 3: GND
+CN16
+Sensor temperatura
+Pin 1: Sensor
+Pin 2: GND
+CN18
+Ventilador nevera
+Pin 1: 24 V
+Pin 2: Diagnóstico detección
+Pin 3: GND
+CN19
+Ventilador nevera
+Pin 1: 24 V
+Pin 2: Diagnóstico detección
+Pin 3: GND
+CN20
+Ventilador estructura
+Pin 1: 24 V
+Pin 2: Diagnóstico detección
+Pin 3: GND
+CN21
+Ventilador estructura
+Pin 1: 24 V
+Pin 2: Diagnóstico detección
+Pin 3: GND

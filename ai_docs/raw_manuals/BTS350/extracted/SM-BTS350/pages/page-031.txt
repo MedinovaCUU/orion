@@ -1,0 +1,37 @@
+—  31  —
+Programme these parameters depending on the type of sample to be read. The interval time and number of intervals time 
+will give the length of the test to be performed.
+Press F1 to begin the test. The appliance asks to enter the baseline and then the sample to be read. If this is the same fluid 
+used for the baseline, a zero stability test can be performed.
+For a routine test, make the BASELINE with standard nº 0 of the AC10495 standards kit and use standard nº 4 as the 
+SAMPLE.
+The reading nº, time and absorbance are printed out. The test statistical data are printed at the end: maximum absorbance, 
+minimum absorbance, average and coefficiant of variation (CV).
+See Appendix I.5 for the acceptable values range.
+4.11.4. - Precision
+This allows successive readings to be made, changing the sample each time. If using the same fluid, it allows the precision 
+of the appliance to be tested (replicability between identical samples).
+When beginning the test, the instrument requests:
+• 
+Reading wavelenght.
+• 
+Stabilisation time.
+• 
+Sample volume.
+• 
+Number of intervals.
+Press F1 to begin the test.
+The appliance asks for the baseline to be entered and then as many samples as there are numbers of intervals programmed. 
+The test statistical data are printed at the end: maximum absorbance, minimum absorbance, average and coefficiant of 
+variation (CV).
+4.11.5. - Trueness
+This allows the accuracy of a sample with a known value to be checked. 
+WARNING: To guarantee the test is reliable, the known value of the sample must have been determined with a very exact 
+reference method. 
+When beginning the test, the instrument requests:
+• 
+Reading wvaelenght.
+• 
+Stabilisation time.
+• 
+Sample volume.

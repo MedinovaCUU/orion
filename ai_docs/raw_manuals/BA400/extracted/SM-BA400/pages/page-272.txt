@@ -1,0 +1,23 @@
+Lista de recambios
+Código
+Representación 
+Descripción
+AC16567
+Fuente de alimentación 320 W
+AC16569
+Fuente de alimentación 35 W para el módulo ISE
+AC17310
+Fuente de alimentación 320 W para la nevera
+AC17311
+Fuente de alimentación 35 W para el control de 
+la nevera
+AC16570
+Célula de carga
+AC16571
+Ventilador general (2 hilos)
+AC17266
+Conjunto soporte filtro ventilador
+AC17265
+Filtro de recambio del ventilador
+Manual de servicio
+272

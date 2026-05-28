@@ -1,0 +1,49 @@
+Manual usuario 
+ 
+ 
+ 
+Manual usuario 
+ 
+ 
+ 
+106
+106
+Biosystems
+Biosystems
+Ilustración 70 
+Introducción de las concentraciones del calibrador
+Escoja primero la técnica que quiera asignarle el calibrador y pulse el botón de editar.
+ 
+Calibradores 
+Seleccione el nombre del calibrador que quiera asignar a la técnica.
+Introduzca los valores del calibrador para la técnica. 
+En el caso de que el calibrador sea de un valor, entonces únicamente tiene que 
+introducir el valor de la concentración. En los calibradores multipuntos, tiene que 
+introducir los siguientes parámetros:
+ 
+Creciente/ decreciente 
+Indica si la curva de calibración será creciente o decreciente.
+ 
+Realización de la curva 
+Introduzca el método para dibujar la curva de calibración. Puede ser uno de los 
+siguientes métodos: poligonal, recta de regresión, parábola de regresión o spline. 
+Escoja también los ejes en que quiera mostrar la curva de calibración: ejes linea­
+les o ejes logarítmicos.
+ 
+Valores de concentración 
+Introduzca los valores de concentración para cada calibrador en orden 
+decreciente. 
+ 
+Diluyente 
+Escoja el diluyente para realizar la curva automáticamente.
+ 
+Máx. concentración 
+Introduzca la concentración del calibrador más elevado. 
+ 
+Factor 
+Introduzca cada uno de los factores de dilución para cada punto en orden decre­
+ciente. Es importante introducir en el primer punto el número uno para indicar 
+cuál es el calibrador más elevado.
+La programación de calibración de la técnica se puede consultar desde la pantalla 
+de programación de las técnicas. Para modificar el valor de calibración únicamente 
+se puede realizar desde esta pantalla.

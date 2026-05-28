@@ -1,0 +1,47 @@
+Manual usuario 
+ 
+ 
+ 
+Manual usuario 
+ 
+ 
+ 
+170
+170
+Biosystems
+Biosystems
+Esta herramienta se accede por el menú de utilidades/SAT report o por el icono de 
+la barra horizontal. Se abre una pantalla como la mostrada en la Ilustración 112.
+ 
+ 
+Pulse el botón para indicar el nombre y la ruta donde se guardará el SatReport. 
+Por defecto aparece la ruta del escritorio y el nombre de SATReport con la 
+fecha. El nombre del archivo es completamente editable situando el puntero en 
+el campo Nombre del Archivo.
+ 
+ 
+Pulse el botón para guardar la información en el SatReport. 
+Copie el fichero y envíelo al servicio técnico para su análisis.
+10.9.7. Crear punto de restauración con los datos actuales
+Utilidad que sirve para crear una copia de toda la base de datos. Sirve para realizar 
+manualmente copias de seguridad.
+ 
+ 
+Pulse el botón para realizar la copia de la base de datos. El nombre del archivo 
+generado por defecto es: RestorePoint [Fecha], pero puede introducir otro nom­
+bre diferente.
+La carpeta donde encontrará dicho archivo es: 
+C:\Program Files\BA200\User Sw\RestorePoints
+Ilustración 113 
+Pantalla creación punto de restauración
+10.9.8. Restaurar datos previos
+Utilidad que permite recuperar la base de datos guardada anteriormente en el 
+punto de restauración. Aparece una ventana con todos los archivos creados desde 
+el punto de restauración anterior. Seleccione uno y pulse el botón aceptar. 
+Tenga en cuenta que cuando restaure un archivo de base de datos, ésta sustituirá la 
+base de datos actual, con lo cual perderá los datos desde la última vez que realizó 
+el último punto de restauración. 
+Es aconsejable realizar siempre un punto de restauración justo antes de realizar 
+una restauración de datos previos.
+Ilustración 114 
+Pantalla restaurar datos previos

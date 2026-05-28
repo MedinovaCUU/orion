@@ -1,0 +1,28 @@
+38
+Service manual
+3.2.5.  Reagents refrigerator
+1
+2
+3
+4
+5
+6
+7
+8
+Figure 3.18 
+1 – Refrigerator lid
+2 – Refrigerator bottle separator
+3 – Refrigerator body
+4 – Cold refrigerator plate
+5 – Peltiers
+6 – Insulating
+7 – Sink
+8 – Fans
+Reference Figure 3.18
+3.2.6.  Back covers
+Three metallic covers close the back of the instrument. 
+3.2.6.1.  Connectors cover
+The metallic cover (1) supports the connectors (2) and (3) that connect the instrument to the PC. There are two con­
+nectors marked as COM1 and COM2.
+The COM1 is for connecting the computer and can be connected using an RS-232 cable or a USB cable.
+The COM2 is an auxiliary communications channel.

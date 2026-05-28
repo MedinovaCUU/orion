@@ -1,0 +1,65 @@
+109
+109
+ 
+Lote 
+Introducir el lote del calibrador. Cuando cambia el lote, se requiere volver a 
+programar las concentraciones de todas las técnicas que usan este calibrador. El 
+programa da un aviso mostrando las técnicas afectadas.
+ 
+Fecha de caducidad 
+Introducir los días que dura el calibrador una vez se ha reconstituido. 
+ 
+Nº 
+Introducir el número de calibradores que tiene este calibrador.
+ 
+Modo dilución 
+Visible sólo cuando el número de calibrador es mayor que uno. Seleccionar 
+el modo de dilución: manual o automático. En las calibraciones multipunto 
+automáticos, es el analizador que prepara automáticamente mediante diluciones 
+cada punto a partir del calibrador de concentración más elevada. En la opción 
+manual hay tantos calibradores preparados como puntos estan definidos en la 
+curva.
+En la segunda pestaña se asigna el calibrador a la técnica y se introduce el valor 
+de concentración. 
+Escoja primero la técnica que quiera asignarle el calibrador y pulse el botón de editar.
+ 
+Calibradores 
+Seleccione el nombre del calibrador que quiera asignar a la técnica.
+Introduzca los valores del calibrador para la técnica. 
+En el caso de que el calibrador sea de un valor, entonces únicamente tiene que 
+introducir el valor de la concentración. En los calibradores multipuntos, tiene que 
+introducir los siguientes parámetros:
+ 
+Creciente/ decreciente 
+Indica si la curva de calibración será creciente o decreciente.
+ 
+Realización de la curva 
+Introduzca el método para dibujar la curva de calibración. Puede ser uno de los 
+siguientes métodos: poligonal, recta de regresión, parábola de regresión o spline. 
+Escoja también los ejes en que quiera mostrar la curva de calibración: ejes linea­
+les o ejes logarítmicos.
+ 
+Valores de concentración 
+Introduzca los valores de concentración para cada calibrador en orden decre­
+ciente. La columna Factor a la derecha de la columna de introducción de los 
+valores de concentración indica la proporción en tanto por 1 respecto al calibra­
+dor de mayor concentración (1 para el calibrador más concentrado).
+ 
+Diluyente 
+Escoja el diluyente para realizar la curva automáticmaente.
+ 
+Máx. concentración 
+Introduzca la concentración del calibrador más elevado. 
+ 
+Factor 
+Introduzca cada uno de los factores de dilución para cada punto en ordén decre­
+ciente. Es importante introducir en el primer punto el número uno para indicar 
+cúal es el calibrador más elevado.
+La programación de calibración de la técnica se puede consultar desde la pantalla 
+de programación de las técnicas. Para modificar el valor de calibración únicamente 
+se puede realizar desde esta pantalla.
+10.3.6. Controles
+En esta pantalla se dan de alta los controles que se van a usar. Se puede crear nuevos 
+controles, editar, borrar e imprimir.
+También permite la edición de los valores mínimos y máximos de cada técnica 
+para cada nivel de control.

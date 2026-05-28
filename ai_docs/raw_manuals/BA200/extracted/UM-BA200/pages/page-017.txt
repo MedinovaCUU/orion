@@ -1,0 +1,52 @@
+17
+17
+Precauciones de seguridad
+Símbolo
+Descripción 
+Prevención de riesgo eléctrico
+Para reducir el riesgo de descargas eléctricas, no quite la cubierta del analizador. 
+No hay ninguna pieza en el interior que deba reparar el usuario para ello 
+diríjase a su servicio de asistencia técnica.
+BIOHAZARD
+Prevención de riesgo biológico por manipulación de muestras
+La manipulación inapropiada de las muestras, controles y calibradores puede 
+causar una infección biológica. No toque las muestras, mezclas ni residuos con 
+las manos. Use guantes y vestimenta de protección cuando sea necesario.
+En caso que las muestras entren en contacto con la piel, lave inmediatamente 
+con abundante agua y consulte con un médico. Se recomienda que siga las 
+buenas prácticas de laboratorio.
+WARNING
+Prevención por manipulación de reactivos
+Manipule con cuidado los reactivos y soluciones de lavado, hay sustancias que 
+pueden ser corrosivas.
+En caso de que los reactivos o solución de lavado entren en contacto con la 
+piel, lave inmediatamente con abundante agua y consulte con un médico. 
+Consulte la hoja de adaptación del reactivo o solución de lavado para seguir las 
+instrucciones de seguridad.
+Se recomienda que siga las buenas prácticas de laboratorio.
+BIOHAZARD
+Prevención de riesgo biológico por manipulación de residuos líquidos
+Manipule con cuidado el contenedor de residuos de alta contaminación. 
+Utilice guantes y vestimenta de protección al manipular el contenedor.
+Deshágase de los residuos de acuerdo con la legislación de su gobierno nacional 
+o local para la eliminación de residuos biológicos peligrosos y consultar al 
+fabricante o distribuidor de los reactivos para más detalles.
+BIOHAZARD
+Prevención de riesgo biológico por manipulación de residuos sólidos
+Manipule con cuidado las partes del analizador que se conviertan en residuos 
+tales como el rotor de reacción, tubos de muestras, botellas de reactivo.
+Utilice guantes y vestimenta de protección al manipular dichos residuos.
+Deshágase de los residuos de acuerdo con la legislación de su gobierno nacional 
+o local para la eliminación de residuos biológicos peligrosos y consultar al 
+fabricante o distribuidor de los reactivos para más detalles.
+NOTE
+Prevención de interferencias electromagnéticas
+El analizador cumple con los requisitos de emisión e inmunidad descritos en la 
+norma UNE -EN 61326-2-6:2006. Este equipo ha sido diseñado y ensayado 
+para la clase B de la norma UNE-EN 55022:2000. En un entorno doméstico 
+puede causar interferencias de radio, en cuyo caso, puede ser necesario tomar 
+medidas para mitigar la interferencia. 
+No usar el analizador en las proximidades de fuentes de radiación 
+electromagnética fuerte (por ejemplo aparatos de centrifugación, transmisores 
+de radio, teléfonos móviles), ya que estas pueden interferir con el 
+funcionamiento adecuado.

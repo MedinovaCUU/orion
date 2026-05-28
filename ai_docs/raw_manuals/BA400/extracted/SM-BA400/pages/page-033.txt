@@ -1,0 +1,7 @@
+3
+4
+Ilustración 3.12 
+Ajuste angular y de inclinación del lector del código de barras
+Ilustración 3.13 
+Verificación del ajuste del lector de código de barras
+33

@@ -1,0 +1,38 @@
+16
+Service manual
+detection to control the level of the bottles and tubes and prevent the needle from penetrating too far into the corre­
+sponding liquids, thus minimizing contamination. An automatic adjustment system informs the user if the needle is 
+not mounted or if it is too bent. The needle has a sophisticated Peltier thermos­tatisation system, with Fuzzy Logic 
+control, capable of thermostatising the preparations at approximately 37º in less than 6 seconds. Dispensing is carried 
+out by means of a low maintenance ceramic piston pump driven by a step-by-step motor. It is capable of dispensing 
+between 3 and 1250  µL. The exterior of the needle is kept constan­tly clean by means of a washing station, which 
+consists of a font special­ly designed to clean and dry the needle, integrated in the racks tray. A system of diaphragm 
+pumps supplies the font with distilled water and transports the waste to its container.
+The A25/Y25 analyzer has a tray with 3 free positions for racks of rea­ge­nts or samples, plus three fixed positions 
+for bottles opposite the washing station. Each reagents rack can carry up to 10 reagents in 20 ml or 50 ml bottles. 
+Each samples rack can contain up to 24 tubes of samples. The samples can be patients, calibrators or controls. The 
+analyzer can be configured to work with 13 mm or 15 mm diameter tubes of samples with a length of up to 100 mm 
+or with paediatric wells. 
+Any possible configuration of racks can be mounted from 3 racks of samples (72 samples) and 30 refrigerated bottles 
+of reagent to 2 racks of unrefrigerated reagents (20 reagents) and 30 refrigerated bottles of reagent and 1 rack of 
+samples (24 samples). Any reagent may be placed in the fixed positions, but it is recommendable to use them for the 
+bottles of distilled water, saline solution for the automatic pre-dilutions and washing solution. The rack tray detects and 
+identifies the type of racks. In this way, if the physical disposition of the racks does not coincide with that programmed 
+on the comp uter, the analyser alerts the user.
+On the left of the analyser are system liquid containers (marked in blue) and waste containers (marked in red), and 
+on the back of the analyser is connected the bottle of washing solution (marked in green). The analyser constantly 
+controls the level of these containers and issues the appropriate alerts if the system liquid or washing solution is nearly 
+empty or if the waste container is full.
+2.1.3. 
+Reactions rotor and reading
+The preparations are dispensed in an optical quality methacrylate reactions rotor thermos­tatised at 37ºC. The optical 
+absorbance readings are taken directly on this rotor. Each reaction can be read for 15 minutes. The readings are taken 
+as they are programd in each measurement procedure. The reaction wells have been designed to enable the mixture 
+of the sample and the reagent during the dispensing. Each rotor has 120 reaction wells. The length of the light path 
+is 6 mm. The minimum volume required to take the optical reading is 200 µL. The wells have a maximum useful ca­
+pacity of 800 µL. When the reactions rotor is completely full, the user must change it with one that is empty, clean and 
+dry. The reactions rotors can be reused up to 5 times if they are carefully cleaned immediately after use. The rotor is 
+driv­en by a step-by-step motor with a transmission. A Peltier system with PID control thermostatises the rotor at 37ºC.
+An optical system integrated in the rotor takes the readings directly on the reaction wells. The light source is a 20 W 
+halogen lamp. The detector is a silicon photodiode. The wavelength is selected by a wheel with 9 positions available 
+for optic filters. The filters are easily ch­an­ged by the user from the exterior of the analyzer, without the need for disas­

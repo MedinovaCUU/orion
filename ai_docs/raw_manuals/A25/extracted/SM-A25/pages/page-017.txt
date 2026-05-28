@@ -1,0 +1,39 @@
+17
+sembling the filter wheel. A step-by-step motor positions the wheel. The optical system is capable of taking 5 readings 
+per second, with or without a filter change in between. The light beam of the lamp passes through a compensated 
+interferential filter to select the desired wavelength and through focalisation lenses. It then passes through the rotor well 
+and finally reaches the photodiode, where the light signal is turned into an electric signal. A sophisticated analogical 
+digital integrator-converter system converts the electric signal into a digital value with which the analyzer obtains the 
+absorbance values. The optical system continues to work when the general cover of the analyzer is open, whereby the 
+analyzer can continue to take readings while the user handles, for example, the sample tubes or the reagent bottles. 
+The rotor cover must be ­in place­ for the optical system to work correctly. A detector tells the analyzer of the presence 
+of the cover. The analyzer aborts the readi­ngs if the user removes the rotor cover while the optical system is taking 
+photometric measurements. If the rotor is not covered, the analyzer informs the user so that he or she places the rotor 
+cover when it sends samples to be analyzed.
+2.1.4. 
+Electronic system
+The described components are controlled by an electronic system based on a micropro­cessor. The microprocessor 
+has two exte­rnal communication channels that make it possible to link up the instrument to the computer containing 
+the application prog­ram and to an optio­nal external module for measuring ion concentration. The electronic system 
+is made up of the following independent boards:
+• 
+Microprocessor board
+• 
+Photometric system board
+• 
+Needle conditioning board
+• 
+Racks detection board
+• 
+Front indicator board
+• 
+Power supply board
+• 
+Communications board
+2.1.5. 
+ Application program
+The application program makes it possible to control all the operations of the analy­zer. Fro­m this program, the user 
+can monitor the state of the analyzer and the work session, program parameters, e.g. technique parameters, prepare 
+the work session, prepare results reports, configure different analyzer options, activate various test utilities, prepare 
+and maintain the instrument and carry out internal quality control processes. The purpose of this manual is not to 
+explain the fun­ction­ing of the user program. For detailed information to this re­gard, please con­sult the User’s Manual

@@ -1,0 +1,19 @@
+Ilustración 6.14 
+Pantalla memorización de las corrientes de referencia.
+6.5.2.2. Metrología
+Desde esta opción se puede verificar el estado de la fotometría del analizador. Ver Ilustración 6.15.
+Se puede realizar las siguientes verificaciones:
+• 
+Repetibilidad de las lecturas.
+• 
+Estabilidad de las lecturas.
+• 
+Lectura de absorbancias.
+Ilustración 6.15 
+Pantalla verificación fotométrica.
+Para realizar cualquier verificación es necesario llenar el rotor con agua destilada. Este proceso lo puede realizar el 
+analizador o el usuario manualmente. 
+1. Seleccione el modo de llenado del rotor y el pocillo donde realizará las lecturas
+2. Pulse el icono para elevar o descender la estación de lavado y así poder retirar o colocar un rotor.
+Manual de servicio
+118

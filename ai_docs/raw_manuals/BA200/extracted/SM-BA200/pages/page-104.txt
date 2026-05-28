@@ -1,0 +1,14 @@
+Ilustración 6.26 
+Pantalla modo demostración
+6.6.2. Información del analizador
+Desde esta pantalla permite realizar la entrada o modificación del número de serie del analizador.
+Pulse el botón de edición para modificar el número de serie.
+También realiza el mismo proceso de verificación que realiza el analizador cuando se inicializa. 
+Pulse el botón de “mostrar detalles” para ver los diferentes pasos realizados en la verificación.
+Ilustración 6.27 
+Pantalla de información del analizador
+6.6.3. Copia de seguridad/Restaurar ajustes
+Desde esta pantalla permite realizar una copia de seguridad de los ajustes del analizador y la restauración de los 
+ajustes desde un fichero guardado previamente.
+Manual de servicio
+104

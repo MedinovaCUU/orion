@@ -1,0 +1,20 @@
+10
+11
+9
+13
+12
+Ilustración 8.31 
+Montaje soporte pistón
+Montaje:
+1. Coloque el nuevo soporte pistón.
+2. Introduzca la cremallera y apriete el tornillo (13).
+3. Apriete los tornillos del motor (12). Verifique que el movimiento del engranaje con la cremallera es suave.
+4. Monte las cámaras una a una, posicionando los tornillos (7) sin apretar. Los pistones deben estar mitad dentro 
+de la cámara, mitad fuera, para la correcta alineación de los pistones con la cámara. Una vez posicionados los 
+tornillos de todas las cámaras, se introducen los pistones dentro de las cámaras y se aprietan los tornillos en cruz.
+5. Desplace la cremallera en su posición inferior.
+6. Coloque la abrazadera y posicione los tornillos (10) y (11) sin apretar.
+7. Coloque el soporte de los pistones a 15.4 mm de distancia respecto a la pieza que sujeta el motor (14).
+8. Apriete los tornillos en este orden, primero (11) y después el (10).
+9. Verifique el movimiento de subida y bajada de los pistones.
+147

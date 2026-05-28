@@ -1,0 +1,65 @@
+121
+121
+ 
+ 
+Pulse este icono para avanzar un paciente. 
+ 
+ 
+Pulse este icono para retroceder un paciente.
+ 
+ 
+Pulse este icono para ir al último paciente.
+ 
+ 
+Pulse este icono para ir al primer paciente.
+ 
+ 
+Pulse este icono para ir al paciente anterior que no tenga datos introducidos.
+ 
+ 
+Pulse este icono para ir al siguiente paciente que no tenga datos introducidos.
+ 
+ 
+Pulse este icono para cerrar la ventana emergente. Por defecto todos los cambios 
+se memorizan sin tener que pulsar ningún otro icono para guardar los datos. 
+También puede cerrar esta pantalla con el botón ESC.
+10.5.3. Posicionamiento en el rotor
+Esta pantalla indica el posicionamiento de los reactivos y de las muestras. El proceso 
+de posicionamiento de los reactivos y muestras puede ser manual o automático.
+La pantalla muestra la siguiente información:
+ 
+)
+Véase Ilustración 83
+A la izquierda, aparece la lista de todos los reactivos y muestras a posicionar de la 
+sesión de trabajo. Los elementos que aún no se han posicionado están en color 
+negro, mientras que los elementos posicionados aparecen de color verde.
+En el centro, la imagen del rotor de muestras y reactivos (en pestañas separadas) 
+permite visualizar los elementos posicionados, identificados con un icono y un 
+color que facilita identificar el tipo de elemento y el estado del mismo.
+A la derecha, aparece la información detallada de la posición seleccionada del rotor 
+de muestras y reactivos. 
+ 
+Posicionamiento manual 
+Seleccione un elemento del árbol y arrástrelo con el ratón hasta la posición del 
+rotor que desee. Repita este proceso para cada uno de los elementos del árbol. 
+Previamente tiene que haber seleccionado o el rotor de reactivos o el rotor de 
+muestras.
+ 
+ 
+Este botón posiciona automáticamente todas las muestras de paciente, controles 
+y calibradores. Las muestras de paciente empezarán a colocarse desde la primera 
+posición que encuentre vacía. Los calibradores y controles se colocan desde la 
+posición 91, corresponde a la tercera corona y estas posiciones no disponen de 
+lector de código de barras.
+ 
+ 
+Este botón posiciona automáticamente los reactivos. Las botellas de las solu­
+ciones especiales (solución salina, solución de lavado, etc) se colocan desde la 
+última posición y decrementando las posiciones.
+Puede mover los elementos posicionados en los rotores manualmente, mediante 
+el arrastre hasta otra posición libre.
+ 
+ 
+Este botón lee los códigos de barras de las muestras y reactivos del analizador. Si 
+se habían introducido o recibido de LIS peticiones para las muestras escaneadas, 
+se relaciona toda la información y estas muestras aparecen de color amarillo

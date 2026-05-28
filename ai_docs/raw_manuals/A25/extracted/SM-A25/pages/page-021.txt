@@ -1,0 +1,65 @@
+21
+3.  Mechanical components
+3.1.  Instrument breakdown
+The physical structure of the analyzer can be broken down as follows:
+• 
+Operating arm
+• 
+X guide.
+• 
+X carriage.
+• 
+Y carriage. This includes the spring and encoder of the Z carriage.
+• 
+Z carriage. This is the carriage carrying the thermostated needle. It includes the elec­tronic needle condi­
+tioning board.
+• 
+Cable carrier chains. These contain the electrical hoses of the arm and the dispensing tube.
+• 
+Dispensing system.
+• 
+Thermostated probe.
+• 
+Dispensing pump.
+• 
+Tubes and containers.
+• 
+Container level control scales.
+• 
+Racks tray with integrated washing station. This includes the electronic racks detection board.
+• 
+Washing pumps.
+• 
+Reactions rotor with integrated optical system.
+• 
+Thermostated rotor and photometric system. This contains the electronic photo­metric system board.
+• 
+Lighting system. 
+• 
+Back covers
+• 
+Main cover hinges.
+• 
+Base. This houses the electronic boards of the microprocessor, the power sup­ply and the front indicator.
+• 
+Housings.
+• 
+Back housing.
+• 
+Front housing. This houses the optical and rotor covers.
+• 
+Arm housing.
+• 
+Main cover.
+The following is a brief description of each of the mechanical components that make up the analyzer.
+3.2.  Description of the mechanical components
+3.2.1.  Operating arm
+This mechanism positions the dis­pen­sing needle appropriately during the prepara­tion of the analyses. An encoder 
+checks the vertical movement of the needle and a spring automatically stops it from falling in the case of a power 
+cut. The dispen­sing tube and the electrical hoses of the arm are housed in cable carrier chains, which guide them 
+appropriately. A housing unit covers the Y and Z carriages.
+The Z carriage (4) supports the thermostated needle and can be displaced over the Y carriage (3), which, in turn, can 
+be displaced over the X carriage (2), which, in turn, can be displaced over the X guide (1). In this way, the needle can 
+be displaced in the three Cartesian directions of X, Y and Z. The cable carrier chain (5) houses the Teflon dispensing 
+tube (6) and all the electrical hoses (7) of the arm. The support cover (8) guides the cable carrier chain of the Y ca­
+rriage along the X carriage.

@@ -1,0 +1,5 @@
+Manual de servicio
+54
+4.12. Interconexión entre placas
+Los siguientes esquemas muestran las conexiones entre las placas y los diferentes elementos que com-
+ponen el analizador.

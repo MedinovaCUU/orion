@@ -1,0 +1,32 @@
+53
+53
+• 
+Los tubos marcados con la W se instalarán en la bomba (2) y el orden de 
+colocación empezando por la izquierda es W1 y W2.
+• 
+Los tubos marcados con la B se instalarán en la bomba (3) y el orden de co­
+locación empezando por la izquierda es B2 y B1.
+• 
+Los tubos marcados con la A se instalarán en la bomba (4) y el orden de co­
+locación empezando por la izquierda es A2 y A1.
+Tenga cuidado al conectar los tubos de la bomba de residuos (2) porque van conec­
+tados en sentido inverso a los tubos de la bomba para los calibradores A (4) y B (3). 
+2
+3
+4
+1
+Ilustración 32 
+Instalación de los tubos
+ Instalación del kit de reactivos Desembale el kit, retire los tres tapones rojos de protección de las conexiones 
+y la etiqueta roja de advertencia. Guarde los tapones por si quiere desinstalar 
+el kit de reactivos. Posicione el conector orientado correctamente y presione 
+con una ligera fuerza hasta oír un clic. Escriba en el lateral del kit la fecha de la 
+instalación.
+No presione con fuerza los laterales de la caja ni ponga boca abajo el kit de reactivos 
+sin los tapones porque puede derramar el reactivo o los residuos. Se recomienda 
+usar guantes para esta operación.
+Coloque el kit en su alojamiento.
+Ejecute las acciones, en número y orden indicado, con el programa de usuario, en 
+el apartado de utilidades ISE, la opción Instalación/Activación.
+Véase capítulo 10.9.4
+NOTE

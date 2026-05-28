@@ -1,0 +1,38 @@
+4. Check that the wash station dryer is correctly secured and in good condition. If it is damaged, replace it with 
+a new one.
+7.1.5. Cleaning the barcode reader window
+Wash the inside and outside of the barcode reader window.
+1. Remove the top panel of the analyser
+2. Use a damp cloth to clean the inside of the two barcode reader windows.
+3. Remove the two rotors from their compartments.
+4. Clean the outside of the two barcode reader windows with a damp cloth.
+7.1.6. Wash the heating canal and the canal of the rotor containers
+Use a damp cloth and neutral soap. 
+1. With the analyser switched off, lift the wash station manually.
+2. Remove the covers from the 3 rotors. 
+3. Remove the PMMA rotor and the sample and reagent rotors.
+4. Wipe the surface of the heating canal and the inside of the rotor vessel with a cloth.
+5. Check that the drains are not blocked. To do this, run some water through the opening and check that the 
+water disappears down the drain.
+7.2. Maintenance
+All maintenance work will be performed every 2 years or when an operation has been performed by the technical 
+service.
+Material and tools needed to perform maintenance on the appliance:
+• 
+T20 torx key with a minimum length of 40 mm
+• 
+Set of Allen keys 
+• 
+SAE-40 or any equivalent lubricant
+7.2.1. Checking of the wash station piston pump
+1. Remove the housing on the right side
+2. Remove the panel on the right side
+3. Touch the fluidic connections of the 5 PMMA chambers and ensure there are no leaks. 
+4. Apply 2 drops of SAE40 lubricant to the linear bearings of the pump. 
+7.2.2. Checking of the reagent and sample arms, stirrers and wash station
+Check the tension of the belts:
+5. Remove the top panel of the analyser
+6. Check the tension of the two belts of each arm (the 2 reagent arms, sample arm and the two stirrers). The belt 
+tension must not be too loose or too tight. 
+Service Manual 
+94

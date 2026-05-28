@@ -1,0 +1,15 @@
+Manual de servicio
+10
+9.3.5. 
+Limpiar la copa de restos de muestra..................................................................... 260
+9.3.6. 
+Márgenes de aceptación de las calibraciones............................................................ 261
+9.3.7. 
+Errores de deriva y ruido...................................................................................... 261
+AI. Lista de accesorios y recambios.........................................................................263
+AII. Modificaciones de hardware y software.............................................................287
+AIII. Listado de códigos de error...............................................................................291
+AIV. Características técnicas.....................................................................................294
+AV. Tablas de márgenes de ajuste............................................................................297
+AVI. Retirada del equipo del uso por reparacion o eliminación de residuos..............300
+AVII. Instrucciones para el reacondicionamiento.......................................................300

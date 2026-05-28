@@ -1,0 +1,31 @@
+—  28  —
+Service manual
+4.9. - Cuvette temperature
+To check the thermostatisation system operation, proceed as follows:
+• 
+Insert the temperature sensor of the digital thermometer into the cuvette holder.
+• 
+When requested by the programme to do so:
+• 
+Insert the test temperature.
+• 
+After five minutes of thermostatation, the programme will ask for a new test temperature. 
+• 
+Check that the temperature indicated by the digital thermometer is within the acceptance criteria.
+4.10. - Carry over
+This enables carry over in the suctioning system produced by the consecutive reading of two different samples to be 
+studied, in which the first usually has a high absorbance and the second, a low one.
+Select the values of the following parameters to perform the test:
+• 
+Reading wavelenght.
+• 
+Stabilisation time (1).
+• 
+Sample volume (400).
+To perform the test:
+• 
+Press F1 to begin the readings. 
+• 
+Enter the baseline and then the first sample five times (L1 to L5) and the second, five times (L6 to L10). 
+• 
+The semi-automatic analyzer calculates the carry over, based on the formula:

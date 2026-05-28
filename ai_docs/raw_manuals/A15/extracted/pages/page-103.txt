@@ -1,0 +1,40 @@
+104
+Manual de servicio
+5.7.3. Ubicación de los diferentes archivos del software
+A continuaión se indica donde localizar los diferentes archivos que utiliza el software de usuario. Sólo aplica a 
+partir de la versión v5.5 del software de usuario
+Dirección de las carpetas
+Descripción
+c:\Program Files (x86)\A15\
+c:\Program Files (x86)\Y15\
+Carpeta de instalación del software
+c:\ProgramData\A15\
+c:\ProgramData\Y15\
+Carpeta donde se guardan las bases de datos y 
+arhivos generados por el software
+c:\Users\Public\Documents\A15\ReportSAT
+c:\Users\Public\Documents\Y15\ReportSAT
+Carpeta donde se guardan los ReportSAT
+c:\Users\Public\Documents\A15\RestorePoints\
+c:\Users\Public\Documents\Y15\RestorePoints\
+Carpeta donse se guardan los RestorePoints, El 
+RestorePoint es un backup de la base de datos
+c:\Users\Public\Documents\A15\Reagents\
+c:\Users\Public\Documents\Y15\Reagents\
+Carpeta donde se guardan los archivos de consumo 
+de reactivos
+c:\Users\Public\Documents\A15\Export\
+c:\Users\Public\Documents\Y15\Export\
+Carpeta donde se guardan los archivos de export
+c:\Users\Public\Documents\A15\Import\
+c:\Users\Public\Documents\Y15\Import\
+Carpeta donde se guardan los archivos de import
+Para poder acceder a la carpeta de c:\ProgramData, se tiene que cambiar la opción de ocultación de carpetas 
+del sistema operativo, para ello siga los pasos siguientes, Ver Ilustración 5.16:
+• 
+Abra el explorador de windows
+• 
+Seleccione la opción del menú de Ver
+• 
+Seleccione la opción de ficheros ocultos
+Ilustración 5.16. Pantalla para configurar las opciones de ocultación de carpetas

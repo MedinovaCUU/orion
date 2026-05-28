@@ -1,0 +1,82 @@
+Manual usuario 
+ 
+ 
+ 
+Manual usuario 
+ 
+ 
+ 
+100
+100
+Biosystems
+Biosystems
+ 
+Nombre 
+Nombre para la técnica calculada.
+ 
+Nombre corto 
+Nombre abreviado de la técnica calculada.
+ 
+Tipo de muestra 
+Indica los tipos de muestra que se van a usar para seleccionar las técnicas 
+estándar.
+Tipo de muestra 
+Descripción
+Simple
+En esta opción las técnicas estándar son de un único tipo 
+de muestra
+Múltiple
+En esta opción las técnicas estándar pueden ser de 
+diferentes tipos de muestra. 
+ 
+Unidad 
+Unidad en que se mostrarán los resultados de las técnicas calculadas. Esta uni­
+dad puede ser diferente al de las técnicas estándar.
+ 
+Decimales 
+Número de decimales en que se mostrarán los valores de la concentración de las 
+técnicas calculadas. El número de decimales puede ser diferente al de las técnicas 
+estándar.
+ 
+Imprimir técnicas 
+experimentales
+ 
+Marque está opción cuando en el informe por paciente quiera mostrar tam­
+bién los resultados de las técnicas estándar además del resultado de la técnica 
+calculada.
+ 
+Definición fórmula 
+Fórmula que relaciona la técnica calculada con las técnicas estándar. Para intro­
+ducir la fórmula, seleccione las técnicas estándar, otras técnicas calculadas, los 
+números y los operadores. El programa verifica si la fórmula entrada es correcta 
+y lo indica con uno de los iconos siguientes:
+ 
+ 
+Este icono indica que la fórmula se ha introducido correctamente y sin errores.
+ 
+ 
+Este icono indica que en la fórmula hay errores. Modifique la fórmula hasta que 
+este icono desaparezca.
+ 
+ 
+Borra el último carácter introducido.
+ 
+ 
+Borra toda la fórmula introducida.
+10.3.3. Contaminaciones
+ 
+CAUTION
+ 
+Cuando están programadas contaminaciones entre reactivos, la velocidad de 
+proceso disminuye.
+Verifique la programación de las contaminaciones con el agente distribuidor de los 
+reactivos para asegurar que los valores han sido actualizados con los últimos cambios. 
+Desde esta pantalla se programan las contaminaciones entre reactivos en las puntas 
+y las contaminaciones de cubeta del rotor de reacciones.
+ 
+)
+Véase Ilustración 66 y Ilustración 67
+En la columna de la izquierda se muestra la lista con todas las posibles técnicas 
+contaminantes. En rojo están marcadas aquellas técnicas que ya tienen programada 
+la contaminación. 
+Seleccione una técnica y luego pulse alguno de los siguientes iconos:

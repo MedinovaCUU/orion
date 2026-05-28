@@ -1,0 +1,98 @@
+Manual usuario 
+ 
+ 
+ 
+Manual usuario 
+ 
+ 
+ 
+198
+198
+Biosystems
+Biosystems
+Ejecute las acciones, en número y orden indicado, con el programa de usuario, en 
+el apartado utilidades ISE.
+ 
+)
+Véase capítulo 10.9.4
+Paso
+Acción 
+Repeti­
+ciones 
+Descripción
+1
+Llenado 
+con Cal A 
+3
+Esta acción dispensa 300 μl de la solución A en 
+la copa del módulo. Use la jeringa y la punta 
+larga que se suministra con la caja de accesorios 
+para aspirar el líquido y deposítelo en un 
+pocillo pediátrico o cualquier otro recipiente. 
+Repita esta acción 3 veces. Esta solución se 
+utilizará para llenar el canal de los electrodos en 
+el procedimiento de almacenamiento.
+2
+Lavar
+1
+Sitúe la solución de lavado en el pocillo 
+indicado del rotor de muestras
+3
+Purgar A
+3
+4
+Instalar 
+pack de 
+limpieza
+1
+Retire el kit de reactivos y coloque en su lugar 
+el pack de limpieza lleno de agua purificada. El 
+pack consta de la base, de 3 tubos y la botella. 
+Estos elementos los encontrará en el recambio 
+AC16752.
+ 
+)
+ Véase Ilustración 121 como instalar el pack de 
+limpieza.
+5
+Purgar A
+3
+6
+Purgar B
+3
+7
+Cebar A
+20
+Ejecuta estas acciones para lavar bien con agua 
+purificada todo el circuito fluídico.
+8
+Cebar B
+20
+9
+Manteni­
+miento
+1
+Acción para vaciar el canal de los electrodos y 
+poder desinstalarlos sin dañar el módulo.
+10
+Desac­
+tivación 
+módulo 
+ISE
+1
+Acción para indicar al programa que el módulo 
+ha sido desconectado.
+Apague la alimentación del módulo ISE.
+Quite todos los electrodos del módulo, incluso el de referencia. Protéjalos de la 
+siguiente manera:
+ 
+Electrodos de Na+ y Cl- 
+Ponga cada electrodo individualmente en una bolsa sellada.
+ 
+Electrodo de referencia 
+Vuelva a insertar en el orificio del electrodo de referencia el hilo marcado con 
+una etiqueta amarilla, y entonces póngalo en una bolsa individual sellada.
+ 
+Electrodos de K+ y Li+ 
+Aspire una pequeña cantidad del calibrador A dispensado en un pocillo pediá­
+trico realizado en el primer paso.

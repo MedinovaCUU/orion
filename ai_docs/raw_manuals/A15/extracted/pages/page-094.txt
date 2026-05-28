@@ -1,0 +1,14 @@
+95
+5.4.5. Configuración del tambor de filtros
+Esta pantalla permite modificar la configuración del tambor de filtros del analizador. El tambor tiene 10 posi-
+ciones. La posición 0 siempre debe contener un filtro tapado para que el analizador pueda realizar el ajuste 
+de oscuridad. Las posiciones de la 1 a la 9 pueden ser utilizadas para filtros ópticos. Todas las posiciones del 
+tambor deben estar ocupadas para que éste funcione correctamente. Aquellas posiciones que no conten gan 
+ningún filtro óptico, deben ocuparse con un filtro tapado. El analizador incluye de serie 8 filtros ópticos en las 
+posiciones 1 a 8 y dos filtros tapados en las posiciones 0 y 9. Si se desea cambiar uno de los filtros, se debe 
+seleccionar la posición deseada del tambor y pulsar el botón Cambiar Filtro. Automáticamente el analizador 
+posiciona el tambor de filtros adecuadamente para que el técnico pueda cambiar el filtro a través de la ventana 
+del sistema óptico. A continuación, el técnico debe introducir, si es diferente, la longitud de onda del nuevo 
+filtro instalado. Si el filtro es tapado debe introducirse el valor 0. Al cerrar la pantalla se pregunta si realmente 
+han sido cambiados físicamente los filtros y se realizan una serie de advertencias al técnico que ha de tener 
+en cuenta si ha cambiado algún filtro.

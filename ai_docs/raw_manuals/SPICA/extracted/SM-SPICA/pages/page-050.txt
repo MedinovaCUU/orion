@@ -1,0 +1,13 @@
+SERVICIO
+Manual de Usuario BioSystems SPICA
+50
+Manual de Usuario BioSystems SPICA | Versión 2.8 - Agosto 2024
+1. ELEMENTOS DE HARDWARE
+1.8 Ensamblaje del sistema de fluidos
+Todo el sistema fluídico está montado en un tablero situado en el lado derecho del analizador. El agua 
+puede entrar en el analizador a través de un tanque externo de gran capacidad. (seleccione la opción de 
+la aplicación)
+Sin la opción de la estación de lavado del rotor, el agua proviene de los tanques delanteros.
+1.9 Ensamblaje Electrónico
+Las fuentes de energía del analizador se encuentran en el lado izquierdo. El interruptor de ethernet, 
+el interruptor USB y la placa de la CPU también están instalados en la misma placa.

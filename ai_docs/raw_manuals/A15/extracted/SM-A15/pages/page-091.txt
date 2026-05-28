@@ -1,0 +1,22 @@
+92
+Manual de servicio
+• 
+Ejecute el programa de servicio. (La versión mínima para utilizar el útil es la 4.1)
+• 
+Deje el analizador encendido y inicializado con el programa de servicio durante 20 minutos, para preca-
+lentar la lámpara. 
+• 
+Seleccione el menú de test y útil de fotometría
+• 
+Pulse el botón de Cargar parámetros.
+• 
+Inserte el CD-ROM y escoja el fichero ReferenciaUtilFotometria.bin. Pulse Aceptar
+• 
+Inserte el útil en el alojamiento dispuesto para el rotor.
+• 
+Pulse el botón Leer ABS.
+• 
+Pulse el botón Informe para imprimir el informe de resultados.
+5.4. Utilidades 
+El programa contiene varias utilidades técnicas. Estas utilidades también son accesi bles desde el programa 
+de usuario.

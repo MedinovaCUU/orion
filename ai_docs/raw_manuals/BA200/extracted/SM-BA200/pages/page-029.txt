@@ -1,0 +1,34 @@
+18
+20
+17
+22
+21
+19
+23
+Ilustración 3.9 
+Conjunto transmisión del rotor de reacción
+13 – Peltier
+14 – Radiador
+15 – Ventilador
+16 – Aislante del canal calefactor
+17 – Motor
+18 – Piñón del motor
+19 – Correa transmisora
+20 – Fotodetector del encoder
+21 – Encoder
+22 – Polea transmisora
+23 – Eje transmisión 
+1 – Tapa rotor de reacción 
+2 – Tornillo sujeción del rotor
+3 – Rotor de reacción
+4 – Estación de lavado
+5 – Canal calefactor
+6 – Sistema óptico
+7 – Tornillo de sujeción centrador rotor
+8 – Centrador rotor
+9 – Fotodetector de inicio
+10 – Canal calefactor
+11 – Detector de tapa
+12 – Sensor de tempratura
+Referencias de las Ilustración 3.6, Ilustración 3.7, Ilustración 3.8 y Ilustración 3.9:
+29

@@ -1,0 +1,17 @@
+68
+Manual de servicio
+2. Desenrosque el soporte pistón del husillo para engrasar la rosca.
+3. Engrase la guía del soporte pistón. Ponga suficiente grasa en el orificio del soporte por donde entra 
+el husillo.
+4. Enrosque el soporte pistón con el husillo. Retire la grasa sobrante con un paño. 
+5. Coloque la cámara de la bomba. Alinee la ranura del soporte (26) con el sistema de antigiro del 
+cuerpo (25).
+6. Coloque los tornillos y las tuercas para sujetar el cuerpo con el motor.
+7. Coloque el detector de inicio.
+8. Siga los pasos de montaje del manifold según el capítulo 4.16
+ 
+24
+25
+26
+27
+Ilustración 4.40.  Engrase del husillo y montaje cuerpo bomba

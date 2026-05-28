@@ -1,0 +1,33 @@
+Manual usuario 
+ 
+ 
+ 
+Manual usuario 
+ 
+ 
+ 
+106
+106
+Biosystems
+Biosystems
+Opción
+Descripción
+Activado
+Para limpiar la cubeta se puede realizar con el número de ciclos 
+y con la solución de lavado programados anteriormente o con 
+el número de ciclos de lavado con agua introducidos en la 
+programación.
+ 
+Ciclos de lavado con agua 
+Indica el numero de ciclos equivalentes de agua. Se puden programar de 1 a 
+10 ciclos. En estos ciclos el programa dispensa cualquier reactivo o solución de 
+lavado excepto el reactivo de la técnica contaminante.
+ 
+)
+Véase Ilustración 64
+Ilustración 64 
+Pantalla programación de las contaminaciones de cubeta
+10.3.4. Perfiles
+Los perfiles son el nombre que se le da a un conjunto de técnicas con significado 
+diagnóstico. Los perfiles son conjuntos de técnicas que usualmente se solicitan a 
+la vez.

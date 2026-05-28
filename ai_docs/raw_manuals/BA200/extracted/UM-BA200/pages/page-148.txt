@@ -1,0 +1,54 @@
+Manual usuario 
+ 
+ 
+ 
+Manual usuario 
+ 
+ 
+ 
+148
+148
+Biosystems
+Biosystems
+10.7.4. Repeticiones de resultados
+El programa solicita automáticamente repeticiones de todos los resultados fuera 
+de margen cuando la técnica tiene este modo de repetición programado.
+Los modos automáticos de repetición son los siguientes:
+Tipo
+Criterio de repetición
+Límite de linealidad
+Repite con decremento
+Límite de detección
+Repite con incremento
+Sustrato consumido
+Repite con decremento
+Rango de repetición
+Repite con las mismas condiciones
+Manualmente se puede solicitar la repetición de técnicas seleccionando el campo 
+Nuevo en al tabla de resultados.
+Para ello pulse en la casilla de nuevo y aparecerá una ventana como la de la Ilus­
+tración 93. En el caso de repetición automática se aplicará, por defecto, el factor 
+de incremento/decremento pre programado por defecto en cada técnica.
+Para las muestras de paciente se permite seleccionar el criterio de repetición en ese 
+momento. Los criterios son:
+• 
+Repetir con aumento de muestra. Por defecto aparece el valor programado en 
+la técnica. Si modifica el valor, el programa le avisa si ha superado el límite 
+establecido por la técnica. Esta repetición modifica la relación de volúmenes 
+entre muestra y reactivo para aumentar la absorbancia de la muestra. La con­
+centración resultante se divide por el factor de incremento. Esta repetición se 
+utiliza para aumentar la sensibilidad de muestras que están al límite del nivel 
+de detección. 
+• 
+Repetir con reducción de muestra. Introduzca el factor de dilución de la mues­
+tra. Por defecto aparece el valor programado en la técnica. El usuario puede 
+entrar un valor entre 2 y 200. La repetición realiza una preparación previa 
+para diluir la muestra y luego realiza la preparación de medida partiendo de 
+la muestra diluida. La concentración resultante se multiplica por el factor de 
+dilución. Esta repetición se utiliza para las muestras que están fuera del límite 
+de linealidad, con alarma de sustrato consumido o para aquellas muestras que 
+están fuera de la curva de calibración. 
+• 
+Repetir con las mismas condiciones programadas en la técnica
+Ilustración 93 
+Pantalla de selección de repeticiones

@@ -1,0 +1,39 @@
+Lista de recambios
+Código
+Conjunto
+Representación 
+Descripción
+AC16834
+ISE
+Conjunto bomba peristaltica
+AC16835
+ISE
+Rcambio abrazadera de la bomba 
+peristaltica (3)
+AC16836
+ISE
+Rcambio abrazadera de la bomba 
+peristaltica (1)
+AC17219
+ISE
+Conector del tubo de residuos
+AC17217
+ISE
+Conector del pack de reactivos
+AC17094
+Desgasificador
+Conjunto desgasificador
+AC17092
+Desgasificador
+Membrana de recambio del desgasificador
+AC17220
+Desgasificador
+Placa del desgasificador
+AC17341
+Desgasificador
+Placa del nuevo control del desgasificador 
+(Nuevo modelo, ver AII para saber 
+el número de série a partir de su 
+implementación)
+Manual de servicio
+246

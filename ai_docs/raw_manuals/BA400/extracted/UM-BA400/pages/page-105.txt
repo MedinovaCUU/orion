@@ -1,0 +1,39 @@
+105
+105
+10.3.5. Calibradores
+ 
+CAUTION
+ 
+Verifique los valores introducidos de concentración de los calibradores con los 
+de los valores de las instrucciones de uso (IFU) del suero calibrador. Asegúrese 
+de introducir los valores con las unidades de la programación de la técnica.
+Pantalla donde se programan los diferentes parámetros de los calibradores: nombre, 
+lote, fecha de caducidad, concentración.
+Ilustración 69 
+Introducción de la información del calibrador
+En la primera pestaña se introduce la información general del calibrador. Hay una 
+lista de todos los calibradores con los iconos de nuevo, editar e imprimir.
+La información a introducir por el usuario es la siguiente:
+ 
+Nombre del calibrador 
+Introducir un nombre del calibrador
+ 
+Lote 
+Introducir el lote del calibrador. Cuando cambia el lote, se requiere volver a 
+programar las concentraciones de todas las técnicas que usan este calibrador. El 
+programa da un aviso mostrando las técnicas afectadas.
+ 
+Fecha de caducidad 
+Introducir la fecha de caducidad del calibrador.
+ 
+Nº 
+Introducir el número de calibradores que tiene este calibrador.
+ 
+Modo dilución Visible sólo cuando el número de calibrador es mayor que uno. Seleccionar 
+el modo de dilución: manual o automático. En las calibraciones multipunto 
+automáticos, es el analizador que prepara automáticamente mediante diluciones 
+cada punto a partir del calibrador de concentración más elevada. En la opción 
+manual hay tantos calibradores preparados como puntos están definidos en la 
+curva.
+En la segunda pestaña se asigna el calibrador a la técnica y se introduce el valor 
+de concentración.

@@ -1,0 +1,32 @@
+7. Also check that the belt is not worn and that there are no traces of material adhering to the cogs. 
+Check that the anti-collision system of the reagent and sample arms is operating correctly:
+1. Remove the top housings from the 3 arms.
+2. Initialise the analyser with the service programme
+3. Go to the anti-collision system checking option.
+4. Lift each tip with your hand and check that they draw back smoothly and correctly.
+5. Check that the lamp on the panel goes on every time the tip is in the raised position.
+6. Check the indication that the tip is in the raised position in the service programme.
+Check that the stirrers function correctly:
+1. Check that the stirrer blades are properly tightened. Take care when tightening the blades, to ensure they con­
+tinue to be aligned with respect to the motor shaft.
+2. Use the service programme to rotate the stirrers. Check that they rotate correctly and are not eccentric.
+Check the anti-collision system in the wash station
+1. Remove the top housing from the wash station.
+2. Initialise the analyser with the service programme
+3. Go to the wash station anti-collision system checking option.
+4. Lift the dryer tip with your hand and check that it draws back smoothly and correctly.
+5. Check the indication that the dryer tip is in the raised position in the service programme.
+6. Lift the wash station pedal system with your hand and check that it slides evenly and returns smoothly to its 
+original position.
+7.2.3. Checking the sample and reagent rotors
+Check the rotor covers:
+1. Initialise the analyser with the service programme.
+2. Check that the cover sensor functions correctly.
+3. Check that the covers fit into their housing correctly.
+Check that the rotors fit into their compartments correctly:
+1. Remove the two covers from the rotor assemblies.
+2. Check that the anchoring of the sample and reagent rotor shaft functions correctly. If it is in position, it must 
+not come out unless the top button is pushed and when inserting it, it must glide in smoothly.
+Check the fans:
+1. Check that there is no fridge or reaction rotor fan operation alarm.
+95

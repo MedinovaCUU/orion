@@ -1,0 +1,64 @@
+—  33  —
+Service manual
+5. - Maintenance
+5.1. - General care
+In order to ensure optimal operation of this instrument it is necessary to follow some minimal maintenance rules.
+• 
+Never use detergents or abrasive products for cleaning the outside of the instrument. Use only a cloth dampened in 
+water and neutral soap.
+• 
+If a reagent or any corrosive product is spilt on the apparatus, clean it immediately with a damp cloth and water.
+• 
+The cuvette holder tray is equipped with a watertight joint in order to prevent penetration of liquid into the inner part 
+of the instrument. If liquid is spilt onto the tray, wipe it with a damp cloth and water. 
+• 
+If a cuvette breaks in the cuvette holder or liquid pours into it for any reason, the holder has a drainage hole connected 
+to the outside. However, distilled water must be passed through it, and then the inside dried.
+5.2. - Cleaning of the optical components
+The following indications should be taken into account for the cleaning of the optical components:
+• 
+Optical components to be considered: lenses, filters and photodiodes.
+• 
+Recommended material: 
+• 
+WYPALL LITE paper (56 gr/m2) SCOTT.
+• 
+50% alcohol + ether solution.
+• 
+Cotton buds.
+• 
+Blower.
+• 
+To ensure correct handling of the optical components, please take the following precautions:
+• 
+The area for manipulating the instrument should be clean and tidy.
+• 
+As the components are fragile, they should be treated carefully; a fall could result in breakage.
+• 
+Avoid touching the active parts with your fingers.
+• 
+Lenses, filters and photodiode should be held by their sides, LEDs and photodiodes by the connecting terminals.
+• 
+To clean the components, first remove the dust using the blower; thus scratches caused by small particles on the 
+surface can be avoided, when rubbing with paper.
+• 
+In the case of persistent or greasy dirt, clean with a paper soaked with the alcohol/ether solution and then with 
+a dry paper. Sometimes, for instance when cleaning the filters or the photodiode window, cotton buds may be 
+helpful together with the paper in the most delicate parts.
+• 
+After any cleaning it is convenient to repeat blowing with the blower thus eliminating any residual paper or 
+cotton nap.
+• 
+When mounting or dismounting any component take into account the corresponding tools and procedures, as 
+they are designed to avoid manipulation problems.
+5.3. - Cleaning the filters
+• 
+Dismantle the top housing of the semi-automatic analyzer.
+• 
+Dismantle the optical bench of the electronic board.
+• 
+Remove the optical bench filters at the lower part of the bench.
+• 
+Clean them as indicated in section 5.2.
+• 
+Reassemble the filters in their holders and the latter on the optical bench.

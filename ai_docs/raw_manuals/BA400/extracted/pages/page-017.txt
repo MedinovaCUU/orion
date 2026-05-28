@@ -1,0 +1,44 @@
+17
+• 
+R1 reagent arm: from 150 μL to 500 μL 
+• 
+R2 reagent arm: from 40 μL to 300 μL
+Each arm has a tip with an automatic level detection system. The tip descends until it reaches the reagent or sample, 
+depending on the case, and then suctions the programmed volume. This prevents the tip from penetrating too deeply 
+in the fluid and makes it easier to wash the tip.
+Each arm has a vertical collision detection system to prevent the tips from colliding with each other and ensure 
+they are not damaged. 
+The sample dispensing arm has a clot detector. This system warns the user if the tip becomes blocked when suction­
+ing the sample. The blockage may be due to traces of fibrin or clotting present in the serum sample.
+2.9. ISE module (optional)
+The ISE ion module is optional, and is used to determine Na+, K+, Cl- and Li+ ions in serum and urine samples.
+The ion module is fully autonomous and functions in parallel, together with the biochemical determinations. 
+When ISE ion testing of patients is programmed in the list, the sample-dispensing arm is responsible for positioning 
+the sample in the ion module.
+The module has a fully sealed kit that contains the calibration standards and collects the waste. This kit is an acces­
+sory and its compartment is accessible from the front part of the analyser.
+2.10. Operating mode
+The analyser performs the tests patient by patient and permits the continuous input of samples. The analyser is 
+controlled by a dedicated PC that is in permanent communication with the instrument. The application programme 
+installed in the computer keeps the user constantly informed about the state of the analyser and the progress of the 
+tests. As the results are obtained, the computer immediately displays them to the user.
+When starting a Worksession, the analyser proposes the performing of the blanks, calibration standards and controls 
+programmed for the measuring procedures it must execute. The user can decide whether or not to execute the blanks 
+and calibration standards. If they are not executed, the analyser will use the latest data available. The controls can also 
+be activated or not activated. During a worksession, while the analyser is operating, the user can enter new routine 
+or urgent samples for analysis. Every time a new sample is added, the analyser automatically proposes potential new 
+blanks, calibration standards or controls that must be executed. It is advisable to restart the session each working day.
+The analyser determines the concentrations of the analytes based on optical absorbance measurements. To measure 
+the concentration of an analyte in a sample, the analyser pipettes a specific volume of reagent, thermostats it in the 
+same tip and dispenses it into the reaction rotor. 
+After 5 minutes the analyser pipettes a specific sample volume and dispenses it into the same well in which the 
+reagent was dispensed.
+During the next cycle the stirring mixes the reagent to ensure correct homogenisation and the chemical reaction 
+is initiated. In the bireactive modes, the reaction is initiated when the analyser dispenses a second reagent into the 
+same reaction well and it is mixed by a second stirrer.
+The reactions may be biochemical or turbidimetric reactions. In both cases, the reaction or chain of reactions 
+produced generate substances that attenuate certain light wavelengths, either by absorption or by dispersion. By 
+comparing the luminous intensity of a certain wavelength that penetrates a well when a reaction occurs and when 
+there is no reaction, it is possible to determine the respective analyte concentration. This comparison is quantified 
+with the physical magnitude absorbance. In some cases the concentration is a direct function of the absorbance and 
+in others, it is a function of the change of the absorbance over time, depending on the analysis mode.

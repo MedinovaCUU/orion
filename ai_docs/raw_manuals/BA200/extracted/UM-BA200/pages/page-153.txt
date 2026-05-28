@@ -1,0 +1,64 @@
+153
+153
+ 
+Rango de fechas 
+Rango de fechas de los resultados a visualizar. El rango de fechas informado por 
+defecto es el que permite mostrar todos los resultados pendientes de revisión. 
+ 
+Criterio de rechazo 
+Número de desviaciones estándar para determinar los límites del intervalo de 
+valores admisibles para los resultados: 
+Rango=Media±Criteriode rechazo⋅SD
+ 
+ 
+Por defecto se informa el criterio de rechazo programado para la técnica.
+ 
+Modo de cálculo 
+Indica cómo se calcularán los valores objetivo para cada control: media, des­
+viación estándar (SD), y coeficiente de variación (CV). Si el modo de cálculo 
+seleccionado es Estadístico, se debe informar también el número de series que se 
+utilizarán para el cálculo de los valores objetivo. 
+Modo de cálculo
+Cómo se calcula
+Manual
+Se utilizan los valores programados en la técnica para 
+cada control:
+Media=Valor máximoValor mínimo
+2
+SD= Margenmáximo−Margenmínimo
+2⋅Criteriode rechazo
+Estadístico
+Se utilizan los resultados de las n primeras series (n = 
+número de series especificado):
+Media=
+∑
+i=1
+n
+X i
+n
+SD=
+∑
+i=1
+n
+xi−Media
+2
+n−1
+CV =
+SD
+Media⋅100
+Por defecto se informa el modo de cálculo programado para la técnica.
+ 
+Aplicación de reglas 
+Permite seleccionar las reglas que se aplicarán en la validación de los resultados y 
+los controles a los que se aplicarán. El grupo de reglas disponibles son las inclui­
+das en el algoritmo de Westgard, pero la aplicación de las mismas es opcional, 
+excepto en el caso de la 1-2s que se aplica siempre.
+Por defecto, las reglas seleccionadas son las programadas para la técnica. 
+ 
+Si la técnica seleccionada tiene resultados para un único control, se le aplicarán 
+las reglas seleccionadas. Pero si la técnica seleccionada tiene resultados para dos o 
+más controles, las reglas activas se aplicarán al par de controles seleccionados. 
+ 
+ 
+Ejecuta la búsqueda y validación de resultados aplicando los criterios de cálculo 
+seleccionados.

@@ -1,0 +1,33 @@
+97
+Partial stressing of the elements of the analyser is possible. The following elements can be stressed partially:
+• 
+X axis
+• 
+Y axis
+• 
+Z axis
+• 
+Reactions rotor
+• 
+Filter wheel
+• 
+Dispensation pump
+• 
+Membrane pumps
+• 
+2-way electrvalve
+• 
+3-way electrovalve
+5.3.7. 
+Photometry tool
+This option is used with the Photometry tool (AC15222). It is used for automate the reading process of the tool.
+To use the photometry tool folow the next stetp:
+1. Switch on the analyzer.
+2. Run the service programme. (The older version to use the tool is the 4.1)
+3. Left the analyzer switch on initialized with the service programme for 20 minutes, to preheat the lamp.
+4. Select the test menu and Photometry tool option.
+5. Press the Load Parameters button.
+6. Insert the CD-ROM and select the file ReferenciaUtilFotometria.bin. Push Accept button.
+7. Insert the tool (1) in the place of the rotor.
+8. Press the Read ABS button.
+9. Press the Report button to print the results report.

@@ -1,0 +1,199 @@
+--Adjustments: 	A400 - SN834001807
+--Fw version: 	BA400v4.05.3
+--Date & Time: 	09:40:04 2024/02/23
+---------------------------------------------------------------------------------
+
+
+{Agitador 1}
+
+A1DH:734;    {Agitación en rotor - Horizontal}
+A1DV:11965;  {REF Agitación en rotor - Vertical}
+A1H:142;     {Posición Parking - Horizontal}
+A1HHC:7;     {Calibración de Home Agitador 1}
+A1RV:8055;   {Posicion referencia - Vertical}
+A1SV:5255;   {Posición Segura para movimiento Horizontal - Vertical}
+A1V:12450;   {REF Posición Parking - Vertical}
+A1WH:-61;    {Estación de Lavado - Horizontal}
+A1WVR:5600;
+{Agitador 2}
+
+A2DH:851;    {Agitación en rotor - Horizontal}
+A2DV:11945;  {REF Agitación en rotor - Vertical}
+A2H:124;     {Posición Parking - Horizontal}
+A2HHC:4;     {Calibración de Home Agitador 2}
+A2RV:8035;   {Posicion referencia - Vertical}
+A2SV:5235;   {Posición Segura para movimiento Horizontal - Vertical}
+A2V:12500;   {REF Posición Parking - Vertical}
+A2WH:-73;    {Estación de Lavado - Horizontal}
+A2WVR:5600;  {Estación de Lavado - Vertical Relativo a R1SV}
+
+{Motores - Modelos y perfiles}
+
+BA1MHTYPE:1; {Modelo motor agitador1 horizontal}
+BA1MVTYPE:1; {Modelo motor agitador1 vertical}
+BA2MHTYPE:1; {Modelo motor agitador2 horizontal}
+BA2MVTYPE:1; {Modelo motor agitador2 vertical}
+BM1MHTYPE:1; {Modelo motor Muestra horizontal}
+BM1MVPRFL:0; {Sample Vertical Movement Profile}
+BM1MVTYPE:2; {Modelo motor Muestra vertical}
+BR1MHTYPE:1; {Modelo motor R1 horizontal}
+BR1MVPRFL:0; {R1 Vertical Movement Profile}
+BR1MVTYPE:2; {Modelo motor R1 vertical}
+BR2MHTYPE:1; {Modelo motor R2 horizontal}
+BR2MVPRFL:0; {R2 Vertical Movement Profile}
+BR2MVTYPE:2; {Modelo motor R2 vertical}
+GLFMPTYPE:1; {GLF Wash station}
+GLFMRTYPE:1; {GLF Rotor}
+JE1M1TYPE:2; {JE1 Engine1}
+JE1M2TYPE:2; {JE1 Engine2}
+JE1M3TYPE:2; {JE1 Engine3}
+
+{Brazo Muestra}
+
+CLOT:1;      {Detección de clot desactivada}
+M1DH1:16705; {Dispensación en Rotor Posicion 1 - Horizontal}
+M1DH2:16239; {Dispensación en Rotor Posicion 2 - Horizontal}
+M1DV1:7400;  {REF Dispensación en Rotor Posicion 1 - Vertical}
+M1H:1804;    {Posición Parking - Horizontal}
+M1ISEH:-30;  {Dispensación en ISE - Horizontal}
+M1ISEV:16600;{Dispensación en ISE - Vertical}
+M1PDV1:7850; {Dispensación en Rotor Vertical -M/R1 Posición 1 para hacer Prediluciones}
+M1PDV2:7850; {REF Dispensación en Rotor Posicion 2 - Vertical}
+M1PH1:10673; {Rotor de Muestras Corona 1 - Horizontal}
+M1PH2:9949;  {Rotor de Muestras Corona 2 - Horizontal}
+M1PH3:8692;  {Rotor de Muestras Corona 3 - Horizontal}
+M1PI:4440;   {REF Punto Inicial Detección de nivel - Vertical}
+M1PV1p:12450;{Rotor de Muestras Corona 1 Punto máximo detección pediátrico - Vertical}
+M1PV1t:17000;{Rotor de Muestras Corona 1 Punto máximo detección tubo - Vertical}
+M1PV2p:12350;{Rotor de Muestras Corona 2 Punto máximo detección pediátrico - Vertical}
+M1PV2t:17000;{Rotor de Muestras Corona 2 Punto máximo detección tubo - Vertical}
+M1PV3p:12370;{Rotor de Muestras Corona 3 Punto máximo detección pediátrico - Vertical}
+M1PV3t:17000;{Rotor de Muestras Corona 3 Punto máximo detección tubo - Vertical}
+M1RPI:4000;  {REF Punto Inicial Detección de nivel - Vertical - En Rotor de Reacciones}
+M1RV:4000;   {Posicion referencia - Vertical}
+M1SV:-50;    {Posición Segura para movimiento Horizontal - Vertical}
+M1V:19500;   {REF Posición Parking - Vertical}
+M1WH:12658;  {Estación de Lavado - Horizontal}
+M1WVR:5070;  {Estación de Lavado - Vertical Relativo a R1SV}
+
+{Detección de Nivel - Sensibilidad}
+
+DM1S:16,0;   {Sensibilidad Detección Muestra}
+DR1S:16,0;   {Sensibilidad Detección Reactivo 1}
+DR2S:16,0;   {Sensibilidad Detección Reactivo 2}
+
+{Fotometria}
+
+GFENC:10;    {Posición referencia para el Encoder}
+GFWR1:7901;  {Posición referencia lectura - Pocillo 1}
+
+{Depositos}
+
+GSMA:2122;   {Nivel Lleno Solución de Lavado}
+GSMI:1828;   {Nivel Vacío Solución de Lavado}
+GWMA:1974;   {Nivel Lleno Alta Contaminación}
+GWMI:1683;   {Nivel Vacío Alta Contaminación}
+
+{General Equipo - Termos}
+
+GTGF:42,3;   {Consigna Termo Fotometría}
+GTH1:50,0;   {Consigna Heater Estación de Lavado}
+GTN1:3,0;    {Consigna Termo Nevera 1}
+GTOGF:37,0;  {Objetivo Termo Fotometría}
+GTOH1:50,0;  {Objetivo Heater Estación de Lavado}
+GTON1:3,0;   {Objetivo Termo Nevera 1}
+GTOR1:37,0;  {Objetivo Termo Punta Reactivo 1}
+GTOR2:37,0;  {Objetivo Termo Punta Reactivo 2}
+GTR1:45,0;   {Consigna Termo Punta Reactivo 1}
+GTR2:45,0;   {Consigna Termo Punta Reactivo 2}
+SWFLAG:1;    {Consigna Termo Fotometría}
+
+{Hardware version}
+
+HWVER:2;     {The Hw version distincts the BA400v1 than BA400v2}
+
+{DAC's Fotometria}
+
+ILED1:2305;  {valor de referencia intensidad Led 1}
+ILED10:365;  {valor de referencia intensidad Led 10}
+ILED11:365;  {valor de referencia intensidad Led 11}
+ILED2:4609;  {valor de referencia intensidad Led 2}
+ILED3:6778;  {valor de referencia intensidad Led 3}
+ILED4:11890; {valor de referencia intensidad Led 4}
+ILED5:2141;  {valor de referencia intensidad Led 5}
+ILED6:5192;  {valor de referencia intensidad Led 6}
+ILED7:6826;  {valor de referencia intensidad Led 7}
+ILED8:8012;  {valor de referencia intensidad Led 8}
+ILED9:365;   {valor de referencia intensidad Led 9}
+
+{ISE Instalado}
+
+ISEINS:0;    {Module ISE Installed}
+
+{Tapas}
+
+MCOV:0;      {Tapa analizador desactivada}
+PHCOV:0;     {Tapa reacciones desactivada}
+RCOV:0;      {Tapa reactivos desactivada}
+SCOV:0;      {Tapa muestras desactivada}
+
+{Brazo Reactivo 1}
+
+R1DH:10883;  {Dispensación en Rotor - Horizontal}
+R1DV:6940;   {REF Dispensación en Rotor - Vertical}
+R1H:134;     {Posición Parking - Horizontal}
+R1PH1:7220;  {Rotor de Reactivos Corona 1 - Horizontal}
+R1PH2:5820;  {Rotor de Reactivos Corona 2 - Horizontal}
+R1PV1:16800; {Rotor de Reactivos Corona 1 Punto máximo detección - Vertical}
+R1PV2:16800; {Rotor de Reactivos Corona 2 Punto máximo detección - Vertical}
+R1RV:3940;   {Posicion referencia - Vertical}
+R1SV:-50;    {Posición Segura para movimiento Horizontal - Vertical}
+R1V:19400;   {REF Posición Parking - Vertical}
+R1WH:9151;   {Estación de Lavado - Horizontal}
+R1WVR:5010;  {Estación de Lavado - Vertical Relativo a R1SV}
+
+{Brazo reactivo 1}
+
+R1PI:4440;   {REF Punto Inicial Detección de nivel - Vertical}
+
+{Brazo Reactivo 2}
+
+R2DH:12413;  {Dispensación en Rotor - Horizontal}
+R2DV:6980;   {REF Dispensación en Rotor - Vertical}
+R2H:184;     {Posición Parking - Horizontal}
+R2PH1:8810;  {Rotor de Reactivos Corona 1 - Horizontal}
+R2PH2:7890;  {Rotor de Reactivos Corona 2 - Horizontal}
+R2PI:4480;   {REF Punto Inicial Detección de nivel - Vertical}
+R2PV1:16860; {Rotor de Reactivos Corona 1 Punto máximo detección - Vertical}
+R2PV2:16830; {Rotor de Reactivos Corona 2 Punto máximo detección - Vertical}
+R2RV:3980;   {Posicion referencia - Vertical}
+R2SV:-50;    {Posición Segura para movimiento Horizontal - Vertical}
+R2V:19500;   {REF Posición Parking - Vertical}
+R2WH:10562;  {Estación de Lavado - Horizontal}
+R2WVR:5050;  {Estación de Lavado - Vertical Relativo a R1SV}
+
+{Rotor Muestras}
+
+RM1P1:27282; {Posición referencia Pipeteo - Pocillo  1 en Corona 1}
+RM1P2:27820; {Posición referencia Pipeteo - Pocillo xx en Corona 2}
+RM1P3:28570; {Posición referencia Pipeteo - Pocillo xx en Corona 3}
+RMCB:-11230; {Posición referencia Codigo de Barras - Pocillo 1 en C.B.}
+
+{Rotor Reactivos}
+
+RR1P1:5444;  {Posición referencia Pipeteo - Pote 1 en Corona 1 Brazo R1}
+RR1P2:6855;  {Posición referencia Pipeteo - Pote XX en Corona 2 Brazo R1}
+RR2P1:3819;  {Posición referencia Pipeteo - Pote 1 en Corona 1 Brazo R2}
+RR2P2:3649;  {Posición referencia Pipeteo - Pote XX en Corona 2 Brazo R2}
+RRCB:11580;  {Posición referencia Codigo de Barras - Pote 1 en C.B.}
+
+{Exceso de Muestra}
+
+SEXC:-300;   {Internal parameter - Sample Excess}
+
+{Estación de Lavado}
+
+WSEV:2080;   {REF Posicion final ciclo lavado - Vertical}
+WSRR:580;    {Posicion ready relativa a Posicion referencia - Vertical}
+WSRV:-100;   {Posicion referencia - Vertical}
+WSSV:100;    {REF Posicion de inicio ciclo lavado - Vertical}

@@ -1,0 +1,33 @@
+165
+165
+Ilustración 108 
+Cambio de rotor
+Siga los siguientes pasos para realizar el cambio de rotor:
+1. Abra la tapa principal.
+2. Pulse el botón para ascender la estación de lavado.
+3. Quite la tapa del rotor de reacción.
+4. Desenrosque el tornillo de sujeción del rotor.
+5. Quite el rotor y deséchelo.
+6. Ponga un rotor nuevo. Vaya con cuidado al colocar el rotor, tiene una posición 
+única. 
+7. Enrosque el tornillo de sujeción y vuelva a colocar la tapa del rotor de reacción. 
+Cierre la tapa principal.
+8. Pulse el botón del paso número 2 para indicar al programa que realice el 
+cambio de rotor. 
+9. El analizador bajará la estación de lavado y iniciará el proceso de ajuste de luz 
+con el nuevo rotor. También realiza la medida de corrección óptica para cada 
+pocillo. El proceso consiste en llenar con agua cada pocillo del rotor, medirlo 
+con todas las longitudes de onda y vaciarlo, este proceso dura unos 20 minutos. 
+10. Si durante las medidas ópticas hay valores fuera de márgenes, en la utilidad se 
+activa el botón del paso número 3 para poder realizar otra vez la medidas sin 
+tener que vaciar el rotor y llenarlo. 
+11. Pulse el botón del paso número 4, para realizar el proceso de vaciado del rotor 
+manualente. Únicamente tendrá que realizar este proceso cuando algunos 
+valores de lectura están fuera de márgenes y repite elproceso de lectura.
+10.9.2. Acondicionamiento analizador
+Utilidad para realizar el acondicionamiento fluídico del analizador. Entre otras 
+operaciones realiza un cebado del sistema fluídico.
+Asegúrese de que la toma trasera de agua y de residuos están bien conectadas, y que 
+la selección de la toma de agua en la pantalla de configuración está seleccionada 
+acorde a la conexión física.
+Si usa un depósito externo de agua, asegúrese de que esté lleno de agua.

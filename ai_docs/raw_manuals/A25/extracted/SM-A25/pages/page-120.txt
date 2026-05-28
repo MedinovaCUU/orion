@@ -1,0 +1,24 @@
+Manual de servicio
+120
+7
+Figure 6.12 
+6.2.3. 
+AC11519 - Z motor with encoder / AC14619 - Encoder without motor
+Z motor disassembly:
+1. Remove the arm and upper housings
+2. Remove the screws (8) and the plate
+3. Disconnect the Z motor cable and remove the home photodetector
+4. Unscrew the 5 screws (9), (10) and (11) that hold the motor assembly
+5. Take out the Z motor and encoder assembly
+Disassembling the encoder spring:
+1. Disassemble the Z motor explained above
+2. Remove the 4 screws (12) and the protection plate (13)
+3. Remove the screw (15) and the nut (17) that hold the spring. Loosen the screw (16)
+4. Carefully release the spring from its housing
+5. Remove the 2 screws (18) and the part (19) that holds the spring (20).
+Encoder spring mounting
+1. Fit the new spring (20). Secure the inner end of the spring with semicircle part (19) and screws (18)
+2. Wind the entire spring in its cavity. Secure the other end of the spring with the screw (15) and its nut (17). Tighten 
+the screw (16)
+3. Put the cover (13) with its 4 screws (12)
+4. Follow the motor mounting steps
