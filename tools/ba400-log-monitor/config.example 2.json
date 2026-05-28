@@ -1,0 +1,56 @@
+{
+  "monitorName": "ba400-log-monitor-test",
+  "identity": {
+    "machineName": "${ENV:COMPUTERNAME}",
+    "equipmentSerial": ""
+  },
+  "source": {
+    "mode": "file",
+    "path": "${CONFIG_DIR}/sample/live-log.txt",
+    "fileNamePattern": ".*",
+    "encoding": "utf8",
+    "pollIntervalMs": 2000,
+    "startAtEndOnFirstSeen": false,
+    "startAtEndOnFileSwitch": false
+  },
+  "parser": {
+    "mode": "pattern",
+    "errorPattern": "E:\\((\\d+)\\)",
+    "uploadLinesWithoutCode": false,
+    "ignoreZeroErrors": true,
+    "dedupeActiveErrors": false
+  },
+  "supabase": {
+    "url": "https://YOUR_PROJECT.supabase.co",
+    "apiKey": "YOUR_PUBLISHABLE_OR_ANON_KEY",
+    "schema": "public",
+    "table": "YOUR_TABLE_NAME"
+  },
+  "upload": {
+    "dryRun": true,
+    "batchSize": 50,
+    "staticColumns": {
+      "environment": "local-test"
+    },
+    "columnMap": {
+      "monitor_name": "monitor_name",
+      "machine_name": "machine_name",
+      "source_file": "source_file",
+      "source_basename": "source_basename",
+      "line_number": "line_number",
+      "byte_offset_start": "byte_offset_start",
+      "byte_offset_end": "byte_offset_end",
+      "raw_line": "raw_line",
+      "error_codes": "error_codes",
+      "primary_error_code": "primary_error_code",
+      "primary_error_description": "primary_error_description",
+      "matched_error_descriptions": "matched_error_descriptions",
+      "detected_at": "detected_at",
+      "line_hash": "line_hash",
+      "payload": "payload"
+    }
+  },
+  "state": {
+    "path": "${CONFIG_DIR}/state/monitor-state.json"
+  }
+}
