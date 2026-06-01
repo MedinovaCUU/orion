@@ -76,6 +76,7 @@
 html {
   min-height: 100%;
   background: var(--bg-color);
+  overflow-x: hidden;
 }
 
 body {
@@ -91,6 +92,7 @@ body {
     radial-gradient(circle at 18% 88%, rgba(var(--environmental-blue-rgb), 0.11), transparent 28%),
     linear-gradient(180deg, #f7fafc 0%, #edf3f8 46%, #e5edf3 100%);
   background-attachment: fixed;
+  overflow-x: hidden;
 }
 
 body::before {
@@ -106,6 +108,7 @@ body::before {
 
 #root {
   min-height: 100vh;
+  overflow-x: hidden;
 }
 
 button,
@@ -134,6 +137,13 @@ a {
 
 a:hover {
   color: var(--accent-color);
+}
+
+img,
+svg,
+video,
+canvas {
+  max-width: 100%;
 }
 
 ::selection {
@@ -317,7 +327,22 @@ textarea.input-field {
     border-radius: 24px;
   }
 
-  .button-primary {
+  body {
+    background-attachment: scroll;
+  }
+
+  .button-primary:not(.chip) {
     width: 100%;
+  }
+
+  .button-primary.chip {
+    width: auto;
+  }
+}
+
+@media (max-width: 520px) {
+  .card {
+    padding: 1.15rem;
+    border-radius: 20px;
   }
 }

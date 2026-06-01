@@ -794,3 +794,86 @@
     grid-template-columns: 1fr;
   }
 }
+
+@media (max-width: 640px) {
+  .travel-modal-overlay {
+    padding: 0;
+    align-items: stretch;
+  }
+
+  .travel-modal-shell {
+    width: 100%;
+    height: 100dvh;
+    max-height: none;
+    border-radius: 0;
+    border-inline: 0;
+  }
+
+  .travel-modal-sidebar {
+    padding: 1rem;
+    gap: 1rem;
+  }
+
+  .travel-step-list {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(220px, 78vw);
+    overflow-x: auto;
+    padding-bottom: 0.15rem;
+  }
+
+  .travel-step-item {
+    min-height: 100%;
+  }
+
+  .travel-sidebar-card,
+  .travel-form-section,
+  .travel-selection-card,
+  .travel-summary-card,
+  .travel-request-card,
+  .travel-admin-shell,
+  .travel-alert-card {
+    border-radius: 20px;
+  }
+
+  .travel-modal-header,
+  .travel-modal-body,
+  .travel-actions {
+    padding: 1rem;
+  }
+
+  .travel-modal-header h2 {
+    font-size: 1.15rem;
+  }
+
+  .travel-actions {
+    flex-direction: column-reverse;
+    align-items: stretch;
+    gap: 0.75rem;
+  }
+
+  .travel-actions-group {
+    width: 100%;
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 560px) {
+  .travel-form-section {
+    padding: 1rem;
+  }
+
+  .travel-flight-topline,
+  .travel-flight-times,
+  .travel-search-toolbar,
+  .travel-admin-toolbar,
+  .travel-admin-card header {
+    grid-template-columns: 1fr;
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .travel-selection-card {
+    min-height: auto;
+  }
+}

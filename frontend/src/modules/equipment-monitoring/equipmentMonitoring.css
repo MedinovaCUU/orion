@@ -760,13 +760,44 @@ html.equipment-monitor__body-scroll-lock {
 }
 
 @media (max-width: 720px) {
+  .equipment-monitor {
+    gap: 1rem;
+  }
+
+  .equipment-monitor__hero,
+  .equipment-monitor__toolbar,
+  .equipment-monitor__map-panel,
+  .equipment-monitor__focus-panel,
+  .equipment-monitor__list-panel,
+  .equipment-monitor__banner {
+    padding: 1rem;
+    border-radius: 22px;
+  }
+
   .equipment-monitor__map-stage {
     min-height: 28rem;
+  }
+
+  .equipment-monitor__map-header,
+  .equipment-monitor__list-header,
+  .equipment-monitor__map-tools,
+  .equipment-monitor__event-head,
+  .equipment-monitor__list-item {
+    flex-direction: column;
+    align-items: flex-start;
   }
 
   .equipment-monitor__section-head {
     flex-direction: column;
     align-items: flex-start;
+  }
+
+  .equipment-monitor__legend {
+    justify-content: flex-start;
+  }
+
+  .equipment-monitor__zoom-controls {
+    flex-wrap: wrap;
   }
 
   .equipment-monitor__focus-meta {
@@ -779,5 +810,11 @@ html.equipment-monitor__body-scroll-lock {
 
   .equipment-monitor__summary-grid {
     grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 560px) {
+  .equipment-monitor__map-stage {
+    min-height: 22rem;
   }
 }

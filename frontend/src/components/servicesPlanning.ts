@@ -18,6 +18,7 @@ export interface ProfileSummary {
   id: string;
   nombre_completo: string | null;
   employee_number?: string | null;
+  employee_type?: string | null;
   telefono?: string | null;
   territorio?: string | null;
   rol?: string | null;

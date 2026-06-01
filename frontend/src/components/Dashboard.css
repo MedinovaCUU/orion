@@ -160,6 +160,8 @@
 
   .dashboard-header {
     flex-direction: column;
+    padding: 1.2rem 1.1rem;
+    border-radius: 24px;
   }
 
   .dashboard-header__actions {
@@ -173,14 +175,54 @@
 
   .dashboard-nav {
     padding: 0.75rem;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x proximity;
   }
 
   .dashboard-nav__button {
-    flex: 1 1 calc(50% - 0.85rem);
-    min-width: 0;
+    flex: 0 0 auto;
+    min-width: 138px;
+    width: auto;
+    scroll-snap-align: start;
+  }
+
+  .dashboard-card {
+    min-height: 0;
+    padding: 1rem;
+    border-radius: 24px;
   }
 
   .dashboard-card--traceability {
     padding: 0.85rem;
+  }
+}
+
+@media (max-width: 560px) {
+  .dashboard-shell {
+    width: calc(100vw - 0.5rem);
+    padding-top: 0.5rem;
+  }
+
+  .dashboard-header {
+    gap: 1rem;
+    padding: 1rem;
+    border-radius: 22px;
+  }
+
+  .dashboard-nav {
+    gap: 0.65rem;
+    border-radius: 22px;
+  }
+
+  .dashboard-nav__button {
+    min-width: 124px;
+    padding-inline: 0.9rem;
+  }
+
+  .dashboard-card {
+    padding: 0.85rem;
+    border-radius: 22px;
   }
 }

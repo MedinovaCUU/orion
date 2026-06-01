@@ -1,6 +1,15 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import './EscalatedAdvisory.css';
 import { supabase } from '../supabaseClient';
 import { stripPlaneacionMeta, type EquipmentSummary, type ProfileSummary } from './servicesPlanning';
+import {
+  buildChemistryDraft,
+  CHEMISTRY_GUIDE_MATERIALS,
+  CHEMISTRY_OUTCOME_LABELS,
+  type ChemistryDraftFields,
+  type ChemistryMaterialKey,
+  type ChemistryOutcome,
+} from './escalatedAdvisoryChemistry';
 
 type AdvisoryArea = 'ingenieria' | 'quimica';
 type AdvisoryStatus = 'solicitada' | 'en_revision' | 'asesorada' | 'cerrada';
@@ -47,9 +56,28 @@ interface AdvisoryNotificationRecord {
   creado_en: string;
 }
 
+interface AdvisoryRoutingSetting {
+  area: AdvisoryArea;
+  weekday_assignee_names: string[] | null;
+  weekend_assignee_names: string[] | null;
+}
+
 interface AdvisoryFeedback {
   tone: 'success' | 'error' | 'info';
   message: string;
+}
+
+interface AdvisoryMetricRow {
+  key: string;
+  label: string;
+  value: number;
+}
+
+interface AdvisoryRequesterInsightRow {
+  key: string;
+  label: string;
+  total: number;
+  topTypes: AdvisoryMetricRow[];
 }
 
 interface EscalatedAdvisoryProps {
@@ -70,26 +98,56 @@ const STATUS_LABELS: Record<AdvisoryStatus, string> = {
   cerrada: 'Cerrada',
 };
 
-const STATUS_TONE: Record<AdvisoryStatus, { background: string; color: string; border: string }> = {
+const DEFAULT_ADVISORY_ROUTING_NAMES: Record<AdvisoryArea, { weekday: string[]; weekend: string[] }> = {
+  ingenieria: {
+    weekday: ['Francisco', 'Hector Cortés'],
+    weekend: ['Diego Navarro'],
+  },
+  quimica: {
+    weekday: ['Martha'],
+    weekend: ['Martha'],
+  },
+};
+
+const STATUS_TONE: Record<
+  AdvisoryStatus,
+  { background: string; color: string; border: string; surface: string; expandedSurface: string; reportSurface: string }
+> = {
   solicitada: {
-    background: 'rgba(186, 0, 13, 0.14)',
-    color: '#ffd7db',
-    border: 'rgba(186, 0, 13, 0.32)',
+    background: 'rgba(243, 39, 53, 0.14)',
+    color: '#9d2432',
+    border: 'rgba(243, 39, 53, 0.22)',
+    surface:
+      'radial-gradient(circle at top right, rgba(243, 39, 53, 0.1), transparent 34%), linear-gradient(180deg, rgba(255, 255, 255, 0.97), rgba(255, 246, 247, 0.92))',
+    expandedSurface: 'linear-gradient(180deg, rgba(255, 251, 251, 0.98), rgba(252, 246, 247, 0.95))',
+    reportSurface: 'linear-gradient(180deg, rgba(255, 255, 255, 0.99), rgba(255, 249, 250, 0.96))',
   },
   en_revision: {
-    background: 'rgba(242, 190, 42, 0.14)',
-    color: '#ffe7a3',
-    border: 'rgba(242, 190, 42, 0.3)',
+    background: 'rgba(255, 196, 94, 0.18)',
+    color: '#8f5b00',
+    border: 'rgba(255, 196, 94, 0.3)',
+    surface:
+      'radial-gradient(circle at top right, rgba(255, 196, 94, 0.12), transparent 34%), linear-gradient(180deg, rgba(255, 255, 255, 0.97), rgba(255, 251, 241, 0.92))',
+    expandedSurface: 'linear-gradient(180deg, rgba(255, 253, 248, 0.98), rgba(253, 249, 238, 0.95))',
+    reportSurface: 'linear-gradient(180deg, rgba(255, 255, 255, 0.99), rgba(255, 252, 245, 0.96))',
   },
   asesorada: {
-    background: 'rgba(0, 230, 118, 0.12)',
-    color: '#cbffe2',
-    border: 'rgba(0, 230, 118, 0.28)',
+    background: 'rgba(76, 207, 147, 0.18)',
+    color: '#187244',
+    border: 'rgba(76, 207, 147, 0.26)',
+    surface:
+      'radial-gradient(circle at top right, rgba(76, 207, 147, 0.11), transparent 34%), linear-gradient(180deg, rgba(255, 255, 255, 0.97), rgba(244, 252, 248, 0.92))',
+    expandedSurface: 'linear-gradient(180deg, rgba(248, 255, 251, 0.98), rgba(241, 250, 246, 0.95))',
+    reportSurface: 'linear-gradient(180deg, rgba(255, 255, 255, 0.99), rgba(247, 255, 251, 0.96))',
   },
   cerrada: {
-    background: 'rgba(133, 145, 166, 0.12)',
-    color: '#dde5f0',
-    border: 'rgba(133, 145, 166, 0.24)',
+    background: 'rgba(124, 136, 149, 0.16)',
+    color: '#546272',
+    border: 'rgba(124, 136, 149, 0.24)',
+    surface:
+      'radial-gradient(circle at top right, rgba(124, 136, 149, 0.08), transparent 34%), linear-gradient(180deg, rgba(255, 255, 255, 0.97), rgba(247, 249, 251, 0.92))',
+    expandedSurface: 'linear-gradient(180deg, rgba(250, 252, 254, 0.98), rgba(244, 247, 250, 0.95))',
+    reportSurface: 'linear-gradient(180deg, rgba(255, 255, 255, 0.99), rgba(248, 250, 252, 0.96))',
   },
 };
 
@@ -126,6 +184,21 @@ const getTicketDetailSuggestion = (ticket: AdvisoryTicketSummary | null) => {
   return getPlainTicketDescription(ticket.descripcion);
 };
 
+const isWeekendDate = (value: Date | string | null | undefined) => {
+  if (!value) {
+    return false;
+  }
+
+  const date = value instanceof Date ? value : new Date(value);
+
+  if (Number.isNaN(date.getTime())) {
+    return false;
+  }
+
+  const day = date.getDay();
+  return day === 0 || day === 6;
+};
+
 const inferAdvisoryAreaFromTicket = (ticket: AdvisoryTicketSummary | null): AdvisoryArea => {
   if (!ticket) {
     return 'ingenieria';
@@ -141,6 +214,24 @@ const inferAdvisoryAreaFromTicket = (ticket: AdvisoryTicketSummary | null): Advi
   }
 
   return 'ingenieria';
+};
+
+const inferAdvisoryAreaFromEmployeeType = (employeeType: string | null | undefined): AdvisoryArea | null => {
+  const haystack = normalizeText(employeeType);
+
+  if (!haystack) {
+    return null;
+  }
+
+  if (haystack.includes('quim')) {
+    return 'quimica';
+  }
+
+  if (haystack.includes('ingen')) {
+    return 'ingenieria';
+  }
+
+  return null;
 };
 
 const formatDateTimeLabel = (value: string | null | undefined) => {
@@ -162,6 +253,64 @@ const buildTicketOptionLabel = (ticket: AdvisoryTicketSummary) => {
 const sortProfilesByName = (profiles: ProfileSummary[]) =>
   [...profiles].sort((left, right) => (left.nombre_completo || '').localeCompare(right.nombre_completo || '', 'es'));
 
+const sortMetricRows = (rows: AdvisoryMetricRow[]) =>
+  [...rows].sort((left, right) => right.value - left.value || left.label.localeCompare(right.label, 'es'));
+
+const capMetricRows = (rows: AdvisoryMetricRow[], limit = 6) => sortMetricRows(rows).slice(0, limit);
+
+function ChemistryIcon({ materialKey }: { materialKey: ChemistryMaterialKey }) {
+  switch (materialKey) {
+    case 'control':
+      return (
+        <svg viewBox="0 0 64 64" aria-hidden="true">
+          <path
+            d="M32 8 14 14v16c0 13.2 7.9 22.8 18 26 10.1-3.2 18-12.8 18-26V14L32 8Z"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="3.5"
+            strokeLinejoin="round"
+          />
+          <path d="m24.5 32 5.4 5.4L40.5 26.8" fill="none" stroke="currentColor" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+      );
+    case 'calibrador':
+      return (
+        <svg viewBox="0 0 64 64" aria-hidden="true">
+          <path d="M14 17h36" fill="none" stroke="currentColor" strokeWidth="3.5" strokeLinecap="round" />
+          <path d="M14 32h36" fill="none" stroke="currentColor" strokeWidth="3.5" strokeLinecap="round" />
+          <path d="M14 47h36" fill="none" stroke="currentColor" strokeWidth="3.5" strokeLinecap="round" />
+          <circle cx="24" cy="17" r="5.5" fill="white" stroke="currentColor" strokeWidth="3.5" />
+          <circle cx="40" cy="32" r="5.5" fill="white" stroke="currentColor" strokeWidth="3.5" />
+          <circle cx="30" cy="47" r="5.5" fill="white" stroke="currentColor" strokeWidth="3.5" />
+        </svg>
+      );
+    case 'blanco':
+      return (
+        <svg viewBox="0 0 64 64" aria-hidden="true">
+          <circle cx="32" cy="32" r="18" fill="none" stroke="currentColor" strokeWidth="3.5" />
+          <circle cx="32" cy="32" r="6.5" fill="none" stroke="currentColor" strokeWidth="3.5" />
+          <path d="M8 32h9M47 32h9M32 8v9M32 47v9" fill="none" stroke="currentColor" strokeWidth="3.5" strokeLinecap="round" />
+        </svg>
+      );
+    case 'muestra':
+      return (
+        <svg viewBox="0 0 64 64" aria-hidden="true">
+          <path
+            d="M24 10h16M28 10v14l-10 18a9 9 0 0 0 7.8 13h12.4A9 9 0 0 0 46 42L36 24V10"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="3.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+          <path d="M22.5 41c2.7-1.5 5.4-2.1 8.1-1.7 2.6.4 4.9 1.8 6.9 4.2" fill="none" stroke="currentColor" strokeWidth="3.5" strokeLinecap="round" />
+        </svg>
+      );
+    default:
+      return null;
+  }
+}
+
 export default function EscalatedAdvisory({ onNotificationCountChange }: EscalatedAdvisoryProps) {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -173,10 +322,10 @@ export default function EscalatedAdvisory({ onNotificationCountChange }: Escalat
   const [profiles, setProfiles] = useState<ProfileSummary[]>([]);
   const [advisories, setAdvisories] = useState<AdvisoryRecord[]>([]);
   const [notifications, setNotifications] = useState<AdvisoryNotificationRecord[]>([]);
+  const [routingSettings, setRoutingSettings] = useState<AdvisoryRoutingSetting[]>([]);
   const [activeAdvisoryId, setActiveAdvisoryId] = useState<string | null>(null);
   const [selectedTicketId, setSelectedTicketId] = useState('');
   const [selectedArea, setSelectedArea] = useState<AdvisoryArea>('ingenieria');
-  const [selectedRecipientIds, setSelectedRecipientIds] = useState<string[]>([]);
   const [pasosSeguidos, setPasosSeguidos] = useState('');
   const [ajustesRealizados, setAjustesRealizados] = useState('');
   const [accionesTomadas, setAccionesTomadas] = useState('');
@@ -185,9 +334,15 @@ export default function EscalatedAdvisory({ onNotificationCountChange }: Escalat
   const [refaccionesUtilizadas, setRefaccionesUtilizadas] = useState('');
   const [bibliografiaConsultada, setBibliografiaConsultada] = useState('');
   const [consultaEscalada, setConsultaEscalada] = useState('');
+  const [selectedChemistryMaterialKey, setSelectedChemistryMaterialKey] = useState<ChemistryMaterialKey | null>(null);
+  const [selectedChemistryIssueIds, setSelectedChemistryIssueIds] = useState<string[]>([]);
+  const [chemistryNotes, setChemistryNotes] = useState('');
+  const [chemistryOutcome, setChemistryOutcome] = useState<ChemistryOutcome>('sin_solucion');
   const [responseDrafts, setResponseDrafts] = useState<Record<string, { estado: AdvisoryStatus; respuesta: string }>>(
     {},
   );
+  const chemistryAutofillRef = useRef<ChemistryDraftFields | null>(null);
+  const areaInitializedRef = useRef(false);
 
   const isStaff = STAFF_ROLES.has(currentRole || '');
 
@@ -204,54 +359,26 @@ export default function EscalatedAdvisory({ onNotificationCountChange }: Escalat
     [selectedTicketId, visibleTickets],
   );
 
+  const selectedChemistryMaterial = useMemo(
+    () => CHEMISTRY_GUIDE_MATERIALS.find((material) => material.key === selectedChemistryMaterialKey) || null,
+    [selectedChemistryMaterialKey],
+  );
+
+  const selectedChemistryIssues = useMemo(
+    () =>
+      selectedChemistryMaterial?.issues.filter((issue) => selectedChemistryIssueIds.includes(issue.id)) || [],
+    [selectedChemistryIssueIds, selectedChemistryMaterial],
+  );
+
   useEffect(() => {
-    const inferredArea = inferAdvisoryAreaFromTicket(selectedTicket);
-    setSelectedArea(inferredArea);
     setAveria(getTicketAveriaSuggestion(selectedTicket));
     setDetalleAveria(getTicketDetailSuggestion(selectedTicket));
-  }, [selectedTicketId, selectedTicket]);
+  }, [selectedTicketId]);
 
   const staffProfiles = useMemo(
     () => sortProfilesByName(profiles.filter((profile) => STAFF_ROLES.has(profile.rol || ''))),
     [profiles],
   );
-
-  const recommendedTrainers = useMemo(
-    () =>
-      staffProfiles.filter((profile) =>
-        selectedArea === 'ingenieria' ? profile.trainer_ingenieria : profile.trainer_quimica,
-      ),
-    [selectedArea, staffProfiles],
-  );
-
-  const fallbackRecipients = useMemo(() => {
-    const withoutCurrentUser = staffProfiles.filter((profile) => profile.id !== currentUserId);
-    const admins = withoutCurrentUser.filter((profile) => profile.rol === 'admin');
-    const receivingStaff = withoutCurrentUser.filter((profile) => profile.recibe_tickets !== false);
-
-    if (admins.length > 0) {
-      return admins;
-    }
-
-    if (receivingStaff.length > 0) {
-      return receivingStaff;
-    }
-
-    return withoutCurrentUser;
-  }, [currentUserId, staffProfiles]);
-
-  const recipientPool = recommendedTrainers.length > 0 ? recommendedTrainers : fallbackRecipients;
-  const usingFallbackRecipients = recommendedTrainers.length === 0;
-
-  useEffect(() => {
-    const availableIds = new Set(recipientPool.map((profile) => profile.id));
-    const defaultIds = recipientPool.map((profile) => profile.id);
-
-    setSelectedRecipientIds((current) => {
-      const stillValid = current.filter((profileId) => availableIds.has(profileId));
-      return stillValid.length > 0 ? stillValid : defaultIds;
-    });
-  }, [recipientPool]);
 
   const profileById = useMemo(() => {
     const entries = profiles.map((profile) => [profile.id, profile] as const);
@@ -300,6 +427,33 @@ export default function EscalatedAdvisory({ onNotificationCountChange }: Escalat
     return selectedPlatform;
   }, [selectedEquipment, selectedPlatform, selectedTicket]);
 
+  const chemistryDraft = useMemo(() => {
+    if (!selectedChemistryMaterial || selectedChemistryIssues.length === 0) {
+      return null;
+    }
+
+    return buildChemistryDraft({
+      material: selectedChemistryMaterial,
+      issues: selectedChemistryIssues,
+      notes: chemistryNotes,
+      outcome: chemistryOutcome,
+      ticket: {
+        subject: selectedTicket?.asunto,
+        serial: selectedTicket?.numero_serie_equipo,
+        platform: selectedPlatform || selectedPlatformStatusLabel,
+      },
+    });
+  }, [
+    chemistryNotes,
+    chemistryOutcome,
+    selectedChemistryIssues,
+    selectedChemistryMaterial,
+    selectedPlatform,
+    selectedPlatformStatusLabel,
+    selectedTicket?.asunto,
+    selectedTicket?.numero_serie_equipo,
+  ]);
+
   const ticketById = useMemo(() => {
     const entries = tickets.map((ticket) => [ticket.id, ticket] as const);
     return new Map(entries);
@@ -319,6 +473,66 @@ export default function EscalatedAdvisory({ onNotificationCountChange }: Escalat
 
     return map;
   }, [notifications]);
+
+  const routingSettingsByArea = useMemo(() => {
+    const entries = routingSettings.map((setting) => [setting.area, setting] as const);
+    return new Map(entries);
+  }, [routingSettings]);
+
+  const resolveProfilesFromRoutingNames = (names: string[]) => {
+    const resolved = names
+      .map((name) => {
+        const normalizedName = normalizeText(name);
+        return (
+          staffProfiles.find((profile) => {
+            const profileName = normalizeText(profile.nombre_completo);
+            return (
+              profileName === normalizedName ||
+              profileName.startsWith(`${normalizedName} `) ||
+              profileName.endsWith(` ${normalizedName}`) ||
+              profileName.includes(` ${normalizedName} `)
+            );
+          }) || null
+        );
+      })
+      .filter((profile): profile is ProfileSummary => Boolean(profile));
+
+    return resolved.filter(
+      (profile, index, list) => list.findIndex((candidate) => candidate.id === profile.id) === index,
+    );
+  };
+
+  const getRoutingNamesForArea = (area: AdvisoryArea, schedule: 'weekday' | 'weekend') => {
+    const setting = routingSettingsByArea.get(area);
+    const configuredNames =
+      schedule === 'weekend' ? setting?.weekend_assignee_names : setting?.weekday_assignee_names;
+
+    if (configuredNames && configuredNames.length > 0) {
+      return configuredNames;
+    }
+
+    return DEFAULT_ADVISORY_ROUTING_NAMES[area][schedule];
+  };
+
+  const engineeringWeekdayRotationProfiles = useMemo(
+    () => resolveProfilesFromRoutingNames(getRoutingNamesForArea('ingenieria', 'weekday')),
+    [routingSettingsByArea, staffProfiles],
+  );
+
+  const engineeringWeekendProfiles = useMemo(
+    () => resolveProfilesFromRoutingNames(getRoutingNamesForArea('ingenieria', 'weekend')),
+    [routingSettingsByArea, staffProfiles],
+  );
+
+  const chemistryRoutingProfiles = useMemo(
+    () => resolveProfilesFromRoutingNames(getRoutingNamesForArea('quimica', 'weekday')),
+    [routingSettingsByArea, staffProfiles],
+  );
+
+  const advisoryById = useMemo(() => {
+    const entries = advisories.map((advisory) => [advisory.id, advisory] as const);
+    return new Map(entries);
+  }, [advisories]);
 
   const unreadNotificationsForMe = useMemo(
     () =>
@@ -347,6 +561,313 @@ export default function EscalatedAdvisory({ onNotificationCountChange }: Escalat
     [advisories, currentUserId],
   );
 
+  const assignedAdvisoryIdsForCurrentUser = useMemo(() => {
+    const advisoryIds = notifications
+      .filter((notification) => notification.destinatario_id === currentUserId)
+      .map((notification) => notification.asesoria_id);
+
+    return new Set(advisoryIds);
+  }, [currentUserId, notifications]);
+
+  const roleScopedAdvisories = useMemo(() => {
+    if (currentRole !== 'tecnico') {
+      return advisories;
+    }
+
+    return advisories.filter((advisory) => assignedAdvisoryIdsForCurrentUser.has(advisory.id));
+  }, [advisories, assignedAdvisoryIdsForCurrentUser, currentRole]);
+
+  const filteredAdvisories = useMemo(
+    () => roleScopedAdvisories.filter((advisory) => advisory.area === selectedArea),
+    [roleScopedAdvisories, selectedArea],
+  );
+
+  const areaUnreadNotificationsForMe = useMemo(
+    () =>
+      notifications.filter(
+        (notification) =>
+          notification.destinatario_id === currentUserId &&
+          !notification.leida_en &&
+          advisoryById.get(notification.asesoria_id)?.area === selectedArea,
+      ).length,
+    [advisoryById, currentUserId, notifications, selectedArea],
+  );
+
+  const areaAssignedAdvisories = useMemo(
+    () =>
+      myAssignedAdvisories.filter(
+        (advisory) =>
+          advisory.area === selectedArea &&
+          (currentRole !== 'tecnico' || assignedAdvisoryIdsForCurrentUser.has(advisory.id)),
+      ),
+    [assignedAdvisoryIdsForCurrentUser, currentRole, myAssignedAdvisories, selectedArea],
+  );
+
+  const areaRequestedAdvisories = useMemo(
+    () =>
+      myRequestedAdvisories.filter(
+        (advisory) =>
+          advisory.area === selectedArea &&
+          (currentRole !== 'tecnico' || assignedAdvisoryIdsForCurrentUser.has(advisory.id)),
+      ),
+    [assignedAdvisoryIdsForCurrentUser, currentRole, myRequestedAdvisories, selectedArea],
+  );
+
+  const engineeringWeekdayAdvisoriesCount = useMemo(
+    () => advisories.filter((advisory) => advisory.area === 'ingenieria' && !isWeekendDate(advisory.creado_en)).length,
+    [advisories],
+  );
+
+  const currentRoutingIsWeekend = isWeekendDate(new Date());
+
+  const autoRecipientProfiles = useMemo(() => {
+    if (selectedArea === 'quimica') {
+      return chemistryRoutingProfiles;
+    }
+
+    if (currentRoutingIsWeekend) {
+      return engineeringWeekendProfiles;
+    }
+
+    if (engineeringWeekdayRotationProfiles.length === 0) {
+      return [];
+    }
+
+    return [
+      engineeringWeekdayRotationProfiles[
+        engineeringWeekdayAdvisoriesCount % engineeringWeekdayRotationProfiles.length
+      ],
+    ].filter(Boolean);
+  }, [
+    chemistryRoutingProfiles,
+    currentRoutingIsWeekend,
+    engineeringWeekdayAdvisoriesCount,
+    engineeringWeekdayRotationProfiles,
+    engineeringWeekendProfiles,
+    selectedArea,
+  ]);
+
+  const autoRecipientIds = useMemo(
+    () => autoRecipientProfiles.map((profile) => profile.id),
+    [autoRecipientProfiles],
+  );
+
+  const isAreaTrainer = useMemo(() => {
+    if (!currentRequesterProfile) {
+      return false;
+    }
+
+    return selectedArea === 'ingenieria'
+      ? currentRequesterProfile.trainer_ingenieria === true
+      : currentRequesterProfile.trainer_quimica === true;
+  }, [currentRequesterProfile, selectedArea]);
+
+  const canViewMetrics = currentRole === 'admin' || isAreaTrainer;
+
+  const metricsScopeAdvisories = useMemo(() => {
+    const advisoriesForArea = advisories.filter((advisory) => advisory.area === selectedArea);
+
+    if (currentRole === 'admin') {
+      return advisoriesForArea;
+    }
+
+    if (!currentUserId || !isAreaTrainer) {
+      return [];
+    }
+
+    return advisoriesForArea.filter((advisory) => assignedAdvisoryIdsForCurrentUser.has(advisory.id));
+  }, [advisories, assignedAdvisoryIdsForCurrentUser, currentRole, currentUserId, isAreaTrainer, selectedArea]);
+
+  const metricsOwnerRows = useMemo(() => {
+    if (metricsScopeAdvisories.length === 0) {
+      return [];
+    }
+
+    if (currentRole !== 'admin' && currentUserId) {
+      return [
+        {
+          key: currentUserId,
+          label: currentRequesterProfile?.nombre_completo || 'Mi bandeja',
+          value: metricsScopeAdvisories.length,
+        },
+      ];
+    }
+
+    const counts = new Map<string, number>();
+
+    metricsScopeAdvisories.forEach((advisory) => {
+      const recipientIds = new Set(
+        (notificationsByAdvisoryId.get(advisory.id) || []).map((notification) => notification.destinatario_id),
+      );
+
+      recipientIds.forEach((recipientId) => {
+        const recipientProfile = profileById.get(recipientId);
+        const isTrainerForArea =
+          selectedArea === 'ingenieria'
+            ? recipientProfile?.trainer_ingenieria === true
+            : recipientProfile?.trainer_quimica === true;
+
+        if (!isTrainerForArea) {
+          return;
+        }
+
+        counts.set(recipientId, (counts.get(recipientId) || 0) + 1);
+      });
+    });
+
+    return capMetricRows(
+      [...counts.entries()].map(([key, value]) => ({
+        key,
+        label: profileById.get(key)?.nombre_completo || 'Trainer sin nombre',
+        value,
+      })),
+    );
+  }, [
+    currentRequesterProfile?.nombre_completo,
+    currentRole,
+    currentUserId,
+    metricsScopeAdvisories,
+    notificationsByAdvisoryId,
+    profileById,
+    selectedArea,
+  ]);
+
+  const metricsResponderRows = useMemo(() => {
+    if (metricsScopeAdvisories.length === 0) {
+      return [];
+    }
+
+    if (currentRole !== 'admin' && currentUserId) {
+      const ownResponses = metricsScopeAdvisories.filter((advisory) => advisory.respondida_por_id === currentUserId).length;
+      return [
+        {
+          key: currentUserId,
+          label: currentRequesterProfile?.nombre_completo || 'Mis respuestas',
+          value: ownResponses,
+        },
+      ];
+    }
+
+    const counts = new Map<string, number>();
+
+    metricsScopeAdvisories.forEach((advisory) => {
+      if (!advisory.respondida_por_id) {
+        return;
+      }
+
+      counts.set(advisory.respondida_por_id, (counts.get(advisory.respondida_por_id) || 0) + 1);
+    });
+
+    return capMetricRows(
+      [...counts.entries()].map(([key, value]) => ({
+        key,
+        label: profileById.get(key)?.nombre_completo || 'Trainer sin nombre',
+        value,
+      })),
+    );
+  }, [currentRequesterProfile?.nombre_completo, currentRole, currentUserId, metricsScopeAdvisories, profileById]);
+
+  const metricsRequesterRows = useMemo(
+    () =>
+      capMetricRows(
+        [...metricsScopeAdvisories.reduce((map, advisory) => {
+          const key = advisory.solicitante_id || advisory.solicitante_nombre_snapshot || 'sin-solicitante';
+          const label =
+            advisory.solicitante_nombre_snapshot ||
+            (advisory.solicitante_id ? profileById.get(advisory.solicitante_id)?.nombre_completo : null) ||
+            'Sin solicitante';
+
+          map.set(key, {
+            key,
+            label,
+            value: (map.get(key)?.value || 0) + 1,
+          });
+
+          return map;
+        }, new Map<string, AdvisoryMetricRow>()).values()],
+      ),
+    [metricsScopeAdvisories, profileById],
+  );
+
+  const metricsTypeRows = useMemo(
+    () =>
+      capMetricRows(
+        [...metricsScopeAdvisories.reduce((map, advisory) => {
+          const label = advisory.averia?.trim() || advisory.actividad?.trim() || 'Sin tipo capturado';
+          const key = normalizeText(label) || label;
+
+          map.set(key, {
+            key,
+            label,
+            value: (map.get(key)?.value || 0) + 1,
+          });
+
+          return map;
+        }, new Map<string, AdvisoryMetricRow>()).values()],
+      ),
+    [metricsScopeAdvisories],
+  );
+
+  const metricsStatusRows = useMemo(
+    () =>
+      capMetricRows(
+        [...metricsScopeAdvisories.reduce((map, advisory) => {
+          const key = advisory.estado;
+          map.set(key, {
+            key,
+            label: STATUS_LABELS[advisory.estado],
+            value: (map.get(key)?.value || 0) + 1,
+          });
+          return map;
+        }, new Map<string, AdvisoryMetricRow>()).values()],
+        4,
+      ),
+    [metricsScopeAdvisories],
+  );
+
+  const metricsRequesterInsightRows = useMemo(() => {
+    const rows = new Map<
+      string,
+      { key: string; label: string; total: number; typeRows: Map<string, AdvisoryMetricRow> }
+    >();
+
+    metricsScopeAdvisories.forEach((advisory) => {
+      const requesterKey = advisory.solicitante_id || advisory.solicitante_nombre_snapshot || 'sin-solicitante';
+      const requesterLabel =
+        advisory.solicitante_nombre_snapshot ||
+        (advisory.solicitante_id ? profileById.get(advisory.solicitante_id)?.nombre_completo : null) ||
+        'Sin solicitante';
+      const typeLabel = advisory.averia?.trim() || advisory.actividad?.trim() || 'Sin tipo capturado';
+      const typeKey = normalizeText(typeLabel) || typeLabel;
+
+      const currentRow = rows.get(requesterKey) || {
+        key: requesterKey,
+        label: requesterLabel,
+        total: 0,
+        typeRows: new Map<string, AdvisoryMetricRow>(),
+      };
+
+      currentRow.total += 1;
+      currentRow.typeRows.set(typeKey, {
+        key: typeKey,
+        label: typeLabel,
+        value: (currentRow.typeRows.get(typeKey)?.value || 0) + 1,
+      });
+
+      rows.set(requesterKey, currentRow);
+    });
+
+    return [...rows.values()]
+      .map<AdvisoryRequesterInsightRow>((row) => ({
+        key: row.key,
+        label: row.label,
+        total: row.total,
+        topTypes: capMetricRows([...row.typeRows.values()], 3),
+      }))
+      .sort((left, right) => right.total - left.total || left.label.localeCompare(right.label, 'es'))
+      .slice(0, 6);
+  }, [metricsScopeAdvisories, profileById]);
+
   const fetchModuleData = async (showLoading = true) => {
     if (showLoading) {
       setLoading(true);
@@ -368,8 +889,9 @@ export default function EscalatedAdvisory({ onNotificationCountChange }: Escalat
       profilesResponse,
       advisoriesResponse,
       notificationsResponse,
+      routingSettingsResponse,
     ] = await Promise.all([
-      supabase.from('profiles').select('id, rol').eq('id', user.id).single(),
+      supabase.from('profiles').select('id, rol, employee_type').eq('id', user.id).single(),
       supabase
         .from('tickets')
         .select('id, asunto, descripcion, estado, creado_en, numero_serie_equipo, nombre_cliente_guest')
@@ -381,7 +903,7 @@ export default function EscalatedAdvisory({ onNotificationCountChange }: Escalat
       supabase
         .from('profiles')
         .select(
-          'id, nombre_completo, employee_number, telefono, territorio, rol, recibe_tickets, trainer_ingenieria, trainer_quimica',
+          'id, nombre_completo, employee_number, employee_type, telefono, territorio, rol, recibe_tickets, trainer_ingenieria, trainer_quimica',
         )
         .order('nombre_completo', { ascending: true }),
       supabase
@@ -396,6 +918,9 @@ export default function EscalatedAdvisory({ onNotificationCountChange }: Escalat
         .select('id, asesoria_id, destinatario_id, leida_en, creado_en')
         .order('creado_en', { ascending: false })
         .limit(400),
+      supabase
+        .from('asesorias_escaladas_enrutamiento')
+        .select('area, weekday_assignee_names, weekend_assignee_names'),
     ]);
 
     const firstError =
@@ -415,13 +940,21 @@ export default function EscalatedAdvisory({ onNotificationCountChange }: Escalat
       return;
     }
 
+    const currentProfile = profileResponse.data as { rol?: string | null; employee_type?: string | null } | null;
+    const defaultArea = inferAdvisoryAreaFromEmployeeType(currentProfile?.employee_type) || 'ingenieria';
+
     setCurrentUserId(user.id);
-    setCurrentRole((profileResponse.data as { rol?: string | null } | null)?.rol || null);
+    setCurrentRole(currentProfile?.rol || null);
+    if (!areaInitializedRef.current) {
+      setSelectedArea(defaultArea);
+      areaInitializedRef.current = true;
+    }
     setTickets((ticketsResponse.data as AdvisoryTicketSummary[] | null) || []);
     setEquipments((equipmentsResponse.data as EquipmentSummary[] | null) || []);
     setProfiles((profilesResponse.data as ProfileSummary[] | null) || []);
     setAdvisories((advisoriesResponse.data as AdvisoryRecord[] | null) || []);
     setNotifications((notificationsResponse.data as AdvisoryNotificationRecord[] | null) || []);
+    setRoutingSettings((routingSettingsResponse.data as AdvisoryRoutingSetting[] | null) || []);
     setLoading(false);
   };
 
@@ -434,6 +967,41 @@ export default function EscalatedAdvisory({ onNotificationCountChange }: Escalat
 
     return () => window.clearInterval(timer);
   }, []);
+
+  useEffect(() => {
+    if (selectedArea !== 'quimica' || !chemistryDraft) {
+      return;
+    }
+
+    const previousDraft = chemistryAutofillRef.current;
+    const shouldReplace = (currentValue: string, previousValue: string | null | undefined) => {
+      const normalizedCurrent = currentValue.trim();
+      const normalizedPrevious = (previousValue || '').trim();
+      return !normalizedCurrent || normalizedCurrent === normalizedPrevious;
+    };
+
+    if (shouldReplace(averia, previousDraft?.averia)) {
+      setAveria(chemistryDraft.averia);
+    }
+
+    if (shouldReplace(detalleAveria, previousDraft?.detalleAveria)) {
+      setDetalleAveria(chemistryDraft.detalleAveria);
+    }
+
+    if (shouldReplace(pasosSeguidos, previousDraft?.pasosSeguidos)) {
+      setPasosSeguidos(chemistryDraft.pasosSeguidos);
+    }
+
+    if (shouldReplace(accionesTomadas, previousDraft?.accionesTomadas)) {
+      setAccionesTomadas(chemistryDraft.accionesTomadas);
+    }
+
+    if (shouldReplace(consultaEscalada, previousDraft?.consultaEscalada)) {
+      setConsultaEscalada(chemistryDraft.consultaEscalada);
+    }
+
+    chemistryAutofillRef.current = chemistryDraft;
+  }, [accionesTomadas, averia, chemistryDraft, consultaEscalada, detalleAveria, pasosSeguidos, selectedArea]);
 
   const markNotificationsRead = async (advisoryId: string) => {
     if (!currentUserId) {
@@ -474,6 +1042,14 @@ export default function EscalatedAdvisory({ onNotificationCountChange }: Escalat
     );
   };
 
+  const resetChemistryGuide = () => {
+    setSelectedChemistryMaterialKey(null);
+    setSelectedChemistryIssueIds([]);
+    setChemistryNotes('');
+    setChemistryOutcome('sin_solucion');
+    chemistryAutofillRef.current = null;
+  };
+
   const resetCreateForm = () => {
     setSelectedTicketId('');
     setPasosSeguidos('');
@@ -484,13 +1060,57 @@ export default function EscalatedAdvisory({ onNotificationCountChange }: Escalat
     setRefaccionesUtilizadas('');
     setBibliografiaConsultada('');
     setConsultaEscalada('');
-    setSelectedRecipientIds(recipientPool.map((profile) => profile.id));
+    resetChemistryGuide();
   };
 
-  const toggleRecipient = (profileId: string) => {
-    setSelectedRecipientIds((current) =>
-      current.includes(profileId) ? current.filter((id) => id !== profileId) : [...current, profileId],
+  const handleAreaChange = (nextArea: AdvisoryArea) => {
+    setActiveAdvisoryId(null);
+    setSelectedArea(nextArea);
+    if (nextArea !== 'quimica') {
+      resetChemistryGuide();
+    }
+  };
+
+  const handleChemistryMaterialSelect = (materialKey: ChemistryMaterialKey) => {
+    setSelectedArea('quimica');
+    setSelectedChemistryMaterialKey(materialKey);
+    setSelectedChemistryIssueIds([]);
+    setChemistryOutcome('sin_solucion');
+    setChemistryNotes((current) => (selectedChemistryMaterialKey === materialKey ? current : ''));
+  };
+
+  const toggleChemistryIssue = (issueId: string) => {
+    setSelectedChemistryIssueIds((current) =>
+      current.includes(issueId) ? current.filter((currentId) => currentId !== issueId) : [...current, issueId],
     );
+  };
+
+  const applyChemistryDraftToForm = (force = false) => {
+    if (!chemistryDraft) {
+      return;
+    }
+
+    if (force || !averia.trim()) {
+      setAveria(chemistryDraft.averia);
+    }
+
+    if (force || !detalleAveria.trim()) {
+      setDetalleAveria(chemistryDraft.detalleAveria);
+    }
+
+    if (force || !pasosSeguidos.trim()) {
+      setPasosSeguidos(chemistryDraft.pasosSeguidos);
+    }
+
+    if (force || !accionesTomadas.trim()) {
+      setAccionesTomadas(chemistryDraft.accionesTomadas);
+    }
+
+    if (force || !consultaEscalada.trim()) {
+      setConsultaEscalada(chemistryDraft.consultaEscalada);
+    }
+
+    chemistryAutofillRef.current = chemistryDraft;
   };
 
   const handleCreateAdvisory = async (event: React.FormEvent) => {
@@ -507,8 +1127,8 @@ export default function EscalatedAdvisory({ onNotificationCountChange }: Escalat
       return;
     }
 
-    if (selectedRecipientIds.length === 0) {
-      setFeedback({ tone: 'error', message: 'Selecciona al menos un trainer o destinatario para la escalación.' });
+    if (autoRecipientIds.length === 0) {
+      setFeedback({ tone: 'error', message: 'No hay destinatarios automáticos resueltos para esta asesoría.' });
       return;
     }
 
@@ -552,7 +1172,7 @@ export default function EscalatedAdvisory({ onNotificationCountChange }: Escalat
       return;
     }
 
-    const notificationsPayload = selectedRecipientIds.map((profileId) => ({
+    const notificationsPayload = autoRecipientIds.map((profileId) => ({
       asesoria_id: insertedAdvisory.id as string,
       destinatario_id: profileId,
     }));
@@ -575,7 +1195,7 @@ export default function EscalatedAdvisory({ onNotificationCountChange }: Escalat
     setSaving(false);
     setFeedback({
       tone: 'success',
-      message: `La asesoría se escaló a ${selectedRecipientIds.length} destinatario(s).`,
+      message: `La asesoría se escaló a ${autoRecipientIds.length} destinatario(s).`,
     });
     await fetchModuleData(false);
   };
@@ -668,34 +1288,57 @@ export default function EscalatedAdvisory({ onNotificationCountChange }: Escalat
     );
   }
 
+  const activeAreaLabel = AREA_LABELS[selectedArea];
+  const areaContributorLabel = selectedArea === 'quimica' ? 'químico' : 'ingeniero';
+  const isTechnician = currentRole === 'tecnico';
+
   return (
     <div style={{ display: 'grid', gap: '1.25rem' }}>
+      <div className="advisory-team-switch" role="tablist" aria-label="Seleccionar vista de asesorías">
+        <button
+          type="button"
+          className={`advisory-team-switch__pill ${selectedArea === 'ingenieria' ? 'is-active' : ''}`}
+          onClick={() => handleAreaChange('ingenieria')}
+        >
+          Ingeniería
+        </button>
+        <button
+          type="button"
+          className={`advisory-team-switch__pill advisory-team-switch__pill--chemistry ${selectedArea === 'quimica' ? 'is-active' : ''}`}
+          onClick={() => handleAreaChange('quimica')}
+        >
+          Química
+        </button>
+      </div>
+
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '1rem' }}>
         <div className="card" style={{ padding: '1.35rem' }}>
           <div style={{ color: 'var(--text-secondary)', fontSize: '0.76rem', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
             Notificaciones para mí
           </div>
-          <strong style={{ display: 'block', fontSize: '2rem', marginTop: '0.4rem' }}>{unreadNotificationsForMe}</strong>
+          <strong style={{ display: 'block', fontSize: '2rem', marginTop: '0.4rem' }}>{areaUnreadNotificationsForMe}</strong>
           <p style={{ color: 'var(--text-secondary)', fontSize: '0.92rem', marginTop: '0.3rem' }}>
-            Escalaciones pendientes por leer o revisar.
+            Pendientes dentro de la vista de {activeAreaLabel}.
           </p>
         </div>
         <div className="card" style={{ padding: '1.35rem' }}>
           <div style={{ color: 'var(--text-secondary)', fontSize: '0.76rem', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
-            Mis solicitudes
+            {isTechnician ? 'Solicitudes mías visibles' : 'Mis solicitudes'}
           </div>
-          <strong style={{ display: 'block', fontSize: '2rem', marginTop: '0.4rem' }}>{myRequestedAdvisories.length}</strong>
+          <strong style={{ display: 'block', fontSize: '2rem', marginTop: '0.4rem' }}>{areaRequestedAdvisories.length}</strong>
           <p style={{ color: 'var(--text-secondary)', fontSize: '0.92rem', marginTop: '0.3rem' }}>
-            Asesorías escaladas desde tus tickets.
+            {isTechnician
+              ? `Casos de ${activeAreaLabel.toLowerCase()} que tú escalaste y además te fueron asignados.`
+              : `Casos de ${activeAreaLabel.toLowerCase()} escalados desde tus tickets.`}
           </p>
         </div>
         <div className="card" style={{ padding: '1.35rem' }}>
           <div style={{ color: 'var(--text-secondary)', fontSize: '0.76rem', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
             Bandeja asignada
           </div>
-          <strong style={{ display: 'block', fontSize: '2rem', marginTop: '0.4rem' }}>{myAssignedAdvisories.length}</strong>
+          <strong style={{ display: 'block', fontSize: '2rem', marginTop: '0.4rem' }}>{areaAssignedAdvisories.length}</strong>
           <p style={{ color: 'var(--text-secondary)', fontSize: '0.92rem', marginTop: '0.3rem' }}>
-            Casos donde apareces como trainer o destinatario.
+            Casos de {activeAreaLabel.toLowerCase()} donde apareces como destinatario.
           </p>
         </div>
       </div>
@@ -703,9 +1346,11 @@ export default function EscalatedAdvisory({ onNotificationCountChange }: Escalat
       <div className="card" style={{ padding: '1.65rem' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', gap: '1rem', flexWrap: 'wrap', marginBottom: '1rem' }}>
           <div>
-            <h3 style={{ marginBottom: '0.35rem' }}>Escalar asesoría</h3>
+            <h3 style={{ marginBottom: '0.35rem' }}>Escalar asesoría de {activeAreaLabel.toLowerCase()}</h3>
             <p style={{ color: 'var(--text-secondary)', maxWidth: '760px' }}>
-              Selecciona el ticket, resume qué ya se intentó en campo y dirige la solicitud al grupo correcto para que el trainer revise y responda.
+              {selectedArea === 'quimica'
+                ? 'Selecciona el ticket, arma el contexto por material y envía al equipo químico una explicación ya estructurada.'
+                : 'Selecciona el ticket, resume el descarte técnico de campo y dirige la solicitud al equipo de ingeniería para revisión.'}
             </p>
           </div>
           <button type="button" className="button-primary inactive" onClick={() => void fetchModuleData(false)} disabled={loading || saving}>
@@ -715,36 +1360,15 @@ export default function EscalatedAdvisory({ onNotificationCountChange }: Escalat
 
         {feedback ? (
           <div
-            style={{
-              marginBottom: '1rem',
-              padding: '0.95rem 1rem',
-              borderRadius: '14px',
-              border:
-                feedback.tone === 'error'
-                  ? '1px solid rgba(244, 63, 94, 0.3)'
-                  : feedback.tone === 'success'
-                    ? '1px solid rgba(34, 197, 94, 0.28)'
-                    : '1px solid rgba(59, 130, 246, 0.28)',
-              background:
-                feedback.tone === 'error'
-                  ? 'rgba(127, 29, 29, 0.22)'
-                  : feedback.tone === 'success'
-                    ? 'rgba(20, 83, 45, 0.18)'
-                    : 'rgba(15, 23, 42, 0.28)',
-              color:
-                feedback.tone === 'error'
-                  ? '#ffd7dc'
-                  : feedback.tone === 'success'
-                    ? '#d4ffe4'
-                    : '#dcebff',
-            }}
+            className={`advisory-feedback advisory-feedback--${feedback.tone}`}
+            style={{ marginBottom: '1rem' }}
           >
             {feedback.message}
           </div>
         ) : null}
 
         <form onSubmit={handleCreateAdvisory} style={{ display: 'grid', gap: '1rem' }}>
-          <div style={{ display: 'grid', gridTemplateColumns: '1.75fr 0.75fr', gap: '1rem' }}>
+          <div className="advisory-form-grid advisory-form-grid--ticket">
             <div>
               <label style={{ display: 'block', marginBottom: '0.45rem', color: 'var(--text-secondary)' }}>Ticket a escalar *</label>
               <select
@@ -761,30 +1385,211 @@ export default function EscalatedAdvisory({ onNotificationCountChange }: Escalat
                 ))}
               </select>
             </div>
-            <div>
-              <label style={{ display: 'block', marginBottom: '0.45rem', color: 'var(--text-secondary)' }}>Actividad *</label>
-              <select
-                className="input-field"
-                value={selectedArea}
-                onChange={(event) => setSelectedArea(event.target.value as AdvisoryArea)}
-              >
-                <option value="ingenieria">Ingeniería</option>
-                <option value="quimica">Química</option>
-              </select>
-            </div>
           </div>
 
+          {selectedArea === 'quimica' ? (
+            <section className="advisory-chemistry-shell">
+              <div className="advisory-chemistry-header">
+                <div>
+                  <span className="glass-pill glass-pill--brand">Apartado de química</span>
+                  <h4>¿Con qué presentas problemas?</h4>
+                  <p>
+                    Esta ruta arma el contexto de forma guiada para que el químico escale el caso sin volver a redactar todo desde cero.
+                  </p>
+                </div>
+                {selectedChemistryMaterial ? (
+                  <button
+                    type="button"
+                    className="button-primary inactive advisory-chemistry-reset"
+                    onClick={resetChemistryGuide}
+                  >
+                    Reiniciar ruta
+                  </button>
+                ) : null}
+              </div>
+
+              <div className="advisory-chemistry-step-strip">
+                <span className={`advisory-chemistry-step-pill ${!selectedChemistryMaterial ? 'is-active' : 'is-complete'}`}>
+                  1. Material
+                </span>
+                <span className={`advisory-chemistry-step-pill ${selectedChemistryMaterial ? 'is-active' : ''}`}>
+                  2. Problema
+                </span>
+                <span
+                  className={`advisory-chemistry-step-pill ${
+                    selectedChemistryMaterial && selectedChemistryIssueIds.length > 0 ? 'is-active' : ''
+                  }`}
+                >
+                  3. Borrador
+                </span>
+              </div>
+
+              <div className="advisory-chemistry-stage-frame">
+                <div className="advisory-chemistry-stage" key={selectedChemistryMaterial ? `issues-${selectedChemistryMaterial.key}` : 'materials'}>
+                  {!selectedChemistryMaterial ? (
+                    <>
+                      <div className="advisory-chemistry-stage__intro advisory-chemistry-stage__intro--material">
+                        <div>
+                          <span className="glass-pill">Paso 1</span>
+                          <h5>Selecciona el material</h5>
+                          <p>Empieza por control, calibrador, blanco o muestra. Al elegir uno, esta misma zona cambia al siguiente paso.</p>
+                        </div>
+                      </div>
+
+                      <div className="advisory-chemistry-material-grid">
+                        {CHEMISTRY_GUIDE_MATERIALS.map((material, index) => {
+                          const isActive = selectedChemistryMaterialKey === material.key;
+                          return (
+                            <button
+                              key={material.key}
+                              type="button"
+                              className={`advisory-chemistry-material-card ${isActive ? 'is-active' : ''}`}
+                              onClick={() => handleChemistryMaterialSelect(material.key)}
+                              style={{ animationDelay: `${index * 70}ms` }}
+                            >
+                              <span className="advisory-chemistry-material-card__icon">
+                                <ChemistryIcon materialKey={material.key} />
+                              </span>
+                              <span className="advisory-chemistry-material-card__copy">
+                                <small>{material.kicker}</small>
+                                <strong>{material.label}</strong>
+                                <p>{material.description}</p>
+                                <em>{material.helper}</em>
+                              </span>
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      <div className="advisory-chemistry-stage__intro advisory-chemistry-stage__intro--issue">
+                        <div className="advisory-chemistry-stage__selected">
+                          <span className="advisory-chemistry-stage__selected-icon">
+                            <ChemistryIcon materialKey={selectedChemistryMaterial.key} />
+                          </span>
+                          <div>
+                            <small>{selectedChemistryMaterial.kicker}</small>
+                            <h5>{selectedChemistryMaterial.label}</h5>
+                            <p>Selecciona una o varias tarjetas que se parezcan a tu caso. El borrador se va actualizando abajo.</p>
+                          </div>
+                        </div>
+                        <div className="advisory-chemistry-stage__meta">
+                          <strong>{selectedChemistryIssueIds.length}</strong>
+                          <span>problema(s) marcado(s)</span>
+                        </div>
+                      </div>
+
+                      <div className="advisory-chemistry-issue-grid">
+                        {selectedChemistryMaterial.issues.map((issue, index) => {
+                          const isSelected = selectedChemistryIssueIds.includes(issue.id);
+                          return (
+                            <button
+                              key={issue.id}
+                              type="button"
+                              className={`advisory-chemistry-issue-card ${isSelected ? 'is-selected' : ''}`}
+                              onClick={() => toggleChemistryIssue(issue.id)}
+                              style={{ animationDelay: `${index * 70}ms` }}
+                            >
+                              <span className="advisory-chemistry-issue-card__kicker">{isSelected ? 'Marcado para escalar' : 'Problema sugerido'}</span>
+                              <strong>{issue.title}</strong>
+                              <p>{issue.symptom}</p>
+                              <div className="advisory-chemistry-issue-card__block">
+                                <span>Qué revisar</span>
+                                <ul>
+                                  {issue.checks.slice(0, 3).map((check) => (
+                                    <li key={check}>{check}</li>
+                                  ))}
+                                </ul>
+                              </div>
+                              <div className="advisory-chemistry-issue-card__block advisory-chemistry-issue-card__block--accent">
+                                <span>Qué suele ayudar</span>
+                                <ul>
+                                  {issue.solutions.slice(0, 2).map((solution) => (
+                                    <li key={solution}>{solution}</li>
+                                  ))}
+                                </ul>
+                              </div>
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </>
+                  )}
+                </div>
+              </div>
+
+              {selectedChemistryMaterial ? (
+                <div className="advisory-chemistry-detail-grid">
+                  <div className="advisory-chemistry-detail-card">
+                    <div className="advisory-chemistry-detail-card__header">
+                      <div>
+                        <span className="glass-pill">Estado del caso</span>
+                        <h5>Resultado del descarte</h5>
+                      </div>
+                    </div>
+
+                    <div className="advisory-chemistry-outcome-switch">
+                      {Object.entries(CHEMISTRY_OUTCOME_LABELS).map(([outcomeKey, outcomeLabel]) => (
+                        <button
+                          key={outcomeKey}
+                          type="button"
+                          className={chemistryOutcome === outcomeKey ? 'is-active' : ''}
+                          onClick={() => setChemistryOutcome(outcomeKey as ChemistryOutcome)}
+                        >
+                          {outcomeLabel}
+                        </button>
+                      ))}
+                    </div>
+
+                    <div>
+                      <label style={{ display: 'block', marginBottom: '0.45rem', color: 'var(--text-secondary)' }}>Notas rápidas del químico</label>
+                      <textarea
+                        className="input-field"
+                        rows={5}
+                        value={chemistryNotes}
+                        onChange={(event) => setChemistryNotes(event.target.value)}
+                        placeholder="Ejemplo: control nivel 2 alto, repetido por duplicado, mismo sesgo; se recalibró con lote nuevo y persiste."
+                      />
+                    </div>
+
+                    <button
+                      type="button"
+                      className="button-primary inactive"
+                      onClick={() => applyChemistryDraftToForm(true)}
+                      disabled={!chemistryDraft}
+                    >
+                      Sobrescribir campos con este borrador
+                    </button>
+                  </div>
+
+                  <div className="advisory-chemistry-preview-card">
+                    <div className="advisory-chemistry-preview-card__header">
+                      <div>
+                        <span className="glass-pill glass-pill--brand">Autocompletado</span>
+                        <h5>Borrador de explicación para la asesoría</h5>
+                      </div>
+                      <small>Se sincroniza con los campos editables de abajo.</small>
+                    </div>
+
+                    {chemistryDraft ? (
+                      <pre>{chemistryDraft.consultaEscalada}</pre>
+                    ) : (
+                      <div className="advisory-chemistry-preview-card__empty">
+                        Selecciona al menos una tarjeta de problema para generar el texto automáticamente.
+                      </div>
+                    )}
+                  </div>
+                </div>
+              ) : null}
+            </section>
+          ) : null}
+
+          {/* La guía extendida de ingeniería y el resumen visual del enrutamiento se dejaron fuera de la UI
+              para mantener el módulo operativo y discreto. La lógica sigue activa en el flujo y en la configuración. */}
+
           {selectedTicket ? (
-            <div
-              style={{
-                padding: '1rem',
-                borderRadius: '14px',
-                border: '1px solid rgba(255,255,255,0.1)',
-                background: 'rgba(255,255,255,0.03)',
-                display: 'grid',
-                gap: '0.25rem',
-              }}
-            >
+            <div className="advisory-ticket-summary">
               <strong>{selectedTicket.asunto}</strong>
               <span style={{ color: 'var(--text-secondary)', fontSize: '0.92rem' }}>
                 Serie {selectedTicket.numero_serie_equipo || 'N/D'} · ticket abierto desde {formatDateTimeLabel(selectedTicket.creado_en)}
@@ -795,7 +1600,13 @@ export default function EscalatedAdvisory({ onNotificationCountChange }: Escalat
             </div>
           ) : null}
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1fr) minmax(0, 2fr)', gap: '1rem' }}>
+          {selectedArea === 'quimica' ? (
+            <div className="advisory-chemistry-form-note">
+              Los campos de abajo siguen siendo editables. Si ya marcaste tarjetas, el sistema llena el borrador para que solo ajustes el contexto fino.
+            </div>
+          ) : null}
+
+          <div className="advisory-form-grid advisory-form-grid--symptoms">
             <div>
               <label style={{ display: 'block', marginBottom: '0.45rem', color: 'var(--text-secondary)' }}>Avería *</label>
               <input
@@ -803,7 +1614,7 @@ export default function EscalatedAdvisory({ onNotificationCountChange }: Escalat
                 value={averia}
                 onChange={(event) => setAveria(event.target.value)}
                 required
-                placeholder="Tipo de avería o síntoma principal"
+                placeholder={selectedArea === 'quimica' ? 'Ej. Control fuera de rango / blanco alto' : 'Tipo de avería o síntoma principal'}
               />
             </div>
             <div>
@@ -814,12 +1625,16 @@ export default function EscalatedAdvisory({ onNotificationCountChange }: Escalat
                 value={detalleAveria}
                 onChange={(event) => setDetalleAveria(event.target.value)}
                 required
-                placeholder="Describe técnicamente la falla observada por el ingeniero a cargo."
+                placeholder={
+                  selectedArea === 'quimica'
+                    ? 'Describe el comportamiento observado, corridas afectadas, nivel del control o condición de la muestra.'
+                    : 'Describe técnicamente la falla observada por el ingeniero a cargo.'
+                }
               />
             </div>
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: '1rem' }}>
+          <div className="advisory-form-grid advisory-form-grid--triple">
             <div>
               <label style={{ display: 'block', marginBottom: '0.45rem', color: 'var(--text-secondary)' }}>Pasos ya seguidos</label>
               <textarea
@@ -837,7 +1652,11 @@ export default function EscalatedAdvisory({ onNotificationCountChange }: Escalat
                 rows={5}
                 value={ajustesRealizados}
                 onChange={(event) => setAjustesRealizados(event.target.value)}
-                placeholder="Parámetros, calibraciones, limpiezas o reconfiguraciones aplicadas."
+                placeholder={
+                  selectedArea === 'quimica'
+                    ? 'Diluciones, recalibraciones, cambios de lote, limpieza, reconstituciones o verificaciones adicionales.'
+                    : 'Parámetros, calibraciones, limpiezas o reconfiguraciones aplicadas.'
+                }
               />
             </div>
             <div>
@@ -847,20 +1666,30 @@ export default function EscalatedAdvisory({ onNotificationCountChange }: Escalat
                 rows={5}
                 value={accionesTomadas}
                 onChange={(event) => setAccionesTomadas(event.target.value)}
-                placeholder="Partes cambiadas, pruebas ejecutadas, llamados previos, evidencias levantadas."
+                placeholder={
+                  selectedArea === 'quimica'
+                    ? 'Repeticiones, cambio de reactivo, blanco nuevo, revisión de interferencias o evidencia levantada.'
+                    : 'Partes cambiadas, pruebas ejecutadas, llamados previos, evidencias levantadas.'
+                }
               />
             </div>
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, minmax(0, 1fr))', gap: '1rem' }}>
+          <div className="advisory-form-grid advisory-form-grid--double">
             <div>
-              <label style={{ display: 'block', marginBottom: '0.45rem', color: 'var(--text-secondary)' }}>Refacciones utilizadas</label>
+              <label style={{ display: 'block', marginBottom: '0.45rem', color: 'var(--text-secondary)' }}>
+                {selectedArea === 'quimica' ? 'Materiales o consumibles utilizados' : 'Refacciones utilizadas'}
+              </label>
               <textarea
                 className="input-field"
                 rows={3}
                 value={refaccionesUtilizadas}
                 onChange={(event) => setRefaccionesUtilizadas(event.target.value)}
-                placeholder="Códigos, cantidades o descripción de refacciones usadas."
+                placeholder={
+                  selectedArea === 'quimica'
+                    ? 'Lote de reactivo, control, calibrador, diluyente, agua o consumibles involucrados.'
+                    : 'Códigos, cantidades o descripción de refacciones usadas.'
+                }
               />
             </div>
             <div>
@@ -870,7 +1699,7 @@ export default function EscalatedAdvisory({ onNotificationCountChange }: Escalat
                 rows={3}
                 value={bibliografiaConsultada}
                 onChange={(event) => setBibliografiaConsultada(event.target.value)}
-                placeholder="Manual, procedimiento, boletín técnico o referencia revisada."
+                placeholder="Manual, procedimiento, inserto, boletín técnico o referencia revisada."
               />
             </div>
           </div>
@@ -887,59 +1716,7 @@ export default function EscalatedAdvisory({ onNotificationCountChange }: Escalat
             />
           </div>
 
-          <div>
-            <div style={{ display: 'flex', justifyContent: 'space-between', gap: '1rem', flexWrap: 'wrap', marginBottom: '0.55rem' }}>
-              <label style={{ color: 'var(--text-secondary)' }}>
-                Destinatarios de la notificación ({AREA_LABELS[selectedArea]})
-              </label>
-              <span style={{ color: 'var(--text-secondary)', fontSize: '0.82rem' }}>
-                {usingFallbackRecipients
-                  ? 'Sin trainers configurados para esta área; se usa staff de respaldo.'
-                  : 'Se detectaron trainers configurados para esta área.'}
-              </span>
-            </div>
-            <div
-              style={{
-                display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
-                gap: '0.75rem',
-              }}
-            >
-              {recipientPool.map((profile) => {
-                const checked = selectedRecipientIds.includes(profile.id);
-                return (
-                  <label
-                    key={profile.id}
-                    style={{
-                      display: 'flex',
-                      gap: '0.7rem',
-                      alignItems: 'flex-start',
-                      padding: '0.9rem 0.95rem',
-                      borderRadius: '14px',
-                      cursor: 'pointer',
-                      border: checked ? '1px solid rgba(186, 0, 13, 0.35)' : '1px solid rgba(255,255,255,0.08)',
-                      background: checked ? 'rgba(186, 0, 13, 0.12)' : 'rgba(255,255,255,0.03)',
-                    }}
-                  >
-                    <input
-                      type="checkbox"
-                      checked={checked}
-                      onChange={() => toggleRecipient(profile.id)}
-                      style={{ marginTop: '0.22rem' }}
-                    />
-                    <span style={{ display: 'grid', gap: '0.16rem' }}>
-                      <strong>{profile.nombre_completo || 'Sin nombre'}</strong>
-                      <span style={{ color: 'var(--text-secondary)', fontSize: '0.86rem' }}>
-                        {(profile.rol || 'staff').toUpperCase()} · {profile.telefono || 'Sin teléfono'}
-                      </span>
-                    </span>
-                  </label>
-                );
-              })}
-            </div>
-          </div>
-
-          <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.75rem' }}>
+          <div className="advisory-form-actions">
             <button
               type="button"
               className="button-primary inactive"
@@ -956,30 +1733,32 @@ export default function EscalatedAdvisory({ onNotificationCountChange }: Escalat
       </div>
 
       <div className="card" style={{ padding: '1.65rem' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', gap: '1rem', flexWrap: 'wrap', marginBottom: '1rem' }}>
-          <div>
-            <h3 style={{ marginBottom: '0.35rem' }}>Bandeja de asesorías</h3>
-            <p style={{ color: 'var(--text-secondary)' }}>
-              Aquí ves tanto lo que has escalado como lo que te asignaron para revisión.
-            </p>
-          </div>
+          <div style={{ display: 'flex', justifyContent: 'space-between', gap: '1rem', flexWrap: 'wrap', marginBottom: '1rem' }}>
+            <div>
+              <h3 style={{ marginBottom: '0.35rem' }}>Bandeja de asesorías</h3>
+              <p style={{ color: 'var(--text-secondary)' }}>
+                {isTechnician
+                  ? `Estás viendo únicamente los casos de ${activeAreaLabel.toLowerCase()} donde apareces como destinatario.`
+                  : `Estás viendo únicamente los casos de ${activeAreaLabel.toLowerCase()}, tanto los que escalaste como los que te asignaron.`}
+              </p>
+            </div>
           <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
             <span className="button-primary inactive chip" style={{ textTransform: 'none' }}>
-              {myAssignedAdvisories.length} asignadas
+              {areaAssignedAdvisories.length} asignadas
             </span>
             <span className="button-primary inactive chip" style={{ textTransform: 'none' }}>
-              {myRequestedAdvisories.length} solicitadas por mí
+              {areaRequestedAdvisories.length} {isTechnician ? 'propias y asignadas' : 'solicitadas por mí'}
             </span>
           </div>
         </div>
 
         {loading ? (
           <p style={{ color: 'var(--text-secondary)' }}>Cargando asesorías escaladas...</p>
-        ) : advisories.length === 0 ? (
-          <p style={{ color: 'var(--text-secondary)' }}>Todavía no hay asesorías escaladas registradas.</p>
+        ) : filteredAdvisories.length === 0 ? (
+          <p style={{ color: 'var(--text-secondary)' }}>Todavía no hay asesorías escaladas registradas para {activeAreaLabel.toLowerCase()}.</p>
         ) : (
-          <div style={{ display: 'grid', gap: '0.85rem' }}>
-            {advisories.map((advisory) => {
+          <div className="advisory-thread-list">
+            {filteredAdvisories.map((advisory) => {
               const ticket = advisory.ticket_id ? ticketById.get(advisory.ticket_id) || null : null;
               const requester = advisory.solicitante_id ? profileById.get(advisory.solicitante_id) || null : null;
               const responder = advisory.respondida_por_id ? profileById.get(advisory.respondida_por_id) || null : null;
@@ -997,42 +1776,31 @@ export default function EscalatedAdvisory({ onNotificationCountChange }: Escalat
               return (
                 <div
                   key={advisory.id}
+                  className={`advisory-thread-card ${isExpanded ? 'is-expanded' : ''}`}
                   style={{
-                    borderRadius: '16px',
-                    border: `1px solid ${tone.border}`,
-                    background: 'rgba(255,255,255,0.02)',
-                    overflow: 'hidden',
+                    borderColor: tone.border,
+                    background: tone.surface,
                   }}
                 >
                   <button
                     type="button"
                     onClick={() => void handleOpenAdvisory(advisory.id)}
-                    style={{
-                      width: '100%',
-                      textAlign: 'left',
-                      background: 'transparent',
-                      color: 'inherit',
-                      border: 'none',
-                      padding: '1rem 1.1rem',
-                      cursor: 'pointer',
-                      display: 'grid',
-                      gap: '0.5rem',
-                    }}
+                    className="advisory-thread-card__summary"
                   >
                     <div style={{ display: 'flex', justifyContent: 'space-between', gap: '0.75rem', flexWrap: 'wrap' }}>
                       <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
                         <span
-                          className="button-primary inactive chip"
+                          className="button-primary inactive chip advisory-thread-card__chip"
                           style={{ textTransform: 'none', background: tone.background, color: tone.color, borderColor: tone.border }}
                         >
                           {STATUS_LABELS[advisory.estado]}
                         </span>
-                        <span className="button-primary inactive chip" style={{ textTransform: 'none' }}>
+                        <span className="button-primary inactive chip advisory-thread-card__chip advisory-thread-card__chip--neutral" style={{ textTransform: 'none' }}>
                           {AREA_LABELS[advisory.area]}
                         </span>
                         {unreadForThisAdvisory > 0 ? (
                           <span
-                            className="button-primary chip"
+                            className="button-primary chip advisory-thread-card__chip"
                             style={{ textTransform: 'none', padding: '0.2rem 0.7rem', minHeight: 'unset' }}
                           >
                             {unreadForThisAdvisory} nueva{unreadForThisAdvisory === 1 ? '' : 's'}
@@ -1056,28 +1824,23 @@ export default function EscalatedAdvisory({ onNotificationCountChange }: Escalat
 
                   {isExpanded ? (
                     <div
+                      className="advisory-thread-card__panel"
                       style={{
-                        borderTop: '1px solid rgba(255,255,255,0.08)',
-                        padding: '1rem 1.1rem 1.15rem',
-                        display: 'grid',
-                        gap: '0.9rem',
-                        background: 'rgba(0,0,0,0.18)',
+                        borderTopColor: tone.border,
+                        background: tone.expandedSurface,
                       }}
                     >
                       <div
+                        className="advisory-thread-card__report"
                         style={{
-                          padding: '1rem',
-                          borderRadius: '14px',
-                          border: '1px solid rgba(255,255,255,0.08)',
-                          background: 'rgba(255,255,255,0.025)',
-                          display: 'grid',
-                          gap: '0.85rem',
+                          borderColor: tone.border,
+                          background: tone.reportSurface,
                         }}
                       >
                         <div style={{ color: 'var(--text-secondary)', fontSize: '0.76rem', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
                           Reporte generado
                         </div>
-                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, minmax(0, 1fr))', gap: '0.75rem' }}>
+                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: '0.75rem' }}>
                           <div>
                             <div style={{ color: 'var(--text-secondary)', fontSize: '0.72rem', marginBottom: '0.2rem' }}>Solicitante</div>
                             <strong>{advisory.solicitante_nombre_snapshot || requester?.nombre_completo || 'Sistema'}</strong>
@@ -1099,7 +1862,7 @@ export default function EscalatedAdvisory({ onNotificationCountChange }: Escalat
                             <strong>{advisory.averia || 'Sin avería registrada'}</strong>
                           </div>
                         </div>
-                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: '0.75rem' }}>
+                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '0.75rem' }}>
                           <div>
                             <div style={{ color: 'var(--text-secondary)', fontSize: '0.72rem', marginBottom: '0.22rem' }}>Detalle de avería</div>
                             <p style={{ whiteSpace: 'pre-wrap', color: 'var(--text-primary)' }}>{advisory.detalle_averia || 'Sin detalle técnico capturado.'}</p>
@@ -1115,20 +1878,20 @@ export default function EscalatedAdvisory({ onNotificationCountChange }: Escalat
                         </div>
                       </div>
 
-                      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: '0.75rem' }}>
-                        <div>
+                      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '0.75rem' }}>
+                        <div className="advisory-thread-card__section">
                           <div style={{ color: 'var(--text-secondary)', fontSize: '0.76rem', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '0.28rem' }}>
                             Pasos seguidos
                           </div>
                           <p style={{ whiteSpace: 'pre-wrap', color: 'var(--text-primary)' }}>{advisory.pasos_seguidos || 'Sin detalle capturado.'}</p>
                         </div>
-                        <div>
+                        <div className="advisory-thread-card__section">
                           <div style={{ color: 'var(--text-secondary)', fontSize: '0.76rem', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '0.28rem' }}>
                             Ajustes realizados
                           </div>
                           <p style={{ whiteSpace: 'pre-wrap', color: 'var(--text-primary)' }}>{advisory.ajustes_realizados || 'Sin detalle capturado.'}</p>
                         </div>
-                        <div>
+                        <div className="advisory-thread-card__section">
                           <div style={{ color: 'var(--text-secondary)', fontSize: '0.76rem', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '0.28rem' }}>
                             Acciones tomadas
                           </div>
@@ -1136,7 +1899,7 @@ export default function EscalatedAdvisory({ onNotificationCountChange }: Escalat
                         </div>
                       </div>
 
-                      <div>
+                      <div className="advisory-thread-card__section">
                         <div style={{ color: 'var(--text-secondary)', fontSize: '0.76rem', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '0.28rem' }}>
                           Destinatarios notificados
                         </div>
@@ -1144,7 +1907,7 @@ export default function EscalatedAdvisory({ onNotificationCountChange }: Escalat
                           {recipients.map((notification) => {
                             const recipient = profileById.get(notification.destinatario_id);
                             return (
-                              <span key={notification.id} className="button-primary inactive chip" style={{ textTransform: 'none' }}>
+                              <span key={notification.id} className="button-primary inactive chip advisory-thread-card__chip advisory-thread-card__chip--recipient" style={{ textTransform: 'none' }}>
                                 {recipient?.nombre_completo || 'Sin nombre'}
                                 {notification.leida_en ? ' · visto' : ' · pendiente'}
                               </span>
@@ -1153,8 +1916,8 @@ export default function EscalatedAdvisory({ onNotificationCountChange }: Escalat
                         </div>
                       </div>
 
-                      <div style={{ display: 'grid', gap: '0.75rem' }}>
-                        <div style={{ display: 'grid', gridTemplateColumns: '220px 1fr', gap: '0.75rem' }}>
+                      <div className="advisory-thread-card__section advisory-thread-card__section--response">
+                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '0.75rem' }}>
                           <div>
                             <label style={{ display: 'block', marginBottom: '0.4rem', color: 'var(--text-secondary)' }}>Estado</label>
                             <select
@@ -1208,6 +1971,148 @@ export default function EscalatedAdvisory({ onNotificationCountChange }: Escalat
           </div>
         )}
       </div>
+
+      {canViewMetrics ? (
+        <div className="card advisory-metrics-shell" style={{ padding: '1.65rem' }}>
+          <div className="advisory-metrics-header">
+            <div>
+              <h3 style={{ marginBottom: '0.35rem' }}>Métricas de {activeAreaLabel.toLowerCase()}</h3>
+              <p style={{ color: 'var(--text-secondary)' }}>
+                {currentRole === 'admin'
+                  ? `Vista consolidada para planeación de recapacitaciones y seguimiento del área de ${activeAreaLabel.toLowerCase()}.`
+                  : `Vista privada de la cartera que te pertenece como trainer de ${activeAreaLabel.toLowerCase()}.`}
+              </p>
+            </div>
+            <div className="advisory-metrics-kpis">
+              <article className="advisory-metrics-kpi">
+                <span>Total de asesorías</span>
+                <strong>{metricsScopeAdvisories.length}</strong>
+              </article>
+              <article className="advisory-metrics-kpi">
+                <span>Trainers con carga</span>
+                <strong>{metricsOwnerRows.filter((row) => row.value > 0).length}</strong>
+              </article>
+              <article className="advisory-metrics-kpi">
+                <span>{areaContributorLabel}s con incidencias</span>
+                <strong>{metricsRequesterRows.length}</strong>
+              </article>
+              <article className="advisory-metrics-kpi">
+                <span>Tipos detectados</span>
+                <strong>{metricsTypeRows.length}</strong>
+              </article>
+            </div>
+          </div>
+
+          {metricsScopeAdvisories.length === 0 ? (
+            <div className="advisory-metrics-empty">
+              No hay asesorías suficientes en esta vista para generar métricas.
+            </div>
+          ) : (
+            <div className="advisory-metrics-grid">
+              <section className="advisory-metrics-card">
+                <div className="advisory-metrics-card__header">
+                  <strong>Propiedad de asesorías</strong>
+                  <span>{currentRole === 'admin' ? 'Por trainer notificado' : 'Tu bandeja actual'}</span>
+                </div>
+                <div className="advisory-metrics-list">
+                  {metricsOwnerRows.map((row) => (
+                    <div key={row.key} className="advisory-metrics-row">
+                      <div className="advisory-metrics-row__copy">
+                        <strong>{row.label}</strong>
+                        <span>{row.value} asesoría(s)</span>
+                      </div>
+                      <div className="advisory-metrics-row__bar">
+                        <span style={{ width: `${(row.value / (metricsOwnerRows[0]?.value || 1)) * 100}%` }} />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </section>
+
+              <section className="advisory-metrics-card">
+                <div className="advisory-metrics-card__header">
+                  <strong>Registros por trainer</strong>
+                  <span>{currentRole === 'admin' ? 'Respuestas capturadas' : 'Tus respuestas guardadas'}</span>
+                </div>
+                <div className="advisory-metrics-list">
+                  {metricsResponderRows.length > 0 ? (
+                    metricsResponderRows.map((row) => (
+                      <div key={row.key} className="advisory-metrics-row">
+                        <div className="advisory-metrics-row__copy">
+                          <strong>{row.label}</strong>
+                          <span>{row.value} registro(s)</span>
+                        </div>
+                        <div className="advisory-metrics-row__bar advisory-metrics-row__bar--accent">
+                          <span style={{ width: `${(row.value / (metricsResponderRows[0]?.value || 1)) * 100}%` }} />
+                        </div>
+                      </div>
+                    ))
+                  ) : (
+                    <div className="advisory-metrics-empty advisory-metrics-empty--inline">
+                      Todavía no hay respuestas registradas para esta vista.
+                    </div>
+                  )}
+                </div>
+              </section>
+
+              <section className="advisory-metrics-card">
+                <div className="advisory-metrics-card__header">
+                  <strong>Incidencias por {areaContributorLabel}</strong>
+                  <span>Quién está escalando más casos</span>
+                </div>
+                <div className="advisory-metrics-list">
+                  {metricsRequesterRows.map((row) => (
+                    <div key={row.key} className="advisory-metrics-row">
+                      <div className="advisory-metrics-row__copy">
+                        <strong>{row.label}</strong>
+                        <span>{row.value} incidencia(s)</span>
+                      </div>
+                      <div className="advisory-metrics-row__bar advisory-metrics-row__bar--warm">
+                        <span style={{ width: `${(row.value / (metricsRequesterRows[0]?.value || 1)) * 100}%` }} />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </section>
+
+              <section className="advisory-metrics-card">
+                <div className="advisory-metrics-card__header">
+                  <strong>Batallas recurrentes por {areaContributorLabel}</strong>
+                  <span>Qué tipo de asesoría solicita cada {areaContributorLabel}</span>
+                </div>
+                <div className="advisory-metrics-cluster">
+                  <div className="advisory-metrics-insight-list">
+                    {metricsRequesterInsightRows.map((row) => (
+                      <article key={row.key} className="advisory-metrics-insight-card">
+                        <div className="advisory-metrics-row__copy">
+                          <strong>{row.label}</strong>
+                          <span>{row.total} incidencia(s)</span>
+                        </div>
+                        <div className="advisory-metrics-tag-cloud">
+                          {row.topTypes.map((typeRow) => (
+                            <span key={`${row.key}-${typeRow.key}`} className="advisory-metrics-tag">
+                              {typeRow.label} · {typeRow.value}
+                            </span>
+                          ))}
+                        </div>
+                      </article>
+                    ))}
+                  </div>
+                  <div className="advisory-metrics-mini-list">
+                    <span className="advisory-metrics-mini-list__title">Estado de las asesorías</span>
+                    {metricsStatusRows.map((row) => (
+                      <div key={row.key} className="advisory-metrics-chip-row advisory-metrics-chip-row--status">
+                        <strong>{row.label}</strong>
+                        <span>{row.value}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </section>
+            </div>
+          )}
+        </div>
+      ) : null}
     </div>
   );
 }

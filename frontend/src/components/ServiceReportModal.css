@@ -1,5 +1,6 @@
 .service-report-shell {
   width: min(1280px, 100%);
+  min-width: 0;
 }
 
 .service-report-upload-card {
@@ -470,5 +471,40 @@
   .service-report-scanner-preview,
   .service-report-scanner-video {
     min-height: 320px;
+  }
+}
+
+@media (max-width: 560px) {
+  .service-report-upload-card,
+  .service-report-inline-actions,
+  .service-report-material-card__actions,
+  .signature-pad-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .service-report-material-remove {
+    min-width: 0;
+  }
+
+  .service-report-guard-card,
+  .service-report-material-card,
+  .service-report-signature-card {
+    border-radius: 20px;
+  }
+
+  .service-report-scanner-shell {
+    width: min(100%, calc(100vw - 1rem));
+    border-radius: 22px;
+  }
+
+  .service-report-scanner-header,
+  .service-report-scanner-body {
+    padding: 1rem;
+  }
+
+  .service-report-scanner-reticle {
+    width: min(78%, 300px);
+    border-radius: 22px;
   }
 }

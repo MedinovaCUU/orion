@@ -277,10 +277,24 @@
     padding: 1rem;
   }
 
+  .login-container--public {
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start;
+  }
+
   .public-access-button {
     position: static;
     margin-bottom: 1rem;
     width: 100%;
+  }
+
+  .login-card--public {
+    max-width: none;
+  }
+
+  .public-ticket-card {
+    padding-top: 1.6rem;
   }
 
   .support-choice-grid {
@@ -293,5 +307,23 @@
 
   .public-ticket-footnote {
     max-width: none;
+  }
+}
+
+@media (max-width: 520px) {
+  .login-container {
+    padding: 0.75rem;
+  }
+
+  .public-ticket-card {
+    padding-top: 1.35rem;
+  }
+
+  .login-card .brand-lockup {
+    margin-bottom: 1.25rem;
+  }
+
+  .login-copy {
+    margin-bottom: 1.25rem;
   }
 }
