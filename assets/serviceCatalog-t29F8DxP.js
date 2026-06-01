@@ -1,0 +1,1 @@
+var e=e=>{let t=[],n=[];return e.forEach(e=>{if(e.catalog_kind===`averia`){t.push({cda:e.catalog_code,tipo_averia:e.catalog_type,detalle_averia:e.catalog_detail,cta:e.category_code});return}n.push({cds:e.catalog_code,tipo_solucion:e.catalog_type,detalle_solucion:e.catalog_detail,cts:e.category_code})}),{averias:t,soluciones:n}};export{e as t};
