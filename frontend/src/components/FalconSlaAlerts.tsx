@@ -649,7 +649,7 @@ export default function FalconSlaAlerts({ contextLabel, entries }: FalconSlaAler
           className="falcon-sla-overlay__card"
           style={{
             borderColor: activeTone.border,
-            background: `linear-gradient(180deg, ${activeTone.background}, rgba(10, 14, 22, 0.96))`,
+            background: activeTone.background,
             color: activeTone.color,
           }}
         >
@@ -680,7 +680,7 @@ export default function FalconSlaAlerts({ contextLabel, entries }: FalconSlaAler
         role="status"
         style={{
           borderColor: activeTone.border,
-          background: `linear-gradient(180deg, ${activeTone.background}, rgba(13, 18, 28, 0.96))`,
+          background: activeTone.background,
           color: activeTone.color,
         }}
       >
