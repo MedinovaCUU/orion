@@ -1,4 +1,4 @@
-import type { EquipmentSummary } from './servicesPlanning';
+import { METADATA_DELIMITER, type EquipmentSummary } from './servicesPlanning';
 import type { ServiceReportTicketOcrResult } from './serviceReportTicketOcr';
 
 export type TicketSupportType = 'Ingeniero' | 'Químico';
@@ -334,6 +334,13 @@ const extractChannelFromEquipment = (equipment?: EquipmentSummary | null): Ticke
   return '';
 };
 
+const isPlanningTicket = (ticket: Pick<TicketLike, 'asunto' | 'descripcion'>) => {
+  const subject = normalizeText(ticket.asunto);
+  const description = ticket.descripcion || '';
+
+  return description.includes(METADATA_DELIMITER) || subject.startsWith('[plan]');
+};
+
 const isMexicoCityText = (value: string | null | undefined) => {
   const normalized = normalizeText(value);
   if (!normalized) {
@@ -380,6 +387,10 @@ export const getFalconTicketSla = (
   equipment?: EquipmentSummary | null,
   nowMs = Date.now(),
 ): FalconTicketSla | null => {
+  if (isPlanningTicket(ticket)) {
+    return null;
+  }
+
   const channel = extractChannelFromTicket(ticket) || extractChannelFromEquipment(equipment);
   if (channel !== 'falcon') {
     return null;
@@ -428,32 +439,36 @@ export const getFalconTicketSla = (
 export const getFalconSlaTone = (severity: TicketSlaSeverity) => {
   if (severity === 'breached') {
     return {
-      background: 'rgba(127, 29, 29, 0.3)',
-      border: 'rgba(248, 113, 113, 0.62)',
-      color: '#ffe4e6',
+      background:
+        'linear-gradient(145deg, rgba(255, 255, 255, 0.96), rgba(255, 242, 244, 0.9) 54%, rgba(255, 232, 235, 0.78))',
+      border: 'rgba(var(--brand-red-rgb), 0.36)',
+      color: 'var(--brand-red-ink)',
     };
   }
 
   if (severity === 'critical') {
     return {
-      background: 'rgba(225, 29, 72, 0.2)',
-      border: 'rgba(244, 63, 94, 0.55)',
-      color: '#ffe4ea',
+      background:
+        'linear-gradient(145deg, rgba(255, 255, 255, 0.96), rgba(255, 245, 239, 0.9) 54%, rgba(var(--clinical-rgb), 0.16))',
+      border: 'rgba(var(--clinical-rgb), 0.34)',
+      color: '#9f3a16',
     };
   }
 
   if (severity === 'warning') {
     return {
-      background: 'rgba(250, 204, 21, 0.18)',
-      border: 'rgba(250, 204, 21, 0.42)',
-      color: '#fff3b0',
+      background:
+        'linear-gradient(145deg, rgba(255, 255, 255, 0.96), rgba(255, 250, 239, 0.9) 54%, rgba(var(--bioprocess-rgb), 0.18))',
+      border: 'rgba(var(--bioprocess-rgb), 0.36)',
+      color: '#89631f',
     };
   }
 
   return {
-    background: 'rgba(34, 197, 94, 0.12)',
-    border: 'rgba(74, 222, 128, 0.3)',
-    color: '#d8ffe7',
+    background:
+      'linear-gradient(145deg, rgba(255, 255, 255, 0.96), rgba(240, 253, 248, 0.9) 54%, rgba(var(--food-rgb), 0.14))',
+    border: 'rgba(var(--food-rgb), 0.28)',
+    color: '#236246',
   };
 };
 
