@@ -46,6 +46,7 @@ interface TicketFeedback {
 interface TicketRenderItem {
   ticket: TicketRecord;
   notification: ReturnType<typeof getTicketNotificationModel>;
+  isPlanningTicket: boolean;
   resolvedEquipment: EquipmentSummary | null;
   ticketClientLabel: string;
   ticketPhoneLabel: string;
@@ -365,6 +366,23 @@ export default function Tickets() {
   const [travelPlannerTicketId, setTravelPlannerTicketId] = useState<string | null>(null);
   const ticketImageInputRef = useRef<HTMLInputElement | null>(null);
 
+  useEffect(() => {
+    if (!cerrarModalOpen) {
+      return;
+    }
+
+    const previousBodyOverflow = document.body.style.overflow;
+    const previousHtmlOverflow = document.documentElement.style.overflow;
+
+    document.body.style.overflow = 'hidden';
+    document.documentElement.style.overflow = 'hidden';
+
+    return () => {
+      document.body.style.overflow = previousBodyOverflow;
+      document.documentElement.style.overflow = previousHtmlOverflow;
+    };
+  }, [cerrarModalOpen]);
+
   const fetchTickets = async () => {
     setLoading(true);
     const { data: { user } } = await supabase.auth.getUser();
@@ -633,6 +651,7 @@ export default function Tickets() {
     () =>
       tickets.map((ticket) => {
         const notification = getTicketNotificationModel(ticket);
+        const isPlanningTicket = Boolean(notification.meta);
         const resolvedEquipment = resolveTicketEquipment(ticket, equipmentCatalog);
         const ticketClientLabel = resolveTicketClientLabel(ticket, equipmentCatalog);
         const ticketPhoneLabel = resolveTicketPhoneLabel(ticket, equipmentCatalog);
@@ -642,6 +661,7 @@ export default function Tickets() {
         return {
           ticket,
           notification,
+          isPlanningTicket,
           resolvedEquipment,
           ticketClientLabel,
           ticketPhoneLabel,
@@ -654,7 +674,7 @@ export default function Tickets() {
   const trackedFalconTickets = useMemo<TrackedFalconTicketEntry[]>(
     () =>
       ticketRenderItems
-        .filter((item) => item.ticket.estado !== 'cerrado' && Boolean(item.staticFalconSla))
+        .filter((item) => item.ticket.estado !== 'cerrado' && !item.isPlanningTicket && Boolean(item.staticFalconSla))
         .map((item) => ({
           ticket: item.ticket,
           equipment: item.resolvedEquipment,
@@ -795,12 +815,12 @@ export default function Tickets() {
         <p style={{ color: 'var(--text-secondary)' }}>No tienes tickets aún.</p>
       ) : (
         <ul className="tickets-list">
-          {ticketRenderItems.map(({ ticket, notification, resolvedEquipment, ticketClientLabel, ticketPhoneLabel, locationLabel, staticFalconSla }) => {
-              const isPlanningTicket = Boolean(notification.meta);
-              const ticketSlaTone = staticFalconSla ? getFalconSlaTone(staticFalconSla.severity) : null;
+          {ticketRenderItems.map(({ ticket, notification, isPlanningTicket, resolvedEquipment, ticketClientLabel, ticketPhoneLabel, locationLabel, staticFalconSla }) => {
+              const displayFalconSla = isPlanningTicket ? null : staticFalconSla;
+              const ticketSlaTone = displayFalconSla ? getFalconSlaTone(displayFalconSla.severity) : null;
 
               return (
-                <li key={ticket.id} className="tickets-list-card">
+                <li key={ticket.id} className={`tickets-list-card${isPlanningTicket ? ' tickets-list-card--planning' : ''}`}>
                   <div className="tickets-list-card__header">
                     <div className="tickets-list-card__copy">
                       <strong className="tickets-list-card__title">{ticket.asunto}</strong>
@@ -816,7 +836,7 @@ export default function Tickets() {
                         <span className="button-primary inactive chip tickets-list-card__chip">
                           Tel. {ticketPhoneLabel}
                         </span>
-                        {staticFalconSla && ticketSlaTone ? (
+                        {displayFalconSla && ticketSlaTone ? (
                           <span
                             className="button-primary inactive chip tickets-list-card__chip"
                             style={{
@@ -825,7 +845,7 @@ export default function Tickets() {
                               color: ticketSlaTone.color,
                             }}
                           >
-                            {formatFalconScopeLabel(staticFalconSla)}
+                            {formatFalconScopeLabel(displayFalconSla)}
                           </span>
                         ) : null}
                         {isPlanningTicket && (
@@ -842,7 +862,7 @@ export default function Tickets() {
                     </span>
                   </div>
 
-                  {staticFalconSla ? (
+                  {displayFalconSla ? (
                     <LiveFalconTicketSlaPanel
                       ticket={ticket}
                       equipment={resolvedEquipment}
@@ -931,10 +951,11 @@ export default function Tickets() {
             onClick={() => setCerrarModalOpen(false)}
         >
             <div 
-                className="card" 
-                style={{ maxWidth: '700px', width: '100%', maxHeight: '90vh', overflowY: 'auto' }}
+                className="card card-scroll-shell" 
+                style={{ maxWidth: '700px', width: 'min(700px, calc(100vw - 2.5rem))', maxHeight: '90vh', padding: 0, overflow: 'hidden' }}
                 onClick={(e) => e.stopPropagation()}
             >
+                <div className="card-scroll-body">
                 <h3 style={{ color: 'var(--primary-color)' }}>Diagnóstico Inteligente de Servicio</h3>
                 <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem' }}>Asunto Original: {selectedTicket.asunto}</p>
                 <hr style={{ margin: '1.5rem 0', borderColor: 'var(--border-color)' }}/>
@@ -1103,6 +1124,7 @@ export default function Tickets() {
                             {submitting ? 'Archivando base de datos...' : 'Finalizar y Archivar Servicio'}
                         </button>
                     </div>
+                </div>
                 </div>
             </div>
         </div>,

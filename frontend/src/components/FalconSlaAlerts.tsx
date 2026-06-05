@@ -649,7 +649,7 @@ export default function FalconSlaAlerts({ contextLabel, entries }: FalconSlaAler
           className="falcon-sla-overlay__card"
           style={{
             borderColor: activeTone.border,
-            background: `linear-gradient(180deg, ${activeTone.background}, rgba(10, 14, 22, 0.96))`,
+            background: activeTone.overlayBackground,
             color: activeTone.color,
           }}
         >
@@ -668,7 +668,16 @@ export default function FalconSlaAlerts({ contextLabel, entries }: FalconSlaAler
           <p className="falcon-sla-overlay__action">{actionLabel}</p>
           <div className="falcon-sla-overlay__footer">
             <span>{activeEntry.sla.scopeLabel}</span>
-            <button type="button" className="falcon-sla-overlay__button" onClick={dismissActive}>
+            <button
+              type="button"
+              className="falcon-sla-overlay__button"
+              onClick={dismissActive}
+              style={{
+                background: activeTone.buttonBackground,
+                borderColor: activeTone.buttonBorder,
+                color: activeTone.buttonColor,
+              }}
+            >
               Entendido
             </button>
           </div>
@@ -680,7 +689,7 @@ export default function FalconSlaAlerts({ contextLabel, entries }: FalconSlaAler
         role="status"
         style={{
           borderColor: activeTone.border,
-          background: `linear-gradient(180deg, ${activeTone.background}, rgba(13, 18, 28, 0.96))`,
+          background: activeTone.overlayBackground,
           color: activeTone.color,
         }}
       >
@@ -695,7 +704,16 @@ export default function FalconSlaAlerts({ contextLabel, entries }: FalconSlaAler
         </small>
         <div className="falcon-sla-toast__footer">
           <span>{actionLabel}</span>
-          <button type="button" className="falcon-sla-toast__button" onClick={dismissActive}>
+          <button
+            type="button"
+            className="falcon-sla-toast__button"
+            onClick={dismissActive}
+            style={{
+              background: activeTone.buttonBackground,
+              borderColor: activeTone.buttonBorder,
+              color: activeTone.buttonColor,
+            }}
+          >
             Cerrar
           </button>
         </div>

@@ -6,6 +6,10 @@ import { splitServiceCatalog, type ServiceCatalogRow } from './serviceCatalog';
 import { createSupremoLaunchSession } from './supremoApi';
 import { getSupremoShowroomPreset, normalizeSerialLookup } from './supremoPresets';
 import { getPublicAssetUrl } from './publicAssetUrl';
+import {
+  getEquipmentTrainingExamDefinition,
+  type EquipmentTrainingExamDefinition,
+} from './equipmentTrainingExams';
 
 interface SupremoDraftState {
   enabled: boolean;
@@ -18,6 +22,34 @@ interface InlineFeedback {
   tone: 'error' | 'success';
 }
 
+interface EquipmentTrainingAttemptRecord {
+  id: string;
+  equipo_id: string;
+  participant_name: string;
+  participant_role: string | null;
+  participant_company: string | null;
+  score: number;
+  total_questions: number;
+  passed: boolean;
+  question_bank_code: string;
+  created_at: string;
+}
+
+interface TrainingExamModalState {
+  definition: EquipmentTrainingExamDefinition;
+  participantName: string;
+  participantRole: string;
+  participantCompany: string;
+  answers: Record<string, number>;
+  submitting: boolean;
+  validationMessage: string | null;
+  result: {
+    score: number;
+    total: number;
+    passed: boolean;
+  } | null;
+}
+
 interface SupremoModalState {
   title: string;
   message: string;
@@ -27,8 +59,12 @@ interface SupremoModalState {
 
 const SUPREMO_LAUNCH_TIMEOUT_MS = 1800;
 const SUPREMO_ICON_URL = getPublicAssetUrl('supremo_icon.png');
+const DOCUMENTOS_BUCKET = 'documentos';
 
 const sanitizeSupremoId = (value: string) => value.replace(/[^\d]/g, '').trim();
+const sanitizeFileName = (value: string) => value.replace(/[^a-zA-Z0-9._-]+/g, '-');
+const buildPublicDocumentUrl = (path: string) =>
+  `${import.meta.env.VITE_SUPABASE_URL}/storage/v1/object/public/${DOCUMENTOS_BUCKET}/${path}`;
 
 const attemptSupremoClientLaunch = async (launchUrl: string) =>
   new Promise<boolean>((resolve) => {
@@ -79,6 +115,36 @@ const getInitialSupremoDraft = (equipo: any): SupremoDraftState => {
   };
 };
 
+const EyeIcon = ({ size = 18 }: { size?: number }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" aria-hidden="true">
+    <path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6-10-6-10-6Z" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+    <circle cx="12" cy="12" r="3" stroke="currentColor" strokeWidth="1.8" />
+  </svg>
+);
+
+const InstallationIcon = ({ size = 20 }: { size?: number }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" aria-hidden="true">
+    <path d="M14.7 6.3a4.5 4.5 0 0 0-5.4 5.4L4 17l3 3 5.3-5.3a4.5 4.5 0 0 0 5.4-5.4l-2.4 2.4-3-3 2.4-2.4Z" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+  </svg>
+);
+
+const TrainingDocumentIcon = ({ size = 20 }: { size?: number }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" aria-hidden="true">
+    <path d="M12 4 4 8l8 4 8-4-8-4Z" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+    <path d="M8 10.5V14c0 1.4 1.8 2.5 4 2.5s4-1.1 4-2.5v-3.5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+    <path d="M20 9v5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+  </svg>
+);
+
+const ExamIcon = ({ size = 18 }: { size?: number }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" aria-hidden="true">
+    <path d="M9 4h6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+    <path d="M10 2h4v4h-4z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round" />
+    <path d="M7 6.5h10A1.5 1.5 0 0 1 18.5 8v11A1.5 1.5 0 0 1 17 20.5H7A1.5 1.5 0 0 1 5.5 19V8A1.5 1.5 0 0 1 7 6.5Z" stroke="currentColor" strokeWidth="1.8" />
+    <path d="m9.5 14 1.6 1.6 3.4-3.7" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+  </svg>
+);
+
 export default function Equipos() {
   const [equipos, setEquipos] = useState<any[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
@@ -111,6 +177,14 @@ export default function Equipos() {
   const [launchingSupremo, setLaunchingSupremo] = useState(false);
   const [supremoFeedback, setSupremoFeedback] = useState<InlineFeedback | null>(null);
   const [supremoModal, setSupremoModal] = useState<SupremoModalState | null>(null);
+  const [documentFeedback, setDocumentFeedback] = useState<InlineFeedback | null>(null);
+  const [uploadingDocumentKind, setUploadingDocumentKind] = useState<'instalacion' | 'capacitacion' | null>(null);
+  const [trainingExamAttempts, setTrainingExamAttempts] = useState<EquipmentTrainingAttemptRecord[]>([]);
+  const [loadingTrainingExamAttempts, setLoadingTrainingExamAttempts] = useState(false);
+  const [trainingExamModal, setTrainingExamModal] = useState<TrainingExamModalState | null>(null);
+  const trainingExamRequestIdRef = useRef(0);
+  const instalacionInputRef = useRef<HTMLInputElement | null>(null);
+  const capacitacionInputRef = useRef<HTMLInputElement | null>(null);
 
   useEffect(() => {
     fetchEquipos();
@@ -127,6 +201,23 @@ export default function Equipos() {
         setCatalogoSoluciones(soluciones);
       });
   }, []);
+
+  useEffect(() => {
+    if (!detallesModalOpen && !terminarModalOpen && !supremoModal && !trainingExamModal) {
+      return;
+    }
+
+    const previousBodyOverflow = document.body.style.overflow;
+    const previousHtmlOverflow = document.documentElement.style.overflow;
+
+    document.body.style.overflow = 'hidden';
+    document.documentElement.style.overflow = 'hidden';
+
+    return () => {
+      document.body.style.overflow = previousBodyOverflow;
+      document.documentElement.style.overflow = previousHtmlOverflow;
+    };
+  }, [detallesModalOpen, terminarModalOpen, supremoModal, trainingExamModal]);
 
   const resetServiciosState = () => {
     serviciosRequestIdRef.current += 1;
@@ -145,6 +236,12 @@ export default function Equipos() {
     });
     setSupremoFeedback(null);
     setSupremoModal(null);
+    setDocumentFeedback(null);
+    setUploadingDocumentKind(null);
+    setTrainingExamAttempts([]);
+    setLoadingTrainingExamAttempts(false);
+    setTrainingExamModal(null);
+    trainingExamRequestIdRef.current += 1;
     resetServiciosState();
   };
 
@@ -154,7 +251,12 @@ export default function Equipos() {
     setSupremoDraft(getInitialSupremoDraft(equipo));
     setSupremoFeedback(null);
     setSupremoModal(null);
+    setDocumentFeedback(null);
+    setUploadingDocumentKind(null);
+    setTrainingExamAttempts([]);
+    setTrainingExamModal(null);
     setDetallesModalOpen(true);
+    void fetchTrainingExamAttempts(equipo.id);
   };
 
   const fetchEquipoServicios = async (numero_serie: string) => {
@@ -210,6 +312,242 @@ export default function Equipos() {
     );
     setDetallesEquipo((current: any) => (current?.id === equipoId ? { ...current, ...nextFields } : current));
     setSelectedEquipo((current: any) => (current?.id === equipoId ? { ...current, ...nextFields } : current));
+  };
+
+  const fetchTrainingExamAttempts = async (equipoId: string) => {
+    const requestId = ++trainingExamRequestIdRef.current;
+    setLoadingTrainingExamAttempts(true);
+
+    const { data, error } = await supabase
+      .from('equipo_capacitacion_examenes')
+      .select('id,equipo_id,participant_name,participant_role,participant_company,score,total_questions,passed,question_bank_code,created_at')
+      .eq('equipo_id', equipoId)
+      .order('created_at', { ascending: false })
+      .limit(8);
+
+    if (requestId !== trainingExamRequestIdRef.current) {
+      return;
+    }
+
+    if (error) {
+      console.error('Error fetching training exam attempts:', error);
+      setTrainingExamAttempts([]);
+      setLoadingTrainingExamAttempts(false);
+      return;
+    }
+
+    setTrainingExamAttempts((data as EquipmentTrainingAttemptRecord[] | null) || []);
+    setLoadingTrainingExamAttempts(false);
+  };
+
+  const uploadEquipmentDocument = async (kind: 'instalacion' | 'capacitacion', providedFile?: File | null) => {
+    if (!detallesEquipo) {
+      return;
+    }
+
+    const file = providedFile || null;
+    if (!file) {
+      setDocumentFeedback({
+        tone: 'error',
+        message: `Selecciona primero el PDF de ${kind === 'instalacion' ? 'instalación' : 'capacitación'}.`,
+      });
+      return;
+    }
+
+    setUploadingDocumentKind(kind);
+    setDocumentFeedback(null);
+
+    const { data: currentUserResp } = await supabase.auth.getUser();
+    const uid = currentUserResp.user?.id || null;
+    const safeSerial = sanitizeFileName(normalizeSerialLookup(detallesEquipo.numero_serie || 'equipo'));
+    const safeName = sanitizeFileName(file.name);
+    const folder = kind === 'instalacion' ? 'instalacion' : 'capacitacion';
+    const path = `equipos/${safeSerial}/${folder}/${Date.now()}-${safeName}`;
+
+    const { error: uploadError } = await supabase.storage.from(DOCUMENTOS_BUCKET).upload(path, file, {
+      upsert: true,
+      contentType: file.type || 'application/pdf',
+    });
+
+    if (uploadError) {
+      setUploadingDocumentKind(null);
+      setDocumentFeedback({
+        tone: 'error',
+        message: `No fue posible subir el PDF: ${uploadError.message}`,
+      });
+      return;
+    }
+
+    const uploadedAt = new Date().toISOString();
+    const payload =
+      kind === 'instalacion'
+        ? {
+            doc_instalacion: true,
+            doc_instalacion_path: path,
+            doc_instalacion_filename: file.name,
+            doc_instalacion_uploaded_at: uploadedAt,
+            doc_instalacion_uploaded_by: uid,
+          }
+        : {
+            doc_capacitacion: true,
+            doc_capacitacion_path: path,
+            doc_capacitacion_filename: file.name,
+            doc_capacitacion_uploaded_at: uploadedAt,
+            doc_capacitacion_uploaded_by: uid,
+          };
+
+    const { error: updateError } = await supabase.from('equipos').update(payload).eq('id', detallesEquipo.id);
+
+    setUploadingDocumentKind(null);
+
+    if (updateError) {
+      setDocumentFeedback({
+        tone: 'error',
+        message: `El archivo subió, pero no pudimos registrar el documento en el equipo: ${updateError.message}`,
+      });
+      return;
+    }
+
+    syncEquipoInState(detallesEquipo.id, payload);
+    setDocumentFeedback({
+      tone: 'success',
+      message: `Se registró correctamente el documento de ${kind === 'instalacion' ? 'instalación' : 'capacitación'}.`,
+    });
+  };
+
+  const openTrainingExam = () => {
+    const definition = getEquipmentTrainingExamDefinition(detallesEquipo?.modelo);
+
+    if (!definition) {
+      setDocumentFeedback({
+        tone: 'error',
+        message: `Todavía no existe un examen configurado para el modelo ${detallesEquipo?.modelo || 'sin modelo definido'}.`,
+      });
+      return;
+    }
+
+    setTrainingExamModal({
+      definition,
+      participantName: '',
+      participantRole: '',
+      participantCompany: detallesEquipo?.clientes?.razon_social || '',
+      answers: {},
+      submitting: false,
+      validationMessage: null,
+      result: null,
+    });
+  };
+
+  const submitTrainingExam = async () => {
+    if (!trainingExamModal || !detallesEquipo) {
+      return;
+    }
+
+    const participantName = trainingExamModal.participantName.trim();
+    if (!participantName) {
+      setTrainingExamModal((current) =>
+        current
+          ? {
+              ...current,
+              validationMessage: 'Captura el nombre de la persona evaluada antes de guardar el examen.',
+            }
+          : current,
+      );
+      return;
+    }
+
+    const totalQuestions = trainingExamModal.definition.questions.length;
+    const answeredCount = trainingExamModal.definition.questions.filter(
+      (question) => typeof trainingExamModal.answers[question.id] === 'number',
+    ).length;
+
+    if (answeredCount !== totalQuestions) {
+      setTrainingExamModal((current) =>
+        current
+          ? {
+              ...current,
+              validationMessage: 'Contesta todas las preguntas antes de finalizar la evaluación.',
+            }
+          : current,
+      );
+      return;
+    }
+
+    const score = trainingExamModal.definition.questions.reduce((acc, question) => {
+      return acc + (trainingExamModal.answers[question.id] === question.correctOptionIndex ? 1 : 0);
+    }, 0);
+    const passed = score / totalQuestions >= trainingExamModal.definition.passingRatio;
+
+    setTrainingExamModal((current) =>
+      current
+        ? {
+            ...current,
+            submitting: true,
+            validationMessage: null,
+          }
+        : current,
+    );
+
+    const { data: currentUserResp } = await supabase.auth.getUser();
+    const uid = currentUserResp.user?.id || null;
+
+    const answers = trainingExamModal.definition.questions.map((question) => ({
+      questionId: question.id,
+      prompt: question.prompt,
+      selectedOptionIndex: trainingExamModal.answers[question.id],
+      selectedOption: question.options[trainingExamModal.answers[question.id]],
+      correctOptionIndex: question.correctOptionIndex,
+      correctOption: question.options[question.correctOptionIndex],
+      correct: trainingExamModal.answers[question.id] === question.correctOptionIndex,
+      reference: question.reference,
+    }));
+
+    const { error } = await supabase.from('equipo_capacitacion_examenes').insert({
+      equipo_id: detallesEquipo.id,
+      numero_serie: detallesEquipo.numero_serie || '',
+      modelo: detallesEquipo.modelo || null,
+      participant_name: participantName,
+      participant_role: trainingExamModal.participantRole.trim() || null,
+      participant_company: trainingExamModal.participantCompany.trim() || detallesEquipo.clientes?.razon_social || null,
+      score,
+      total_questions: totalQuestions,
+      passed,
+      question_bank_code: trainingExamModal.definition.code,
+      answers,
+      created_by: uid,
+    });
+
+    if (error) {
+      setTrainingExamModal((current) =>
+        current
+          ? {
+              ...current,
+              submitting: false,
+              validationMessage: `No fue posible guardar el resultado: ${error.message}`,
+            }
+          : current,
+      );
+      return;
+    }
+
+    setTrainingExamModal((current) =>
+      current
+        ? {
+            ...current,
+            submitting: false,
+            result: {
+              score,
+              total: totalQuestions,
+              passed,
+            },
+          }
+        : current,
+    );
+    setDocumentFeedback({
+      tone: 'success',
+      message: `Se guardó el examen de capacitación de ${participantName} con ${score}/${totalQuestions} respuestas correctas.`,
+    });
+    void fetchTrainingExamAttempts(detallesEquipo.id);
   };
 
   const saveSupremoConfig = async () => {
@@ -388,10 +726,11 @@ export default function Equipos() {
           onClick={closeDetallesModal}
         >
           <div
-            className="card"
-            style={{ maxWidth: '650px', width: '100%', border: '1px solid var(--border-color)', maxHeight: '90vh', overflowY: 'auto' }}
+            className="card card-scroll-shell"
+            style={{ maxWidth: '650px', width: 'min(650px, calc(100vw - 2.5rem))', border: '1px solid var(--border-color)', maxHeight: '90vh', padding: 0, overflow: 'hidden' }}
             onClick={(e) => e.stopPropagation()}
           >
+            <div className="card-scroll-body">
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1rem' }}>
               <h3 style={{ color: 'var(--primary-color)' }}>Detalles Integrales del Equipo</h3>
               <button
@@ -402,7 +741,7 @@ export default function Equipos() {
               </button>
             </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '1.5rem' }}>
               <div>
                 <h4 style={{ color: 'var(--text-secondary)', fontSize: '0.8rem', textTransform: 'uppercase', marginBottom: '0.3rem' }}>No. de Serie / Modelo</h4>
                 <p style={{ fontWeight: '500', fontSize: '1.1rem', margin: '0' }}>{detallesEquipo.numero_serie}</p>
@@ -474,8 +813,125 @@ export default function Equipos() {
             </div>
 
             <div style={{ marginTop: '1.5rem', paddingTop: '1.5rem', borderTop: '1px solid var(--border-color)' }}>
+              {documentFeedback && (
+                <div
+                  style={{
+                    marginBottom: '1rem',
+                    padding: '0.85rem 1rem',
+                    borderRadius: '12px',
+                    border: `1px solid ${documentFeedback.tone === 'error' ? 'rgba(243, 39, 53, 0.22)' : 'rgba(76, 207, 147, 0.24)'}`,
+                    background:
+                      documentFeedback.tone === 'error'
+                        ? 'linear-gradient(180deg, rgba(255, 245, 246, 0.96), rgba(255, 238, 240, 0.92))'
+                        : 'linear-gradient(180deg, rgba(245, 255, 250, 0.96), rgba(238, 252, 244, 0.92))',
+                    color: documentFeedback.tone === 'error' ? 'var(--brand-red-ink)' : '#1f7f63',
+                    fontSize: '0.9rem',
+                  }}
+                >
+                  {documentFeedback.message}
+                </div>
+              )}
+
+              <div className="equipment-doc-toolbar">
+                <h4 className="equipment-doc-toolbar-title">Documentacion y capacitacion</h4>
+                <div className="equipment-doc-toolbar-actions">
+                <div className="equipment-doc-action-group equipment-doc-action-group--install">
+                  <input
+                    ref={instalacionInputRef}
+                    type="file"
+                    accept="application/pdf"
+                    className="equipment-doc-hidden-input"
+                    onChange={(event) => {
+                      const nextFile = event.target.files?.[0] || null;
+                      if (nextFile) {
+                        void uploadEquipmentDocument('instalacion', nextFile);
+                      }
+                      event.target.value = '';
+                    }}
+                  />
+                  <button
+                    type="button"
+                    title={detallesEquipo.doc_instalacion_path ? 'Ver documento de instalación' : 'Cargar documento de instalación'}
+                    className={`equipment-doc-action-button equipment-doc-action-button--primary ${
+                      detallesEquipo.doc_instalacion ? 'equipment-doc-action-button--loaded-install' : ''
+                    }`}
+                    disabled={uploadingDocumentKind === 'instalacion'}
+                    onClick={() => {
+                      if (detallesEquipo.doc_instalacion_path) {
+                        window.open(buildPublicDocumentUrl(detallesEquipo.doc_instalacion_path), '_blank', 'noopener,noreferrer');
+                        return;
+                      }
+                      instalacionInputRef.current?.click();
+                    }}
+                  >
+                    {detallesEquipo.doc_instalacion_path ? <EyeIcon size={20} /> : <InstallationIcon size={20} />}
+                  </button>
+                </div>
+
+                <div className="equipment-doc-action-group equipment-doc-action-group--training">
+                  <input
+                    ref={capacitacionInputRef}
+                    type="file"
+                    accept="application/pdf"
+                    className="equipment-doc-hidden-input"
+                    onChange={(event) => {
+                      const nextFile = event.target.files?.[0] || null;
+                      if (nextFile) {
+                        void uploadEquipmentDocument('capacitacion', nextFile);
+                      }
+                      event.target.value = '';
+                    }}
+                  />
+                  <button
+                    type="button"
+                    title={detallesEquipo.doc_capacitacion_path ? 'Ver documento de capacitación' : 'Cargar documento de capacitación'}
+                    className={`equipment-doc-action-button equipment-doc-action-button--primary ${
+                      detallesEquipo.doc_capacitacion ? 'equipment-doc-action-button--loaded-training' : ''
+                    }`}
+                    disabled={uploadingDocumentKind === 'capacitacion'}
+                    onClick={() => {
+                      if (detallesEquipo.doc_capacitacion_path) {
+                        window.open(buildPublicDocumentUrl(detallesEquipo.doc_capacitacion_path), '_blank', 'noopener,noreferrer');
+                        return;
+                      }
+                      capacitacionInputRef.current?.click();
+                    }}
+                  >
+                    {detallesEquipo.doc_capacitacion_path ? <EyeIcon size={20} /> : <TrainingDocumentIcon size={20} />}
+                  </button>
+                  <button
+                    type="button"
+                    title="Aplicar examen de capacitación"
+                    className={`equipment-doc-action-button ${getEquipmentTrainingExamDefinition(detallesEquipo.modelo) ? 'equipment-doc-action-button--loaded-training' : ''}`}
+                    disabled={!getEquipmentTrainingExamDefinition(detallesEquipo.modelo)}
+                    onClick={openTrainingExam}
+                  >
+                    <ExamIcon />
+                  </button>
+                </div>
+                </div>
+              </div>
+
+              {!loadingTrainingExamAttempts && trainingExamAttempts.length > 0 ? (
+                <div className="equipment-training-attempts">
+                    {trainingExamAttempts.map((attempt) => (
+                      <div
+                        key={attempt.id}
+                        className="equipment-training-attempt-chip"
+                      >
+                        <strong className="equipment-training-attempt-name">{attempt.participant_name}</strong>
+                        <span className="equipment-training-attempt-role">
+                          {attempt.participant_role || 'Sin puesto especificado'}
+                        </span>
+                      </div>
+                    ))}
+                </div>
+              ) : null}
+            </div>
+
+            <div style={{ marginTop: '1.5rem', paddingTop: '1.5rem', borderTop: '1px solid var(--border-color)' }}>
               <h4 style={{ color: 'var(--primary-color)', marginBottom: '1rem', fontSize: '1.1rem' }}>Ubicación Física del Equipo</h4>
-              <div style={{ display: 'grid', gridTemplateColumns: 'minmax(200px, 1fr) minmax(200px, 1fr)', gap: '1rem' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem' }}>
                 <div>
                   <h4 style={{ color: 'var(--text-secondary)', fontSize: '0.8rem', textTransform: 'uppercase', marginBottom: '0.3rem' }}>País / Estado</h4>
                   <p style={{ margin: 0, fontWeight: '500' }}>
@@ -516,7 +972,7 @@ export default function Equipos() {
                       </div>
                     )}
 
-                    <div style={{ display: 'grid', gridTemplateColumns: 'minmax(180px, 1fr) minmax(220px, 1fr)', gap: '1rem' }}>
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '1rem' }}>
                       <div>
                         <h4 style={{ color: 'var(--text-secondary)', fontSize: '0.8rem', textTransform: 'uppercase', marginBottom: '0.35rem' }}>Alias remoto</h4>
                         <input
@@ -637,7 +1093,18 @@ export default function Equipos() {
                 ) : (
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                     {equipoServicios.map(serv => (
-                      <div key={serv.id} style={{ background: 'rgba(255,255,255,0.03)', padding: '1rem', borderRadius: '8px', borderLeft: '4px solid var(--primary-color)' }}>
+                      <div
+                        key={serv.id}
+                        style={{
+                          background:
+                            'radial-gradient(circle at top right, rgba(var(--clinical-rgb), 0.08), transparent 28%), linear-gradient(180deg, rgba(255, 255, 255, 0.94), rgba(245, 248, 251, 0.82))',
+                          padding: '1rem',
+                          borderRadius: '18px',
+                          border: '1px solid var(--surface-outline)',
+                          borderLeft: '4px solid var(--primary-color)',
+                          boxShadow: 'var(--surface-shadow)',
+                        }}
+                      >
                         <div style={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', gap: '0.5rem', marginBottom: '0.5rem' }}>
                           <strong style={{ fontSize: '0.95rem' }}>
                             <span style={{ color: 'var(--primary-color)', marginRight: '0.5rem' }}>
@@ -649,7 +1116,7 @@ export default function Equipos() {
                         </div>
                         <p style={{ margin: '0.5rem 0', fontWeight: '500', fontSize: '0.9rem' }}>Motivo / Asunto: <span style={{ color: 'var(--text-secondary)', fontWeight: 'normal' }}>{serv.motivo}</span></p>
 
-                        <div style={{ display: 'grid', gridTemplateColumns: 'minmax(150px, 1fr) minmax(150px, 1fr)', gap: '1rem', marginTop: '1rem' }}>
+                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: '1rem', marginTop: '1rem' }}>
                           <div>
                             <span style={{ fontSize: '0.8rem', color: 'var(--error-color)', display: 'block', fontWeight: 'bold' }}>Avería [CDA: {serv.cda}]</span>
                             <span style={{ fontSize: '0.85rem' }}>{serv.averias_catalogo ? serv.averias_catalogo.detalle_averia : 'Avería de Texto Libre'}</span>
@@ -661,9 +1128,18 @@ export default function Equipos() {
                         </div>
 
                         {serv.servicios_refacciones && serv.servicios_refacciones.length > 0 && (
-                          <div style={{ marginTop: '1rem', background: 'rgba(0,0,0,0.3)', padding: '0.5rem', borderRadius: '4px' }}>
-                            <strong style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', display: 'block', marginBottom: '0.3rem' }}>Refacciones Utilizadas:</strong>
-                            <ul style={{ margin: 0, paddingLeft: '1.2rem', fontSize: '0.8rem' }}>
+                          <div
+                            style={{
+                              marginTop: '1rem',
+                              padding: '0.85rem 1rem',
+                              borderRadius: '14px',
+                              border: '1px solid rgba(124, 136, 149, 0.14)',
+                              background:
+                                'linear-gradient(180deg, rgba(255, 255, 255, 0.92), rgba(244, 247, 250, 0.78))',
+                            }}
+                          >
+                            <strong style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', display: 'block', marginBottom: '0.45rem' }}>Refacciones Utilizadas:</strong>
+                            <ul style={{ margin: 0, paddingLeft: '1.2rem', fontSize: '0.82rem', color: 'var(--text-primary)', lineHeight: 1.6 }}>
                               {serv.servicios_refacciones.map((sr: any, idx: number) => (
                                 <li key={idx}><strong>[{sr.refacciones_catalogo?.codigo_refaccion}]</strong> x{sr.cantidad} - {sr.refacciones_catalogo?.descripcion}</li>
                               ))}
@@ -676,6 +1152,7 @@ export default function Equipos() {
                 )}
               </div>
             )}
+            </div>
           </div>
         </div>,
         document.body
@@ -722,6 +1199,249 @@ export default function Equipos() {
               <button className="button-primary" onClick={() => setSupremoModal(null)}>
                 Entendido
               </button>
+            </div>
+          </div>
+        </div>,
+        document.body
+      )}
+
+      {trainingExamModal && detallesEquipo && createPortal(
+        <div
+          style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            background: 'rgba(8, 12, 19, 0.72)',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            zIndex: 1150,
+            padding: '1rem',
+            backdropFilter: 'blur(10px)',
+            overflow: 'hidden',
+            overscrollBehavior: 'contain',
+          }}
+          onClick={() => setTrainingExamModal(null)}
+        >
+          <div
+            className="card training-exam-modal-shell"
+            style={{ maxWidth: '920px', width: 'min(920px, calc(100vw - 2.5rem))', maxHeight: '92vh', padding: 0, overflow: 'hidden', border: '1px solid var(--surface-outline)' }}
+            onClick={(event) => event.stopPropagation()}
+          >
+            <div className="training-exam-modal-scroll">
+            <div style={{ display: 'flex', justifyContent: 'space-between', gap: '1rem', alignItems: 'flex-start', marginBottom: '1rem' }}>
+              <div>
+                <div
+                  style={{
+                    display: 'inline-flex',
+                    padding: '0.24rem 0.7rem',
+                    borderRadius: '999px',
+                    background: 'linear-gradient(135deg, rgba(var(--bioprocess-rgb), 0.16), rgba(var(--environmental-blue-rgb), 0.1))',
+                    border: '1px solid rgba(var(--bioprocess-rgb), 0.26)',
+                    color: '#8b5d17',
+                    fontSize: '0.78rem',
+                    fontWeight: 700,
+                  }}
+                >
+                  Evaluacion de capacitacion
+                </div>
+                <h3 style={{ margin: '0.8rem 0 0.35rem 0', color: 'var(--primary-color)' }}>{trainingExamModal.definition.title}</h3>
+                <p style={{ margin: 0, color: 'var(--text-secondary)', lineHeight: 1.65 }}>
+                  Equipo {detallesEquipo.numero_serie}
+                  {detallesEquipo.modelo ? ` · ${detallesEquipo.modelo}` : ''}
+                  {' · '}
+                  {trainingExamModal.definition.sourceLabel}
+                </p>
+              </div>
+              <button
+                style={{ background: 'none', border: 'none', color: 'var(--text-secondary)', cursor: 'pointer', fontSize: '1.5rem', lineHeight: 1 }}
+                onClick={() => setTrainingExamModal(null)}
+              >
+                &times;
+              </button>
+            </div>
+
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '1rem', marginBottom: '1rem' }}>
+              <div>
+                <label style={{ display: 'block', marginBottom: '0.35rem', fontSize: '0.82rem', color: 'var(--text-secondary)', textTransform: 'uppercase' }}>
+                  Nombre de la persona evaluada
+                </label>
+                <input
+                  type="text"
+                  className="input-field"
+                  value={trainingExamModal.participantName}
+                  onChange={(event) =>
+                    setTrainingExamModal((current) =>
+                      current
+                        ? {
+                            ...current,
+                            participantName: event.target.value,
+                            validationMessage: null,
+                          }
+                        : current,
+                    )
+                  }
+                  placeholder="Nombre completo"
+                />
+              </div>
+              <div>
+                <label style={{ display: 'block', marginBottom: '0.35rem', fontSize: '0.82rem', color: 'var(--text-secondary)', textTransform: 'uppercase' }}>
+                  Puesto o area
+                </label>
+                <input
+                  type="text"
+                  className="input-field"
+                  value={trainingExamModal.participantRole}
+                  onChange={(event) =>
+                    setTrainingExamModal((current) =>
+                      current
+                        ? {
+                            ...current,
+                            participantRole: event.target.value,
+                          }
+                        : current,
+                    )
+                  }
+                  placeholder="Quimico, responsable de proceso, operador..."
+                />
+              </div>
+              <div>
+                <label style={{ display: 'block', marginBottom: '0.35rem', fontSize: '0.82rem', color: 'var(--text-secondary)', textTransform: 'uppercase' }}>
+                  Institucion o cliente
+                </label>
+                <input
+                  type="text"
+                  className="input-field"
+                  value={trainingExamModal.participantCompany}
+                  onChange={(event) =>
+                    setTrainingExamModal((current) =>
+                      current
+                        ? {
+                            ...current,
+                            participantCompany: event.target.value,
+                          }
+                        : current,
+                    )
+                  }
+                  placeholder="Se autocompleta con el cliente del equipo"
+                />
+              </div>
+            </div>
+
+            {trainingExamModal.validationMessage ? (
+              <div
+                style={{
+                  marginBottom: '1rem',
+                  padding: '0.85rem 1rem',
+                  borderRadius: '12px',
+                  border: '1px solid rgba(var(--brand-red-rgb), 0.22)',
+                  background: 'linear-gradient(180deg, rgba(255, 245, 246, 0.96), rgba(255, 238, 240, 0.92))',
+                  color: 'var(--brand-red-ink)',
+                  fontSize: '0.9rem',
+                }}
+              >
+                {trainingExamModal.validationMessage}
+              </div>
+            ) : null}
+
+            {trainingExamModal.result ? (
+              <div
+                style={{
+                  marginBottom: '1rem',
+                  padding: '1rem 1.1rem',
+                  borderRadius: '16px',
+                  border: `1px solid ${
+                    trainingExamModal.result.passed ? 'rgba(var(--food-rgb), 0.26)' : 'rgba(var(--brand-red-rgb), 0.22)'
+                  }`,
+                  background: trainingExamModal.result.passed
+                    ? 'linear-gradient(180deg, rgba(245, 255, 250, 0.96), rgba(238, 252, 244, 0.92))'
+                    : 'linear-gradient(180deg, rgba(255, 246, 247, 0.96), rgba(255, 239, 241, 0.92))',
+                }}
+              >
+                <strong style={{ display: 'block', fontSize: '1rem', color: trainingExamModal.result.passed ? '#1f7f63' : 'var(--brand-red-ink)' }}>
+                  {trainingExamModal.result.passed ? 'Capacitacion aprobada' : 'Capacitacion con refuerzo requerido'}
+                </strong>
+                <span style={{ display: 'block', marginTop: '0.35rem', color: 'var(--text-secondary)' }}>
+                  Resultado guardado: {trainingExamModal.result.score} de {trainingExamModal.result.total} respuestas correctas.
+                </span>
+              </div>
+            ) : null}
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.9rem' }}>
+              {trainingExamModal.definition.questions.map((question, index) => (
+                <div
+                  key={question.id}
+                  style={{
+                    padding: '1rem',
+                    borderRadius: '16px',
+                    border: '1px solid var(--surface-outline)',
+                    background: 'linear-gradient(180deg, rgba(255, 255, 255, 0.94), rgba(244, 247, 250, 0.82))',
+                  }}
+                >
+                  <div style={{ display: 'flex', justifyContent: 'space-between', gap: '0.75rem', flexWrap: 'wrap' }}>
+                    <strong style={{ fontSize: '0.96rem' }}>{index + 1}. {question.prompt}</strong>
+                    <span style={{ color: 'var(--text-tertiary)', fontSize: '0.78rem' }}>{question.reference}</span>
+                  </div>
+                  <div style={{ marginTop: '0.85rem', display: 'grid', gap: '0.65rem' }}>
+                    {question.options.map((option, optionIndex) => {
+                      const selected = trainingExamModal.answers[question.id] === optionIndex;
+                      return (
+                        <button
+                          key={`${question.id}-${optionIndex}`}
+                          type="button"
+                          disabled={Boolean(trainingExamModal.result)}
+                          onClick={() =>
+                            setTrainingExamModal((current) =>
+                              current
+                                ? {
+                                    ...current,
+                                    answers: {
+                                      ...current.answers,
+                                      [question.id]: optionIndex,
+                                    },
+                                    validationMessage: null,
+                                  }
+                                : current,
+                            )
+                          }
+                          style={{
+                            textAlign: 'left',
+                            padding: '0.8rem 0.9rem',
+                            borderRadius: '14px',
+                            border: selected ? '1px solid rgba(var(--environmental-blue-rgb), 0.34)' : '1px solid rgba(124, 136, 149, 0.16)',
+                            background: selected
+                              ? 'linear-gradient(180deg, rgba(var(--environmental-blue-rgb), 0.12), rgba(var(--environmental-blue-rgb), 0.06))'
+                              : 'rgba(255, 255, 255, 0.88)',
+                            color: 'var(--text-primary)',
+                            cursor: trainingExamModal.result ? 'default' : 'pointer',
+                            transition: 'transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease',
+                            boxShadow: selected ? '0 12px 24px rgba(var(--environmental-blue-rgb), 0.12)' : 'none',
+                            opacity: trainingExamModal.result ? 0.88 : 1,
+                          }}
+                        >
+                          {option}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <div style={{ marginTop: '1.25rem', display: 'flex', justifyContent: 'space-between', gap: '0.85rem', flexWrap: 'wrap' }}>
+              <button className="button-primary inactive" onClick={() => setTrainingExamModal(null)}>
+                Cerrar
+              </button>
+              <button
+                className="button-primary"
+                disabled={trainingExamModal.submitting || Boolean(trainingExamModal.result)}
+                onClick={() => void submitTrainingExam()}
+              >
+                {trainingExamModal.submitting ? 'Guardando evaluacion...' : trainingExamModal.result ? 'Evaluacion guardada' : 'Guardar evaluacion'}
+              </button>
+            </div>
             </div>
           </div>
         </div>,

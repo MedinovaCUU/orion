@@ -106,6 +106,10 @@ function App() {
             path="/dashboard" 
             element={session ? <Dashboard session={session} /> : <Navigate to="/login" replace />} 
           />
+          <Route
+            path="/dri"
+            element={session ? <Dashboard session={session} initialTab="dri" /> : <Navigate to="/login" replace />}
+          />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </Suspense>

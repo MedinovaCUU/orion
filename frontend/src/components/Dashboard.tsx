@@ -14,6 +14,7 @@ const Tutoriales = lazy(() => import('./Tutoriales'));
 const Equipos = lazy(() => import('./Equipos'));
 const PNO = lazy(() => import('./PNO'));
 const EquipmentMonitoring = lazy(() => import('../modules/equipment-monitoring/EquipmentMonitoring'));
+const DriPage = lazy(() => import('../modules/dri/DriPage'));
 const DEFAULT_DASHBOARD_TAB: DashboardTabKey = 'tickets';
 
 type DashboardTabKey =
@@ -26,7 +27,8 @@ type DashboardTabKey =
   | 'tutoriales'
   | 'pno'
   | 'equipos'
-  | 'monitoreo';
+  | 'monitoreo'
+  | 'dri';
 
 type DashboardTone = 'clinical' | 'environmental' | 'environmental-blue' | 'veterinary' | 'bioprocess' | 'food';
 
@@ -64,11 +66,12 @@ interface DashboardProps {
       id?: string;
     };
   } | null;
+  initialTab?: DashboardTabKey;
 }
 
-export default function Dashboard({ session }: DashboardProps) {
+export default function Dashboard({ session, initialTab }: DashboardProps) {
   const navigate = useNavigate();
-  const [activeTab, setActiveTab] = useState<DashboardTabKey>(DEFAULT_DASHBOARD_TAB);
+  const [activeTab, setActiveTab] = useState<DashboardTabKey>(initialTab ?? DEFAULT_DASHBOARD_TAB);
   const [authReady, setAuthReady] = useState(false);
   const [userRole, setUserRole] = useState<string | null>(null);
   const [advisoryUnreadCount, setAdvisoryUnreadCount] = useState(0);
@@ -85,6 +88,7 @@ export default function Dashboard({ session }: DashboardProps) {
     { key: 'tutoriales', label: 'Tutoriales', tone: 'clinical' },
     { key: 'pno', label: 'PNO', tone: 'veterinary' },
     { key: 'equipos', label: 'Equipos', tone: 'food', adminOnly: true },
+    { key: 'dri', label: 'DRI', tone: 'environmental-blue' },
   ];
   const activeTabIsVisible = navigationItems.some((item) => {
     if (item.key !== activeTab) {
@@ -107,6 +111,12 @@ export default function Dashboard({ session }: DashboardProps) {
       setActiveTab(DEFAULT_DASHBOARD_TAB);
     }
   }, [activeTabIsVisible]);
+
+  useEffect(() => {
+    if (initialTab) {
+      setActiveTab(initialTab);
+    }
+  }, [initialTab]);
 
   useEffect(() => {
     let mounted = true;
@@ -241,6 +251,7 @@ export default function Dashboard({ session }: DashboardProps) {
           {activeTab === 'tutoriales' && <Tutoriales />}
           {activeTab === 'pno' && <PNO />}
           {activeTab === 'equipos' && userRole === 'admin' && <Equipos />}
+          {activeTab === 'dri' && <DriPage />}
         </Suspense>
       </div>
     </div>

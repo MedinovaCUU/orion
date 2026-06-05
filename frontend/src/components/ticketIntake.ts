@@ -1,4 +1,4 @@
-import type { EquipmentSummary } from './servicesPlanning';
+import { extractPlaneacionMeta, type EquipmentSummary } from './servicesPlanning';
 import type { ServiceReportTicketOcrResult } from './serviceReportTicketOcr';
 
 export type TicketSupportType = 'Ingeniero' | 'Químico';
@@ -380,6 +380,10 @@ export const getFalconTicketSla = (
   equipment?: EquipmentSummary | null,
   nowMs = Date.now(),
 ): FalconTicketSla | null => {
+  if (extractPlaneacionMeta(ticket.descripcion)) {
+    return null;
+  }
+
   const channel = extractChannelFromTicket(ticket) || extractChannelFromEquipment(equipment);
   if (channel !== 'falcon') {
     return null;
@@ -428,32 +432,56 @@ export const getFalconTicketSla = (
 export const getFalconSlaTone = (severity: TicketSlaSeverity) => {
   if (severity === 'breached') {
     return {
-      background: 'rgba(127, 29, 29, 0.3)',
-      border: 'rgba(248, 113, 113, 0.62)',
-      color: '#ffe4e6',
+      background: 'linear-gradient(180deg, rgba(255, 244, 245, 0.98), rgba(255, 236, 239, 0.94))',
+      border: 'rgba(243, 39, 53, 0.26)',
+      color: '#8f2431',
+      muted: '#7b4d56',
+      overlayBackground:
+        'radial-gradient(circle at top right, rgba(243, 39, 53, 0.16), transparent 34%), linear-gradient(180deg, rgba(255, 252, 252, 0.98), rgba(255, 242, 244, 0.95))',
+      buttonBackground: 'linear-gradient(135deg, rgba(243, 39, 53, 0.96), rgba(171, 34, 47, 0.92))',
+      buttonBorder: 'rgba(243, 39, 53, 0.28)',
+      buttonColor: 'var(--text-on-brand)',
     };
   }
 
   if (severity === 'critical') {
     return {
-      background: 'rgba(225, 29, 72, 0.2)',
-      border: 'rgba(244, 63, 94, 0.55)',
-      color: '#ffe4ea',
+      background: 'linear-gradient(180deg, rgba(255, 246, 247, 0.98), rgba(255, 239, 243, 0.93))',
+      border: 'rgba(225, 29, 72, 0.24)',
+      color: '#9a2740',
+      muted: '#7f5660',
+      overlayBackground:
+        'radial-gradient(circle at top right, rgba(225, 29, 72, 0.14), transparent 34%), linear-gradient(180deg, rgba(255, 252, 253, 0.98), rgba(255, 243, 246, 0.95))',
+      buttonBackground: 'linear-gradient(135deg, rgba(243, 39, 53, 0.94), rgba(186, 52, 72, 0.9))',
+      buttonBorder: 'rgba(225, 29, 72, 0.24)',
+      buttonColor: 'var(--text-on-brand)',
     };
   }
 
   if (severity === 'warning') {
     return {
-      background: 'rgba(250, 204, 21, 0.18)',
-      border: 'rgba(250, 204, 21, 0.42)',
-      color: '#fff3b0',
+      background: 'linear-gradient(180deg, rgba(255, 252, 244, 0.98), rgba(255, 247, 228, 0.94))',
+      border: 'rgba(255, 196, 94, 0.28)',
+      color: '#8f5b00',
+      muted: '#7f6950',
+      overlayBackground:
+        'radial-gradient(circle at top right, rgba(255, 196, 94, 0.18), transparent 34%), linear-gradient(180deg, rgba(255, 254, 249, 0.98), rgba(255, 249, 236, 0.95))',
+      buttonBackground: 'linear-gradient(135deg, rgba(255, 196, 94, 0.94), rgba(214, 149, 40, 0.9))',
+      buttonBorder: 'rgba(255, 196, 94, 0.28)',
+      buttonColor: '#4f3422',
     };
   }
 
   return {
-    background: 'rgba(34, 197, 94, 0.12)',
-    border: 'rgba(74, 222, 128, 0.3)',
-    color: '#d8ffe7',
+    background: 'linear-gradient(180deg, rgba(245, 255, 250, 0.98), rgba(236, 251, 243, 0.94))',
+    border: 'rgba(76, 207, 147, 0.26)',
+    color: '#187244',
+    muted: '#4f6e60',
+    overlayBackground:
+      'radial-gradient(circle at top right, rgba(76, 207, 147, 0.14), transparent 34%), linear-gradient(180deg, rgba(251, 255, 253, 0.98), rgba(241, 252, 246, 0.95))',
+    buttonBackground: 'linear-gradient(135deg, rgba(76, 207, 147, 0.94), rgba(34, 153, 103, 0.9))',
+    buttonBorder: 'rgba(76, 207, 147, 0.24)',
+    buttonColor: 'var(--text-on-brand)',
   };
 };
 

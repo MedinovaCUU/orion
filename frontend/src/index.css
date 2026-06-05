@@ -273,10 +273,213 @@ canvas {
 .card::after {
   content: '';
   position: absolute;
-  inset: 1px;
+  inset: 0;
   border-radius: inherit;
   pointer-events: none;
-  border: 1px solid var(--surface-highlight);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.34), rgba(255, 255, 255, 0.08) 12%, transparent 24%);
+}
+
+.card-scroll-shell {
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.card-scroll-body {
+  max-height: 90vh;
+  overflow-y: auto;
+  padding: 2.25rem;
+  padding-right: 1.25rem;
+  scrollbar-gutter: stable both-edges;
+  overscroll-behavior: contain;
+}
+
+.card-scroll-body::-webkit-scrollbar {
+  width: 12px;
+}
+
+.card-scroll-body::-webkit-scrollbar-track {
+  margin: 1rem 0.45rem 1rem 0;
+  background: rgba(194, 203, 213, 0.08);
+  border-radius: 999px;
+}
+
+.card-scroll-body::-webkit-scrollbar-thumb {
+  background: rgba(138, 149, 161, 0.28);
+  border-radius: 999px;
+  border: 3px solid rgba(255, 255, 255, 0.82);
+  background-clip: padding-box;
+}
+
+.card-scroll-body::-webkit-scrollbar-thumb:hover {
+  background: rgba(138, 149, 161, 0.42);
+}
+
+.training-exam-modal-shell {
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.training-exam-modal-scroll {
+  max-height: 92vh;
+  overflow-y: auto;
+  padding: 2.25rem;
+  padding-right: 1.25rem;
+  scrollbar-gutter: stable both-edges;
+}
+
+.training-exam-modal-scroll::-webkit-scrollbar {
+  width: 12px;
+}
+
+.training-exam-modal-scroll::-webkit-scrollbar-track {
+  margin: 1rem 0.45rem 1rem 0;
+  background: rgba(194, 203, 213, 0.08);
+  border-radius: 999px;
+}
+
+.training-exam-modal-scroll::-webkit-scrollbar-thumb {
+  background: rgba(138, 149, 161, 0.28);
+  border-radius: 999px;
+  border: 3px solid rgba(255, 255, 255, 0.82);
+  background-clip: padding-box;
+}
+
+.training-exam-modal-scroll::-webkit-scrollbar-thumb:hover {
+  background: rgba(138, 149, 161, 0.42);
+}
+
+.equipment-doc-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0.85rem;
+}
+
+.equipment-doc-toolbar-title {
+  margin: 0;
+  color: var(--primary-color);
+  font-size: 1.1rem;
+  flex: 0 0 auto;
+}
+
+.equipment-doc-toolbar-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  gap: 0.7rem;
+  flex: 0 0 auto;
+}
+
+.equipment-doc-action-group {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.45rem 0.5rem;
+  border-radius: 18px;
+  border: 1px solid var(--surface-outline);
+  box-shadow: var(--surface-shadow);
+}
+
+.equipment-doc-action-group--install {
+  background:
+    radial-gradient(circle at top right, rgba(var(--environmental-blue-rgb), 0.12), transparent 28%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.94), rgba(244, 247, 250, 0.82));
+}
+
+.equipment-doc-action-group--training {
+  background:
+    radial-gradient(circle at top right, rgba(var(--bioprocess-rgb), 0.14), transparent 28%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.94), rgba(248, 247, 241, 0.82));
+}
+
+.equipment-doc-hidden-input {
+  display: none;
+}
+
+.equipment-doc-action-button {
+  appearance: none;
+  width: 50px;
+  height: 50px;
+  border-radius: 16px;
+  border: 1px solid rgba(124, 136, 149, 0.14);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.92), rgba(242, 245, 248, 0.82)),
+    rgba(255, 255, 255, 0.36);
+  color: var(--text-secondary);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 10px 24px rgba(104, 116, 133, 0.08);
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    border-color 0.2s ease,
+    background 0.2s ease,
+    color 0.2s ease;
+}
+
+.equipment-doc-action-button--primary {
+  width: 58px;
+  height: 58px;
+  border-radius: 18px;
+}
+
+.equipment-doc-action-button:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 14px 26px rgba(104, 116, 133, 0.12);
+}
+
+.equipment-doc-action-button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.equipment-doc-action-button--loaded-install {
+  border-color: rgba(var(--environmental-blue-rgb), 0.28);
+  background:
+    linear-gradient(180deg, rgba(var(--environmental-blue-rgb), 0.2), rgba(var(--environmental-blue-rgb), 0.1)),
+    rgba(255, 255, 255, 0.46);
+  color: #3a6f9f;
+}
+
+.equipment-doc-action-button--loaded-training {
+  border-color: rgba(var(--bioprocess-rgb), 0.3);
+  background:
+    linear-gradient(180deg, rgba(var(--bioprocess-rgb), 0.24), rgba(var(--bioprocess-rgb), 0.12)),
+    rgba(255, 255, 255, 0.46);
+  color: #8b5d17;
+}
+
+.equipment-training-attempts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-top: 0.75rem;
+}
+
+.equipment-training-attempt-chip {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  min-width: 0;
+  padding: 0.7rem 0.85rem;
+  border-radius: 16px;
+  border: 1px solid rgba(124, 136, 149, 0.14);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.88), rgba(244, 247, 250, 0.8));
+}
+
+.equipment-training-attempt-name {
+  font-size: 0.88rem;
+  color: var(--text-primary);
+}
+
+.equipment-training-attempt-role {
+  font-size: 0.76rem;
+  color: var(--text-secondary);
 }
 
 .glass-pill {
@@ -327,6 +530,24 @@ textarea.input-field {
     border-radius: 24px;
   }
 
+  .card-scroll-body {
+    padding: 1.5rem;
+    padding-right: 0.95rem;
+  }
+
+  .training-exam-modal-scroll {
+    padding: 1.5rem;
+    padding-right: 0.95rem;
+  }
+
+  .equipment-doc-toolbar {
+    align-items: flex-start;
+  }
+
+  .equipment-doc-toolbar-actions {
+    justify-content: flex-start;
+  }
+
   body {
     background-attachment: scroll;
   }
@@ -344,5 +565,32 @@ textarea.input-field {
   .card {
     padding: 1.15rem;
     border-radius: 20px;
+  }
+
+  .card-scroll-body {
+    padding: 1.15rem;
+    padding-right: 0.8rem;
+  }
+
+  .training-exam-modal-scroll {
+    padding: 1.15rem;
+    padding-right: 0.8rem;
+  }
+
+  .equipment-doc-action-button {
+    width: 44px;
+    height: 44px;
+    border-radius: 14px;
+  }
+
+  .equipment-doc-action-button--primary {
+    width: 52px;
+    height: 52px;
+    border-radius: 16px;
+  }
+
+  .equipment-doc-action-group {
+    padding: 0.4rem 0.45rem;
+    border-radius: 16px;
   }
 }
