@@ -412,25 +412,18 @@ export default function DriPage() {
     [analysis?.hypotheses],
   );
 
-  const handleOutcomeToggle = (reagentId: string, outcome: DriOutcomeType) => {
+  const handleReagentCycle = (reagentId: string) => {
     setForm((current) => {
       const failedSet = new Set(current.failedReagentIds);
       const correctSet = new Set(current.correctReagentIds);
 
-      if (outcome === 'failed') {
-        if (failedSet.has(reagentId)) {
-          failedSet.delete(reagentId);
-        } else {
-          failedSet.add(reagentId);
-          correctSet.delete(reagentId);
-        }
+      if (correctSet.has(reagentId)) {
+        correctSet.delete(reagentId);
+        failedSet.add(reagentId);
+      } else if (failedSet.has(reagentId)) {
+        failedSet.delete(reagentId);
       } else {
-        if (correctSet.has(reagentId)) {
-          correctSet.delete(reagentId);
-        } else {
-          correctSet.add(reagentId);
-          failedSet.delete(reagentId);
-        }
+        correctSet.add(reagentId);
       }
 
       return {
@@ -516,7 +509,7 @@ export default function DriPage() {
       {catalogWarning ? <div className="dri-alert dri-alert--warning">{catalogWarning}</div> : null}
       {persistWarning ? <div className="dri-alert dri-alert--warning">{persistWarning}</div> : null}
 
-      <div className="dri-grid">
+      <div className="dri-stack">
         <section className="dri-panel dri-panel--form">
           <div className="dri-panel__head">
             <div>
@@ -529,7 +522,7 @@ export default function DriPage() {
           </div>
 
           <div className="dri-form-grid">
-            <label className="dri-field">
+            <label className="dri-field dri-field--span-2">
               <span>Modelo</span>
               <select
                 className="input-field"
@@ -549,7 +542,7 @@ export default function DriPage() {
               </select>
             </label>
 
-            <label className="dri-field">
+            <label className="dri-field dri-field--span-3">
               <span>No. de serie</span>
               <input
                 className="input-field"
@@ -559,7 +552,7 @@ export default function DriPage() {
               />
             </label>
 
-            <label className="dri-field">
+            <label className="dri-field dri-field--span-2">
               <span>Fecha</span>
               <input
                 type="date"
@@ -569,7 +562,7 @@ export default function DriPage() {
               />
             </label>
 
-            <label className="dri-field">
+            <label className="dri-field dri-field--span-3">
               <span>Tipo de evento</span>
               <select
                 className="input-field"
@@ -589,7 +582,7 @@ export default function DriPage() {
               </select>
             </label>
 
-            <label className="dri-field">
+            <label className="dri-field dri-field--span-2">
               <span>Dirección de falla</span>
               <select
                 className="input-field"
@@ -609,7 +602,7 @@ export default function DriPage() {
               </select>
             </label>
 
-            <label className="dri-field">
+            <label className="dri-field dri-field--span-4">
               <span>Lote de reactivo</span>
               <input
                 className="input-field"
@@ -619,7 +612,7 @@ export default function DriPage() {
               />
             </label>
 
-            <label className="dri-field">
+            <label className="dri-field dri-field--span-4">
               <span>Lote de control</span>
               <input
                 className="input-field"
@@ -629,7 +622,7 @@ export default function DriPage() {
               />
             </label>
 
-            <label className="dri-field">
+            <label className="dri-field dri-field--span-4">
               <span>Lote de calibrador</span>
               <input
                 className="input-field"
@@ -683,7 +676,7 @@ export default function DriPage() {
             />
           </div>
 
-          <label className="dri-field">
+          <label className="dri-field dri-field--full">
             <span>Observaciones</span>
             <textarea
               className="input-field dri-textarea"
@@ -707,57 +700,31 @@ export default function DriPage() {
               />
             </div>
 
-            <div className="dri-selected-strips">
-              <div className="dri-selected-strip">
-                <span>Fallidas</span>
-                <div>
-                  {form.failedReagentIds.length > 0 ? (
-                    form.failedReagentIds.map((id) => <StatusBadge key={id} tone="red">{id}</StatusBadge>)
-                  ) : (
-                    <StatusBadge tone="neutral">Sin seleccionar</StatusBadge>
-                  )}
-                </div>
-              </div>
-              <div className="dri-selected-strip">
-                <span>Correctas</span>
-                <div>
-                  {form.correctReagentIds.length > 0 ? (
-                    form.correctReagentIds.map((id) => <StatusBadge key={id} tone="teal">{id}</StatusBadge>)
-                  ) : (
-                    <StatusBadge tone="neutral">Sin contraste</StatusBadge>
-                  )}
-                </div>
-              </div>
+            <div className="dri-selection-summary">
+              <StatusBadge tone={form.failedReagentIds.length > 0 ? 'red' : 'neutral'}>
+                Fallidas · {form.failedReagentIds.length}
+              </StatusBadge>
+              <StatusBadge tone={form.correctReagentIds.length > 0 ? 'teal' : 'neutral'}>
+                Correctas · {form.correctReagentIds.length}
+              </StatusBadge>
             </div>
 
             <div className="dri-reagent-list">
               {filteredReagents.map((reagent) => {
                 const failedActive = form.failedReagentIds.includes(reagent.id);
                 const correctActive = form.correctReagentIds.includes(reagent.id);
+                const stateLabel = failedActive ? 'Fallida' : correctActive ? 'Correcta' : 'Sin marcar';
                 return (
-                  <div key={reagent.id} className={`dri-reagent-row ${failedActive ? 'is-failed' : correctActive ? 'is-correct' : ''}`}>
-                    <div>
-                      <strong>{reagent.id}</strong>
-                      <p>{reagent.name}</p>
-                      <small>{reagent.reportedMethod || reagent.reagentType || 'Sin método cargado'}</small>
-                    </div>
-                    <div className="dri-reagent-row__actions">
-                      <button
-                        type="button"
-                        className={`dri-pill-button dri-pill-button--danger ${failedActive ? 'is-active' : ''}`}
-                        onClick={() => handleOutcomeToggle(reagent.id, 'failed')}
-                      >
-                        Falla
-                      </button>
-                      <button
-                        type="button"
-                        className={`dri-pill-button dri-pill-button--success ${correctActive ? 'is-active' : ''}`}
-                        onClick={() => handleOutcomeToggle(reagent.id, 'correct')}
-                      >
-                        Correcta
-                      </button>
-                    </div>
-                  </div>
+                  <button
+                    key={reagent.id}
+                    type="button"
+                    className={`dri-reagent-pill ${failedActive ? 'is-failed' : correctActive ? 'is-correct' : ''}`}
+                    onClick={() => handleReagentCycle(reagent.id)}
+                    aria-label={`${reagent.id} ${stateLabel}. Clic para cambiar estado.`}
+                    title={`${reagent.id} · ${reagent.name} · ${reagent.reportedMethod || reagent.reagentType || 'Sin método cargado'} · ${stateLabel}`}
+                  >
+                    <span className="dri-reagent-pill__code">{reagent.id}</span>
+                  </button>
                 );
               })}
             </div>
@@ -818,10 +785,10 @@ export default function DriPage() {
           </div>
         </section>
 
-        <aside className="dri-panel dri-panel--side">
+        <section className="dri-panel dri-panel--side">
           <div className="dri-panel__head">
             <div>
-              <span className="dri-panel__eyebrow">Panel lateral</span>
+              <span className="dri-panel__eyebrow">Seguimiento</span>
               <h3>Lectura guiada del caso</h3>
             </div>
           </div>
@@ -926,79 +893,75 @@ export default function DriPage() {
               <p>No hay casos históricos ligados al nodo seleccionado.</p>
             )}
           </div>
-        </aside>
-      </div>
 
-      <div className="dri-bottom-grid">
-        <section className="dri-panel dri-panel--evidence">
-          <div className="dri-panel__head">
-            <div>
-              <span className="dri-panel__eyebrow">Evidencia</span>
-              <h3>Tabla de factores y peso diferencial</h3>
-            </div>
-            {activeCase ? <StatusBadge tone="neutral">{activeCase.caseCode}</StatusBadge> : null}
-          </div>
-
-          {analysis?.evidenceRows.length ? (
-            <div className="dri-table-wrapper">
-              <table className="dri-table">
-                <thead>
-                  <tr>
-                    <th>Factor</th>
-                    <th>Tipo</th>
-                    <th>Fallidas</th>
-                    <th>Correctas</th>
-                    <th>Peso</th>
-                    <th>Score</th>
-                    <th>A favor</th>
-                    <th>En contra</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {analysis.evidenceRows.slice(0, 12).map((row: DriEvidenceRow) => (
-                    <tr key={row.id} onClick={() => setSelectedNodeId(factorNodeId(row.factorId))}>
-                      <td>{row.label}</td>
-                      <td>{row.factorType}</td>
-                      <td>{Math.round(row.failedCoverage * 100)}%</td>
-                      <td>{Math.round(row.correctCoverage * 100)}%</td>
-                      <td>{row.meanLinkWeight}</td>
-                      <td>{row.suspicionScore}</td>
-                      <td>{row.evidenceFor}</td>
-                      <td>{row.evidenceAgainst}</td>
+          <div className="dri-side-block">
+            <span className="dri-side-block__label">Evidencia</span>
+            <strong>Tabla de factores y peso diferencial</strong>
+            {activeCase ? (
+              <div className="dri-inline-badges">
+                <StatusBadge tone="neutral">{activeCase.caseCode}</StatusBadge>
+              </div>
+            ) : null}
+            {analysis?.evidenceRows.length ? (
+              <div className="dri-table-wrapper">
+                <table className="dri-table">
+                  <thead>
+                    <tr>
+                      <th>Factor</th>
+                      <th>Tipo</th>
+                      <th>Fallidas</th>
+                      <th>Correctas</th>
+                      <th>Peso</th>
+                      <th>Score</th>
+                      <th>A favor</th>
+                      <th>En contra</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          ) : (
-            <div className="dri-empty-state">La tabla de evidencia aparecerá después de generar el diagnóstico.</div>
-          )}
-        </section>
-
-        <section className="dri-panel dri-panel--trace">
-          <div className="dri-panel__head">
-            <div>
-              <span className="dri-panel__eyebrow">Logging</span>
-              <h3>Traza del motor</h3>
-            </div>
-            {analysis ? <StatusBadge tone="teal">{analysis.logs.length} eventos</StatusBadge> : null}
+                  </thead>
+                  <tbody>
+                    {analysis.evidenceRows.slice(0, 12).map((row: DriEvidenceRow) => (
+                      <tr key={row.id} onClick={() => setSelectedNodeId(factorNodeId(row.factorId))}>
+                        <td>{row.label}</td>
+                        <td>{row.factorType}</td>
+                        <td>{Math.round(row.failedCoverage * 100)}%</td>
+                        <td>{Math.round(row.correctCoverage * 100)}%</td>
+                        <td>{row.meanLinkWeight}</td>
+                        <td>{row.suspicionScore}</td>
+                        <td>{row.evidenceFor}</td>
+                        <td>{row.evidenceAgainst}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            ) : (
+              <div className="dri-empty-state">La tabla de evidencia aparecerá después de generar el diagnóstico.</div>
+            )}
           </div>
 
-          {analysis?.logs.length ? (
-            <div className="dri-log-list">
-              {analysis.logs.slice(0, 14).map((log) => (
-                <div key={`${log.step}-${log.message}`} className={`dri-log-entry dri-log-entry--${log.level}`}>
-                  <div>
-                    <strong>{log.step}</strong>
-                    <p>{log.message}</p>
+          <div className="dri-side-block">
+            <span className="dri-side-block__label">Logging</span>
+            <strong>Traza del motor</strong>
+            {analysis ? (
+              <div className="dri-inline-badges">
+                <StatusBadge tone="teal">{analysis.logs.length} eventos</StatusBadge>
+              </div>
+            ) : null}
+            {analysis?.logs.length ? (
+              <div className="dri-log-list">
+                {analysis.logs.slice(0, 14).map((log) => (
+                  <div key={`${log.step}-${log.message}`} className={`dri-log-entry dri-log-entry--${log.level}`}>
+                    <div>
+                      <strong>{log.step}</strong>
+                      <p>{log.message}</p>
+                    </div>
+                    <small>{Object.keys(log.details).join(' · ') || 'sin payload adicional'}</small>
                   </div>
-                  <small>{Object.keys(log.details).join(' · ') || 'sin payload adicional'}</small>
-                </div>
-              ))}
-            </div>
-          ) : (
-            <div className="dri-empty-state">Los logs de cálculo aparecerán cuando corras el motor.</div>
-          )}
+                ))}
+              </div>
+            ) : (
+              <div className="dri-empty-state">Los logs de cálculo aparecerán cuando corras el motor.</div>
+            )}
+          </div>
         </section>
       </div>
     </div>
