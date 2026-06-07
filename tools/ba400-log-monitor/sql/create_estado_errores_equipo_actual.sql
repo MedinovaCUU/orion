@@ -6,6 +6,8 @@ create table if not exists public.estado_errores_equipo_actual (
   analizador_id text,
   estado_actual text not null check (estado_actual in ('ok', 'warning', 'fatal')),
   tipo_mensaje text not null check (tipo_mensaje in ('ok', 'warning', 'fatal')),
+  codigo_estado text,
+  descripcion_estado text,
   codigos_error text[] not null default '{}',
   errores_activos jsonb not null default '[]'::jsonb,
   error_principal_codigo text,

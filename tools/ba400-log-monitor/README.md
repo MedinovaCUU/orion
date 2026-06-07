@@ -7,6 +7,7 @@ Incluye:
 - `monitor.mjs`: monitoreo de errores activos desde `TraceComm*.LAx00`.
 - `consumption-monitor.mjs`: monitoreo de consumos desde `LogConsum`.
 - `full-monitor.mjs`: supervisor que arranca ambos monitores, reinicia si uno cae y guarda logs locales.
+- `program-data-inventory.mjs`: inventario offline de `ProgramData` para revisar qué fuentes pueden alimentar diagnóstico.
 
 ## Archivos
 
@@ -15,6 +16,7 @@ Incluye:
 - `monitor.mjs`: monitor de errores.
 - `consumption-monitor.mjs`: monitor de consumos.
 - `full-monitor.mjs`: supervisor completo.
+- `program-data-inventory.mjs`: explorador local de `Adjustments`, `Log`, `LogConsum`, `AuditTrail` y `FwScripts`.
 - `config.windows.nacional.json`: configuración del monitor de errores.
 - `config.windows.consumo.json`: configuración del monitor de consumos.
 - `config.windows.completo.json`: configuración del supervisor.
@@ -199,8 +201,25 @@ Reglas de estado actual:
 - `ANSERR;N:<n>;E:<codigo>` confirma el detalle del error activo.
 - `STATUS ... E:0` marca al equipo como limpio.
 - `ANSERR;N:0` tambien marca al equipo como limpio.
+- cuando el equipo queda limpio, el monitor publica `codigo_estado = OK_000` y `descripcion_estado = Sin errores activos detectados por monitor` en `estado_errores_equipo_actual`.
 - `ASN:` tiene prioridad sobre `SN:` para identificar correctamente la serie real del analizador.
 - Una vez detectada una serie por `ASN:`, un `SN:` posterior no debe reemplazarla. Esto evita falsos cambios de serie en lineas como `ANSADJ`.
+
+## Inventario offline de ProgramData
+
+Si quieres revisar qué material del analizador puede servir para diagnóstico técnico, puedes correr:
+
+```bash
+node program-data-inventory.mjs --path "C:\\ProgramData\\BA400"
+```
+
+Fuentes que hoy reconoce:
+
+- `TraceComm*.LAx00`: errores, estados, serie, firmware y telemetría térmica/fluídica.
+- `LogConsum`: consumos por reactivo, rotor, calibrador y control.
+- `Adjustments`: ajustes mecánicos y artefactos de photometry / repeatability / stability.
+- `FwScripts`: catálogo real de utilidades del BA400.
+- `AuditTrail`: detectado pero aún pendiente de reverse engineering.
 
 Si quieres reiniciar el seguimiento de errores desde cero, borra:
 

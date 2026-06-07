@@ -1,5 +1,6 @@
 import { supabase } from '../../supabaseClient';
 import { DRI_WORKBOOK_SEED } from './driWorkbookSeed.generated';
+import { createDriLogger } from './utils/driLogging';
 import type {
   DriCatalog,
   DriCaseFormState,
@@ -11,6 +12,45 @@ import type {
   DriPersistedCaseResult,
   DriReagent,
 } from './driTypes';
+
+const driDataLogger = createDriLogger('dri-data', 'IO', []);
+const DRI_EVIDENCE_BUCKET = 'documentos';
+const sanitizeFileName = (value: string) => value.replace(/[^a-zA-Z0-9._-]+/g, '-');
+const buildStoragePublicUrl = (bucket: string, path: string) =>
+  `${import.meta.env.VITE_SUPABASE_URL}/storage/v1/object/public/${bucket}/${path}`;
+
+export async function uploadDriEvidenceAsset({
+  file,
+  equipmentModel,
+  serialNumber,
+  evidenceType,
+}: {
+  file: File;
+  equipmentModel: DriCaseFormState['equipmentModel'];
+  serialNumber: string;
+  evidenceType: DriCaseFormState['evidenceItems'][number]['type'];
+}) {
+  const safeSerial = sanitizeFileName(serialNumber.trim() || 'sin-serie');
+  const safeName = sanitizeFileName(file.name || `${evidenceType}.bin`);
+  const path = `dri-evidence/${equipmentModel}/${safeSerial}/${Date.now()}-${crypto.randomUUID()}-${safeName}`;
+  const { error } = await supabase.storage.from(DRI_EVIDENCE_BUCKET).upload(path, file, {
+    cacheControl: '3600',
+    upsert: false,
+    contentType: file.type || undefined,
+  });
+
+  if (error) {
+    throw error;
+  }
+
+  return {
+    fileBucket: DRI_EVIDENCE_BUCKET,
+    filePath: path,
+    fileUrl: buildStoragePublicUrl(DRI_EVIDENCE_BUCKET, path),
+    fileName: file.name,
+    mimeType: file.type || null,
+  };
+}
 
 interface DriCatalogLoadResult {
   catalog: DriCatalog;
@@ -93,13 +133,26 @@ const mapCaseRows = (
       key: row.hypothesis_key,
       title: row.title,
       score: row.score,
+      probabilityScore: row.probability_score ?? row.score,
+      confidenceScore: row.confidence_score ?? 0,
+      severity: row.severity ?? 'medium',
       probabilityLabel: row.probability_label,
       status: row.status,
+      suspectedSubsystem: row.suspected_subsystem ?? 'unknown',
+      explanation: row.payload?.explanation ?? row.title,
       evidenceFor: row.evidence_for || [],
       evidenceAgainst: row.evidence_against || [],
       confirmatoryActions: row.confirmatory_actions || [],
+      correctiveActions: row.corrective_actions || [],
+      recommendedNextTest: row.recommended_next_test || null,
+      serviceUtilities: row.payload?.serviceUtilities || [],
+      checklist: row.payload?.checklist || [],
+      invasivenessLevel: row.invasiveness_level || 'operational_review',
+      candidateParts: row.candidate_parts || [],
+      warningText: row.warning_text || null,
       supportingFactorIds: row.supporting_factor_ids || [],
       matchedRuleIds: row.matched_rule_ids || [],
+      missingEvidence: row.payload?.missingEvidence || [],
       payload: row.payload || {},
     });
     hypothesesByCaseId.set(row.case_id, existing);
@@ -150,6 +203,16 @@ const buildLocalCaseRecord = (form: DriCaseFormState, engineResult: DriEngineRes
   caseSummary: buildCaseSummary(form, engineResult),
   metadata: {
     signals: form.signals,
+    controlLevel: form.controlLevel,
+    selectedQcReferenceId: form.selectedQcReferenceId,
+    expectedValue: form.expectedValue,
+    obtainedValue: form.obtainedValue,
+    calibratorName: form.calibratorName,
+    ambientTemperatureC: form.ambientTemperatureC,
+    reagentExpiryDate: form.reagentExpiryDate,
+    reagentOpenedAt: form.reagentOpenedAt,
+    serviceTests: form.serviceTests,
+    evidenceItems: form.evidenceItems,
     localOnly: true,
   },
   status: 'open',
@@ -224,6 +287,18 @@ export async function loadDriCatalog(): Promise<DriCatalogLoadResult> {
           confidence: row.confidence,
           sourceType: row.source_type,
           sourceReference: row.source_reference,
+          metadata: row.metadata || {},
+          referenceCode: row.reference_code ?? null,
+          platforms: row.platforms ?? null,
+          analyticalFamily: row.analytical_family ?? null,
+          reactionKind: row.reaction_kind ?? null,
+          reagentScheme: row.reagent_scheme ?? null,
+          usesR1: row.uses_r1 ?? null,
+          usesR2: row.uses_r2 ?? null,
+          sharedR2Group: row.shared_r2_group ?? null,
+          mechanicalSubsystems: row.mechanical_subsystems ?? null,
+          relatedReagentIds: row.related_reagent_ids ?? null,
+          technicalProfile: row.technical_profile ?? row.metadata ?? {},
         })),
         factors: factorsResponse.data.map((row) => ({
           id: row.id,
@@ -238,6 +313,7 @@ export async function loadDriCatalog(): Promise<DriCatalogLoadResult> {
           confidence: row.confidence,
           sourceType: row.source_type,
           sourceReference: row.source_reference,
+          metadata: row.metadata || {},
         })),
         links: linksResponse.data.map((row) => ({
           reagentId: row.reagent_id,
@@ -249,13 +325,16 @@ export async function loadDriCatalog(): Promise<DriCatalogLoadResult> {
           sourceReference: row.source_reference,
           sourceLabel: row.source_label,
           note: row.note,
+          metadata: row.metadata || {},
         })),
       },
       sourceLabel: 'Supabase',
       warning: null,
     };
   } catch (error) {
-    console.warn('DRI no pudo cargar catálogo desde Supabase. Usando seed local.', error);
+    driDataLogger.warn('DATA', 'catalog-fallback', 'DRI no pudo cargar catálogo desde Supabase. Usando seed local.', {
+      error: error instanceof Error ? error.message : String(error),
+    });
     return {
       catalog: fallbackCatalog,
       sourceLabel: 'Seed local del workbook',
@@ -289,7 +368,9 @@ export async function loadDriHistory(limit = 24): Promise<DriDiagnosticCaseRecor
 
     return mapCaseRows(casesResponse.data, itemsResponse.data || [], hypothesesResponse.data || []);
   } catch (error) {
-    console.warn('DRI no pudo cargar historial desde Supabase.', error);
+    driDataLogger.warn('DATA', 'history-fallback', 'DRI no pudo cargar historial desde Supabase.', {
+      error: error instanceof Error ? error.message : String(error),
+    });
     return [];
   }
 }
@@ -309,6 +390,7 @@ export async function persistDriCase(
       .from('diagnostic_cases')
       .insert({
         equipment_model: form.equipmentModel,
+        capture_mode: 'advanced',
         serial_number: form.serialNumber,
         event_date: form.eventDate,
         event_type: form.eventType,
@@ -316,10 +398,26 @@ export async function persistDriCase(
         reagent_lot: form.reagentLot || null,
         control_lot: form.controlLot || null,
         calibrator_lot: form.calibratorLot || null,
+        calibrator_name: form.calibratorName || null,
+        ambient_temperature_c: form.ambientTemperatureC ? Number(form.ambientTemperatureC) : null,
+        reagent_opened_at: form.reagentOpenedAt || null,
+        reagent_expires_at: form.reagentExpiryDate || null,
         observations: form.observations || null,
         case_summary: buildCaseSummary(form, engineResult),
+        service_test_results: form.serviceTests,
+        evidence_payload: form.evidenceItems,
         metadata: {
           signals: form.signals,
+          controlLevel: form.controlLevel,
+          selectedQcReferenceId: form.selectedQcReferenceId,
+          expectedValue: form.expectedValue,
+          obtainedValue: form.obtainedValue,
+          calibratorName: form.calibratorName,
+          ambientTemperatureC: form.ambientTemperatureC,
+          reagentExpiryDate: form.reagentExpiryDate,
+          reagentOpenedAt: form.reagentOpenedAt,
+          serviceTests: form.serviceTests,
+          evidenceItems: form.evidenceItems,
         },
         created_by: user?.id ?? null,
         updated_by: user?.id ?? null,
@@ -339,10 +437,14 @@ export async function persistDriCase(
         reagent_id: reagentId,
         outcome_type: 'failed',
         failure_direction: form.failureDirection,
+        control_level: form.controlLevel,
+        result_value: form.obtainedValue || null,
+        expected_mean: form.expectedValue || null,
         is_intermittent: form.signals.intermittentPattern,
         position_index: index,
         metadata: {
           source: 'dri_ui',
+          selectedQcReferenceId: form.selectedQcReferenceId || null,
         },
       })),
       ...form.correctReagentIds.map((reagentId, index) => ({
@@ -350,10 +452,14 @@ export async function persistDriCase(
         reagent_id: reagentId,
         outcome_type: 'correct',
         failure_direction: null,
+        control_level: form.controlLevel,
+        result_value: form.obtainedValue || null,
+        expected_mean: form.expectedValue || null,
         is_intermittent: false,
         position_index: 100 + index,
         metadata: {
           source: 'dri_ui',
+          selectedQcReferenceId: form.selectedQcReferenceId || null,
         },
       })),
     ];
@@ -375,14 +481,17 @@ export async function persistDriCase(
       reagent_lot: form.reagentLot || null,
       control_lot: form.controlLot || null,
       calibrator_lot: form.calibratorLot || null,
-      observations: form.observations || null,
-      confidence: 'pending',
-      source_type: 'user_input',
-      source_reference: 'DRI UI',
-      raw_payload: {
-        outcomeType: row.outcome_type,
-      },
-      created_by: user?.id ?? null,
+        observations: form.observations || null,
+        confidence: 'pending',
+        source_type: 'user_input',
+        source_reference: 'DRI UI',
+        raw_payload: {
+          outcomeType: row.outcome_type,
+          selectedQcReferenceId: form.selectedQcReferenceId || null,
+          serviceTests: form.serviceTests,
+          evidenceItems: form.evidenceItems,
+        },
+        created_by: user?.id ?? null,
     }));
 
     const qcInsert = await supabase.from('qc_events').insert(qcPayload);
@@ -396,11 +505,20 @@ export async function persistDriCase(
         hypothesis_key: hypothesis.key,
         title: hypothesis.title,
         score: hypothesis.score,
+        severity: hypothesis.severity,
+        probability_score: hypothesis.probabilityScore,
+        confidence_score: hypothesis.confidenceScore,
         probability_label: hypothesis.probabilityLabel,
         status: hypothesis.status,
+        suspected_subsystem: hypothesis.suspectedSubsystem,
         evidence_for: hypothesis.evidenceFor,
         evidence_against: hypothesis.evidenceAgainst,
         confirmatory_actions: hypothesis.confirmatoryActions,
+        corrective_actions: hypothesis.correctiveActions,
+        recommended_next_test: hypothesis.recommendedNextTest,
+        invasiveness_level: hypothesis.invasivenessLevel,
+        candidate_parts: hypothesis.candidateParts,
+        warning_text: hypothesis.warningText,
         supporting_factor_ids: hypothesis.supportingFactorIds,
         matched_rule_ids: hypothesis.matchedRuleIds,
         payload: hypothesis.payload,
@@ -416,6 +534,7 @@ export async function persistDriCase(
         case_id: caseId,
         run_id: engineResult.runId,
         log_level: log.level,
+        namespace: log.namespace,
         step: log.step,
         message: log.message,
         details: log.details,
@@ -441,7 +560,11 @@ export async function persistDriCase(
         calibratorLot: caseInsert.data.calibrator_lot,
         observations: caseInsert.data.observations,
         caseSummary: caseInsert.data.case_summary,
-        metadata: caseInsert.data.metadata || {},
+        metadata: {
+          ...(caseInsert.data.metadata || {}),
+          serviceTests: caseInsert.data.service_test_results || form.serviceTests,
+          evidenceItems: caseInsert.data.evidence_payload || form.evidenceItems,
+        },
         status: caseInsert.data.status,
         createdAt: caseInsert.data.created_at,
         items: itemsInsert.data.map((row) => ({
@@ -461,7 +584,9 @@ export async function persistDriCase(
       persistWarning: null,
     };
   } catch (error) {
-    console.warn('DRI no pudo persistir el caso. Se conservará en memoria local.', error);
+    driDataLogger.warn('DATA', 'persist-fallback', 'DRI no pudo persistir el caso. Se conservará en memoria local.', {
+      error: error instanceof Error ? error.message : String(error),
+    });
     return {
       caseRecord: localFallback,
       persistWarning: 'El cálculo se generó correctamente, pero la persistencia en Supabase no se pudo completar.',

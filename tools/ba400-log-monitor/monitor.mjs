@@ -667,6 +667,18 @@ function buildCurrentErrorStateRow({
   const resolvedStatus = stateStatus === 'ok' ? 'ok' : resolveCurrentStateStatus(errorCodes, catalog);
   const detectedAt = new Date().toISOString();
   const sourceBasename = path.basename(sourceFile);
+  const stateCode =
+    resolvedStatus === 'ok'
+      ? 'OK_000'
+      : errorCodes.length > 1
+        ? 'MULTI_ERROR'
+        : errorCodes[0] || null;
+  const stateDescription =
+    resolvedStatus === 'ok'
+      ? 'Sin errores activos detectados por monitor'
+      : errorCodes.length > 1
+        ? 'Multiples errores activos detectados por monitor'
+        : matchedDescriptions[0]?.description || 'Error activo detectado por monitor';
 
   return removeUndefinedProperties({
     numero_serie: effectiveEquipmentSerial,
@@ -676,6 +688,8 @@ function buildCurrentErrorStateRow({
     analizador_id: metadata?.analyzer_id || null,
     estado_actual: resolvedStatus,
     tipo_mensaje: resolvedStatus,
+    codigo_estado: stateCode,
+    descripcion_estado: stateDescription,
     codigos_error: errorCodes,
     errores_activos: matchedDescriptions.map((item) => ({
       codigo_error: item.code,
@@ -709,6 +723,8 @@ function buildCurrentErrorStateRow({
       analyzer_id: metadata?.analyzer_id || null,
       protocol_message_type: metadata?.message_type || null,
       estado_actual: resolvedStatus,
+      codigo_estado: stateCode,
+      descripcion_estado: stateDescription,
     },
     updated_at: detectedAt,
   });

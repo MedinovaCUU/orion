@@ -11,6 +11,7 @@ import {
 import './equipmentMonitoring.css';
 
 type EquipmentHealthStatus = 'ok' | 'warning' | 'fatal';
+type EquipmentMarkerTone = EquipmentHealthStatus | 'muted' | 'supremo';
 type EquipmentFilter = 'all' | 'fatal' | 'warning' | 'ok' | 'unmapped';
 type NumericLike = number | string | null;
 
@@ -52,6 +53,9 @@ interface EquipmentRow {
   geo_boundingbox?: unknown;
   geo_precision?: string | null;
   geo_display_name?: string | null;
+  supremo_id?: string | null;
+  supremo_alias?: string | null;
+  supremo_enabled?: boolean | null;
 }
 
 interface EquipmentMapLocationRow {
@@ -92,6 +96,8 @@ interface CurrentEquipmentErrorStateRow {
   machine_name: string | null;
   estado_actual: string | null;
   tipo_mensaje: string | null;
+  codigo_estado: string | null;
+  descripcion_estado: string | null;
   errores_activos: CurrentEquipmentErrorDetail[] | null;
   error_principal_codigo: string | null;
   error_principal_descripcion: string | null;
@@ -221,6 +227,10 @@ interface MonitoringEquipment {
   clientName: string;
   model: string;
   status: EquipmentHealthStatus;
+  markerTone: EquipmentMarkerTone;
+  hasSupremoLink: boolean;
+  hasSupabaseSignal: boolean;
+  hasSupremoHeartbeat: boolean;
   mapPoint: { x: number; y: number } | null;
   normalizedState: string | null;
   city: string | null;
@@ -355,6 +365,41 @@ const coerceStatus = (rawValue?: string | null): EquipmentHealthStatus => {
 const normalizeSerial = (value?: string | null) => {
   const normalized = (value || '').trim().toUpperCase().replace(/\s+/g, '');
   return normalized || null;
+};
+
+const hasSupremoConnection = (equipment: Pick<EquipmentRow, 'supremo_id' | 'supremo_enabled'>) =>
+  Boolean(equipment.supremo_enabled && String(equipment.supremo_id || '').trim());
+
+const resolveMarkerTone = (
+  hasSupabaseSignal: boolean,
+  hasSupremoLink: boolean,
+  status: EquipmentHealthStatus,
+): EquipmentMarkerTone => {
+  if (hasSupabaseSignal) {
+    return status;
+  }
+
+  if (hasSupremoLink) {
+    return 'supremo';
+  }
+
+  return 'muted';
+};
+
+const getStatusLabel = (equipment: Pick<MonitoringEquipment, 'status' | 'markerTone' | 'hasSupabaseSignal' | 'hasSupremoLink'>) => {
+  if (!equipment.hasSupabaseSignal) {
+    return equipment.hasSupremoLink ? 'Supremo listo' : 'Sin señal';
+  }
+
+  if (equipment.status === 'fatal') {
+    return 'Fatal';
+  }
+
+  if (equipment.status === 'warning') {
+    return 'Warning';
+  }
+
+  return 'Operativo';
 };
 
 const clampPercent = (value: number) => clampValue(value, 0.8, 99.2);
@@ -573,6 +618,9 @@ const buildEquipmentList = (snapshot: MonitoringSnapshot): MonitoringEquipment[]
       const reagentSummaries = normalizedSerial ? reagentSummaryIndex.get(normalizedSerial) || [] : [];
       const reagentSummary =
         reagentSummaries.find((row) => row.bucket_month === CURRENT_REAGENT_BUCKET_MONTH) || null;
+      const hasSupremoLink = hasSupremoConnection(equipment);
+      const hasSupabaseSignal = Boolean(currentState || errorState || telemetry || rotorSummary || reagentSummaries.length);
+      const status = currentState?.status || errorState?.status || 'ok';
       const normalizedState = mapPoint?.normalizedState || equipment.estado || null;
       const model =
         equipment.modelo ||
@@ -599,7 +647,11 @@ const buildEquipmentList = (snapshot: MonitoringSnapshot): MonitoringEquipment[]
         serial,
         clientName,
         model,
-        status: currentState?.status || errorState?.status || 'ok',
+        status,
+        markerTone: resolveMarkerTone(hasSupabaseSignal, hasSupremoLink, status),
+        hasSupremoLink,
+        hasSupabaseSignal,
+        hasSupremoHeartbeat: hasSupremoLink && hasSupabaseSignal,
         mapPoint: mapPoint ? { x: mapPoint.x, y: mapPoint.y } : null,
         normalizedState,
         city: equipment.ciudad,
@@ -759,7 +811,9 @@ export default function EquipmentMonitoring() {
       ] = await Promise.all([
         supabase
           .from('equipos')
-          .select('id,numero_serie,modelo,pais,estado,ciudad,municipio,colonia,direccion,codigo_postal,fecha_fin,clientes(razon_social)')
+          .select(
+            'id,numero_serie,modelo,pais,estado,ciudad,municipio,colonia,direccion,codigo_postal,fecha_fin,supremo_id,supremo_alias,supremo_enabled,clientes(razon_social)',
+          )
           .order('creado_en', { ascending: false }),
         supabase
           .from('v_equipment_map_locations')
@@ -772,7 +826,7 @@ export default function EquipmentMonitoring() {
         supabase
           .from('estado_errores_equipo_actual')
           .select(
-            'numero_serie,modelo,monitor_name,machine_name,estado_actual,tipo_mensaje,errores_activos,error_principal_codigo,error_principal_descripcion,error_principal_seccion,last_event_at,resolved_at,updated_at',
+            'numero_serie,modelo,monitor_name,machine_name,estado_actual,tipo_mensaje,codigo_estado,descripcion_estado,errores_activos,error_principal_codigo,error_principal_descripcion,error_principal_seccion,last_event_at,resolved_at,updated_at',
           )
           .range(0, 1999),
         supabase
@@ -1503,6 +1557,14 @@ export default function EquipmentMonitoring() {
       return;
     }
 
+    if (!selectedEquipment.hasSupremoLink) {
+      setSupremoFeedback({
+        tone: 'warning',
+        message: 'Este equipo no tiene una conexión de Supremo configurada todavía.',
+      });
+      return;
+    }
+
     if (!isSupremoLaunchEnabled()) {
       setSupremoFeedback({
         tone: 'error',
@@ -1561,8 +1623,8 @@ export default function EquipmentMonitoring() {
           <span className="equipment-monitor__eyebrow">Monitoreo en vivo</span>
           <h2>Mapa operativo nacional de equipos Orion</h2>
           <p>
-            Cada punto late sobre el mapa con base en la ubicación registrada del equipo. Verde es operación sana,
-            amarillo es advertencia y rojo es evento fatal confirmado por el monitor de errores.
+            El mapa cruza presencia remota y señal operativa real. Gris indica equipos sin Supremo ni rastro en
+            Supabase, azul marca Supremo listo, y verde/ámbar/rojo muestran la salud reportada por Supabase.
           </p>
         </div>
         <div className="equipment-monitor__hero-meta">
@@ -1585,9 +1647,9 @@ export default function EquipmentMonitoring() {
         <div className="equipment-monitor__filters">
           {[
             ['all', 'Todos'],
-            ['fatal', 'Rojos'],
-            ['warning', 'Amarillos'],
-            ['ok', 'Verdes'],
+            ['fatal', 'Fatal'],
+            ['warning', 'Warning'],
+            ['ok', 'Sin fatal'],
             ['unmapped', 'Sin ubicar'],
           ].map(([value, label]) => (
             <button
@@ -1672,9 +1734,12 @@ export default function EquipmentMonitoring() {
             </div>
             <div className="equipment-monitor__map-tools">
               <div className="equipment-monitor__legend">
-                <span><i className="equipment-monitor__legend-dot equipment-monitor__legend-dot--ok" /> Verde</span>
+                <span><i className="equipment-monitor__legend-dot equipment-monitor__legend-dot--muted" /> Sin señal</span>
+                <span><i className="equipment-monitor__legend-dot equipment-monitor__legend-dot--supremo" /> Supremo</span>
+                <span><i className="equipment-monitor__legend-dot equipment-monitor__legend-dot--ok" /> OK en Supabase</span>
                 <span><i className="equipment-monitor__legend-dot equipment-monitor__legend-dot--warning" /> Warning</span>
                 <span><i className="equipment-monitor__legend-dot equipment-monitor__legend-dot--fatal" /> Fatal</span>
+                <span><i className="equipment-monitor__legend-dot equipment-monitor__legend-dot--heartbeat" /> Pulso remoto</span>
               </div>
               <div className="equipment-monitor__zoom-controls" aria-label="Controles de zoom del mapa">
                 <button type="button" className="button-primary chip inactive" onClick={() => updateMapZoom(mapZoom - MAP_ZOOM_STEP)}>
@@ -1743,7 +1808,9 @@ export default function EquipmentMonitoring() {
                   <button
                     key={`${equipment.id}-${equipment.serial}`}
                     type="button"
-                    className={`equipment-monitor__marker equipment-monitor__marker--${equipment.status} ${
+                    className={`equipment-monitor__marker equipment-monitor__marker--${equipment.markerTone} ${
+                      equipment.hasSupremoHeartbeat ? 'equipment-monitor__marker--heartbeat' : ''
+                    } ${
                       selectedEquipment?.id === equipment.id ? 'equipment-monitor__marker--selected' : ''
                     } ${
                       draggingEquipmentId === equipment.id ? 'equipment-monitor__marker--dragging' : ''
@@ -1783,8 +1850,8 @@ export default function EquipmentMonitoring() {
                     onClick={() => setSelectedEquipmentId(equipment.id)}
                     title={
                       isEditMode
-                        ? `${equipment.clientName} · ${equipment.serial} · arrastra para ajustar`
-                        : `${equipment.clientName} · ${equipment.serial}`
+                        ? `${equipment.clientName} · ${equipment.serial} · ${getStatusLabel(equipment)} · arrastra para ajustar`
+                        : `${equipment.clientName} · ${equipment.serial} · ${getStatusLabel(equipment)}`
                     }
                   >
                     <span className="equipment-monitor__marker-pulse" />
@@ -1799,12 +1866,8 @@ export default function EquipmentMonitoring() {
         <aside className="equipment-monitor__focus-panel">
           {selectedEquipment ? (
             <>
-              <div className={`equipment-monitor__status-pill equipment-monitor__status-pill--${selectedEquipment.status}`}>
-                {selectedEquipment.status === 'fatal'
-                  ? 'Fatal'
-                  : selectedEquipment.status === 'warning'
-                    ? 'Warning'
-                    : 'Operativo'}
+              <div className={`equipment-monitor__status-pill equipment-monitor__status-pill--${selectedEquipment.markerTone}`}>
+                {getStatusLabel(selectedEquipment)}
               </div>
               <h3>{selectedEquipment.clientName}</h3>
               <p className="equipment-monitor__focus-subtitle">
@@ -1813,12 +1876,16 @@ export default function EquipmentMonitoring() {
               <div className="equipment-monitor__focus-actions">
                 <button
                   type="button"
-                  className={`button-primary ${isSupremoLaunchEnabled() ? '' : 'inactive'}`.trim()}
+                  className={`button-primary ${isSupremoLaunchEnabled() && selectedEquipment.hasSupremoLink ? '' : 'inactive'}`.trim()}
                   onClick={() => void launchSupremo()}
-                  disabled={launchingSupremo || !isSupremoLaunchEnabled()}
+                  disabled={launchingSupremo || !isSupremoLaunchEnabled() || !selectedEquipment.hasSupremoLink}
                 >
                   <img src={SUPREMO_ICON_URL} alt="" className="equipment-monitor__focus-action-icon" />
-                  {launchingSupremo ? 'Abriendo Supremo...' : 'Conectar con Supremo'}
+                  {launchingSupremo
+                    ? 'Abriendo Supremo...'
+                    : selectedEquipment.hasSupremoLink
+                      ? 'Conectar con Supremo'
+                      : 'Supremo no configurado'}
                 </button>
               </div>
               {supremoFeedback ? (
@@ -1887,7 +1954,9 @@ export default function EquipmentMonitoring() {
                   </div>
                 ) : (
                   <div className="equipment-monitor__empty-state">
-                    No hay warnings ni fatales vigentes para esta serie. El equipo aparece verde por default.
+                    {selectedEquipment.hasSupabaseSignal
+                      ? 'No hay warnings ni fatales vigentes para esta serie en el último corte.'
+                      : 'Esta serie todavía no ha reportado estado ni errores desde Supabase.'}
                   </div>
                 )}
               </div>
@@ -2107,7 +2176,7 @@ export default function EquipmentMonitoring() {
         <div className="equipment-monitor__list-panel">
           <div className="equipment-monitor__list-header">
             <h3>Alertas activas</h3>
-            <span>{criticalEquipments.length} equipos con señal no verde</span>
+            <span>{criticalEquipments.length} equipos con warning o fatal</span>
           </div>
           {criticalEquipments.length ? (
             criticalEquipments.map((equipment) => (

@@ -2,6 +2,7 @@ import { Suspense, lazy, useEffect, useState } from 'react';
 import { supabase } from '../supabaseClient';
 import { useNavigate } from 'react-router-dom';
 import BrandLockup from './BrandLockup';
+import EmployeeCredentialModal, { type EmployeeCredentialProfile } from './EmployeeCredentialModal';
 import './Dashboard.css';
 
 const Tickets = lazy(() => import('./Tickets'));
@@ -64,6 +65,7 @@ interface DashboardProps {
   session: {
     user?: {
       id?: string;
+      email?: string | null;
     };
   } | null;
   initialTab?: DashboardTabKey;
@@ -75,6 +77,8 @@ export default function Dashboard({ session, initialTab }: DashboardProps) {
   const [authReady, setAuthReady] = useState(false);
   const [userRole, setUserRole] = useState<string | null>(null);
   const [advisoryUnreadCount, setAdvisoryUnreadCount] = useState(0);
+  const [credentialOpen, setCredentialOpen] = useState(false);
+  const [viewerProfile, setViewerProfile] = useState<EmployeeCredentialProfile | null>(null);
 
   const isStaffRole = (role: string | null) => role === 'admin' || role === 'tecnico';
   const navigationItems: DashboardNavigationItem[] = [
@@ -126,6 +130,7 @@ export default function Dashboard({ session, initialTab }: DashboardProps) {
 
     if (!userId) {
       setUserRole(null);
+      setViewerProfile(null);
       setAdvisoryUnreadCount(0);
       setAuthReady(true);
       return () => {
@@ -134,22 +139,32 @@ export default function Dashboard({ session, initialTab }: DashboardProps) {
     }
 
     async function fetchRoleAndUnread() {
-      const { data, error } = await supabase.from('profiles').select('rol').eq('id', userId).maybeSingle();
+      const { data, error } = await supabase
+        .from('profiles')
+        .select(
+          'id, nombre_completo, rol, telefono, territorio, employee_type, employee_number, puesto, credential_photo_path, credential_metadata, creado_en',
+        )
+        .eq('id', userId)
+        .maybeSingle();
       if (!mounted) {
         return;
       }
 
       if (error) {
         console.error('No se pudo refrescar el rol del usuario en Dashboard.', error);
+        setViewerProfile(null);
         setAuthReady(true);
         return;
       }
 
       if (!data?.rol) {
+        setUserRole(null);
+        setViewerProfile(data as EmployeeCredentialProfile | null);
         setAuthReady(true);
         return;
       }
 
+      setViewerProfile(data as EmployeeCredentialProfile);
       setUserRole(data.rol);
 
       if (!isStaffRole(data.rol)) {
@@ -202,6 +217,15 @@ export default function Dashboard({ session, initialTab }: DashboardProps) {
         />
         <div className="dashboard-header__actions">
           <span className="dashboard-header__meta">Mesa operativa unificada</span>
+          {isStaffRole(userRole) ? (
+            <button
+              type="button"
+              onClick={() => setCredentialOpen(true)}
+              className="button-primary inactive dashboard-header__button dashboard-header__button--secondary"
+            >
+              Mi credencial
+            </button>
+          ) : null}
           <button onClick={handleLogout} className="button-primary dashboard-header__button">Cerrar sesión</button>
         </div>
       </header>
@@ -254,6 +278,14 @@ export default function Dashboard({ session, initialTab }: DashboardProps) {
           {activeTab === 'dri' && <DriPage />}
         </Suspense>
       </div>
+
+      <EmployeeCredentialModal
+        open={credentialOpen && isStaffRole(userRole)}
+        profile={viewerProfile}
+        userEmail={session?.user?.email || ''}
+        onClose={() => setCredentialOpen(false)}
+        onProfileUpdated={setViewerProfile}
+      />
     </div>
   );
 }

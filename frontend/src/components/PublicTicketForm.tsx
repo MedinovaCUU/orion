@@ -31,7 +31,7 @@ export default function PublicTicketForm() {
       value: 'Químico',
       className: 'support-choice--applications',
       title: 'Quimica 🧪',
-      description: 'Programacion, técnicas nuevas, reactivos, calibracion, control de calidad, soporte funcional...',
+      description: 'Programación, técnicas nuevas, reactivos, calibración, control de calidad, soporte funcional.',
     },
   ];
 
@@ -42,15 +42,25 @@ export default function PublicTicketForm() {
         return;
     }
     
+    const trimmedNombre = nombre.trim();
+    const trimmedSerie = numeroSerie.trim();
+    const trimmedCelular = celular.trim();
+    const trimmedDescripcion = descripcion.trim();
+
+    if (!trimmedNombre) {
+        setErrorMsg('Por favor captura el nombre del contacto.');
+        return;
+    }
+    
     setLoading(true);
     setErrorMsg('');
     
     const { error } = await supabase.from('tickets').insert([{
-        asunto: `Soporte ${tipoSoporte}: Reporte en equipo ${numeroSerie}`,
-        descripcion: descripcion,
-        numero_serie_equipo: numeroSerie,
-        nombre_cliente_guest: nombre,
-        telefono_cliente_guest: celular,
+        asunto: `Soporte ${tipoSoporte}: Reporte en equipo ${trimmedSerie}`,
+        descripcion: trimmedDescripcion,
+        numero_serie_equipo: trimmedSerie,
+        nombre_cliente_guest: trimmedNombre,
+        telefono_cliente_guest: trimmedCelular,
         estado: 'abierto'
     }]);
 
@@ -116,15 +126,7 @@ export default function PublicTicketForm() {
           variant="public"
           eyebrow="BioSystems"
           title="Portal de soporte Orion"
-          subtitle="Levanta un ticket con trazabilidad inmediata para ingeniería o aplicaciones, bajo la identidad de servicio BioSystems."
         />
-        <div className="login-copy">
-          <span className="login-kicker">Mesa de atención</span>
-          <h2 className="login-title">Solicita atención técnica</h2>
-          <p className="login-subtitle">
-            Captura el incidente con el mayor contexto posible para acelerar diagnóstico, prioridad y retorno.
-          </p>
-        </div>
 
         {errorMsg && <div className="error-alert">{errorMsg}</div>}
 
@@ -164,14 +166,18 @@ export default function PublicTicketForm() {
           </div>
 
           <div className="form-group">
-            <label>Nombre del Contacto</label>
+            <label>Nombre del Contacto *</label>
             <input 
               type="text" 
               className="input-field" 
               value={nombre}
               onChange={(e) => setNombre(e.target.value)}
-              placeholder="Opcional pero recomendado"
+              placeholder="Ej. María López"
+              required
             />
+            <small className="form-group-note">
+              Usa nombre real, no área o equipo; si falta, lo pediremos al contactarte.
+            </small>
           </div>
 
           <div className="form-group">
@@ -199,9 +205,6 @@ export default function PublicTicketForm() {
           </div>
           
           <div className="public-ticket-footer">
-            <p className="public-ticket-footnote">
-              La prioridad final se asigna según criticidad del equipo, impacto clínico y disponibilidad de recursos.
-            </p>
             <button type="submit" className="button-primary login-btn" disabled={loading}>
             {loading ? 'Procesando...' : 'Crear Ticket'}
             </button>

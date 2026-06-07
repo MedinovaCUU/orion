@@ -3,6 +3,14 @@ import './EscalatedAdvisory.css';
 import { supabase } from '../supabaseClient';
 import { stripPlaneacionMeta, type EquipmentSummary, type ProfileSummary } from './servicesPlanning';
 import {
+  runAdvisoryEvidenceOcr,
+  uploadAdvisoryAttachment,
+} from './escalatedAdvisoryEvidence';
+import {
+  downloadAdvisoryMetricsExcel,
+  downloadAdvisoryMetricsPdf,
+} from './escalatedAdvisoryMetricsExport';
+import {
   buildChemistryDraft,
   CHEMISTRY_GUIDE_MATERIALS,
   CHEMISTRY_OUTCOME_LABELS,
@@ -10,6 +18,19 @@ import {
   type ChemistryMaterialKey,
   type ChemistryOutcome,
 } from './escalatedAdvisoryChemistry';
+import {
+  appendAdvisorySystemMessage,
+  appendAdvisoryThreadMessage,
+  getAdvisoryThreadAnalytics,
+  getAdvisoryThreadMessages,
+  markAdvisoryThreadRead,
+  type AdvisoryAttachmentAnalysis,
+  type AdvisoryAttachmentRecord,
+  type AdvisoryMetadata,
+  type AdvisoryThreadMessage,
+  type AdvisoryThreadRole,
+  type AdvisoryWaitingOn,
+} from './escalatedAdvisoryThread';
 
 type AdvisoryArea = 'ingenieria' | 'quimica';
 type AdvisoryStatus = 'solicitada' | 'en_revision' | 'asesorada' | 'cerrada';
@@ -46,6 +67,7 @@ interface AdvisoryRecord {
   respondida_en: string | null;
   creado_en: string;
   actualizado_en: string;
+  metadata: AdvisoryMetadata | null;
 }
 
 interface AdvisoryNotificationRecord {
@@ -73,11 +95,55 @@ interface AdvisoryMetricRow {
   value: number;
 }
 
-interface AdvisoryRequesterInsightRow {
+interface PendingAdvisoryAttachment {
+  localId: string;
+  kind: 'photo' | 'report' | 'service_test';
+  file: File;
+  fileName: string;
+  previewUrl: string | null;
+  status: 'processing' | 'ready' | 'error';
+  error: string | null;
+  analysis: AdvisoryAttachmentAnalysis | null;
+}
+
+interface AdvisoryReplyDraft {
+  estado: AdvisoryStatus;
+  mensaje: string;
+  attachments: PendingAdvisoryAttachment[];
+}
+
+interface AdvisoryThreadSummary {
+  messages: AdvisoryThreadMessage[];
+  waitingOn: AdvisoryWaitingOn;
+  unreadRequester: number;
+  unreadTrainer: number;
+  lastMessageAt: string | null;
+  firstTrainerResponseMinutes: number | null;
+  messageCount: number;
+  attachmentCount: number;
+  responseCount: number;
+  evidenceTags: string[];
+}
+
+interface AdvisoryHeatmapCell {
+  key: string;
+  value: number;
+}
+
+interface AdvisoryTrainerWorkloadRow {
   key: string;
   label: string;
-  total: number;
-  topTypes: AdvisoryMetricRow[];
+  assigned: number;
+  responded: number;
+  avgFirstResponseMinutes: number | null;
+}
+
+interface AdvisoryTimelineDay {
+  key: string;
+  label: string;
+  created: number;
+  replied: number;
+  closed: number;
 }
 
 interface EscalatedAdvisoryProps {
@@ -258,6 +324,83 @@ const sortMetricRows = (rows: AdvisoryMetricRow[]) =>
 
 const capMetricRows = (rows: AdvisoryMetricRow[], limit = 6) => sortMetricRows(rows).slice(0, limit);
 
+const WAITING_LABELS: Record<AdvisoryWaitingOn, string> = {
+  requester: 'Espera al solicitante',
+  trainer: 'Espera al trainer',
+  closed: 'Cerrada',
+};
+
+const WAITING_COLORS: Record<AdvisoryWaitingOn, string> = {
+  requester: '#2f7ec7',
+  trainer: '#c13d4f',
+  closed: '#7c8895',
+};
+
+const EVIDENCE_KIND_LABELS: Record<PendingAdvisoryAttachment['kind'], string> = {
+  photo: 'Foto',
+  report: 'Reporte',
+  service_test: 'Prueba de servicio',
+};
+
+const QUICK_REPLIES: Record<AdvisoryThreadRole, string[]> = {
+  requester: [
+    'Adjunto evidencia fotográfica del caso.',
+    'Subo reporte para complementar la consulta.',
+    'El problema persiste después de repetir la prueba.',
+  ],
+  trainer: [
+    'Recibido. Reviso la evidencia y te respondo con siguiente paso.',
+    'Comparte el resultado de la utilidad indicada para cerrar hipótesis.',
+    'Antes de pensar en refacción, valida esta prueba de servicio.',
+  ],
+  system: [],
+};
+
+const STATUS_OPTIONS: { value: AdvisoryStatus; label: string }[] = [
+  { value: 'solicitada', label: 'Solicitada' },
+  { value: 'en_revision', label: 'En revisión' },
+  { value: 'asesorada', label: 'Asesorada' },
+  { value: 'cerrada', label: 'Cerrada' },
+];
+
+const formatMinutesLabel = (minutes: number | null) => {
+  if (minutes === null || Number.isNaN(minutes)) {
+    return 'Sin respuesta';
+  }
+
+  if (minutes < 60) {
+    return `${minutes} min`;
+  }
+
+  const hours = minutes / 60;
+  return `${hours.toFixed(hours >= 10 ? 0 : 1)} h`;
+};
+
+const buildConicGradient = (segments: { value: number; color: string }[]) => {
+  const total = segments.reduce((sum, segment) => sum + segment.value, 0) || 1;
+  let current = 0;
+  return `conic-gradient(${segments
+    .map((segment) => {
+      const start = (current / total) * 360;
+      current += segment.value;
+      const end = (current / total) * 360;
+      return `${segment.color} ${start}deg ${end}deg`;
+    })
+    .join(', ')})`;
+};
+
+const getMessageRoleLabel = (role: AdvisoryThreadRole) => {
+  if (role === 'trainer') {
+    return 'Trainer';
+  }
+
+  if (role === 'requester') {
+    return 'Solicitante';
+  }
+
+  return 'Sistema';
+};
+
 function ChemistryIcon({ materialKey }: { materialKey: ChemistryMaterialKey }) {
   switch (materialKey) {
     case 'control':
@@ -338,11 +481,12 @@ export default function EscalatedAdvisory({ onNotificationCountChange }: Escalat
   const [selectedChemistryIssueIds, setSelectedChemistryIssueIds] = useState<string[]>([]);
   const [chemistryNotes, setChemistryNotes] = useState('');
   const [chemistryOutcome, setChemistryOutcome] = useState<ChemistryOutcome>('sin_solucion');
-  const [responseDrafts, setResponseDrafts] = useState<Record<string, { estado: AdvisoryStatus; respuesta: string }>>(
-    {},
-  );
+  const [createEvidenceDrafts, setCreateEvidenceDrafts] = useState<PendingAdvisoryAttachment[]>([]);
+  const [responseDrafts, setResponseDrafts] = useState<Record<string, AdvisoryReplyDraft>>({});
+  const [exportingMetrics, setExportingMetrics] = useState<'excel' | 'pdf' | null>(null);
   const chemistryAutofillRef = useRef<ChemistryDraftFields | null>(null);
   const areaInitializedRef = useRef(false);
+  const metricsFetchInFlightRef = useRef<Promise<void> | null>(null);
 
   const isStaff = STAFF_ROLES.has(currentRole || '');
 
@@ -369,6 +513,182 @@ export default function EscalatedAdvisory({ onNotificationCountChange }: Escalat
       selectedChemistryMaterial?.issues.filter((issue) => selectedChemistryIssueIds.includes(issue.id)) || [],
     [selectedChemistryIssueIds, selectedChemistryMaterial],
   );
+
+  const buildThreadSource = (
+    advisory: AdvisoryRecord,
+    requesterName: string,
+    responderName: string | null,
+  ) => ({
+    consultaEscalada: advisory.consulta_escalada,
+    creadoEn: advisory.creado_en,
+    solicitanteId: advisory.solicitante_id,
+    solicitanteNombre: requesterName,
+    estado: advisory.estado,
+    legacyRespuestaTrainer: advisory.respuesta_trainer,
+    legacyRespondidaEn: advisory.respondida_en,
+    legacyRespondidaPorId: advisory.respondida_por_id,
+    legacyRespondidaPorNombre: responderName,
+  });
+
+  const getViewerThreadRole = (advisory: AdvisoryRecord): 'requester' | 'trainer' =>
+    advisory.solicitante_id === currentUserId ? 'requester' : 'trainer';
+
+  const addPendingAttachments = async (
+    files: FileList | null,
+    kind: PendingAdvisoryAttachment['kind'],
+    scope: 'create' | string,
+  ) => {
+    if (!files || files.length === 0) {
+      return;
+    }
+
+    const nextDrafts = Array.from(files).map<PendingAdvisoryAttachment>((file) => ({
+      localId: crypto.randomUUID(),
+      kind,
+      file,
+      fileName: file.name,
+      previewUrl: file.type.startsWith('image/') ? URL.createObjectURL(file) : null,
+      status: 'processing',
+      error: null,
+      analysis: null,
+    }));
+
+    if (scope === 'create') {
+      setCreateEvidenceDrafts((current) => [...current, ...nextDrafts]);
+    } else {
+      setResponseDrafts((current) => {
+        const base = current[scope];
+        if (!base) {
+          return current;
+        }
+
+        return {
+          ...current,
+          [scope]: {
+            ...base,
+            attachments: [...base.attachments, ...nextDrafts],
+          },
+        };
+      });
+    }
+
+    await Promise.all(
+      nextDrafts.map(async (draft) => {
+        try {
+          const analysis = await runAdvisoryEvidenceOcr(draft.file);
+          const applyPatch = (items: PendingAdvisoryAttachment[]) =>
+            items.map((item) =>
+              item.localId === draft.localId
+                ? {
+                    ...item,
+                    analysis,
+                    status: 'ready' as const,
+                  }
+                : item,
+            );
+
+          if (scope === 'create') {
+            setCreateEvidenceDrafts((current) => applyPatch(current));
+          } else {
+            setResponseDrafts((current) => {
+              const base = current[scope];
+              if (!base) {
+                return current;
+              }
+
+              return {
+                ...current,
+                [scope]: {
+                  ...base,
+                  attachments: applyPatch(base.attachments),
+                },
+              };
+            });
+          }
+        } catch (error) {
+          const message = error instanceof Error ? error.message : 'No se pudo leer el archivo.';
+          const applyPatch = (items: PendingAdvisoryAttachment[]) =>
+            items.map((item) =>
+              item.localId === draft.localId
+                ? {
+                    ...item,
+                    status: 'error' as const,
+                    error: message,
+                  }
+                : item,
+            );
+
+          if (scope === 'create') {
+            setCreateEvidenceDrafts((current) => applyPatch(current));
+          } else {
+            setResponseDrafts((current) => {
+              const base = current[scope];
+              if (!base) {
+                return current;
+              }
+
+              return {
+                ...current,
+                [scope]: {
+                  ...base,
+                  attachments: applyPatch(base.attachments),
+                },
+              };
+            });
+          }
+        }
+      }),
+    );
+  };
+
+  const removePendingAttachment = (scope: 'create' | string, localId: string) => {
+    const disposePreview = (attachment: PendingAdvisoryAttachment | undefined) => {
+      if (attachment?.previewUrl) {
+        URL.revokeObjectURL(attachment.previewUrl);
+      }
+    };
+
+    if (scope === 'create') {
+      setCreateEvidenceDrafts((current) => {
+        disposePreview(current.find((item) => item.localId === localId));
+        return current.filter((item) => item.localId !== localId);
+      });
+      return;
+    }
+
+    setResponseDrafts((current) => {
+      const draft = current[scope];
+      if (!draft) {
+        return current;
+      }
+
+      disposePreview(draft.attachments.find((item) => item.localId === localId));
+      return {
+        ...current,
+        [scope]: {
+          ...draft,
+          attachments: draft.attachments.filter((item) => item.localId !== localId),
+        },
+      };
+    });
+  };
+
+  const buildUploadedAttachmentRecords = async (
+    advisoryId: string,
+    messageId: string,
+    pendingAttachments: PendingAdvisoryAttachment[],
+  ) =>
+    Promise.all(
+      pendingAttachments.map((attachment) =>
+        uploadAdvisoryAttachment({
+          advisoryId,
+          messageId,
+          kind: attachment.kind,
+          file: attachment.file,
+          analysis: attachment.analysis,
+        }),
+      ),
+    );
 
   useEffect(() => {
     setAveria(getTicketAveriaSuggestion(selectedTicket));
@@ -473,6 +793,27 @@ export default function EscalatedAdvisory({ onNotificationCountChange }: Escalat
 
     return map;
   }, [notifications]);
+
+  const threadSummaryByAdvisoryId = useMemo(() => {
+    const map = new Map<string, AdvisoryThreadSummary>();
+
+    advisories.forEach((advisory) => {
+      const requesterName =
+        advisory.solicitante_nombre_snapshot ||
+        (advisory.solicitante_id ? profileById.get(advisory.solicitante_id)?.nombre_completo : null) ||
+        'Solicitante';
+      const responderName =
+        advisory.respondida_por_id ? profileById.get(advisory.respondida_por_id)?.nombre_completo || null : null;
+      const source = buildThreadSource(advisory, requesterName, responderName);
+      const analytics = getAdvisoryThreadAnalytics(advisory.metadata, source);
+      map.set(advisory.id, {
+        messages: getAdvisoryThreadMessages(advisory.metadata, source),
+        ...analytics,
+      });
+    });
+
+    return map;
+  }, [advisories, profileById]);
 
   const routingSettingsByArea = useMemo(() => {
     const entries = routingSettings.map((setting) => [setting.area, setting] as const);
@@ -678,95 +1019,6 @@ export default function EscalatedAdvisory({ onNotificationCountChange }: Escalat
     return advisoriesForArea.filter((advisory) => assignedAdvisoryIdsForCurrentUser.has(advisory.id));
   }, [advisories, assignedAdvisoryIdsForCurrentUser, currentRole, currentUserId, isAreaTrainer, selectedArea]);
 
-  const metricsOwnerRows = useMemo(() => {
-    if (metricsScopeAdvisories.length === 0) {
-      return [];
-    }
-
-    if (currentRole !== 'admin' && currentUserId) {
-      return [
-        {
-          key: currentUserId,
-          label: currentRequesterProfile?.nombre_completo || 'Mi bandeja',
-          value: metricsScopeAdvisories.length,
-        },
-      ];
-    }
-
-    const counts = new Map<string, number>();
-
-    metricsScopeAdvisories.forEach((advisory) => {
-      const recipientIds = new Set(
-        (notificationsByAdvisoryId.get(advisory.id) || []).map((notification) => notification.destinatario_id),
-      );
-
-      recipientIds.forEach((recipientId) => {
-        const recipientProfile = profileById.get(recipientId);
-        const isTrainerForArea =
-          selectedArea === 'ingenieria'
-            ? recipientProfile?.trainer_ingenieria === true
-            : recipientProfile?.trainer_quimica === true;
-
-        if (!isTrainerForArea) {
-          return;
-        }
-
-        counts.set(recipientId, (counts.get(recipientId) || 0) + 1);
-      });
-    });
-
-    return capMetricRows(
-      [...counts.entries()].map(([key, value]) => ({
-        key,
-        label: profileById.get(key)?.nombre_completo || 'Trainer sin nombre',
-        value,
-      })),
-    );
-  }, [
-    currentRequesterProfile?.nombre_completo,
-    currentRole,
-    currentUserId,
-    metricsScopeAdvisories,
-    notificationsByAdvisoryId,
-    profileById,
-    selectedArea,
-  ]);
-
-  const metricsResponderRows = useMemo(() => {
-    if (metricsScopeAdvisories.length === 0) {
-      return [];
-    }
-
-    if (currentRole !== 'admin' && currentUserId) {
-      const ownResponses = metricsScopeAdvisories.filter((advisory) => advisory.respondida_por_id === currentUserId).length;
-      return [
-        {
-          key: currentUserId,
-          label: currentRequesterProfile?.nombre_completo || 'Mis respuestas',
-          value: ownResponses,
-        },
-      ];
-    }
-
-    const counts = new Map<string, number>();
-
-    metricsScopeAdvisories.forEach((advisory) => {
-      if (!advisory.respondida_por_id) {
-        return;
-      }
-
-      counts.set(advisory.respondida_por_id, (counts.get(advisory.respondida_por_id) || 0) + 1);
-    });
-
-    return capMetricRows(
-      [...counts.entries()].map(([key, value]) => ({
-        key,
-        label: profileById.get(key)?.nombre_completo || 'Trainer sin nombre',
-        value,
-      })),
-    );
-  }, [currentRequesterProfile?.nombre_completo, currentRole, currentUserId, metricsScopeAdvisories, profileById]);
-
   const metricsRequesterRows = useMemo(
     () =>
       capMetricRows(
@@ -825,137 +1077,381 @@ export default function EscalatedAdvisory({ onNotificationCountChange }: Escalat
     [metricsScopeAdvisories],
   );
 
-  const metricsRequesterInsightRows = useMemo(() => {
-    const rows = new Map<
-      string,
-      { key: string; label: string; total: number; typeRows: Map<string, AdvisoryMetricRow> }
-    >();
+  const metricsWaitingRows = useMemo(
+    () =>
+      capMetricRows(
+        [...metricsScopeAdvisories.reduce((map, advisory) => {
+          const waitingOn = threadSummaryByAdvisoryId.get(advisory.id)?.waitingOn || 'trainer';
+          map.set(waitingOn, {
+            key: waitingOn,
+            label: WAITING_LABELS[waitingOn],
+            value: (map.get(waitingOn)?.value || 0) + 1,
+          });
+          return map;
+        }, new Map<string, AdvisoryMetricRow>()).values()],
+        3,
+      ),
+    [metricsScopeAdvisories, threadSummaryByAdvisoryId],
+  );
+
+  const metricsTrainerWorkloadRows = useMemo(() => {
+    const counts = new Map<string, AdvisoryTrainerWorkloadRow>();
 
     metricsScopeAdvisories.forEach((advisory) => {
-      const requesterKey = advisory.solicitante_id || advisory.solicitante_nombre_snapshot || 'sin-solicitante';
-      const requesterLabel =
-        advisory.solicitante_nombre_snapshot ||
-        (advisory.solicitante_id ? profileById.get(advisory.solicitante_id)?.nombre_completo : null) ||
-        'Sin solicitante';
-      const typeLabel = advisory.averia?.trim() || advisory.actividad?.trim() || 'Sin tipo capturado';
-      const typeKey = normalizeText(typeLabel) || typeLabel;
+      const recipients = notificationsByAdvisoryId.get(advisory.id) || [];
+      const summary = threadSummaryByAdvisoryId.get(advisory.id);
+      recipients.forEach((notification) => {
+        const recipient = profileById.get(notification.destinatario_id);
+        const isTrainerForArea =
+          selectedArea === 'ingenieria'
+            ? recipient?.trainer_ingenieria === true
+            : recipient?.trainer_quimica === true;
 
-      const currentRow = rows.get(requesterKey) || {
-        key: requesterKey,
-        label: requesterLabel,
-        total: 0,
-        typeRows: new Map<string, AdvisoryMetricRow>(),
-      };
+        if (!isTrainerForArea || !recipient) {
+          return;
+        }
 
-      currentRow.total += 1;
-      currentRow.typeRows.set(typeKey, {
-        key: typeKey,
-        label: typeLabel,
-        value: (currentRow.typeRows.get(typeKey)?.value || 0) + 1,
+        const existing = counts.get(recipient.id) || {
+          key: recipient.id,
+          label: recipient.nombre_completo || 'Trainer sin nombre',
+          assigned: 0,
+          responded: 0,
+          avgFirstResponseMinutes: null,
+        };
+
+        existing.assigned += 1;
+        if (advisory.respondida_por_id === recipient.id) {
+          existing.responded += 1;
+          const firstResponseMinutes = summary?.firstTrainerResponseMinutes;
+          if (typeof firstResponseMinutes === 'number') {
+            existing.avgFirstResponseMinutes =
+              existing.avgFirstResponseMinutes === null
+                ? firstResponseMinutes
+                : Math.round((existing.avgFirstResponseMinutes + firstResponseMinutes) / 2);
+          }
+        }
+
+        counts.set(recipient.id, existing);
       });
-
-      rows.set(requesterKey, currentRow);
     });
 
-    return [...rows.values()]
-      .map<AdvisoryRequesterInsightRow>((row) => ({
-        key: row.key,
-        label: row.label,
-        total: row.total,
-        topTypes: capMetricRows([...row.typeRows.values()], 3),
-      }))
-      .sort((left, right) => right.total - left.total || left.label.localeCompare(right.label, 'es'))
+    return [...counts.values()]
+      .sort((left, right) => right.assigned - left.assigned || left.label.localeCompare(right.label, 'es'))
       .slice(0, 6);
-  }, [metricsScopeAdvisories, profileById]);
+  }, [metricsScopeAdvisories, notificationsByAdvisoryId, profileById, selectedArea, threadSummaryByAdvisoryId]);
 
-  const fetchModuleData = async (showLoading = true) => {
-    if (showLoading) {
-      setLoading(true);
+  const metricsTimelineDays = useMemo(() => {
+    const today = new Date();
+    const rows: AdvisoryTimelineDay[] = [];
+
+    for (let offset = 9; offset >= 0; offset -= 1) {
+      const date = new Date(today);
+      date.setHours(0, 0, 0, 0);
+      date.setDate(date.getDate() - offset);
+      const nextDate = new Date(date);
+      nextDate.setDate(date.getDate() + 1);
+      const label = date.toLocaleDateString('es-MX', { day: 'numeric', month: 'short' });
+
+      const created = metricsScopeAdvisories.filter((advisory) => {
+        const advisoryDate = new Date(advisory.creado_en);
+        return advisoryDate >= date && advisoryDate < nextDate;
+      }).length;
+
+      const replied = metricsScopeAdvisories.filter((advisory) => {
+        const lastReplyDate = threadSummaryByAdvisoryId
+          .get(advisory.id)
+          ?.messages.slice()
+          .reverse()
+          .find((message) => message.role === 'trainer')?.createdAt;
+        if (!lastReplyDate) {
+          return false;
+        }
+        const advisoryDate = new Date(lastReplyDate);
+        return advisoryDate >= date && advisoryDate < nextDate;
+      }).length;
+
+      const closed = metricsScopeAdvisories.filter((advisory) => {
+        if (advisory.estado !== 'cerrada') {
+          return false;
+        }
+        const advisoryDate = new Date(advisory.actualizado_en);
+        return advisoryDate >= date && advisoryDate < nextDate;
+      }).length;
+
+      rows.push({
+        key: date.toISOString(),
+        label,
+        created,
+        replied,
+        closed,
+      });
     }
 
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
+    return rows;
+  }, [metricsScopeAdvisories, threadSummaryByAdvisoryId]);
 
-    if (!user) {
-      setLoading(false);
+  const metricsHeatmap = useMemo(() => {
+    const requesterRows = metricsRequesterRows.slice(0, 5);
+    const typeColumns = metricsTypeRows.slice(0, 5);
+    const cells = new Map<string, AdvisoryHeatmapCell>();
+
+    requesterRows.forEach((requester) => {
+      typeColumns.forEach((type) => {
+        const count = metricsScopeAdvisories.filter((advisory) => {
+          const requesterKey =
+            advisory.solicitante_id || advisory.solicitante_nombre_snapshot || 'sin-solicitante';
+          const typeLabel = advisory.averia?.trim() || advisory.actividad?.trim() || 'Sin tipo capturado';
+          const typeKey = normalizeText(typeLabel) || typeLabel;
+          return requesterKey === requester.key && typeKey === type.key;
+        }).length;
+
+        cells.set(`${requester.key}:${type.key}`, {
+          key: `${requester.key}:${type.key}`,
+          value: count,
+        });
+      });
+    });
+
+    const max = Math.max(...[...cells.values()].map((cell) => cell.value), 0);
+
+    return {
+      requesters: requesterRows,
+      types: typeColumns,
+      cells,
+      max,
+    };
+  }, [metricsRequesterRows, metricsScopeAdvisories, metricsTypeRows]);
+
+  const metricsHeatmapRows = useMemo(
+    () =>
+      metricsHeatmap.requesters
+        .flatMap((requesterRow) =>
+          metricsHeatmap.types.map((type) => ({
+            requester: requesterRow.label,
+            type: type.label,
+            count: metricsHeatmap.cells.get(`${requesterRow.key}:${type.key}`)?.value || 0,
+          })),
+        )
+        .filter((row) => row.count > 0)
+        .sort((left, right) => right.count - left.count || left.requester.localeCompare(right.requester)),
+    [metricsHeatmap],
+  );
+
+  const metricsAverageFirstResponseMinutes = useMemo(() => {
+    const values = metricsScopeAdvisories
+      .map((advisory) => threadSummaryByAdvisoryId.get(advisory.id)?.firstTrainerResponseMinutes)
+      .filter((value): value is number => typeof value === 'number' && value >= 0);
+
+    if (values.length === 0) {
+      return null;
+    }
+
+    return Math.round(values.reduce((sum, value) => sum + value, 0) / values.length);
+  }, [metricsScopeAdvisories, threadSummaryByAdvisoryId]);
+
+  const metricsEvidenceCoverage = useMemo(() => {
+    if (metricsScopeAdvisories.length === 0) {
+      return 0;
+    }
+
+    const withEvidence = metricsScopeAdvisories.filter(
+      (advisory) => (threadSummaryByAdvisoryId.get(advisory.id)?.attachmentCount || 0) > 0,
+    ).length;
+
+    return Math.round((withEvidence / metricsScopeAdvisories.length) * 100);
+  }, [metricsScopeAdvisories, threadSummaryByAdvisoryId]);
+
+  const metricsScopeLabel = useMemo(() => {
+    if (currentRole === 'admin') {
+      return `Vista consolidada de ${AREA_LABELS[selectedArea]}`;
+    }
+
+    return `Cartera visible para ${currentRequesterProfile?.nombre_completo || 'trainer actual'}`;
+  }, [currentRequesterProfile?.nombre_completo, currentRole, selectedArea]);
+
+  const exportMetrics = async (format: 'excel' | 'pdf') => {
+    if (!canViewMetrics || metricsScopeAdvisories.length === 0) {
       return;
     }
 
-    const [
-      profileResponse,
-      ticketsResponse,
-      equipmentsResponse,
-      profilesResponse,
-      advisoriesResponse,
-      notificationsResponse,
-      routingSettingsResponse,
-    ] = await Promise.all([
-      supabase.from('profiles').select('id, rol, employee_type').eq('id', user.id).single(),
-      supabase
-        .from('tickets')
-        .select('id, asunto, descripcion, estado, creado_en, numero_serie_equipo, nombre_cliente_guest')
-        .order('creado_en', { ascending: false })
-        .limit(250),
-      supabase
-        .from('equipos')
-        .select('numero_serie, modelo, software, firmware, estado, ciudad, municipio'),
-      supabase
-        .from('profiles')
-        .select(
-          'id, nombre_completo, employee_number, employee_type, telefono, territorio, rol, recibe_tickets, trainer_ingenieria, trainer_quimica',
-        )
-        .order('nombre_completo', { ascending: true }),
-      supabase
-        .from('asesorias_escaladas')
-        .select(
-          'id, ticket_id, solicitante_id, solicitante_nombre_snapshot, plataforma_snapshot, actividad, averia, detalle_averia, refacciones_utilizadas, bibliografia_consultada, area, estado, pasos_seguidos, ajustes_realizados, acciones_tomadas, consulta_escalada, respuesta_trainer, respondida_por_id, respondida_en, creado_en, actualizado_en',
-        )
-        .order('creado_en', { ascending: false })
-        .limit(120),
-      supabase
-        .from('asesorias_escaladas_destinatarios')
-        .select('id, asesoria_id, destinatario_id, leida_en, creado_en')
-        .order('creado_en', { ascending: false })
-        .limit(400),
-      supabase
-        .from('asesorias_escaladas_enrutamiento')
-        .select('area, weekday_assignee_names, weekend_assignee_names'),
-    ]);
+    const payload = {
+      areaLabel: AREA_LABELS[selectedArea],
+      scopeLabel: metricsScopeLabel,
+      generatedAt: new Date().toLocaleString('es-MX', {
+        dateStyle: 'medium',
+        timeStyle: 'short',
+      }),
+      summary: {
+        total: metricsScopeAdvisories.length,
+        averageFirstResponseLabel: formatMinutesLabel(metricsAverageFirstResponseMinutes),
+        evidenceCoverage: metricsEvidenceCoverage,
+        waitingOnTrainer: metricsWaitingRows.find((row) => row.key === 'trainer')?.value || 0,
+      },
+      statusRows: metricsStatusRows.map((row) => ({ label: row.label, value: row.value })),
+      waitingRows: metricsWaitingRows.map((row) => ({ label: row.label, value: row.value })),
+      trainerRows: metricsTrainerWorkloadRows.map((row) => ({
+        label: row.label,
+        assigned: row.assigned,
+        responded: row.responded,
+        avgFirstResponseMinutes: row.avgFirstResponseMinutes,
+      })),
+      heatmapRows: metricsHeatmapRows,
+      timelineRows: metricsTimelineDays.map((row) => ({
+        label: row.label,
+        created: row.created,
+        replied: row.replied,
+        closed: row.closed,
+      })),
+    };
 
-    const firstError =
-      profileResponse.error ||
-      ticketsResponse.error ||
-      equipmentsResponse.error ||
-      profilesResponse.error ||
-      advisoriesResponse.error ||
-      notificationsResponse.error;
-
-    if (firstError) {
+    setExportingMetrics(format);
+    try {
+      if (format === 'excel') {
+        downloadAdvisoryMetricsExcel(payload);
+      } else {
+        await downloadAdvisoryMetricsPdf(payload);
+      }
+      setFeedback({
+        tone: 'success',
+        message: `Las métricas de ${AREA_LABELS[selectedArea].toLowerCase()} se descargaron en ${format.toUpperCase()}.`,
+      });
+    } catch (error) {
       setFeedback({
         tone: 'error',
-        message: firstError.message || 'No fue posible cargar el módulo de asesoría escalada.',
+        message:
+          error instanceof Error
+            ? `No se pudo generar la descarga de métricas: ${error.message}`
+            : 'No se pudo generar la descarga de métricas.',
       });
-      setLoading(false);
-      return;
+    } finally {
+      setExportingMetrics(null);
+    }
+  };
+
+  const fetchModuleData = async (showLoading = true) => {
+    if (metricsFetchInFlightRef.current) {
+      return metricsFetchInFlightRef.current;
     }
 
-    const currentProfile = profileResponse.data as { rol?: string | null; employee_type?: string | null } | null;
-    const defaultArea = inferAdvisoryAreaFromEmployeeType(currentProfile?.employee_type) || 'ingenieria';
+    const task = (async () => {
+      try {
+        if (showLoading) {
+          setLoading(true);
+        }
 
-    setCurrentUserId(user.id);
-    setCurrentRole(currentProfile?.rol || null);
-    if (!areaInitializedRef.current) {
-      setSelectedArea(defaultArea);
-      areaInitializedRef.current = true;
-    }
-    setTickets((ticketsResponse.data as AdvisoryTicketSummary[] | null) || []);
-    setEquipments((equipmentsResponse.data as EquipmentSummary[] | null) || []);
-    setProfiles((profilesResponse.data as ProfileSummary[] | null) || []);
-    setAdvisories((advisoriesResponse.data as AdvisoryRecord[] | null) || []);
-    setNotifications((notificationsResponse.data as AdvisoryNotificationRecord[] | null) || []);
-    setRoutingSettings((routingSettingsResponse.data as AdvisoryRoutingSetting[] | null) || []);
-    setLoading(false);
+        const {
+          data: { session },
+          error: sessionError,
+        } = await supabase.auth.getSession();
+
+        if (sessionError) {
+          throw sessionError;
+        }
+
+        const user = session?.user ?? null;
+
+        if (!user) {
+          setLoading(false);
+          return;
+        }
+
+        const [
+          profileResponse,
+          ticketsResponse,
+          equipmentsResponse,
+          profilesResponse,
+          advisoriesResponse,
+          notificationsResponse,
+          routingSettingsResponse,
+        ] = await Promise.all([
+          supabase.from('profiles').select('id, rol, employee_type').eq('id', user.id).single(),
+          supabase
+            .from('tickets')
+            .select('id, asunto, descripcion, estado, creado_en, numero_serie_equipo, nombre_cliente_guest')
+            .order('creado_en', { ascending: false })
+            .limit(250),
+          supabase
+            .from('equipos')
+            .select('numero_serie, modelo, software, firmware, estado, ciudad, municipio'),
+          supabase
+            .from('profiles')
+            .select(
+              'id, nombre_completo, employee_number, employee_type, telefono, territorio, rol, recibe_tickets, trainer_ingenieria, trainer_quimica',
+            )
+            .order('nombre_completo', { ascending: true }),
+          supabase
+            .from('asesorias_escaladas')
+            .select(
+              'id, ticket_id, solicitante_id, solicitante_nombre_snapshot, plataforma_snapshot, actividad, averia, detalle_averia, refacciones_utilizadas, bibliografia_consultada, area, estado, pasos_seguidos, ajustes_realizados, acciones_tomadas, consulta_escalada, respuesta_trainer, respondida_por_id, respondida_en, creado_en, actualizado_en, metadata',
+            )
+            .order('creado_en', { ascending: false })
+            .limit(120),
+          supabase
+            .from('asesorias_escaladas_destinatarios')
+            .select('id, asesoria_id, destinatario_id, leida_en, creado_en')
+            .order('creado_en', { ascending: false })
+            .limit(400),
+          supabase
+            .from('asesorias_escaladas_enrutamiento')
+            .select('area, weekday_assignee_names, weekend_assignee_names'),
+        ]);
+
+        const firstError =
+          profileResponse.error ||
+          ticketsResponse.error ||
+          equipmentsResponse.error ||
+          profilesResponse.error ||
+          advisoriesResponse.error ||
+          notificationsResponse.error ||
+          routingSettingsResponse.error;
+
+        if (firstError) {
+          setFeedback({
+            tone: 'error',
+            message: firstError.message || 'No fue posible cargar el módulo de asesoría escalada.',
+          });
+          setLoading(false);
+          return;
+        }
+
+        const currentProfile = profileResponse.data as { rol?: string | null; employee_type?: string | null } | null;
+        const defaultArea = inferAdvisoryAreaFromEmployeeType(currentProfile?.employee_type) || 'ingenieria';
+
+        setCurrentUserId(user.id);
+        setCurrentRole(currentProfile?.rol || null);
+        if (!areaInitializedRef.current) {
+          setSelectedArea(defaultArea);
+          areaInitializedRef.current = true;
+        }
+        setTickets((ticketsResponse.data as AdvisoryTicketSummary[] | null) || []);
+        setEquipments((equipmentsResponse.data as EquipmentSummary[] | null) || []);
+        setProfiles((profilesResponse.data as ProfileSummary[] | null) || []);
+        setAdvisories((advisoriesResponse.data as AdvisoryRecord[] | null) || []);
+        setNotifications((notificationsResponse.data as AdvisoryNotificationRecord[] | null) || []);
+        setRoutingSettings((routingSettingsResponse.data as AdvisoryRoutingSetting[] | null) || []);
+        setLoading(false);
+      } catch (error) {
+        const message = error instanceof Error ? error.message : String(error || 'Error desconocido');
+        const normalized = message.toLowerCase();
+
+        if (normalized.includes('lock was stolen by another request')) {
+          console.warn('[EscalatedAdvisory][fetchModuleData] Supabase lock contention ignored.', error);
+          setLoading(false);
+          return;
+        }
+
+        setFeedback({
+          tone: 'error',
+          message: message || 'No fue posible cargar el módulo de asesoría escalada.',
+        });
+        setLoading(false);
+      } finally {
+        metricsFetchInFlightRef.current = null;
+      }
+    })();
+
+    metricsFetchInFlightRef.current = task;
+    return task;
   };
 
   useEffect(() => {
@@ -1051,6 +1547,11 @@ export default function EscalatedAdvisory({ onNotificationCountChange }: Escalat
   };
 
   const resetCreateForm = () => {
+    createEvidenceDrafts.forEach((attachment) => {
+      if (attachment.previewUrl) {
+        URL.revokeObjectURL(attachment.previewUrl);
+      }
+    });
     setSelectedTicketId('');
     setPasosSeguidos('');
     setAjustesRealizados('');
@@ -1060,6 +1561,7 @@ export default function EscalatedAdvisory({ onNotificationCountChange }: Escalat
     setRefaccionesUtilizadas('');
     setBibliografiaConsultada('');
     setConsultaEscalada('');
+    setCreateEvidenceDrafts([]);
     resetChemistryGuide();
   };
 
@@ -1139,6 +1641,19 @@ export default function EscalatedAdvisory({ onNotificationCountChange }: Escalat
 
     setSaving(true);
 
+    const initialMessageId = crypto.randomUUID();
+    const initialThreadMessage: AdvisoryThreadMessage = {
+      id: initialMessageId,
+      kind: 'initial',
+      role: 'requester',
+      actorId: currentUserId,
+      actorName: currentRequesterProfile?.nombre_completo?.trim() || 'Solicitante',
+      body: consultaEscalada.trim(),
+      createdAt: new Date().toISOString(),
+      attachments: [],
+      statusSnapshot: 'solicitada',
+    };
+
     const advisoryPayload = {
       ticket_id: selectedTicketId,
       solicitante_id: currentUserId,
@@ -1155,6 +1670,21 @@ export default function EscalatedAdvisory({ onNotificationCountChange }: Escalat
       ajustes_realizados: ajustesRealizados.trim() || null,
       acciones_tomadas: accionesTomadas.trim() || null,
       consulta_escalada: consultaEscalada.trim(),
+      metadata: {
+        thread: [initialThreadMessage],
+        serviceDesk: {
+          waitingOn: 'trainer',
+          unreadRequester: 0,
+          unreadTrainer: 1,
+          lastActorRole: 'requester',
+          lastMessageAt: initialThreadMessage.createdAt,
+          firstTrainerResponseAt: null,
+          messageCount: 1,
+          attachmentCount: 0,
+          responseCount: 0,
+          evidenceTags: [],
+        },
+      } satisfies AdvisoryMetadata,
     };
 
     const { data: insertedAdvisory, error: insertError } = await supabase
@@ -1190,6 +1720,54 @@ export default function EscalatedAdvisory({ onNotificationCountChange }: Escalat
       return;
     }
 
+    if (createEvidenceDrafts.length > 0) {
+      try {
+        const uploadedAttachments = await buildUploadedAttachmentRecords(
+          insertedAdvisory.id as string,
+          initialMessageId,
+          createEvidenceDrafts,
+        );
+        const metadataWithEvidence = appendAdvisoryThreadMessage({
+          metadata: advisoryPayload.metadata,
+          source: {
+            consultaEscalada: advisoryPayload.consulta_escalada,
+            creadoEn: initialThreadMessage.createdAt,
+            solicitanteId: currentUserId,
+            solicitanteNombre: currentRequesterProfile?.nombre_completo?.trim() || 'Solicitante',
+            estado: 'solicitada',
+          },
+          message: {
+            ...initialThreadMessage,
+            attachments: uploadedAttachments,
+          },
+          nextStatus: 'solicitada',
+        });
+
+        const { error: metadataError } = await supabase
+          .from('asesorias_escaladas')
+          .update({
+            metadata: metadataWithEvidence,
+            actualizado_en: new Date().toISOString(),
+          })
+          .eq('id', insertedAdvisory.id);
+
+        if (metadataError) {
+          throw metadataError;
+        }
+      } catch (error) {
+        setSaving(false);
+        setFeedback({
+          tone: 'info',
+          message:
+            error instanceof Error
+              ? `La asesoría se creó, pero la evidencia no se pudo procesar por completo: ${error.message}`
+              : 'La asesoría se creó, pero la evidencia no se pudo procesar por completo.',
+        });
+        await fetchModuleData(false);
+        return;
+      }
+    }
+
     resetCreateForm();
     setActiveAdvisoryId(insertedAdvisory.id as string);
     setSaving(false);
@@ -1200,12 +1778,16 @@ export default function EscalatedAdvisory({ onNotificationCountChange }: Escalat
     await fetchModuleData(false);
   };
 
-  const updateResponseDraft = (advisoryId: string, patch: Partial<{ estado: AdvisoryStatus; respuesta: string }>) => {
+  const updateResponseDraft = (
+    advisoryId: string,
+    patch: Partial<Pick<AdvisoryReplyDraft, 'estado' | 'mensaje' | 'attachments'>>,
+  ) => {
     setResponseDrafts((current) => {
       const advisory = advisories.find((item) => item.id === advisoryId);
       const base = current[advisoryId] || {
         estado: advisory?.estado || 'solicitada',
-        respuesta: advisory?.respuesta_trainer || '',
+        mensaje: '',
+        attachments: [],
       };
 
       return {
@@ -1218,6 +1800,35 @@ export default function EscalatedAdvisory({ onNotificationCountChange }: Escalat
     });
   };
 
+  const markThreadSideRead = async (advisory: AdvisoryRecord) => {
+    const viewerRole = getViewerThreadRole(advisory);
+    const requesterName =
+      advisory.solicitante_nombre_snapshot ||
+      (advisory.solicitante_id ? profileById.get(advisory.solicitante_id)?.nombre_completo : null) ||
+      'Solicitante';
+    const responderName = advisory.respondida_por_id ? profileById.get(advisory.respondida_por_id)?.nombre_completo || null : null;
+    const source = buildThreadSource(advisory, requesterName, responderName);
+    const analytics = getAdvisoryThreadAnalytics(advisory.metadata, source);
+
+    if ((viewerRole === 'requester' && analytics.unreadRequester === 0) || (viewerRole === 'trainer' && analytics.unreadTrainer === 0)) {
+      return;
+    }
+
+    const nextMetadata = markAdvisoryThreadRead(advisory.metadata, source, viewerRole);
+    const { error } = await supabase
+      .from('asesorias_escaladas')
+      .update({ metadata: nextMetadata, actualizado_en: new Date().toISOString() })
+      .eq('id', advisory.id);
+
+    if (error) {
+      return;
+    }
+
+    setAdvisories((current) =>
+      current.map((item) => (item.id === advisory.id ? { ...item, metadata: nextMetadata } : item)),
+    );
+  };
+
   const handleOpenAdvisory = async (advisoryId: string) => {
     setActiveAdvisoryId((current) => (current === advisoryId ? null : advisoryId));
 
@@ -1227,9 +1838,11 @@ export default function EscalatedAdvisory({ onNotificationCountChange }: Escalat
         ...current,
         [advisoryId]: {
           estado: current[advisoryId]?.estado || advisory.estado,
-          respuesta: current[advisoryId]?.respuesta ?? advisory.respuesta_trainer ?? '',
+          mensaje: current[advisoryId]?.mensaje ?? '',
+          attachments: current[advisoryId]?.attachments || [],
         },
       }));
+      await markThreadSideRead(advisory);
     }
 
     await markNotificationsRead(advisoryId);
@@ -1248,15 +1861,99 @@ export default function EscalatedAdvisory({ onNotificationCountChange }: Escalat
     setSaving(true);
 
     const nextStatus = draft.estado;
-    const trimmedResponse = draft.respuesta.trim();
+    const advisory = advisories.find((item) => item.id === advisoryId);
+    if (!advisory) {
+      setSaving(false);
+      return;
+    }
+
+    const trimmedResponse = draft.mensaje.trim();
+    const viewerRole = getViewerThreadRole(advisory);
+    const canEditStatus = viewerRole === 'trainer';
     const timestamp = new Date().toISOString();
-    const payload = {
-      estado: nextStatus,
-      respuesta_trainer: trimmedResponse || null,
-      respondida_por_id: trimmedResponse ? currentUserId : null,
-      respondida_en: trimmedResponse ? timestamp : null,
+    const hasStatusChange = canEditStatus && nextStatus !== advisory.estado;
+    const hasBody = Boolean(trimmedResponse);
+    const hasAttachments = draft.attachments.length > 0;
+
+    if (!hasBody && !hasStatusChange && !hasAttachments) {
+      setSaving(false);
+      setFeedback({
+        tone: 'info',
+        message: 'Agrega un comentario, evidencia o cambio de estado antes de guardar.',
+      });
+      return;
+    }
+
+    const requesterName =
+      advisory.solicitante_nombre_snapshot ||
+      (advisory.solicitante_id ? profileById.get(advisory.solicitante_id)?.nombre_completo : null) ||
+      'Solicitante';
+    const actorName =
+      profileById.get(currentUserId)?.nombre_completo ||
+      (viewerRole === 'trainer' ? 'Trainer' : requesterName);
+    const source = buildThreadSource(
+      advisory,
+      requesterName,
+      advisory.respondida_por_id ? profileById.get(advisory.respondida_por_id)?.nombre_completo || null : null,
+    );
+    const messageId = crypto.randomUUID();
+    let attachments: AdvisoryAttachmentRecord[] = [];
+    if (hasAttachments) {
+      try {
+        attachments = await buildUploadedAttachmentRecords(advisoryId, messageId, draft.attachments);
+      } catch (error) {
+        setSaving(false);
+        setFeedback({
+          tone: 'error',
+          message:
+            error instanceof Error
+              ? `No se pudo subir la evidencia adjunta: ${error.message}`
+              : 'No se pudo subir la evidencia adjunta.',
+        });
+        return;
+      }
+    }
+    let nextMetadata: AdvisoryMetadata | unknown = advisory.metadata;
+
+    if (hasBody || hasAttachments) {
+      nextMetadata = appendAdvisoryThreadMessage({
+        metadata: advisory.metadata,
+        source,
+        message: {
+          id: messageId,
+          kind: 'reply',
+          role: viewerRole,
+          actorId: currentUserId,
+          actorName,
+          body: trimmedResponse || (attachments.length > 0 ? 'Adjuntó evidencia técnica.' : ''),
+          createdAt: timestamp,
+          attachments,
+          statusSnapshot: canEditStatus ? nextStatus : advisory.estado,
+        },
+        nextStatus: canEditStatus ? nextStatus : advisory.estado,
+      });
+    }
+
+    if (hasStatusChange) {
+      nextMetadata = appendAdvisorySystemMessage(
+        nextMetadata,
+        source,
+        `Estado actualizado a ${STATUS_LABELS[nextStatus]}.`,
+        nextStatus,
+      );
+    }
+
+    const payload: Record<string, unknown> = {
+      estado: canEditStatus ? nextStatus : advisory.estado,
+      metadata: nextMetadata,
       actualizado_en: timestamp,
     };
+
+    if (viewerRole === 'trainer' && (trimmedResponse || attachments.length > 0)) {
+      payload.respuesta_trainer = trimmedResponse || advisory.respuesta_trainer || 'Se adjuntó evidencia técnica.';
+      payload.respondida_por_id = currentUserId;
+      payload.respondida_en = timestamp;
+    }
 
     const { error } = await supabase.from('asesorias_escaladas').update(payload).eq('id', advisoryId);
 
@@ -1272,8 +1969,24 @@ export default function EscalatedAdvisory({ onNotificationCountChange }: Escalat
 
     setFeedback({
       tone: 'success',
-      message: nextStatus === 'cerrada' ? 'La asesoría quedó cerrada.' : 'La respuesta de asesoría quedó guardada.',
+      message:
+        canEditStatus && nextStatus === 'cerrada'
+          ? 'La asesoría quedó cerrada.'
+          : 'La conversación y la actualización de asesoría quedaron guardadas.',
     });
+    draft.attachments.forEach((attachment) => {
+      if (attachment.previewUrl) {
+        URL.revokeObjectURL(attachment.previewUrl);
+      }
+    });
+    setResponseDrafts((current) => ({
+      ...current,
+      [advisoryId]: {
+        estado: canEditStatus ? nextStatus : advisory.estado,
+        mensaje: '',
+        attachments: [],
+      },
+    }));
     await fetchModuleData(false);
   };
 
@@ -1716,6 +2429,74 @@ export default function EscalatedAdvisory({ onNotificationCountChange }: Escalat
             />
           </div>
 
+          <div className="advisory-thread-card__section">
+            <div className="advisory-thread-card__section-header">
+              <div>
+                <div className="advisory-thread-card__eyebrow">Evidencia técnica</div>
+                <strong>Adjunta foto o reporte</strong>
+              </div>
+              <div className="advisory-thread-actions">
+                <label className="button-primary inactive advisory-thread-action-pill" htmlFor="advisory-create-photo">
+                  Foto
+                </label>
+                <input
+                  id="advisory-create-photo"
+                  hidden
+                  type="file"
+                  accept="image/*"
+                  capture="environment"
+                  onChange={(event) => void addPendingAttachments(event.target.files, 'photo', 'create')}
+                />
+                <label className="button-primary inactive advisory-thread-action-pill" htmlFor="advisory-create-report">
+                  Reporte
+                </label>
+                <input
+                  id="advisory-create-report"
+                  hidden
+                  type="file"
+                  accept=".pdf,.txt,image/*"
+                  onChange={(event) => void addPendingAttachments(event.target.files, 'report', 'create')}
+                />
+              </div>
+            </div>
+
+            {createEvidenceDrafts.length > 0 ? (
+              <div className="advisory-attachment-draft-grid">
+                {createEvidenceDrafts.map((attachment) => (
+                  <article key={attachment.localId} className="advisory-attachment-draft">
+                    <div className="advisory-attachment-draft__topline">
+                      <span className="glass-pill">{EVIDENCE_KIND_LABELS[attachment.kind]}</span>
+                      <button
+                        type="button"
+                        className="button-primary inactive advisory-attachment-draft__remove"
+                        onClick={() => removePendingAttachment('create', attachment.localId)}
+                      >
+                        Quitar
+                      </button>
+                    </div>
+                    <strong>{attachment.fileName}</strong>
+                    <span>
+                      {attachment.status === 'processing'
+                        ? 'Analizando archivo…'
+                        : attachment.status === 'error'
+                          ? attachment.error || 'No se pudo leer'
+                          : 'Listo para adjuntar'}
+                    </span>
+                    {attachment.analysis?.summary?.length ? (
+                      <div className="advisory-attachment-draft__chips">
+                        {attachment.analysis.summary.slice(0, 3).map((summary) => (
+                          <span key={summary}>{summary}</span>
+                        ))}
+                      </div>
+                    ) : null}
+                  </article>
+                ))}
+              </div>
+            ) : (
+              <div className="advisory-thread-empty">Sin evidencias adjuntas todavía.</div>
+            )}
+          </div>
+
           <div className="advisory-form-actions">
             <button
               type="button"
@@ -1761,16 +2542,28 @@ export default function EscalatedAdvisory({ onNotificationCountChange }: Escalat
             {filteredAdvisories.map((advisory) => {
               const ticket = advisory.ticket_id ? ticketById.get(advisory.ticket_id) || null : null;
               const requester = advisory.solicitante_id ? profileById.get(advisory.solicitante_id) || null : null;
-              const responder = advisory.respondida_por_id ? profileById.get(advisory.respondida_por_id) || null : null;
               const recipients = notificationsByAdvisoryId.get(advisory.id) || [];
               const unreadForThisAdvisory = recipients.filter(
                 (notification) => notification.destinatario_id === currentUserId && !notification.leida_en,
               ).length;
+              const threadSummary = threadSummaryByAdvisoryId.get(advisory.id);
               const isExpanded = activeAdvisoryId === advisory.id;
               const draft = responseDrafts[advisory.id] || {
                 estado: advisory.estado,
-                respuesta: advisory.respuesta_trainer || '',
+                mensaje: '',
+                attachments: [],
               };
+              const viewerRole = getViewerThreadRole(advisory);
+              const conversationUnread =
+                viewerRole === 'requester'
+                  ? threadSummary?.unreadRequester || 0
+                  : threadSummary?.unreadTrainer || 0;
+              const unreadBadgeCount = Math.max(unreadForThisAdvisory, conversationUnread);
+              const lastMessage =
+                threadSummary?.messages.slice().reverse().find((message) => message.role !== 'system') ||
+                threadSummary?.messages[threadSummary.messages.length - 1] ||
+                null;
+              const canEditStatus = viewerRole === 'trainer';
               const tone = STATUS_TONE[advisory.estado];
 
               return (
@@ -1798,28 +2591,47 @@ export default function EscalatedAdvisory({ onNotificationCountChange }: Escalat
                         <span className="button-primary inactive chip advisory-thread-card__chip advisory-thread-card__chip--neutral" style={{ textTransform: 'none' }}>
                           {AREA_LABELS[advisory.area]}
                         </span>
-                        {unreadForThisAdvisory > 0 ? (
+                        {unreadBadgeCount > 0 ? (
                           <span
                             className="button-primary chip advisory-thread-card__chip"
                             style={{ textTransform: 'none', padding: '0.2rem 0.7rem', minHeight: 'unset' }}
                           >
-                            {unreadForThisAdvisory} nueva{unreadForThisAdvisory === 1 ? '' : 's'}
+                            {unreadBadgeCount} nueva{unreadBadgeCount === 1 ? '' : 's'}
+                          </span>
+                        ) : null}
+                        {threadSummary ? (
+                          <span
+                            className="button-primary inactive chip advisory-thread-card__chip advisory-thread-card__chip--neutral"
+                            style={{
+                              textTransform: 'none',
+                              color: WAITING_COLORS[threadSummary.waitingOn],
+                              borderColor: `${WAITING_COLORS[threadSummary.waitingOn]}33`,
+                            }}
+                          >
+                            {WAITING_LABELS[threadSummary.waitingOn]}
                           </span>
                         ) : null}
                       </div>
                       <span style={{ color: 'var(--text-secondary)', fontSize: '0.84rem' }}>
-                        {formatDateTimeLabel(advisory.creado_en)}
+                        {formatDateTimeLabel(threadSummary?.lastMessageAt || advisory.creado_en)}
                       </span>
                     </div>
-                      <div style={{ display: 'grid', gap: '0.22rem' }}>
-                        <strong style={{ fontSize: '1rem' }}>{ticket?.asunto || 'Ticket no encontrado'}</strong>
+                    <div style={{ display: 'grid', gap: '0.22rem' }}>
+                      <strong style={{ fontSize: '1rem' }}>{ticket?.asunto || 'Ticket no encontrado'}</strong>
                       <span style={{ color: 'var(--text-secondary)', fontSize: '0.88rem' }}>
                         Serie {ticket?.numero_serie_equipo || 'N/D'} · solicitó {advisory.solicitante_nombre_snapshot || requester?.nombre_completo || 'Sistema'}
                       </span>
                     </div>
                     <p style={{ color: 'var(--text-secondary)', fontSize: '0.92rem' }}>
-                      {advisory.consulta_escalada}
+                      {lastMessage?.body || advisory.consulta_escalada}
                     </p>
+                    {threadSummary ? (
+                      <div className="advisory-thread-summary-strip">
+                        <span>{threadSummary.messageCount} mensajes</span>
+                        <span>{threadSummary.attachmentCount} evidencias</span>
+                        <span>{formatMinutesLabel(threadSummary.firstTrainerResponseMinutes)} primera respuesta</span>
+                      </div>
+                    ) : null}
                   </button>
 
                   {isExpanded ? (
@@ -1878,7 +2690,7 @@ export default function EscalatedAdvisory({ onNotificationCountChange }: Escalat
                         </div>
                       </div>
 
-                      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '0.75rem' }}>
+                      <div className="advisory-thread-grid">
                         <div className="advisory-thread-card__section">
                           <div style={{ color: 'var(--text-secondary)', fontSize: '0.76rem', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '0.28rem' }}>
                             Pasos seguidos
@@ -1899,59 +2711,255 @@ export default function EscalatedAdvisory({ onNotificationCountChange }: Escalat
                         </div>
                       </div>
 
-                      <div className="advisory-thread-card__section">
-                        <div style={{ color: 'var(--text-secondary)', fontSize: '0.76rem', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '0.28rem' }}>
-                          Destinatarios notificados
-                        </div>
-                        <div style={{ display: 'flex', gap: '0.45rem', flexWrap: 'wrap' }}>
-                          {recipients.map((notification) => {
-                            const recipient = profileById.get(notification.destinatario_id);
-                            return (
-                              <span key={notification.id} className="button-primary inactive chip advisory-thread-card__chip advisory-thread-card__chip--recipient" style={{ textTransform: 'none' }}>
-                                {recipient?.nombre_completo || 'Sin nombre'}
-                                {notification.leida_en ? ' · visto' : ' · pendiente'}
+                      <div className="advisory-thread-grid advisory-thread-grid--topline">
+                        <div className="advisory-thread-card__section">
+                          <div className="advisory-thread-card__section-header">
+                            <div>
+                              <div className="advisory-thread-card__eyebrow">Customer service</div>
+                              <strong>Estado operativo de la conversación</strong>
+                            </div>
+                          </div>
+                          <div className="advisory-thread-service-grid">
+                            <div className="advisory-thread-service-kpi">
+                              <span>Espera</span>
+                              <strong style={{ color: WAITING_COLORS[threadSummary?.waitingOn || 'trainer'] }}>
+                                {threadSummary ? WAITING_LABELS[threadSummary.waitingOn] : 'Sin cálculo'}
+                              </strong>
+                            </div>
+                            <div className="advisory-thread-service-kpi">
+                              <span>Primera respuesta</span>
+                              <strong>{formatMinutesLabel(threadSummary?.firstTrainerResponseMinutes ?? null)}</strong>
+                            </div>
+                            <div className="advisory-thread-service-kpi">
+                              <span>Evidencias</span>
+                              <strong>{threadSummary?.attachmentCount || 0}</strong>
+                            </div>
+                            <div className="advisory-thread-service-kpi">
+                              <span>Mensajes</span>
+                              <strong>{threadSummary?.messageCount || 0}</strong>
+                            </div>
+                          </div>
+                          <div className="advisory-thread-chip-cloud">
+                            {threadSummary?.evidenceTags?.length ? (
+                              threadSummary.evidenceTags.map((tag) => (
+                                <span key={tag} className="advisory-thread-chip-cloud__item">
+                                  {tag}
+                                </span>
+                              ))
+                            ) : (
+                              <span className="advisory-thread-chip-cloud__item advisory-thread-chip-cloud__item--empty">
+                                Sin señales OCR todavía
                               </span>
-                            );
-                          })}
+                            )}
+                          </div>
+                        </div>
+
+                        <div className="advisory-thread-card__section">
+                          <div className="advisory-thread-card__section-header">
+                            <div>
+                              <div className="advisory-thread-card__eyebrow">Destinatarios</div>
+                              <strong>Trainers notificados</strong>
+                            </div>
+                          </div>
+                          <div style={{ display: 'flex', gap: '0.45rem', flexWrap: 'wrap' }}>
+                            {recipients.map((notification) => {
+                              const recipient = profileById.get(notification.destinatario_id);
+                              return (
+                                <span key={notification.id} className="button-primary inactive chip advisory-thread-card__chip advisory-thread-card__chip--recipient" style={{ textTransform: 'none' }}>
+                                  {recipient?.nombre_completo || 'Sin nombre'}
+                                  {notification.leida_en ? ' · visto' : ' · pendiente'}
+                                </span>
+                              );
+                            })}
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="advisory-thread-card__section">
+                        <div className="advisory-thread-card__section-header">
+                          <div>
+                            <div className="advisory-thread-card__eyebrow">Conversación</div>
+                            <strong>Expediente conversacional</strong>
+                          </div>
+                        </div>
+                        <div className="advisory-thread-chat">
+                          {threadSummary?.messages.map((message) => (
+                            <div key={message.id} className={`advisory-thread-bubble advisory-thread-bubble--${message.role}`}>
+                              <div className="advisory-thread-bubble__meta">
+                                <strong>{message.actorName}</strong>
+                                <span>
+                                  {getMessageRoleLabel(message.role)} · {formatDateTimeLabel(message.createdAt)}
+                                </span>
+                              </div>
+                              <p>{message.body}</p>
+                              {message.attachments.length > 0 ? (
+                                <div className="advisory-thread-attachments">
+                                  {message.attachments.map((attachment) => (
+                                    <a
+                                      key={attachment.id}
+                                      href={attachment.publicUrl}
+                                      target="_blank"
+                                      rel="noreferrer"
+                                      className="advisory-thread-attachment"
+                                    >
+                                      {attachment.mimeType.startsWith('image/') ? (
+                                        <img src={attachment.publicUrl} alt={attachment.fileName} />
+                                      ) : (
+                                        <div className="advisory-thread-attachment__file">
+                                          <strong>{attachment.fileName}</strong>
+                                          <span>{EVIDENCE_KIND_LABELS[attachment.kind]}</span>
+                                        </div>
+                                      )}
+                                      {attachment.analysis?.summary?.length ? (
+                                        <div className="advisory-thread-attachment__chips">
+                                          {attachment.analysis.summary.slice(0, 3).map((summary) => (
+                                            <span key={summary}>{summary}</span>
+                                          ))}
+                                        </div>
+                                      ) : null}
+                                    </a>
+                                  ))}
+                                </div>
+                              ) : null}
+                            </div>
+                          ))}
                         </div>
                       </div>
 
                       <div className="advisory-thread-card__section advisory-thread-card__section--response">
-                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '0.75rem' }}>
+                        <div className="advisory-thread-card__section-header">
                           <div>
-                            <label style={{ display: 'block', marginBottom: '0.4rem', color: 'var(--text-secondary)' }}>Estado</label>
-                            <select
-                              className="input-field"
-                              value={draft.estado}
-                              onChange={(event) =>
-                                updateResponseDraft(advisory.id, { estado: event.target.value as AdvisoryStatus })
-                              }
-                            >
-                              <option value="solicitada">Solicitada</option>
-                              <option value="en_revision">En revisión</option>
-                              <option value="asesorada">Asesorada</option>
-                              <option value="cerrada">Cerrada</option>
-                            </select>
-                          </div>
-                          <div>
-                            <label style={{ display: 'block', marginBottom: '0.4rem', color: 'var(--text-secondary)' }}>Respuesta del trainer</label>
-                            <textarea
-                              className="input-field"
-                              rows={4}
-                              value={draft.respuesta}
-                              onChange={(event) =>
-                                updateResponseDraft(advisory.id, { respuesta: event.target.value })
-                              }
-                              placeholder="Documenta la asesoría entregada, validaciones pendientes o siguientes pasos."
-                            />
+                            <div className="advisory-thread-card__eyebrow">Responder</div>
+                            <strong>{viewerRole === 'trainer' ? 'Responder como trainer' : 'Responder como solicitante'}</strong>
                           </div>
                         </div>
 
+                        {canEditStatus ? (
+                          <div className="advisory-thread-grid advisory-thread-grid--compact">
+                            <div>
+                              <label style={{ display: 'block', marginBottom: '0.4rem', color: 'var(--text-secondary)' }}>Estado</label>
+                              <select
+                                className="input-field"
+                                value={draft.estado}
+                                onChange={(event) =>
+                                  updateResponseDraft(advisory.id, { estado: event.target.value as AdvisoryStatus })
+                                }
+                              >
+                                {STATUS_OPTIONS.map((option) => (
+                                  <option key={option.value} value={option.value}>
+                                    {option.label}
+                                  </option>
+                                ))}
+                              </select>
+                            </div>
+                          </div>
+                        ) : null}
+
+                        <div className="advisory-thread-quick-replies">
+                          {QUICK_REPLIES[viewerRole].map((reply) => (
+                            <button
+                              key={reply}
+                              type="button"
+                              className="button-primary inactive advisory-thread-quick-reply"
+                              onClick={() =>
+                                updateResponseDraft(advisory.id, {
+                                  mensaje: draft.mensaje ? `${draft.mensaje}\n${reply}` : reply,
+                                })
+                              }
+                            >
+                              {reply}
+                            </button>
+                          ))}
+                        </div>
+
+                        <div>
+                          <label style={{ display: 'block', marginBottom: '0.4rem', color: 'var(--text-secondary)' }}>Mensaje</label>
+                          <textarea
+                            className="input-field"
+                            rows={4}
+                            value={draft.mensaje}
+                            onChange={(event) => updateResponseDraft(advisory.id, { mensaje: event.target.value })}
+                            placeholder={
+                              viewerRole === 'trainer'
+                                ? 'Documenta la asesoría, la interpretación de evidencia y el siguiente paso.'
+                                : 'Responde con hallazgos nuevos, confirma resultado o agrega contexto.'
+                            }
+                          />
+                        </div>
+
+                        <div className="advisory-thread-actions">
+                          <label className="button-primary inactive advisory-thread-action-pill" htmlFor={`reply-photo-${advisory.id}`}>
+                            Foto
+                          </label>
+                          <input
+                            id={`reply-photo-${advisory.id}`}
+                            hidden
+                            type="file"
+                            accept="image/*"
+                            capture="environment"
+                            onChange={(event) => void addPendingAttachments(event.target.files, 'photo', advisory.id)}
+                          />
+                          <label className="button-primary inactive advisory-thread-action-pill" htmlFor={`reply-report-${advisory.id}`}>
+                            Reporte
+                          </label>
+                          <input
+                            id={`reply-report-${advisory.id}`}
+                            hidden
+                            type="file"
+                            accept=".pdf,.txt,image/*"
+                            onChange={(event) => void addPendingAttachments(event.target.files, 'report', advisory.id)}
+                          />
+                          <label className="button-primary inactive advisory-thread-action-pill" htmlFor={`reply-service-${advisory.id}`}>
+                            Prueba de servicio
+                          </label>
+                          <input
+                            id={`reply-service-${advisory.id}`}
+                            hidden
+                            type="file"
+                            accept=".pdf,.txt,image/*"
+                            onChange={(event) => void addPendingAttachments(event.target.files, 'service_test', advisory.id)}
+                          />
+                        </div>
+
+                        {draft.attachments.length > 0 ? (
+                          <div className="advisory-attachment-draft-grid">
+                            {draft.attachments.map((attachment) => (
+                              <article key={attachment.localId} className="advisory-attachment-draft">
+                                <div className="advisory-attachment-draft__topline">
+                                  <span className="glass-pill">{EVIDENCE_KIND_LABELS[attachment.kind]}</span>
+                                  <button
+                                    type="button"
+                                    className="button-primary inactive advisory-attachment-draft__remove"
+                                    onClick={() => removePendingAttachment(advisory.id, attachment.localId)}
+                                  >
+                                    Quitar
+                                  </button>
+                                </div>
+                                <strong>{attachment.fileName}</strong>
+                                <span>
+                                  {attachment.status === 'processing'
+                                    ? 'Analizando archivo…'
+                                    : attachment.status === 'error'
+                                      ? attachment.error || 'No se pudo leer'
+                                      : 'Listo para adjuntar'}
+                                </span>
+                                {attachment.analysis?.summary?.length ? (
+                                  <div className="advisory-attachment-draft__chips">
+                                    {attachment.analysis.summary.slice(0, 3).map((summary) => (
+                                      <span key={summary}>{summary}</span>
+                                    ))}
+                                  </div>
+                                ) : null}
+                              </article>
+                            ))}
+                          </div>
+                        ) : null}
+
                         <div style={{ display: 'flex', justifyContent: 'space-between', gap: '1rem', flexWrap: 'wrap', alignItems: 'center' }}>
                           <div style={{ color: 'var(--text-secondary)', fontSize: '0.84rem' }}>
-                            {advisory.respondida_en
-                              ? `Última respuesta: ${formatDateTimeLabel(advisory.respondida_en)} por ${responder?.nombre_completo || 'staff'}`
-                              : 'Aún no hay respuesta formal registrada.'}
+                            {threadSummary?.lastMessageAt
+                              ? `Última actividad: ${formatDateTimeLabel(threadSummary.lastMessageAt)}`
+                              : 'Aún no hay actividad conversacional.'}
                           </div>
                           <button
                             type="button"
@@ -1959,7 +2967,7 @@ export default function EscalatedAdvisory({ onNotificationCountChange }: Escalat
                             onClick={() => void handleSaveAdvisoryResponse(advisory.id)}
                             disabled={saving}
                           >
-                            Guardar actualización
+                            Guardar mensaje
                           </button>
                         </div>
                       </div>
@@ -1975,13 +2983,29 @@ export default function EscalatedAdvisory({ onNotificationCountChange }: Escalat
       {canViewMetrics ? (
         <div className="card advisory-metrics-shell" style={{ padding: '1.65rem' }}>
           <div className="advisory-metrics-header">
-            <div>
-              <h3 style={{ marginBottom: '0.35rem' }}>Métricas de {activeAreaLabel.toLowerCase()}</h3>
-              <p style={{ color: 'var(--text-secondary)' }}>
-                {currentRole === 'admin'
-                  ? `Vista consolidada para planeación de recapacitaciones y seguimiento del área de ${activeAreaLabel.toLowerCase()}.`
-                  : `Vista privada de la cartera que te pertenece como trainer de ${activeAreaLabel.toLowerCase()}.`}
-              </p>
+            <div className="advisory-metrics-header__topline">
+              <div>
+                <h3 style={{ marginBottom: '0.35rem' }}>Métricas de {activeAreaLabel.toLowerCase()}</h3>
+                <p style={{ color: 'var(--text-secondary)' }}>{metricsScopeLabel}.</p>
+              </div>
+              <div className="advisory-metrics-header__actions">
+                <button
+                  type="button"
+                  className="button-primary inactive advisory-thread-action-pill"
+                  onClick={() => void exportMetrics('excel')}
+                  disabled={exportingMetrics !== null || metricsScopeAdvisories.length === 0}
+                >
+                  {exportingMetrics === 'excel' ? 'Generando Excel...' : 'Descargar Excel'}
+                </button>
+                <button
+                  type="button"
+                  className="button-primary inactive advisory-thread-action-pill"
+                  onClick={() => void exportMetrics('pdf')}
+                  disabled={exportingMetrics !== null || metricsScopeAdvisories.length === 0}
+                >
+                  {exportingMetrics === 'pdf' ? 'Generando PDF...' : 'Descargar PDF'}
+                </button>
+              </div>
             </div>
             <div className="advisory-metrics-kpis">
               <article className="advisory-metrics-kpi">
@@ -1989,16 +3013,16 @@ export default function EscalatedAdvisory({ onNotificationCountChange }: Escalat
                 <strong>{metricsScopeAdvisories.length}</strong>
               </article>
               <article className="advisory-metrics-kpi">
-                <span>Trainers con carga</span>
-                <strong>{metricsOwnerRows.filter((row) => row.value > 0).length}</strong>
+                <span>Primera respuesta promedio</span>
+                <strong>{formatMinutesLabel(metricsAverageFirstResponseMinutes)}</strong>
               </article>
               <article className="advisory-metrics-kpi">
-                <span>{areaContributorLabel}s con incidencias</span>
-                <strong>{metricsRequesterRows.length}</strong>
+                <span>Cobertura con evidencia</span>
+                <strong>{metricsEvidenceCoverage}%</strong>
               </article>
               <article className="advisory-metrics-kpi">
-                <span>Tipos detectados</span>
-                <strong>{metricsTypeRows.length}</strong>
+                <span>Esperando a trainer</span>
+                <strong>{metricsWaitingRows.find((row) => row.key === 'trainer')?.value || 0}</strong>
               </article>
             </div>
           </div>
@@ -2011,45 +3035,96 @@ export default function EscalatedAdvisory({ onNotificationCountChange }: Escalat
             <div className="advisory-metrics-grid">
               <section className="advisory-metrics-card">
                 <div className="advisory-metrics-card__header">
-                  <strong>Propiedad de asesorías</strong>
-                  <span>{currentRole === 'admin' ? 'Por trainer notificado' : 'Tu bandeja actual'}</span>
+                  <strong>Distribución operativa</strong>
+                  <span>Estados y espera del flujo</span>
                 </div>
-                <div className="advisory-metrics-list">
-                  {metricsOwnerRows.map((row) => (
-                    <div key={row.key} className="advisory-metrics-row">
-                      <div className="advisory-metrics-row__copy">
-                        <strong>{row.label}</strong>
-                        <span>{row.value} asesoría(s)</span>
-                      </div>
-                      <div className="advisory-metrics-row__bar">
-                        <span style={{ width: `${(row.value / (metricsOwnerRows[0]?.value || 1)) * 100}%` }} />
+                <div className="advisory-metrics-donut-grid">
+                  <div className="advisory-metrics-donut-card">
+                    <div
+                      className="advisory-metrics-donut"
+                      style={{
+                        background: buildConicGradient(
+                          metricsStatusRows.map((row, index) => ({
+                            value: row.value,
+                            color: ['#c13d4f', '#d5902f', '#2f8c61', '#7c8895'][index % 4],
+                          })),
+                        ),
+                      }}
+                    >
+                      <div className="advisory-metrics-donut__center">
+                        <strong>{metricsScopeAdvisories.length}</strong>
+                        <span>casos</span>
                       </div>
                     </div>
-                  ))}
+                    <div className="advisory-metrics-mini-list">
+                      <span className="advisory-metrics-mini-list__title">Por estado</span>
+                      {metricsStatusRows.map((row) => (
+                        <div key={row.key} className="advisory-metrics-chip-row advisory-metrics-chip-row--status">
+                          <strong>{row.label}</strong>
+                          <span>{row.value}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="advisory-metrics-donut-card">
+                    <div
+                      className="advisory-metrics-donut advisory-metrics-donut--waiting"
+                      style={{
+                        background: buildConicGradient(
+                          metricsWaitingRows.map((row) => ({
+                            value: row.value,
+                            color: WAITING_COLORS[row.key as AdvisoryWaitingOn] || '#7c8895',
+                          })),
+                        ),
+                      }}
+                    >
+                      <div className="advisory-metrics-donut__center">
+                        <strong>{metricsWaitingRows.reduce((sum, row) => sum + row.value, 0)}</strong>
+                        <span>esperas</span>
+                      </div>
+                    </div>
+                    <div className="advisory-metrics-mini-list">
+                      <span className="advisory-metrics-mini-list__title">A quién le toca</span>
+                      {metricsWaitingRows.map((row) => (
+                        <div key={row.key} className="advisory-metrics-chip-row advisory-metrics-chip-row--status">
+                          <strong>{row.label}</strong>
+                          <span>{row.value}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
                 </div>
               </section>
 
               <section className="advisory-metrics-card">
                 <div className="advisory-metrics-card__header">
-                  <strong>Registros por trainer</strong>
-                  <span>{currentRole === 'admin' ? 'Respuestas capturadas' : 'Tus respuestas guardadas'}</span>
+                  <strong>Carga y respuesta por trainer</strong>
+                  <span>Asignadas vs contestadas, con tiempo promedio</span>
                 </div>
                 <div className="advisory-metrics-list">
-                  {metricsResponderRows.length > 0 ? (
-                    metricsResponderRows.map((row) => (
+                  {metricsTrainerWorkloadRows.length > 0 ? (
+                    metricsTrainerWorkloadRows.map((row) => (
                       <div key={row.key} className="advisory-metrics-row">
                         <div className="advisory-metrics-row__copy">
                           <strong>{row.label}</strong>
-                          <span>{row.value} registro(s)</span>
+                          <span>
+                            {row.assigned} asignada(s) · {row.responded} respondida(s) · {formatMinutesLabel(row.avgFirstResponseMinutes)}
+                          </span>
                         </div>
-                        <div className="advisory-metrics-row__bar advisory-metrics-row__bar--accent">
-                          <span style={{ width: `${(row.value / (metricsResponderRows[0]?.value || 1)) * 100}%` }} />
+                        <div className="advisory-metrics-row__dual">
+                          <div className="advisory-metrics-row__bar">
+                            <span style={{ width: `${(row.assigned / (metricsTrainerWorkloadRows[0]?.assigned || 1)) * 100}%` }} />
+                          </div>
+                          <div className="advisory-metrics-row__bar advisory-metrics-row__bar--accent">
+                            <span style={{ width: `${(row.responded / (metricsTrainerWorkloadRows[0]?.assigned || 1)) * 100}%` }} />
+                          </div>
                         </div>
                       </div>
                     ))
                   ) : (
                     <div className="advisory-metrics-empty advisory-metrics-empty--inline">
-                      Todavía no hay respuestas registradas para esta vista.
+                      Todavía no hay suficiente actividad de respuesta para esta vista.
                     </div>
                   )}
                 </div>
@@ -2057,56 +3132,103 @@ export default function EscalatedAdvisory({ onNotificationCountChange }: Escalat
 
               <section className="advisory-metrics-card">
                 <div className="advisory-metrics-card__header">
-                  <strong>Incidencias por {areaContributorLabel}</strong>
-                  <span>Quién está escalando más casos</span>
+                  <strong>Heatmap de recurrencia</strong>
+                  <span>{areaContributorLabel}s vs tipos más repetidos</span>
                 </div>
-                <div className="advisory-metrics-list">
-                  {metricsRequesterRows.map((row) => (
-                    <div key={row.key} className="advisory-metrics-row">
-                      <div className="advisory-metrics-row__copy">
-                        <strong>{row.label}</strong>
-                        <span>{row.value} incidencia(s)</span>
+                <div className="advisory-metrics-heatmap-shell">
+                  <div
+                    className="advisory-metrics-heatmap"
+                    style={{
+                      gridTemplateColumns: `minmax(150px, 190px) repeat(${Math.max(metricsHeatmap.types.length, 1)}, minmax(118px, 1fr))`,
+                    }}
+                  >
+                    <div className="advisory-metrics-heatmap__header">Solicitante</div>
+                    {metricsHeatmap.types.map((type) => (
+                      <div key={type.key} className="advisory-metrics-heatmap__col-label" title={type.label}>
+                        {type.label}
                       </div>
-                      <div className="advisory-metrics-row__bar advisory-metrics-row__bar--warm">
-                        <span style={{ width: `${(row.value / (metricsRequesterRows[0]?.value || 1)) * 100}%` }} />
+                    ))}
+                    {metricsHeatmap.requesters.map((requesterRow) => (
+                      <div key={requesterRow.key} className="advisory-metrics-heatmap__row">
+                        <div className="advisory-metrics-heatmap__row-label" title={requesterRow.label}>
+                          <strong>{requesterRow.label}</strong>
+                        </div>
+                        {metricsHeatmap.types.map((type) => {
+                          const cell = metricsHeatmap.cells.get(`${requesterRow.key}:${type.key}`);
+                          const value = cell?.value || 0;
+                          const intensity = metricsHeatmap.max > 0 ? value / metricsHeatmap.max : 0;
+                          return (
+                            <div
+                              key={`${requesterRow.key}:${type.key}`}
+                              className={`advisory-metrics-heatmap__cell ${value === 0 ? 'is-empty' : ''}`}
+                              style={{
+                                background:
+                                  value > 0
+                                    ? `linear-gradient(180deg, rgba(var(--brand-red-rgb), ${0.12 + intensity * 0.2}), rgba(255,255,255,0.96))`
+                                    : 'linear-gradient(180deg, rgba(255,255,255,0.92), rgba(246,248,251,0.82))',
+                                borderColor:
+                                  value > 0
+                                    ? `rgba(var(--brand-red-rgb), ${0.12 + intensity * 0.25})`
+                                    : 'rgba(124, 136, 149, 0.1)',
+                                boxShadow:
+                                  value > 0
+                                    ? `0 14px 24px rgba(var(--brand-red-rgb), ${0.06 + intensity * 0.08})`
+                                    : 'inset 0 1px 0 rgba(255,255,255,0.74)',
+                              }}
+                              title={`${requesterRow.label} · ${type.label}: ${value}`}
+                            >
+                              <strong>{value}</strong>
+                              <span>{value > 0 ? 'casos' : 'sin cruce'}</span>
+                            </div>
+                          );
+                        })}
                       </div>
-                    </div>
-                  ))}
+                    ))}
+                  </div>
                 </div>
               </section>
 
               <section className="advisory-metrics-card">
                 <div className="advisory-metrics-card__header">
-                  <strong>Batallas recurrentes por {areaContributorLabel}</strong>
-                  <span>Qué tipo de asesoría solicita cada {areaContributorLabel}</span>
+                  <strong>Ritmo de la operación</strong>
+                  <span>Nuevas, respondidas y cerradas por día</span>
                 </div>
-                <div className="advisory-metrics-cluster">
-                  <div className="advisory-metrics-insight-list">
-                    {metricsRequesterInsightRows.map((row) => (
-                      <article key={row.key} className="advisory-metrics-insight-card">
-                        <div className="advisory-metrics-row__copy">
-                          <strong>{row.label}</strong>
-                          <span>{row.total} incidencia(s)</span>
+                <div className="advisory-metrics-timeline">
+                  {metricsTimelineDays.map((day) => {
+                    const max = Math.max(
+                      ...metricsTimelineDays.map((item) => item.created + item.replied + item.closed),
+                      1,
+                    );
+                    const total = day.created + day.replied + day.closed;
+
+                    return (
+                      <div key={day.key} className="advisory-metrics-timeline__day" title={`${day.label}: ${total} movimiento(s)`}>
+                        <div className="advisory-metrics-timeline__stack">
+                          <span
+                            className="advisory-metrics-timeline__bar advisory-metrics-timeline__bar--created"
+                            style={{ height: `${(day.created / max) * 100}%` }}
+                          />
+                          <span
+                            className="advisory-metrics-timeline__bar advisory-metrics-timeline__bar--replied"
+                            style={{ height: `${(day.replied / max) * 100}%` }}
+                          />
+                          <span
+                            className="advisory-metrics-timeline__bar advisory-metrics-timeline__bar--closed"
+                            style={{ height: `${(day.closed / max) * 100}%` }}
+                          />
                         </div>
-                        <div className="advisory-metrics-tag-cloud">
-                          {row.topTypes.map((typeRow) => (
-                            <span key={`${row.key}-${typeRow.key}`} className="advisory-metrics-tag">
-                              {typeRow.label} · {typeRow.value}
-                            </span>
-                          ))}
+                        <div className="advisory-metrics-timeline__meta">
+                          <strong>{total}</strong>
+                          <span>{day.label}</span>
                         </div>
-                      </article>
-                    ))}
-                  </div>
-                  <div className="advisory-metrics-mini-list">
-                    <span className="advisory-metrics-mini-list__title">Estado de las asesorías</span>
-                    {metricsStatusRows.map((row) => (
-                      <div key={row.key} className="advisory-metrics-chip-row advisory-metrics-chip-row--status">
-                        <strong>{row.label}</strong>
-                        <span>{row.value}</span>
                       </div>
-                    ))}
-                  </div>
+                    );
+                  })}
+                </div>
+                <div className="advisory-metrics-legend">
+                  <span><i className="advisory-metrics-legend__dot advisory-metrics-legend__dot--created" />Nuevas</span>
+                  <span><i className="advisory-metrics-legend__dot advisory-metrics-legend__dot--replied" />Respondidas</span>
+                  <span><i className="advisory-metrics-legend__dot advisory-metrics-legend__dot--closed" />Cerradas</span>
                 </div>
               </section>
             </div>
