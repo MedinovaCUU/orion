@@ -25,13 +25,13 @@ export default function PublicTicketForm() {
       value: 'Ingeniero',
       className: 'support-choice--engineering',
       title: 'Ingeniería 🧰',
-      description: 'Fallas físicas, instalación, arranque, partes, periféricos y continuidad operativa en equipos clínicos o veterinarios.',
+      description: 'Fallas físicas, instalación, arranque, partes, periféricos y continuidad operativa.',
     },
     {
       value: 'Químico',
       className: 'support-choice--applications',
       title: 'Quimica 🧪',
-      description: 'Metodología, corridas, validación, reactivos y soporte funcional del analizador en equipos clínicos o veterinarios.',
+      description: 'Programacion, técnicas nuevas, reactivos, calibracion, control de calidad, soporte funcional...',
     },
   ];
 
