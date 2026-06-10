@@ -1,0 +1,626 @@
+[
+  {
+    "code": "11824",
+    "fileName": "11824_BIOSYSTEMS_STANDARD_CALIBRADOR_DE_CKMB.pdf",
+    "name": "BIOSYSTEMS STANDARD CALIBRADOR DE CKMB",
+    "docType": "Value Sheet",
+    "params": {},
+    "confidence": "estimated_from_IFU",
+    "sourceType": "manual"
+  },
+  {
+    "code": "12500",
+    "fileName": "12500_A-15-A-25_PROTEINAS_TOTALES.pdf",
+    "name": "A-15-A-25 PROTEINAS TOTALES",
+    "docType": "IFU",
+    "params": {
+      "primaryWavelengthNm": 535,
+      "referenceWavelengthNm": 670,
+      "reportedMethod": "Punto final monoreactiva",
+      "readMode": "Bicro",
+      "reagentType": "Monoreactiva"
+    },
+    "confidence": "estimated_from_IFU",
+    "sourceType": "manual"
+  },
+  {
+    "code": "12502",
+    "fileName": "12502_A-15-A-25_CREATININA.pdf",
+    "name": "A-15-A-25 CREATININA",
+    "docType": "IFU",
+    "params": {
+      "primaryWavelengthNm": 505,
+      "reportedMethod": "Tiempo fijo bireactiva",
+      "readMode": "Bicro",
+      "reagentType": "Bireactiva"
+    },
+    "confidence": "estimated_from_IFU",
+    "sourceType": "manual"
+  },
+  {
+    "code": "12503",
+    "fileName": "12503_A-15-A-25_GLUCOSA.pdf",
+    "name": "A-15-A-25 GLUCOSA",
+    "docType": "IFU",
+    "params": {
+      "primaryWavelengthNm": 505,
+      "referenceWavelengthNm": 670,
+      "reportedMethod": "Punto final monoreactiva",
+      "readMode": "Bicro",
+      "reagentType": "Monoreactiva"
+    },
+    "confidence": "estimated_from_IFU",
+    "sourceType": "manual"
+  },
+  {
+    "code": "12509",
+    "fileName": "12509_A-15-A-25_HIERRO_FERROCINA.pdf",
+    "name": "A-15-A-25 HIERRO FERROCINA",
+    "docType": "IFU",
+    "params": {
+      "primaryWavelengthNm": 560,
+      "reportedMethod": "Diferencial bireactiva",
+      "readMode": "Bicro",
+      "reagentType": "Bireactiva"
+    },
+    "confidence": "estimated_from_IFU",
+    "sourceType": "manual"
+  },
+  {
+    "code": "12520",
+    "fileName": "12520_A-15-A-25_GAMMA_GGT.pdf",
+    "name": "A-15-A-25 GAMMA GGT",
+    "docType": "IFU",
+    "params": {
+      "reportedMethod": "Cinética",
+      "readMode": "Mono"
+    },
+    "confidence": "estimated_from_IFU",
+    "sourceType": "manual"
+  },
+  {
+    "code": "12521",
+    "fileName": "12521_A-15-A-25_ACIDO_URICO.pdf",
+    "name": "A-15-A-25 ACIDO URICO",
+    "docType": "IFU",
+    "params": {
+      "primaryWavelengthNm": 505,
+      "referenceWavelengthNm": 670,
+      "reportedMethod": "Punto final monoreactiva",
+      "readMode": "Bicro",
+      "reagentType": "Monoreactiva"
+    },
+    "confidence": "estimated_from_IFU",
+    "sourceType": "manual"
+  },
+  {
+    "code": "12528",
+    "fileName": "12528_A-15-A-25_TRIGLICERIDOS.pdf",
+    "name": "A-15-A-25 TRIGLICERIDOS",
+    "docType": "IFU",
+    "params": {
+      "primaryWavelengthNm": 505,
+      "referenceWavelengthNm": 670,
+      "reportedMethod": "Punto final",
+      "readMode": "Bicro"
+    },
+    "confidence": "estimated_from_IFU",
+    "sourceType": "manual"
+  },
+  {
+    "code": "12531",
+    "fileName": "12531_A-15-A-25_ASPARTATO_AMINOTRANSFERASA_AST.pdf",
+    "name": "A-15-A-25 ASPARTATO AMINOTRANSFERASA AST",
+    "docType": "IFU",
+    "params": {
+      "primaryWavelengthNm": 340,
+      "reportedMethod": "Cinética monoreactiva",
+      "readMode": "Bicro",
+      "reagentType": "Monoreactiva"
+    },
+    "confidence": "estimated_from_IFU",
+    "sourceType": "manual"
+  },
+  {
+    "code": "12533",
+    "fileName": "12533_A-15-A-25_ALANINO_AMINOTRANSFERASA_ALT.pdf",
+    "name": "A-15-A-25 ALANINO AMINOTRANSFERASA ALT",
+    "docType": "IFU",
+    "params": {
+      "primaryWavelengthNm": 340,
+      "reportedMethod": "Cinética monoreactiva",
+      "readMode": "Bicro",
+      "reagentType": "Monoreactiva"
+    },
+    "confidence": "estimated_from_IFU",
+    "sourceType": "manual"
+  },
+  {
+    "code": "12547",
+    "fileName": "12547_A-15-A-25_ALBUMINA.pdf",
+    "name": "A-15-A-25 ALBUMINA",
+    "docType": "IFU",
+    "params": {
+      "primaryWavelengthNm": 635,
+      "referenceWavelengthNm": 670,
+      "reportedMethod": "Punto final monoreactiva",
+      "readMode": "Bicro",
+      "reagentType": "Monoreactiva"
+    },
+    "confidence": "estimated_from_IFU",
+    "sourceType": "manual"
+  },
+  {
+    "code": "12570",
+    "fileName": "12570_A-15-A-25_CALCIO_ARSENAZO.pdf",
+    "name": "A-15-A-25 CALCIO ARSENAZO",
+    "docType": "IFU",
+    "params": {
+      "primaryWavelengthNm": 635,
+      "reportedMethod": "Punto final monoreactiva",
+      "readMode": "Bicro",
+      "reagentType": "Monoreactiva"
+    },
+    "confidence": "estimated_from_IFU",
+    "sourceType": "manual"
+  },
+  {
+    "code": "12580",
+    "fileName": "12580_A-15-A-25_LACTATO_DESHIDROGENASA_LDH.pdf",
+    "name": "A-15-A-25 LACTATO DESHIDROGENASA LDH",
+    "docType": "IFU",
+    "params": {
+      "reportedMethod": "Cinética",
+      "readMode": "Mono"
+    },
+    "confidence": "estimated_from_IFU",
+    "sourceType": "manual"
+  },
+  {
+    "code": "12757",
+    "fileName": "12757_A-15-A-25_COLESTEROL_HDL_DIRECTO_TOOS.pdf",
+    "name": "A-15-A-25 COLESTEROL HDL DIRECTO TOOS",
+    "docType": "IFU",
+    "params": {},
+    "confidence": "estimated_from_IFU",
+    "sourceType": "manual"
+  },
+  {
+    "code": "12797",
+    "fileName": "12797_A-15-A-25_MAGNESIO_XYLIDIL.pdf",
+    "name": "A-15-A-25 MAGNESIO XYLIDIL",
+    "docType": "IFU",
+    "params": {
+      "primaryWavelengthNm": 505,
+      "reportedMethod": "Punto final monoreactiva",
+      "readMode": "Bicro",
+      "reagentType": "Monoreactiva"
+    },
+    "confidence": "estimated_from_IFU",
+    "sourceType": "manual"
+  },
+  {
+    "code": "13921",
+    "fileName": "13921_A-15-A-25_PROTEINA_C_REACTIVA_PCR.pdf",
+    "name": "A-15-A-25 PROTEINA C REACTIVA PCR",
+    "docType": "IFU",
+    "params": {
+      "reportedMethod": "Punto final",
+      "readMode": "Bicro"
+    },
+    "confidence": "estimated_from_IFU",
+    "sourceType": "manual"
+  },
+  {
+    "code": "13922",
+    "fileName": "13922_A-15-A-25_FACTOR_REUMATOIDE_FR.pdf",
+    "name": "A-15-A-25 FACTOR REUMATOIDE FR",
+    "docType": "IFU",
+    "params": {
+      "reportedMethod": "Diferencial",
+      "readMode": "Mono"
+    },
+    "confidence": "estimated_from_IFU",
+    "sourceType": "manual"
+  },
+  {
+    "code": "13923",
+    "fileName": "13923_A-15-A-25_ANTI_ESTREPTOLISINA_ASO.pdf",
+    "name": "A-15-A-25 ANTI ESTREPTOLISINA ASO",
+    "docType": "IFU",
+    "params": {
+      "reportedMethod": "Punto final",
+      "readMode": "Bicro"
+    },
+    "confidence": "estimated_from_IFU",
+    "sourceType": "manual"
+  },
+  {
+    "code": "18001",
+    "fileName": "18001_BIOSYSTEMS_SUERO_CONTROL_HEMOGLOBINA_NORMAL.pdf",
+    "name": "BIOSYSTEMS SUERO CONTROL HEMOGLOBINA NORMAL",
+    "docType": "IFU",
+    "params": {},
+    "confidence": "estimated_from_IFU",
+    "sourceType": "manual"
+  },
+  {
+    "code": "18002",
+    "fileName": "18002_BIOSYSTEMS_SUERO_CONTROL_HEMOGLOBINA_ELEVADO.pdf",
+    "name": "BIOSYSTEMS SUERO CONTROL HEMOGLOBINA ELEVADO",
+    "docType": "IFU",
+    "params": {},
+    "confidence": "estimated_from_IFU",
+    "sourceType": "manual"
+  },
+  {
+    "code": "18009",
+    "fileName": "18009_BIOSYSTEMS_SUERO_CONTROL_N_I.pdf",
+    "name": "BIOSYSTEMS SUERO CONTROL N I",
+    "docType": "IFU",
+    "params": {},
+    "confidence": "estimated_from_IFU",
+    "sourceType": "manual"
+  },
+  {
+    "code": "18010",
+    "fileName": "18010_BIOSYSTEMS_SUERO_CONTROL_N_II.pdf",
+    "name": "BIOSYSTEMS SUERO CONTROL N II",
+    "docType": "IFU",
+    "params": {},
+    "confidence": "estimated_from_IFU",
+    "sourceType": "manual"
+  },
+  {
+    "code": "18040",
+    "fileName": "18040_BIOSYSTEMS_SUERO_CONTROL_LIPIDOS_N_I.pdf",
+    "name": "BIOSYSTEMS SUERO CONTROL LIPIDOS N I",
+    "docType": "IFU",
+    "params": {},
+    "confidence": "estimated_from_IFU",
+    "sourceType": "manual"
+  },
+  {
+    "code": "18041",
+    "fileName": "18041_BIOSYSTEMS_SUERO_CONTROL_LIPIDOS_N_II.pdf",
+    "name": "BIOSYSTEMS SUERO CONTROL LIPIDOS N II",
+    "docType": "IFU",
+    "params": {},
+    "confidence": "estimated_from_IFU",
+    "sourceType": "manual"
+  },
+  {
+    "code": "18066",
+    "fileName": "18066_BIOSYSTEMS_SUERO_CONTROL_ORINA_N_II.pdf",
+    "name": "BIOSYSTEMS SUERO CONTROL ORINA N II",
+    "docType": "IFU",
+    "params": {},
+    "confidence": "estimated_from_IFU",
+    "sourceType": "manual"
+  },
+  {
+    "code": "21502",
+    "fileName": "21502_BA-200-400_CREATININA.pdf",
+    "name": "BA-200-400 CREATININA",
+    "docType": "IFU",
+    "params": {
+      "primaryWavelengthNm": 505,
+      "reportedMethod": "Tiempo fijo bireactiva",
+      "readMode": "Bicro",
+      "reagentType": "Bireactiva"
+    },
+    "confidence": "estimated_from_IFU",
+    "sourceType": "manual"
+  },
+  {
+    "code": "21503",
+    "fileName": "21503_BA-200-400_GLUCOSA.pdf",
+    "name": "BA-200-400 GLUCOSA",
+    "docType": "IFU",
+    "params": {},
+    "confidence": "estimated_from_IFU",
+    "sourceType": "manual"
+  },
+  {
+    "code": "21504",
+    "fileName": "21504_BA-200-400_BILIRRUBINA_DIRECTA_BIL-D.pdf",
+    "name": "BA-200-400 BILIRRUBINA DIRECTA BIL-D",
+    "docType": "IFU",
+    "params": {
+      "primaryWavelengthNm": 535,
+      "referenceWavelengthNm": 670,
+      "reportedMethod": "Diferencial bireactiva",
+      "readMode": "Bicro",
+      "reagentType": "Bireactiva"
+    },
+    "confidence": "estimated_from_IFU",
+    "sourceType": "manual"
+  },
+  {
+    "code": "21505",
+    "fileName": "21505_BA-200-400_COLESTEROL.pdf",
+    "name": "BA-200-400 COLESTEROL",
+    "docType": "IFU",
+    "params": {
+      "primaryWavelengthNm": 505,
+      "referenceWavelengthNm": 670,
+      "reportedMethod": "Punto final monoreactiva",
+      "readMode": "Bicro",
+      "reagentType": "Monoreactiva"
+    },
+    "confidence": "estimated_from_IFU",
+    "sourceType": "manual"
+  },
+  {
+    "code": "21506",
+    "fileName": "21506_BA-200-400_BILIRRUBINA_TOTAL_BIL-T.pdf",
+    "name": "BA-200-400 BILIRRUBINA TOTAL BIL-T",
+    "docType": "IFU",
+    "params": {
+      "primaryWavelengthNm": 535,
+      "referenceWavelengthNm": 670,
+      "reportedMethod": "Diferencial bireactiva",
+      "readMode": "Bicro",
+      "reagentType": "Bireactiva"
+    },
+    "confidence": "estimated_from_IFU",
+    "sourceType": "manual"
+  },
+  {
+    "code": "21509",
+    "fileName": "21509_BA-200-400_HIERRO_FERROZINA.pdf",
+    "name": "BA-200-400 HIERRO FERROZINA",
+    "docType": "IFU",
+    "params": {
+      "primaryWavelengthNm": 560,
+      "reportedMethod": "Diferencial bireactiva",
+      "readMode": "Bicro",
+      "reagentType": "Bireactiva"
+    },
+    "confidence": "estimated_from_IFU",
+    "sourceType": "manual"
+  },
+  {
+    "code": "21513",
+    "fileName": "21513_BA-200-400_PROTEINA_TOTAL.pdf",
+    "name": "BA-200-400 PROTEINA TOTAL",
+    "docType": "IFU",
+    "params": {
+      "primaryWavelengthNm": 535,
+      "reportedMethod": "Diferencial bireactiva",
+      "readMode": "Bicro",
+      "reagentType": "Bireactiva"
+    },
+    "confidence": "estimated_from_IFU",
+    "sourceType": "manual"
+  },
+  {
+    "code": "21516",
+    "fileName": "21516_BA-200-400_UREA_UV.pdf",
+    "name": "BA-200-400 UREA UV",
+    "docType": "IFU",
+    "params": {
+      "primaryWavelengthNm": 340,
+      "reportedMethod": "Tiempo fijo bireactiva",
+      "readMode": "Bicro",
+      "reagentType": "Bireactiva"
+    },
+    "confidence": "estimated_from_IFU",
+    "sourceType": "manual"
+  },
+  {
+    "code": "21518",
+    "fileName": "21518_BA-200-400_FOSFORO.pdf",
+    "name": "BA-200-400 FOSFORO",
+    "docType": "IFU",
+    "params": {
+      "primaryWavelengthNm": 340,
+      "reportedMethod": "Diferencial bireactiva",
+      "readMode": "Bicro",
+      "reagentType": "Bireactiva"
+    },
+    "confidence": "estimated_from_IFU",
+    "sourceType": "manual"
+  },
+  {
+    "code": "21520",
+    "fileName": "21520_BA-200-400_GAMMA_GLUTAMIL_TRANSFERASA_GGT.pdf",
+    "name": "BA-200-400 GAMMA GLUTAMIL TRANSFERASA GGT",
+    "docType": "IFU",
+    "params": {
+      "primaryWavelengthNm": 405,
+      "reportedMethod": "Cinética bireactiva",
+      "readMode": "Bicro",
+      "reagentType": "Bireactiva"
+    },
+    "confidence": "estimated_from_IFU",
+    "sourceType": "manual"
+  },
+  {
+    "code": "21521",
+    "fileName": "21521_BA-200-400_ACIDO_URICO.pdf",
+    "name": "BA-200-400 ACIDO URICO",
+    "docType": "IFU",
+    "params": {
+      "primaryWavelengthNm": 505,
+      "referenceWavelengthNm": 670,
+      "reportedMethod": "Punto final monoreactiva",
+      "readMode": "Bicro",
+      "reagentType": "Monoreactiva"
+    },
+    "confidence": "estimated_from_IFU",
+    "sourceType": "manual"
+  },
+  {
+    "code": "21528",
+    "fileName": "21528_BA-200-400_TRIGLICERIDOS.pdf",
+    "name": "BA-200-400 TRIGLICERIDOS",
+    "docType": "IFU",
+    "params": {
+      "primaryWavelengthNm": 505,
+      "referenceWavelengthNm": 670,
+      "reportedMethod": "Punto final monoreactiva",
+      "readMode": "Bicro",
+      "reagentType": "Monoreactiva"
+    },
+    "confidence": "estimated_from_IFU",
+    "sourceType": "manual"
+  },
+  {
+    "code": "21531",
+    "fileName": "21531_BA-200-400_ASPARTATO_AMINOTRANSFERASA_TGO_AST.pdf",
+    "name": "BA-200-400 ASPARTATO AMINOTRANSFERASA TGO AST",
+    "docType": "IFU",
+    "params": {
+      "primaryWavelengthNm": 340,
+      "reportedMethod": "Cinética bireactiva",
+      "readMode": "Bicro",
+      "reagentType": "Bireactiva"
+    },
+    "confidence": "estimated_from_IFU",
+    "sourceType": "manual"
+  },
+  {
+    "code": "21533",
+    "fileName": "21533_BA-200-400_ALANINA_AMINOTRANSFERASA_TGP-ALT.pdf",
+    "name": "BA-200-400 ALANINA AMINOTRANSFERASA TGP-ALT",
+    "docType": "IFU",
+    "params": {
+      "primaryWavelengthNm": 340,
+      "reportedMethod": "Cinética bireactiva",
+      "readMode": "Bicro",
+      "reagentType": "Bireactiva"
+    },
+    "confidence": "estimated_from_IFU",
+    "sourceType": "manual"
+  },
+  {
+    "code": "21550",
+    "fileName": "21550_BA-200-400_AMILASA_DIRECTA.pdf",
+    "name": "BA-200-400 AMILASA DIRECTA",
+    "docType": "IFU",
+    "params": {},
+    "confidence": "estimated_from_IFU",
+    "sourceType": "manual"
+  },
+  {
+    "code": "21570",
+    "fileName": "21570_BA-200-400_CALCIO_ARSENAZO.pdf",
+    "name": "BA-200-400 CALCIO ARSENAZO",
+    "docType": "IFU",
+    "params": {
+      "primaryWavelengthNm": 635,
+      "reportedMethod": "Punto final monoreactiva",
+      "readMode": "Bicro",
+      "reagentType": "Monoreactiva"
+    },
+    "confidence": "estimated_from_IFU",
+    "sourceType": "manual"
+  },
+  {
+    "code": "21580",
+    "fileName": "21580_BA-200-400_LACTATO_DESHIDROGENASA_LDH.pdf",
+    "name": "BA-200-400 LACTATO DESHIDROGENASA LDH",
+    "docType": "IFU",
+    "params": {
+      "primaryWavelengthNm": 340,
+      "reportedMethod": "Cinética bireactiva",
+      "readMode": "Bicro",
+      "reagentType": "Bireactiva"
+    },
+    "confidence": "estimated_from_IFU",
+    "sourceType": "manual"
+  },
+  {
+    "code": "21592",
+    "fileName": "21592_BA-200-400_ALP-AMP.pdf",
+    "name": "BA-200-400 ALP-AMP",
+    "docType": "IFU",
+    "params": {
+      "primaryWavelengthNm": 405,
+      "reportedMethod": "Cinética bireactiva",
+      "readMode": "Bicro",
+      "reagentType": "Bireactiva"
+    },
+    "confidence": "estimated_from_IFU",
+    "sourceType": "manual"
+  },
+  {
+    "code": "21594",
+    "fileName": "21594_BA-200-400_COLESTEROL_HDL_DIRECTO_TOOS.pdf",
+    "name": "BA-200-400 COLESTEROL HDL DIRECTO TOOS",
+    "docType": "IFU",
+    "params": {},
+    "confidence": "estimated_from_IFU",
+    "sourceType": "manual"
+  },
+  {
+    "code": "21760",
+    "fileName": "21760_BA-200-400_LIPASA.pdf",
+    "name": "BA-200-400 LIPASA",
+    "docType": "IFU",
+    "params": {
+      "primaryWavelengthNm": 560,
+      "reportedMethod": "Cinética bireactiva",
+      "readMode": "Bicro",
+      "reagentType": "Bireactiva"
+    },
+    "confidence": "estimated_from_IFU",
+    "sourceType": "manual"
+  },
+  {
+    "code": "21790",
+    "fileName": "21790_BA-200-400_CREATININA_KINASA_CK.pdf",
+    "name": "BA-200-400 CREATININA KINASA CK",
+    "docType": "IFU",
+    "params": {
+      "primaryWavelengthNm": 340,
+      "reportedMethod": "Cinética bireactiva",
+      "readMode": "Bicro",
+      "reagentType": "Bireactiva"
+    },
+    "confidence": "estimated_from_IFU",
+    "sourceType": "manual"
+  },
+  {
+    "code": "22147",
+    "fileName": "22147_BA-200-400_HEMOGLOBINA_A1C_DIRECTA.pdf",
+    "name": "BA-200-400 HEMOGLOBINA A1C DIRECTA",
+    "docType": "IFU",
+    "params": {
+      "primaryWavelengthNm": 670,
+      "reportedMethod": "Tiempo fijo bireactiva",
+      "readMode": "Bicro",
+      "reagentType": "Bireactiva"
+    },
+    "confidence": "estimated_from_IFU",
+    "sourceType": "manual"
+  },
+  {
+    "code": "31113",
+    "fileName": "31113_BIOSYSTEMS_STANDARD_CALIBRADOR_DE_PROTEINA_C_REACTIVA_CRP-CRP-hs.pdf",
+    "name": "BIOSYSTEMS STANDARD CALIBRADOR DE PROTEINA C REACTIVA CRP-CRP-hs",
+    "docType": "Value Sheet",
+    "params": {},
+    "confidence": "estimated_from_IFU",
+    "sourceType": "manual"
+  },
+  {
+    "code": "31119",
+    "fileName": "31119_BIOSYSTEMS_STANDARD_CALIBRADOR_DE_ANTI-ESTREPTOLISINA_ASO.pdf",
+    "name": "BIOSYSTEMS STANDARD CALIBRADOR DE ANTI-ESTREPTOLISINA ASO",
+    "docType": "Value Sheet",
+    "params": {},
+    "confidence": "estimated_from_IFU",
+    "sourceType": "manual"
+  },
+  {
+    "code": "31214",
+    "fileName": "31214_BIOSYSTEMS_SUERO_CONTROL_REUMATOIDE_N_II.pdf",
+    "name": "BIOSYSTEMS SUERO CONTROL REUMATOIDE N II",
+    "docType": "IFU",
+    "params": {},
+    "confidence": "estimated_from_IFU",
+    "sourceType": "manual"
+  }
+]

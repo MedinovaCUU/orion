@@ -1,6 +1,8 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
+// @ts-ignore
 import { BrowserCodeReader, BrowserMultiFormatReader, type IScannerControls } from '@zxing/browser';
+// @ts-ignore
 import { BarcodeFormat, DecodeHintType } from '@zxing/library';
 import { createMaterialItemFromScan, type ServiceReportMaterialItem } from './gs1DataMatrix';
 import './ServiceReportModal.css';
@@ -114,7 +116,7 @@ export default function Gs1ScannerModal({ isOpen, onClose, onDetected }: Gs1Scan
         const controls = await readerRef.current?.decodeFromVideoDevice(
           selectedDeviceId || undefined,
           videoRef.current || undefined,
-          async (result, error) => {
+          async (result: any, error: any) => {
             if (cancelled || resolvingRef.current) {
               return;
             }
