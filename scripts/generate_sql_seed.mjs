@@ -18,7 +18,7 @@ function escapeSql(str) {
     return "'" + str.toString().replace(/'/g, "''") + "'";
 }
 
-let sql = '-- Migration to sync reagents from DRI catalog\\n\\n';
+let sql = '-- Migration to sync reagents from DRI catalog\n\n';
 
 seed.reagents.forEach(r => {
     sql += `INSERT INTO public.reagents (

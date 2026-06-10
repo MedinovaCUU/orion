@@ -1,4 +1,6 @@
--- Migration to sync reagents from DRI catalog\n\nINSERT INTO public.reagents (
+-- Migration to sync reagents from DRI catalog
+
+INSERT INTO public.reagents (
     id, name, calibration_mode, read_mode, primary_wavelength_nm, 
     reference_wavelength_nm, reported_method, reagent_type, operational_note, 
     preliminary_risk, source_status, confidence, source_type, source_reference, metadata
