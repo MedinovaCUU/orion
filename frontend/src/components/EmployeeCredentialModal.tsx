@@ -93,6 +93,7 @@ export default function EmployeeCredentialModal({
   onClose,
   onProfileUpdated,
 }: EmployeeCredentialModalProps) {
+  const [showBack, setShowBack] = useState(false);
   const [fullName, setFullName] = useState('');
   const [employeeNumber, setEmployeeNumber] = useState('');
   const [jobTitle, setJobTitle] = useState('');
@@ -114,6 +115,7 @@ export default function EmployeeCredentialModal({
       return;
     }
 
+    setShowBack(false);
     setFullName(profile.nombre_completo || '');
     setEmployeeNumber(profile.employee_number || '');
     setJobTitle(profile.puesto || '');
@@ -162,6 +164,16 @@ export default function EmployeeCredentialModal({
   const verificationCode = useMemo(
     () => buildVerificationCode(profile ? { ...profile, employee_number: employeeNumber } : null),
     [profile, employeeNumber],
+  );
+  const credentialInitials = useMemo(
+    () =>
+      (fullName || 'BioSystems')
+        .split(/\s+/)
+        .filter(Boolean)
+        .slice(0, 2)
+        .map((token) => token[0]?.toUpperCase() || '')
+        .join('') || 'BS',
+    [fullName],
   );
 
   const pendingFields = useMemo(() => {
@@ -424,42 +436,46 @@ export default function EmployeeCredentialModal({
           </section>
 
           <section className="credential-preview-shell">
-            <div className="credential-preview">
-              <div className="credential-preview__accent" />
-              <div className="credential-preview__watermark" aria-hidden="true">
-                <img src={BRAND_LOGO_URL} alt="" />
-              </div>
-              <div className="credential-preview__topline">
-                <img className="credential-preview__logo" src={BRAND_LOGO_URL} alt="BioSystems" />
-                <div className="credential-preview__identity">
-                  <span>BioSystems</span>
-                  <strong>Identificación laboral digital</strong>
-                  <small>ORION · Servicio y soporte</small>
-                </div>
-              </div>
+            <div className="credential-card-stage">
+              <div className={`credential-card ${showBack ? 'credential-card--flipped' : ''}`}>
+                <article className="credential-card__face credential-card__face--front">
+                  <div className="credential-card__rail" />
+                  <div className="credential-card__glow" aria-hidden="true" />
+                  <button
+                    type="button"
+                    className="credential-card__flip"
+                    onClick={() => setShowBack(true)}
+                    aria-label="Voltear credencial al reverso"
+                  >
+                    ↩︎
+                  </button>
 
-              <div className="credential-preview__body">
-                <div className="credential-preview__photo-frame">
-                  {photoPreviewUrl ? (
-                    <img src={photoPreviewUrl} alt={`Fotografía de ${fullName || 'empleado BioSystems'}`} />
-                  ) : (
-                    <div className="credential-preview__photo-placeholder">
-                      {(fullName || 'BioSystems')
-                        .split(/\s+/)
-                        .filter(Boolean)
-                        .slice(0, 2)
-                        .map((token) => token[0]?.toUpperCase() || '')
-                        .join('') || 'BS'}
+                  <div className="credential-card__header">
+                    <div className="credential-card__header-copy">
+                      <span>BioSystems</span>
+                      <strong>Identificación laboral digital</strong>
+                      <small>ORION · Servicio técnico</small>
                     </div>
-                  )}
-                </div>
+                    <img className="credential-card__logo" src={BRAND_LOGO_URL} alt="BioSystems" />
+                  </div>
 
-                <div className="credential-preview__copy">
-                  <span className="credential-preview__tag">{areaLabel}</span>
-                  <h3>{fullName || 'Nombre pendiente'}</h3>
-                  <p>{jobTitle || roleLabel}</p>
+                  <div className="credential-card__photo-shell">
+                    <div className="credential-card__photo-frame">
+                      {photoPreviewUrl ? (
+                        <img src={photoPreviewUrl} alt={`Fotografía de ${fullName || 'empleado BioSystems'}`} />
+                      ) : (
+                        <div className="credential-card__photo-placeholder">{credentialInitials}</div>
+                      )}
+                    </div>
+                  </div>
 
-                  <div className="credential-preview__facts">
+                  <div className="credential-card__front-copy">
+                    <span className="credential-card__pill">{areaLabel}</span>
+                    <h3>{fullName || 'Nombre pendiente'}</h3>
+                    <p>{jobTitle || roleLabel}</p>
+                  </div>
+
+                  <div className="credential-card__front-facts">
                     <div>
                       <span>No. empleado</span>
                       <strong>{employeeNumber || verificationCode}</strong>
@@ -472,28 +488,72 @@ export default function EmployeeCredentialModal({
                       <span>Teléfono</span>
                       <strong>{phone || 'Pendiente'}</strong>
                     </div>
+                  </div>
+
+                  <div className="credential-card__front-footer">
+                    <small>Documento oficial mostrado desde ORION.</small>
+                  </div>
+                </article>
+
+                <article className="credential-card__face credential-card__face--back">
+                  <div className="credential-card__back-gradient" aria-hidden="true" />
+                  <button
+                    type="button"
+                    className="credential-card__flip"
+                    onClick={() => setShowBack(false)}
+                    aria-label="Voltear credencial al frente"
+                  >
+                    ↩︎
+                  </button>
+
+                  <div className="credential-card__back-header">
+                    <img className="credential-card__back-logo" src={BRAND_LOGO_URL} alt="BioSystems" />
                     <div>
+                      <strong>Reverso de validación</strong>
+                      <small>Presenta esta vista si requieren más datos.</small>
+                    </div>
+                  </div>
+
+                  <div className="credential-card__back-grid">
+                    <div className="credential-card__info-box">
+                      <span>Folio ORION</span>
+                      <strong>{verificationCode}</strong>
+                    </div>
+                    <div className="credential-card__info-box">
+                      <span>Área</span>
+                      <strong>{areaLabel}</strong>
+                    </div>
+                    <div className="credential-card__info-box">
                       <span>Correo</span>
                       <strong>{userEmail || 'Pendiente'}</strong>
                     </div>
-                    <div>
-                      <span>Emitida</span>
+                    <div className="credential-card__info-box">
+                      <span>Puesto</span>
+                      <strong>{jobTitle || roleLabel}</strong>
+                    </div>
+                    <div className="credential-card__info-box">
+                      <span>Emisión</span>
                       <strong>{formatDisplayDate(issueDate)}</strong>
                     </div>
-                    <div>
+                    <div className="credential-card__info-box">
                       <span>Vigencia</span>
-                      <strong>{validUntil ? formatDisplayDate(validUntil) : validityLabel}</strong>
+                      <strong>{validUntil ? formatDisplayDate(validUntil) : 'Activa'}</strong>
                     </div>
                   </div>
-                </div>
-              </div>
 
-              <div className="credential-preview__footer">
-                <div>
-                  <span>Folio de verificación</span>
-                  <strong>{verificationCode}</strong>
-                </div>
-                <small>Documento digital mostrado desde ORION para identificación en campo.</small>
+                  <div className="credential-card__note">
+                    <span>Leyenda de validez</span>
+                    <p>{validityLabel || 'Vigente mientras conserve relación laboral.'}</p>
+                  </div>
+
+                  <div className="credential-card__back-footer">
+                    <div>
+                      <span>Contacto</span>
+                      <strong>{phone || userEmail || 'Pendiente'}</strong>
+                    </div>
+                    <small>Si necesitas validar identidad, confirma folio y datos desde ORION.</small>
+                  </div>
+                </article>
               </div>
             </div>
           </section>
