@@ -1,4 +1,3 @@
-import { DRI_SUBSYSTEM_LABELS } from '../knowledge/mechanicalSubsystems';
 import { normalizeText, countCoverage, roundDri } from '../utils/relationUtils';
 import type {
   DriCatalog,
@@ -10,6 +9,66 @@ import type {
   DriReagentProfile,
 } from '../types/dri.types';
 import { createDriLogger } from '../utils/driLogging';
+
+const REACTION_LABELS: Record<string, string> = {
+  endpoint: 'Punto final',
+  kinetic: 'Cinética',
+  turbidimetric: 'Turbidimetría',
+  ise: 'ISE',
+  other: 'Otra reacción',
+};
+
+const SCHEME_LABELS: Record<string, string> = {
+  monoreactive: 'Monoreactiva',
+  bireactive: 'Bireactiva',
+  multireactive: 'Multirreactiva',
+  variable: 'Variable por programa',
+  unknown: 'Esquema pendiente',
+};
+
+const WATER_KEYWORDS = ['agua', 'water', 'wash', 'lavado', 'destilada', 'conductividad'];
+const CONTAMINATION_KEYWORDS = ['contamin', 'carryover', 'arrastre', 'lavado', 'wash', 'blanco inicial', 'blank'];
+
+const extractProfileText = (profile: DriReagentProfile) => {
+  const technicalProfile = (profile.legacy.technicalProfile || {}) as Record<string, unknown>;
+  const ifuFacts = (technicalProfile.ifuFacts || {}) as Record<string, unknown>;
+  const ifuNotes = Array.isArray(ifuFacts.notes) ? ifuFacts.notes.filter((item): item is string => typeof item === 'string') : [];
+  return {
+    text: normalizeText(
+      [
+        profile.legacy.reportedMethod,
+        profile.legacy.operationalNote,
+        profile.legacy.preliminaryRisk,
+        ...profile.technicalNotes.value,
+        ...ifuNotes,
+      ]
+        .filter(Boolean)
+        .join(' '),
+    ),
+    ifuFacts,
+  };
+};
+
+const registerTechniqueSignal = (
+  signalMap: Map<string, DriRelationSignal>,
+  profile: DriReagentProfile,
+  outcome: 'failed' | 'correct',
+  id: string,
+  label: string,
+  subsystems = profile.mechanicalSubsystems.value,
+) => {
+  registerSignal(
+    signalMap,
+    {
+      id,
+      category: 'technique',
+      label,
+      suspectedSubsystems: subsystems,
+    },
+    profile.id,
+    outcome,
+  );
+};
 
 export const buildFactorAggregates = (
   catalog: DriCatalog,
@@ -145,24 +204,71 @@ export const buildRelationSignals = (
   const signalMap = new Map<string, DriRelationSignal>();
 
   const pushProfileSignals = (profile: DriReagentProfile, outcome: 'failed' | 'correct') => {
+    const { text, ifuFacts } = extractProfileText(profile);
+    const storageMin = typeof ifuFacts.storageTempMinC === 'number' ? ifuFacts.storageTempMinC : null;
+    const storageMax = typeof ifuFacts.storageTempMaxC === 'number' ? ifuFacts.storageTempMaxC : null;
+    const blankDeterioration = typeof ifuFacts.blankDeterioration === 'string' ? ifuFacts.blankDeterioration : null;
+    const platformSpecificScheme =
+      profile.reagentScheme.value === 'variable' && ['BA400', 'BA200'].includes(platform) && text.includes('ba:') && text.includes('bireact')
+        ? 'bireactive'
+        : profile.reagentScheme.value === 'variable' && platform === 'A15' && text.includes('a15') && text.includes('monoreact')
+          ? 'monoreactive'
+          : profile.reagentScheme.value;
+
     registerSignal(
       signalMap,
       {
         id: `reaction:${profile.reactionKind.value}`,
         category: 'reaction',
-        label: `Reacción ${profile.reactionKind.value}`,
+        label: REACTION_LABELS[profile.reactionKind.value] || `Reacción ${profile.reactionKind.value}`,
         suspectedSubsystems: profile.mechanicalSubsystems.value,
       },
       profile.id,
       outcome,
     );
 
+    if (text.includes('punto final')) {
+      registerTechniqueSignal(signalMap, profile, outcome, 'technique:endpoint', 'Técnica de punto final');
+    }
+    if (text.includes('tiempo fijo')) {
+      registerTechniqueSignal(signalMap, profile, outcome, 'technique:fixed_time', 'Técnica de tiempo fijo');
+    }
+    if (text.includes('enzimat')) {
+      registerTechniqueSignal(signalMap, profile, outcome, 'technique:enzymatic', 'Técnica enzimática');
+    }
+    if (text.includes('decreciente')) {
+      registerSignal(
+        signalMap,
+        {
+          id: 'trend:decreasing',
+          category: 'trend',
+          label: 'Cinética decreciente',
+          suspectedSubsystems: ['optical_system', 'reaction_rotor', 'reagent_arm_r2'],
+        },
+        profile.id,
+        outcome,
+      );
+    }
+    if (text.includes('creciente')) {
+      registerSignal(
+        signalMap,
+        {
+          id: 'trend:increasing',
+          category: 'trend',
+          label: 'Cinética creciente',
+          suspectedSubsystems: ['optical_system', 'reaction_rotor', 'reagent_arm_r2'],
+        },
+        profile.id,
+        outcome,
+      );
+    }
+
     registerSignal(
       signalMap,
       {
-        id: `scheme:${profile.reagentScheme.value}`,
+        id: `scheme:${platformSpecificScheme}`,
         category: 'scheme',
-        label: `Esquema ${profile.reagentScheme.value}`,
+        label: SCHEME_LABELS[platformSpecificScheme] || `Esquema ${platformSpecificScheme}`,
         suspectedSubsystems: profile.mechanicalSubsystems.value,
       },
       profile.id,
@@ -176,6 +282,20 @@ export const buildRelationSignals = (
           id: `wavelength:${profile.primaryWavelengthNm.value}`,
           category: 'wavelength',
           label: `Filtro/longitud ${profile.primaryWavelengthNm.value} nm`,
+          suspectedSubsystems: ['optical_system', 'reaction_rotor'],
+        },
+        profile.id,
+        outcome,
+      );
+    }
+
+    if (profile.secondaryWavelengthNm.value) {
+      registerSignal(
+        signalMap,
+        {
+          id: `wavelength:ref:${profile.secondaryWavelengthNm.value}`,
+          category: 'wavelength',
+          label: `Filtro de referencia ${profile.secondaryWavelengthNm.value} nm`,
           suspectedSubsystems: ['optical_system', 'reaction_rotor'],
         },
         profile.id,
@@ -201,9 +321,9 @@ export const buildRelationSignals = (
       registerSignal(
         signalMap,
         {
-          id: 'temperature:sensitive',
+          id: 'temperature:reaction_sensitive',
           category: 'temperature',
-          label: 'Sensibles a temperatura',
+          label: 'Sensibles a temperatura de reacción',
           suspectedSubsystems: ['reaction_rotor', 'fridge'],
         },
         profile.id,
@@ -211,7 +331,38 @@ export const buildRelationSignals = (
       );
     }
 
-    if (normalizeText(profile.legacy.operationalNote).includes('agua')) {
+    if (storageMin !== null || storageMax !== null) {
+      registerSignal(
+        signalMap,
+        {
+          id: `storage:${storageMin ?? 'x'}:${storageMax ?? 'x'}`,
+          category: 'storage',
+          label:
+            storageMin !== null && storageMax !== null
+              ? `Conservación ${storageMin}-${storageMax} °C`
+              : 'Conservación IFU documentada',
+          suspectedSubsystems: ['fridge'],
+        },
+        profile.id,
+        outcome,
+      );
+    }
+
+    if (blankDeterioration) {
+      registerSignal(
+        signalMap,
+        {
+          id: `blank:${blankDeterioration}`,
+          category: 'blank',
+          label: 'Blanco inicial / absorbancia base crítica',
+          suspectedSubsystems: ['optical_system', 'reaction_rotor', 'wash_station'],
+        },
+        profile.id,
+        outcome,
+      );
+    }
+
+    if (WATER_KEYWORDS.some((keyword) => text.includes(keyword))) {
       registerSignal(
         signalMap,
         {
@@ -225,33 +376,20 @@ export const buildRelationSignals = (
       );
     }
 
-    if (profile.allowsAutoDilution.value) {
+    if (profile.contaminationSensitive.value || CONTAMINATION_KEYWORDS.some((keyword) => text.includes(keyword))) {
       registerSignal(
         signalMap,
         {
-          id: 'dilution:auto',
-          category: 'dilution',
-          label: 'Permiten dilución automática',
-          suspectedSubsystems: ['sample_arm', 'fluidics', 'level_detection'],
+          id: 'contamination:carryover',
+          category: 'contamination',
+          label: 'Sensibles a contaminación / carryover',
+          suspectedSubsystems: ['wash_station', 'fluidics', 'sample_arm', 'reagent_arm_r1', 'reagent_arm_r2'],
         },
         profile.id,
         outcome,
       );
     }
 
-    profile.mechanicalSubsystems.value.forEach((subsystem) => {
-      registerSignal(
-        signalMap,
-        {
-          id: `subsystem:${subsystem}`,
-          category: 'subsystem',
-          label: DRI_SUBSYSTEM_LABELS[subsystem],
-          suspectedSubsystems: [subsystem],
-        },
-        profile.id,
-        outcome,
-      );
-    });
   };
 
   failedProfiles.forEach((profile) => pushProfileSignals(profile, 'failed'));
@@ -287,7 +425,17 @@ export const buildRelationSignals = (
       const failedCoverage = countCoverage(signal.relatedReagentIds.length, failedProfiles.length);
       const correctCoverage = countCoverage(signal.contrastReagentIds.length, correctProfiles.length);
       const matchingFactorBoost = factorAggregates
-        .filter((aggregate) => normalizeText(aggregate.label).includes(normalizeText(signal.label).replace('filtro/longitud ', '').split(' ')[0]))
+        .filter((aggregate) => {
+          const aggregateLabel = normalizeText(aggregate.label);
+          const signalLabel = normalizeText(signal.label);
+          const signalTerms = signalLabel
+            .replace('filtro de referencia ', '')
+            .replace('filtro longitud ', '')
+            .replace('filtro/longitud ', '')
+            .split(' ')
+            .filter(Boolean);
+          return signalTerms.some((term) => term.length > 2 && aggregateLabel.includes(term));
+        })
         .reduce((max, aggregate) => Math.max(max, aggregate.suspicionScore), 0);
       const suspicionScore = roundDri(Math.max(0, failedCoverage * 74 - correctCoverage * 42 + matchingFactorBoost * 0.28));
       return {

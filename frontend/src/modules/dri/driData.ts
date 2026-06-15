@@ -1,5 +1,10 @@
 import { supabase } from '../../supabaseClient';
 import { DRI_WORKBOOK_SEED } from './driWorkbookSeed.generated';
+import {
+  enrichCatalogWithReagentIdentity,
+  type DriAliasContextRow,
+  type DriCatalogContextRow,
+} from './knowledge/reagentIdentity';
 import { createDriLogger } from './utils/driLogging';
 import type {
   DriCatalog,
@@ -248,15 +253,22 @@ const buildLocalCaseRecord = (form: DriCaseFormState, engineResult: DriEngineRes
 
 export async function loadDriCatalog(): Promise<DriCatalogLoadResult> {
   try {
-    const [reagentsResponse, factorsResponse, linksResponse] = await Promise.all([
+    const [reagentsResponse, factorsResponse, linksResponse, catalogRowsResponse, aliasRowsResponse] = await Promise.all([
       supabase.from('reagents').select('*').order('name'),
       supabase.from('reagent_factors').select('*').order('factor_type').order('label'),
       supabase.from('reagent_factor_links').select('*').order('reagent_id').order('factor_id'),
+      supabase.from('reactivo_rendimientos_catalogo').select('*').order('modelo_familia').order('descripcion_normalizada'),
+      supabase.from('reactivo_test_aliases').select('*').order('modelo_familia').order('alias_normalizado'),
     ]);
 
     if (reagentsResponse.error || factorsResponse.error || linksResponse.error) {
       throw reagentsResponse.error || factorsResponse.error || linksResponse.error;
     }
+
+    const contextRows = {
+      catalogRows: (catalogRowsResponse.data || []) as DriCatalogContextRow[],
+      aliasRows: (aliasRowsResponse.data || []) as DriAliasContextRow[],
+    };
 
     if (
       !reagentsResponse.data?.length ||
@@ -264,71 +276,73 @@ export async function loadDriCatalog(): Promise<DriCatalogLoadResult> {
       !linksResponse.data?.length
     ) {
       return {
-        catalog: fallbackCatalog,
-        sourceLabel: 'Seed local del workbook',
-        warning: 'DRI está usando seed local porque la base no tiene catálogo cargado todavía.',
+        catalog: enrichCatalogWithReagentIdentity(fallbackCatalog, contextRows),
+        sourceLabel: 'Seed local + contexto documental',
+        warning: 'DRI está usando seed local porque la base no tiene catálogo cargado todavía, pero ya mezcló alias y documentación de reactivos.',
       };
     }
 
+    const remoteCatalog: DriCatalog = {
+      reagents: reagentsResponse.data.map((row) => ({
+        id: row.id,
+        name: row.name,
+        calibrationMode: row.calibration_mode,
+        readMode: row.read_mode,
+        primaryWavelengthNm: row.primary_wavelength_nm,
+        referenceWavelengthNm: row.reference_wavelength_nm,
+        reportedMethod: row.reported_method,
+        reagentType: row.reagent_type,
+        operationalNote: row.operational_note,
+        preliminaryRisk: row.preliminary_risk,
+        sourceStatus: row.source_status,
+        confidence: row.confidence,
+        sourceType: row.source_type,
+        sourceReference: row.source_reference,
+        metadata: row.metadata || {},
+        referenceCode: row.reference_code ?? null,
+        platforms: row.platforms ?? null,
+        analyticalFamily: row.analytical_family ?? null,
+        reactionKind: row.reaction_kind ?? null,
+        reagentScheme: row.reagent_scheme ?? null,
+        usesR1: row.uses_r1 ?? null,
+        usesR2: row.uses_r2 ?? null,
+        sharedR2Group: row.shared_r2_group ?? null,
+        mechanicalSubsystems: row.mechanical_subsystems ?? null,
+        relatedReagentIds: row.related_reagent_ids ?? null,
+        technicalProfile: row.technical_profile ?? row.metadata ?? {},
+      })),
+      factors: factorsResponse.data.map((row) => ({
+        id: row.id,
+        factorType: row.factor_type,
+        label: row.label,
+        valueText: row.value_text,
+        valueNumeric: row.value_numeric,
+        unit: row.unit,
+        description: row.description,
+        priority: row.priority,
+        sourceStatus: row.source_status,
+        confidence: row.confidence,
+        sourceType: row.source_type,
+        sourceReference: row.source_reference,
+        metadata: row.metadata || {},
+      })),
+      links: linksResponse.data.map((row) => ({
+        reagentId: row.reagent_id,
+        factorId: row.factor_id,
+        relationType: row.relation_type,
+        weight: row.weight,
+        confidence: row.confidence,
+        sourceType: row.source_type,
+        sourceReference: row.source_reference,
+        sourceLabel: row.source_label,
+        note: row.note,
+        metadata: row.metadata || {},
+      })),
+    };
+
     return {
-      catalog: {
-        reagents: reagentsResponse.data.map((row) => ({
-          id: row.id,
-          name: row.name,
-          calibrationMode: row.calibration_mode,
-          readMode: row.read_mode,
-          primaryWavelengthNm: row.primary_wavelength_nm,
-          referenceWavelengthNm: row.reference_wavelength_nm,
-          reportedMethod: row.reported_method,
-          reagentType: row.reagent_type,
-          operationalNote: row.operational_note,
-          preliminaryRisk: row.preliminary_risk,
-          sourceStatus: row.source_status,
-          confidence: row.confidence,
-          sourceType: row.source_type,
-          sourceReference: row.source_reference,
-          metadata: row.metadata || {},
-          referenceCode: row.reference_code ?? null,
-          platforms: row.platforms ?? null,
-          analyticalFamily: row.analytical_family ?? null,
-          reactionKind: row.reaction_kind ?? null,
-          reagentScheme: row.reagent_scheme ?? null,
-          usesR1: row.uses_r1 ?? null,
-          usesR2: row.uses_r2 ?? null,
-          sharedR2Group: row.shared_r2_group ?? null,
-          mechanicalSubsystems: row.mechanical_subsystems ?? null,
-          relatedReagentIds: row.related_reagent_ids ?? null,
-          technicalProfile: row.technical_profile ?? row.metadata ?? {},
-        })),
-        factors: factorsResponse.data.map((row) => ({
-          id: row.id,
-          factorType: row.factor_type,
-          label: row.label,
-          valueText: row.value_text,
-          valueNumeric: row.value_numeric,
-          unit: row.unit,
-          description: row.description,
-          priority: row.priority,
-          sourceStatus: row.source_status,
-          confidence: row.confidence,
-          sourceType: row.source_type,
-          sourceReference: row.source_reference,
-          metadata: row.metadata || {},
-        })),
-        links: linksResponse.data.map((row) => ({
-          reagentId: row.reagent_id,
-          factorId: row.factor_id,
-          relationType: row.relation_type,
-          weight: row.weight,
-          confidence: row.confidence,
-          sourceType: row.source_type,
-          sourceReference: row.source_reference,
-          sourceLabel: row.source_label,
-          note: row.note,
-          metadata: row.metadata || {},
-        })),
-      },
-      sourceLabel: 'Supabase',
+      catalog: enrichCatalogWithReagentIdentity(remoteCatalog, contextRows),
+      sourceLabel: 'Supabase + contexto documental',
       warning: null,
     };
   } catch (error) {
@@ -336,7 +350,7 @@ export async function loadDriCatalog(): Promise<DriCatalogLoadResult> {
       error: error instanceof Error ? error.message : String(error),
     });
     return {
-      catalog: fallbackCatalog,
+      catalog: enrichCatalogWithReagentIdentity(fallbackCatalog, { catalogRows: [], aliasRows: [] }),
       sourceLabel: 'Seed local del workbook',
       warning: 'No se pudo leer Supabase; DRI quedó operando con el seed local del workbook.',
     };

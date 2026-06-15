@@ -94,11 +94,28 @@ const inferFieldMeta = (
   status: DriKnowledgeStatus,
 ) => ({ reference, sourceType, confidence, status });
 
+const CONTAMINATION_KEYWORDS = [
+  'contamin',
+  'carryover',
+  'arrastre',
+  'lavado',
+  'wash',
+  'agua destilada',
+  'water quality',
+  'quality water',
+  'blanco inicial',
+  'blank',
+];
+
+const WATER_KEYWORDS = ['agua', 'water', 'lavado', 'wash', 'destilada', 'conductividad'];
+
 export const buildReagentProfiles = (catalog: DriCatalog): DriReagentProfile[] =>
   catalog.reagents.map((reagent) => {
+    const technicalProfile = (reagent.technicalProfile || {}) as Record<string, unknown>;
+    const ifuFacts = (technicalProfile.ifuFacts || {}) as Record<string, unknown>;
     const reactionKind = inferReactionKind(reagent.reportedMethod || '');
     const scheme = inferScheme(reagent.reagentType || '');
-    const platforms = inferPlatforms(reagent.reportedMethod || '', reagent.reagentType || '');
+    const platforms = reagent.platforms?.length ? reagent.platforms : inferPlatforms(reagent.reportedMethod || '', reagent.reagentType || '');
     const fieldMeta = inferFieldMeta(reagent.sourceReference, reagent.sourceType, reagent.confidence, 'pending');
     const noteText = `${reagent.operationalNote || ''} ${reagent.preliminaryRisk || ''}`;
     const noteNormalized = normalizeText(noteText);
@@ -107,11 +124,25 @@ export const buildReagentProfiles = (catalog: DriCatalog): DriReagentProfile[] =
     const usesR1 = scheme === 'unknown' ? null : true;
     const usesR2 = scheme === 'bireactive' || scheme === 'multireactive' || scheme === 'variable' ? true : scheme === 'monoreactive' ? false : null;
     const relatedReagents = Array.isArray(reagent.relatedReagentIds) ? reagent.relatedReagentIds : [];
+    const contextualNotes = Array.isArray(ifuFacts.notes) ? ifuFacts.notes.filter((item): item is string => typeof item === 'string') : [];
+    const missingFields = Array.isArray(technicalProfile.missingFields)
+      ? technicalProfile.missingFields.filter((item): item is string => typeof item === 'string')
+      : [];
+    const lightSensitive = typeof ifuFacts.lightSensitive === 'boolean' ? ifuFacts.lightSensitive : null;
+    const onboardStabilityHours = typeof ifuFacts.onboardStabilityHours === 'number' ? ifuFacts.onboardStabilityHours : null;
+    const blankDeterioration = typeof ifuFacts.blankDeterioration === 'string' ? ifuFacts.blankDeterioration : null;
+    const ifuStorageMin = typeof ifuFacts.storageTempMinC === 'number' ? ifuFacts.storageTempMinC : null;
+    const ifuStorageMax = typeof ifuFacts.storageTempMaxC === 'number' ? ifuFacts.storageTempMaxC : null;
+    const contaminationSensitive =
+      CONTAMINATION_KEYWORDS.some((keyword) => noteNormalized.includes(keyword)) ||
+      Boolean(blankDeterioration) ||
+      reactionKind === 'turbidimetric';
+    const waterSensitive = WATER_KEYWORDS.some((keyword) => noteNormalized.includes(keyword));
 
     return {
       id: reagent.id,
-      displayName: reagent.name,
-      referenceCode: buildKnowledgeField(reagent.referenceCode || reagent.id, 'estimated', fieldMeta.reference, fieldMeta.sourceType, fieldMeta.confidence),
+      displayName: reagent.displayName || reagent.name,
+      referenceCode: buildKnowledgeField(reagent.displayCode || reagent.referenceCode || reagent.id, 'estimated', fieldMeta.reference, fieldMeta.sourceType, fieldMeta.confidence),
       platforms: buildKnowledgeField(platforms, 'estimated', fieldMeta.reference, fieldMeta.sourceType, fieldMeta.confidence),
       analyticalFamily: buildKnowledgeField(reagent.analyticalFamily || null, reagent.analyticalFamily ? 'validated' : 'pending', fieldMeta.reference, fieldMeta.sourceType, fieldMeta.confidence),
       reactionKind: buildKnowledgeField(reactionKind, 'estimated', fieldMeta.reference, fieldMeta.sourceType, fieldMeta.confidence),
@@ -122,8 +153,14 @@ export const buildReagentProfiles = (catalog: DriCatalog): DriReagentProfile[] =
       primaryWavelengthNm: buildKnowledgeField(reagent.primaryWavelengthNm, reagent.primaryWavelengthNm ? 'validated' : 'pending', fieldMeta.reference, fieldMeta.sourceType, fieldMeta.confidence),
       secondaryWavelengthNm: buildKnowledgeField(reagent.referenceWavelengthNm, reagent.referenceWavelengthNm ? 'validated' : 'pending', fieldMeta.reference, fieldMeta.sourceType, fieldMeta.confidence),
       temperatureSensitive: buildKnowledgeField(temperatureSensitive, temperatureSensitive ? 'estimated' : 'pending', fieldMeta.reference, fieldMeta.sourceType, fieldMeta.confidence),
-      lightSensitive: buildKnowledgeField(null, 'pending', fieldMeta.reference, fieldMeta.sourceType, fieldMeta.confidence),
-      contaminationSensitive: buildKnowledgeField(reactionKind !== 'ise', 'estimated', fieldMeta.reference, fieldMeta.sourceType, fieldMeta.confidence),
+      lightSensitive: buildKnowledgeField(lightSensitive, lightSensitive === null ? 'pending' : 'validated', fieldMeta.reference, fieldMeta.sourceType, fieldMeta.confidence),
+      contaminationSensitive: buildKnowledgeField(
+        contaminationSensitive,
+        contaminationSensitive ? 'estimated' : 'pending',
+        fieldMeta.reference,
+        fieldMeta.sourceType,
+        fieldMeta.confidence,
+      ),
       hemolysisSensitive: buildKnowledgeField(null, 'pending', fieldMeta.reference, fieldMeta.sourceType, fieldMeta.confidence),
       lipemiaSensitive: buildKnowledgeField(null, 'pending', fieldMeta.reference, fieldMeta.sourceType, fieldMeta.confidence),
       ictericiaSensitive: buildKnowledgeField(null, 'pending', fieldMeta.reference, fieldMeta.sourceType, fieldMeta.confidence),
@@ -131,9 +168,9 @@ export const buildReagentProfiles = (catalog: DriCatalog): DriReagentProfile[] =
       reagentR1VolumeUl: buildKnowledgeField(null, 'pending', fieldMeta.reference, fieldMeta.sourceType, fieldMeta.confidence),
       reagentR2VolumeUl: buildKnowledgeField(usesR2 ? null : 0, usesR2 ? 'pending' : 'rule_inferred', fieldMeta.reference, fieldMeta.sourceType, fieldMeta.confidence),
       totalReactionVolumeUl: buildKnowledgeField(null, 'pending', fieldMeta.reference, fieldMeta.sourceType, fieldMeta.confidence),
-      requiresBlank: buildKnowledgeField(reactionKind !== 'ise', 'estimated', fieldMeta.reference, fieldMeta.sourceType, fieldMeta.confidence),
+      requiresBlank: buildKnowledgeField(blankDeterioration ? true : reactionKind !== 'ise', blankDeterioration ? 'validated' : 'estimated', fieldMeta.reference, fieldMeta.sourceType, fieldMeta.confidence),
       requiresFrequentCalibration: buildKnowledgeField(reactionKind === 'kinetic' || scheme === 'bireactive', 'estimated', fieldMeta.reference, fieldMeta.sourceType, fieldMeta.confidence),
-      onboardStabilityHours: buildKnowledgeField(null, 'pending', fieldMeta.reference, fieldMeta.sourceType, fieldMeta.confidence),
+      onboardStabilityHours: buildKnowledgeField(onboardStabilityHours, onboardStabilityHours === null ? 'pending' : 'validated', fieldMeta.reference, fieldMeta.sourceType, fieldMeta.confidence),
       reconstitutedStabilityHours: buildKnowledgeField(null, 'pending', fieldMeta.reference, fieldMeta.sourceType, fieldMeta.confidence),
       recommendedPlacement: buildKnowledgeField(platforms.includes('BA400') ? 'BA400_PENDIENTE_VALIDACION' : null, 'pending', fieldMeta.reference, fieldMeta.sourceType, fieldMeta.confidence),
       analyticalRange: buildKnowledgeField(null, 'pending', fieldMeta.reference, fieldMeta.sourceType, fieldMeta.confidence),
@@ -141,8 +178,16 @@ export const buildReagentProfiles = (catalog: DriCatalog): DriReagentProfile[] =
       allowsAutoDilution: buildKnowledgeField(reactionKind !== 'ise', 'estimated', fieldMeta.reference, fieldMeta.sourceType, fieldMeta.confidence),
       dilutionFactors: buildKnowledgeField(['1:2', '1:4', '1:5'], 'pending', fieldMeta.reference, fieldMeta.sourceType, fieldMeta.confidence),
       technicalNotes: buildKnowledgeField(
-        [reagent.operationalNote, reagent.preliminaryRisk].filter(Boolean) as string[],
-        'estimated',
+        [
+          ...([reagent.operationalNote, reagent.preliminaryRisk].filter(Boolean) as string[]),
+          ...contextualNotes,
+          ...(waterSensitive ? ['Sensibilidad potencial a agua/lavado'] : []),
+          ...(ifuStorageMin !== null || ifuStorageMax !== null
+            ? [`Conservación IFU: ${ifuStorageMin ?? '?'}-${ifuStorageMax ?? '?'} °C`]
+            : []),
+          ...missingFields.map((item) => `Dato pendiente: ${item}`),
+        ],
+        contextualNotes.length || waterSensitive || ifuStorageMin !== null || ifuStorageMax !== null ? 'validated' : 'estimated',
         fieldMeta.reference,
         fieldMeta.sourceType,
         fieldMeta.confidence,

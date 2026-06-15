@@ -7,7 +7,7 @@ export type DriOutcomeType = 'failed' | 'correct';
 export type DriHypothesisStatus = 'generated' | 'reviewed' | 'discarded' | 'confirmed';
 export type DriSeverity = 'low' | 'medium' | 'high' | 'critical';
 export type DriLogLevel = 'info' | 'warning' | 'success' | 'error';
-export type DriNodeType = 'failed_reagent' | 'correct_reagent' | 'factor';
+export type DriNodeType = 'failed_reagent' | 'correct_reagent' | 'factor' | 'ambient_factor';
 export type DriControlLevel = 'level_1' | 'level_2' | 'both' | 'not_applicable';
 export type DriFailureDirection =
   | 'high'
@@ -106,6 +106,9 @@ export interface DriKnowledgeField<T> {
 export interface DriReagent {
   id: string;
   name: string;
+  displayCode?: string | null;
+  displayName?: string | null;
+  canonicalNames?: string[] | null;
   calibrationMode: string | null;
   readMode: string | null;
   primaryWavelengthNm: number | null;
@@ -218,6 +221,8 @@ export interface DriEvidenceArtifact {
 export interface DriQcReference {
   id: string;
   reagentId: string;
+  reagentDisplayCode?: string | null;
+  reagentDisplayName?: string | null;
   productCode: string;
   lot: string | null;
   controlLevel: DriQcReferenceControlLevel;
@@ -333,10 +338,15 @@ export interface DriRelationSignal {
   category:
     | 'wavelength'
     | 'reaction'
+    | 'technique'
+    | 'trend'
     | 'scheme'
     | 'r2'
     | 'temperature'
+    | 'storage'
     | 'water'
+    | 'contamination'
+    | 'blank'
     | 'dilution'
     | 'volume'
     | 'subsystem'
@@ -465,10 +475,13 @@ export interface DriGraphNode {
   label: string;
   subtitle: string;
   type: DriNodeType;
+  clusterKey?: string;
   color: string;
   emphasis: number;
   associationCount: number;
   associationStrength: number;
+  orbit?: 'failed' | 'correct' | 'core' | 'diagnostic' | 'ambient';
+  tier?: number;
 }
 
 export interface DriGraphEdge {
@@ -478,6 +491,8 @@ export interface DriGraphEdge {
   color: string;
   weight: number;
   relationType: string;
+  opacity?: number;
+  arcBias?: number;
 }
 
 export interface DriPersistedCaseResult {

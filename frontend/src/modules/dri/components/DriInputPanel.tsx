@@ -71,6 +71,8 @@ export default function DriInputPanel({
   onApplyQcReference,
   onReset,
   onAnalyze,
+  onLoadDemo,
+  showDemoButton,
   canAnalyze,
   saving,
   onAddServiceTest,
@@ -95,6 +97,8 @@ export default function DriInputPanel({
   onApplyQcReference: (reference: DriQcReference) => void;
   onReset: () => void;
   onAnalyze: () => void;
+  onLoadDemo: () => void;
+  showDemoButton: boolean;
   canAnalyze: boolean;
   saving: boolean;
   onAddServiceTest: () => void;
@@ -117,6 +121,9 @@ export default function DriInputPanel({
           <h3>Captura del caso</h3>
         </div>
         <div className="dri-inline-badges">
+          {showDemoButton ? (
+            <button type="button" className="dri-pill-button" onClick={onLoadDemo}>Demo BA400</button>
+          ) : null}
           <button type="button" className="dri-ghost-button" onClick={onReset}>Reiniciar</button>
         </div>
       </div>
@@ -245,7 +252,7 @@ export default function DriInputPanel({
                   className={`dri-qc-reference-card ${selected ? 'is-active' : ''}`}
                   onClick={() => onApplyQcReference(reference)}
                 >
-                  <strong>{reference.reagentId} · {reference.controlLevel === 'level_1' ? 'Nivel I' : 'Nivel II'}</strong>
+                  <strong>{reference.reagentDisplayCode || reference.reagentId} · {reference.controlLevel === 'level_1' ? 'Nivel I' : 'Nivel II'}</strong>
                   <span>{reference.lot ? `Lote ${reference.lot}` : 'Lote no capturado'} · {reference.unit || 'sin unidad'}</span>
                   <small>Target {formatQcValue(reference.targetValue, reference.unit)} · 1SD {formatQcValue(reference.sd1Low, reference.unit)} a {formatQcValue(reference.sd1High, reference.unit)}</small>
                 </button>
@@ -292,10 +299,10 @@ export default function DriInputPanel({
                 key={reagent.id}
                 type="button"
                 className={`dri-reagent-pill ${failed ? 'is-failed' : correct ? 'is-correct' : ''}`}
-                title={`${reagent.id} · ${reagent.name}`}
+                title={`${reagent.displayCode || reagent.id} · ${reagent.displayName || reagent.name}`}
                 onClick={() => onCycleReagent(reagent.id)}
               >
-                <span className="dri-reagent-pill__code">{reagent.id}</span>
+                <span className="dri-reagent-pill__code">{reagent.displayCode || reagent.id}</span>
               </button>
             );
           })}

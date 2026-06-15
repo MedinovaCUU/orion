@@ -55,7 +55,7 @@ const buildEvidenceRows = (signals: DriRelationSignal[]): DriEvidenceRow[] =>
 
 const buildQcEvidenceRow = (reference: DriQcReference, assessment: DriQcAssessment): DriEvidenceRow => ({
   id: `qc:${reference.id}`,
-  title: `${reference.reagentId} · ${reference.controlLevel === 'level_1' ? 'Nivel I' : 'Nivel II'} · ${reference.unit || 'sin unidad'}`,
+  title: `${reference.reagentDisplayCode || reference.reagentId} · ${reference.controlLevel === 'level_1' ? 'Nivel I' : 'Nivel II'} · ${reference.unit || 'sin unidad'}`,
   category: 'qc',
   failedCoverage: 1,
   correctCoverage: 0,
@@ -177,7 +177,7 @@ export function runDifferentialDiagnosisEngine(form: DriCaseFormState, catalog: 
   if (matchedQcReference && qcAssessment) {
     logger.info('EVIDENCE', 'qc-reference', 'Se aplicó referencia QC del valuesheet al caso.', {
       referenceId: matchedQcReference.id,
-      reagentId: matchedQcReference.reagentId,
+      reagentId: matchedQcReference.reagentDisplayCode || matchedQcReference.reagentId,
       controlLevel: matchedQcReference.controlLevel,
       lot: matchedQcReference.lot,
       targetValue: matchedQcReference.targetValue,

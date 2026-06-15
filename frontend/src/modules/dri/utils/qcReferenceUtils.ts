@@ -77,6 +77,8 @@ export const extractQcReferences = (reagent: DriReagent): DriQcReference[] => {
               row.methodName as string | null,
             ]),
       reagentId: reagent.id,
+      reagentDisplayCode: reagent.displayCode || reagent.referenceCode || reagent.id,
+      reagentDisplayName: reagent.displayName || reagent.name,
       productCode: String(row.productCode || '').trim(),
       lot: row.lot ? String(row.lot).trim() : null,
       controlLevel,
