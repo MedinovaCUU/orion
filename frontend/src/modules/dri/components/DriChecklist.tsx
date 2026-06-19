@@ -19,15 +19,29 @@ export default function DriChecklist({ steps }: { steps: DriChecklistStep[] }) {
           <p><b>Si pasa:</b> {step.onPass}</p>
           <p><b>Si falla:</b> {step.onFail}</p>
           {step.serviceScriptIds?.length ? (
-            <div className="dri-script-stack">
-              {getBa400ServiceScripts(step.serviceScriptIds).map((script) => (
-                <div key={script.id} className="dri-script-chip">
-                  <span className="dri-script-chip__id">FW {script.id}</span>
-                  <strong>{script.actionId}</strong>
-                  <small>{script.description}</small>
+            <details className="dri-script-disclosure" onClick={(event) => event.stopPropagation()}>
+              <summary
+                className="dri-script-disclosure__summary"
+                onClick={(event) => event.stopPropagation()}
+              >
+                <span>Referencia BA400</span>
+                <small>{step.serviceScriptIds.length} script{step.serviceScriptIds.length === 1 ? '' : 's'} internos</small>
+              </summary>
+              <div className="dri-script-disclosure__body">
+                <p className="dri-script-disclosure__note">
+                  Estos códigos son referencia documental del programa de servicio del BA400. No ejecutan ninguna acción desde ORION.
+                </p>
+                <div className="dri-script-stack">
+                  {getBa400ServiceScripts(step.serviceScriptIds).map((script) => (
+                    <div key={script.id} className="dri-script-chip">
+                      <span className="dri-script-chip__id">FW {script.id}</span>
+                      <strong>{script.actionId}</strong>
+                      <small>{script.description}</small>
+                    </div>
+                  ))}
                 </div>
-              ))}
-            </div>
+              </div>
+            </details>
           ) : null}
         </article>
       ))}

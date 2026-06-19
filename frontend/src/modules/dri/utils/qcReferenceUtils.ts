@@ -32,6 +32,107 @@ const buildReferenceId = (parts: Array<string | null | undefined>) =>
     .filter(Boolean)
     .join('::');
 
+const normalizeTextKey = (value: unknown) =>
+  String(value || '')
+    .trim()
+    .toLowerCase()
+    .replace(/\s+/g, ' ');
+
+const normalizeUnitKey = (value: unknown) =>
+  String(value || '')
+    .trim()
+    .toUpperCase()
+    .replace(/Μ/g, 'µ')
+    .replace(/μ/g, 'µ')
+    .replace(/\s+/g, '');
+
+const roundForKey = (value: number | null) => (value === null ? '' : value.toFixed(6));
+
+const buildSemanticReferenceKey = (reference: DriQcReference) =>
+  [
+    reference.reagentId,
+    normalizeTextKey(reference.lot),
+    reference.controlLevel,
+    normalizeTextKey(reference.analyteName),
+    normalizeTextKey(reference.methodName),
+    normalizeUnitKey(reference.unit),
+    roundForKey(reference.targetValue),
+    roundForKey(reference.sd1),
+    roundForKey(reference.sd1Low),
+    roundForKey(reference.sd1High),
+    roundForKey(reference.rejectLow),
+    roundForKey(reference.rejectHigh),
+  ].join('::');
+
+const buildDisplayReferenceKey = (reference: DriQcReference) =>
+  [
+    reference.reagentDisplayCode || reference.reagentId,
+    normalizeTextKey(reference.lot),
+    reference.controlLevel,
+    normalizeTextKey(reference.analyteName),
+    normalizeTextKey(reference.methodName),
+  ].join('::');
+
+const GENERIC_UNIT_PRIORITY = [
+  'U/L',
+  'mg/dL',
+  'g/L',
+  'mg/L',
+  'mmol/L',
+  'µmol/L',
+  'µkat/L',
+  'nkat/L',
+];
+
+const getGenericUnitPriority = (unit: string | null) => {
+  const normalized = normalizeUnitKey(unit);
+  const index = GENERIC_UNIT_PRIORITY.findIndex((candidate) => normalizeUnitKey(candidate) === normalized);
+  return index === -1 ? GENERIC_UNIT_PRIORITY.length : index;
+};
+
+const getPreferredUnitsForReagent = (reagent: DriReagent) => {
+  const technicalProfile = (reagent.technicalProfile || {}) as Record<string, unknown>;
+  const ifuFacts =
+    technicalProfile.ifuFacts && typeof technicalProfile.ifuFacts === 'object'
+      ? (technicalProfile.ifuFacts as Record<string, unknown>)
+      : {};
+
+  const candidates = [
+    ifuFacts.linearityLimitUnit,
+    ifuFacts.detectionLimitUnit,
+    ifuFacts.quantificationLimitUnit,
+    ifuFacts.linearityLimitAlternateUnit,
+    ifuFacts.detectionLimitAlternateUnit,
+    ifuFacts.quantificationLimitAlternateUnit,
+  ]
+    .map((value) => normalizeUnitKey(value))
+    .filter(Boolean);
+
+  return Array.from(new Set(candidates));
+};
+
+const scoreReferenceForDisplay = (reference: DriQcReference, reagent: DriReagent) => {
+  const normalizedUnit = normalizeUnitKey(reference.unit);
+  const preferredUnits = getPreferredUnitsForReagent(reagent);
+  const preferredIndex = preferredUnits.indexOf(normalizedUnit);
+
+  let score = 0;
+  if (preferredIndex === 0) {
+    score += 240;
+  } else if (preferredIndex > 0) {
+    score += 180 - preferredIndex * 20;
+  }
+
+  score += Math.max(0, 50 - getGenericUnitPriority(reference.unit) * 6);
+
+  if (reference.sourceStatus === 'validated') score += 24;
+  if (reference.methodName) score += 10;
+  if (reference.productCode) score += 6;
+  if (reference.matchConfidence === 'validated') score += 8;
+
+  return score;
+};
+
 export const extractQcReferences = (reagent: DriReagent): DriQcReference[] => {
   const technicalProfile = reagent.technicalProfile || {};
   const qcRoot = (technicalProfile.qc_reference || technicalProfile.qcReference) as { references?: unknown } | undefined;
@@ -39,7 +140,7 @@ export const extractQcReferences = (reagent: DriReagent): DriQcReference[] => {
     return [];
   }
 
-  return qcRoot.references.flatMap((candidate) => {
+  const extracted = qcRoot.references.flatMap((candidate) => {
     if (!candidate || typeof candidate !== 'object') {
       return [];
     }
@@ -100,10 +201,21 @@ export const extractQcReferences = (reagent: DriReagent): DriQcReference[] => {
       sourceReference: String(row.sourceReference || 'einfo.bio valuesheet').trim(),
     }];
   });
+
+  const deduped = new Map<string, DriQcReference>();
+  extracted.forEach((reference) => {
+    const key = buildSemanticReferenceKey(reference);
+    const current = deduped.get(key);
+    if (!current || current.sourceStatus !== 'validated') {
+      deduped.set(key, reference);
+    }
+  });
+
+  return Array.from(deduped.values());
 };
 
 const controlLevelMatches = (formLevel: DriCaseFormState['controlLevel'], referenceLevel: DriQcReferenceControlLevel) =>
-  formLevel === 'both' || formLevel === referenceLevel;
+  formLevel === 'both' || formLevel === 'not_applicable' || formLevel === referenceLevel;
 
 export const findQcReferenceById = (catalog: DriCatalog, referenceId: string) => {
   if (!referenceId.trim()) return null;
@@ -114,15 +226,21 @@ export const findQcReferenceById = (catalog: DriCatalog, referenceId: string) =>
   return null;
 };
 
-export const getMatchingQcReferences = (catalog: DriCatalog, form: DriCaseFormState) => {
-  if (!form.failedReagentIds.length || form.controlLevel === 'not_applicable') {
+export const getMatchingQcReferences = (
+  catalog: DriCatalog,
+  form: DriCaseFormState,
+  reagentIdsOverride?: string[],
+) => {
+  const reagentIds = reagentIdsOverride?.length ? reagentIdsOverride : form.failedReagentIds;
+
+  if (!reagentIds.length) {
     return [] as DriQcReference[];
   }
 
   const lotFilter = form.controlLot.trim().toLowerCase();
 
   const allCandidates = catalog.reagents
-    .filter((reagent) => form.failedReagentIds.includes(reagent.id))
+    .filter((reagent) => reagentIds.includes(reagent.id))
     .flatMap((reagent) => extractQcReferences(reagent))
     .filter((reference) => controlLevelMatches(form.controlLevel, reference.controlLevel));
 
@@ -137,17 +255,40 @@ export const getMatchingQcReferences = (catalog: DriCatalog, form: DriCaseFormSt
     .sort((left, right) => {
       const leftLot = left.lot || '';
       const rightLot = right.lot || '';
-      if (left.reagentId !== right.reagentId) return form.failedReagentIds.indexOf(left.reagentId) - form.failedReagentIds.indexOf(right.reagentId);
+      if (left.reagentId !== right.reagentId) return reagentIds.indexOf(left.reagentId) - reagentIds.indexOf(right.reagentId);
       if (left.controlLevel !== right.controlLevel) return left.controlLevel.localeCompare(right.controlLevel);
       if (leftLot !== rightLot) return rightLot.localeCompare(leftLot);
       if ((left.unit || '') !== (right.unit || '')) return (left.unit || '').localeCompare(right.unit || '');
       return (left.methodName || '').localeCompare(right.methodName || '');
     })
     .forEach((reference) => {
-      unique.set(reference.id, reference);
+      const reagent = catalog.reagents.find((candidateReagent) => candidateReagent.id === reference.reagentId);
+      if (!reagent) {
+        unique.set(buildDisplayReferenceKey(reference), reference);
+        return;
+      }
+
+      const key = buildDisplayReferenceKey(reference);
+      const current = unique.get(key);
+      if (!current) {
+        unique.set(key, reference);
+        return;
+      }
+
+      const currentScore = scoreReferenceForDisplay(current, reagent);
+      const nextScore = scoreReferenceForDisplay(reference, reagent);
+      if (nextScore > currentScore) {
+        unique.set(key, reference);
+      }
     });
 
-  return Array.from(unique.values());
+  return Array.from(unique.values()).sort((left, right) => {
+    const leftIndex = reagentIds.indexOf(left.reagentId);
+    const rightIndex = reagentIds.indexOf(right.reagentId);
+    if (leftIndex !== rightIndex) return leftIndex - rightIndex;
+    if (left.controlLevel !== right.controlLevel) return left.controlLevel.localeCompare(right.controlLevel);
+    return (left.reagentDisplayCode || left.reagentId).localeCompare(right.reagentDisplayCode || right.reagentId);
+  });
 };
 
 export const assessQcReference = (reference: DriQcReference | null, obtainedValue: string): DriQcAssessment | null => {

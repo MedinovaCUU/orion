@@ -1,5 +1,5 @@
 import { DRI_REAGENT_CONTEXT } from './driReagentContext.generated';
-import type { DriCatalog, DriReagent } from '../types/dri.types';
+import type { DriCatalog, DriEquipmentModel, DriReagent } from '../types/dri.types';
 
 export interface DriCatalogContextRow {
   codigo: string;
@@ -173,6 +173,103 @@ const normalizePlatformKey = (value: string) => {
   return value;
 };
 
+const inferPlatformsFromContextEntry = (entry: DriContextEntry): DriEquipmentModel[] => {
+  const platforms = new Set<DriEquipmentModel>();
+  Object.entries(entry.productCodesByPlatform || {}).forEach(([platform, codes]) => {
+    if (Array.isArray(codes) && codes.length && ['BA400', 'BA200', 'A15'].includes(platform)) {
+      platforms.add(platform as DriEquipmentModel);
+    }
+  });
+
+  if (!platforms.size) {
+    entry.productEntries.forEach((product) => {
+      const code = String(product.productCode || '');
+      if (code.startsWith('21') || code.startsWith('23')) {
+        platforms.add('BA400');
+        platforms.add('BA200');
+      } else if (code.startsWith('12')) {
+        platforms.add('A15');
+      }
+    });
+  }
+
+  return Array.from(platforms);
+};
+
+const buildSyntheticContextReagents = (
+  existingReagents: DriReagent[],
+  catalogRows: DriCatalogContextRow[],
+): DriReagent[] => {
+  const existingIds = new Set(existingReagents.map((reagent) => reagent.id));
+
+  return Object.entries(DRI_REAGENT_CONTEXT).flatMap(([reagentId, entry]) => {
+    if (existingIds.has(reagentId)) {
+      return [];
+    }
+
+    const spec = IDENTITY_SPECS[reagentId];
+    if (!spec) {
+      return [];
+    }
+
+    const supplementalEntries = buildSupplementalProductEntries(entry, catalogRows, spec);
+    const platforms = inferPlatformsFromContextEntry(entry);
+    if (!platforms.length) {
+      return [];
+    }
+
+    return [{
+      id: reagentId,
+      name: spec.displayName,
+      displayCode: spec.displayCode,
+      displayName: spec.displayName,
+      canonicalNames: [...spec.canonicalNames],
+      calibrationMode: null,
+      readMode: null,
+      primaryWavelengthNm: null,
+      referenceWavelengthNm: null,
+      reportedMethod: null,
+      reagentType: null,
+      operationalNote: null,
+      preliminaryRisk: entry.missingFields.length ? 'Contexto IFU listo; falta programación técnica.' : 'Contexto IFU/documental disponible.',
+      sourceStatus: 'Contexto documental sintético',
+      confidence: 'pending',
+      sourceType: 'ifu',
+      sourceReference: `einfo.bio · ${reagentId}`,
+      metadata: {
+        syntheticFromContext: true,
+      },
+      referenceCode: spec.displayCode,
+      platforms,
+      analyticalFamily: null,
+      reactionKind: null,
+      reagentScheme: null,
+      usesR1: null,
+      usesR2: null,
+      sharedR2Group: null,
+      mechanicalSubsystems: null,
+      relatedReagentIds: null,
+      technicalProfile: {
+        identity: {
+          reagentKey: reagentId,
+          displayCode: spec.displayCode,
+          displayName: spec.displayName,
+          canonicalNames: spec.canonicalNames,
+          aliases: [],
+        },
+        catalogProducts: supplementalEntries,
+        productCodesByPlatform: entry.productCodesByPlatform || {},
+        documentation: entry.documentation || null,
+        ifuFacts: entry.facts || null,
+        missingFields: entry.missingFields || [],
+        qc_reference: {
+          references: entry.qcReferences || [],
+        },
+      },
+    }];
+  });
+};
+
 const mergeQcReferences = (reagent: DriReagent, generatedReferences: ReadonlyArray<Record<string, unknown>>) => {
   const technicalProfile = (reagent.technicalProfile || {}) as Record<string, unknown>;
   const currentRoot =
@@ -277,10 +374,14 @@ export const enrichCatalogWithReagentIdentity = (
     alias_normalizado: normalizeIdentityText(row.alias_normalizado),
     descripcion_normalizada: normalizeIdentityText(row.descripcion_normalizada),
   }));
+  const baseReagents = [
+    ...catalog.reagents,
+    ...buildSyntheticContextReagents(catalog.reagents, normalizedCatalogRows),
+  ];
 
   return {
     ...catalog,
-    reagents: catalog.reagents.map((reagent) => {
+    reagents: baseReagents.map((reagent) => {
       const candidates = buildCandidateSet(reagent);
       const matchedSpecKey = resolveSpecKey(candidates, normalizedAliasRows, normalizedCatalogRows) || reagent.id;
       const matchedSpec = IDENTITY_SPECS[matchedSpecKey];

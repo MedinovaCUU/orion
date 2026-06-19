@@ -193,10 +193,19 @@ export interface DriEvidenceDerivedServiceTest {
   notes: string;
 }
 
+export interface DriEvidenceObservedInterferent {
+  interferent: 'bilirubin' | 'hemolysis' | 'lipemia' | 'ascorbic_acid' | 'other';
+  label: string;
+  value: number;
+  unit: string;
+  sourceExcerpt?: string | null;
+}
+
 export interface DriEvidenceDerivedData {
   signalPatch: Partial<DriCaseSignals>;
   serviceTests: DriEvidenceDerivedServiceTest[];
   observationLines: string[];
+  observedInterferents: DriEvidenceObservedInterferent[];
 }
 
 export interface DriEvidenceArtifact {
@@ -253,6 +262,22 @@ export interface DriQcAssessment {
   explanation: string;
 }
 
+export interface DriMeasurementLimit {
+  value: number;
+  unit: string;
+  alternateValue?: number | null;
+  alternateUnit?: string | null;
+}
+
+export interface DriInterferenceThreshold {
+  interferent: string;
+  label: string;
+  thresholdValue: number;
+  unit: string;
+  effect: 'may_interfere_above' | 'no_interference_below';
+  sourceExcerpt?: string | null;
+}
+
 export interface DriCaseFormState {
   equipmentModel: DriEquipmentModel;
   serialNumber: string;
@@ -297,6 +322,9 @@ export interface DriReagentProfile {
   hemolysisSensitive: DriKnowledgeField<boolean | null>;
   lipemiaSensitive: DriKnowledgeField<boolean | null>;
   ictericiaSensitive: DriKnowledgeField<boolean | null>;
+  detectionLimit: DriKnowledgeField<DriMeasurementLimit | null>;
+  quantificationLimit: DriKnowledgeField<DriMeasurementLimit | null>;
+  linearityLimit: DriKnowledgeField<DriMeasurementLimit | null>;
   sampleVolumeUl: DriKnowledgeField<number | null>;
   reagentR1VolumeUl: DriKnowledgeField<number | null>;
   reagentR2VolumeUl: DriKnowledgeField<number | null>;
@@ -310,6 +338,8 @@ export interface DriReagentProfile {
   linearity: DriKnowledgeField<string | null>;
   allowsAutoDilution: DriKnowledgeField<boolean | null>;
   dilutionFactors: DriKnowledgeField<string[]>;
+  procedureLimitations: DriKnowledgeField<string[]>;
+  interferenceThresholds: DriKnowledgeField<DriInterferenceThreshold[]>;
   technicalNotes: DriKnowledgeField<string[]>;
   mechanicalSubsystems: DriKnowledgeField<DriMechanicalSubsystemId[]>;
   relatedReagents: DriKnowledgeField<string[]>;

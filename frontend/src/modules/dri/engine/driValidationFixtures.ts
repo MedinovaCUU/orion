@@ -102,6 +102,34 @@ export const DRI_VALIDATION_FIXTURES: DriValidationFixture[] = [
     expectedTopHypothesis: 'termostat',
     expectedRuleIds: ['ba400_temperature'],
   },
+  {
+    id: 'case-11',
+    title: 'Fuera de linealidad IFU',
+    input: {
+      ...createBaseForm(),
+      eventType: 'incoherent_result',
+      failedReagentIds: ['CHOL'],
+      correctReagentIds: ['ALB'],
+      selectedQcReferenceId: 'CHOL::18005::0004::I::mg/dL::Colesterol oxidasa/peroxidasa',
+      obtainedValue: '1100',
+      observations: 'Muestra por arriba del rango esperado.',
+    },
+    expectedTopHypothesis: 'linealidad',
+    expectedRuleIds: ['ba400_metrology_range'],
+  },
+  {
+    id: 'case-12',
+    title: 'Interferencia por bilirrubina',
+    input: {
+      ...createBaseForm(),
+      eventType: 'incoherent_result',
+      failedReagentIds: ['CHOL'],
+      correctReagentIds: ['ALB'],
+      observations: 'Bilirrubina total 12 mg/dL en la muestra; el sesgo apareció después.',
+    },
+    expectedTopHypothesis: 'interferencia',
+    expectedRuleIds: ['ba400_procedure_limitation_interference'],
+  },
 ];
 
 export const runDriValidationFixtures = (catalog: DriCatalog) =>

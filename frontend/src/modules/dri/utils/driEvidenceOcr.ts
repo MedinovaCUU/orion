@@ -4,6 +4,7 @@ import type {
   DriCaseSignals,
   DriEvidenceArtifact,
   DriEvidenceDerivedData,
+  DriEvidenceObservedInterferent,
   DriEvidenceDerivedServiceTest,
   DriServiceTestResult,
   DriServiceUtilityId,
@@ -141,7 +142,56 @@ const buildSignalPatch = (normalized: string): Partial<DriCaseSignals> => ({
   waterSensitivePattern: /\bagua destilada\b|\bwater quality\b|\bwash solution\b|\bconductividad\b|\bquality water\b/.test(normalized) || undefined,
 });
 
-const extractObservationLines = (serviceTests: DriEvidenceDerivedServiceTest[], signalPatch: Partial<DriCaseSignals>, rawText: string) => {
+const parseObservedInterferents = (rawText: string): DriEvidenceObservedInterferent[] => {
+  const matches: DriEvidenceObservedInterferent[] = [];
+  const patterns = [
+    {
+      interferent: 'bilirubin',
+      label: 'Bilirrubina',
+      regex: /(?:bilirrubina(?:\s+total)?|bilirubin(?:\s+total)?)\D{0,24}(\d+(?:[.,]\d+)?)\s*(mg\/dl|g\/l|mmol\/l)/gi,
+    },
+    {
+      interferent: 'hemolysis',
+      label: 'Hemólisis / hemoglobina',
+      regex: /(?:hem[oó]lisis|hemolysis|hemoglobina|hemoglobin)\D{0,24}(\d+(?:[.,]\d+)?)\s*(mg\/dl|g\/l|mmol\/l)/gi,
+    },
+    {
+      interferent: 'lipemia',
+      label: 'Lipemia / triglicéridos',
+      regex: /(?:lipemia|triglic[eé]ridos|triglycerides)\D{0,24}(\d+(?:[.,]\d+)?)\s*(mg\/dl|g\/l|mmol\/l)/gi,
+    },
+    {
+      interferent: 'ascorbic_acid',
+      label: 'Ácido ascórbico',
+      regex: /(?:acido\s+ascorbico|ácido\s+ascórbico|ascorbic\s+acid)\D{0,24}(\d+(?:[.,]\d+)?)\s*(mg\/dl|g\/l|mmol\/l)/gi,
+    },
+  ] as const;
+
+  for (const pattern of patterns) {
+    for (const match of rawText.matchAll(pattern.regex)) {
+      const value = Number(match[1].replace(',', '.'));
+      if (!Number.isFinite(value)) {
+        continue;
+      }
+      matches.push({
+        interferent: pattern.interferent,
+        label: pattern.label,
+        value,
+        unit: match[2],
+        sourceExcerpt: compactSpaces(match[0]),
+      });
+    }
+  }
+
+  return unique(matches.map((item) => JSON.stringify(item))).map((item) => JSON.parse(item) as DriEvidenceObservedInterferent);
+};
+
+const extractObservationLines = (
+  serviceTests: DriEvidenceDerivedServiceTest[],
+  signalPatch: Partial<DriCaseSignals>,
+  observedInterferents: DriEvidenceObservedInterferent[],
+  rawText: string,
+) => {
   const lines: string[] = [];
   serviceTests.forEach((test) => {
     lines.push(`${test.label}: ${test.result === 'abnormal' ? 'anormal' : 'normal'}.`);
@@ -158,6 +208,9 @@ const extractObservationLines = (serviceTests: DriEvidenceDerivedServiceTest[], 
   if (signalPatch.waterSensitivePattern) {
     lines.push('OCR detectó referencia a agua/solución de lavado.');
   }
+  observedInterferents.forEach((item) => {
+    lines.push(`${item.label} ${item.value} ${item.unit}.`);
+  });
 
   const normalized = normalizeText(rawText);
   if (normalized.includes('factor de dilucion') || normalized.includes('dilution factor')) {
@@ -182,13 +235,15 @@ const parseOcrText = (rawText: string): DriEvidenceOcrResult => {
     .filter((item): item is DriEvidenceDerivedServiceTest => Boolean(item));
 
   const signalPatch = buildSignalPatch(normalizeText(rawText));
-  const observationLines = extractObservationLines(serviceTests, signalPatch, rawText);
+  const observedInterferents = parseObservedInterferents(rawText);
+  const observationLines = extractObservationLines(serviceTests, signalPatch, observedInterferents, rawText);
   const summary = unique([
     ...serviceTests.map((test) => `${test.label}: ${test.result === 'abnormal' ? 'anormal' : 'normal'}`),
     ...(signalPatch.opticalRejectObserved ? ['Rechazo óptico detectado'] : []),
     ...(signalPatch.intermittentPattern ? ['Patrón intermitente detectado'] : []),
     ...(signalPatch.normalCurvesObserved ? ['Curvas normales detectadas'] : []),
     ...(signalPatch.waterSensitivePattern ? ['Referencia a agua/lavado detectada'] : []),
+    ...observedInterferents.map((item) => `${item.label}: ${item.value} ${item.unit}`),
   ]).slice(0, 6);
 
   return {
@@ -198,6 +253,7 @@ const parseOcrText = (rawText: string): DriEvidenceOcrResult => {
       signalPatch,
       serviceTests,
       observationLines,
+      observedInterferents,
     },
     sourceReference: 'OCR DRI',
   };

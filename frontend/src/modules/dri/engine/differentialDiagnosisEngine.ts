@@ -7,6 +7,7 @@ import { buildHypothesisRecommendation, rankSubsystems } from './recommendationE
 import { resolveProbabilityLabel, scoreHypothesis, type DriScoreContribution } from './scoringEngine';
 import { createDriLogger } from '../utils/driLogging';
 import { assessDilutionPattern } from '../utils/dilutionUtils';
+import { assessProcedureLimitations } from '../utils/procedureLimitations';
 import { assessQcReference, findQcReferenceById } from '../utils/qcReferenceUtils';
 import { normalizeText } from '../utils/relationUtils';
 import type {
@@ -72,6 +73,18 @@ const buildQcEvidenceRow = (reference: DriQcReference, assessment: DriQcAssessme
   evidenceFor: `Target ${reference.targetValue} ${reference.unit || ''} · 1SD ${reference.sd1Low} a ${reference.sd1High} · rechazo ${reference.rejectLow} a ${reference.rejectHigh}.`,
   evidenceAgainst: assessment.explanation,
   source: 'Valuesheet QC',
+});
+
+const buildProcedureEvidenceRow = (finding: ReturnType<typeof assessProcedureLimitations>['findings'][number]): DriEvidenceRow => ({
+  id: `procedure:${finding.id}`,
+  title: finding.title,
+  category: finding.type === 'interference' ? 'control' : 'dilution',
+  failedCoverage: 1,
+  correctCoverage: 0,
+  score: finding.score,
+  evidenceFor: finding.explanation,
+  evidenceAgainst: 'Antes de culpar al hardware, confirmar la limitación del procedimiento y la unidad reportada.',
+  source: finding.source === 'observations' ? 'IFU + observaciones' : 'IFU / rango metrológico',
 });
 
 const createHypothesis = (
@@ -154,10 +167,16 @@ export function runDifferentialDiagnosisEngine(form: DriCaseFormState, catalog: 
   const relationSignals = buildRelationSignals(form, failedProfiles, correctProfiles, factorAggregates, runId, form.equipmentModel, logs);
   const matchedQcReference = form.selectedQcReferenceId ? findQcReferenceById(catalog, form.selectedQcReferenceId) : null;
   const qcAssessment = assessQcReference(matchedQcReference, form.obtainedValue);
-  const evidenceRows =
-    matchedQcReference && qcAssessment
-      ? [buildQcEvidenceRow(matchedQcReference, qcAssessment), ...buildEvidenceRows(relationSignals)]
-      : buildEvidenceRows(relationSignals);
+  const procedureAssessment = assessProcedureLimitations({
+    form,
+    failedProfiles,
+    matchedQcReference,
+  });
+  const evidenceRows = [
+    ...(matchedQcReference && qcAssessment ? [buildQcEvidenceRow(matchedQcReference, qcAssessment)] : []),
+    ...procedureAssessment.findings.map((finding) => buildProcedureEvidenceRow(finding)),
+    ...buildEvidenceRows(relationSignals),
+  ];
   const hypotheses: DriHypothesisResult[] = [];
   const dilutionAssessment = assessDilutionPattern(form.expectedValue, form.obtainedValue);
 
@@ -173,6 +192,9 @@ export function runDifferentialDiagnosisEngine(form: DriCaseFormState, catalog: 
   const abnormalThermostat = hasAbnormalServiceTest(form, 'thermostatting');
   const abnormalWash = hasAbnormalServiceTest(form, 'washing_station');
   const normalPhotometry = hasNormalServiceTest(form, 'photometry');
+  const procedureFindings = procedureAssessment.findings.filter((item) => item.type === 'interference');
+  const metrologyFindings = procedureAssessment.findings.filter((item) => item.type !== 'interference');
+  const strongestProcedureFinding = procedureAssessment.findings[0] || null;
 
   if (matchedQcReference && qcAssessment) {
     logger.info('EVIDENCE', 'qc-reference', 'Se aplicó referencia QC del valuesheet al caso.', {
@@ -184,6 +206,18 @@ export function runDifferentialDiagnosisEngine(form: DriCaseFormState, catalog: 
       obtainedValue: qcAssessment.obtainedValue,
       band: qcAssessment.band,
       zScore: qcAssessment.zScore,
+    });
+  }
+
+  if (procedureAssessment.findings.length) {
+    logger.info('EVIDENCE', 'procedure-limitations', 'El IFU aporta límites metrológicos o de interferencia relevantes para el caso.', {
+      findings: procedureAssessment.findings.map((item) => ({
+        id: item.id,
+        type: item.type,
+        reagentId: item.reagentId,
+        score: item.score,
+        explanation: item.explanation,
+      })),
     });
   }
 
@@ -215,6 +249,9 @@ export function runDifferentialDiagnosisEngine(form: DriCaseFormState, catalog: 
     }
     if (form.eventType === 'absorbance_error' || form.eventType === 'failed_blank') {
       positive.push({ label: 'El tipo de problema es compatible con fotometría/absorbancia.', points: 14 });
+    }
+    if (strongestProcedureFinding) {
+      negative.push({ label: `Existe una explicación analítica más directa: ${strongestProcedureFinding.explanation}`, points: 18 });
     }
     if (!abnormalPhotometry) {
       missingEvidence.push('Resultado de Photometry / baseline');
@@ -257,6 +294,9 @@ export function runDifferentialDiagnosisEngine(form: DriCaseFormState, catalog: 
     if (form.correctReagentIds.length === 0) {
       negative.push({ label: 'Sin pruebas correctas para contrastar R2 contra monoreactivas.', points: 12 });
     }
+    if (strongestProcedureFinding) {
+      negative.push({ label: `La limitación IFU/analítica puede explicar la desviación sin culpar a R2: ${strongestProcedureFinding.title}.`, points: 16 });
+    }
     if (positive.length) {
       hypotheses.push(
         createHypothesis(
@@ -291,6 +331,9 @@ export function runDifferentialDiagnosisEngine(form: DriCaseFormState, catalog: 
     }
     if ((topSignal(relationSignals, 'reaction', (signal) => signal.id === 'reaction:endpoint')?.correctCoverage || 0) > 0.25) {
       positive.push({ label: 'Las técnicas endpoint correctas contrastan contra cinéticas sensibles.', points: 12 });
+    }
+    if (strongestProcedureFinding) {
+      negative.push({ label: `Existe una limitación del procedimiento documentada que puede explicar el sesgo: ${strongestProcedureFinding.title}.`, points: 16 });
     }
     if (!abnormalThermostat) {
       missingEvidence.push('Resultado de Thermostatting');
@@ -333,6 +376,9 @@ export function runDifferentialDiagnosisEngine(form: DriCaseFormState, catalog: 
     if (dilutionAssessment.exactHalfPattern) {
       negative.push({ label: 'La dilución exacta a la mitad sugiere más bien factor no aplicado por software.', points: 18 });
     }
+    if (strongestProcedureFinding) {
+      negative.push({ label: `Hay una explicación analítica/IFU más directa que una falla fluídica: ${strongestProcedureFinding.title}.`, points: 14 });
+    }
     if (!dilutionAssessment.explanation) {
       missingEvidence.push('Resultados de linealidad / dilución 1:2, 1:4, 1:5');
     }
@@ -364,6 +410,9 @@ export function runDifferentialDiagnosisEngine(form: DriCaseFormState, catalog: 
     }
     if (form.eventType === 'dilution_error' || normalizeText(form.observations).includes('lis')) {
       positive.push({ label: 'La observación/tipo de evento sugiere configuración o reporte.', points: 16 });
+    }
+    if (metrologyFindings.some((item) => item.type === 'linearity')) {
+      positive.push({ label: 'El valor capturado rebasa la linealidad IFU y exige revisar dilución/factor.', points: 18 });
     }
     if (abnormalPumps || hasAbnormalServiceTest(form, 'thermostatting')) {
       negative.push({ label: 'Ya existe evidencia mecánica fuerte que compite con un error operativo puro.', points: 18 });
@@ -405,6 +454,9 @@ export function runDifferentialDiagnosisEngine(form: DriCaseFormState, catalog: 
     }
     if (abnormalWash) {
       positive.push({ label: 'Washing station fue capturada como anormal.', points: 26 });
+    }
+    if (procedureFindings.length) {
+      negative.push({ label: 'La interferencia documentada por IFU compite con una causa de carryover puro.', points: 14 });
     }
     if (!abnormalWash) {
       missingEvidence.push('Resultado de Washing station / carryover');
@@ -468,6 +520,84 @@ export function runDifferentialDiagnosisEngine(form: DriCaseFormState, catalog: 
           negative,
           missingEvidence,
           'Antes de tocar hardware, el caso exige descartar control, calibrador, preparación o error operativo.',
+          rule,
+          false,
+        ),
+      );
+    }
+  }
+
+  {
+    const rule = BA400_KNOWLEDGE.rules.find((item) => item.id === 'ba400_procedure_limitation_interference')!;
+    const positive: DriScoreContribution[] = [];
+    const negative: DriScoreContribution[] = [];
+    const missingEvidence: string[] = [];
+
+    procedureFindings.forEach((finding, index) => {
+      positive.push({
+        label: finding.explanation,
+        points: index === 0 ? 30 : 16,
+      });
+    });
+
+    if (!procedureFindings.length && /bilirrubina|hem[oó]lisis|hemoglobina|lipemia|triglic[eé]ridos/i.test(form.observations || '')) {
+      missingEvidence.push('Verificar unidad y umbral IFU del posible interferente');
+    }
+
+    if (abnormalPhotometry || abnormalPumps || abnormalThermostat || abnormalWash) {
+      negative.push({ label: 'Sí existe evidencia funcional anormal en utilidades del equipo que compite con una explicación puramente interferencial.', points: 16 });
+    }
+
+    if (positive.length) {
+      hypotheses.push(
+        createHypothesis(
+          'hyp:procedure-limitation',
+          rule.title,
+          rule.id,
+          rule.targetSubsystem,
+          positive,
+          negative,
+          missingEvidence,
+          'El IFU del reactivo documenta una limitación del procedimiento o interferencia que puede explicar el sesgo analítico.',
+          rule,
+          false,
+        ),
+      );
+    }
+  }
+
+  {
+    const rule = BA400_KNOWLEDGE.rules.find((item) => item.id === 'ba400_metrology_range')!;
+    const positive: DriScoreContribution[] = [];
+    const negative: DriScoreContribution[] = [];
+    const missingEvidence: string[] = [];
+
+    metrologyFindings.forEach((finding, index) => {
+      positive.push({
+        label: finding.explanation,
+        points: index === 0 ? 28 : 14,
+      });
+    });
+
+    if ((form.failedReagentIds.length === 1 || matchedQcReference) && !metrologyFindings.length && form.obtainedValue) {
+      missingEvidence.push('Unidad del resultado capturado para compararla con LOD/LOQ/linealidad IFU');
+    }
+
+    if (abnormalPumps || abnormalPhotometry) {
+      negative.push({ label: 'Existe evidencia funcional anormal que compite con una causa puramente metrológica.', points: 14 });
+    }
+
+    if (positive.length) {
+      hypotheses.push(
+        createHypothesis(
+          'hyp:metrology-range',
+          rule.title,
+          rule.id,
+          rule.targetSubsystem,
+          positive,
+          negative,
+          missingEvidence,
+          'El valor capturado exige revisar rango metrológico, linealidad y dilución antes de concluir una falla del equipo.',
           rule,
           false,
         ),

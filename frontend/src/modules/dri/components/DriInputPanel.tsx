@@ -9,9 +9,12 @@ import type {
   DriCaseFormState,
   DriEvidenceArtifact,
   DriEvidenceArtifactType,
+  DriInterferenceThreshold,
+  DriMeasurementLimit,
   DriQcAssessment,
   DriQcReference,
   DriReagent,
+  DriReagentProfile,
   DriServiceTestInput,
   DriServiceUtilityId,
 } from '../types/dri.types';
@@ -57,6 +60,18 @@ const qcBandLabel = (band: DriQcAssessment['band']) => {
   return 'Sin referencia';
 };
 
+const formatMeasurement = (limit: DriMeasurementLimit | null) => {
+  if (!limit) return 'N/D';
+  const alternate =
+    limit.alternateValue !== null && limit.alternateValue !== undefined && limit.alternateUnit
+      ? ` · ${limit.alternateValue} ${limit.alternateUnit}`
+      : '';
+  return `${limit.value} ${limit.unit}${alternate}`;
+};
+
+const formatInterferenceThreshold = (threshold: DriInterferenceThreshold) =>
+  `${threshold.label} > ${threshold.thresholdValue} ${threshold.unit}`;
+
 export default function DriInputPanel({
   form,
   filteredReagents,
@@ -72,6 +87,7 @@ export default function DriInputPanel({
   onReset,
   onAnalyze,
   onLoadDemo,
+  onLoadFullDemo,
   showDemoButton,
   canAnalyze,
   saving,
@@ -83,6 +99,8 @@ export default function DriInputPanel({
   onRemoveEvidenceItem,
   onSelectEvidenceFile,
   evidenceTasks,
+  selectedReagent,
+  selectedReagentProfile,
 }: {
   form: DriCaseFormState;
   filteredReagents: DriReagent[];
@@ -98,6 +116,7 @@ export default function DriInputPanel({
   onReset: () => void;
   onAnalyze: () => void;
   onLoadDemo: () => void;
+  onLoadFullDemo: () => void;
   showDemoButton: boolean;
   canAnalyze: boolean;
   saving: boolean;
@@ -109,6 +128,8 @@ export default function DriInputPanel({
   onRemoveEvidenceItem: (id: string) => void;
   onSelectEvidenceFile: (id: string, file: File) => void;
   evidenceTasks: Record<string, { busy: boolean; message: string; error: string | null }>;
+  selectedReagent: DriReagent | null;
+  selectedReagentProfile: DriReagentProfile | null;
 }) {
   const handleInput = (field: keyof DriCaseFormState) => (event: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) =>
     onFormChange(field as never, event.target.value as never);
@@ -122,7 +143,10 @@ export default function DriInputPanel({
         </div>
         <div className="dri-inline-badges">
           {showDemoButton ? (
-            <button type="button" className="dri-pill-button" onClick={onLoadDemo}>Demo BA400</button>
+            <>
+              <button type="button" className="dri-pill-button" onClick={onLoadDemo}>Demo BA400</button>
+              <button type="button" className="dri-pill-button" onClick={onLoadFullDemo}>Demo total</button>
+            </>
           ) : null}
           <button type="button" className="dri-ghost-button" onClick={onReset}>Reiniciar</button>
         </div>
@@ -224,7 +248,7 @@ export default function DriInputPanel({
           <div className="dri-qc-strip__head">
             <div>
               <span className="dri-panel__eyebrow">Referencias QC detectadas</span>
-              <h4>Valuesheet disponible para las fallidas</h4>
+              <h4>{form.failedReagentIds.length ? 'Valuesheet disponible para las fallidas' : 'Valuesheet disponible para el reactivo seleccionado'}</h4>
             </div>
             <div className="dri-selection-summary">
               <span className="dri-badge dri-badge--neutral">{qcReferenceOptions.length} referencia(s)</span>
@@ -307,6 +331,67 @@ export default function DriInputPanel({
             );
           })}
         </div>
+
+        {selectedReagent && selectedReagentProfile ? (
+          <div className="dri-reagent-detail">
+            <div className="dri-reagent-detail__head">
+              <div>
+                <span className="dri-panel__eyebrow">Reactivo seleccionado</span>
+                <h5>{selectedReagent.displayCode || selectedReagent.id} · {selectedReagent.displayName || selectedReagent.name}</h5>
+              </div>
+              <div className="dri-inline-badges">
+                {selectedReagentProfile.reactionKind.value !== 'other' ? (
+                  <span className="dri-mini-badge">{selectedReagentProfile.reactionKind.value}</span>
+                ) : null}
+                {selectedReagentProfile.reagentScheme.value !== 'unknown' ? (
+                  <span className="dri-mini-badge">{selectedReagentProfile.reagentScheme.value}</span>
+                ) : null}
+                {selectedReagentProfile.platforms.value.length ? (
+                  <span className="dri-mini-badge">{selectedReagentProfile.platforms.value.join(' · ')}</span>
+                ) : null}
+              </div>
+            </div>
+
+            <div className="dri-reagent-detail__metrics">
+              <div className="dri-reagent-metric">
+                <span>Límite detección</span>
+                <strong>{formatMeasurement(selectedReagentProfile.detectionLimit.value)}</strong>
+              </div>
+              <div className="dri-reagent-metric">
+                <span>Límite cuantificación</span>
+                <strong>{formatMeasurement(selectedReagentProfile.quantificationLimit.value)}</strong>
+              </div>
+              <div className="dri-reagent-metric">
+                <span>Límite linealidad</span>
+                <strong>{formatMeasurement(selectedReagentProfile.linearityLimit.value)}</strong>
+              </div>
+            </div>
+
+            {selectedReagentProfile.interferenceThresholds.value.length ? (
+              <div className="dri-reagent-detail__group">
+                <span className="dri-panel__eyebrow">Interferencias críticas IFU</span>
+                <div className="dri-evidence-summary">
+                  {selectedReagentProfile.interferenceThresholds.value.slice(0, 4).map((threshold) => (
+                    <span key={`${selectedReagent.id}-${threshold.interferent}-${threshold.thresholdValue}`} className="dri-badge dri-badge--neutral">
+                      {formatInterferenceThreshold(threshold)}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            ) : null}
+
+            {selectedReagentProfile.procedureLimitations.value.length ? (
+              <div className="dri-reagent-detail__group">
+                <span className="dri-panel__eyebrow">Limitaciones del procedimiento</span>
+                <ul className="dri-reagent-detail__list">
+                  {selectedReagentProfile.procedureLimitations.value.slice(0, 2).map((item) => (
+                    <li key={`${selectedReagent.id}-${item}`}>{item}</li>
+                  ))}
+                </ul>
+              </div>
+            ) : null}
+          </div>
+        ) : null}
       </div>
 
       <div className="dri-advanced-grid">

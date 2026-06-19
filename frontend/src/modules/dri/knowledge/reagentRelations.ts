@@ -2,8 +2,10 @@ import type {
   DriCatalog,
   DriConfidence,
   DriEquipmentModel,
+  DriInterferenceThreshold,
   DriKnowledgeStatus,
   DriMechanicalSubsystemId,
+  DriMeasurementLimit,
   DriReactionKind,
   DriReagentProfile,
   DriReagentScheme,
@@ -109,6 +111,60 @@ const CONTAMINATION_KEYWORDS = [
 
 const WATER_KEYWORDS = ['agua', 'water', 'lavado', 'wash', 'destilada', 'conductividad'];
 
+const isNumeric = (value: unknown): value is number => typeof value === 'number' && Number.isFinite(value);
+
+const buildMeasurementLimit = (
+  value: unknown,
+  unit: unknown,
+  alternateValue: unknown,
+  alternateUnit: unknown,
+): DriMeasurementLimit | null => {
+  if (!isNumeric(value) || typeof unit !== 'string' || !unit.trim()) {
+    return null;
+  }
+
+  return {
+    value,
+    unit,
+    alternateValue: isNumeric(alternateValue) ? alternateValue : null,
+    alternateUnit: typeof alternateUnit === 'string' && alternateUnit.trim() ? alternateUnit : null,
+  };
+};
+
+const buildMeasurementText = (prefix: string, limit: DriMeasurementLimit | null) => {
+  if (!limit) {
+    return null;
+  }
+  const alternate =
+    limit.alternateValue !== null && limit.alternateValue !== undefined && limit.alternateUnit
+      ? ` (${limit.alternateValue} ${limit.alternateUnit})`
+      : '';
+  return `${prefix}: ${limit.value} ${limit.unit}${alternate}`;
+};
+
+const parseInterferenceThresholds = (value: unknown): DriInterferenceThreshold[] =>
+  Array.isArray(value)
+    ? value
+        .map((item) => {
+          if (!item || typeof item !== 'object') {
+            return null;
+          }
+          const row = item as Record<string, unknown>;
+          if (!isNumeric(row.thresholdValue) || typeof row.unit !== 'string' || !row.unit.trim()) {
+            return null;
+          }
+          return {
+            interferent: typeof row.interferent === 'string' ? row.interferent : 'other',
+            label: typeof row.label === 'string' ? row.label : 'Interferencia',
+            thresholdValue: row.thresholdValue,
+            unit: row.unit,
+            effect: row.effect === 'no_interference_below' ? 'no_interference_below' : 'may_interfere_above',
+            ...(typeof row.sourceExcerpt === 'string' ? { sourceExcerpt: row.sourceExcerpt } : {}),
+          } as DriInterferenceThreshold;
+        })
+        .filter((item): item is DriInterferenceThreshold => item !== null)
+    : [];
+
 export const buildReagentProfiles = (catalog: DriCatalog): DriReagentProfile[] =>
   catalog.reagents.map((reagent) => {
     const technicalProfile = (reagent.technicalProfile || {}) as Record<string, unknown>;
@@ -133,6 +189,31 @@ export const buildReagentProfiles = (catalog: DriCatalog): DriReagentProfile[] =
     const blankDeterioration = typeof ifuFacts.blankDeterioration === 'string' ? ifuFacts.blankDeterioration : null;
     const ifuStorageMin = typeof ifuFacts.storageTempMinC === 'number' ? ifuFacts.storageTempMinC : null;
     const ifuStorageMax = typeof ifuFacts.storageTempMaxC === 'number' ? ifuFacts.storageTempMaxC : null;
+    const detectionLimit = buildMeasurementLimit(
+      ifuFacts.detectionLimitValue,
+      ifuFacts.detectionLimitUnit,
+      ifuFacts.detectionLimitAlternateValue,
+      ifuFacts.detectionLimitAlternateUnit,
+    );
+    const quantificationLimit = buildMeasurementLimit(
+      ifuFacts.quantificationLimitValue,
+      ifuFacts.quantificationLimitUnit,
+      ifuFacts.quantificationLimitAlternateValue,
+      ifuFacts.quantificationLimitAlternateUnit,
+    );
+    const linearityLimit = buildMeasurementLimit(
+      ifuFacts.linearityLimitValue,
+      ifuFacts.linearityLimitUnit,
+      ifuFacts.linearityLimitAlternateValue,
+      ifuFacts.linearityLimitAlternateUnit,
+    );
+    const procedureLimitations = Array.isArray(ifuFacts.procedureLimitations)
+      ? ifuFacts.procedureLimitations.filter((item): item is string => typeof item === 'string')
+      : [];
+    const interferenceThresholds = parseInterferenceThresholds(ifuFacts.interferenceThresholds);
+    const hasHemolysisThreshold = interferenceThresholds.some((item) => item.interferent === 'hemolysis');
+    const hasLipemiaThreshold = interferenceThresholds.some((item) => item.interferent === 'lipemia');
+    const hasBilirubinThreshold = interferenceThresholds.some((item) => item.interferent === 'bilirubin');
     const contaminationSensitive =
       CONTAMINATION_KEYWORDS.some((keyword) => noteNormalized.includes(keyword)) ||
       Boolean(blankDeterioration) ||
@@ -161,9 +242,48 @@ export const buildReagentProfiles = (catalog: DriCatalog): DriReagentProfile[] =
         fieldMeta.sourceType,
         fieldMeta.confidence,
       ),
-      hemolysisSensitive: buildKnowledgeField(null, 'pending', fieldMeta.reference, fieldMeta.sourceType, fieldMeta.confidence),
-      lipemiaSensitive: buildKnowledgeField(null, 'pending', fieldMeta.reference, fieldMeta.sourceType, fieldMeta.confidence),
-      ictericiaSensitive: buildKnowledgeField(null, 'pending', fieldMeta.reference, fieldMeta.sourceType, fieldMeta.confidence),
+      hemolysisSensitive: buildKnowledgeField(
+        hasHemolysisThreshold ? true : null,
+        hasHemolysisThreshold ? 'validated' : 'pending',
+        fieldMeta.reference,
+        fieldMeta.sourceType,
+        fieldMeta.confidence,
+      ),
+      lipemiaSensitive: buildKnowledgeField(
+        hasLipemiaThreshold ? true : null,
+        hasLipemiaThreshold ? 'validated' : 'pending',
+        fieldMeta.reference,
+        fieldMeta.sourceType,
+        fieldMeta.confidence,
+      ),
+      ictericiaSensitive: buildKnowledgeField(
+        hasBilirubinThreshold ? true : null,
+        hasBilirubinThreshold ? 'validated' : 'pending',
+        fieldMeta.reference,
+        fieldMeta.sourceType,
+        fieldMeta.confidence,
+      ),
+      detectionLimit: buildKnowledgeField(
+        detectionLimit,
+        detectionLimit ? 'validated' : 'pending',
+        fieldMeta.reference,
+        fieldMeta.sourceType,
+        fieldMeta.confidence,
+      ),
+      quantificationLimit: buildKnowledgeField(
+        quantificationLimit,
+        quantificationLimit ? 'validated' : 'pending',
+        fieldMeta.reference,
+        fieldMeta.sourceType,
+        fieldMeta.confidence,
+      ),
+      linearityLimit: buildKnowledgeField(
+        linearityLimit,
+        linearityLimit ? 'validated' : 'pending',
+        fieldMeta.reference,
+        fieldMeta.sourceType,
+        fieldMeta.confidence,
+      ),
       sampleVolumeUl: buildKnowledgeField(null, 'pending', fieldMeta.reference, fieldMeta.sourceType, fieldMeta.confidence),
       reagentR1VolumeUl: buildKnowledgeField(null, 'pending', fieldMeta.reference, fieldMeta.sourceType, fieldMeta.confidence),
       reagentR2VolumeUl: buildKnowledgeField(usesR2 ? null : 0, usesR2 ? 'pending' : 'rule_inferred', fieldMeta.reference, fieldMeta.sourceType, fieldMeta.confidence),
@@ -173,15 +293,48 @@ export const buildReagentProfiles = (catalog: DriCatalog): DriReagentProfile[] =
       onboardStabilityHours: buildKnowledgeField(onboardStabilityHours, onboardStabilityHours === null ? 'pending' : 'validated', fieldMeta.reference, fieldMeta.sourceType, fieldMeta.confidence),
       reconstitutedStabilityHours: buildKnowledgeField(null, 'pending', fieldMeta.reference, fieldMeta.sourceType, fieldMeta.confidence),
       recommendedPlacement: buildKnowledgeField(platforms.includes('BA400') ? 'BA400_PENDIENTE_VALIDACION' : null, 'pending', fieldMeta.reference, fieldMeta.sourceType, fieldMeta.confidence),
-      analyticalRange: buildKnowledgeField(null, 'pending', fieldMeta.reference, fieldMeta.sourceType, fieldMeta.confidence),
-      linearity: buildKnowledgeField(null, 'pending', fieldMeta.reference, fieldMeta.sourceType, fieldMeta.confidence),
+      analyticalRange: buildKnowledgeField(
+        detectionLimit && linearityLimit && detectionLimit.unit === linearityLimit.unit
+          ? `${detectionLimit.value} a ${linearityLimit.value} ${linearityLimit.unit}`
+          : null,
+        detectionLimit && linearityLimit && detectionLimit.unit === linearityLimit.unit ? 'validated' : 'pending',
+        fieldMeta.reference,
+        fieldMeta.sourceType,
+        fieldMeta.confidence,
+      ),
+      linearity: buildKnowledgeField(
+        linearityLimit ? `≤ ${linearityLimit.value} ${linearityLimit.unit}` : null,
+        linearityLimit ? 'validated' : 'pending',
+        fieldMeta.reference,
+        fieldMeta.sourceType,
+        fieldMeta.confidence,
+      ),
       allowsAutoDilution: buildKnowledgeField(reactionKind !== 'ise', 'estimated', fieldMeta.reference, fieldMeta.sourceType, fieldMeta.confidence),
       dilutionFactors: buildKnowledgeField(['1:2', '1:4', '1:5'], 'pending', fieldMeta.reference, fieldMeta.sourceType, fieldMeta.confidence),
+      procedureLimitations: buildKnowledgeField(
+        procedureLimitations,
+        procedureLimitations.length ? 'validated' : 'pending',
+        fieldMeta.reference,
+        fieldMeta.sourceType,
+        fieldMeta.confidence,
+      ),
+      interferenceThresholds: buildKnowledgeField(
+        interferenceThresholds,
+        interferenceThresholds.length ? 'validated' : 'pending',
+        fieldMeta.reference,
+        fieldMeta.sourceType,
+        fieldMeta.confidence,
+      ),
       technicalNotes: buildKnowledgeField(
         [
           ...([reagent.operationalNote, reagent.preliminaryRisk].filter(Boolean) as string[]),
           ...contextualNotes,
           ...(waterSensitive ? ['Sensibilidad potencial a agua/lavado'] : []),
+          ...(buildMeasurementText('Límite de detección IFU', detectionLimit) ? [buildMeasurementText('Límite de detección IFU', detectionLimit) as string] : []),
+          ...(buildMeasurementText('Límite de cuantificación IFU', quantificationLimit) ? [buildMeasurementText('Límite de cuantificación IFU', quantificationLimit) as string] : []),
+          ...(buildMeasurementText('Límite de linealidad IFU', linearityLimit) ? [buildMeasurementText('Límite de linealidad IFU', linearityLimit) as string] : []),
+          ...interferenceThresholds.map((item) => `${item.label}: posible interferencia por arriba de ${item.thresholdValue} ${item.unit}`),
+          ...procedureLimitations.slice(0, 2),
           ...(ifuStorageMin !== null || ifuStorageMax !== null
             ? [`Conservación IFU: ${ifuStorageMin ?? '?'}-${ifuStorageMax ?? '?'} °C`]
             : []),

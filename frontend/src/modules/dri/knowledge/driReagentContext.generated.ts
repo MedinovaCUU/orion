@@ -42,8 +42,52 @@ export const DRI_REAGENT_CONTEXT = {
       "onboardStabilityUnit": null,
       "onboardStabilityRaw": null,
       "blankDeterioration": null,
+      "detectionLimitValue": 3.79,
+      "detectionLimitUnit": "U/L",
+      "detectionLimitAlternateValue": 0.063,
+      "detectionLimitAlternateUnit": "μkat/L",
+      "quantificationLimitValue": null,
+      "quantificationLimitUnit": null,
+      "quantificationLimitAlternateValue": null,
+      "quantificationLimitAlternateUnit": null,
+      "linearityLimitValue": 150.0,
+      "linearityLimitUnit": "U/L",
+      "linearityLimitAlternateValue": 2.5,
+      "linearityLimitAlternateUnit": "μkat/L",
+      "interferenceThresholds": [
+        {
+          "interferent": "bilirubin",
+          "label": "Bilirrubina",
+          "thresholdValue": 20.0,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "LIMITACIONES DEL PROCEDIMIENTO   Interferencias: La bilirrubina (hasta 20 mg/dL), la hemólisis (hemoglobina hasta 300 mg/dL) y lipemia  (triglicéridos  hasta  400  mg/dL)  no    interfieren.  Otros  medicamentos  y  sustancias pueden interferir5."
+        },
+        {
+          "interferent": "hemolysis",
+          "label": "Hemólisis / hemoglobina",
+          "thresholdValue": 300.0,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "LIMITACIONES DEL PROCEDIMIENTO   Interferencias: La bilirrubina (hasta 20 mg/dL), la hemólisis (hemoglobina hasta 300 mg/dL) y lipemia  (triglicéridos  hasta  400  mg/dL)  no    interfieren.  Otros  medicamentos  y  sustancias pueden interferir5."
+        },
+        {
+          "interferent": "lipemia",
+          "label": "Lipemia / triglicéridos",
+          "thresholdValue": 400.0,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "LIMITACIONES DEL PROCEDIMIENTO   Interferencias: La bilirrubina (hasta 20 mg/dL), la hemólisis (hemoglobina hasta 300 mg/dL) y lipemia  (triglicéridos  hasta  400  mg/dL)  no    interfieren.  Otros  medicamentos  y  sustancias pueden interferir5."
+        }
+      ],
+      "procedureLimitations": [
+        "La bilirrubina (hasta 20 mg/dL), la hemólisis (hemoglobina hasta 300 mg/dL) y lipemia (triglicéridos hasta 400 mg/dL) no interfieren."
+      ],
       "notes": [
-        "CONSERVACIÓN Y ESTABILIDAD Conservar a 2-8ºC. Los  componentes  son  estables  hasta  la  fecha  de  caducidad  indicada  en  la  etiqueta  del  kit, siempre que se conserven bien cerrados y se evite la contaminación durante su uso. Estabilidad  a  bordo:  Los  reactivos  abiertos  y  conservados  en  el  compartimento  refrigerado  del analizador son estables 2  meses. Indicaciones de deterioro: Absorbancia del blanco inferior al límite indicado en “Parámetros de la prueba”."
+        "CONSERVACIÓN Y ESTABILIDAD Conservar a 2-8ºC. Los  componentes  son  estables  hasta  la  fecha  de  caducidad  indicada  en  la  etiqueta  del  kit, siempre que se conserven bien cerrados y se evite la contaminación durante su uso. Estabilidad  a  bordo:  Los  reactivos  abiertos  y  conservados  en  el  compartimento  refrigerado  del analizador son estables 2  meses. Indicaciones de deterioro: Absorbancia del blanco inferior al límite indicado en “Parámetros de la prueba”.",
+        "CARACTERÍSTICAS METROLÓGICAS Las prestaciones metrológicas que se describen a continuación, han sido obtenidas utilizando un analizador BA400 y siguiendo las guías del Clinical & Laboratory Standards Institute (CLSI).   Límite de detección: 3,79 U/L = 0,063 μkat/L.",
+        "  Límite de linealidad: 150 U/L = 2,50 μkat/L.",
+        "LIMITACIONES DEL PROCEDIMIENTO   Interferencias: La bilirrubina (hasta 20 mg/dL), la hemólisis (hemoglobina hasta 300 mg/dL) y lipemia  (triglicéridos  hasta  400  mg/dL)  no    interfieren.  Otros  medicamentos  y  sustancias pueden interferir5."
       ]
     },
     "qcReferences": [
@@ -266,9 +310,28 @@ export const DRI_REAGENT_CONTEXT = {
       "onboardStabilityUnit": null,
       "onboardStabilityRaw": null,
       "blankDeterioration": "high_blank_absorbance",
+      "detectionLimitValue": 0.8,
+      "detectionLimitUnit": "U/L",
+      "detectionLimitAlternateValue": 13.0,
+      "detectionLimitAlternateUnit": "nkat/L",
+      "quantificationLimitValue": null,
+      "quantificationLimitUnit": null,
+      "quantificationLimitAlternateValue": null,
+      "quantificationLimitAlternateUnit": null,
+      "linearityLimitValue": 150.0,
+      "linearityLimitUnit": "U/L",
+      "linearityLimitAlternateValue": 2500.0,
+      "linearityLimitAlternateUnit": "nkat/L",
+      "interferenceThresholds": [],
+      "procedureLimitations": [
+        "La lipemia (triglicéridos < 5 g/L) no interfiere. La bilirrubina ( 2,5 mg/dL) Reactivo de Trabajo: Añadir al Reactivo B1 10 mL de Reactivo AT (FAC total) o de Reactivo AI (FAC no prostática) y agitar hasta disolución completa. A continuación trasvasar esta disolución al frasco de Reactivo B2 y agitar hasta disolución completa. Estable 10 días a 2-8ºC. interfiere."
+      ],
       "notes": [
         "CONSERVAR A 2-8ºC",
-        " Reactivos: Presencia de partículas, turbidez, absorbancia del blanco superior a 0,450 a 405 nm"
+        " Reactivos: Presencia de partículas, turbidez, absorbancia del blanco superior a 0,450 a 405 nm",
+        " Límite de detección: 0,8 U/L = 13 nkat/L",
+        " Límite de linealidad: 150 U/L = 2500 nkat/L. Cuando se obtengan valores superiores, diluir la",
+        " Interferencias:  La  lipemia  (triglicéridos  <  5  g/L)  no  interfiere.  La    bilirrubina  (  2,5  mg/dL)"
       ]
     },
     "qcReferences": [
@@ -494,7 +557,8 @@ export const DRI_REAGENT_CONTEXT = {
       }
     ],
     "missingFields": [
-      "Sin estabilidad a bordo"
+      "Sin estabilidad a bordo",
+      "Sin umbrales de interferencia"
     ]
   },
   "ADA": {
@@ -552,13 +616,35 @@ export const DRI_REAGENT_CONTEXT = {
       "onboardStabilityUnit": null,
       "onboardStabilityRaw": null,
       "blankDeterioration": "high_blank_absorbance",
+      "detectionLimitValue": 2.96,
+      "detectionLimitUnit": "U/L",
+      "detectionLimitAlternateValue": null,
+      "detectionLimitAlternateUnit": null,
+      "quantificationLimitValue": null,
+      "quantificationLimitUnit": null,
+      "quantificationLimitAlternateValue": null,
+      "quantificationLimitAlternateUnit": null,
+      "linearityLimitValue": 150.0,
+      "linearityLimitUnit": "U/L",
+      "linearityLimitAlternateValue": null,
+      "linearityLimitAlternateUnit": null,
+      "interferenceThresholds": [],
+      "procedureLimitations": [
+        " Intervenciones: La hemólisis o separación en suero prolongada pueden causar resultados más altos debido a la concentración de adenosina desaminasa elevada en los eritrocitos. La lipidemia (triglicéridos < 500 mg/dL) y bilirrubina (< 20 mg/dL) no interfieren. Pueden intervenir otros fármacos y sustancias5. BIBLIOGRAFÍA 1. Bota A, Gella FJ, Canalias F. Optimization of adenosine deaminase assay by response surface methodology. Clin Chim Acta 2000; 290: 145-157. ATENCIÓN: H302: Nocivo en caso de ingestión. EUH031: En contacto con ácidos libera gases tóxicos. P301+P312: EN CASO DE INGESTIÓN: Llamar a un CENTRO DE INFORMACIÓN TOXICOLÓGICA o a un médico si se encuentra mal. P330: Enjuagarse la boca. 2. Slaats EH, Asberg EGMT, van Keimpema ARJ, Kruijswijk H. A continuous method for the estimation of adenosine deaminase catalytic concentration in pleural effusions with a Hitachi 705 discrete analyser. J Clin Chem Clin Biochem 1985; 23: 677-682. 3. Villena V, Navarro-Gonzálvez JA, García-Benayas C, Manzanos JA, Echave J, López-Encuentra A, Arenas- Barbero J. Rapid automated determination of adenosine deaminase and lysozyme for differentiating tuberculous and nontuberculous pleural effusions. Clin Chem 1996; 42:218-221. 4. Collazos J, España P, Mayo J, Martínez E, Izquierdo F. Sequential evaluation of serum adenosine deaminase in patients treated for tuberculosis. CHEST 1998; 114:432-435. 5. Young DS. Effects of drugs on clinical laboratory tests, 5th ed. AACC Press, 2000. 6. Kobayashi F, Ikoda T, Marumo F, Sato C. Adenosine deaminase isoenzymes in liver disease. Am J CONSERVACIÓN Y ESTABILIDAD Conservar a 2-8ºC. Los componentes son estables hasta la fecha de caducidad indicada en la etiqueta del kit, siempre que se conserven bien cerrados y se evite la contaminación durante su uso. Estabilidad a bordo: Los reactivos abiertos y conservados en el compartimento refrigerado del analizador son estables 21 días. Indicaciones de deterioro: Absorbancia del blanco superior al límite indicado en “Parámetros de la prueba”. Gastroenterol 1993; 88:226-271. PARÁMETROS DE LA PRUEBA R1: Utilizar el Reactivo de trabajo. BA200 BA400 ADVERTENCIAS Y PRECAUCIONES Ejerza las precauciones habituales requeridas para manipular todos los reactivos de laboratorio. Las fichas de seguridad están disponibles para el usuario bajo petición. La eliminación de todos los residuos debe ser conforme a las normativas locales. Cualquier incidente grave que pueda ocurrir en relación al dispositivo debe ser comunicado a BioSystems S.A. GENERAL MATERIALES ADICIONALES REQUERIDOS (NO SUMINISTRADOS) S. Patrón de ADA (BioSystems Cod. 18052). ADA bovina, Tris 50 mmol/L. La concentración de ADA viene indicada en la etiqueta del vial. El valor de ADA es trazable al material de referència BCR-647 (IRMM). Reconstituir con 1,0 mL de agua destilada. Los componentes del material reconstituido son estables hasta 7 días a 2-8ºC y 2 meses a -20ºC. Nombre Nombre corto Tipo muestra Modo de análisis Unidad Decimales Tipo de reacción ADA ADA suero / LIQ cinética monoreactiva U/L 1 decreciente ADA ADA suero / LIQ cinética monoreactiva U/L 1 decreciente PREPARACIÓN DE LOS REACTIVOS PROCEDIMIENTO Reactivo de Trabajo: Añadir 4 mL de Reactivo B en una botella de Reactivo A. Agitar suavemente. Estable 30 días a 2-8ºC."
+      ],
       "notes": [
-        "CONSERVACIÓN Y ESTABILIDAD Conservar a 2-8ºC. Los  componentes  son  estables  hasta  la  fecha  de  caducidad  indicada  en  la  etiqueta  del  kit, siempre que se conserven bien cerrados y se evite la contaminación durante su uso. Estabilidad  a  bordo:  Los  reactivos  abiertos  y  conservados  en  el  compartimento  refrigerado  del analizador son estables 21 días. Indicaciones de deterioro: Absorbancia del blanco superior al límite indicado en “Parámetros de la prueba”."
+        "CONSERVACIÓN Y ESTABILIDAD Conservar a 2-8ºC. Los  componentes  son  estables  hasta  la  fecha  de  caducidad  indicada  en  la  etiqueta  del  kit, siempre que se conserven bien cerrados y se evite la contaminación durante su uso. Estabilidad  a  bordo:  Los  reactivos  abiertos  y  conservados  en  el  compartimento  refrigerado  del analizador son estables 21 días. Indicaciones de deterioro: Absorbancia del blanco superior al límite indicado en “Parámetros de la prueba”.",
+        "CARACTERÍSTICAS METROLÓGICAS Las prestaciones metrológicas que se describen a continuación, han sido obtenidas utilizando un analizador BA400 y siguiendo las guías del Clinical & Laboratory Standards Institute (CLSI).   Límite de detección: 2,96 U/L = 0,049 kat/L.   Límite  de  linealidad:  150  U/L  =  2,5  kat/L.  Para  muestras  con  valores  superiores,  diluir manualmente  o  consultar  los  Parámetros  de  la  prueba  para  dilución  automática  (estas muestras se diluirán con el mismo factor de dilución).",
+        "Límite de linealidad: 150 U/L",
+        "LIMITACIONES DEL PROCEDIMIENTO   Intervenciones:  La  hemólisis  o  separación  en  suero  prolongada  pueden  causar  resultados más altos debido a la concentración de adenosina desaminasa elevada en los  eritrocitos. La lipidemia (triglicéridos < 500 mg/dL) y bilirrubina (< 20 mg/dL) no interfieren. Pueden intervenir otros fármacos y sustancias5.",
+        "CONSERVACIÓN Conservar a 2-8ºC. Los reactivos son estables hasta la fecha de caducidad indicada en la etiqueta, siempre que se conserven bien cerrados y se evite la contaminación durante su uso.",
+        "Límite absorbancia blanco Límite blanco cinético Limite de linealidad"
       ]
     },
     "qcReferences": [],
     "missingFields": [
-      "Sin estabilidad a bordo"
+      "Sin estabilidad a bordo",
+      "Sin umbrales de interferencia"
     ]
   },
   "AGLU": {
@@ -603,12 +689,29 @@ export const DRI_REAGENT_CONTEXT = {
       "onboardStabilityUnit": null,
       "onboardStabilityRaw": null,
       "blankDeterioration": null,
+      "detectionLimitValue": null,
+      "detectionLimitUnit": null,
+      "detectionLimitAlternateValue": null,
+      "detectionLimitAlternateUnit": null,
+      "quantificationLimitValue": null,
+      "quantificationLimitUnit": null,
+      "quantificationLimitAlternateValue": null,
+      "quantificationLimitAlternateUnit": null,
+      "linearityLimitValue": null,
+      "linearityLimitUnit": null,
+      "linearityLimitAlternateValue": null,
+      "linearityLimitAlternateUnit": null,
+      "interferenceThresholds": [],
+      "procedureLimitations": [],
       "notes": []
     },
     "qcReferences": [],
     "missingFields": [
       "Sin temperatura de conservación",
-      "Sin estabilidad a bordo"
+      "Sin estabilidad a bordo",
+      "Sin límite de linealidad",
+      "Sin LOD/LOQ estructurado",
+      "Sin umbrales de interferencia"
     ]
   },
   "ALB": {
@@ -704,8 +807,103 @@ export const DRI_REAGENT_CONTEXT = {
       "onboardStabilityUnit": "months",
       "onboardStabilityRaw": 2.0,
       "blankDeterioration": "high_blank_absorbance",
+      "detectionLimitValue": 1.43,
+      "detectionLimitUnit": "g/L",
+      "detectionLimitAlternateValue": null,
+      "detectionLimitAlternateUnit": null,
+      "quantificationLimitValue": 3.72,
+      "quantificationLimitUnit": "g/L",
+      "quantificationLimitAlternateValue": null,
+      "quantificationLimitAlternateUnit": null,
+      "linearityLimitValue": 70.0,
+      "linearityLimitUnit": "g/L",
+      "linearityLimitAlternateValue": null,
+      "linearityLimitAlternateUnit": null,
+      "interferenceThresholds": [
+        {
+          "interferent": "bilirubin",
+          "label": "Bilirrubina",
+          "thresholdValue": 30.0,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "LIMITACIONES DEL PROCEDIMIENTO −  Interferencias: La bilirrubina (hasta 30 mg/dL), la hemólisis (hemoglobina hasta 400 mg/dL) y lipemia  (triglicéridos  hasta  655  mg/dL)  no    interfieren.  Otros  medicamentos  y  sustancias pueden interferir4."
+        },
+        {
+          "interferent": "hemolysis",
+          "label": "Hemólisis / hemoglobina",
+          "thresholdValue": 400.0,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "LIMITACIONES DEL PROCEDIMIENTO −  Interferencias: La bilirrubina (hasta 30 mg/dL), la hemólisis (hemoglobina hasta 400 mg/dL) y lipemia  (triglicéridos  hasta  655  mg/dL)  no    interfieren.  Otros  medicamentos  y  sustancias pueden interferir4."
+        },
+        {
+          "interferent": "lipemia",
+          "label": "Lipemia / triglicéridos",
+          "thresholdValue": 655.0,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "LIMITACIONES DEL PROCEDIMIENTO −  Interferencias: La bilirrubina (hasta 30 mg/dL), la hemólisis (hemoglobina hasta 400 mg/dL) y lipemia  (triglicéridos  hasta  655  mg/dL)  no    interfieren.  Otros  medicamentos  y  sustancias pueden interferir4."
+        },
+        {
+          "interferent": "bilirubin",
+          "label": "Bilirrubina",
+          "thresholdValue": 30.0,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "LIMITACIONES DEL PROCEDIMIENTO −  Interferencias: La bilirrubina (hasta 30 mg/dL), la hemólisis (hemoglobina hasta 300 mg/dL) y lipemia  (triglicéridos  hasta  325  mg/dL)  no    interfieren.  Otros  medicamentos  y  sustancias pueden interferir4."
+        },
+        {
+          "interferent": "hemolysis",
+          "label": "Hemólisis / hemoglobina",
+          "thresholdValue": 300.0,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "LIMITACIONES DEL PROCEDIMIENTO −  Interferencias: La bilirrubina (hasta 30 mg/dL), la hemólisis (hemoglobina hasta 300 mg/dL) y lipemia  (triglicéridos  hasta  325  mg/dL)  no    interfieren.  Otros  medicamentos  y  sustancias pueden interferir4."
+        },
+        {
+          "interferent": "lipemia",
+          "label": "Lipemia / triglicéridos",
+          "thresholdValue": 325.0,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "LIMITACIONES DEL PROCEDIMIENTO −  Interferencias: La bilirrubina (hasta 30 mg/dL), la hemólisis (hemoglobina hasta 300 mg/dL) y lipemia  (triglicéridos  hasta  325  mg/dL)  no    interfieren.  Otros  medicamentos  y  sustancias pueden interferir4."
+        },
+        {
+          "interferent": "bilirubin",
+          "label": "Bilirrubina",
+          "thresholdValue": 30.0,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "LIMITACIONES DEL PROCEDIMIENTO   Interferencias: La bilirrubina (hasta 30 mg/dL), la hemólisis (hemoglobina hasta 400 mg/dL) y lipemia  (triglicéridos  hasta  655  mg/dL)  no    interfieren.  Otros  medicamentos  y  sustancias pueden interferir4."
+        },
+        {
+          "interferent": "hemolysis",
+          "label": "Hemólisis / hemoglobina",
+          "thresholdValue": 400.0,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "LIMITACIONES DEL PROCEDIMIENTO   Interferencias: La bilirrubina (hasta 30 mg/dL), la hemólisis (hemoglobina hasta 400 mg/dL) y lipemia  (triglicéridos  hasta  655  mg/dL)  no    interfieren.  Otros  medicamentos  y  sustancias pueden interferir4."
+        },
+        {
+          "interferent": "lipemia",
+          "label": "Lipemia / triglicéridos",
+          "thresholdValue": 655.0,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "LIMITACIONES DEL PROCEDIMIENTO   Interferencias: La bilirrubina (hasta 30 mg/dL), la hemólisis (hemoglobina hasta 400 mg/dL) y lipemia  (triglicéridos  hasta  655  mg/dL)  no    interfieren.  Otros  medicamentos  y  sustancias pueden interferir4."
+        }
+      ],
+      "procedureLimitations": [
+        "La bilirrubina (hasta 30 mg/dL), la hemólisis (hemoglobina hasta 400 mg/dL) y lipemia (triglicéridos hasta 655 mg/dL) no interfieren.",
+        "La bilirrubina (hasta 30 mg/dL), la hemólisis (hemoglobina hasta 300 mg/dL) y lipemia (triglicéridos hasta 325 mg/dL) no interfieren."
+      ],
       "notes": [
-        "CONSERVACIÓN Y ESTABILIDAD Conservar a 2-8 ºC. Los  componentes  son  estables  hasta  la  fecha  de  caducidad  indicada  en  la  etiqueta  del  kit, siempre que se conserven bien cerrados y se evite la contaminación durante su uso. Estabilidad a bordo:  Los reactivos abiertos y conservados  en el compartimento refrigerado  del analizador son estables 2  meses. Indicaciones de deterioro: Absorbancia del blanco superior al límite indicado en “Parámetros de la prueba”."
+        "CONSERVACIÓN Y ESTABILIDAD Conservar a 2-8 ºC. Los  componentes  son  estables  hasta  la  fecha  de  caducidad  indicada  en  la  etiqueta  del  kit, siempre que se conserven bien cerrados y se evite la contaminación durante su uso. Estabilidad a bordo:  Los reactivos abiertos y conservados  en el compartimento refrigerado  del analizador son estables 2  meses. Indicaciones de deterioro: Absorbancia del blanco superior al límite indicado en “Parámetros de la prueba”.",
+        "−  Límite de detección: 1,43 g/L. Límite de cuantificación: 3,72 g/L. −  Límite de linealidad: 70 g/L. Intervalo de medición: 3,72 - 70 g/L. Para muestras con valores superiores,  diluir  manualmente  o  consultar  los  Parámetros  de  la  prueba  para  dilución automática (estas muestras se diluirán con el mismo factor de dilución).",
+        "LIMITACIONES DEL PROCEDIMIENTO −  Interferencias: La bilirrubina (hasta 30 mg/dL), la hemólisis (hemoglobina hasta 400 mg/dL) y lipemia  (triglicéridos  hasta  655  mg/dL)  no    interfieren.  Otros  medicamentos  y  sustancias pueden interferir4.",
+        "CONSERVACIÓN Y ESTABILIDAD Conservar a 2-8ºC. Los  componentes  son  estables  hasta  la  fecha  de  caducidad  indicada  en  la  etiqueta  del  kit, siempre que se conserven bien cerrados y se evite la contaminación durante su uso. Estabilidad a bordo: Los reactivos abiertos y conservados en el compartimento refrigerado del analizador son estables 2  meses. Indicaciones de deterioro: Absorbancia del blanco superior al límite indicado en “Parámetros de la prueba”.",
+        "CARACTERÍSTICAS METROLÓGICAS Las prestaciones metrológicas que se describen a continuación, han sido obtenidas utilizando un analizador A25. Los resultados son similares a los del A15. −  Límite de detección: 1,1 g/L. −  Límite de linealidad: 70 g/L. −  Precisión:",
+        "LIMITACIONES DEL PROCEDIMIENTO −  Interferencias: La bilirrubina (hasta 30 mg/dL), la hemólisis (hemoglobina hasta 300 mg/dL) y lipemia  (triglicéridos  hasta  325  mg/dL)  no    interfieren.  Otros  medicamentos  y  sustancias pueden interferir4."
       ]
     },
     "qcReferences": [
@@ -1111,8 +1309,55 @@ export const DRI_REAGENT_CONTEXT = {
       "onboardStabilityUnit": "months",
       "onboardStabilityRaw": 2.0,
       "blankDeterioration": "high_blank_absorbance",
+      "detectionLimitValue": 15.9,
+      "detectionLimitUnit": "U/L",
+      "detectionLimitAlternateValue": null,
+      "detectionLimitAlternateUnit": null,
+      "quantificationLimitValue": null,
+      "quantificationLimitUnit": null,
+      "quantificationLimitAlternateValue": null,
+      "quantificationLimitAlternateUnit": null,
+      "linearityLimitValue": 1200.0,
+      "linearityLimitUnit": "U/L",
+      "linearityLimitAlternateValue": null,
+      "linearityLimitAlternateUnit": null,
+      "interferenceThresholds": [
+        {
+          "interferent": "bilirubin",
+          "label": "Bilirrubina",
+          "thresholdValue": 30.0,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "LIMITACIONES DEL PROCEDIMIENTO −  Interferencias: la bilirrubina (hasta 30 mg/dL), la hemólisis (hemoglobina hasta 500 mg/dL) y lipemia  (triglicéridos  hasta  1625  mg/dL)  no  interfieren.  Otros  medicamentos  y  sustancias pueden interferir5."
+        },
+        {
+          "interferent": "hemolysis",
+          "label": "Hemólisis / hemoglobina",
+          "thresholdValue": 500.0,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "LIMITACIONES DEL PROCEDIMIENTO −  Interferencias: la bilirrubina (hasta 30 mg/dL), la hemólisis (hemoglobina hasta 500 mg/dL) y lipemia  (triglicéridos  hasta  1625  mg/dL)  no  interfieren.  Otros  medicamentos  y  sustancias pueden interferir5."
+        },
+        {
+          "interferent": "lipemia",
+          "label": "Lipemia / triglicéridos",
+          "thresholdValue": 1625.0,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "LIMITACIONES DEL PROCEDIMIENTO −  Interferencias: la bilirrubina (hasta 30 mg/dL), la hemólisis (hemoglobina hasta 500 mg/dL) y lipemia  (triglicéridos  hasta  1625  mg/dL)  no  interfieren.  Otros  medicamentos  y  sustancias pueden interferir5."
+        }
+      ],
+      "procedureLimitations": [
+        "la bilirrubina (hasta 30 mg/dL), la hemólisis (hemoglobina hasta 500 mg/dL) y lipemia (triglicéridos hasta 1625 mg/dL) no interfieren.",
+        "La bilirrubina (< 20 mg/dL) y la lipemia (trigliceridos < 10 g/L) no interfieren. La hemoglobina (> 2,5 g/L) interfiere."
+      ],
       "notes": [
-        "CONSERVACIÓN Y ESTABILIDAD Conservar a 2-8 ºC. Los  componentes  son  estables  hasta  la  fecha  de  caducidad  indicada  en  la  etiqueta  del  kit, siempre que se conserven bien cerrados y se evite la contaminación durante su uso. Estabilidad a bordo:  Los reactivos abiertos y conservados  en el compartimento refrigerado  del analizador son estables 2 meses. Indicaciones de deterioro: Absorbancia del blanco superior al límite indicado en “Parámetros de la prueba”."
+        "CONSERVACIÓN Y ESTABILIDAD Conservar a 2-8 ºC. Los  componentes  son  estables  hasta  la  fecha  de  caducidad  indicada  en  la  etiqueta  del  kit, siempre que se conserven bien cerrados y se evite la contaminación durante su uso. Estabilidad a bordo:  Los reactivos abiertos y conservados  en el compartimento refrigerado  del analizador son estables 2 meses. Indicaciones de deterioro: Absorbancia del blanco superior al límite indicado en “Parámetros de la prueba”.",
+        "CARACTERÍSTICAS METROLÓGICAS Las prestaciones metrológicas que se describen a continuación, han sido obtenidas utilizando un analizador BA400 y siguiendo las guías del Clinical & Laboratory Standards Institute (CLSI). −  Límite de detección: 15,9 U/L = 0,26 kat/L.",
+        "−  Límite de linealidad: 1200 U/L = 20 kat/L.",
+        "LIMITACIONES DEL PROCEDIMIENTO −  Interferencias: la bilirrubina (hasta 30 mg/dL), la hemólisis (hemoglobina hasta 500 mg/dL) y lipemia  (triglicéridos  hasta  1625  mg/dL)  no  interfieren.  Otros  medicamentos  y  sustancias pueden interferir5.",
+        "CONSERVAR A 2-8ºC",
+        "  Reactivos: Presencia de partículas, turbidez, absorbancia del blanco superior a 1,200 a 405"
       ]
     },
     "qcReferences": [
@@ -1394,8 +1639,52 @@ export const DRI_REAGENT_CONTEXT = {
       "onboardStabilityUnit": null,
       "onboardStabilityRaw": null,
       "blankDeterioration": "high_blank_absorbance",
+      "detectionLimitValue": 8.7,
+      "detectionLimitUnit": "U/L",
+      "detectionLimitAlternateValue": null,
+      "detectionLimitAlternateUnit": null,
+      "quantificationLimitValue": null,
+      "quantificationLimitUnit": null,
+      "quantificationLimitAlternateValue": null,
+      "quantificationLimitAlternateUnit": null,
+      "linearityLimitValue": 900.0,
+      "linearityLimitUnit": "U/L",
+      "linearityLimitAlternateValue": null,
+      "linearityLimitAlternateUnit": null,
+      "interferenceThresholds": [
+        {
+          "interferent": "bilirubin",
+          "label": "Bilirrubina",
+          "thresholdValue": 20.0,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "LIMITACIONES DEL PROCEDIMIENTO   Interferencias: la bilirrubina (hasta 20 mg/dL), la hemólisis (hemoglobina hasta 500 mg/dL) y lipemia  (triglicéridos  hasta  1000  mg/dL)  no    interfieren.  Otros  medicamentos  y  sustancias pueden interferir6."
+        },
+        {
+          "interferent": "hemolysis",
+          "label": "Hemólisis / hemoglobina",
+          "thresholdValue": 500.0,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "LIMITACIONES DEL PROCEDIMIENTO   Interferencias: la bilirrubina (hasta 20 mg/dL), la hemólisis (hemoglobina hasta 500 mg/dL) y lipemia  (triglicéridos  hasta  1000  mg/dL)  no    interfieren.  Otros  medicamentos  y  sustancias pueden interferir6."
+        },
+        {
+          "interferent": "lipemia",
+          "label": "Lipemia / triglicéridos",
+          "thresholdValue": 1000.0,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "LIMITACIONES DEL PROCEDIMIENTO   Interferencias: la bilirrubina (hasta 20 mg/dL), la hemólisis (hemoglobina hasta 500 mg/dL) y lipemia  (triglicéridos  hasta  1000  mg/dL)  no    interfieren.  Otros  medicamentos  y  sustancias pueden interferir6."
+        }
+      ],
+      "procedureLimitations": [
+        "la bilirrubina (hasta 20 mg/dL), la hemólisis (hemoglobina hasta 500 mg/dL) y lipemia (triglicéridos hasta 1000 mg/dL) no interfieren."
+      ],
       "notes": [
-        "CONSERVACIÓN Y ESTABILIDAD Conservar a 2-8ºC. Los  componentes  son  estables  hasta  la  fecha  de  caducidad  indicada  en  la  etiqueta  del  kit, siempre que se conserven bien cerrados y se evite la contaminación durante su uso. Estabilidad  a  bordo:  Los  reactivos  abiertos  y  conservados  en  el  compartimento  refrigerado  del analizador son estables 2  meses. Indicaciones de deterioro: Absorbancia del blanco superior al límite indicado en “Parámetros de la prueba”."
+        "CONSERVACIÓN Y ESTABILIDAD Conservar a 2-8ºC. Los  componentes  son  estables  hasta  la  fecha  de  caducidad  indicada  en  la  etiqueta  del  kit, siempre que se conserven bien cerrados y se evite la contaminación durante su uso. Estabilidad  a  bordo:  Los  reactivos  abiertos  y  conservados  en  el  compartimento  refrigerado  del analizador son estables 2  meses. Indicaciones de deterioro: Absorbancia del blanco superior al límite indicado en “Parámetros de la prueba”.",
+        "  Límite de detección: 8,70 U/L = 0,145 kat/L.",
+        "  Límite de linealidad: 900 U/L = 15,0 kat/L.",
+        "LIMITACIONES DEL PROCEDIMIENTO   Interferencias: la bilirrubina (hasta 20 mg/dL), la hemólisis (hemoglobina hasta 500 mg/dL) y lipemia  (triglicéridos  hasta  1000  mg/dL)  no    interfieren.  Otros  medicamentos  y  sustancias pueden interferir6."
       ]
     },
     "qcReferences": [
@@ -1548,12 +1837,83 @@ export const DRI_REAGENT_CONTEXT = {
     "facts": {
       "storageTempMinC": 2.0,
       "storageTempMaxC": 8.0,
-      "onboardStabilityHours": null,
-      "onboardStabilityUnit": null,
-      "onboardStabilityRaw": null,
+      "onboardStabilityHours": 360.0,
+      "onboardStabilityUnit": "days",
+      "onboardStabilityRaw": 15.0,
       "blankDeterioration": null,
+      "detectionLimitValue": 8.5,
+      "detectionLimitUnit": "U/L",
+      "detectionLimitAlternateValue": null,
+      "detectionLimitAlternateUnit": null,
+      "quantificationLimitValue": null,
+      "quantificationLimitUnit": null,
+      "quantificationLimitAlternateValue": null,
+      "quantificationLimitAlternateUnit": null,
+      "linearityLimitValue": 500.0,
+      "linearityLimitUnit": "U/L",
+      "linearityLimitAlternateValue": null,
+      "linearityLimitAlternateUnit": null,
+      "interferenceThresholds": [
+        {
+          "interferent": "bilirubin",
+          "label": "Bilirrubina",
+          "thresholdValue": 20.0,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "LIMITACIONES DEL PROCEDIMIENTO   Interferencias:  la  bilirrubina  (hasta  20  mg/dL),  la  hemólisis  (hemoglobina  hasta  1000  mg/dL)  y  lipemia"
+        },
+        {
+          "interferent": "hemolysis",
+          "label": "Hemólisis / hemoglobina",
+          "thresholdValue": 1000.0,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "LIMITACIONES DEL PROCEDIMIENTO   Interferencias:  la  bilirrubina  (hasta  20  mg/dL),  la  hemólisis  (hemoglobina  hasta  1000  mg/dL)  y  lipemia"
+        },
+        {
+          "interferent": "lipemia",
+          "label": "Lipemia / triglicéridos",
+          "thresholdValue": 200.0,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "LIMITACIONES DEL PROCEDIMIENTO   Interferencias:  la  bilirrubina  (hasta  20  mg/dL),  la  hemólisis  (hemoglobina  hasta  1000  mg/dL)  y  lipemia"
+        },
+        {
+          "interferent": "bilirubin",
+          "label": "Bilirrubina",
+          "thresholdValue": 20.0,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "  Interferencias: La hemólisis (hemoglobina 10 g/L) y la bilirrubina (20 mg/dL) no interfieren. La lipemia  (triglicéridos  2  g/L)  puede  afectar  los  resultados.  Otros  medicamentos  y  sustancias pueden interferir4."
+        },
+        {
+          "interferent": "hemolysis",
+          "label": "Hemólisis / hemoglobina",
+          "thresholdValue": 10.0,
+          "unit": "g/L",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "  Interferencias: La hemólisis (hemoglobina 10 g/L) y la bilirrubina (20 mg/dL) no interfieren. La lipemia  (triglicéridos  2  g/L)  puede  afectar  los  resultados.  Otros  medicamentos  y  sustancias pueden interferir4."
+        },
+        {
+          "interferent": "lipemia",
+          "label": "Lipemia / triglicéridos",
+          "thresholdValue": 2.0,
+          "unit": "g/L",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "  Interferencias: La hemólisis (hemoglobina 10 g/L) y la bilirrubina (20 mg/dL) no interfieren. La lipemia  (triglicéridos  2  g/L)  puede  afectar  los  resultados.  Otros  medicamentos  y  sustancias pueden interferir4."
+        }
+      ],
+      "procedureLimitations": [
+        "la bilirrubina (hasta 20 mg/dL), la hemólisis (hemoglobina hasta 1000 mg/dL) y lipemia (triglicéridos hasta 200 mg/dL) no interfieren.",
+        "La hemólisis (hemoglobina 10 g/L) y la bilirrubina (20 mg/dL) no interfieren. La lipemia (triglicéridos 2 g/L) puede afectar los resultados."
+      ],
       "notes": [
-        "CONSERVACIÓN Y ESTABILIDAD Conservar a 2-8 ºC. Los  componentes  son  estables  hasta  la  fecha  de  caducidad  indicada  en  la  etiqueta  del  kit,  siempre  que  se conserven bien cerrados y se evite la contaminación durante su uso. Estabilidad  a  bordo:  Los reactivos  abiertos  y conservados  en  el  compartimento  refrigerado  del  analizador  son estables 2  meses."
+        "CONSERVACIÓN Y ESTABILIDAD Conservar a 2-8 ºC. Los  componentes  son  estables  hasta  la  fecha  de  caducidad  indicada  en  la  etiqueta  del  kit,  siempre  que  se conserven bien cerrados y se evite la contaminación durante su uso. Estabilidad  a  bordo:  Los reactivos  abiertos  y conservados  en  el  compartimento  refrigerado  del  analizador  son estables 2  meses.",
+        "CARACTERÍSTICAS METROLÓGICAS Las prestaciones metrológicas que se describen a continuación, han sido obtenidas utilizando un analizador BA400 y siguiendo las guías del Clinical & Laboratory Standards Institute (CLSI).   Límite de detección: 8,5 U/L = 0,14 kat/L   Límite de linealidad: 500 U/L = 8,33 kat/L   Precisión:",
+        "LIMITACIONES DEL PROCEDIMIENTO   Interferencias:  la  bilirrubina  (hasta  20  mg/dL),  la  hemólisis  (hemoglobina  hasta  1000  mg/dL)  y  lipemia",
+        "CONSERVACIÓN Y ESTABILIDAD Conservar a 2-8ºC. Los  componentes  son  estables  hasta  la  fecha  de  caducidad  indicada  en  la  etiqueta  del  kit,  siempre  que  se conserven bien cerrados y se evite la contaminación durante su uso. Estabilidad a bordo: Los reactivos abiertos y conservados en el compartimento refrigerado del analizador son estables 15 días.",
+        "  Límite de detección: 3,1 U/L = 0,05 kat/L.   Límite de linealidad: 500 U/L = 8,33 kat/L.   Precisión:",
+        "CONSERVAR A 2-8ºC"
       ]
     },
     "qcReferences": [
@@ -1844,9 +2204,7 @@ export const DRI_REAGENT_CONTEXT = {
         "sourceReference": "einfo.bio valuesheet 18043 lote 58987"
       }
     ],
-    "missingFields": [
-      "Sin estabilidad a bordo"
-    ]
+    "missingFields": []
   },
   "AMY": {
     "displayCode": "AMY",
@@ -1917,7 +2275,92 @@ export const DRI_REAGENT_CONTEXT = {
       "onboardStabilityUnit": null,
       "onboardStabilityRaw": null,
       "blankDeterioration": null,
-      "notes": []
+      "detectionLimitValue": null,
+      "detectionLimitUnit": null,
+      "detectionLimitAlternateValue": null,
+      "detectionLimitAlternateUnit": null,
+      "quantificationLimitValue": null,
+      "quantificationLimitUnit": null,
+      "quantificationLimitAlternateValue": null,
+      "quantificationLimitAlternateUnit": null,
+      "linearityLimitValue": null,
+      "linearityLimitUnit": null,
+      "linearityLimitAlternateValue": null,
+      "linearityLimitAlternateUnit": null,
+      "interferenceThresholds": [
+        {
+          "interferent": "bilirubin",
+          "label": "Bilirrubina",
+          "thresholdValue": 30.0,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "LIMITACIONES DEL PROCEDIMIENTO"
+        },
+        {
+          "interferent": "hemolysis",
+          "label": "Hemólisis / hemoglobina",
+          "thresholdValue": 200.0,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "LIMITACIONES DEL PROCEDIMIENTO"
+        },
+        {
+          "interferent": "lipemia",
+          "label": "Lipemia / triglicéridos",
+          "thresholdValue": 1625.0,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "LIMITACIONES DEL PROCEDIMIENTO"
+        },
+        {
+          "interferent": "ascorbic_acid",
+          "label": "Ácido ascórbico",
+          "thresholdValue": 30.0,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "LIMITACIONES DEL PROCEDIMIENTO"
+        },
+        {
+          "interferent": "bilirubin",
+          "label": "Bilirrubina",
+          "thresholdValue": 30.0,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "LIMITACIONES DEL PROCEDIMIENTO Interferencia10: Suero/plasma:  Bilirrubina  (hasta  30  mg/dL  -  513  μmol/L),  hemólisis  (hemoglobina  hasta  200 mg/dL),  lipemia  (triglicéridos  hasta  1625  mg/dL  -  18,4  mmol/L),  el  ácido  ascórbico  (hasta  30 mg/dL - 1704 μmol/L) y el paracetamol (hasta 20 mg/dL - 1324 μmol/L) no interfieren. Orina: Bilirrubina (hasta 30 mg/dL - 513 μmol/L), la hemólisis (hemoglobina hasta 100 mg/dL), el ácido  ascórbico  (hasta  30  mg/dL  -  1704  μmol/L)  y  el  paracetamol  (hasta  20  mg/dL  -  1324 μmol/L) no interfieren. Otros fármacos y sustancias pueden interferir11."
+        },
+        {
+          "interferent": "hemolysis",
+          "label": "Hemólisis / hemoglobina",
+          "thresholdValue": 200.0,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "LIMITACIONES DEL PROCEDIMIENTO Interferencia10: Suero/plasma:  Bilirrubina  (hasta  30  mg/dL  -  513  μmol/L),  hemólisis  (hemoglobina  hasta  200 mg/dL),  lipemia  (triglicéridos  hasta  1625  mg/dL  -  18,4  mmol/L),  el  ácido  ascórbico  (hasta  30 mg/dL - 1704 μmol/L) y el paracetamol (hasta 20 mg/dL - 1324 μmol/L) no interfieren. Orina: Bilirrubina (hasta 30 mg/dL - 513 μmol/L), la hemólisis (hemoglobina hasta 100 mg/dL), el ácido  ascórbico  (hasta  30  mg/dL  -  1704  μmol/L)  y  el  paracetamol  (hasta  20  mg/dL  -  1324 μmol/L) no interfieren. Otros fármacos y sustancias pueden interferir11."
+        },
+        {
+          "interferent": "lipemia",
+          "label": "Lipemia / triglicéridos",
+          "thresholdValue": 1625.0,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "LIMITACIONES DEL PROCEDIMIENTO Interferencia10: Suero/plasma:  Bilirrubina  (hasta  30  mg/dL  -  513  μmol/L),  hemólisis  (hemoglobina  hasta  200 mg/dL),  lipemia  (triglicéridos  hasta  1625  mg/dL  -  18,4  mmol/L),  el  ácido  ascórbico  (hasta  30 mg/dL - 1704 μmol/L) y el paracetamol (hasta 20 mg/dL - 1324 μmol/L) no interfieren. Orina: Bilirrubina (hasta 30 mg/dL - 513 μmol/L), la hemólisis (hemoglobina hasta 100 mg/dL), el ácido  ascórbico  (hasta  30  mg/dL  -  1704  μmol/L)  y  el  paracetamol  (hasta  20  mg/dL  -  1324 μmol/L) no interfieren. Otros fármacos y sustancias pueden interferir11."
+        },
+        {
+          "interferent": "ascorbic_acid",
+          "label": "Ácido ascórbico",
+          "thresholdValue": 30.0,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "LIMITACIONES DEL PROCEDIMIENTO Interferencia10: Suero/plasma:  Bilirrubina  (hasta  30  mg/dL  -  513  μmol/L),  hemólisis  (hemoglobina  hasta  200 mg/dL),  lipemia  (triglicéridos  hasta  1625  mg/dL  -  18,4  mmol/L),  el  ácido  ascórbico  (hasta  30 mg/dL - 1704 μmol/L) y el paracetamol (hasta 20 mg/dL - 1324 μmol/L) no interfieren. Orina: Bilirrubina (hasta 30 mg/dL - 513 μmol/L), la hemólisis (hemoglobina hasta 100 mg/dL), el ácido  ascórbico  (hasta  30  mg/dL  -  1704  μmol/L)  y  el  paracetamol  (hasta  20  mg/dL  -  1324 μmol/L) no interfieren. Otros fármacos y sustancias pueden interferir11."
+        }
+      ],
+      "procedureLimitations": [
+        "MUESTRAS Suero y plasma heparinizado obtenidos mediante procedimientos estándar. La α-amilasa es bastante estable; conserva íntegramente su actividad durante 7 días de almacenamiento a 2-8 ºC y durante 1 año a -20 ºC6. La orina puede ser una muestra para solicitudes clínicas especiales. La α-amilasa es muy inestable en orina ácida; ajuste el pH a un rango alcalino (justo por encima de pH 7) antes del almacenamiento. Se mantiene estable en orina durante 10 días cuando se almacena a 2-8 °C6,7. La información sobre manipulación y almacenamiento aquí proporcionada se basa en datos o referencias mantenidos por el fabricante. Es responsabilidad de cada laboratorio utilizar todas las referencias disponibles y/o sus propios estudios a la hora de establecer criterios de estabilidad alternativos para satisfacer necesidades específicas. Interferencias10: Suero/plasma: Bilirrubina (hasta 30 mg/dL - 513 μmol/L), hemólisis (hemoglobina hasta 200 mg/dL), lipemia (triglicéridos hasta 1625 mg/dL - 18,4 mmol/L), el ácido ascórbico (hasta 30 mg/dL - 1704 μmol/L) y el paracetamol (hasta 20 mg/dL - 1324 μmol/L) no interfieren. PARÁMETROS Y CÁLCULOS DE LAS PRUEBAS Orina: Bilirrubina (hasta 30 mg/dL - 513 μmol/L), la hemólisis (hemoglobina hasta 100 mg/dL), el ácido ascórbico (hasta 30 mg/dL - 1704 μmol/L) y el paracetamol (hasta 20 mg/dL - 1324 μmol/L) no interfieren. Los parámetros de ensayo y los cálculos se programan en los analizadores BioSystems BA200 y BA400. CALIBRACIÓN Suero/plasma, orina: Para la calibración rutinaria se recomienda utilizar el calibrador bioquímico (BioSystems, código 18011) o el calibrador bioquímico humano (BioSystems, código 18044). Consulte las instrucciones de uso correspondientes. AVISO AL USUARIO El Resumen sobre Seguridad y Funcionamiento está disponible en la base de datos EUDAMED: https://ec.europa.eu/tools/eudamed. Las versiones en otros idiomas de la IFU y la SDS están disponibles en el sitio web de BioSystems https://einfo.bio. Debe determinarse un blanco de reactivo cada día y realizarse una calibración al menos cada 2 meses, tras el cambio de lote de reactivo o según requieran los procedimientos de control de calidad. NOTAS 1. Las matrices de",
+        "Interferencia10: Suero/plasma: Bilirrubina (hasta 30 mg/dL - 513 μmol/L), hemólisis (hemoglobina hasta 200 mg/dL), lipemia (triglicéridos hasta 1625 mg/dL - 18,4 mmol/L), el ácido ascórbico (hasta 30 mg/dL - 1704 μmol/L) y el paracetamol (hasta 20 mg/dL - 1324 μmol/L) no interfieren. Orina: Bilirrubina (hasta 30 mg/dL - 513 μmol/L), la hemólisis (hemoglobina hasta 100 mg/dL), el ácido ascórbico (hasta 30 mg/dL - 1704 μmol/L) y el paracetamol (hasta 20 mg/dL - 1324 μmol/L) no interfieren. Otros fármacos y sustancias pueden interferir11. CALIBRACIÓN Suero/plasma, orina: Para la calibración rutinaria se recomienda utilizar el calibrador bioquímico (BioSystems, código 18011) o el calibrador bioquímico humano (BioSystems, código 18044). Consulte las instrucciones de uso correspondientes. Debe determinarse un blanco de reactivo cada día y realizarse una calibración al menos cada 2 meses, tras el cambio de lote de reactivo o según requieran los procedimientos de control de calidad. AVISO AL USUARIO El Resumen sobre Seguridad y Funcionamiento está disponible en la base de datos EUDAMED: https://ec.europa.eu/tools/eudamed. Las versiones en otros idiomas de la IFU y la SDS están disponibles en el sitio web de BioSystems https://einfo.bio. NOTAS 1. Las matrices de"
+      ],
+      "notes": [
+        "LIMITACIONES DEL PROCEDIMIENTO",
+        "LIMITACIONES DEL PROCEDIMIENTO Interferencia10: Suero/plasma:  Bilirrubina  (hasta  30  mg/dL  -  513  μmol/L),  hemólisis  (hemoglobina  hasta  200 mg/dL),  lipemia  (triglicéridos  hasta  1625  mg/dL  -  18,4  mmol/L),  el  ácido  ascórbico  (hasta  30 mg/dL - 1704 μmol/L) y el paracetamol (hasta 20 mg/dL - 1324 μmol/L) no interfieren. Orina: Bilirrubina (hasta 30 mg/dL - 513 μmol/L), la hemólisis (hemoglobina hasta 100 mg/dL), el ácido  ascórbico  (hasta  30  mg/dL  -  1704  μmol/L)  y  el  paracetamol  (hasta  20  mg/dL  -  1324 μmol/L) no interfieren. Otros fármacos y sustancias pueden interferir11."
+      ]
     },
     "qcReferences": [
       {
@@ -2099,7 +2542,9 @@ export const DRI_REAGENT_CONTEXT = {
     ],
     "missingFields": [
       "Sin temperatura de conservación",
-      "Sin estabilidad a bordo"
+      "Sin estabilidad a bordo",
+      "Sin límite de linealidad",
+      "Sin LOD/LOQ estructurado"
     ]
   },
   "AST_GOT": {
@@ -2141,8 +2586,51 @@ export const DRI_REAGENT_CONTEXT = {
       "onboardStabilityUnit": null,
       "onboardStabilityRaw": null,
       "blankDeterioration": null,
+      "detectionLimitValue": 1.67,
+      "detectionLimitUnit": "U/L",
+      "detectionLimitAlternateValue": null,
+      "detectionLimitAlternateUnit": null,
+      "quantificationLimitValue": null,
+      "quantificationLimitUnit": null,
+      "quantificationLimitAlternateValue": null,
+      "quantificationLimitAlternateUnit": null,
+      "linearityLimitValue": 800.0,
+      "linearityLimitUnit": "U/L",
+      "linearityLimitAlternateValue": null,
+      "linearityLimitAlternateUnit": null,
+      "interferenceThresholds": [
+        {
+          "interferent": "bilirubin",
+          "label": "Bilirrubina",
+          "thresholdValue": 20.0,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "Interferencias:  La  lipemia  (triglicéridos  2  g/L)  interfiere.  La  bilirrubina  (20  mg/dL)  y  la hemólisis (hemoglobina 50 mg/dL) no interfieren. Otros medicamentos y sustancias pueden interferir5."
+        },
+        {
+          "interferent": "hemolysis",
+          "label": "Hemólisis / hemoglobina",
+          "thresholdValue": 50.0,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "Interferencias:  La  lipemia  (triglicéridos  2  g/L)  interfiere.  La  bilirrubina  (20  mg/dL)  y  la hemólisis (hemoglobina 50 mg/dL) no interfieren. Otros medicamentos y sustancias pueden interferir5."
+        },
+        {
+          "interferent": "lipemia",
+          "label": "Lipemia / triglicéridos",
+          "thresholdValue": 2.0,
+          "unit": "g/L",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "Interferencias:  La  lipemia  (triglicéridos  2  g/L)  interfiere.  La  bilirrubina  (20  mg/dL)  y  la hemólisis (hemoglobina 50 mg/dL) no interfieren. Otros medicamentos y sustancias pueden interferir5."
+        }
+      ],
+      "procedureLimitations": [
+        "La lipemia (triglicéridos 2 g/L) interfiere. La bilirrubina (20 mg/dL) y la hemólisis (hemoglobina 50 mg/dL) no interfieren."
+      ],
       "notes": [
-        "CONSERVAR A 2-8ºC"
+        "CONSERVAR A 2-8ºC",
+        "CARACTERÍSTICAS METROLÓGICAS −  Límite de detección: 1,67 U/L = 0,028 kat/L −  Límite de linealidad: 800 U/L = 13,3 kat/L. Cuando se obtengan valores superiores, diluir la",
+        "Interferencias:  La  lipemia  (triglicéridos  2  g/L)  interfiere.  La  bilirrubina  (20  mg/dL)  y  la hemólisis (hemoglobina 50 mg/dL) no interfieren. Otros medicamentos y sustancias pueden interferir5."
       ]
     },
     "qcReferences": [
@@ -2528,12 +3016,76 @@ export const DRI_REAGENT_CONTEXT = {
     "facts": {
       "storageTempMinC": 2.0,
       "storageTempMaxC": 8.0,
-      "onboardStabilityHours": null,
-      "onboardStabilityUnit": null,
-      "onboardStabilityRaw": null,
+      "onboardStabilityHours": 1440.0,
+      "onboardStabilityUnit": "months",
+      "onboardStabilityRaw": 2.0,
       "blankDeterioration": "high_blank_absorbance",
+      "detectionLimitValue": 0.09,
+      "detectionLimitUnit": "mg/dL",
+      "detectionLimitAlternateValue": null,
+      "detectionLimitAlternateUnit": null,
+      "quantificationLimitValue": 0.37,
+      "quantificationLimitUnit": "mg/dL",
+      "quantificationLimitAlternateValue": null,
+      "quantificationLimitAlternateUnit": null,
+      "linearityLimitValue": 15.0,
+      "linearityLimitUnit": "mg/dL",
+      "linearityLimitAlternateValue": 257.0,
+      "linearityLimitAlternateUnit": "µmol/L",
+      "interferenceThresholds": [
+        {
+          "interferent": "hemolysis",
+          "label": "Hemólisis / hemoglobina",
+          "thresholdValue": 25.0,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "  Interferencias:  La  hemólisis  (hemoglobina  25  mg/dL)  y  la  lipemia  (triglicéridos  1300  mg/dL)"
+        },
+        {
+          "interferent": "lipemia",
+          "label": "Lipemia / triglicéridos",
+          "thresholdValue": 1300.0,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "  Interferencias:  La  hemólisis  (hemoglobina  25  mg/dL)  y  la  lipemia  (triglicéridos  1300  mg/dL)"
+        },
+        {
+          "interferent": "hemolysis",
+          "label": "Hemólisis / hemoglobina",
+          "thresholdValue": 25.0,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "Interferencias: la hemólisis (hemoglobina 25 mg/dL) y la lipemia (triglicéridos 1300 mg/dL) interfieren. Otros medicamentos y sustancias pueden interferir8."
+        },
+        {
+          "interferent": "lipemia",
+          "label": "Lipemia / triglicéridos",
+          "thresholdValue": 1300.0,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "Interferencias: la hemólisis (hemoglobina 25 mg/dL) y la lipemia (triglicéridos 1300 mg/dL) interfieren. Otros medicamentos y sustancias pueden interferir8."
+        },
+        {
+          "interferent": "hemolysis",
+          "label": "Hemólisis / hemoglobina",
+          "thresholdValue": 10.0,
+          "unit": "g/L",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "−  Sensibilidad (bilirrubina total): 88 mAdL/mg = 5,15 mAL/mol −  Sensibilidad (bilirrubina directa): 100 mAdL/mg = 5,85 mAL/mol −  Veracidad: Los resultados obtenidos con estos reactivos no muestran diferencias sistemáticas significativas al ser comparados  con  reactivos  de  referencia  (Nota  4).  Los  detalles  del  estudio  comparativo  están  disponibles  bajo solicitud. Interferencias: La hemólisis no interfiere (hemoglobina 10 g/L). La lipemia (trigliceridos > 15 g/L) interfieren. Otros medicamentos y sustancias pueden interferir6."
+        }
+      ],
+      "procedureLimitations": [
+        "La hemólisis (hemoglobina 25 mg/dL) y la lipemia (triglicéridos 1300 mg/dL) interfieren.",
+        "la hemólisis (hemoglobina 25 mg/dL) y la lipemia (triglicéridos 1300 mg/dL) interfieren.",
+        "La hemólisis no interfiere (hemoglobina 10 g/L). La lipemia (trigliceridos > 15 g/L) interfieren."
+      ],
       "notes": [
-        "CONSERVACIÓN Y ESTABILIDAD Conservar a 2-8ºC. Los  componentes  son  estables  hasta  la  fecha  de  caducidad  indicada  en  la  etiqueta  del  kit,  siempre  que  se conserven bien cerrados y se evite la contaminación durante su uso. Estabilidad  a  bordo:  Los reactivos  abiertos  y conservados  en  el  compartimento  refrigerado  del  analizador  son estables 2 meses. Indicaciones de deterioro: Absorbancia del blanco superior al límite indicado en “Parámetros de la prueba”."
+        "CONSERVACIÓN Y ESTABILIDAD Conservar a 2-8ºC. Los  componentes  son  estables  hasta  la  fecha  de  caducidad  indicada  en  la  etiqueta  del  kit,  siempre  que  se conserven bien cerrados y se evite la contaminación durante su uso. Estabilidad  a  bordo:  Los reactivos  abiertos  y conservados  en  el  compartimento  refrigerado  del  analizador  son estables 2 meses. Indicaciones de deterioro: Absorbancia del blanco superior al límite indicado en “Parámetros de la prueba”.",
+        "Cada laboratorio debe establecer su propio programa de Control de Calidad interno, así como procedimientos de corrección en el caso de que los resultados de los controles no se encuentren entre los límites de aceptación.",
+        "CARACTERÍSTICAS METROLÓGICAS Las prestaciones metrológicas que se describen a continuación, han sido obtenidas utilizando un analizador BA400 y siguiendo las guías del Clinical & Laboratory Standards Institute (CLSI).   Límite de detección: 0,09 mg/dL = 1,60 mol/L.   Límite de linealidad: 15 mg/dL = 257 µmol/L.   Precisión:",
+        "  Interferencias:  La  hemólisis  (hemoglobina  25  mg/dL)  y  la  lipemia  (triglicéridos  1300  mg/dL)",
+        "Conservar a 2-8ºC. Los  componentes  son  estables  hasta  la  fecha  de  caducidad  indicada  en  la  etiqueta  del  kit, siempre que se conserven bien cerrados y se evite la contaminación durante su uso. Estabilidad a bordo: Los reactivos abiertos y conservados en el compartimento refrigerado del analizador son estables 2 meses. Indicaciones de deterioro: Absorbancia del blanco superior al límite indicado en “Parámetros del Ensayo”.",
+        "  Límite de detección: 0,07 mg/dL = 1,15 mol/L. Límite de cuantificación: 0,37 mg/dL = 6,32 mol/L.   Límite de linealidad: 15 mg/dL = 257 µmol/L.   Precisión:"
       ]
     },
     "qcReferences": [
@@ -2824,9 +3376,7 @@ export const DRI_REAGENT_CONTEXT = {
         "sourceReference": "einfo.bio valuesheet 18043 lote 58987"
       }
     ],
-    "missingFields": [
-      "Sin estabilidad a bordo"
-    ]
+    "missingFields": []
   },
   "BIL_T": {
     "displayCode": "BIL T",
@@ -2923,8 +3473,72 @@ export const DRI_REAGENT_CONTEXT = {
       "onboardStabilityUnit": "months",
       "onboardStabilityRaw": 3.0,
       "blankDeterioration": "high_blank_absorbance",
+      "detectionLimitValue": 0.109,
+      "detectionLimitUnit": "mg/dL",
+      "detectionLimitAlternateValue": 1.86,
+      "detectionLimitAlternateUnit": "µmol/L",
+      "quantificationLimitValue": null,
+      "quantificationLimitUnit": null,
+      "quantificationLimitAlternateValue": null,
+      "quantificationLimitAlternateUnit": null,
+      "linearityLimitValue": 38.0,
+      "linearityLimitUnit": "mg/dL",
+      "linearityLimitAlternateValue": 650.0,
+      "linearityLimitAlternateUnit": "µmol/L",
+      "interferenceThresholds": [
+        {
+          "interferent": "hemolysis",
+          "label": "Hemólisis / hemoglobina",
+          "thresholdValue": 250.0,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "−  Interferencias:  La  hemólisis  (hemoglobina  hasta  250  mg/dL)  no  interfiere.  La  lipemia (triglicéridos hasta 1300 mg/dL) interfiere. Otros medicamentos y sustancias pueden interferir8."
+        },
+        {
+          "interferent": "lipemia",
+          "label": "Lipemia / triglicéridos",
+          "thresholdValue": 1300.0,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "−  Interferencias:  La  hemólisis  (hemoglobina  hasta  250  mg/dL)  no  interfiere.  La  lipemia (triglicéridos hasta 1300 mg/dL) interfiere. Otros medicamentos y sustancias pueden interferir8."
+        },
+        {
+          "interferent": "hemolysis",
+          "label": "Hemólisis / hemoglobina",
+          "thresholdValue": 250.0,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "Interferencias:  La hemólisis (hemoglobina 250 mg/dL)  no interfiere. La lipemia (triglicéridos 1300 mg/dL) interfiere. Otros medicamentos y sustancias pueden interferir8."
+        },
+        {
+          "interferent": "lipemia",
+          "label": "Lipemia / triglicéridos",
+          "thresholdValue": 1300.0,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "Interferencias:  La hemólisis (hemoglobina 250 mg/dL)  no interfiere. La lipemia (triglicéridos 1300 mg/dL) interfiere. Otros medicamentos y sustancias pueden interferir8."
+        },
+        {
+          "interferent": "hemolysis",
+          "label": "Hemólisis / hemoglobina",
+          "thresholdValue": 10.0,
+          "unit": "g/L",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "−  Sensibilidad (bilirrubina total): 88 mAdL/mg = 5,15 mAL/mol −  Sensibilidad (bilirrubina directa): 100 mAdL/mg = 5,85 mAL/mol −  Veracidad: Los resultados obtenidos con estos reactivos no muestran diferencias sistemáticas significativas al ser comparados  con  reactivos  de  referencia  (Nota  4).  Los  detalles  del  estudio  comparativo  están  disponibles  bajo solicitud. Interferencias: La hemólisis no interfiere (hemoglobina 10 g/L). La lipemia (trigliceridos > 15 g/L) interfieren. Otros medicamentos y sustancias pueden interferir6."
+        }
+      ],
+      "procedureLimitations": [
+        "La hemólisis (hemoglobina hasta 250 mg/dL) no interfiere. La lipemia (triglicéridos hasta 1300 mg/dL) interfiere.",
+        "La hemólisis (hemoglobina 250 mg/dL) no interfiere. La lipemia (triglicéridos 1300 mg/dL) interfiere.",
+        "La hemólisis no interfiere (hemoglobina 10 g/L). La lipemia (trigliceridos > 15 g/L) interfieren."
+      ],
       "notes": [
-        "CONSERVACIÓN Y ESTABILIDAD Conservar a 2-8ºC. Los  componentes  son  estables  hasta  la  fecha  de  caducidad  indicada  en  la  etiqueta  del  kit, siempre que se conserven bien cerrados y se evite la contaminación durante su uso. Estabilidad a bordo:  Los reactivos abiertos y conservados  en el compartimento refrigerado  del analizador son estables 3 meses. Indicaciones de deterioro: Absorbancia del blanco superior al límite indicado en “Parámetros de la prueba”."
+        "CONSERVACIÓN Y ESTABILIDAD Conservar a 2-8ºC. Los  componentes  son  estables  hasta  la  fecha  de  caducidad  indicada  en  la  etiqueta  del  kit, siempre que se conserven bien cerrados y se evite la contaminación durante su uso. Estabilidad a bordo:  Los reactivos abiertos y conservados  en el compartimento refrigerado  del analizador son estables 3 meses. Indicaciones de deterioro: Absorbancia del blanco superior al límite indicado en “Parámetros de la prueba”.",
+        "CARACTERÍSTICAS METROLÓGICAS Las prestaciones metrológicas que se describen a continuación, han sido obtenidas utilizando un analizador BA400 y siguiendo las guías del Clinical & Laboratory Standards Institute (CLSI). −  Límite de detección: 0,109 mg/dL = 1,86 µmol/L. −  Límite de linealidad: 38 mg/dL = 650 µmol/L. −  Precisión:",
+        "−  Interferencias:  La  hemólisis  (hemoglobina  hasta  250  mg/dL)  no  interfiere.  La  lipemia (triglicéridos hasta 1300 mg/dL) interfiere. Otros medicamentos y sustancias pueden interferir8.",
+        "CONSERVACIÓN Y ESTABILIDAD Conservar a 2-8 ºC. Los  componentes  son  estables  hasta  la  fecha  de  caducidad  indicada  en  la  etiqueta  del  kit, siempre que se conserven bien cerrados y se evite la contaminación durante su uso. Estabilidad a bordo: Los reactivos abiertos y conservados en el compartimento refrigerado del analizador son estables 3 meses. Indicaciones de deterioro: Absorbancia del blanco superior al límite indicado en “Parámetros del Ensayo”.",
+        "Las prestaciones metrológicas que se describen a continuación, han sido obtenidas utilizando un  analizador  A25  y  siguiendo  las  guías  del  Clinical  &  Laboratory  Standards  Institute  (CLSI). Los resultados son similares a los del A15. −  Límite de detección: 0,172 mg/dL = 2,95 mol/L.",
+        "−  Límite de linealidad: 38 mg/dL = 650 mol/L. −  Precisión:"
       ]
     },
     "qcReferences": [
@@ -3294,12 +3908,75 @@ export const DRI_REAGENT_CONTEXT = {
     "facts": {
       "storageTempMinC": 2.0,
       "storageTempMaxC": 8.0,
-      "onboardStabilityHours": null,
-      "onboardStabilityUnit": null,
-      "onboardStabilityRaw": null,
+      "onboardStabilityHours": 1440.0,
+      "onboardStabilityUnit": "months",
+      "onboardStabilityRaw": 2.0,
       "blankDeterioration": "high_blank_absorbance",
+      "detectionLimitValue": 0.42,
+      "detectionLimitUnit": "mg/dL",
+      "detectionLimitAlternateValue": 0.105,
+      "detectionLimitAlternateUnit": "mmol/L",
+      "quantificationLimitValue": null,
+      "quantificationLimitUnit": null,
+      "quantificationLimitAlternateValue": null,
+      "quantificationLimitAlternateUnit": null,
+      "linearityLimitValue": 18.0,
+      "linearityLimitUnit": "mg/dL",
+      "linearityLimitAlternateValue": 4.5,
+      "linearityLimitAlternateUnit": "mmol/L",
+      "interferenceThresholds": [
+        {
+          "interferent": "bilirubin",
+          "label": "Bilirrubina",
+          "thresholdValue": 20.0,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "LIMITACIONES DEL PROCEDIMIENTO   Interferencias: la bilirrubina (hasta 20 mg/dL), la hemólisis (hemoglobina hasta 250 mg/dL) y lipemia  (triglicéridos  hasta  1000  mg/dL)  no    interfieren.  Otros  medicamentos  y  sustancias pueden interferir4."
+        },
+        {
+          "interferent": "hemolysis",
+          "label": "Hemólisis / hemoglobina",
+          "thresholdValue": 250.0,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "LIMITACIONES DEL PROCEDIMIENTO   Interferencias: la bilirrubina (hasta 20 mg/dL), la hemólisis (hemoglobina hasta 250 mg/dL) y lipemia  (triglicéridos  hasta  1000  mg/dL)  no    interfieren.  Otros  medicamentos  y  sustancias pueden interferir4."
+        },
+        {
+          "interferent": "lipemia",
+          "label": "Lipemia / triglicéridos",
+          "thresholdValue": 1000.0,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "LIMITACIONES DEL PROCEDIMIENTO   Interferencias: la bilirrubina (hasta 20 mg/dL), la hemólisis (hemoglobina hasta 250 mg/dL) y lipemia  (triglicéridos  hasta  1000  mg/dL)  no    interfieren.  Otros  medicamentos  y  sustancias pueden interferir4."
+        },
+        {
+          "interferent": "hemolysis",
+          "label": "Hemólisis / hemoglobina",
+          "thresholdValue": 2.5,
+          "unit": "g/L",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": " Interferencias: La bilirrubina (< 20 mg/dL) no interfiere. La hemólisis (hemoglobina 2,5 g/L) y la"
+        },
+        {
+          "interferent": "lipemia",
+          "label": "Lipemia / triglicéridos",
+          "thresholdValue": 10.0,
+          "unit": "g/L",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": " Interferencias: La bilirrubina (< 20 mg/dL) no interfiere. La hemólisis (hemoglobina 2,5 g/L) y la"
+        }
+      ],
+      "procedureLimitations": [
+        "la bilirrubina (hasta 20 mg/dL), la hemólisis (hemoglobina hasta 250 mg/dL) y lipemia (triglicéridos hasta 1000 mg/dL) no interfieren.",
+        "La bilirrubina (< 20 mg/dL) no interfiere. La hemólisis (hemoglobina 2,5 g/L) y la  Reactivo: Presencia de partículas, turbidez, absorbancia del blanco superior a 0,550 a 650 nm.  Patrón: Presencia de partículas, turbidez. lipemia (10 g/L) interfieren."
+      ],
       "notes": [
-        "CONSERVACIÓN Y ESTABILIDAD Conservar a 2-8ºC. Los  componentes  son  estables  hasta  la  fecha  de  caducidad  indicada  en  la  etiqueta  del  kit, siempre que se conserven bien cerrados y se evite la contaminación durante su uso. Estabilidad  a  bordo:  Los  reactivos  abiertos  y  conservados  en  el  compartimento  refrigerado  del analizador son estables 2  meses. Indicaciones de deterioro: Absorbancia del blanco superior al límite indicado en “Parámetros de la prueba”."
+        "CONSERVACIÓN Y ESTABILIDAD Conservar a 2-8ºC. Los  componentes  son  estables  hasta  la  fecha  de  caducidad  indicada  en  la  etiqueta  del  kit, siempre que se conserven bien cerrados y se evite la contaminación durante su uso. Estabilidad  a  bordo:  Los  reactivos  abiertos  y  conservados  en  el  compartimento  refrigerado  del analizador son estables 2  meses. Indicaciones de deterioro: Absorbancia del blanco superior al límite indicado en “Parámetros de la prueba”.",
+        "CARACTERÍSTICAS METROLÓGICAS Las prestaciones metrológicas que se describen a continuación, han sido obtenidas utilizando un analizador BA400 y siguiendo las guías del Clinical & Laboratory Standards Institute (CLSI).   Límite de detección: 0,42 mg/dL = 0,105 mmol/L.",
+        "  Límite de linealidad: 18 mg/dL = 4,5 mmol/L.",
+        "LIMITACIONES DEL PROCEDIMIENTO   Interferencias: la bilirrubina (hasta 20 mg/dL), la hemólisis (hemoglobina hasta 250 mg/dL) y lipemia  (triglicéridos  hasta  1000  mg/dL)  no    interfieren.  Otros  medicamentos  y  sustancias pueden interferir4.",
+        "CONSERVACIÓN Y ESTABILIDAD Conservar a 2-8ºC. Los  componentes  son  estables  hasta  la  fecha  de  caducidad  indicada  en  la  etiqueta  del  kit, siempre que se conserven bien cerrados y se evite la contaminación durante su uso. Estabilidad a bordo: Los reactivos abiertos y conservados en el compartimento refrigerado del analizador son estables 2  meses. Indicaciones de deterioro: Absorbancia del blanco superior al límite indicado en “Parámetros de la prueba”.",
+        "  Límite de detección: 0,42 mg/dL = 0,105 mmol/L.   Límite de linealidad: 18 mg/dL = 4,5 mmol/L."
       ]
     },
     "qcReferences": [
@@ -3414,9 +4091,7 @@ export const DRI_REAGENT_CONTEXT = {
         "sourceReference": "einfo.bio valuesheet 18043 lote 58987"
       }
     ],
-    "missingFields": [
-      "Sin estabilidad a bordo"
-    ]
+    "missingFields": []
   },
   "CA_CPC": {
     "displayCode": "CA CPC",
@@ -3474,8 +4149,52 @@ export const DRI_REAGENT_CONTEXT = {
       "onboardStabilityUnit": null,
       "onboardStabilityRaw": null,
       "blankDeterioration": "high_blank_absorbance",
+      "detectionLimitValue": 0.5,
+      "detectionLimitUnit": "mg/dL",
+      "detectionLimitAlternateValue": 0.125,
+      "detectionLimitAlternateUnit": "mmol/L",
+      "quantificationLimitValue": null,
+      "quantificationLimitUnit": null,
+      "quantificationLimitAlternateValue": null,
+      "quantificationLimitAlternateUnit": null,
+      "linearityLimitValue": 20.0,
+      "linearityLimitUnit": "mg/dL",
+      "linearityLimitAlternateValue": 5.0,
+      "linearityLimitAlternateUnit": "mmol/L",
+      "interferenceThresholds": [
+        {
+          "interferent": "bilirubin",
+          "label": "Bilirrubina",
+          "thresholdValue": 20.0,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "LIMITACIONES DEL PROCEDIMIENTO   Interferencias: la bilirrubina (hasta 20 mg/dL), la hemólisis (hemoglobina hasta 1000 mg/dL) y lipemia  (triglicéridos  hasta  3000  mg/dL)  no    interfieren.  Otros  medicamentos  y  sustancias pueden interferir4."
+        },
+        {
+          "interferent": "hemolysis",
+          "label": "Hemólisis / hemoglobina",
+          "thresholdValue": 1000.0,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "LIMITACIONES DEL PROCEDIMIENTO   Interferencias: la bilirrubina (hasta 20 mg/dL), la hemólisis (hemoglobina hasta 1000 mg/dL) y lipemia  (triglicéridos  hasta  3000  mg/dL)  no    interfieren.  Otros  medicamentos  y  sustancias pueden interferir4."
+        },
+        {
+          "interferent": "lipemia",
+          "label": "Lipemia / triglicéridos",
+          "thresholdValue": 3000.0,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "LIMITACIONES DEL PROCEDIMIENTO   Interferencias: la bilirrubina (hasta 20 mg/dL), la hemólisis (hemoglobina hasta 1000 mg/dL) y lipemia  (triglicéridos  hasta  3000  mg/dL)  no    interfieren.  Otros  medicamentos  y  sustancias pueden interferir4."
+        }
+      ],
+      "procedureLimitations": [
+        "la bilirrubina (hasta 20 mg/dL), la hemólisis (hemoglobina hasta 1000 mg/dL) y lipemia (triglicéridos hasta 3000 mg/dL) no interfieren."
+      ],
       "notes": [
-        "CONSERVACIÓN Y ESTABILIDAD Conservar a 2-30ºC. Los  componentes  son  estables  hasta  la  fecha  de  caducidad  indicada  en  la  etiqueta  del  kit, siempre que se conserven bien cerrados y se evite la contaminación durante su uso. Estabilidad  a  bordo:  Los  reactivos  abiertos  y  conservados  en  el  compartimento  refrigerado  del analizador son estables 45 días.. Indicaciones de deterioro: Absorbancia del blanco superior al límite indicado en “Parámetros de la prueba”."
+        "CONSERVACIÓN Y ESTABILIDAD Conservar a 2-30ºC. Los  componentes  son  estables  hasta  la  fecha  de  caducidad  indicada  en  la  etiqueta  del  kit, siempre que se conserven bien cerrados y se evite la contaminación durante su uso. Estabilidad  a  bordo:  Los  reactivos  abiertos  y  conservados  en  el  compartimento  refrigerado  del analizador son estables 45 días.. Indicaciones de deterioro: Absorbancia del blanco superior al límite indicado en “Parámetros de la prueba”.",
+        "Cada laboratorio debe  establecer  su propio programa  de Control  de  Calidad interno,  así como procedimientos de corrección en el caso de que los resultados de los controles no se encuentren entre los límites de aceptación.",
+        "  Límite de linealidad: 20 mg/dL  = 5 mmol/L.   Precisión:",
+        "LIMITACIONES DEL PROCEDIMIENTO   Interferencias: la bilirrubina (hasta 20 mg/dL), la hemólisis (hemoglobina hasta 1000 mg/dL) y lipemia  (triglicéridos  hasta  3000  mg/dL)  no    interfieren.  Otros  medicamentos  y  sustancias pueden interferir4."
       ]
     },
     "qcReferences": [
@@ -3697,12 +4416,57 @@ export const DRI_REAGENT_CONTEXT = {
       "onboardStabilityUnit": "months",
       "onboardStabilityRaw": 3.0,
       "blankDeterioration": null,
+      "detectionLimitValue": null,
+      "detectionLimitUnit": null,
+      "detectionLimitAlternateValue": null,
+      "detectionLimitAlternateUnit": null,
+      "quantificationLimitValue": null,
+      "quantificationLimitUnit": null,
+      "quantificationLimitAlternateValue": null,
+      "quantificationLimitAlternateUnit": null,
+      "linearityLimitValue": null,
+      "linearityLimitUnit": null,
+      "linearityLimitAlternateValue": null,
+      "linearityLimitAlternateUnit": null,
+      "interferenceThresholds": [
+        {
+          "interferent": "bilirubin",
+          "label": "Bilirrubina",
+          "thresholdValue": 30.0,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "  Interferencias: la hemólisis (hemoglobina  hasta  500 mg/dL), la bilirrubina (hasta  30 mg/dL- 513 mol/L), la lipemia (triglicéridos hasta 326 mg/dL- 3,68 mmol/L)  y el factor reumatoide (hasta 103 UI/mL) no interfieren. Otros medicamentos y sustancias pueden interferir6."
+        },
+        {
+          "interferent": "hemolysis",
+          "label": "Hemólisis / hemoglobina",
+          "thresholdValue": 500.0,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "  Interferencias: la hemólisis (hemoglobina  hasta  500 mg/dL), la bilirrubina (hasta  30 mg/dL- 513 mol/L), la lipemia (triglicéridos hasta 326 mg/dL- 3,68 mmol/L)  y el factor reumatoide (hasta 103 UI/mL) no interfieren. Otros medicamentos y sustancias pueden interferir6."
+        },
+        {
+          "interferent": "lipemia",
+          "label": "Lipemia / triglicéridos",
+          "thresholdValue": 326.0,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "  Interferencias: la hemólisis (hemoglobina  hasta  500 mg/dL), la bilirrubina (hasta  30 mg/dL- 513 mol/L), la lipemia (triglicéridos hasta 326 mg/dL- 3,68 mmol/L)  y el factor reumatoide (hasta 103 UI/mL) no interfieren. Otros medicamentos y sustancias pueden interferir6."
+        }
+      ],
+      "procedureLimitations": [
+        "la hemólisis (hemoglobina hasta 500 mg/dL), la bilirrubina (hasta 30 mg/dL- 513 mol/L), la lipemia (triglicéridos hasta 326 mg/dL- 3,68 mmol/L) y el factor reumatoide (hasta 103 UI/mL) no interfieren."
+      ],
       "notes": [
-        "Conservar a 2-8ºC. Los  componentes  son  estables  una  vez  abiertos  hasta  la  fecha  de  caducidad  marcada  en  la etiqueta  si  estos  se  mantienen  a  la  temperatura  de  almacenamiento  recomendada,  bien cerrados y se tiene cuidado de evitar la contaminación durante su uso. Estabilidad a bordo: Los reactivos abiertos y conservados en el compartimento refrigerado del analizador son estables 3 meses. Indicaciones  de  deterioro:  Absorbancia  del  blanco  superior  al parametrización del analizador."
+        "Conservar a 2-8ºC. Los  componentes  son  estables  una  vez  abiertos  hasta  la  fecha  de  caducidad  marcada  en  la etiqueta  si  estos  se  mantienen  a  la  temperatura  de  almacenamiento  recomendada,  bien cerrados y se tiene cuidado de evitar la contaminación durante su uso. Estabilidad a bordo: Los reactivos abiertos y conservados en el compartimento refrigerado del analizador son estables 3 meses. Indicaciones  de  deterioro:  Absorbancia  del  blanco  superior  al parametrización del analizador.",
+        "  Interferencias: la hemólisis (hemoglobina  hasta  500 mg/dL), la bilirrubina (hasta  30 mg/dL- 513 mol/L), la lipemia (triglicéridos hasta 326 mg/dL- 3,68 mmol/L)  y el factor reumatoide (hasta 103 UI/mL) no interfieren. Otros medicamentos y sustancias pueden interferir6."
       ]
     },
     "qcReferences": [],
-    "missingFields": []
+    "missingFields": [
+      "Sin límite de linealidad",
+      "Sin LOD/LOQ estructurado"
+    ]
   },
   "CHOL": {
     "displayCode": "CHOL",
@@ -3819,12 +4583,98 @@ export const DRI_REAGENT_CONTEXT = {
     "facts": {
       "storageTempMinC": 2.0,
       "storageTempMaxC": 8.0,
-      "onboardStabilityHours": null,
-      "onboardStabilityUnit": null,
-      "onboardStabilityRaw": null,
+      "onboardStabilityHours": 1440.0,
+      "onboardStabilityUnit": "months",
+      "onboardStabilityRaw": 2.0,
       "blankDeterioration": "high_blank_absorbance",
+      "detectionLimitValue": 4.2,
+      "detectionLimitUnit": "mg/dL",
+      "detectionLimitAlternateValue": 0.109,
+      "detectionLimitAlternateUnit": "mmol/L",
+      "quantificationLimitValue": null,
+      "quantificationLimitUnit": null,
+      "quantificationLimitAlternateValue": null,
+      "quantificationLimitAlternateUnit": null,
+      "linearityLimitValue": 1000.0,
+      "linearityLimitUnit": "mg/dL",
+      "linearityLimitAlternateValue": 26.0,
+      "linearityLimitAlternateUnit": "mmol/L",
+      "interferenceThresholds": [
+        {
+          "interferent": "bilirubin",
+          "label": "Bilirrubina",
+          "thresholdValue": 10.0,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "Interferencias: La hemólisis (hemoglobina hasta 500 mg/dL), la bilirrubina (hasta 10 mg/dL) y la  lipemia  (triglicéridos  hasta  1000  mg/dL)  no  interfieren.  El  àcido  ascórbico  (hasta  6,25 mg/dL) no interfiere. Otros medicamentos y sustancias pueden interferir6."
+        },
+        {
+          "interferent": "hemolysis",
+          "label": "Hemólisis / hemoglobina",
+          "thresholdValue": 500.0,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "Interferencias: La hemólisis (hemoglobina hasta 500 mg/dL), la bilirrubina (hasta 10 mg/dL) y la  lipemia  (triglicéridos  hasta  1000  mg/dL)  no  interfieren.  El  àcido  ascórbico  (hasta  6,25 mg/dL) no interfiere. Otros medicamentos y sustancias pueden interferir6."
+        },
+        {
+          "interferent": "lipemia",
+          "label": "Lipemia / triglicéridos",
+          "thresholdValue": 1000.0,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "Interferencias: La hemólisis (hemoglobina hasta 500 mg/dL), la bilirrubina (hasta 10 mg/dL) y la  lipemia  (triglicéridos  hasta  1000  mg/dL)  no  interfieren.  El  àcido  ascórbico  (hasta  6,25 mg/dL) no interfiere. Otros medicamentos y sustancias pueden interferir6."
+        },
+        {
+          "interferent": "ascorbic_acid",
+          "label": "Ácido ascórbico",
+          "thresholdValue": 6.25,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "Interferencias: La hemólisis (hemoglobina hasta 500 mg/dL), la bilirrubina (hasta 10 mg/dL) y la  lipemia  (triglicéridos  hasta  1000  mg/dL)  no  interfieren.  El  àcido  ascórbico  (hasta  6,25 mg/dL) no interfiere. Otros medicamentos y sustancias pueden interferir6."
+        },
+        {
+          "interferent": "bilirubin",
+          "label": "Bilirrubina",
+          "thresholdValue": 10.0,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "  Interferencias: La hemólisis (hemoglobina hasta 500 mg/dL), la bilirrubina (hasta 10 mg/dL) y la  lipemia  (triglicéridos  hasta  1000  mg/dL)  no  interfieren.  El  àcido  ascórbico  (hasta  6,25 mg/dL) no interfiere. Otros medicamentos y sustancias pueden interferir4."
+        },
+        {
+          "interferent": "hemolysis",
+          "label": "Hemólisis / hemoglobina",
+          "thresholdValue": 500.0,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "  Interferencias: La hemólisis (hemoglobina hasta 500 mg/dL), la bilirrubina (hasta 10 mg/dL) y la  lipemia  (triglicéridos  hasta  1000  mg/dL)  no  interfieren.  El  àcido  ascórbico  (hasta  6,25 mg/dL) no interfiere. Otros medicamentos y sustancias pueden interferir4."
+        },
+        {
+          "interferent": "lipemia",
+          "label": "Lipemia / triglicéridos",
+          "thresholdValue": 1000.0,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "  Interferencias: La hemólisis (hemoglobina hasta 500 mg/dL), la bilirrubina (hasta 10 mg/dL) y la  lipemia  (triglicéridos  hasta  1000  mg/dL)  no  interfieren.  El  àcido  ascórbico  (hasta  6,25 mg/dL) no interfiere. Otros medicamentos y sustancias pueden interferir4."
+        },
+        {
+          "interferent": "ascorbic_acid",
+          "label": "Ácido ascórbico",
+          "thresholdValue": 6.25,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "  Interferencias: La hemólisis (hemoglobina hasta 500 mg/dL), la bilirrubina (hasta 10 mg/dL) y la  lipemia  (triglicéridos  hasta  1000  mg/dL)  no  interfieren.  El  àcido  ascórbico  (hasta  6,25 mg/dL) no interfiere. Otros medicamentos y sustancias pueden interferir4."
+        }
+      ],
+      "procedureLimitations": [
+        "La hemólisis (hemoglobina hasta 500 mg/dL), la bilirrubina (hasta 10 mg/dL) y la lipemia (triglicéridos hasta 1000 mg/dL) no interfieren. El àcido ascórbico (hasta 6,25 mg/dL) no interfiere."
+      ],
       "notes": [
-        "CONSERVACIÓN Y ESTABILIDAD Conservar a 2-8 ºC. Los  componentes  son  estables  hasta  la  fecha  de  caducidad  indicada  en  la  etiqueta  del  kit, siempre que se conserven bien cerrados y se evite la contaminación durante su uso. Estabilidad  a  bordo:  Los  reactivos  abiertos  y  conservados  en  el  compartimento  refrigerado  del analizador son estables 2 meses. Indicaciones de deterioro: Absorbancia del blanco superior al límite indicado en “Parámetros de la prueba”."
+        "CONSERVACIÓN Y ESTABILIDAD Conservar a 2-8 ºC. Los  componentes  son  estables  hasta  la  fecha  de  caducidad  indicada  en  la  etiqueta  del  kit, siempre que se conserven bien cerrados y se evite la contaminación durante su uso. Estabilidad  a  bordo:  Los  reactivos  abiertos  y  conservados  en  el  compartimento  refrigerado  del analizador son estables 2 meses. Indicaciones de deterioro: Absorbancia del blanco superior al límite indicado en “Parámetros de la prueba”.",
+        "CARACTERÍSTICAS METROLÓGICAS Las prestaciones metrológicas que se describen a continuación, han sido obtenidas utilizando un analizador BA400 y siguiendo las guías del Clinical & Laboratory Standards Institute (CLSI). −  Límite de detección: 4,2 mg/dL = 0,109 mmol/L −  Límite de linealidad: 1000 mg/dL = 26  mmol/L. −  Precisión:",
+        "Interferencias: La hemólisis (hemoglobina hasta 500 mg/dL), la bilirrubina (hasta 10 mg/dL) y la  lipemia  (triglicéridos  hasta  1000  mg/dL)  no  interfieren.  El  àcido  ascórbico  (hasta  6,25 mg/dL) no interfiere. Otros medicamentos y sustancias pueden interferir6.",
+        "CONSERVACIÓN Y ESTABILIDAD Conservar a 2-8ºC. Los  componentes  son  estables  hasta  la  fecha  de  caducidad  indicada  en  la  etiqueta  del  kit, siempre que se conserven bien cerrados y se evite la contaminación durante su uso. Estabilidad a bordo: Los reactivos abiertos y conservados en el compartimento refrigerado del analizador son estables 2 meses. Indicaciones de deterioro: Absorbancia del blanco superior al límite indicado en “Parámetros de la prueba”.",
+        "−  Límite de detección: 0,9 mg/dL = 0,023 mmol/L. −  Límite de linealidad: 1000 mg/dL = 26 mmol/L. −  Precisión:",
+        "CONSERVAR A 2-8ºC"
       ]
     },
     "qcReferences": [
@@ -4049,9 +4899,7 @@ export const DRI_REAGENT_CONTEXT = {
         "sourceReference": "einfo.bio valuesheet 18043 lote 58987"
       }
     ],
-    "missingFields": [
-      "Sin estabilidad a bordo"
-    ]
+    "missingFields": []
   },
   "CK": {
     "displayCode": "CK",
@@ -4147,8 +4995,80 @@ export const DRI_REAGENT_CONTEXT = {
       "onboardStabilityUnit": "months",
       "onboardStabilityRaw": 2.0,
       "blankDeterioration": "high_blank_absorbance",
+      "detectionLimitValue": 1.92,
+      "detectionLimitUnit": "U/L",
+      "detectionLimitAlternateValue": 31.0,
+      "detectionLimitAlternateUnit": "nkat/L",
+      "quantificationLimitValue": null,
+      "quantificationLimitUnit": null,
+      "quantificationLimitAlternateValue": null,
+      "quantificationLimitAlternateUnit": null,
+      "linearityLimitValue": 1300.0,
+      "linearityLimitUnit": "U/L",
+      "linearityLimitAlternateValue": 21671.0,
+      "linearityLimitAlternateUnit": "nkat/L",
+      "interferenceThresholds": [
+        {
+          "interferent": "bilirubin",
+          "label": "Bilirrubina",
+          "thresholdValue": 20.0,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "−  Interferencias: La bilirrubina (hasta 20 mg/dL), la hemólisis (hemoglobina hasta 1000 mg/dL) y lipemia  (triglicéridos  hasta  500  mg/dL)  no  interfieren.  Otros  medicamentos  y  sustancias pueden interferir5."
+        },
+        {
+          "interferent": "hemolysis",
+          "label": "Hemólisis / hemoglobina",
+          "thresholdValue": 1000.0,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "−  Interferencias: La bilirrubina (hasta 20 mg/dL), la hemólisis (hemoglobina hasta 1000 mg/dL) y lipemia  (triglicéridos  hasta  500  mg/dL)  no  interfieren.  Otros  medicamentos  y  sustancias pueden interferir5."
+        },
+        {
+          "interferent": "lipemia",
+          "label": "Lipemia / triglicéridos",
+          "thresholdValue": 500.0,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "−  Interferencias: La bilirrubina (hasta 20 mg/dL), la hemólisis (hemoglobina hasta 1000 mg/dL) y lipemia  (triglicéridos  hasta  500  mg/dL)  no  interfieren.  Otros  medicamentos  y  sustancias pueden interferir5."
+        },
+        {
+          "interferent": "bilirubin",
+          "label": "Bilirrubina",
+          "thresholdValue": 20.0,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "LIMITACIONES DEL PROCEDIMIENTO   Interferencias: la bilirrubina (hasta 20 mg/dL), la hemólisis (hemoglobina hasta 1000 mg/dL) y lipemia  (triglicéridos  hasta  500  mg/dL)  no  interfieren.  Otros  medicamentos  y  sustancias pueden interferir5."
+        },
+        {
+          "interferent": "hemolysis",
+          "label": "Hemólisis / hemoglobina",
+          "thresholdValue": 1000.0,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "LIMITACIONES DEL PROCEDIMIENTO   Interferencias: la bilirrubina (hasta 20 mg/dL), la hemólisis (hemoglobina hasta 1000 mg/dL) y lipemia  (triglicéridos  hasta  500  mg/dL)  no  interfieren.  Otros  medicamentos  y  sustancias pueden interferir5."
+        },
+        {
+          "interferent": "lipemia",
+          "label": "Lipemia / triglicéridos",
+          "thresholdValue": 500.0,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "LIMITACIONES DEL PROCEDIMIENTO   Interferencias: la bilirrubina (hasta 20 mg/dL), la hemólisis (hemoglobina hasta 1000 mg/dL) y lipemia  (triglicéridos  hasta  500  mg/dL)  no  interfieren.  Otros  medicamentos  y  sustancias pueden interferir5."
+        }
+      ],
+      "procedureLimitations": [
+        "La bilirrubina (hasta 20 mg/dL), la hemólisis (hemoglobina hasta 1000 mg/dL) y lipemia (triglicéridos hasta 500 mg/dL) no interfieren.",
+        "la bilirrubina (hasta 20 mg/dL), la hemólisis (hemoglobina hasta 1000 mg/dL) y lipemia (triglicéridos hasta 500 mg/dL) no interfieren.",
+        "La bilirrubina (< 20 mg/dL) y la hemolisis (hemoglobina < 10 g/L) no interfieren. La lipemia interfiere (triglicéridos > 5 g/L)."
+      ],
       "notes": [
-        "CONSERVACIÓN Y ESTABILIDAD Conservar a 2-8ºC. Los  componentes  son  estables  hasta  la  fecha  de  caducidad  indicada  en  la  etiqueta  del  kit, siempre que se conserven bien cerrados y se evite la contaminación durante su uso. Estabilidad a bordo:  Los reactivos abiertos y conservados  en el compartimento refrigerado  del analizador son estables 2 meses. Indicaciones de deterioro: Absorbancia del blanco superior al límite indicado en “Parámetros  de la prueba”."
+        "CONSERVACIÓN Y ESTABILIDAD Conservar a 2-8ºC. Los  componentes  son  estables  hasta  la  fecha  de  caducidad  indicada  en  la  etiqueta  del  kit, siempre que se conserven bien cerrados y se evite la contaminación durante su uso. Estabilidad a bordo:  Los reactivos abiertos y conservados  en el compartimento refrigerado  del analizador son estables 2 meses. Indicaciones de deterioro: Absorbancia del blanco superior al límite indicado en “Parámetros  de la prueba”.",
+        "Cada laboratorio debe  establecer  su propio programa  de Control  de  Calidad interno,  así como procedimientos de corrección en el caso de que los resultados de los controles no se encuentren entre los límites de aceptación.",
+        "−  Límite de linealidad: 1300 U/L = 21671 nkat/L (21,67 kat/L).",
+        "−  Interferencias: La bilirrubina (hasta 20 mg/dL), la hemólisis (hemoglobina hasta 1000 mg/dL) y lipemia  (triglicéridos  hasta  500  mg/dL)  no  interfieren.  Otros  medicamentos  y  sustancias pueden interferir5.",
+        "CONSERVACIÓN Y ESTABILIDAD Conservar a 2-8ºC. Los componentes son estables hasta la fecha de caducidad indicada en la etiqueta del kit, siempre que se conserven bien cerrados y se evite la contaminación durante su uso. Estabilidad  a  bordo:  Los  reactivos  abiertos  y  conservados  en  el  compartimento  refrigerado  del analizador son estables 15 días. Indicaciones  de  deterioro:  Absorbancia  del  blanco  superior  al  límite  indicado  en  “Parámetros  de  la prueba”.",
+        "  Límite de detección: 10 U/L = 153 nkat/L   Límite de linealidad: 1300 U/L = 21671 nkat/L. Cuando se obtengan valores superiores, diluir"
       ]
     },
     "qcReferences": [
@@ -4443,8 +5363,71 @@ export const DRI_REAGENT_CONTEXT = {
       "onboardStabilityUnit": null,
       "onboardStabilityRaw": null,
       "blankDeterioration": "high_blank_absorbance",
+      "detectionLimitValue": 0.05,
+      "detectionLimitUnit": "mg/dL",
+      "detectionLimitAlternateValue": null,
+      "detectionLimitAlternateUnit": null,
+      "quantificationLimitValue": null,
+      "quantificationLimitUnit": null,
+      "quantificationLimitAlternateValue": null,
+      "quantificationLimitAlternateUnit": null,
+      "linearityLimitValue": 30.0,
+      "linearityLimitUnit": "mg/dL",
+      "linearityLimitAlternateValue": null,
+      "linearityLimitAlternateUnit": null,
+      "interferenceThresholds": [
+        {
+          "interferent": "bilirubin",
+          "label": "Bilirrubina",
+          "thresholdValue": 24.0,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "LIMITACIONES DEL PROCEDIMIENTO   Interferencias: la bilirrubina (hasta 24 mg/dL), la hemólisis (hemoglobina hasta  500 mg/dL) y lipemia  (triglicéridos  hasta  1600  mg/dL)  no    interfieren.  Otros  medicamentos  y  sustancias pueden interferir5."
+        },
+        {
+          "interferent": "hemolysis",
+          "label": "Hemólisis / hemoglobina",
+          "thresholdValue": 500.0,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "LIMITACIONES DEL PROCEDIMIENTO   Interferencias: la bilirrubina (hasta 24 mg/dL), la hemólisis (hemoglobina hasta  500 mg/dL) y lipemia  (triglicéridos  hasta  1600  mg/dL)  no    interfieren.  Otros  medicamentos  y  sustancias pueden interferir5."
+        },
+        {
+          "interferent": "lipemia",
+          "label": "Lipemia / triglicéridos",
+          "thresholdValue": 1600.0,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "LIMITACIONES DEL PROCEDIMIENTO   Interferencias: la bilirrubina (hasta 24 mg/dL), la hemólisis (hemoglobina hasta  500 mg/dL) y lipemia  (triglicéridos  hasta  1600  mg/dL)  no    interfieren.  Otros  medicamentos  y  sustancias pueden interferir5."
+        },
+        {
+          "interferent": "hemolysis",
+          "label": "Hemólisis / hemoglobina",
+          "thresholdValue": 5.0,
+          "unit": "g/L",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "  Interferencias:  La  hemoglobina  (5  g/L)  y  la  lipemia  (triglicéridos  16  g/L)  no  interfieren.  La bilirrubina (> 24 mg/dL) puede interferir. Otros medicamentos y sustancias pueden interferir4."
+        },
+        {
+          "interferent": "lipemia",
+          "label": "Lipemia / triglicéridos",
+          "thresholdValue": 16.0,
+          "unit": "g/L",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "  Interferencias:  La  hemoglobina  (5  g/L)  y  la  lipemia  (triglicéridos  16  g/L)  no  interfieren.  La bilirrubina (> 24 mg/dL) puede interferir. Otros medicamentos y sustancias pueden interferir4."
+        }
+      ],
+      "procedureLimitations": [
+        "la bilirrubina (hasta 24 mg/dL), la hemólisis (hemoglobina hasta 500 mg/dL) y lipemia (triglicéridos hasta 1600 mg/dL) no interfieren.",
+        "La hemoglobina (5 g/L) y la lipemia (triglicéridos 16 g/L) no interfieren. La bilirrubina (> 24 mg/dL) puede interferir."
+      ],
       "notes": [
-        "CONSERVACIÓN Y ESTABILIDAD Conservar a 2-8ºC. Los  componentes  son  estables  hasta  la  fecha  de  caducidad  indicada  en  la  etiqueta  del  kit, siempre que se conserven bien cerrados y se evite la contaminación durante su uso. Estabilidad  a  bordo:  Los  reactivos  abiertos  y  conservados  en  el  compartimento  refrigerado  del analizador son estables 2  meses. Indicaciones de deterioro: Absorbancia del blanco superior al límite indicado  en “Parámetros de la prueba”."
+        "CONSERVACIÓN Y ESTABILIDAD Conservar a 2-8ºC. Los  componentes  son  estables  hasta  la  fecha  de  caducidad  indicada  en  la  etiqueta  del  kit, siempre que se conserven bien cerrados y se evite la contaminación durante su uso. Estabilidad  a  bordo:  Los  reactivos  abiertos  y  conservados  en  el  compartimento  refrigerado  del analizador son estables 2  meses. Indicaciones de deterioro: Absorbancia del blanco superior al límite indicado  en “Parámetros de la prueba”.",
+        "  Límite de detección: 0,05 mg/dL = 4,43 mol/L.",
+        "  Límite de linealidad: 30 mg/dL = 2652 mol/L.",
+        "LIMITACIONES DEL PROCEDIMIENTO   Interferencias: la bilirrubina (hasta 24 mg/dL), la hemólisis (hemoglobina hasta  500 mg/dL) y lipemia  (triglicéridos  hasta  1600  mg/dL)  no    interfieren.  Otros  medicamentos  y  sustancias pueden interferir5.",
+        "CONSERVAR A 2-8ºC",
+        "Límite absorbancia blanco Límite blanco cinético Limite de linealidad"
       ]
     },
     "qcReferences": [
@@ -4668,8 +5651,104 @@ export const DRI_REAGENT_CONTEXT = {
       "onboardStabilityUnit": "days",
       "onboardStabilityRaw": 30.0,
       "blankDeterioration": "high_blank_absorbance",
+      "detectionLimitValue": 0.04,
+      "detectionLimitUnit": "mg/dL",
+      "detectionLimitAlternateValue": null,
+      "detectionLimitAlternateUnit": null,
+      "quantificationLimitValue": null,
+      "quantificationLimitUnit": null,
+      "quantificationLimitAlternateValue": null,
+      "quantificationLimitAlternateUnit": null,
+      "linearityLimitValue": 20.0,
+      "linearityLimitUnit": "mg/dL",
+      "linearityLimitAlternateValue": null,
+      "linearityLimitAlternateUnit": null,
+      "interferenceThresholds": [
+        {
+          "interferent": "bilirubin",
+          "label": "Bilirrubina",
+          "thresholdValue": 10.0,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "−  Interferencias:  Bilirrubina  (hasta  10  mg/dL),  hemólisis  (hemoglobina  hasta  500  mg/dL),  lipemia (triglicéridos  hasta  600  mg/dL)  y  cuerpos  proteicos  y  cetónicos  no  interfieren.  Una  concentración elevada de compuestos reductores puede interferir. Otros fármacos y sustancias pueden interferir 9."
+        },
+        {
+          "interferent": "hemolysis",
+          "label": "Hemólisis / hemoglobina",
+          "thresholdValue": 500.0,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "−  Interferencias:  Bilirrubina  (hasta  10  mg/dL),  hemólisis  (hemoglobina  hasta  500  mg/dL),  lipemia (triglicéridos  hasta  600  mg/dL)  y  cuerpos  proteicos  y  cetónicos  no  interfieren.  Una  concentración elevada de compuestos reductores puede interferir. Otros fármacos y sustancias pueden interferir 9."
+        },
+        {
+          "interferent": "lipemia",
+          "label": "Lipemia / triglicéridos",
+          "thresholdValue": 600.0,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "−  Interferencias:  Bilirrubina  (hasta  10  mg/dL),  hemólisis  (hemoglobina  hasta  500  mg/dL),  lipemia (triglicéridos  hasta  600  mg/dL)  y  cuerpos  proteicos  y  cetónicos  no  interfieren.  Una  concentración elevada de compuestos reductores puede interferir. Otros fármacos y sustancias pueden interferir 9."
+        },
+        {
+          "interferent": "bilirubin",
+          "label": "Bilirrubina",
+          "thresholdValue": 10.0,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "Interferencias:  Bilirrubina  (hasta  10  mg/dL),  hemólisis  (hemoglobina  hasta  500  mg/dL),  lipemia (triglicéridos  hasta  600  mg/dL)  y  cuerpos  proteicos  y  cetónicos  no  interfieren.  Una  concentración elevada de compuestos reductores puede interferir. Otros fármacos y sustancias pueden interferir 9."
+        },
+        {
+          "interferent": "hemolysis",
+          "label": "Hemólisis / hemoglobina",
+          "thresholdValue": 500.0,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "Interferencias:  Bilirrubina  (hasta  10  mg/dL),  hemólisis  (hemoglobina  hasta  500  mg/dL),  lipemia (triglicéridos  hasta  600  mg/dL)  y  cuerpos  proteicos  y  cetónicos  no  interfieren.  Una  concentración elevada de compuestos reductores puede interferir. Otros fármacos y sustancias pueden interferir 9."
+        },
+        {
+          "interferent": "lipemia",
+          "label": "Lipemia / triglicéridos",
+          "thresholdValue": 600.0,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "Interferencias:  Bilirrubina  (hasta  10  mg/dL),  hemólisis  (hemoglobina  hasta  500  mg/dL),  lipemia (triglicéridos  hasta  600  mg/dL)  y  cuerpos  proteicos  y  cetónicos  no  interfieren.  Una  concentración elevada de compuestos reductores puede interferir. Otros fármacos y sustancias pueden interferir 9."
+        },
+        {
+          "interferent": "bilirubin",
+          "label": "Bilirrubina",
+          "thresholdValue": 3.0,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "Interferencias:  Bilirrubina  (hasta  3  mg/dL),  hemólisis  (hemoglobina  hasta  500  mg/dL),  lipemia (triglicéridos  hasta  600  mg/dL)  y  cuerpos  proteicos  y  cetónicos  no  interfieren.  Una  concentración elevada de compuestos reductores puede interferir. Otros fármacos y sustancias pueden interferir8."
+        },
+        {
+          "interferent": "hemolysis",
+          "label": "Hemólisis / hemoglobina",
+          "thresholdValue": 500.0,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "Interferencias:  Bilirrubina  (hasta  3  mg/dL),  hemólisis  (hemoglobina  hasta  500  mg/dL),  lipemia (triglicéridos  hasta  600  mg/dL)  y  cuerpos  proteicos  y  cetónicos  no  interfieren.  Una  concentración elevada de compuestos reductores puede interferir. Otros fármacos y sustancias pueden interferir8."
+        },
+        {
+          "interferent": "lipemia",
+          "label": "Lipemia / triglicéridos",
+          "thresholdValue": 600.0,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "Interferencias:  Bilirrubina  (hasta  3  mg/dL),  hemólisis  (hemoglobina  hasta  500  mg/dL),  lipemia (triglicéridos  hasta  600  mg/dL)  y  cuerpos  proteicos  y  cetónicos  no  interfieren.  Una  concentración elevada de compuestos reductores puede interferir. Otros fármacos y sustancias pueden interferir8."
+        }
+      ],
+      "procedureLimitations": [
+        "Bilirrubina (hasta 10 mg/dL), hemólisis (hemoglobina hasta 500 mg/dL), lipemia (triglicéridos hasta 600 mg/dL) y cuerpos proteicos y cetónicos no interfieren. Una concentración elevada de compuestos reductores puede interferir. Otros fármacos y sustancias pueden interferir 9. COD 21502 COD 23502 NOTA 1. Para la medición en",
+        "Bilirrubina (hasta 10 mg/dL), hemólisis (hemoglobina hasta 500 mg/dL), lipemia (triglicéridos hasta 600 mg/dL) y cuerpos proteicos y cetónicos no interfieren. Una concentración elevada de compuestos reductores puede interferir. Otros fármacos y sustancias pueden interferir 9. CONTENIDO Y COMPOSICIÓN A. Reactivo. 5 x 50 mL. Hidróxido de sodio 0,4 mol/L, detergente. NOTA 1. Para la medición en",
+        "Bilirrubina (hasta 3 mg/dL), hemólisis (hemoglobina hasta 500 mg/dL), lipemia (triglicéridos hasta 600 mg/dL) y cuerpos proteicos y cetónicos no interfieren. Una concentración elevada de compuestos reductores puede interferir. Otros fármacos y sustancias pueden interferir8."
+      ],
       "notes": [
-        "CONSERVACIÓN Y ESTABILIDAD Conservar a 2-30ºC. Los componentes son estables hasta la fecha de caducidad indicada en la etiqueta del kit, siempre que se conserven bien cerrados y se evite la contaminación durante su uso. Estabilidad a bordo: Los reactivos abiertos y conservados en el compartimento refrigerado del analizador a 2-8ºC son estables 30 días. Indicaciones de deterioro: Reactivos: RA se trata de una solución de NaOH de concentración elevada. Algunas condiciones, (p.ej. conservar a una temperatura inferior a la recomendada) puede provocar la aparición  de  un  ligero  precipitado  en  el  vial  que  no  interfiere  en  la  realización  del  ensayo,  y  que desaparece  mediante  una  ligera  rotación  previa  al  ensayo.  RB,  presencia  de  partículas  y  turbidez. Absorbancia del blanco superior al límite indicado en “Parámetros de la prueba”."
+        "CONSERVACIÓN Y ESTABILIDAD Conservar a 2-30ºC. Los componentes son estables hasta la fecha de caducidad indicada en la etiqueta del kit, siempre que se conserven bien cerrados y se evite la contaminación durante su uso. Estabilidad a bordo: Los reactivos abiertos y conservados en el compartimento refrigerado del analizador a 2-8ºC son estables 30 días. Indicaciones de deterioro: Reactivos: RA se trata de una solución de NaOH de concentración elevada. Algunas condiciones, (p.ej. conservar a una temperatura inferior a la recomendada) puede provocar la aparición  de  un  ligero  precipitado  en  el  vial  que  no  interfiere  en  la  realización  del  ensayo,  y  que desaparece  mediante  una  ligera  rotación  previa  al  ensayo.  RB,  presencia  de  partículas  y  turbidez. Absorbancia del blanco superior al límite indicado en “Parámetros de la prueba”.",
+        "CARACTERÍSTICAS METROLÓGICAS Las  prestaciones  metrológicas  que  se  describen  a  continuación,  han  sido  obtenidas  utilizando  un analizador BA400 y siguiendo las guías del Clinical & Laboratory Standards Institute (CLSI). −  Límite de detección: 0,04 mg/dL = 3,95 mol/L. −  Límite de linealidad: 20 mg/dL = 1768 mol/L. −  Precisión:",
+        "−  Interferencias:  Bilirrubina  (hasta  10  mg/dL),  hemólisis  (hemoglobina  hasta  500  mg/dL),  lipemia (triglicéridos  hasta  600  mg/dL)  y  cuerpos  proteicos  y  cetónicos  no  interfieren.  Una  concentración elevada de compuestos reductores puede interferir. Otros fármacos y sustancias pueden interferir 9.",
+        "CONSERVACIÓN Y ESTABILIDAD Conservar a 2-30ºC. Los componentes son estables hasta la fecha de caducidad indicada en la etiqueta del kit, siempre que se conserven bien cerrados y se evite la contaminación durante su uso. Estabilidad  a  bordo:  Los  reactivos  abiertos  y  conservados  en  el  compartimento  refrigerado  del analizador a 2-8ºC son estables 2 semanas. Indicaciones de deterioro: Reactivos: RA se trata de una solución de NaOH de concentración elevada. Algunas condiciones, (p.ej. conservar a una temperatura inferior a la recomendada) puede provocar la aparición  de  un  ligero  precipitado  en  el  vial  que  no  interfiere  en  la  realización  del  ensayo,  y  que desaparece  mediante  una  ligera  rotación  previa  al  ensayo.  RB,  presencia  de  partículas  y  turbidez. Absorbancia del blanco superior al límite indicado en “Parámetros de la prueba”.",
+        "CARACTERÍSTICAS METROLÓGICAS Las  prestaciones  metrológicas  que  se  describen  a  continuación,  han  sido  obtenidas  utilizando  un analizador A25. Los resultados son similares a los del A15. −  Límite de detección: 0,1 mg/dL = 8,57 mol/L. −  Límite de linealidad: 20 mg/dL = 1768 mol/L.",
+        "Interferencias:  Bilirrubina  (hasta  10  mg/dL),  hemólisis  (hemoglobina  hasta  500  mg/dL),  lipemia (triglicéridos  hasta  600  mg/dL)  y  cuerpos  proteicos  y  cetónicos  no  interfieren.  Una  concentración elevada de compuestos reductores puede interferir. Otros fármacos y sustancias pueden interferir 9."
       ]
     },
     "qcReferences": [
@@ -4944,8 +6023,79 @@ export const DRI_REAGENT_CONTEXT = {
       "onboardStabilityUnit": "months",
       "onboardStabilityRaw": 2.0,
       "blankDeterioration": "high_blank_absorbance",
+      "detectionLimitValue": 1.9,
+      "detectionLimitUnit": "mg/L",
+      "detectionLimitAlternateValue": null,
+      "detectionLimitAlternateUnit": null,
+      "quantificationLimitValue": null,
+      "quantificationLimitUnit": null,
+      "quantificationLimitAlternateValue": null,
+      "quantificationLimitAlternateUnit": null,
+      "linearityLimitValue": 150.0,
+      "linearityLimitUnit": "mg/L",
+      "linearityLimitAlternateValue": null,
+      "linearityLimitAlternateUnit": null,
+      "interferenceThresholds": [
+        {
+          "interferent": "bilirubin",
+          "label": "Bilirrubina",
+          "thresholdValue": 30.0,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "LIMITACIONES DEL PROCEDIMIENTO −  Interferencias:  La  bilirrubina  (hasta  30  mg/dL),  el  factor  reumatoide  (hasta  300  UI/mL),  la hemólisis  (hemoglobina  hasta  500  mg/dL)  y  la  lipemia  (triglicéridos  hasta  1625  mg/dL)  no interfieren. Otros medicamentos y sustancias pueden interferir7."
+        },
+        {
+          "interferent": "hemolysis",
+          "label": "Hemólisis / hemoglobina",
+          "thresholdValue": 500.0,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "LIMITACIONES DEL PROCEDIMIENTO −  Interferencias:  La  bilirrubina  (hasta  30  mg/dL),  el  factor  reumatoide  (hasta  300  UI/mL),  la hemólisis  (hemoglobina  hasta  500  mg/dL)  y  la  lipemia  (triglicéridos  hasta  1625  mg/dL)  no interfieren. Otros medicamentos y sustancias pueden interferir7."
+        },
+        {
+          "interferent": "lipemia",
+          "label": "Lipemia / triglicéridos",
+          "thresholdValue": 1625.0,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "LIMITACIONES DEL PROCEDIMIENTO −  Interferencias:  La  bilirrubina  (hasta  30  mg/dL),  el  factor  reumatoide  (hasta  300  UI/mL),  la hemólisis  (hemoglobina  hasta  500  mg/dL)  y  la  lipemia  (triglicéridos  hasta  1625  mg/dL)  no interfieren. Otros medicamentos y sustancias pueden interferir7."
+        },
+        {
+          "interferent": "bilirubin",
+          "label": "Bilirrubina",
+          "thresholdValue": 20.0,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "−  Interferencias:  La  lipemia  (trigliceridos  10  g/L),  la  hemólisis  (hemoglobina  10  g/L),  la bilirrubina (20 mg/dL) y el factor reumatoide (200 UI/mL) no interfieren. Otros medicamentos y sustancias pueden interferir6."
+        },
+        {
+          "interferent": "hemolysis",
+          "label": "Hemólisis / hemoglobina",
+          "thresholdValue": 10.0,
+          "unit": "g/L",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "−  Interferencias:  La  lipemia  (trigliceridos  10  g/L),  la  hemólisis  (hemoglobina  10  g/L),  la bilirrubina (20 mg/dL) y el factor reumatoide (200 UI/mL) no interfieren. Otros medicamentos y sustancias pueden interferir6."
+        },
+        {
+          "interferent": "lipemia",
+          "label": "Lipemia / triglicéridos",
+          "thresholdValue": 10.0,
+          "unit": "g/L",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "−  Interferencias:  La  lipemia  (trigliceridos  10  g/L),  la  hemólisis  (hemoglobina  10  g/L),  la bilirrubina (20 mg/dL) y el factor reumatoide (200 UI/mL) no interfieren. Otros medicamentos y sustancias pueden interferir6."
+        }
+      ],
+      "procedureLimitations": [
+        "La bilirrubina (hasta 30 mg/dL), el factor reumatoide (hasta 300 UI/mL), la hemólisis (hemoglobina hasta 500 mg/dL) y la lipemia (triglicéridos hasta 1625 mg/dL) no interfieren.",
+        "La lipemia (trigliceridos 10 g/L), la hemólisis (hemoglobina 10 g/L), la bilirrubina (20 mg/dL) y el factor reumatoide (200 UI/mL) no interfieren."
+      ],
       "notes": [
-        "CONSERVACIÓN Y ESTABILIDAD Conservar a 2-8ºC. Los  componentes  son  estables  hasta  la  fecha  de  caducidad  indicada  en  la  etiqueta  del  kit, siempre que se conserven bien cerrados y se evite la contaminación durante su uso. Estabilidad a bordo:  Los reactivos abiertos y conservados  en el compartimento refrigerado  del analizador son estables 2 meses. Indicaciones de deterioro: Absorbancia del blanco superior al límite indicado en “Parámetros de la prueba”."
+        "CONSERVACIÓN Y ESTABILIDAD Conservar a 2-8ºC. Los  componentes  son  estables  hasta  la  fecha  de  caducidad  indicada  en  la  etiqueta  del  kit, siempre que se conserven bien cerrados y se evite la contaminación durante su uso. Estabilidad a bordo:  Los reactivos abiertos y conservados  en el compartimento refrigerado  del analizador son estables 2 meses. Indicaciones de deterioro: Absorbancia del blanco superior al límite indicado en “Parámetros de la prueba”.",
+        "Las prestaciones metrológicas que se describen a continuación, han sido obtenidas utilizando un analizador BA400 y siguiendo las guías del Clinical & Laboratory Standards Institute (CLSI). −  Límite de detección: 1.9 mg/L.",
+        "−  Límite de linealidad: 150 mg/L. −  Precisión:",
+        "LIMITACIONES DEL PROCEDIMIENTO −  Interferencias:  La  bilirrubina  (hasta  30  mg/dL),  el  factor  reumatoide  (hasta  300  UI/mL),  la hemólisis  (hemoglobina  hasta  500  mg/dL)  y  la  lipemia  (triglicéridos  hasta  1625  mg/dL)  no interfieren. Otros medicamentos y sustancias pueden interferir7.",
+        "Conservar a 2-8ºC. Los Reactivos son estables hasta la fecha de caducidad indicada en la etiqueta, siempre que se conserven bien cerrados y se evite la contaminación durante su uso.",
+        "Indicaciones de deterioro: −  Reactivos: Absorbancia del blanco superior al límite indicado en “Parámetros del ensayo”."
       ]
     },
     "qcReferences": [],
@@ -4988,9 +6138,53 @@ export const DRI_REAGENT_CONTEXT = {
       "onboardStabilityUnit": null,
       "onboardStabilityRaw": null,
       "blankDeterioration": "high_blank_absorbance",
+      "detectionLimitValue": 0.14,
+      "detectionLimitUnit": "mmol/L",
+      "detectionLimitAlternateValue": null,
+      "detectionLimitAlternateUnit": null,
+      "quantificationLimitValue": null,
+      "quantificationLimitUnit": null,
+      "quantificationLimitAlternateValue": null,
+      "quantificationLimitAlternateUnit": null,
+      "linearityLimitValue": 7.0,
+      "linearityLimitUnit": "mmol/L",
+      "linearityLimitAlternateValue": null,
+      "linearityLimitAlternateUnit": null,
+      "interferenceThresholds": [
+        {
+          "interferent": "bilirubin",
+          "label": "Bilirrubina",
+          "thresholdValue": 20.0,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": " Interferencias:  Lipidos  (triglicéridos  10  g/L),  hemoglobina  (10  g/L)  y  bilirrubina  (20  mg/dL)  no"
+        },
+        {
+          "interferent": "hemolysis",
+          "label": "Hemólisis / hemoglobina",
+          "thresholdValue": 10.0,
+          "unit": "g/L",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": " Interferencias:  Lipidos  (triglicéridos  10  g/L),  hemoglobina  (10  g/L)  y  bilirrubina  (20  mg/dL)  no"
+        },
+        {
+          "interferent": "lipemia",
+          "label": "Lipemia / triglicéridos",
+          "thresholdValue": 10.0,
+          "unit": "g/L",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": " Interferencias:  Lipidos  (triglicéridos  10  g/L),  hemoglobina  (10  g/L)  y  bilirrubina  (20  mg/dL)  no"
+        }
+      ],
+      "procedureLimitations": [
+        "Lipidos (triglicéridos 10 g/L), hemoglobina (10 g/L) y bilirrubina (20 mg/dL) no interfieren."
+      ],
       "notes": [
         "CONSERVAR A 2-8ºC",
-        " Reactivo: Presencia de partículas, turbidez, absorbancia del blanco superior a 0,065 a 530 nm"
+        " Reactivo: Presencia de partículas, turbidez, absorbancia del blanco superior a 0,065 a 530 nm",
+        "Límite de detección: 0,14 mmol/L (DMF), 16 mol/L (albúmina glicada).",
+        "Límite de linealidad: 7 mmol/L",
+        " Interferencias:  Lipidos  (triglicéridos  10  g/L),  hemoglobina  (10  g/L)  y  bilirrubina  (20  mg/dL)  no"
       ]
     },
     "qcReferences": [],
@@ -5047,19 +6241,73 @@ export const DRI_REAGENT_CONTEXT = {
       "matchedProductCount": 2
     },
     "facts": {
-      "storageTempMinC": null,
-      "storageTempMaxC": null,
+      "storageTempMinC": 2.0,
+      "storageTempMaxC": 8.0,
       "onboardStabilityHours": 2160.0,
       "onboardStabilityUnit": "months",
       "onboardStabilityRaw": 3.0,
       "blankDeterioration": "high_blank_absorbance",
+      "detectionLimitValue": null,
+      "detectionLimitUnit": null,
+      "detectionLimitAlternateValue": null,
+      "detectionLimitAlternateUnit": null,
+      "quantificationLimitValue": null,
+      "quantificationLimitUnit": null,
+      "quantificationLimitAlternateValue": null,
+      "quantificationLimitAlternateUnit": null,
+      "linearityLimitValue": null,
+      "linearityLimitUnit": null,
+      "linearityLimitAlternateValue": null,
+      "linearityLimitAlternateUnit": null,
+      "interferenceThresholds": [
+        {
+          "interferent": "bilirubin",
+          "label": "Bilirrubina",
+          "thresholdValue": 30.0,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "LIMITACIONES DEL PROCEDIMIENTO −  Interferencias: La bilirrubina (hasta 30 mg/dL) y la lipemia (triglicéridos hasta 1840 mg/dL) no"
+        },
+        {
+          "interferent": "lipemia",
+          "label": "Lipemia / triglicéridos",
+          "thresholdValue": 1840.0,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "LIMITACIONES DEL PROCEDIMIENTO −  Interferencias: La bilirrubina (hasta 30 mg/dL) y la lipemia (triglicéridos hasta 1840 mg/dL) no"
+        },
+        {
+          "interferent": "bilirubin",
+          "label": "Bilirrubina",
+          "thresholdValue": 30.0,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "− Interferencias:  La  bilirrubina  (hasta  30  mg/dL)  y  la  lipemia  (triglicéridos  hasta  1840  mg/dL  -  20,8"
+        },
+        {
+          "interferent": "lipemia",
+          "label": "Lipemia / triglicéridos",
+          "thresholdValue": 1840.0,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "− Interferencias:  La  bilirrubina  (hasta  30  mg/dL)  y  la  lipemia  (triglicéridos  hasta  1840  mg/dL  -  20,8"
+        }
+      ],
+      "procedureLimitations": [
+        "La bilirrubina (hasta 30 mg/dL) y la lipemia (triglicéridos hasta 1840 mg/dL) no interfieren.",
+        "La bilirrubina (hasta 30 mg/dL) y la lipemia (triglicéridos hasta 1840 mg/dL - 20,8 mmol/L) no interfieren."
+      ],
       "notes": [
-        "CONSERVACIÓN Y ESTABILIDAD Los  componentes  son  estables  una  vez  abiertos  hasta  la  fecha  de  caducidad  marcada  en  la etiqueta si estos se mantienen a la temperatura de almacenamiento recomendada, bien cerrados y se tiene cuidado de evitar la contaminación durante su uso. Estabilidad a bordo:  Los reactivos abiertos y conservados  en el compartimento refrigerado  del analizador son estables 3 meses. Indicaciones de deterioro: −  Reactivos A, B, C: Presencia de partículas, turbidez, absorbancia del blanco superior al límite"
+        "CONSERVACIÓN Y ESTABILIDAD Los  componentes  son  estables  una  vez  abiertos  hasta  la  fecha  de  caducidad  marcada  en  la etiqueta si estos se mantienen a la temperatura de almacenamiento recomendada, bien cerrados y se tiene cuidado de evitar la contaminación durante su uso. Estabilidad a bordo:  Los reactivos abiertos y conservados  en el compartimento refrigerado  del analizador son estables 3 meses. Indicaciones de deterioro: −  Reactivos A, B, C: Presencia de partículas, turbidez, absorbancia del blanco superior al límite",
+        "LIMITACIONES DEL PROCEDIMIENTO −  Interferencias: La bilirrubina (hasta 30 mg/dL) y la lipemia (triglicéridos hasta 1840 mg/dL) no",
+        "Conservar a 2-8ºC. Los componentes son estables una vez abiertos hasta la fecha de caducidad marcada en la etiqueta si estos  se  mantienen  a  la  temperatura  de  almacenamiento  recomendada,  bien  cerrados  y  se  tiene cuidado de evitar la contaminación durante su uso. Estabilidad  a  bordo:  Los  reactivos  abiertos  y  conservados  en  el  compartimento  refrigerado  del analizador son estables 3 meses. Indicaciones de deterioro: −    Reactivos  A,  B,  C:  Presencia  de  partículas,  turbidez,  absorbancia  del  blanco  superior  a  0,400  a",
+        "− Interferencias:  La  bilirrubina  (hasta  30  mg/dL)  y  la  lipemia  (triglicéridos  hasta  1840  mg/dL  -  20,8"
       ]
     },
     "qcReferences": [],
     "missingFields": [
-      "Sin temperatura de conservación"
+      "Sin límite de linealidad",
+      "Sin LOD/LOQ estructurado"
     ]
   },
   "GGT": {
@@ -5113,14 +6361,36 @@ export const DRI_REAGENT_CONTEXT = {
       "onboardStabilityHours": null,
       "onboardStabilityUnit": null,
       "onboardStabilityRaw": null,
-      "blankDeterioration": null,
+      "blankDeterioration": "high_blank_absorbance",
+      "detectionLimitValue": 5.8,
+      "detectionLimitUnit": "U/L",
+      "detectionLimitAlternateValue": null,
+      "detectionLimitAlternateUnit": null,
+      "quantificationLimitValue": null,
+      "quantificationLimitUnit": null,
+      "quantificationLimitAlternateValue": null,
+      "quantificationLimitAlternateUnit": null,
+      "linearityLimitValue": 600.0,
+      "linearityLimitUnit": "U/L",
+      "linearityLimitAlternateValue": null,
+      "linearityLimitAlternateUnit": null,
+      "interferenceThresholds": [],
+      "procedureLimitations": [
+        "La hemólisis (hemoglobina > 5 g/L), la lipemia (triglicéridos > 4 g/L) y la bilirrubina (> 10 mg/dL) interfieren."
+      ],
       "notes": [
-        "CONSERVAR A 2-8ºC"
+        "CONSERVAR A 2-8ºC",
+        "Límite absorbancia blanco Límite blanco cinético Limite de linealidad",
+        " Límite de linealidad: 600 U/L = 10,0 kat/L.",
+        " Interferencias:  La  hemólisis  (hemoglobina  >  5  g/L),  la  lipemia  (triglicéridos  >  4  g/L)  y  la",
+        " Reactivos: Presencia de partículas, turbidez, absorbancia del blanco superior a 1,000 a 410",
+        "  Límite de detección: 1,6 U/L = 0,03 kat/L."
       ]
     },
     "qcReferences": [],
     "missingFields": [
-      "Sin estabilidad a bordo"
+      "Sin estabilidad a bordo",
+      "Sin umbrales de interferencia"
     ]
   },
   "GLU": {
@@ -5242,8 +6512,127 @@ export const DRI_REAGENT_CONTEXT = {
       "onboardStabilityUnit": "months",
       "onboardStabilityRaw": 2.0,
       "blankDeterioration": "high_blank_absorbance",
+      "detectionLimitValue": 1.6,
+      "detectionLimitUnit": "mg/dL",
+      "detectionLimitAlternateValue": 0.08,
+      "detectionLimitAlternateUnit": "mmol/L",
+      "quantificationLimitValue": null,
+      "quantificationLimitUnit": null,
+      "quantificationLimitAlternateValue": null,
+      "quantificationLimitAlternateUnit": null,
+      "linearityLimitValue": 500.0,
+      "linearityLimitUnit": "mg/dL",
+      "linearityLimitAlternateValue": 27.5,
+      "linearityLimitAlternateUnit": "mmol/L",
+      "interferenceThresholds": [
+        {
+          "interferent": "bilirubin",
+          "label": "Bilirrubina",
+          "thresholdValue": 12.0,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "LIMITACIONES DEL PROCEDIMIENTO Interferencias: Suero/plasma:  La  bilirrubina  (hasta  12 mg/dL  -  205 µmol/L),  la  hemólisis  (hemoglobina  hasta 500 mg/dL),  la  lipemia  (triglicéridos  hasta  163 mg/dL  -  1,84 mmol/L),  el  ácido  úrico  (hasta 20 mg/dL  -  1190 µmol/L),  el  ácido  ascórbico  (hasta  6 mg/dL  -  341 µmol/L)  y  el  acetaminofén (hasta 20 mg/dL - 1324 µmol/L) no interfieren. LCR: La hemólisis (hemoglobina hasta 500 mg/dL) no interfiere. Pueden interferir otros fármacos y sustancias6."
+        },
+        {
+          "interferent": "hemolysis",
+          "label": "Hemólisis / hemoglobina",
+          "thresholdValue": 500.0,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "LIMITACIONES DEL PROCEDIMIENTO Interferencias: Suero/plasma:  La  bilirrubina  (hasta  12 mg/dL  -  205 µmol/L),  la  hemólisis  (hemoglobina  hasta 500 mg/dL),  la  lipemia  (triglicéridos  hasta  163 mg/dL  -  1,84 mmol/L),  el  ácido  úrico  (hasta 20 mg/dL  -  1190 µmol/L),  el  ácido  ascórbico  (hasta  6 mg/dL  -  341 µmol/L)  y  el  acetaminofén (hasta 20 mg/dL - 1324 µmol/L) no interfieren. LCR: La hemólisis (hemoglobina hasta 500 mg/dL) no interfiere. Pueden interferir otros fármacos y sustancias6."
+        },
+        {
+          "interferent": "lipemia",
+          "label": "Lipemia / triglicéridos",
+          "thresholdValue": 163.0,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "LIMITACIONES DEL PROCEDIMIENTO Interferencias: Suero/plasma:  La  bilirrubina  (hasta  12 mg/dL  -  205 µmol/L),  la  hemólisis  (hemoglobina  hasta 500 mg/dL),  la  lipemia  (triglicéridos  hasta  163 mg/dL  -  1,84 mmol/L),  el  ácido  úrico  (hasta 20 mg/dL  -  1190 µmol/L),  el  ácido  ascórbico  (hasta  6 mg/dL  -  341 µmol/L)  y  el  acetaminofén (hasta 20 mg/dL - 1324 µmol/L) no interfieren. LCR: La hemólisis (hemoglobina hasta 500 mg/dL) no interfiere. Pueden interferir otros fármacos y sustancias6."
+        },
+        {
+          "interferent": "ascorbic_acid",
+          "label": "Ácido ascórbico",
+          "thresholdValue": 6.0,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "LIMITACIONES DEL PROCEDIMIENTO Interferencias: Suero/plasma:  La  bilirrubina  (hasta  12 mg/dL  -  205 µmol/L),  la  hemólisis  (hemoglobina  hasta 500 mg/dL),  la  lipemia  (triglicéridos  hasta  163 mg/dL  -  1,84 mmol/L),  el  ácido  úrico  (hasta 20 mg/dL  -  1190 µmol/L),  el  ácido  ascórbico  (hasta  6 mg/dL  -  341 µmol/L)  y  el  acetaminofén (hasta 20 mg/dL - 1324 µmol/L) no interfieren. LCR: La hemólisis (hemoglobina hasta 500 mg/dL) no interfiere. Pueden interferir otros fármacos y sustancias6."
+        },
+        {
+          "interferent": "bilirubin",
+          "label": "Bilirrubina",
+          "thresholdValue": 10.0,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "  Interferencias: La hemólisis (hemoglobina hasta 300 mg/dL), la bilirrubina (hasta 10 mg/dL) y la lipemia (triglicéridos hasta 125 mg/dL) no interfieren. El àcido ascórbico (hasta 25 mg/dL) no interfiere. Otros medicamentos y sustancias pueden interferir5."
+        },
+        {
+          "interferent": "hemolysis",
+          "label": "Hemólisis / hemoglobina",
+          "thresholdValue": 300.0,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "  Interferencias: La hemólisis (hemoglobina hasta 300 mg/dL), la bilirrubina (hasta 10 mg/dL) y la lipemia (triglicéridos hasta 125 mg/dL) no interfieren. El àcido ascórbico (hasta 25 mg/dL) no interfiere. Otros medicamentos y sustancias pueden interferir5."
+        },
+        {
+          "interferent": "lipemia",
+          "label": "Lipemia / triglicéridos",
+          "thresholdValue": 125.0,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "  Interferencias: La hemólisis (hemoglobina hasta 300 mg/dL), la bilirrubina (hasta 10 mg/dL) y la lipemia (triglicéridos hasta 125 mg/dL) no interfieren. El àcido ascórbico (hasta 25 mg/dL) no interfiere. Otros medicamentos y sustancias pueden interferir5."
+        },
+        {
+          "interferent": "ascorbic_acid",
+          "label": "Ácido ascórbico",
+          "thresholdValue": 25.0,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "  Interferencias: La hemólisis (hemoglobina hasta 300 mg/dL), la bilirrubina (hasta 10 mg/dL) y la lipemia (triglicéridos hasta 125 mg/dL) no interfieren. El àcido ascórbico (hasta 25 mg/dL) no interfiere. Otros medicamentos y sustancias pueden interferir5."
+        },
+        {
+          "interferent": "bilirubin",
+          "label": "Bilirrubina",
+          "thresholdValue": 10.0,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "  Interferencias: La hemólisis (hemoglobina hasta 300 mg/dL), la bilirrubina (hasta 10 mg/dL) y la lipemia (triglicéridos hasta 125 mg/dL) no interfieren. El àcido ascórbico (hasta 25 mg/dL) no interfiere. Otros medicamentos y sustancias pueden interferir4."
+        },
+        {
+          "interferent": "hemolysis",
+          "label": "Hemólisis / hemoglobina",
+          "thresholdValue": 300.0,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "  Interferencias: La hemólisis (hemoglobina hasta 300 mg/dL), la bilirrubina (hasta 10 mg/dL) y la lipemia (triglicéridos hasta 125 mg/dL) no interfieren. El àcido ascórbico (hasta 25 mg/dL) no interfiere. Otros medicamentos y sustancias pueden interferir4."
+        },
+        {
+          "interferent": "lipemia",
+          "label": "Lipemia / triglicéridos",
+          "thresholdValue": 125.0,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "  Interferencias: La hemólisis (hemoglobina hasta 300 mg/dL), la bilirrubina (hasta 10 mg/dL) y la lipemia (triglicéridos hasta 125 mg/dL) no interfieren. El àcido ascórbico (hasta 25 mg/dL) no interfiere. Otros medicamentos y sustancias pueden interferir4."
+        },
+        {
+          "interferent": "ascorbic_acid",
+          "label": "Ácido ascórbico",
+          "thresholdValue": 25.0,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "  Interferencias: La hemólisis (hemoglobina hasta 300 mg/dL), la bilirrubina (hasta 10 mg/dL) y la lipemia (triglicéridos hasta 125 mg/dL) no interfieren. El àcido ascórbico (hasta 25 mg/dL) no interfiere. Otros medicamentos y sustancias pueden interferir4."
+        }
+      ],
+      "procedureLimitations": [
+        "Suero/plasma: La bilirrubina (hasta 12 mg/dL - 205 µmol/L), la hemólisis (hemoglobina hasta 500 mg/dL), la lipemia (triglicéridos hasta 163 mg/dL - 1,84 mmol/L), el ácido úrico (hasta 20 mg/dL - 1190 µmol/L), el ácido ascórbico (hasta 6 mg/dL - 341 µmol/L) y el acetaminofén (hasta 20 mg/dL - 1324 µmol/L) no interfieren. LCR: La hemólisis (hemoglobina hasta 500 mg/dL) no interfiere. Pueden interferir otros fármacos y sustancias6. AVISO AL USUARIO El Resumen sobre seguridad y funcionamiento está disponible en la base de datos EUDAMED: https://ec.europa.eu/tools/eudamed. Las versiones en diferentes idiomas de las instrucciones de uso y la ficha de datos de seguridad están disponibles en el sitio web de BioSystems https://einfo.bio. NOTAS 1. Las matrices de las",
+        "La hemólisis (hemoglobina hasta 300 mg/dL), la bilirrubina (hasta 10 mg/dL) y la lipemia (triglicéridos hasta 125 mg/dL) no interfieren. El àcido ascórbico (hasta 25 mg/dL) no interfiere."
+      ],
       "notes": [
-        "CONSERVACIÓN Y ESTABILIDAD Conservar a 2-8ºC. Los  componentes  son  estables  hasta  la  fecha  de  caducidad  indicada  en  la  etiqueta  del  kit, siempre que se conserven bien cerrados y se evite la contaminación durante su uso. Estabilidad a bordo: Los reactivos abiertos y conservados en el compartimento refrigerado del analizador son estables 2  meses. Indicaciones de deterioro: Absorbancia del blanco superior al límite indicado en “Parámetros de la prueba”."
+        "LIMITACIONES DEL PROCEDIMIENTO Interferencias: Suero/plasma:  La  bilirrubina  (hasta  12 mg/dL  -  205 µmol/L),  la  hemólisis  (hemoglobina  hasta 500 mg/dL),  la  lipemia  (triglicéridos  hasta  163 mg/dL  -  1,84 mmol/L),  el  ácido  úrico  (hasta 20 mg/dL  -  1190 µmol/L),  el  ácido  ascórbico  (hasta  6 mg/dL  -  341 µmol/L)  y  el  acetaminofén (hasta 20 mg/dL - 1324 µmol/L) no interfieren. LCR: La hemólisis (hemoglobina hasta 500 mg/dL) no interfiere. Pueden interferir otros fármacos y sustancias6.",
+        "CONSERVACIÓN Y ESTABILIDAD Conservar a 2-8ºC. Los  componentes  son  estables  hasta  la  fecha  de  caducidad  indicada  en  la  etiqueta  del  kit, siempre que se conserven bien cerrados y se evite la contaminación durante su uso. Estabilidad a bordo: Los reactivos abiertos y conservados en el compartimento refrigerado del analizador son estables 2  meses. Indicaciones de deterioro: Absorbancia del blanco superior al límite indicado en “Parámetros de la prueba”.",
+        "CARACTERÍSTICAS METROLÓGICAS Las prestaciones metrológicas que se describen a continuación, han sido obtenidas utilizando un analizador A25. Los resultados son similares a los del A15.   Límite de detección: 1,6 mg/dL = 0,08 mmol/L.",
+        "  Límite de linealidad: 500 mg/dL = 27,5 mmol/L.",
+        "  Interferencias: La hemólisis (hemoglobina hasta 300 mg/dL), la bilirrubina (hasta 10 mg/dL) y la lipemia (triglicéridos hasta 125 mg/dL) no interfieren. El àcido ascórbico (hasta 25 mg/dL) no interfiere. Otros medicamentos y sustancias pueden interferir5.",
+        "CONSERVAR A 2-8ºC"
       ]
     },
     "qcReferences": [
@@ -5554,8 +6943,145 @@ export const DRI_REAGENT_CONTEXT = {
       "onboardStabilityUnit": null,
       "onboardStabilityRaw": null,
       "blankDeterioration": "high_blank_absorbance",
+      "detectionLimitValue": 2.26,
+      "detectionLimitUnit": "mg/dL",
+      "detectionLimitAlternateValue": 0.125,
+      "detectionLimitAlternateUnit": "mmol/L",
+      "quantificationLimitValue": null,
+      "quantificationLimitUnit": null,
+      "quantificationLimitAlternateValue": null,
+      "quantificationLimitAlternateUnit": null,
+      "linearityLimitValue": 800.0,
+      "linearityLimitUnit": "mg/dL",
+      "linearityLimitAlternateValue": 44.4,
+      "linearityLimitAlternateUnit": "mmol/L",
+      "interferenceThresholds": [
+        {
+          "interferent": "bilirubin",
+          "label": "Bilirrubina",
+          "thresholdValue": 30.0,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "  Interferencias: la bilirrubina (hasta 30 mg/dL), la hemólisis (hemoglobina hasta  500 mg/dL) y lipemia  (triglicéridos  hasta  1625  mg/dL)  no    interfieren.  Otros  medicamentos  y  sustancias pueden interferir5."
+        },
+        {
+          "interferent": "hemolysis",
+          "label": "Hemólisis / hemoglobina",
+          "thresholdValue": 500.0,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "  Interferencias: la bilirrubina (hasta 30 mg/dL), la hemólisis (hemoglobina hasta  500 mg/dL) y lipemia  (triglicéridos  hasta  1625  mg/dL)  no    interfieren.  Otros  medicamentos  y  sustancias pueden interferir5."
+        },
+        {
+          "interferent": "lipemia",
+          "label": "Lipemia / triglicéridos",
+          "thresholdValue": 1625.0,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "  Interferencias: la bilirrubina (hasta 30 mg/dL), la hemólisis (hemoglobina hasta  500 mg/dL) y lipemia  (triglicéridos  hasta  1625  mg/dL)  no    interfieren.  Otros  medicamentos  y  sustancias pueden interferir5."
+        },
+        {
+          "interferent": "bilirubin",
+          "label": "Bilirrubina",
+          "thresholdValue": 30.0,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "LIMITACIONES DEL PROCEDIMIENTO Interferencias:"
+        },
+        {
+          "interferent": "hemolysis",
+          "label": "Hemólisis / hemoglobina",
+          "thresholdValue": 500.0,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "LIMITACIONES DEL PROCEDIMIENTO Interferencias:"
+        },
+        {
+          "interferent": "lipemia",
+          "label": "Lipemia / triglicéridos",
+          "thresholdValue": 1392.0,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "LIMITACIONES DEL PROCEDIMIENTO Interferencias:"
+        },
+        {
+          "interferent": "ascorbic_acid",
+          "label": "Ácido ascórbico",
+          "thresholdValue": 6.0,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "LIMITACIONES DEL PROCEDIMIENTO Interferencias:"
+        },
+        {
+          "interferent": "bilirubin",
+          "label": "Bilirrubina",
+          "thresholdValue": 30.0,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "LIMITACIONES DEL PROCEDIMIENTO Interferencias: Suero/plasma:  Bilirrubina  (hasta  30  mg/dL  –  513  mol/L),  hemólisis  (hemoglobina  hasta  500 mg/dL),  lipemia  (triglicéridos  hasta  1392  mg/dL  -  15,7  mmol/L),  ácido  úrico  (hasta  20  mg/dL), ácido ascórbico (hasta 6 mg/dL) y acetaminofén (hasta 20 mg/dL) no interfieren. Orina: Bilirrubina (hasta 30 mg/dL - 513 mol/L), hemólisis (hemoglobina hasta 500 mg/dL), urea (hasta 5888 mg/dL - 977 mmol/L), ácido ascórbico (hasta  30 mg/dL) y acetaminofén (hasta 20 mg/dL) no interfieren. LCR: La hemólisis (hemoglobina hasta 500 mg/dL) no interfiere. Otros fármacos y sustancias pueden interferir6."
+        },
+        {
+          "interferent": "hemolysis",
+          "label": "Hemólisis / hemoglobina",
+          "thresholdValue": 500.0,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "LIMITACIONES DEL PROCEDIMIENTO Interferencias: Suero/plasma:  Bilirrubina  (hasta  30  mg/dL  –  513  mol/L),  hemólisis  (hemoglobina  hasta  500 mg/dL),  lipemia  (triglicéridos  hasta  1392  mg/dL  -  15,7  mmol/L),  ácido  úrico  (hasta  20  mg/dL), ácido ascórbico (hasta 6 mg/dL) y acetaminofén (hasta 20 mg/dL) no interfieren. Orina: Bilirrubina (hasta 30 mg/dL - 513 mol/L), hemólisis (hemoglobina hasta 500 mg/dL), urea (hasta 5888 mg/dL - 977 mmol/L), ácido ascórbico (hasta  30 mg/dL) y acetaminofén (hasta 20 mg/dL) no interfieren. LCR: La hemólisis (hemoglobina hasta 500 mg/dL) no interfiere. Otros fármacos y sustancias pueden interferir6."
+        },
+        {
+          "interferent": "lipemia",
+          "label": "Lipemia / triglicéridos",
+          "thresholdValue": 1392.0,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "LIMITACIONES DEL PROCEDIMIENTO Interferencias: Suero/plasma:  Bilirrubina  (hasta  30  mg/dL  –  513  mol/L),  hemólisis  (hemoglobina  hasta  500 mg/dL),  lipemia  (triglicéridos  hasta  1392  mg/dL  -  15,7  mmol/L),  ácido  úrico  (hasta  20  mg/dL), ácido ascórbico (hasta 6 mg/dL) y acetaminofén (hasta 20 mg/dL) no interfieren. Orina: Bilirrubina (hasta 30 mg/dL - 513 mol/L), hemólisis (hemoglobina hasta 500 mg/dL), urea (hasta 5888 mg/dL - 977 mmol/L), ácido ascórbico (hasta  30 mg/dL) y acetaminofén (hasta 20 mg/dL) no interfieren. LCR: La hemólisis (hemoglobina hasta 500 mg/dL) no interfiere. Otros fármacos y sustancias pueden interferir6."
+        },
+        {
+          "interferent": "ascorbic_acid",
+          "label": "Ácido ascórbico",
+          "thresholdValue": 6.0,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "LIMITACIONES DEL PROCEDIMIENTO Interferencias: Suero/plasma:  Bilirrubina  (hasta  30  mg/dL  –  513  mol/L),  hemólisis  (hemoglobina  hasta  500 mg/dL),  lipemia  (triglicéridos  hasta  1392  mg/dL  -  15,7  mmol/L),  ácido  úrico  (hasta  20  mg/dL), ácido ascórbico (hasta 6 mg/dL) y acetaminofén (hasta 20 mg/dL) no interfieren. Orina: Bilirrubina (hasta 30 mg/dL - 513 mol/L), hemólisis (hemoglobina hasta 500 mg/dL), urea (hasta 5888 mg/dL - 977 mmol/L), ácido ascórbico (hasta  30 mg/dL) y acetaminofén (hasta 20 mg/dL) no interfieren. LCR: La hemólisis (hemoglobina hasta 500 mg/dL) no interfiere. Otros fármacos y sustancias pueden interferir6."
+        },
+        {
+          "interferent": "bilirubin",
+          "label": "Bilirrubina",
+          "thresholdValue": 20.0,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "−  Interferencias:  La  hemoglobina  (10  g/L),  la  lipemia  (triglicéridos  10  g/L)  y  la  bilirrubina"
+        },
+        {
+          "interferent": "hemolysis",
+          "label": "Hemólisis / hemoglobina",
+          "thresholdValue": 10.0,
+          "unit": "g/L",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "−  Interferencias:  La  hemoglobina  (10  g/L),  la  lipemia  (triglicéridos  10  g/L)  y  la  bilirrubina"
+        },
+        {
+          "interferent": "lipemia",
+          "label": "Lipemia / triglicéridos",
+          "thresholdValue": 10.0,
+          "unit": "g/L",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "−  Interferencias:  La  hemoglobina  (10  g/L),  la  lipemia  (triglicéridos  10  g/L)  y  la  bilirrubina"
+        }
+      ],
+      "procedureLimitations": [
+        "la bilirrubina (hasta 30 mg/dL), la hemólisis (hemoglobina hasta 500 mg/dL) y lipemia (triglicéridos hasta 1625 mg/dL) no interfieren.",
+        "Suero/plasma: Bilirrubina (hasta 30 mg/dL - 513 mol/L), hemólisis (hemoglobina hasta 500 mg/dL), lipemia (triglicéridos hasta 1392 mg/dL - 15,7 mmol/L), ácido úrico (hasta 20 mg/dL), ácido ascórbico (hasta 6 mg/dL) y acetaminofén (hasta 20 mg/dL) no interfieren. Orina: bilirrubina (hasta 30 mg/dL - 513 mol/L), hemólisis (hemoglobina hasta 500 mg/dL), urea (hasta 5888 mg/dL - 977 mmol/L), ácido ascórbico (hasta 30 mg/dL) y acetaminofén (hasta 20 mg/dL) no interfieren. LCR: la hemólisis (hemoglobina hasta 500 mg/dL) no interfiere. Otros fármacos y sustancias pueden interferir6. AVISO AL USUARIO El Resumen sobre Seguridad y Funcionamiento está disponible en la base de datos EUDAMED: https://ec.europa.eu/tools/eudamed. Las versiones en otros idiomas de la IFU y la SDS están disponibles en el sitio web de BioSystems https://einfo.bio. NOTAS 1. Las matrices de",
+        "Suero/plasma: Bilirrubina (hasta 30 mg/dL – 513 mol/L), hemólisis (hemoglobina hasta 500 mg/dL), lipemia (triglicéridos hasta 1392 mg/dL - 15,7 mmol/L), ácido úrico (hasta 20 mg/dL), ácido ascórbico (hasta 6 mg/dL) y acetaminofén (hasta 20 mg/dL) no interfieren. Orina: Bilirrubina (hasta 30 mg/dL - 513 mol/L), hemólisis (hemoglobina hasta 500 mg/dL), urea (hasta 5888 mg/dL - 977 mmol/L), ácido ascórbico (hasta 30 mg/dL) y acetaminofén (hasta 20 mg/dL) no interfieren. LCR: La hemólisis (hemoglobina hasta 500 mg/dL) no interfiere. Otros fármacos y sustancias pueden interferir6. AVISO AL USUARIO El Resumen sobre Seguridad y funcionamiento está disponible en la base de datos EUDAMED: https://ec.europa.eu/tools/eudamed. Las versiones en otros idiomas de la IFU y la SDS están disponibles en el sitio web de BioSystems https://einfo.bio. NOTAS 1. Las matrices de",
+        "La hemoglobina (10 g/L), la lipemia (triglicéridos 10 g/L) y la bilirrubina (20 mg/dL) no interfieren."
+      ],
       "notes": [
-        "CONSERVACIÓN Y ESTABILIDAD Conservar a 2-8ºC. Los  componentes  son  estables  hasta  la  fecha  de  caducidad  indicada  en  la  etiqueta  del  kit, siempre que se conserven bien cerrados y se evite la contaminación durante su uso. Estabilidad  a  bordo:  Los  reactivos  abiertos  y  conservados  en  el  compartimento  refrigerado  del analizador son estables 2  meses. Indicaciones de deterioro: Absorbancia del blanco superior al límite indicado en “Parámetros de la prueba”."
+        "CONSERVACIÓN Y ESTABILIDAD Conservar a 2-8ºC. Los  componentes  son  estables  hasta  la  fecha  de  caducidad  indicada  en  la  etiqueta  del  kit, siempre que se conserven bien cerrados y se evite la contaminación durante su uso. Estabilidad  a  bordo:  Los  reactivos  abiertos  y  conservados  en  el  compartimento  refrigerado  del analizador son estables 2  meses. Indicaciones de deterioro: Absorbancia del blanco superior al límite indicado en “Parámetros de la prueba”.",
+        "CARACTERÍSTICAS METROLÓGICAS Las prestaciones metrológicas que se describen a continuación, han sido obtenidas utilizando un analizador BA400 y siguiendo las guías del Clinical & Laboratory Standards Institute (CLSI).   Límite de detección: 2,26 mg/dL = 0,125 mmol/L.   Límite de linealidad: 800 mg/dL = 44,4 mmol/L.   Precisión:",
+        "  Interferencias: la bilirrubina (hasta 30 mg/dL), la hemólisis (hemoglobina hasta  500 mg/dL) y lipemia  (triglicéridos  hasta  1625  mg/dL)  no    interfieren.  Otros  medicamentos  y  sustancias pueden interferir5.",
+        "ALMACENAMIENTO Y ESTABILIDAD Conservar a 2-8 ºC. Los  componentes  son  estables  una  vez  abiertos  hasta  la  fecha  de  caducidad  marcada  en  la etiqueta si se conservan a la temperatura de almacenamiento recomendada, bien cerrados y se tiene cuidado de evitar la contaminación durante su uso. Estabilidad a bordo: Los reactivos abiertos y almacenados en el compartimento refrigerado del analizador son estables durante 3 meses. límite Indicios  de  deterioro:  Absorbancia  del  blanco  por  encima  del parametrización del analizador. En ese caso, no se debe utilizar el dispositivo.",
+        "LIMITACIONES DEL PROCEDIMIENTO Interferencias:",
+        "ALMACENAMIENTO Y ESTABILIDAD Conservar a 2-8 ºC. Los  componentes  son  estables  una  vez  abiertos  hasta  la  fecha  de  caducidad  marcada  en  la etiqueta si se conservan a la temperatura de almacenamiento recomendada, bien cerrados y se tiene cuidado de evitar la contaminación durante su uso. Estabilidad a bordo: Los reactivos abiertos y almacenados en el compartimento refrigerado del analizador son estables durante 3 meses. Indicios  de  deterioro:  Absorbancia  del  blanco  por  encima  del límite parametrización del analizador. En ese caso, no se debe utilizar el dispositivo."
       ]
     },
     "qcReferences": [
@@ -5670,12 +7196,49 @@ export const DRI_REAGENT_CONTEXT = {
       "onboardStabilityUnit": "months",
       "onboardStabilityRaw": 3.0,
       "blankDeterioration": null,
+      "detectionLimitValue": null,
+      "detectionLimitUnit": null,
+      "detectionLimitAlternateValue": null,
+      "detectionLimitAlternateUnit": null,
+      "quantificationLimitValue": null,
+      "quantificationLimitUnit": null,
+      "quantificationLimitAlternateValue": null,
+      "quantificationLimitAlternateUnit": null,
+      "linearityLimitValue": null,
+      "linearityLimitUnit": null,
+      "linearityLimitAlternateValue": null,
+      "linearityLimitAlternateUnit": null,
+      "interferenceThresholds": [
+        {
+          "interferent": "bilirubin",
+          "label": "Bilirrubina",
+          "thresholdValue": 30.0,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "−  Interferencias:  La  hemólisis  (hemoglobina  a  25  mg/dL)  interfiere.  La  bilirrubina  (hasta  30 mg/dL  -  513  mol/L),  la  lipemia  (triglicéridos  hasta  1300  mg/dL  -  14,7  mmol/L)  y  los anticuerpos reumatoideos (hasta 320 UI/mL) no interfieren. Pueden interferir otros fármacos y sustancias6."
+        },
+        {
+          "interferent": "lipemia",
+          "label": "Lipemia / triglicéridos",
+          "thresholdValue": 1300.0,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "−  Interferencias:  La  hemólisis  (hemoglobina  a  25  mg/dL)  interfiere.  La  bilirrubina  (hasta  30 mg/dL  -  513  mol/L),  la  lipemia  (triglicéridos  hasta  1300  mg/dL  -  14,7  mmol/L)  y  los anticuerpos reumatoideos (hasta 320 UI/mL) no interfieren. Pueden interferir otros fármacos y sustancias6."
+        }
+      ],
+      "procedureLimitations": [
+        "La hemólisis (hemoglobina a 25 mg/dL) interfiere. La bilirrubina (hasta 30 mg/dL - 513 mol/L), la lipemia (triglicéridos hasta 1300 mg/dL - 14,7 mmol/L) y los anticuerpos reumatoideos (hasta 320 UI/mL) no interfieren. Pueden interferir otros fármacos y sustancias6. PREPARACIÓN DE LOS REACTIVOS − Fenómeno de zona: > 1200 mg/dL = 12,0 g/L. Los reactivos están listos para su uso. BIBLIOGRAFIA 1. Tietz Textbook of Clinical Chemistry and Molecular Diagnostics. 6th ed. Rifai N, Horvath AR, Wittwer CT. WB Saunders Co, 2018. 2. Quaye IK. Haptoglobin, inflammation and disease. Royal Society of Tropical Medicine and R1: Utilizar el Reactivo A, R2: Utilizar el Reactivo B. Curva de Calibración: Preparar diluciones del Calibrador Haptoglobina empleando solución salina 9 g/L como diluyente. Multiplicar la concentración del Calibrador Haptoglobina por el factor correspondiente indicado en la tabla, para obtener la concentración de Haptoglobina de las diluciones. Hygiene 2008; 102:735-742. 3. Langlois MR, Delanghe JR. Biological and clinical significance of haptoglobin polymorphism 1 2 3 4 5 in humans. Clin Chem 1996; 42:10: 1589-1600. DILUCION Calibrador Haptoglobina (L) 30 60 120 180 240 4. Price CP, Spencer K and Whicher J. Light-scattering immunoassay of specific proteins: a 210 180 120 60 Sol. salina (L) ⎯ review. Ann Clin Biochem 1983; 20: 1-14. Factor 0,125 0,25 0,5 0,75 1,0 5. World Health Organization (WHO). Use of anticoagulants in diagnostic laboratory investigations. Document WHO/DIL/LAB/99.1, Rev.2; 2002 6. Young DS. Effects of drugs on clinical laboratory tests, 5th ed. AACC Press, 2000."
+      ],
       "notes": [
-        "CONSERVACIÓN Y ESTABILIDAD Conservar a 2-8ºC. Los  componentes  son  estables  una  vez  abiertos  hasta  la  fecha  de  caducidad  marcada  en  la etiqueta  si  estos  se  mantienen  a  la  temperatura  de  almacenamiento  recomendada,  bien cerrados y se tiene cuidado de evitar la contaminación durante su uso. Estabilidad a bordo: Los reactivos abiertos y conservados en el compartimento refrigerado del analizador son estables 3 meses. Indicaciones  de  deterioro:  Absorbancia  del  blanco  superior  al parametrización del analizador."
+        "CONSERVACIÓN Y ESTABILIDAD Conservar a 2-8ºC. Los  componentes  son  estables  una  vez  abiertos  hasta  la  fecha  de  caducidad  marcada  en  la etiqueta  si  estos  se  mantienen  a  la  temperatura  de  almacenamiento  recomendada,  bien cerrados y se tiene cuidado de evitar la contaminación durante su uso. Estabilidad a bordo: Los reactivos abiertos y conservados en el compartimento refrigerado del analizador son estables 3 meses. Indicaciones  de  deterioro:  Absorbancia  del  blanco  superior  al parametrización del analizador.",
+        "−  Interferencias:  La  hemólisis  (hemoglobina  a  25  mg/dL)  interfiere.  La  bilirrubina  (hasta  30 mg/dL  -  513  mol/L),  la  lipemia  (triglicéridos  hasta  1300  mg/dL  -  14,7  mmol/L)  y  los anticuerpos reumatoideos (hasta 320 UI/mL) no interfieren. Pueden interferir otros fármacos y sustancias6."
       ]
     },
     "qcReferences": [],
-    "missingFields": []
+    "missingFields": [
+      "Sin límite de linealidad",
+      "Sin LOD/LOQ estructurado"
+    ]
   },
   "HCY": {
     "displayCode": "HCY",
@@ -5717,13 +7280,57 @@ export const DRI_REAGENT_CONTEXT = {
       "onboardStabilityUnit": null,
       "onboardStabilityRaw": null,
       "blankDeterioration": null,
+      "detectionLimitValue": null,
+      "detectionLimitUnit": null,
+      "detectionLimitAlternateValue": null,
+      "detectionLimitAlternateUnit": null,
+      "quantificationLimitValue": null,
+      "quantificationLimitUnit": null,
+      "quantificationLimitAlternateValue": null,
+      "quantificationLimitAlternateUnit": null,
+      "linearityLimitValue": null,
+      "linearityLimitUnit": null,
+      "linearityLimitAlternateValue": null,
+      "linearityLimitAlternateUnit": null,
+      "interferenceThresholds": [
+        {
+          "interferent": "bilirubin",
+          "label": "Bilirrubina",
+          "thresholdValue": 40.0,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "LIMITACIONES DEL PROCEDIMIENTO   Interferencias:  la  bilirrubina  (hasta  40  mg/dL),  la  hemólisis  (hemoglobina  hasta  500  mg/dL)  y  lipemia"
+        },
+        {
+          "interferent": "hemolysis",
+          "label": "Hemólisis / hemoglobina",
+          "thresholdValue": 500.0,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "LIMITACIONES DEL PROCEDIMIENTO   Interferencias:  la  bilirrubina  (hasta  40  mg/dL),  la  hemólisis  (hemoglobina  hasta  500  mg/dL)  y  lipemia"
+        },
+        {
+          "interferent": "lipemia",
+          "label": "Lipemia / triglicéridos",
+          "thresholdValue": 750.0,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "LIMITACIONES DEL PROCEDIMIENTO   Interferencias:  la  bilirrubina  (hasta  40  mg/dL),  la  hemólisis  (hemoglobina  hasta  500  mg/dL)  y  lipemia"
+        }
+      ],
+      "procedureLimitations": [
+        "la bilirrubina (hasta 40 mg/dL), la hemólisis (hemoglobina hasta 500 mg/dL) y lipemia (triglicéridos hasta 750 mg/dL) no interfieren."
+      ],
       "notes": [
-        "Todos  los  componentes  de  origen  humano  han  resultado  ser  negativos  para  el  antígeno  HBs  y  para  los anticuerpos anti-HCV y anti-HIV. Sin embargo, deben tratarse con precaución como potencialmente infecciosos. Conservar a 2-8ºC, una vez abierto. Estable hasta la fecha de caducidad indicada en la etiqueta, siempre que se conserve bien cerrado y se evite la contaminación durante su uso. Cada laboratorio debe establecer su propio programa de Control de Calidad interno, así como procedimientos de corrección en el caso de que los resultados de los controles no se encuentren entre los límites de aceptación."
+        "Todos  los  componentes  de  origen  humano  han  resultado  ser  negativos  para  el  antígeno  HBs  y  para  los anticuerpos anti-HCV y anti-HIV. Sin embargo, deben tratarse con precaución como potencialmente infecciosos. Conservar a 2-8ºC, una vez abierto. Estable hasta la fecha de caducidad indicada en la etiqueta, siempre que se conserve bien cerrado y se evite la contaminación durante su uso. Cada laboratorio debe establecer su propio programa de Control de Calidad interno, así como procedimientos de corrección en el caso de que los resultados de los controles no se encuentren entre los límites de aceptación.",
+        "LIMITACIONES DEL PROCEDIMIENTO   Interferencias:  la  bilirrubina  (hasta  40  mg/dL),  la  hemólisis  (hemoglobina  hasta  500  mg/dL)  y  lipemia"
       ]
     },
     "qcReferences": [],
     "missingFields": [
-      "Sin estabilidad a bordo"
+      "Sin estabilidad a bordo",
+      "Sin límite de linealidad",
+      "Sin LOD/LOQ estructurado"
     ]
   },
   "HGB": {
@@ -5749,6 +7356,20 @@ export const DRI_REAGENT_CONTEXT = {
       "onboardStabilityUnit": null,
       "onboardStabilityRaw": null,
       "blankDeterioration": null,
+      "detectionLimitValue": null,
+      "detectionLimitUnit": null,
+      "detectionLimitAlternateValue": null,
+      "detectionLimitAlternateUnit": null,
+      "quantificationLimitValue": null,
+      "quantificationLimitUnit": null,
+      "quantificationLimitAlternateValue": null,
+      "quantificationLimitAlternateUnit": null,
+      "linearityLimitValue": null,
+      "linearityLimitUnit": null,
+      "linearityLimitAlternateValue": null,
+      "linearityLimitAlternateUnit": null,
+      "interferenceThresholds": [],
+      "procedureLimitations": [],
       "notes": []
     },
     "qcReferences": [],
@@ -5756,7 +7377,10 @@ export const DRI_REAGENT_CONTEXT = {
       "Sin producto enlazado",
       "Sin IFU descargado",
       "Sin temperatura de conservación",
-      "Sin estabilidad a bordo"
+      "Sin estabilidad a bordo",
+      "Sin límite de linealidad",
+      "Sin LOD/LOQ estructurado",
+      "Sin umbrales de interferencia"
     ]
   },
   "LDH": {
@@ -5859,8 +7483,44 @@ export const DRI_REAGENT_CONTEXT = {
       "onboardStabilityUnit": "months",
       "onboardStabilityRaw": 2.0,
       "blankDeterioration": null,
+      "detectionLimitValue": 24.4,
+      "detectionLimitUnit": "U/L",
+      "detectionLimitAlternateValue": null,
+      "detectionLimitAlternateUnit": null,
+      "quantificationLimitValue": null,
+      "quantificationLimitUnit": null,
+      "quantificationLimitAlternateValue": null,
+      "quantificationLimitAlternateUnit": null,
+      "linearityLimitValue": 1250.0,
+      "linearityLimitUnit": "U/L",
+      "linearityLimitAlternateValue": null,
+      "linearityLimitAlternateUnit": null,
+      "interferenceThresholds": [
+        {
+          "interferent": "bilirubin",
+          "label": "Bilirrubina",
+          "thresholdValue": 20.0,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "−  Interferencias:  la  bilirrubina  (hasta  20  mg/dL)  y  lipemia  (triglicéridos  hasta  1000  mg/dL)  no interfieren.  La  hemólisis  o  la  tardía  separación  del  suero  ocasionan  resultados  elevados debido a la elevada concentración de LD en los eritrocitos. Otros medicamentos y sustancias pueden interferir5."
+        },
+        {
+          "interferent": "lipemia",
+          "label": "Lipemia / triglicéridos",
+          "thresholdValue": 1000.0,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "−  Interferencias:  la  bilirrubina  (hasta  20  mg/dL)  y  lipemia  (triglicéridos  hasta  1000  mg/dL)  no interfieren.  La  hemólisis  o  la  tardía  separación  del  suero  ocasionan  resultados  elevados debido a la elevada concentración de LD en los eritrocitos. Otros medicamentos y sustancias pueden interferir5."
+        }
+      ],
+      "procedureLimitations": [
+        "la bilirrubina (hasta 20 mg/dL) y lipemia (triglicéridos hasta 1000 mg/dL) no interfieren. La hemólisis o la tardía separación del suero ocasionan resultados elevados debido a la elevada concentración de LD en los eritrocitos."
+      ],
       "notes": [
-        "CONSERVACIÓN Y ESTABILIDAD Conservar a 2-8ºC. Los  componentes  son  estables  hasta  la  fecha  de  caducidad  indicada  en  la  etiqueta  del  kit, siempre que se conserven bien cerrados y se evite la contaminación durante su uso. Estabilidad a bordo:  Los reactivos abiertos y conservados  en el compartimento refrigerado  del analizador son estables 2  meses. Indicaciones de deterioro: Absorbancia del blanco inferior al límite indicado en “Parámetros de la prueba”."
+        "CONSERVACIÓN Y ESTABILIDAD Conservar a 2-8ºC. Los  componentes  son  estables  hasta  la  fecha  de  caducidad  indicada  en  la  etiqueta  del  kit, siempre que se conserven bien cerrados y se evite la contaminación durante su uso. Estabilidad a bordo:  Los reactivos abiertos y conservados  en el compartimento refrigerado  del analizador son estables 2  meses. Indicaciones de deterioro: Absorbancia del blanco inferior al límite indicado en “Parámetros de la prueba”.",
+        "−  Límite de detección: 24,4 U/L = 0,405 kat/L.",
+        "−  Límite de linealidad: 1250 U/L = 20,92 kat/L.",
+        "−  Interferencias:  la  bilirrubina  (hasta  20  mg/dL)  y  lipemia  (triglicéridos  hasta  1000  mg/dL)  no interfieren.  La  hemólisis  o  la  tardía  separación  del  suero  ocasionan  resultados  elevados debido a la elevada concentración de LD en los eritrocitos. Otros medicamentos y sustancias pueden interferir5."
       ]
     },
     "qcReferences": [],
@@ -5908,8 +7568,44 @@ export const DRI_REAGENT_CONTEXT = {
       "onboardStabilityUnit": "months",
       "onboardStabilityRaw": 2.0,
       "blankDeterioration": null,
+      "detectionLimitValue": 16.9,
+      "detectionLimitUnit": "U/L",
+      "detectionLimitAlternateValue": null,
+      "detectionLimitAlternateUnit": null,
+      "quantificationLimitValue": null,
+      "quantificationLimitUnit": null,
+      "quantificationLimitAlternateValue": null,
+      "quantificationLimitAlternateUnit": null,
+      "linearityLimitValue": 1500.0,
+      "linearityLimitUnit": "U/L",
+      "linearityLimitAlternateValue": null,
+      "linearityLimitAlternateUnit": null,
+      "interferenceThresholds": [
+        {
+          "interferent": "bilirubin",
+          "label": "Bilirrubina",
+          "thresholdValue": 30.0,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "−  Interferencias:  La  hemólisis"
+        },
+        {
+          "interferent": "lipemia",
+          "label": "Lipemia / triglicéridos",
+          "thresholdValue": 1099.0,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "−  Interferencias:  La  hemólisis"
+        }
+      ],
+      "procedureLimitations": [
+        "La hemólisis Lactato + NAD+ Piruvato + NADH lactato deshidrogenasa en los glóbulos rojos. Bilirrubina (hasta 30 mg/dL) y lipemia (triglicéridos hasta 1099 mg/dL) no interfieren."
+      ],
       "notes": [
-        "CONSERVACIÓN Y ESTABILIDAD Conservar a 2-8ºC. Los componentes son estables hasta la fecha de caducidad indicada en la etiqueta del kit, siempre que se conserven bien cerrados y se evite la contaminación durante su uso. Estabilidad a bordo: Los reactivos abiertos y conservados en el compartimento refrigerado del analizador son estables 2 meses. Indicaciones  de  deterioro:  Absorbancia  del  blanco  superior  al  límite  indicado  en  “Parámetros  de  la prueba”."
+        "CONSERVACIÓN Y ESTABILIDAD Conservar a 2-8ºC. Los componentes son estables hasta la fecha de caducidad indicada en la etiqueta del kit, siempre que se conserven bien cerrados y se evite la contaminación durante su uso. Estabilidad a bordo: Los reactivos abiertos y conservados en el compartimento refrigerado del analizador son estables 2 meses. Indicaciones  de  deterioro:  Absorbancia  del  blanco  superior  al  límite  indicado  en  “Parámetros  de  la prueba”.",
+        "−  Límite de detección: 16,9 U/L = 0,28 kat/L.",
+        "−  Límite de linealidad: 1500 U/L = 25,00 kat/L",
+        "−  Interferencias:  La  hemólisis"
       ]
     },
     "qcReferences": [],
@@ -6007,8 +7703,79 @@ export const DRI_REAGENT_CONTEXT = {
       "onboardStabilityUnit": "months",
       "onboardStabilityRaw": 2.0,
       "blankDeterioration": "high_blank_absorbance",
+      "detectionLimitValue": 1.46,
+      "detectionLimitUnit": "mg/L",
+      "detectionLimitAlternateValue": null,
+      "detectionLimitAlternateUnit": null,
+      "quantificationLimitValue": 2.29,
+      "quantificationLimitUnit": "mg/L",
+      "quantificationLimitAlternateValue": null,
+      "quantificationLimitAlternateUnit": null,
+      "linearityLimitValue": 200.0,
+      "linearityLimitUnit": "mg/L",
+      "linearityLimitAlternateValue": null,
+      "linearityLimitAlternateUnit": null,
+      "interferenceThresholds": [
+        {
+          "interferent": "bilirubin",
+          "label": "Bilirrubina",
+          "thresholdValue": 30.0,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "−  Interferencias:  La  bilirrubina  (hasta  30  mg/dL)  y  la  hemólisis  (hemoglobina  hasta  500  mg/dL)  no"
+        },
+        {
+          "interferent": "hemolysis",
+          "label": "Hemólisis / hemoglobina",
+          "thresholdValue": 500.0,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "−  Interferencias:  La  bilirrubina  (hasta  30  mg/dL)  y  la  hemólisis  (hemoglobina  hasta  500  mg/dL)  no"
+        },
+        {
+          "interferent": "bilirubin",
+          "label": "Bilirrubina",
+          "thresholdValue": 30.0,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "LIMITACIONES DEL PROCEDIMIENTO −  Interferencias: La bilirrubina (hasta 30 mg/dL) y la hemólisis (hemoglobina hasta 500 mg/dL)"
+        },
+        {
+          "interferent": "hemolysis",
+          "label": "Hemólisis / hemoglobina",
+          "thresholdValue": 500.0,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "LIMITACIONES DEL PROCEDIMIENTO −  Interferencias: La bilirrubina (hasta 30 mg/dL) y la hemólisis (hemoglobina hasta 500 mg/dL)"
+        },
+        {
+          "interferent": "bilirubin",
+          "label": "Bilirrubina",
+          "thresholdValue": 30.0,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "LIMITACIONES DEL PROCEDIMIENTO −  Interferencias: la bilirrubina (hasta 30 mg/dL) y la hemólisis (hemoglobina hasta 500 mg/dL)"
+        },
+        {
+          "interferent": "hemolysis",
+          "label": "Hemólisis / hemoglobina",
+          "thresholdValue": 500.0,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "LIMITACIONES DEL PROCEDIMIENTO −  Interferencias: la bilirrubina (hasta 30 mg/dL) y la hemólisis (hemoglobina hasta 500 mg/dL)"
+        }
+      ],
+      "procedureLimitations": [
+        "La bilirrubina (hasta 30 mg/dL) y la hemólisis (hemoglobina hasta 500 mg/dL) no interfieren.",
+        "la bilirrubina (hasta 30 mg/dL) y la hemólisis (hemoglobina hasta 500 mg/dL) no interfieren."
+      ],
       "notes": [
-        "CONSERVACIÓN Y ESTABILIDAD Conservar a 2-8ºC. Los componentes son estables una vez abiertos hasta la fecha de caducidad marcada en la etiqueta si estos se mantienen a la temperatura de almacenamiento recomendada bien cerrados y se tiene cuidado de evitar la contaminación durante su uso. Estabilidad a bordo: Los reactivos abiertos y conservados en el compartimento refrigerado del analizador son estables 2 meses. Indicaciones de deterioro: Absorbancia del blanco superior al límite indicado en la parametrización del analizador."
+        "CONSERVACIÓN Y ESTABILIDAD Conservar a 2-8ºC. Los componentes son estables una vez abiertos hasta la fecha de caducidad marcada en la etiqueta si estos se mantienen a la temperatura de almacenamiento recomendada bien cerrados y se tiene cuidado de evitar la contaminación durante su uso. Estabilidad a bordo: Los reactivos abiertos y conservados en el compartimento refrigerado del analizador son estables 2 meses. Indicaciones de deterioro: Absorbancia del blanco superior al límite indicado en la parametrización del analizador.",
+        "−  Límite de detección: 1,46 mg/L. Límite de cuantificación: 2,29 mg/L. −  Límite de linealidad:  200 mg/L.  Intervalo  de medición:  2,29  -  200 mg/L. Para muestras con valores superiores, diluir manualmente o consultar los Parámetros de la prueba para dilución automática (estas muestras se diluirán con el mismo factor de dilución).",
+        "−  Interferencias:  La  bilirrubina  (hasta  30  mg/dL)  y  la  hemólisis  (hemoglobina  hasta  500  mg/dL)  no",
+        "CONSERVACIÓN Y ESTABILIDAD Conservar a 2-8ºC. Los componentes son estables una vez abiertos hasta la fecha de caducidad marcada en la etiqueta si estos  se  mantienen  a  la  temperatura  de  almacenamiento  recomendada  bien  cerrados  y  se  tiene cuidado de evitar la contaminación durante su uso. Estabilidad  a  bordo:  Los  reactivos  abiertos  y  almacenados  en  el  compartimento  refrigerado  del analizador son estables durante 1 mes. Indicaciones de deterioro: Absorbancia del blanco por encima del límite indicado en la parametrización del analizador.",
+        "−  Límite de detección: 1,67 mg/L. Límite de cuantificación: 5,22 mg/L.",
+        "Límite de linealidad: 200 mg/L"
       ]
     },
     "qcReferences": [],
@@ -6095,8 +7862,103 @@ export const DRI_REAGENT_CONTEXT = {
       "onboardStabilityUnit": "days",
       "onboardStabilityRaw": 30.0,
       "blankDeterioration": "high_blank_absorbance",
+      "detectionLimitValue": 0.16,
+      "detectionLimitUnit": "mg/dL",
+      "detectionLimitAlternateValue": 0.06,
+      "detectionLimitAlternateUnit": "mmol/L",
+      "quantificationLimitValue": 0.45,
+      "quantificationLimitUnit": "mg/dL",
+      "quantificationLimitAlternateValue": 0.18,
+      "quantificationLimitAlternateUnit": "mmol/L",
+      "linearityLimitValue": 4.0,
+      "linearityLimitUnit": "mg/dL",
+      "linearityLimitAlternateValue": 1.64,
+      "linearityLimitAlternateUnit": "mmol/L",
+      "interferenceThresholds": [
+        {
+          "interferent": "bilirubin",
+          "label": "Bilirrubina",
+          "thresholdValue": 6.0,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "LIMITACIONES DEL PROCEDIMIENTO −  Interferencias: La bilirrubina (hasta 6 mg/dL), la hemólisis (hemoglobina hasta 300 mg/dL) y la lipemia (triglicéridos hasta 158 mg/dL) no interfieren. Otros medicamentos y sustancias pueden interferir6."
+        },
+        {
+          "interferent": "hemolysis",
+          "label": "Hemólisis / hemoglobina",
+          "thresholdValue": 300.0,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "LIMITACIONES DEL PROCEDIMIENTO −  Interferencias: La bilirrubina (hasta 6 mg/dL), la hemólisis (hemoglobina hasta 300 mg/dL) y la lipemia (triglicéridos hasta 158 mg/dL) no interfieren. Otros medicamentos y sustancias pueden interferir6."
+        },
+        {
+          "interferent": "lipemia",
+          "label": "Lipemia / triglicéridos",
+          "thresholdValue": 158.0,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "LIMITACIONES DEL PROCEDIMIENTO −  Interferencias: La bilirrubina (hasta 6 mg/dL), la hemólisis (hemoglobina hasta 300 mg/dL) y la lipemia (triglicéridos hasta 158 mg/dL) no interfieren. Otros medicamentos y sustancias pueden interferir6."
+        },
+        {
+          "interferent": "bilirubin",
+          "label": "Bilirrubina",
+          "thresholdValue": 6.0,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "Interferencias: La bilirrubina (hasta 6 mg/dL), la hemólisis (hemoglobina hasta 300 mg/dL) y la  lipemia  (triglicéridos  hasta  223  mg/dL)  no  interfieren.  Otros  medicamentos  y  sustancias pueden interferir6."
+        },
+        {
+          "interferent": "hemolysis",
+          "label": "Hemólisis / hemoglobina",
+          "thresholdValue": 300.0,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "Interferencias: La bilirrubina (hasta 6 mg/dL), la hemólisis (hemoglobina hasta 300 mg/dL) y la  lipemia  (triglicéridos  hasta  223  mg/dL)  no  interfieren.  Otros  medicamentos  y  sustancias pueden interferir6."
+        },
+        {
+          "interferent": "lipemia",
+          "label": "Lipemia / triglicéridos",
+          "thresholdValue": 223.0,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "Interferencias: La bilirrubina (hasta 6 mg/dL), la hemólisis (hemoglobina hasta 300 mg/dL) y la  lipemia  (triglicéridos  hasta  223  mg/dL)  no  interfieren.  Otros  medicamentos  y  sustancias pueden interferir6."
+        },
+        {
+          "interferent": "bilirubin",
+          "label": "Bilirrubina",
+          "thresholdValue": 6.0,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "−  Interferencias: La bilirrubina (hasta 6 mg/dL), la hemólisis (hemoglobina hasta 300 mg/dL) y la lipemia  (triglicéridos  hasta  158  mg/dL)  no  interfieren.  Otros  medicamentos  y  sustancias pueden interferir6."
+        },
+        {
+          "interferent": "hemolysis",
+          "label": "Hemólisis / hemoglobina",
+          "thresholdValue": 300.0,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "−  Interferencias: La bilirrubina (hasta 6 mg/dL), la hemólisis (hemoglobina hasta 300 mg/dL) y la lipemia  (triglicéridos  hasta  158  mg/dL)  no  interfieren.  Otros  medicamentos  y  sustancias pueden interferir6."
+        },
+        {
+          "interferent": "lipemia",
+          "label": "Lipemia / triglicéridos",
+          "thresholdValue": 158.0,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "−  Interferencias: La bilirrubina (hasta 6 mg/dL), la hemólisis (hemoglobina hasta 300 mg/dL) y la lipemia  (triglicéridos  hasta  158  mg/dL)  no  interfieren.  Otros  medicamentos  y  sustancias pueden interferir6."
+        }
+      ],
+      "procedureLimitations": [
+        "La bilirrubina (hasta 6 mg/dL), la hemólisis (hemoglobina hasta 300 mg/dL) y la lipemia (triglicéridos hasta 158 mg/dL) no interfieren.",
+        "La bilirrubina (hasta 6 mg/dL), la hemólisis (hemoglobina hasta 300 mg/dL) y la lipemia (triglicéridos hasta 223 mg/dL) no interfieren."
+      ],
       "notes": [
-        "CONSERVACIÓN Y ESTABILIDAD Conservar a 2-8ºC. Los  componentes  son  estables  hasta  la  fecha  de  caducidad  indicada  en  la  etiqueta  del  kit, siempre que se conserven bien cerrados y se evite la contaminación durante su uso. Estabilidad a bordo:  Los reactivos abiertos y conservados  en el compartimento refrigerado  del analizador son estables 30 días. Indicaciones de deterioro: Absorbancia del blanco superior al límite indicado en “Parámetros de la prueba”."
+        "CONSERVACIÓN Y ESTABILIDAD Conservar a 2-8ºC. Los  componentes  son  estables  hasta  la  fecha  de  caducidad  indicada  en  la  etiqueta  del  kit, siempre que se conserven bien cerrados y se evite la contaminación durante su uso. Estabilidad a bordo:  Los reactivos abiertos y conservados  en el compartimento refrigerado  del analizador son estables 30 días. Indicaciones de deterioro: Absorbancia del blanco superior al límite indicado en “Parámetros de la prueba”.",
+        "−  Límite de detección: 0,16 mg/dL = 0,06 mmol/L. Límite de cuantificación: 0,45 mg/dL = 0,18 mmol/L.",
+        "Límite de linealidad: 4 mg/dL = 1,64 mmol/L",
+        "LIMITACIONES DEL PROCEDIMIENTO −  Interferencias: La bilirrubina (hasta 6 mg/dL), la hemólisis (hemoglobina hasta 300 mg/dL) y la lipemia (triglicéridos hasta 158 mg/dL) no interfieren. Otros medicamentos y sustancias pueden interferir6.",
+        "CONSERVACIÓN Y ESTABILIDAD Conservar a 2-8ºC. Los  componentes  son  estables  hasta  la  fecha  de  caducidad  indicada  en  la  etiqueta  del  kit, siempre que se conserven bien cerrados y se evite la contaminación durante su uso. Estabilidad a bordo: Los reactivos abiertos y conservados en el compartimento refrigerado del analizador son estables 7 días. Indicaciones de deterioro: Absorbancia del blanco superior al límite indicado en “Parámetros de la prueba”.",
+        "CARACTERÍSTICAS METROLÓGICAS Las prestaciones metrológicas que se describen a continuación, han sido obtenidas utilizando un analizador A25. Los resultados son similares a los del A15. −  Límite de detección: 0,21 mg/dL = 0,08 mmol/L. Límite de cuantificación: 0,99 mg/dL = 0,40"
       ]
     },
     "qcReferences": [
@@ -6531,8 +8393,63 @@ export const DRI_REAGENT_CONTEXT = {
       "onboardStabilityUnit": null,
       "onboardStabilityRaw": null,
       "blankDeterioration": null,
+      "detectionLimitValue": 26.2,
+      "detectionLimitUnit": "µmol/L",
+      "detectionLimitAlternateValue": 44.5,
+      "detectionLimitAlternateUnit": "µg/dL",
+      "quantificationLimitValue": null,
+      "quantificationLimitUnit": null,
+      "quantificationLimitAlternateValue": null,
+      "quantificationLimitAlternateUnit": null,
+      "linearityLimitValue": 600.0,
+      "linearityLimitUnit": "µmol/L",
+      "linearityLimitAlternateValue": 1022.0,
+      "linearityLimitAlternateUnit": "µg/dL",
+      "interferenceThresholds": [
+        {
+          "interferent": "bilirubin",
+          "label": "Bilirrubina",
+          "thresholdValue": 30.0,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "LIMITACIONES DEL PROCEDIMIENTO Interferencias:  la  bilirrubina  (hasta  30  mg/dL),  la  hemólisis  (hemoglobina  hasta  50  mg/dL)  no interfieren. Lipemia, la turbidez de la muestra interfiere en los resultados. Otros medicamentos y sustancias pueden interferir6."
+        },
+        {
+          "interferent": "hemolysis",
+          "label": "Hemólisis / hemoglobina",
+          "thresholdValue": 50.0,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "LIMITACIONES DEL PROCEDIMIENTO Interferencias:  la  bilirrubina  (hasta  30  mg/dL),  la  hemólisis  (hemoglobina  hasta  50  mg/dL)  no interfieren. Lipemia, la turbidez de la muestra interfiere en los resultados. Otros medicamentos y sustancias pueden interferir6."
+        },
+        {
+          "interferent": "bilirubin",
+          "label": "Bilirrubina",
+          "thresholdValue": 30.0,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "LIMITACIONES DEL PROCEDIMIENTO Interferencias:  La  bilirrubina  (hasta  30  mg/dL),  la  hemólisis  (hemoglobina  hasta  50  mg/dL)  no interfieren.  Lipemia,  la  turbidez  de  la  muestra  interfiere  en  los  resultados.  Otros  medicamentos  y sustancias pueden interferir6."
+        },
+        {
+          "interferent": "hemolysis",
+          "label": "Hemólisis / hemoglobina",
+          "thresholdValue": 50.0,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "LIMITACIONES DEL PROCEDIMIENTO Interferencias:  La  bilirrubina  (hasta  30  mg/dL),  la  hemólisis  (hemoglobina  hasta  50  mg/dL)  no interfieren.  Lipemia,  la  turbidez  de  la  muestra  interfiere  en  los  resultados.  Otros  medicamentos  y sustancias pueden interferir6."
+        }
+      ],
+      "procedureLimitations": [
+        "la bilirrubina (hasta 30 mg/dL), la hemólisis (hemoglobina hasta 50 mg/dL) no interfieren. Lipemia, la turbidez de la muestra interfiere en los resultados.",
+        "La bilirrubina (hasta 30 mg/dL), la hemólisis (hemoglobina hasta 50 mg/dL) no interfieren. Lipemia, la turbidez de la muestra interfiere en los resultados."
+      ],
       "notes": [
-        "CONSERVACIÓN Y ESTABILIDAD Conservar a 2-8ºC. Los  componentes  son  estables  hasta  la  fecha  de  caducidad  indicada  en  la  etiqueta  del  kit, siempre que se conserven bien cerrados y se evite la contaminación durante su uso. Estabilidad  a  bordo:  Los  reactivos  abiertos  y  conservados  en  el  compartimento  refrigerado  del analizador son estables 40 días. Indicaciones de deterioro: Absorbancia del blanco inferior al límite indicado en “Parámetros de la prueba”."
+        "CONSERVACIÓN Y ESTABILIDAD Conservar a 2-8ºC. Los  componentes  son  estables  hasta  la  fecha  de  caducidad  indicada  en  la  etiqueta  del  kit, siempre que se conserven bien cerrados y se evite la contaminación durante su uso. Estabilidad  a  bordo:  Los  reactivos  abiertos  y  conservados  en  el  compartimento  refrigerado  del analizador son estables 40 días. Indicaciones de deterioro: Absorbancia del blanco inferior al límite indicado en “Parámetros de la prueba”.",
+        "  Límite de detección: 26,2 µmol/L = 44,5 µg/dL.   Límite de linealidad: 600 µmol/L = 1022 µg/dL. Cuando se obtengan valores superiores, diluir",
+        "LIMITACIONES DEL PROCEDIMIENTO Interferencias:  la  bilirrubina  (hasta  30  mg/dL),  la  hemólisis  (hemoglobina  hasta  50  mg/dL)  no interfieren. Lipemia, la turbidez de la muestra interfiere en los resultados. Otros medicamentos y sustancias pueden interferir6.",
+        "CONSERVACIÓN Y ESTABILIDAD Conservar a 2-8ºC. Los componentes son estables hasta la fecha de caducidad indicada en la etiqueta del kit, siempre que se conserven bien cerrados y se evite la contaminación durante su uso. Estabilidad  a  bordo:  Los  reactivos  abiertos  y  conservados  en  el  compartimento  refrigerado  del analizador son estable 20 días. Indicaciones  de  deterioro:  Absorbancia  del  blanco  inferior  al  límite  indicado  en  “Parámetros  de  la prueba”.",
+        "Límite absorbancia blanco Límite blanco cinético Límite de linealidad",
+        "LIMITACIONES DEL PROCEDIMIENTO Interferencias:  La  bilirrubina  (hasta  30  mg/dL),  la  hemólisis  (hemoglobina  hasta  50  mg/dL)  no interfieren.  Lipemia,  la  turbidez  de  la  muestra  interfiere  en  los  resultados.  Otros  medicamentos  y sustancias pueden interferir6."
       ]
     },
     "qcReferences": [],
@@ -6590,19 +8507,86 @@ export const DRI_REAGENT_CONTEXT = {
     "facts": {
       "storageTempMinC": 2.0,
       "storageTempMaxC": 8.0,
-      "onboardStabilityHours": null,
-      "onboardStabilityUnit": null,
-      "onboardStabilityRaw": null,
+      "onboardStabilityHours": 1440.0,
+      "onboardStabilityUnit": "days",
+      "onboardStabilityRaw": 60.0,
       "blankDeterioration": "high_blank_absorbance",
+      "detectionLimitValue": 0.63,
+      "detectionLimitUnit": "mg/L",
+      "detectionLimitAlternateValue": 0.007,
+      "detectionLimitAlternateUnit": "mmol/L",
+      "quantificationLimitValue": null,
+      "quantificationLimitUnit": null,
+      "quantificationLimitAlternateValue": null,
+      "quantificationLimitAlternateUnit": null,
+      "linearityLimitValue": 180.0,
+      "linearityLimitUnit": "mg/L",
+      "linearityLimitAlternateValue": 2.0,
+      "linearityLimitAlternateUnit": "mmol/L",
+      "interferenceThresholds": [
+        {
+          "interferent": "bilirubin",
+          "label": "Bilirrubina",
+          "thresholdValue": 30.0,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "LIMITACIONES DEL PROCEDIMIENTO   Interferencias: La bilirrubina (hasta 30 mg/dL), la hemólisis (hemoglobina hasta 450 mg/dL), el ácido ascórbico"
+        },
+        {
+          "interferent": "hemolysis",
+          "label": "Hemólisis / hemoglobina",
+          "thresholdValue": 450.0,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "LIMITACIONES DEL PROCEDIMIENTO   Interferencias: La bilirrubina (hasta 30 mg/dL), la hemólisis (hemoglobina hasta 450 mg/dL), el ácido ascórbico"
+        },
+        {
+          "interferent": "ascorbic_acid",
+          "label": "Ácido ascórbico",
+          "thresholdValue": 16.0,
+          "unit": "mmol/L",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "LIMITACIONES DEL PROCEDIMIENTO   Interferencias: La bilirrubina (hasta 30 mg/dL), la hemólisis (hemoglobina hasta 450 mg/dL), el ácido ascórbico"
+        },
+        {
+          "interferent": "bilirubin",
+          "label": "Bilirrubina",
+          "thresholdValue": 30.0,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "Interferencias:  La  bilirrubina  (hasta  30  mg/dL),  la  hemólisis  (hemoglobina  hasta  450  mg/dL),  el  ácido ascórbico (hasta 16 mmol/L) no  interfieren. Otros medicamentos y sustancias pueden interferir4."
+        },
+        {
+          "interferent": "hemolysis",
+          "label": "Hemólisis / hemoglobina",
+          "thresholdValue": 450.0,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "Interferencias:  La  bilirrubina  (hasta  30  mg/dL),  la  hemólisis  (hemoglobina  hasta  450  mg/dL),  el  ácido ascórbico (hasta 16 mmol/L) no  interfieren. Otros medicamentos y sustancias pueden interferir4."
+        },
+        {
+          "interferent": "ascorbic_acid",
+          "label": "Ácido ascórbico",
+          "thresholdValue": 16.0,
+          "unit": "mmol/L",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "Interferencias:  La  bilirrubina  (hasta  30  mg/dL),  la  hemólisis  (hemoglobina  hasta  450  mg/dL),  el  ácido ascórbico (hasta 16 mmol/L) no  interfieren. Otros medicamentos y sustancias pueden interferir4."
+        }
+      ],
+      "procedureLimitations": [
+        "La bilirrubina (hasta 30 mg/dL), la hemólisis (hemoglobina hasta 450 mg/dL), el ácido ascórbico (hasta 16 mmol/L) no interfieren."
+      ],
       "notes": [
         "CONSERVACIÓN Y ESTABILIDAD Conservar a 2-8ºC. Los  componentes  son  estables  hasta  la  fecha  de  caducidad  indicada  en  la  etiqueta  del  kit,  siempre  que  se conserven bien cerrados y se evite la contaminación durante su uso. Estabilidad  a  bordo:  Los reactivos  abiertos  y conservados  en  el  compartimento  refrigerado  del  analizador  son estables 2 meses.",
-        "Indicaciones de deterioro: Absorbancia del blanco superior al límite indicado en “Parámetros de la prueba”."
+        "Indicaciones de deterioro: Absorbancia del blanco superior al límite indicado en “Parámetros de la prueba”.",
+        "CARACTERÍSTICAS METROLÓGICAS Las prestaciones metrológicas que se describen a continuación, han sido obtenidas utilizando un analizador BA400 y siguiendo las guías del Clinical & Laboratory Standards Institute (CLSI).   Límite de detección: 0,630 mg/L = 0,007 mmol/L.   Límite de linealidad: 180 mg/L = 2,00 mmol/L.",
+        "LIMITACIONES DEL PROCEDIMIENTO   Interferencias: La bilirrubina (hasta 30 mg/dL), la hemólisis (hemoglobina hasta 450 mg/dL), el ácido ascórbico",
+        "CONSERVACIÓN Y ESTABILIDAD Conservar a 2-8ºC. Los componentes son estables hasta la fecha de caducidad indicada en la etiqueta del kit, siempre que se conserven bien cerrados y se evite la contaminación durante su uso. Estabilidad a bordo: Los reactivos abiertos y conservados en el compartimento refrigerado del analizador son estables 60 días. Indicaciones de deterioro:   Reactivos: Presencia de partículas, turbidez, absorbancia del blanco superior a 0,150 a 600 nm (cubeta de 1 cm).   Patrón: Presencia de partículas, turbidez.",
+        "Límite absorbancia blanco Límite blanco cinético Límite linealidad Sustrato consumido"
       ]
     },
     "qcReferences": [],
-    "missingFields": [
-      "Sin estabilidad a bordo"
-    ]
+    "missingFields": []
   },
   "PHOS": {
     "displayCode": "PHOS",
@@ -6681,12 +8665,107 @@ export const DRI_REAGENT_CONTEXT = {
     "facts": {
       "storageTempMinC": 2.0,
       "storageTempMaxC": 30.0,
-      "onboardStabilityHours": null,
-      "onboardStabilityUnit": null,
-      "onboardStabilityRaw": null,
+      "onboardStabilityHours": 1440.0,
+      "onboardStabilityUnit": "months",
+      "onboardStabilityRaw": 2.0,
       "blankDeterioration": "high_blank_absorbance",
+      "detectionLimitValue": 0.25,
+      "detectionLimitUnit": "mg/dL",
+      "detectionLimitAlternateValue": 0.08,
+      "detectionLimitAlternateUnit": "mmol/L",
+      "quantificationLimitValue": null,
+      "quantificationLimitUnit": null,
+      "quantificationLimitAlternateValue": null,
+      "quantificationLimitAlternateUnit": null,
+      "linearityLimitValue": 20.0,
+      "linearityLimitUnit": "mg/dL",
+      "linearityLimitAlternateValue": 6.46,
+      "linearityLimitAlternateUnit": "mmol/L",
+      "interferenceThresholds": [
+        {
+          "interferent": "bilirubin",
+          "label": "Bilirrubina",
+          "thresholdValue": 20.0,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "LIMITACIONES DEL PROCEDIMIENTO   Interferencias: la bilirrubina (hasta 20 mg/dL), la hemólisis (hemoglobina hasta 1000 mg/dL) y lipemia  (triglicéridos  hasta  1000  mg/dL)  no    interfieren.  Otros  medicamentos  y  sustancias pueden interferir5."
+        },
+        {
+          "interferent": "hemolysis",
+          "label": "Hemólisis / hemoglobina",
+          "thresholdValue": 1000.0,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "LIMITACIONES DEL PROCEDIMIENTO   Interferencias: la bilirrubina (hasta 20 mg/dL), la hemólisis (hemoglobina hasta 1000 mg/dL) y lipemia  (triglicéridos  hasta  1000  mg/dL)  no    interfieren.  Otros  medicamentos  y  sustancias pueden interferir5."
+        },
+        {
+          "interferent": "lipemia",
+          "label": "Lipemia / triglicéridos",
+          "thresholdValue": 1000.0,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "LIMITACIONES DEL PROCEDIMIENTO   Interferencias: la bilirrubina (hasta 20 mg/dL), la hemólisis (hemoglobina hasta 1000 mg/dL) y lipemia  (triglicéridos  hasta  1000  mg/dL)  no    interfieren.  Otros  medicamentos  y  sustancias pueden interferir5."
+        },
+        {
+          "interferent": "bilirubin",
+          "label": "Bilirrubina",
+          "thresholdValue": 20.0,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "LIMITACIONES DEL PROCEDIMIENTO   Interferencias: la bilirrubina (hasta 20 mg/dL), la hemólisis (hemoglobina hasta 1000 mg/dL) y lipemia (triglicéridos hasta 1000 mg/dL) no  interfieren. Otros medicamentos y sustancias pueden interferir5."
+        },
+        {
+          "interferent": "hemolysis",
+          "label": "Hemólisis / hemoglobina",
+          "thresholdValue": 1000.0,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "LIMITACIONES DEL PROCEDIMIENTO   Interferencias: la bilirrubina (hasta 20 mg/dL), la hemólisis (hemoglobina hasta 1000 mg/dL) y lipemia (triglicéridos hasta 1000 mg/dL) no  interfieren. Otros medicamentos y sustancias pueden interferir5."
+        },
+        {
+          "interferent": "lipemia",
+          "label": "Lipemia / triglicéridos",
+          "thresholdValue": 1000.0,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "LIMITACIONES DEL PROCEDIMIENTO   Interferencias: la bilirrubina (hasta 20 mg/dL), la hemólisis (hemoglobina hasta 1000 mg/dL) y lipemia (triglicéridos hasta 1000 mg/dL) no  interfieren. Otros medicamentos y sustancias pueden interferir5."
+        },
+        {
+          "interferent": "bilirubin",
+          "label": "Bilirrubina",
+          "thresholdValue": 20.0,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "  Interferencias:  la  hemoglobina  (10  g/L),  la  lipemia  (triglicéridos  10  g/L)  y  la  bilirrubina"
+        },
+        {
+          "interferent": "hemolysis",
+          "label": "Hemólisis / hemoglobina",
+          "thresholdValue": 10.0,
+          "unit": "g/L",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "  Interferencias:  la  hemoglobina  (10  g/L),  la  lipemia  (triglicéridos  10  g/L)  y  la  bilirrubina"
+        },
+        {
+          "interferent": "lipemia",
+          "label": "Lipemia / triglicéridos",
+          "thresholdValue": 10.0,
+          "unit": "g/L",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "  Interferencias:  la  hemoglobina  (10  g/L),  la  lipemia  (triglicéridos  10  g/L)  y  la  bilirrubina"
+        }
+      ],
+      "procedureLimitations": [
+        "la bilirrubina (hasta 20 mg/dL), la hemólisis (hemoglobina hasta 1000 mg/dL) y lipemia (triglicéridos hasta 1000 mg/dL) no interfieren.",
+        "la hemoglobina (10 g/L), la lipemia (triglicéridos 10 g/L) y la bilirrubina (20 mg/dL) no interfieren."
+      ],
       "notes": [
-        "CONSERVACIÓN Y ESTABILIDAD Conservar a 2-30ºC. Los  componentes  son  estables  hasta  la  fecha  de  caducidad  indicada  en  la  etiqueta  del  kit, siempre que se conserven bien cerrados y se evite la contaminación durante su uso. Estabilidad  a  bordo:  Los  reactivos  abiertos  y  conservados  en  el  compartimento  refrigerado  del analizador son estables 2  meses. Indicaciones de deterioro: Absorbancia del blanco superior al límite indicado en “Parámetros de la prueba”."
+        "CONSERVACIÓN Y ESTABILIDAD Conservar a 2-30ºC. Los  componentes  son  estables  hasta  la  fecha  de  caducidad  indicada  en  la  etiqueta  del  kit, siempre que se conserven bien cerrados y se evite la contaminación durante su uso. Estabilidad  a  bordo:  Los  reactivos  abiertos  y  conservados  en  el  compartimento  refrigerado  del analizador son estables 2  meses. Indicaciones de deterioro: Absorbancia del blanco superior al límite indicado en “Parámetros de la prueba”.",
+        "CARACTERÍSTICAS METROLÓGICAS Las prestaciones metrológicas que se describen a continuación, han sido obtenidas utilizando un analizador BA400 y siguiendo las guías del Clinical & Laboratory Standards Institute (CLSI).   Límite de detección: 0,25 mg/dL = 0,080 mmol/L.",
+        "  Límite de linealidad: 20 mg/dL = 6,46 mmol/L.",
+        "LIMITACIONES DEL PROCEDIMIENTO   Interferencias: la bilirrubina (hasta 20 mg/dL), la hemólisis (hemoglobina hasta 1000 mg/dL) y lipemia  (triglicéridos  hasta  1000  mg/dL)  no    interfieren.  Otros  medicamentos  y  sustancias pueden interferir5.",
+        "CONSERVACIÓN Y ESTABILIDAD Conservar a 2-30ºC. Los  componentes  son  estables  hasta  la  fecha  de  caducidad  indicada  en  la  etiqueta  del  kit, siempre que se conserven bien cerrados y se evite la contaminación durante su uso. Estabilidad a bordo: Los reactivos abiertos y conservados en el compartimento refrigerado del analizador son estables 2  meses. Indicaciones de deterioro: Absorbancia del blanco superior al límite indicado en “Parámetros de la prueba”.",
+        "CARACTERÍSTICAS METROLÓGICAS Las prestaciones metrológicas que se describen a continuación, han sido obtenidas utilizando un analizador A25. Los resultados son similares a los del A15.   Límite de detección: 0,13 mg/dL = 0,04 mmol/L."
       ]
     },
     "qcReferences": [
@@ -6999,6 +9078,143 @@ export const DRI_REAGENT_CONTEXT = {
         "sourceReference": "einfo.bio valuesheet 18066 lote 0000619"
       }
     ],
+    "missingFields": []
+  },
+  "PROT_T": {
+    "displayCode": "PROT T",
+    "displayName": "Proteína total",
+    "canonicalNames": [
+      "PROTEIN TOTAL",
+      "PROTEIN TOTAL BIREAGENT",
+      "PROTEIN TOTAL"
+    ],
+    "productEntries": [
+      {
+        "productCode": "11500",
+        "platformFamily": "manual",
+        "itemName": "PROTEIN (TOTAL)",
+        "description": "PROTEIN (TOTAL) 2x250 mL",
+        "format": "2x250 mL",
+        "systems": null,
+        "ifuDocs": 0,
+        "valuesheetDocs": 0,
+        "totalDocs": 0
+      },
+      {
+        "productCode": "12500",
+        "platformFamily": "ax5",
+        "itemName": "PROTEIN (TOTAL)",
+        "description": "PROTEIN (TOTAL) BSA 10x50 mL",
+        "format": "10x50 mL",
+        "systems": "BSA",
+        "ifuDocs": 0,
+        "valuesheetDocs": 0,
+        "totalDocs": 0
+      },
+      {
+        "productCode": "21513",
+        "platformFamily": "bax00",
+        "itemName": "PROTEIN (TOTAL)",
+        "description": "PROTEIN (TOTAL)",
+        "format": "2 x 60 + 2 x 20 mL",
+        "systems": "BA",
+        "ifuDocs": 1,
+        "valuesheetDocs": 0,
+        "totalDocs": 3
+      },
+      {
+        "productCode": "23513",
+        "platformFamily": "bax00",
+        "itemName": "PROTEIN (TOTAL) BIREAGENT",
+        "description": "PROTEIN (TOTAL) BIREAGENT BA 1x60+1x20mL",
+        "format": "1x60+1x20mL",
+        "systems": "BA",
+        "ifuDocs": 1,
+        "valuesheetDocs": 0,
+        "totalDocs": 3
+      }
+    ],
+    "productCodesByPlatform": {
+      "BA400": [
+        "21513",
+        "23513"
+      ],
+      "BA200": [
+        "21513",
+        "23513"
+      ],
+      "A15": [
+        "12500"
+      ],
+      "manual": [
+        "11500"
+      ]
+    },
+    "missingIfuCodes": [
+      "11500",
+      "12500"
+    ],
+    "documentation": {
+      "hasIfu": true,
+      "hasValuesheet": false,
+      "matchedProductCount": 4
+    },
+    "facts": {
+      "storageTempMinC": 2.0,
+      "storageTempMaxC": 30.0,
+      "onboardStabilityHours": null,
+      "onboardStabilityUnit": null,
+      "onboardStabilityRaw": null,
+      "blankDeterioration": "high_blank_absorbance",
+      "detectionLimitValue": 0.8,
+      "detectionLimitUnit": "g/L",
+      "detectionLimitAlternateValue": null,
+      "detectionLimitAlternateUnit": null,
+      "quantificationLimitValue": null,
+      "quantificationLimitUnit": null,
+      "quantificationLimitAlternateValue": null,
+      "quantificationLimitAlternateUnit": null,
+      "linearityLimitValue": 150.0,
+      "linearityLimitUnit": "g/L",
+      "linearityLimitAlternateValue": null,
+      "linearityLimitAlternateUnit": null,
+      "interferenceThresholds": [
+        {
+          "interferent": "bilirubin",
+          "label": "Bilirrubina",
+          "thresholdValue": 30.0,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "LIMITACIONES DEL PROCEDIMIENTO   Interferencias: la bilirrubina (hasta 30 mg/dL), la hemólisis (hemoglobina hasta 500 mg/dL) y lipemia (triglicéridos hasta 975 mg/dL) no  interfieren. Otros medicamentos y sustancias pueden interferir5."
+        },
+        {
+          "interferent": "hemolysis",
+          "label": "Hemólisis / hemoglobina",
+          "thresholdValue": 500.0,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "LIMITACIONES DEL PROCEDIMIENTO   Interferencias: la bilirrubina (hasta 30 mg/dL), la hemólisis (hemoglobina hasta 500 mg/dL) y lipemia (triglicéridos hasta 975 mg/dL) no  interfieren. Otros medicamentos y sustancias pueden interferir5."
+        },
+        {
+          "interferent": "lipemia",
+          "label": "Lipemia / triglicéridos",
+          "thresholdValue": 975.0,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "LIMITACIONES DEL PROCEDIMIENTO   Interferencias: la bilirrubina (hasta 30 mg/dL), la hemólisis (hemoglobina hasta 500 mg/dL) y lipemia (triglicéridos hasta 975 mg/dL) no  interfieren. Otros medicamentos y sustancias pueden interferir5."
+        }
+      ],
+      "procedureLimitations": [
+        "la bilirrubina (hasta 30 mg/dL), la hemólisis (hemoglobina hasta 500 mg/dL) y lipemia (triglicéridos hasta 975 mg/dL) no interfieren."
+      ],
+      "notes": [
+        "CONSERVACIÓN Y ESTABILIDAD Conservar a 2-30ºC. Los  componentes  son  estables  hasta  la  fecha  de  caducidad  indicada  en  la  etiqueta  del  kit, siempre que se conserven bien cerrados y se evite la contaminación durante su uso. Estabilidad  a  bordo:  Los  reactivos  abiertos  y  conservados  en  el  compartimento  refrigerado  del analizador son estables 42 días. Indicaciones de deterioro: Absorbancia del blanco superior al límite indicado en “Parámetros de la prueba”.",
+        "CONTROL DE CALIDAD Se recomienda el uso de los Sueros Control Bioquímica niveles I (cod. 18005, 18009 y 18042) y II (cod. 18007, 18010 y 18043) para verificar la exactitud del procedimiento de medida. Cada  laboratorio  debe  establecer  su  propio  programa  de  Control  de  Calidad  interno,  así  como procedimientos de corrección en el caso de que los resultados de los controles no se encuentren entre los límites de aceptación.",
+        "Límite de linealidad: 150 g/L",
+        "LIMITACIONES DEL PROCEDIMIENTO   Interferencias: la bilirrubina (hasta 30 mg/dL), la hemólisis (hemoglobina hasta 500 mg/dL) y lipemia (triglicéridos hasta 975 mg/dL) no  interfieren. Otros medicamentos y sustancias pueden interferir5."
+      ]
+    },
+    "qcReferences": [],
     "missingFields": [
       "Sin estabilidad a bordo"
     ]
@@ -7008,8 +9224,6 @@ export const DRI_REAGENT_CONTEXT = {
     "displayName": "Proteína en orina",
     "canonicalNames": [
       "PROTEIN URINE",
-      "PROTEIN TOTALBIR",
-      "PROTEIN TOTAL BIR",
       "PROTEIN URINE",
       "PROTEIN URINE",
       "PROTEIN URINE"
@@ -7085,19 +9299,63 @@ export const DRI_REAGENT_CONTEXT = {
     "facts": {
       "storageTempMinC": 15.0,
       "storageTempMaxC": 30.0,
-      "onboardStabilityHours": null,
-      "onboardStabilityUnit": null,
-      "onboardStabilityRaw": null,
+      "onboardStabilityHours": 1440.0,
+      "onboardStabilityUnit": "months",
+      "onboardStabilityRaw": 2.0,
       "blankDeterioration": "high_blank_absorbance",
+      "detectionLimitValue": 26.0,
+      "detectionLimitUnit": "mg/L",
+      "detectionLimitAlternateValue": null,
+      "detectionLimitAlternateUnit": null,
+      "quantificationLimitValue": null,
+      "quantificationLimitUnit": null,
+      "quantificationLimitAlternateValue": null,
+      "quantificationLimitAlternateUnit": null,
+      "linearityLimitValue": 2000.0,
+      "linearityLimitUnit": "mg/L",
+      "linearityLimitAlternateValue": null,
+      "linearityLimitAlternateUnit": null,
+      "interferenceThresholds": [
+        {
+          "interferent": "bilirubin",
+          "label": "Bilirrubina",
+          "thresholdValue": 20.0,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "LIMITACIONES DEL PROCEDIMIENTO   Interferencias:  La  bilirrubina  (20  mg/dL)  no medicamentos y sustancias pueden interferir2."
+        },
+        {
+          "interferent": "bilirubin",
+          "label": "Bilirrubina",
+          "thresholdValue": 20.0,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "LIMITACIONES DEL PROCEDIMIENTO −  Interferencias:  La  bilirrubina  (20  mg/dL)  no  interfiere.  La  hemólisis  interfiere.  Otros"
+        },
+        {
+          "interferent": "bilirubin",
+          "label": "Bilirrubina",
+          "thresholdValue": 20.0,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "−  Interferencias:  La  bilirrubina  (20  mg/dL)  no  interfiere.  La  hemólisis  interfiere.  Otros"
+        }
+      ],
+      "procedureLimitations": [
+        "La bilirrubina (20 mg/dL) no medicamentos y sustancias pueden interferir2. La proteína presente en la muestra reacciona con el rojo de pirogalol y el molibdato en medio ácido, originando un complejo coloreado que se cuantifica por espectrofotometría1,5. BIBLIOGRAFÍA CONTENIDO 1. Watanabe N et al. Urinary Protein as measured with a pyrogallol red-molybdate complex, COD 21512 COD 23512 A. Reactivo 8 x 20 mL 4 x 20 mL manually and in a Hitachi 726 automated analyzer. Clin Chem 1986; 32:1551-1544 2. Young DS. Effects of drugs on clinical laboratory tests, 5th ed. AACC Press, 2000. 3. Tietz Textbook of Clinical Chemistry and Molecular Diagnostics, 4th ed. Burtis CA, Ashwood COMPOSICIÓN ER, Bruns DE. WB Saunders Co, 2005. A. Reactivo: Rojo de pirogalol 60 mol/L, molibdato sódico 40 mol/L, succinato 50 mmol/L, 4. Friedman and Young. Effects of disease on clinical laboratory tests, 4th ed. AACC Press, 2001.. 5. Orsonneau JL et al. An improved pyrogallol red-molybdate method for determining total urinary protein. Clin Chem 1989; 35:2233-2236. 6. World Health Organization (WHO). Use of anticoagulants in diagnostic laboratory investigations. Document WHO/DIL/LAB/99.1, Rev.2; 2002 pH 2,3, detergente. ATENCIÓN: H226: Líquidos y vapores inflamables. H371: Puede provocar daños en los órganos. P210: Mantener alejado de fuentes de calor, chispas, llama abierta o superficies calientes. – No fumar. P280: Llevar guantes/prendas/gafas/máscara de protección. P308+P313: EN CASO DE exposición manifiesta o presunta: Consultar a un médico. P403+P235: Almacenar en un lugar bien ventilado. Mantener en lugar fresco. Para más advertencias y precauciones, ver la ficha de datos de seguridad del producto (SDS). PARÁMETROS DE LA PRUEBA Estos reactivos pueden utilizarse también en otros analizadores automáticos. Solicite información a su distribuidor. R1: utilizar el Reactivo A. BA200 BA400 GENERAL CONSERVACIÓN Y ESTABILIDAD Conservar a 15-30ºC. Los componentes son estables hasta la fecha de caducidad indicada en la etiqueta del kit, siempre que se conserven bien cerrados y se evite la contaminación durante su uso. Estabilidad a bordo: Los reactivos abiertos y conservados en el compartimento refrigerado del analizador son estables 2 meses. Indicaciones de deterioro: Absorbancia del blanco superior al límite indicado en “Parámetros de la prueba”. MATERIALES ADICIONALES REQUERIDOS (NO SUMINISTRADOS) Nombre Nombre corto Tipo muestra Modo de análisis Unidad Decimales Tipo de reacción PROTEIN URINE U-PROT orina / CSF punto final monoreactiva mg/L 0 creciente PROTEIN URINE U-PROT orina / CSF punto final monoreactiva mg/L 0 creciente PROCEDIMIENTO S. Patrón de Proteína (Orina) (BioSystems Cod. 11603). Albúmina bovina. La concentración viene indicada en la etiqueta del vial. El valor de concentración es trazable al Material de Referencia Certificado SRM 927 (National Institute of Standards and Technology, NIST). Conservar a 2-8ºC, una vez abierto. Estable hasta la fecha de caducidad indicada en la etiqueta, siempre que se conserve bien cerrado y se evite la contaminación durante su uso. PREPARACIÓN DE LOS REACTIVOS Los reactivos están listos para su uso.",
+        "La bilirrubina (20 mg/dL) no interfiere. La hemólisis interfiere."
+      ],
       "notes": [
         "CONSERVACIÓN Y ESTABILIDAD Conservar a 15-30ºC. Los  componentes  son  estables  hasta  la  fecha  de  caducidad  indicada  en  la  etiqueta  del  kit, siempre que se conserven bien cerrados y se evite la contaminación durante su uso. Estabilidad  a  bordo:  Los  reactivos  abiertos  y  conservados  en  el  compartimento  refrigerado  del analizador son estables 2 meses. Indicaciones de deterioro: Absorbancia del blanco superior al límite indicado en “Parámetros de la prueba”.",
-        "S.  Patrón  de  Proteína  (Orina)  (BioSystems  Cod.  11603).  Albúmina  bovina.  La  concentración viene  indicada  en  la  etiqueta  del  vial.  El  valor  de  concentración  es  trazable  al  Material  de Referencia Certificado SRM 927 (National Institute of Standards and Technology, NIST). Conservar a 2-8ºC, una vez abierto. Estable hasta la fecha de caducidad indicada en la etiqueta, siempre que se conserve bien cerrado y se evite la contaminación durante su uso."
+        "S.  Patrón  de  Proteína  (Orina)  (BioSystems  Cod.  11603).  Albúmina  bovina.  La  concentración viene  indicada  en  la  etiqueta  del  vial.  El  valor  de  concentración  es  trazable  al  Material  de Referencia Certificado SRM 927 (National Institute of Standards and Technology, NIST). Conservar a 2-8ºC, una vez abierto. Estable hasta la fecha de caducidad indicada en la etiqueta, siempre que se conserve bien cerrado y se evite la contaminación durante su uso.",
+        "CARACTERÍSTICAS METROLÓGICAS Las prestaciones metrológicas que se describen a continuación, han sido obtenidas utilizando un analizador BA400 y siguiendo las guías del Clinical & Laboratory Standards Institute (CLSI).   Límite de detección: 26,0 mg/L.",
+        "  Límite de linealidad: 2000 mg/L.",
+        "LIMITACIONES DEL PROCEDIMIENTO   Interferencias:  La  bilirrubina  (20  mg/dL)  no medicamentos y sustancias pueden interferir2.",
+        "Reactivo (A): Conservar a 15-30ºC."
       ]
     },
     "qcReferences": [],
-    "missingFields": [
-      "Sin estabilidad a bordo"
-    ]
+    "missingFields": []
   },
   "TBA": {
     "displayCode": "TBA",
@@ -7140,8 +9398,58 @@ export const DRI_REAGENT_CONTEXT = {
       "onboardStabilityUnit": "months",
       "onboardStabilityRaw": 2.0,
       "blankDeterioration": "high_blank_absorbance",
+      "detectionLimitValue": null,
+      "detectionLimitUnit": null,
+      "detectionLimitAlternateValue": null,
+      "detectionLimitAlternateUnit": null,
+      "quantificationLimitValue": null,
+      "quantificationLimitUnit": null,
+      "quantificationLimitAlternateValue": null,
+      "quantificationLimitAlternateUnit": null,
+      "linearityLimitValue": null,
+      "linearityLimitUnit": null,
+      "linearityLimitAlternateValue": null,
+      "linearityLimitAlternateUnit": null,
+      "interferenceThresholds": [
+        {
+          "interferent": "bilirubin",
+          "label": "Bilirrubina",
+          "thresholdValue": 50.0,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "LIMITACIONES DEL PROCEDIMIENTO −  Interferencias:  El  ácido  ascórbico  (hasta  50  mg/dL),  la  bilirrubina  (hasta  50  mg/dL),  la hemólisis  (hemoglobina  hasta  500  mg/dL)  y  lipemia  (triglicéridos  hasta  2000  mg/dL)  no interfieren. Otros medicamentos y sustancias pueden interferir1."
+        },
+        {
+          "interferent": "hemolysis",
+          "label": "Hemólisis / hemoglobina",
+          "thresholdValue": 500.0,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "LIMITACIONES DEL PROCEDIMIENTO −  Interferencias:  El  ácido  ascórbico  (hasta  50  mg/dL),  la  bilirrubina  (hasta  50  mg/dL),  la hemólisis  (hemoglobina  hasta  500  mg/dL)  y  lipemia  (triglicéridos  hasta  2000  mg/dL)  no interfieren. Otros medicamentos y sustancias pueden interferir1."
+        },
+        {
+          "interferent": "lipemia",
+          "label": "Lipemia / triglicéridos",
+          "thresholdValue": 2000.0,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "LIMITACIONES DEL PROCEDIMIENTO −  Interferencias:  El  ácido  ascórbico  (hasta  50  mg/dL),  la  bilirrubina  (hasta  50  mg/dL),  la hemólisis  (hemoglobina  hasta  500  mg/dL)  y  lipemia  (triglicéridos  hasta  2000  mg/dL)  no interfieren. Otros medicamentos y sustancias pueden interferir1."
+        },
+        {
+          "interferent": "ascorbic_acid",
+          "label": "Ácido ascórbico",
+          "thresholdValue": 50.0,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "LIMITACIONES DEL PROCEDIMIENTO −  Interferencias:  El  ácido  ascórbico  (hasta  50  mg/dL),  la  bilirrubina  (hasta  50  mg/dL),  la hemólisis  (hemoglobina  hasta  500  mg/dL)  y  lipemia  (triglicéridos  hasta  2000  mg/dL)  no interfieren. Otros medicamentos y sustancias pueden interferir1."
+        }
+      ],
+      "procedureLimitations": [
+        "El ácido ascórbico (hasta 50 mg/dL), la bilirrubina (hasta 50 mg/dL), la hemólisis (hemoglobina hasta 500 mg/dL) y lipemia (triglicéridos hasta 2000 mg/dL) no interfieren."
+      ],
       "notes": [
-        "CONSERVACIÓN Y ESTABILIDAD Conservar a 2-8ºC. Los  componentes  son  estables  hasta  la  fecha  de  caducidad  indicada  en  la  etiqueta  del  kit, siempre que se conserven bien cerrados y se evite la contaminación durante su uso. Estabilidad a bordo:  Los reactivos abiertos y conservados  en el compartimento refrigerado  del analizador son estables 2 meses. Indicaciones de deterioro: Absorbancia del blanco superior al límite indicado en “Parámetros de la prueba”."
+        "CONSERVACIÓN Y ESTABILIDAD Conservar a 2-8ºC. Los  componentes  son  estables  hasta  la  fecha  de  caducidad  indicada  en  la  etiqueta  del  kit, siempre que se conserven bien cerrados y se evite la contaminación durante su uso. Estabilidad a bordo:  Los reactivos abiertos y conservados  en el compartimento refrigerado  del analizador son estables 2 meses. Indicaciones de deterioro: Absorbancia del blanco superior al límite indicado en “Parámetros de la prueba”.",
+        "LIMITACIONES DEL PROCEDIMIENTO −  Interferencias:  El  ácido  ascórbico  (hasta  50  mg/dL),  la  bilirrubina  (hasta  50  mg/dL),  la hemólisis  (hemoglobina  hasta  500  mg/dL)  y  lipemia  (triglicéridos  hasta  2000  mg/dL)  no interfieren. Otros medicamentos y sustancias pueden interferir1."
       ]
     },
     "qcReferences": [
@@ -7256,7 +9564,10 @@ export const DRI_REAGENT_CONTEXT = {
         "sourceReference": "einfo.bio valuesheet 18043 lote 58987"
       }
     ],
-    "missingFields": []
+    "missingFields": [
+      "Sin límite de linealidad",
+      "Sin LOD/LOQ estructurado"
+    ]
   },
   "TG": {
     "displayCode": "TG",
@@ -7347,18 +9658,110 @@ export const DRI_REAGENT_CONTEXT = {
     "facts": {
       "storageTempMinC": 2.0,
       "storageTempMaxC": 8.0,
-      "onboardStabilityHours": null,
-      "onboardStabilityUnit": null,
-      "onboardStabilityRaw": null,
+      "onboardStabilityHours": 1440.0,
+      "onboardStabilityUnit": "months",
+      "onboardStabilityRaw": 2.0,
       "blankDeterioration": "high_blank_absorbance",
+      "detectionLimitValue": 5.99,
+      "detectionLimitUnit": "mg/dL",
+      "detectionLimitAlternateValue": 0.067,
+      "detectionLimitAlternateUnit": "mmol/L",
+      "quantificationLimitValue": null,
+      "quantificationLimitUnit": null,
+      "quantificationLimitAlternateValue": null,
+      "quantificationLimitAlternateUnit": null,
+      "linearityLimitValue": 600.0,
+      "linearityLimitUnit": "mg/dL",
+      "linearityLimitAlternateValue": 6.78,
+      "linearityLimitAlternateUnit": "mmol/L",
+      "interferenceThresholds": [
+        {
+          "interferent": "bilirubin",
+          "label": "Bilirrubina",
+          "thresholdValue": 2.5,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "LIMITACIONES DEL PROCEDIMIENTO   Interferencias: La hemólisis (hemoglobina hasta 1000 mg/dL), la bilirrubina (hasta 2,5 mg/dL) no  interfieren.  El  ácido  ascórbico  (hasta  5  mg/dL)  no  interfiere.  Otros  medicamentos  y sustancias pueden interferir5."
+        },
+        {
+          "interferent": "hemolysis",
+          "label": "Hemólisis / hemoglobina",
+          "thresholdValue": 1000.0,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "LIMITACIONES DEL PROCEDIMIENTO   Interferencias: La hemólisis (hemoglobina hasta 1000 mg/dL), la bilirrubina (hasta 2,5 mg/dL) no  interfieren.  El  ácido  ascórbico  (hasta  5  mg/dL)  no  interfiere.  Otros  medicamentos  y sustancias pueden interferir5."
+        },
+        {
+          "interferent": "ascorbic_acid",
+          "label": "Ácido ascórbico",
+          "thresholdValue": 5.0,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "LIMITACIONES DEL PROCEDIMIENTO   Interferencias: La hemólisis (hemoglobina hasta 1000 mg/dL), la bilirrubina (hasta 2,5 mg/dL) no  interfieren.  El  ácido  ascórbico  (hasta  5  mg/dL)  no  interfiere.  Otros  medicamentos  y sustancias pueden interferir5."
+        },
+        {
+          "interferent": "bilirubin",
+          "label": "Bilirrubina",
+          "thresholdValue": 2.5,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "LIMITACIONES DEL PROCEDIMIENTO −  Interferencias: La hemólisis (hemoglobina hasta 1000 mg/dL), la bilirrubina (hasta 2,5 mg/dL) no  interfieren.  El  ácido  ascórbico  (hasta  5  mg/dL)  no  interfiere.  Otros  medicamentos  y sustancias pueden interferir5."
+        },
+        {
+          "interferent": "hemolysis",
+          "label": "Hemólisis / hemoglobina",
+          "thresholdValue": 1000.0,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "LIMITACIONES DEL PROCEDIMIENTO −  Interferencias: La hemólisis (hemoglobina hasta 1000 mg/dL), la bilirrubina (hasta 2,5 mg/dL) no  interfieren.  El  ácido  ascórbico  (hasta  5  mg/dL)  no  interfiere.  Otros  medicamentos  y sustancias pueden interferir5."
+        },
+        {
+          "interferent": "ascorbic_acid",
+          "label": "Ácido ascórbico",
+          "thresholdValue": 5.0,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "LIMITACIONES DEL PROCEDIMIENTO −  Interferencias: La hemólisis (hemoglobina hasta 1000 mg/dL), la bilirrubina (hasta 2,5 mg/dL) no  interfieren.  El  ácido  ascórbico  (hasta  5  mg/dL)  no  interfiere.  Otros  medicamentos  y sustancias pueden interferir5."
+        },
+        {
+          "interferent": "bilirubin",
+          "label": "Bilirrubina",
+          "thresholdValue": 2.5,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "  Interferencias: La hemólisis (hemoglobina hasta 1000 mg/dL), la bilirrubina (hasta 2,5 mg/dL) no  interfieren.  El  ácido  ascórbico  (hasta  5  mg/dL)  no  interfiere.  Otros  medicamentos  y sustancias pueden interferir4."
+        },
+        {
+          "interferent": "hemolysis",
+          "label": "Hemólisis / hemoglobina",
+          "thresholdValue": 1000.0,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "  Interferencias: La hemólisis (hemoglobina hasta 1000 mg/dL), la bilirrubina (hasta 2,5 mg/dL) no  interfieren.  El  ácido  ascórbico  (hasta  5  mg/dL)  no  interfiere.  Otros  medicamentos  y sustancias pueden interferir4."
+        },
+        {
+          "interferent": "ascorbic_acid",
+          "label": "Ácido ascórbico",
+          "thresholdValue": 5.0,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "  Interferencias: La hemólisis (hemoglobina hasta 1000 mg/dL), la bilirrubina (hasta 2,5 mg/dL) no  interfieren.  El  ácido  ascórbico  (hasta  5  mg/dL)  no  interfiere.  Otros  medicamentos  y sustancias pueden interferir4."
+        }
+      ],
+      "procedureLimitations": [
+        "La hemólisis (hemoglobina hasta 1000 mg/dL), la bilirrubina (hasta 2,5 mg/dL) no interfieren. El ácido ascórbico (hasta 5 mg/dL) no interfiere."
+      ],
       "notes": [
-        "CONSERVACIÓN Y ESTABILIDAD Conservar a 2-8 ºC. Los  componentes  son  estables  hasta  la  fecha  de  caducidad  indicada  en  la  etiqueta  del  kit, siempre que se conserven bien cerrados y se evite la contaminación durante su uso. Estabilidad  a  bordo:  Los  reactivos  abiertos  y  conservados  en  el  compartimento  refrigerado  del analizador son estables 2  meses. Indicaciones de deterioro: Absorbancia del blanco superior al límite indicado en “Parámetros de la prueba”."
+        "CONSERVACIÓN Y ESTABILIDAD Conservar a 2-8 ºC. Los  componentes  son  estables  hasta  la  fecha  de  caducidad  indicada  en  la  etiqueta  del  kit, siempre que se conserven bien cerrados y se evite la contaminación durante su uso. Estabilidad  a  bordo:  Los  reactivos  abiertos  y  conservados  en  el  compartimento  refrigerado  del analizador son estables 2  meses. Indicaciones de deterioro: Absorbancia del blanco superior al límite indicado en “Parámetros de la prueba”.",
+        "CARACTERÍSTICAS METROLÓGICAS Las prestaciones metrológicas que se describen a continuación, han sido obtenidas utilizando un analizador BA400 y siguiendo las guías del Clinical & Laboratory Standards Institute (CLSI).   Límite de detección: 5,99 mg/dL = 0,067 mmol/L.",
+        "  Límite de linealidad: 600  mg/dL = 6,78 mmol/L.",
+        "LIMITACIONES DEL PROCEDIMIENTO   Interferencias: La hemólisis (hemoglobina hasta 1000 mg/dL), la bilirrubina (hasta 2,5 mg/dL) no  interfieren.  El  ácido  ascórbico  (hasta  5  mg/dL)  no  interfiere.  Otros  medicamentos  y sustancias pueden interferir5.",
+        "CONSERVACIÓN Y ESTABILIDAD Conservar a 2-8ºC. Los  componentes  son  estables  hasta  la  fecha  de  caducidad  indicada  en  la  etiqueta  del  kit, siempre que se conserven bien cerrados y se evite la contaminación durante su uso. Estabilidad a bordo: Los reactivos abiertos y conservados en el compartimento refrigerado del analizador son estables 2  meses. Indicaciones de deterioro: Absorbancia del blanco superior al límite indicado en “Parámetros de la prueba”.",
+        "CARACTERÍSTICAS METROLÓGICAS Las prestaciones metrológicas que se describen a continuación, han sido obtenidas utilizando un analizador A25. Los resultados son similares a los del A15. −  Límite de detección: 4,4 mg/dL = 0,05 mmol/L. −  Límite de linealidad: 600 mg/dL = 6,78 mmol/L. −  Precisión:"
       ]
     },
     "qcReferences": [],
-    "missingFields": [
-      "Sin estabilidad a bordo"
-    ]
+    "missingFields": []
   },
   "UREA_COLOR": {
     "displayCode": "UREA",
@@ -7410,9 +9813,53 @@ export const DRI_REAGENT_CONTEXT = {
       "onboardStabilityUnit": null,
       "onboardStabilityRaw": null,
       "blankDeterioration": "high_blank_absorbance",
+      "detectionLimitValue": 1.3,
+      "detectionLimitUnit": "mg/dL",
+      "detectionLimitAlternateValue": 0.6,
+      "detectionLimitAlternateUnit": "mg/dL",
+      "quantificationLimitValue": null,
+      "quantificationLimitUnit": null,
+      "quantificationLimitAlternateValue": null,
+      "quantificationLimitAlternateUnit": null,
+      "linearityLimitValue": 300.0,
+      "linearityLimitUnit": "mg/dL",
+      "linearityLimitAlternateValue": 140.0,
+      "linearityLimitAlternateUnit": "mg/dL",
+      "interferenceThresholds": [
+        {
+          "interferent": "bilirubin",
+          "label": "Bilirrubina",
+          "thresholdValue": 20.0,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "  Interferencias: La lipemia (triglicéridos  10  g/L)  y la  bilirrubina (20 mg/dL) no interfieren. La interfieren.  Otros"
+        },
+        {
+          "interferent": "hemolysis",
+          "label": "Hemólisis / hemoglobina",
+          "thresholdValue": 2.0,
+          "unit": "g/L",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "  Interferencias: La lipemia (triglicéridos  10  g/L)  y la  bilirrubina (20 mg/dL) no interfieren. La interfieren.  Otros"
+        },
+        {
+          "interferent": "lipemia",
+          "label": "Lipemia / triglicéridos",
+          "thresholdValue": 10.0,
+          "unit": "g/L",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "  Interferencias: La lipemia (triglicéridos  10  g/L)  y la  bilirrubina (20 mg/dL) no interfieren. La interfieren.  Otros"
+        }
+      ],
+      "procedureLimitations": [
+        "La lipemia (triglicéridos 10 g/L) y la bilirrubina (20 mg/dL) no interfieren. La interfieren. Otros (hemoglobina 2 g/L) y niveles elevados de amonio hemólisis medicamentos y sustancias pueden interferir5. PREPARACIÓN DE LOS REACTIVOS Reactivo (B) y Patrón (S): Están listo para su uso. Reactivo (A): Vaciar el contenido de un vial de Reactivo A2 en un frasco de Reactivo A1 (Nota 1). Homogeneizar. Si se desea preparar otros volúmenes, mezclar en la proporción: 1 mL Reactivo A2 + 24 mL Reactivo A1. Estable 2 meses a 2-8ºC (Nota 2)."
+      ],
       "notes": [
         "CONSERVAR A 2-8ºC",
-        "CONSERVACIÓN Conservar a 2-8ºC. Los  Reactivos  y  el  Patrón  son  estables  hasta  la  fecha  de  caducidad  indicada  en  la  etiqueta, siempre que se conserven bien cerrados y se evite la contaminación durante su uso. Indicaciones de deterioro:   Reactivos: Presencia de partículas, turbidez, absorbancia del blanco superior a 0,250 a 600"
+        "CONSERVACIÓN Conservar a 2-8ºC. Los  Reactivos  y  el  Patrón  son  estables  hasta  la  fecha  de  caducidad  indicada  en  la  etiqueta, siempre que se conserven bien cerrados y se evite la contaminación durante su uso. Indicaciones de deterioro:   Reactivos: Presencia de partículas, turbidez, absorbancia del blanco superior a 0,250 a 600",
+        "CARACTERÍSTICAS METROLÓGICAS   Límite de detección: 1,3 mg/dL urea = 0,60 mg/dL BUN = 0,21 mmol/L urea.   Límite  de  linealidad:  300  mg/dL  urea  =  140  mg/dL  BUN  =  50  mmol/L  urea.  Cuando  se obtengan valores superiores, diluir la muestra 1/5 con agua destilada y repetir la medición.",
+        "Límite de linealidad: 300 mg/dL urea = 140 mg/dL",
+        "  Interferencias: La lipemia (triglicéridos  10  g/L)  y la  bilirrubina (20 mg/dL) no interfieren. La interfieren.  Otros"
       ]
     },
     "qcReferences": [
@@ -7743,12 +10190,83 @@ export const DRI_REAGENT_CONTEXT = {
     "facts": {
       "storageTempMinC": 2.0,
       "storageTempMaxC": 8.0,
-      "onboardStabilityHours": null,
-      "onboardStabilityUnit": null,
-      "onboardStabilityRaw": null,
+      "onboardStabilityHours": 720.0,
+      "onboardStabilityUnit": "days",
+      "onboardStabilityRaw": 30.0,
       "blankDeterioration": null,
+      "detectionLimitValue": 3.69,
+      "detectionLimitUnit": "mg/dL",
+      "detectionLimitAlternateValue": 1.72,
+      "detectionLimitAlternateUnit": "mg/dL",
+      "quantificationLimitValue": null,
+      "quantificationLimitUnit": null,
+      "quantificationLimitAlternateValue": null,
+      "quantificationLimitAlternateUnit": null,
+      "linearityLimitValue": 300.0,
+      "linearityLimitUnit": "mg/dL",
+      "linearityLimitAlternateValue": 140.0,
+      "linearityLimitAlternateUnit": "mg/dL",
+      "interferenceThresholds": [
+        {
+          "interferent": "bilirubin",
+          "label": "Bilirrubina",
+          "thresholdValue": 30.0,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "LIMITACIONES DEL PROCEDIMIENTO   Interferencias: la bilirrubina (hasta 30 mg/dL), la hemólisis (hemoglobina hasta  500 mg/dL) y lipemia  (triglicéridos  hasta  1625  mg/dL)  no    interfieren.  Otros  medicamentos  y  sustancias pueden interferir6."
+        },
+        {
+          "interferent": "hemolysis",
+          "label": "Hemólisis / hemoglobina",
+          "thresholdValue": 500.0,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "LIMITACIONES DEL PROCEDIMIENTO   Interferencias: la bilirrubina (hasta 30 mg/dL), la hemólisis (hemoglobina hasta  500 mg/dL) y lipemia  (triglicéridos  hasta  1625  mg/dL)  no    interfieren.  Otros  medicamentos  y  sustancias pueden interferir6."
+        },
+        {
+          "interferent": "lipemia",
+          "label": "Lipemia / triglicéridos",
+          "thresholdValue": 1625.0,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "LIMITACIONES DEL PROCEDIMIENTO   Interferencias: la bilirrubina (hasta 30 mg/dL), la hemólisis (hemoglobina hasta  500 mg/dL) y lipemia  (triglicéridos  hasta  1625  mg/dL)  no    interfieren.  Otros  medicamentos  y  sustancias pueden interferir6."
+        },
+        {
+          "interferent": "bilirubin",
+          "label": "Bilirrubina",
+          "thresholdValue": 30.0,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "LIMITACIONES DEL PROCEDIMIENTO −  Interferencias: la bilirrubina (hasta 30 mg/dL), la hemólisis (hemoglobina hasta 500 mg/dL) y lipemia  (triglicéridos  hasta  1625  mg/dL)  no    interfieren.  Otros  medicamentos  y  sustancias pueden interferir6."
+        },
+        {
+          "interferent": "hemolysis",
+          "label": "Hemólisis / hemoglobina",
+          "thresholdValue": 500.0,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "LIMITACIONES DEL PROCEDIMIENTO −  Interferencias: la bilirrubina (hasta 30 mg/dL), la hemólisis (hemoglobina hasta 500 mg/dL) y lipemia  (triglicéridos  hasta  1625  mg/dL)  no    interfieren.  Otros  medicamentos  y  sustancias pueden interferir6."
+        },
+        {
+          "interferent": "lipemia",
+          "label": "Lipemia / triglicéridos",
+          "thresholdValue": 1625.0,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "LIMITACIONES DEL PROCEDIMIENTO −  Interferencias: la bilirrubina (hasta 30 mg/dL), la hemólisis (hemoglobina hasta 500 mg/dL) y lipemia  (triglicéridos  hasta  1625  mg/dL)  no    interfieren.  Otros  medicamentos  y  sustancias pueden interferir6."
+        }
+      ],
+      "procedureLimitations": [
+        "la bilirrubina (hasta 30 mg/dL), la hemólisis (hemoglobina hasta 500 mg/dL) y lipemia (triglicéridos hasta 1625 mg/dL) no interfieren.",
+        "La lipemia (triglicéridos < 10 g/L) y la bilirrubina (< 20 mg/dL) no interfieren. La hemólisis (hemoglobina > 5 g/L) y niveles elevados de amonio interfieren."
+      ],
       "notes": [
-        "CONSERVACIÓN Y ESTABILIDAD Conservar a 2-8ºC. Los  componentes  son  estables  hasta  la  fecha  de  caducidad  indicada  en  la  etiqueta  del  kit, siempre que se conserven bien cerrados y se evite la contaminación durante su uso. Estabilidad  a  bordo:  Los  reactivos  abiertos  y  conservados  en  el  compartimento  refrigerado  del analizador son estables 30 días. Indicaciones de deterioro: Absorbancia del blanco inferior al límite indicado en “Parámetros de la prueba”."
+        "CONSERVACIÓN Y ESTABILIDAD Conservar a 2-8ºC. Los  componentes  son  estables  hasta  la  fecha  de  caducidad  indicada  en  la  etiqueta  del  kit, siempre que se conserven bien cerrados y se evite la contaminación durante su uso. Estabilidad  a  bordo:  Los  reactivos  abiertos  y  conservados  en  el  compartimento  refrigerado  del analizador son estables 30 días. Indicaciones de deterioro: Absorbancia del blanco inferior al límite indicado en “Parámetros de la prueba”.",
+        "CARACTERÍSTICAS METROLÓGICAS Las prestaciones metrológicas que se describen a continuación, han sido obtenidas utilizando un analizador BA400 y siguiendo las guías del Clinical & Laboratory Standards Institute (CLSI).   Límite de detección: 3,69 mg/dL urea = 1,72 mg/dL BUN = 0,614 mmol/L urea.",
+        "  Límite de linealidad: 300 mg/dL urea = 140 mg/dL BUN = 50 mmol/L urea. Para muestras con valores superiores, diluir manualmente o consultar los Parámetros de la prueba para dilución automática (estas muestras se diluirán con el mismo factor de dilución).",
+        "LIMITACIONES DEL PROCEDIMIENTO   Interferencias: la bilirrubina (hasta 30 mg/dL), la hemólisis (hemoglobina hasta  500 mg/dL) y lipemia  (triglicéridos  hasta  1625  mg/dL)  no    interfieren.  Otros  medicamentos  y  sustancias pueden interferir6.",
+        "CONSERVACIÓN Y ESTABILIDAD Conservar a 2-8ºC. Los  componentes  son  estables  hasta  la  fecha  de  caducidad  indicada  en  la  etiqueta  del  kit, siempre que se conserven bien cerrados y se evite la contaminación durante su uso. Estabilidad a bordo: Los reactivos abiertos y conservados en el compartimento refrigerado del analizador son estables 30 días. Indicaciones de deterioro: Absorbancia del blanco inferior al límite indicado en “Parámetros de la prueba”.",
+        "CARACTERÍSTICAS METROLÓGICAS Los datos siguientes se obtuvieron usando un analizador A25.  Los resultados son similares a los del A15. −  Límite de detección: 4,0 mg/dL urea 1,9 mg/dL BUN = 0,7 mmol/L urea. −  Límite de linealidad:  250 mg/dL  urea = 117 mg/dL BUN = 42 mmol/L urea. Para muestras con  valores  superiores,  diluir  manualmente  o  consultar  los  Parámetros  de  la  prueba  para dilución automática (estas muestras se diluirán con el mismo factor de dilución)."
       ]
     },
     "qcReferences": [
@@ -7819,9 +10337,7 @@ export const DRI_REAGENT_CONTEXT = {
         "sourceReference": "einfo.bio valuesheet 18042 lote 59322"
       }
     ],
-    "missingFields": [
-      "Sin estabilidad a bordo"
-    ]
+    "missingFields": []
   },
   "URIC": {
     "displayCode": "URIC",
@@ -7925,12 +10441,106 @@ export const DRI_REAGENT_CONTEXT = {
     "facts": {
       "storageTempMinC": 2.0,
       "storageTempMaxC": 8.0,
-      "onboardStabilityHours": null,
-      "onboardStabilityUnit": null,
-      "onboardStabilityRaw": null,
+      "onboardStabilityHours": 1440.0,
+      "onboardStabilityUnit": "months",
+      "onboardStabilityRaw": 2.0,
       "blankDeterioration": "high_blank_absorbance",
+      "detectionLimitValue": 0.31,
+      "detectionLimitUnit": "mg/dL",
+      "detectionLimitAlternateValue": null,
+      "detectionLimitAlternateUnit": null,
+      "quantificationLimitValue": null,
+      "quantificationLimitUnit": null,
+      "quantificationLimitAlternateValue": null,
+      "quantificationLimitAlternateUnit": null,
+      "linearityLimitValue": 25.0,
+      "linearityLimitUnit": "mg/dL",
+      "linearityLimitAlternateValue": null,
+      "linearityLimitAlternateUnit": null,
+      "interferenceThresholds": [
+        {
+          "interferent": "bilirubin",
+          "label": "Bilirrubina",
+          "thresholdValue": 2.5,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "  Interferencias:  La  hemólisis  (hemoglobina  hasta  2  g/L),  la  bilirrubina  (hasta  2,5  mg/dL)  no interfieren.  La  lipemia  interfiere.  El  ácido  ascórbico  (hasta  2,5  mg/dL)  no  interfiere.  Otros medicamentos y sustancias pueden interferir5."
+        },
+        {
+          "interferent": "hemolysis",
+          "label": "Hemólisis / hemoglobina",
+          "thresholdValue": 2.0,
+          "unit": "g/L",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "  Interferencias:  La  hemólisis  (hemoglobina  hasta  2  g/L),  la  bilirrubina  (hasta  2,5  mg/dL)  no interfieren.  La  lipemia  interfiere.  El  ácido  ascórbico  (hasta  2,5  mg/dL)  no  interfiere.  Otros medicamentos y sustancias pueden interferir5."
+        },
+        {
+          "interferent": "ascorbic_acid",
+          "label": "Ácido ascórbico",
+          "thresholdValue": 2.5,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "  Interferencias:  La  hemólisis  (hemoglobina  hasta  2  g/L),  la  bilirrubina  (hasta  2,5  mg/dL)  no interfieren.  La  lipemia  interfiere.  El  ácido  ascórbico  (hasta  2,5  mg/dL)  no  interfiere.  Otros medicamentos y sustancias pueden interferir5."
+        },
+        {
+          "interferent": "bilirubin",
+          "label": "Bilirrubina",
+          "thresholdValue": 2.5,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "LIMITACIONES DEL PROCEDIMIENTO   Interferencias:  La  hemólisis  (hemoglobina  hasta  2  g/L),  la  bilirrubina  (hasta  2,5  mg/dL)  no interfieren.  La  lipemia  interfiere.  El  ácido  ascórbico  (hasta  2,5  mg/dL)  no  interfiere.  Otros medicamentos y sustancias pueden interferir5."
+        },
+        {
+          "interferent": "hemolysis",
+          "label": "Hemólisis / hemoglobina",
+          "thresholdValue": 2.0,
+          "unit": "g/L",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "LIMITACIONES DEL PROCEDIMIENTO   Interferencias:  La  hemólisis  (hemoglobina  hasta  2  g/L),  la  bilirrubina  (hasta  2,5  mg/dL)  no interfieren.  La  lipemia  interfiere.  El  ácido  ascórbico  (hasta  2,5  mg/dL)  no  interfiere.  Otros medicamentos y sustancias pueden interferir5."
+        },
+        {
+          "interferent": "ascorbic_acid",
+          "label": "Ácido ascórbico",
+          "thresholdValue": 2.5,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "LIMITACIONES DEL PROCEDIMIENTO   Interferencias:  La  hemólisis  (hemoglobina  hasta  2  g/L),  la  bilirrubina  (hasta  2,5  mg/dL)  no interfieren.  La  lipemia  interfiere.  El  ácido  ascórbico  (hasta  2,5  mg/dL)  no  interfiere.  Otros medicamentos y sustancias pueden interferir5."
+        },
+        {
+          "interferent": "bilirubin",
+          "label": "Bilirrubina",
+          "thresholdValue": 2.5,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "  Interferencias:  La  hemólisis  (hemoglobina  hasta  2  g/L),  la  bilirrubina  (hasta  2,5  mg/dL)  no interfieren.  La  lipemia  interfiere.  El  ácido  ascórbico  (hasta  2,5  mg/dL)  no  interfiere.  Otros medicamentos y sustancias pueden interferir4."
+        },
+        {
+          "interferent": "hemolysis",
+          "label": "Hemólisis / hemoglobina",
+          "thresholdValue": 2.0,
+          "unit": "g/L",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "  Interferencias:  La  hemólisis  (hemoglobina  hasta  2  g/L),  la  bilirrubina  (hasta  2,5  mg/dL)  no interfieren.  La  lipemia  interfiere.  El  ácido  ascórbico  (hasta  2,5  mg/dL)  no  interfiere.  Otros medicamentos y sustancias pueden interferir4."
+        },
+        {
+          "interferent": "ascorbic_acid",
+          "label": "Ácido ascórbico",
+          "thresholdValue": 2.5,
+          "unit": "mg/dL",
+          "effect": "may_interfere_above",
+          "sourceExcerpt": "  Interferencias:  La  hemólisis  (hemoglobina  hasta  2  g/L),  la  bilirrubina  (hasta  2,5  mg/dL)  no interfieren.  La  lipemia  interfiere.  El  ácido  ascórbico  (hasta  2,5  mg/dL)  no  interfiere.  Otros medicamentos y sustancias pueden interferir4."
+        }
+      ],
+      "procedureLimitations": [
+        "La hemólisis (hemoglobina hasta 2 g/L), la bilirrubina (hasta 2,5 mg/dL) no interfieren. La lipemia interfiere. El ácido ascórbico (hasta 2,5 mg/dL) no interfiere."
+      ],
       "notes": [
-        "CONSERVACIÓN Y ESTABILIDAD Conservar a 2-8 ºC. Los  componentes  son  estables  hasta  la  fecha  de  caducidad  indicada  en  la  etiqueta  del  kit, siempre que se conserven bien cerrados y se evite la contaminación durante su uso. Estabilidad  a  bordo:  Los  reactivos  abiertos  y  conservados  en  el  compartimento  refrigerado  del analizador son estables 2  meses. Indicaciones de deterioro: Absorbancia del blanco superior al límite indicado en “Parámetros de la prueba”."
+        "CONSERVACIÓN Y ESTABILIDAD Conservar a 2-8 ºC. Los  componentes  son  estables  hasta  la  fecha  de  caducidad  indicada  en  la  etiqueta  del  kit, siempre que se conserven bien cerrados y se evite la contaminación durante su uso. Estabilidad  a  bordo:  Los  reactivos  abiertos  y  conservados  en  el  compartimento  refrigerado  del analizador son estables 2  meses. Indicaciones de deterioro: Absorbancia del blanco superior al límite indicado en “Parámetros de la prueba”.",
+        "  Límite de detección: 0,31 mg/dL = 18,5 mol/L.",
+        "  Límite de linealidad: 25 mg/dL = 1487 mol/L.",
+        "  Interferencias:  La  hemólisis  (hemoglobina  hasta  2  g/L),  la  bilirrubina  (hasta  2,5  mg/dL)  no interfieren.  La  lipemia  interfiere.  El  ácido  ascórbico  (hasta  2,5  mg/dL)  no  interfiere.  Otros medicamentos y sustancias pueden interferir5.",
+        "CONSERVACIÓN Y ESTABILIDAD Conservar a 2-8ºC. Los  componentes  son  estables  hasta  la  fecha  de  caducidad  indicada  en  la  etiqueta  del  kit, siempre que se conserven bien cerrados y se evite la contaminación durante su uso. Estabilidad a bordo: Los reactivos abiertos y conservados en el compartimento refrigerado del analizador son estables 2  meses. Indicaciones de deterioro: Absorbancia del blanco superior al límite indicado en “Parámetros de la prueba”.",
+        "CARACTERÍSTICAS METROLÓGICAS Las prestaciones metrológicas que se describen a continuación, han sido obtenidas utilizando un analizador A25. Los resultados son similares a los del A15.   Límite de detección: 0,11 mg/dL = 6,5 mol/L."
       ]
     },
     "qcReferences": [
@@ -8309,8 +10919,6 @@ export const DRI_REAGENT_CONTEXT = {
         "sourceReference": "einfo.bio valuesheet 18066 lote 0000619"
       }
     ],
-    "missingFields": [
-      "Sin estabilidad a bordo"
-    ]
+    "missingFields": []
   }
 } as const;

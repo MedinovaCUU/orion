@@ -8,6 +8,7 @@ import { loadDriCatalog, loadDriHistory, persistDriCase, uploadDriEvidenceAsset 
 import { runDriEngine, runDriValidationFixtures } from '../driEngine';
 import { buildReagentSearchText, getReagentDisplayCode, getReagentDisplayName } from '../knowledge/reagentIdentity';
 import { buildReagentProfiles } from '../knowledge/reagentRelations';
+import { buildBa400HierarchyGraph } from '../knowledge/ba400SubsystemHierarchy';
 import { buildObservationBlockFromEvidence, runDriEvidenceOcr } from '../utils/driEvidenceOcr';
 import { createDriLogger } from '../utils/driLogging';
 import { assessQcReference, findQcReferenceById, getMatchingQcReferences } from '../utils/qcReferenceUtils';
@@ -20,9 +21,9 @@ import type {
   DriEvidenceArtifact,
   DriGraphEdge,
   DriGraphNode,
-  DriMechanicalSubsystemId,
   DriQcReference,
   DriRelationSignal,
+  DriReagent,
   DriReagentProfile,
   DriServiceTestInput,
 } from '../types/dri.types';
@@ -157,18 +158,10 @@ const signalColor = (signal: DriRelationSignal) => {
   return '#9cb1c9';
 };
 
-const graphAmbientColor = (kind: 'optics' | 'rotor' | 'fluidics' | 'dilution') => {
-  if (kind === 'optics') return '#c7d3dd';
-  if (kind === 'rotor') return '#d5dde5';
-  if (kind === 'fluidics') return '#bfd6da';
-  return '#d8d0e5';
-};
-
-const buildAmbientNodeId = (kind: string) => `ambient:${kind}`;
 const DEMO_ACCOUNT_EMAIL = 'rmontanez@biosystems.com.mx';
 
 const GRAPH_SIGNAL_QUOTAS: Partial<Record<DriRelationSignal['category'], number>> = {
-  wavelength: 6,
+  wavelength: 12,
   reaction: 2,
   technique: 3,
   trend: 2,
@@ -226,11 +219,22 @@ const selectGraphSignals = (signals: DriRelationSignal[], selectedCount: number)
     bucket.sort((left, right) => scoreSignalForGraph(right, selectedCount) - scoreSignalForGraph(left, selectedCount));
   });
 
-  const maxSignals = Math.min(18, Math.max(10, Math.ceil(selectedCount * 0.55)));
+  const wavelengthCount = perCategory.get('wavelength')?.length || 0;
+  const maxSignals = Math.min(56, Math.max(20, wavelengthCount + Math.ceil(selectedCount * 0.7)));
   const picked: DriRelationSignal[] = [];
   const used = new Set<string>();
 
+  (perCategory.get('wavelength') || []).forEach((signal) => {
+    if (!used.has(signal.id) && picked.length < maxSignals) {
+      used.add(signal.id);
+      picked.push(signal);
+    }
+  });
+
   Object.entries(GRAPH_SIGNAL_QUOTAS).forEach(([category, quota]) => {
+    if (category === 'wavelength') {
+      return;
+    }
     const bucket = perCategory.get(category as DriRelationSignal['category']) || [];
     bucket.slice(0, quota).forEach((signal) => {
       if (!used.has(signal.id) && picked.length < maxSignals && !isBroadContextSignal(signal, selectedCount)) {
@@ -294,6 +298,22 @@ const pickDemoReagentIds = (catalog: DriCatalog, equipmentModel: DriCaseFormStat
   const correct = findIds(['ALT', 'AST', 'ALB', 'ADA', 'URIC'], 5).filter((id) => !failed.includes(id));
 
   return { failed, correct };
+};
+
+const inferGraphFactorTier = (signal: DriRelationSignal, index: number) => {
+  if (['reaction', 'technique', 'trend', 'scheme', 'r2'].includes(signal.category)) {
+    return 1;
+  }
+  if (['wavelength', 'blank', 'service', 'control'].includes(signal.category)) {
+    return 2;
+  }
+  if (index < 4) {
+    return 1;
+  }
+  if (index < 10) {
+    return 2;
+  }
+  return 3;
 };
 
 const buildDemoFormState = (catalog: DriCatalog): DriCaseFormState => {
@@ -391,101 +411,42 @@ const buildDemoFormState = (catalog: DriCatalog): DriCaseFormState => {
   };
 };
 
-const allProfilesShareSubsystem = (profiles: DriReagentProfile[], subsystem: DriMechanicalSubsystemId) =>
-  profiles.length > 0 && profiles.every((profile) => profile.mechanicalSubsystems.value.includes(subsystem));
+const shuffleIds = (ids: string[]) => {
+  const pool = [...ids];
+  for (let index = pool.length - 1; index > 0; index -= 1) {
+    const swapIndex = Math.floor(Math.random() * (index + 1));
+    [pool[index], pool[swapIndex]] = [pool[swapIndex], pool[index]];
+  }
+  return pool;
+};
 
-const buildAmbientContextNodes = (
+const buildFullRandomDemoFormState = (
+  catalog: DriCatalog,
   profiles: DriReagentProfile[],
-  signals: DriRelationSignal[],
-  eventType: DriCaseFormState['eventType'],
-  serviceTests: DriCaseFormState['serviceTests'],
-): DriGraphNode[] => {
-  const ambientNodes: DriGraphNode[] = [];
-  const signalIds = new Set(signals.map((signal) => signal.id));
-  const serviceIds = new Set(
-    serviceTests
-      .filter((test) => ['abnormal', 'failed', 'adjusted'].includes(test.result))
-      .map((test) => test.utilityId),
-  );
+  equipmentModel: DriCaseFormState['equipmentModel'],
+): DriCaseFormState => {
+  const visibleIds = profiles
+    .filter((profile) => profile.platforms.value.length === 0 || profile.platforms.value.includes(equipmentModel))
+    .map((profile) => profile.id);
+  const randomizedIds = shuffleIds(visibleIds);
+  const midpoint = Math.max(1, Math.floor(randomizedIds.length / 2));
+  const failedReagentIds = randomizedIds.slice(0, midpoint);
+  const correctReagentIds = randomizedIds.slice(midpoint);
 
-  if (
-    allProfilesShareSubsystem(profiles, 'optical_system') &&
-    (signals.some((signal) => ['wavelength', 'blank'].includes(signal.category)) || serviceIds.has('photometry'))
-  ) {
-    ambientNodes.push({
-      id: buildAmbientNodeId('optics'),
-      label: 'Sistema óptico',
-      subtitle: 'contexto compartido',
-      type: 'ambient_factor',
-      clusterKey: 'ambient_optics',
-      color: graphAmbientColor('optics'),
-      emphasis: 0.7,
-      associationCount: signals.filter((signal) => signal.category === 'wavelength').length || 1,
-      associationStrength: 0.58,
-      orbit: 'ambient',
-      tier: 1,
-    });
-  }
-
-  if (
-    allProfilesShareSubsystem(profiles, 'reaction_rotor') &&
-    (signals.some((signal) => ['reaction', 'technique', 'trend', 'temperature', 'wavelength', 'blank'].includes(signal.category)) || serviceIds.has('thermostatting'))
-  ) {
-    ambientNodes.push({
-      id: buildAmbientNodeId('rotor'),
-      label: 'Rotor de reacción',
-      subtitle: 'contexto compartido',
-      type: 'ambient_factor',
-      clusterKey: 'ambient_rotor',
-      color: graphAmbientColor('rotor'),
-      emphasis: 0.68,
-      associationCount: signals.filter((signal) => ['reaction', 'temperature', 'wavelength'].includes(signal.category)).length || 1,
-      associationStrength: 0.56,
-      orbit: 'ambient',
-      tier: 1,
-    });
-  }
-
-  if (
-    allProfilesShareSubsystem(profiles, 'fluidics') &&
-    (signals.some((signal) => ['scheme', 'r2', 'water', 'service', 'contamination'].includes(signal.category)) || serviceIds.has('motors_valves_pumps'))
-  ) {
-    ambientNodes.push({
-      id: buildAmbientNodeId('fluidics'),
-      label: 'Stack fluídico',
-      subtitle: 'muestra · reactivos · lavado',
-      type: 'ambient_factor',
-      clusterKey: 'ambient_fluidics',
-      color: graphAmbientColor('fluidics'),
-      emphasis: 0.72,
-      associationCount: signals.filter((signal) => ['scheme', 'r2', 'water', 'service'].includes(signal.category)).length || 1,
-      associationStrength: 0.6,
-      orbit: 'ambient',
-      tier: 2,
-    });
-  }
-
-  if (
-    profiles.length > 0 &&
-    profiles.every((profile) => profile.allowsAutoDilution.value === true) &&
-    (eventType === 'dilution_error' || serviceIds.has('dilution_review') || signalIds.has('service:software_configuration'))
-  ) {
-    ambientNodes.push({
-      id: buildAmbientNodeId('dilution'),
-      label: 'Dilución automática',
-      subtitle: 'capacidad compartida',
-      type: 'ambient_factor',
-      clusterKey: 'ambient_dilution',
-      color: graphAmbientColor('dilution'),
-      emphasis: 0.64,
-      associationCount: 1,
-      associationStrength: 0.52,
-      orbit: 'ambient',
-      tier: 2,
-    });
-  }
-
-  return ambientNodes;
+  const baseDemo = buildDemoFormState(catalog);
+  return {
+    ...baseDemo,
+    serialNumber: `${equipmentModel}-DEMO-FULL`,
+    observations:
+      'Demo DRI completo: todos los reactivos visibles del modelo activo fueron repartidos al azar entre fallidas y correctas para estresar el grafo relacional y la lectura por factores compartidos.',
+    failedReagentIds,
+    correctReagentIds,
+    selectedQcReferenceId: '',
+    expectedValue: '',
+    obtainedValue: '',
+    controlLot: '',
+    controlLevel: 'not_applicable',
+  };
 };
 
 export default function DriDashboard() {
@@ -497,8 +458,19 @@ export default function DriDashboard() {
   const [analysis, setAnalysis] = useState<DriEngineResult | null>(null);
   const [activeCase, setActiveCase] = useState<DriDiagnosticCaseRecord | null>(null);
   const [search, setSearch] = useState('');
+  const [selectedReagentId, setSelectedReagentId] = useState<string | null>(null);
   const [selectedNodeId, setSelectedNodeId] = useState<string | null>(null);
+  const [selectedNodeIds, setSelectedNodeIds] = useState<string[]>([]);
   const [selectedHypothesisKey, setSelectedHypothesisKey] = useState<string | null>(null);
+  const [focusedSystemKey, setFocusedSystemKey] = useState<string | null>(null);
+  const [graphMultiSelect, setGraphMultiSelect] = useState(false);
+  const [graphShellControls, setGraphShellControls] = useState({
+    systemCoreRadius: 0.98,
+    systemStep: 0.98,
+    factorBaseRadius: 4.18,
+    factorStep: 1.18,
+    reagentRadius: 8.88,
+  });
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [persistWarning, setPersistWarning] = useState<string | null>(null);
@@ -534,19 +506,40 @@ export default function DriDashboard() {
     () => new Map(supportedProfiles.map((profile) => [profile.id, profile])),
     [supportedProfiles],
   );
-  const supportedIds = useMemo(() => new Set(supportedProfiles.map((profile) => profile.id)), [supportedProfiles]);
 
   const filteredReagents = useMemo(() => {
-    if (!catalog) return [];
-    const base = catalog.reagents.filter((reagent) => supportedIds.has(reagent.id));
+    const base = supportedProfiles.map((profile) => profile.legacy);
     const needle = deferredSearch.trim().toLowerCase();
     if (!needle) return base;
     return base.filter((reagent) => buildReagentSearchText(reagent).includes(needle));
-  }, [catalog, deferredSearch, supportedIds]);
+  }, [deferredSearch, supportedProfiles]);
+
+  const selectedReagent = useMemo<DriReagent | null>(
+    () =>
+      filteredReagents.find((reagent) => reagent.id === selectedReagentId) ||
+      catalog?.reagents.find((reagent) => reagent.id === selectedReagentId) ||
+      null,
+    [catalog?.reagents, filteredReagents, selectedReagentId],
+  );
+
+  const selectedReagentProfile = useMemo<DriReagentProfile | null>(
+    () => (selectedReagentId ? supportedProfileById.get(selectedReagentId) || null : null),
+    [selectedReagentId, supportedProfileById],
+  );
+
+  const qcReferenceReagentIds = useMemo(
+    () =>
+      form.failedReagentIds.length
+        ? form.failedReagentIds
+        : selectedReagentId
+          ? [selectedReagentId]
+          : [],
+    [form.failedReagentIds, selectedReagentId],
+  );
 
   const qcReferenceOptions = useMemo(
-    () => (catalog ? getMatchingQcReferences(catalog, form) : []),
-    [catalog, form],
+    () => (catalog ? getMatchingQcReferences(catalog, form, qcReferenceReagentIds) : []),
+    [catalog, form, qcReferenceReagentIds],
   );
 
   const selectedQcReference = useMemo<DriQcReference | null>(() => {
@@ -554,11 +547,11 @@ export default function DriDashboard() {
     if (form.selectedQcReferenceId) {
       return findQcReferenceById(catalog, form.selectedQcReferenceId);
     }
-    if (qcReferenceOptions.length === 1 && form.failedReagentIds.length === 1) {
+    if (qcReferenceOptions.length === 1 && qcReferenceReagentIds.length === 1) {
       return qcReferenceOptions[0];
     }
     return null;
-  }, [catalog, form.failedReagentIds.length, form.selectedQcReferenceId, qcReferenceOptions]);
+  }, [catalog, form.selectedQcReferenceId, qcReferenceOptions, qcReferenceReagentIds.length]);
 
   const qcAssessment = useMemo(
     () => assessQcReference(selectedQcReference, form.obtainedValue),
@@ -570,12 +563,50 @@ export default function DriDashboard() {
     [analysis?.hypotheses, selectedHypothesisKey],
   );
 
+  const graphSelectedProfiles = useMemo(
+    () =>
+      [...form.failedReagentIds, ...form.correctReagentIds]
+        .map((id) => supportedProfileById.get(id))
+        .filter((profile): profile is DriReagentProfile => Boolean(profile)),
+    [form.correctReagentIds, form.failedReagentIds, supportedProfileById],
+  );
+
+  const topGraphSignals = useMemo(
+    () =>
+      analysis
+        ? selectGraphSignals(
+            analysis.relationSignals,
+            form.failedReagentIds.length + form.correctReagentIds.length,
+          )
+        : [],
+    [analysis, form.correctReagentIds.length, form.failedReagentIds.length],
+  );
+
+  const hierarchyGraph = useMemo(
+    () =>
+      form.equipmentModel === 'BA400'
+        ? buildBa400HierarchyGraph({
+            profiles: graphSelectedProfiles,
+            signals: topGraphSignals,
+          })
+        : { nodes: [], edges: [] },
+    [form.equipmentModel, graphSelectedProfiles, topGraphSignals],
+  );
+
+  const graphSystemPills = useMemo(
+    () =>
+      hierarchyGraph.nodes
+        .filter((node) => node.type === 'ambient_factor' && node.tier === 1)
+        .map((node) => ({
+          key: String(node.clusterKey || '').replace(/^ambient:/, ''),
+          label: node.label,
+        })),
+    [hierarchyGraph.nodes],
+  );
+
   const graphNodes = useMemo<DriGraphNode[]>(() => {
     if (!analysis || !catalog) return [];
     const reagentById = new Map(catalog.reagents.map((reagent) => [reagent.id, reagent]));
-    const selectedProfiles = [...form.failedReagentIds, ...form.correctReagentIds]
-      .map((id) => supportedProfileById.get(id))
-      .filter((profile): profile is DriReagentProfile => Boolean(profile));
     const nodes: DriGraphNode[] = [];
     form.failedReagentIds.forEach((id) => {
       const reagent = reagentById.get(id);
@@ -611,12 +642,8 @@ export default function DriDashboard() {
         tier: 3,
       });
     });
-    const topSignals = selectGraphSignals(
-      analysis.relationSignals,
-      form.failedReagentIds.length + form.correctReagentIds.length,
-    );
-    const maxSignalScore = Math.max(...topSignals.map((signal) => signal.suspicionScore), 1);
-    topSignals.forEach((signal, index) => {
+    const maxSignalScore = Math.max(...topGraphSignals.map((signal) => signal.suspicionScore), 1);
+    topGraphSignals.forEach((signal, index) => {
       nodes.push({
         id: signalNodeId(signal.id),
         label: signal.label,
@@ -628,42 +655,15 @@ export default function DriDashboard() {
         associationCount: signal.relatedReagentIds.length + signal.contrastReagentIds.length,
         associationStrength: signal.suspicionScore / maxSignalScore,
         orbit: 'diagnostic',
-        tier: index < 3 ? 1 : 2,
+        tier: inferGraphFactorTier(signal, index),
       });
     });
-    return [...nodes, ...buildAmbientContextNodes(selectedProfiles, topSignals, form.eventType, form.serviceTests)];
-  }, [analysis, catalog, form.correctReagentIds, form.eventType, form.failedReagentIds, form.serviceTests, supportedProfileById]);
+    return [...nodes, ...hierarchyGraph.nodes];
+  }, [analysis, catalog, form.correctReagentIds, form.failedReagentIds, hierarchyGraph.nodes, topGraphSignals]);
 
   const graphEdges = useMemo<DriGraphEdge[]>(() => {
     if (!analysis) return [];
-    const ambientEdgeMap = new Map<
-      string,
-      {
-        sourceId: string;
-        targetId: string;
-        color: string;
-        weight: number;
-        opacity: number;
-        arcBias: number;
-      }
-    >();
-
-    const connectAmbient = (
-      sourceId: string,
-      targetId: string,
-      color = '#c4d0db',
-      weight = 1,
-      opacity = 0.26,
-      arcBias = 0.8,
-    ) => {
-      ambientEdgeMap.set(`${sourceId}:${targetId}`, { sourceId, targetId, color, weight, opacity, arcBias });
-    };
-
-    const topSignals = selectGraphSignals(
-      analysis.relationSignals,
-      form.failedReagentIds.length + form.correctReagentIds.length,
-    );
-    const edges = topSignals.flatMap((signal) => {
+    const edges = topGraphSignals.flatMap((signal) => {
       const edges: DriGraphEdge[] = [];
       signal.relatedReagentIds.forEach((id) => {
         edges.push({
@@ -689,37 +689,14 @@ export default function DriDashboard() {
           arcBias: -0.28,
         });
       });
-
-      if (['wavelength', 'blank'].includes(signal.category) || signal.suspectedSubsystems.includes('optical_system')) {
-        connectAmbient(buildAmbientNodeId('optics'), signalNodeId(signal.id), '#c6d4dd', 1, 0.3, 0.95);
-      }
-      if (['reaction', 'technique', 'trend', 'temperature', 'wavelength', 'blank'].includes(signal.category) || signal.suspectedSubsystems.includes('reaction_rotor')) {
-        connectAmbient(buildAmbientNodeId('rotor'), signalNodeId(signal.id), '#d4dce4', 1, 0.24, -0.9);
-      }
-      if (
-        ['scheme', 'r2', 'water', 'service', 'contamination'].includes(signal.category) ||
-        signal.suspectedSubsystems.some((subsystem) => ['fluidics', 'sample_arm', 'reagent_arm_r1', 'reagent_arm_r2', 'wash_station'].includes(subsystem))
-      ) {
-        connectAmbient(buildAmbientNodeId('fluidics'), signalNodeId(signal.id), '#bdd4d8', 1.1, 0.3, 0.78);
-      }
-      if (signal.category === 'storage') {
-        connectAmbient(buildAmbientNodeId('rotor'), signalNodeId(signal.id), '#d4dce4', 0.95, 0.18, -0.35);
-      }
-      if (signal.category === 'service' && signal.id === 'service:software_configuration') {
-        connectAmbient(buildAmbientNodeId('dilution'), signalNodeId(signal.id), '#d8d0e5', 0.9, 0.25, -0.72);
-      }
       return edges;
     });
 
     return [
       ...edges,
-      ...Array.from(ambientEdgeMap.entries()).map(([id, edge]) => ({
-        id,
-        relationType: 'ambient',
-        ...edge,
-      })),
+      ...hierarchyGraph.edges,
     ];
-  }, [analysis, form.correctReagentIds.length, form.failedReagentIds.length]);
+  }, [analysis, form.correctReagentIds.length, form.failedReagentIds.length, hierarchyGraph.edges, topGraphSignals]);
 
   const selectedSignal = useMemo(
     () =>
@@ -747,7 +724,7 @@ export default function DriDashboard() {
       return;
     }
 
-    if (!form.selectedQcReferenceId && qcReferenceOptions.length === 1 && form.failedReagentIds.length === 1) {
+    if (!form.selectedQcReferenceId && qcReferenceOptions.length === 1 && qcReferenceReagentIds.length === 1) {
       const [reference] = qcReferenceOptions;
       setForm((current) => ({
         ...current,
@@ -756,7 +733,7 @@ export default function DriDashboard() {
         controlLot: current.controlLot || reference.lot || '',
       }));
     }
-  }, [form.failedReagentIds.length, form.selectedQcReferenceId, qcReferenceOptions]);
+  }, [form.selectedQcReferenceId, qcReferenceOptions, qcReferenceReagentIds.length]);
 
   const handleFormChange = <K extends keyof DriCaseFormState>(field: K, value: DriCaseFormState[K]) => {
     setForm((current) => ({ ...current, [field]: value }));
@@ -767,6 +744,7 @@ export default function DriDashboard() {
   };
 
   const handleReagentCycle = (reagentId: string) => {
+    setSelectedReagentId(reagentId);
     setForm((current) => {
       const failedSet = new Set(current.failedReagentIds);
       const correctSet = new Set(current.correctReagentIds);
@@ -786,6 +764,47 @@ export default function DriDashboard() {
     });
   };
 
+  const handleToggleGraphNode = (nodeId: string) => {
+    setSelectedNodeIds((current) => {
+      const exists = current.includes(nodeId);
+      const next = graphMultiSelect
+        ? exists
+          ? current.filter((id) => id !== nodeId)
+          : [...current, nodeId]
+        : exists && current.length === 1
+          ? []
+          : [nodeId];
+
+      setSelectedNodeId((previous) => {
+        if (!next.length) {
+          return null;
+        }
+        if (next.includes(nodeId)) {
+          return nodeId;
+        }
+        if (previous && next.includes(previous)) {
+          return previous;
+        }
+        return next[next.length - 1] || null;
+      });
+
+      return next;
+    });
+  };
+
+  const clearGraphSelection = () => {
+    setSelectedNodeIds([]);
+    setSelectedNodeId(null);
+  };
+
+  const updateGraphShellControl = (field: keyof typeof graphShellControls, value: number) => {
+    setGraphShellControls((current) => ({ ...current, [field]: value }));
+  };
+
+  const handleGraphShellControlInput = (field: keyof typeof graphShellControls, rawValue: string) => {
+    updateGraphShellControl(field, Number(rawValue));
+  };
+
   const handleAnalyze = async () => {
     if (!catalog || !form.serialNumber.trim() || !form.failedReagentIds.length) return;
     setSaving(true);
@@ -793,7 +812,8 @@ export default function DriDashboard() {
     const result = runDriEngine(form, catalog);
     startTransition(() => {
       setAnalysis(result);
-      setSelectedNodeId(result.relationSignals[0] ? signalNodeId(result.relationSignals[0].id) : null);
+      setSelectedNodeId(null);
+      setSelectedNodeIds([]);
       setSelectedHypothesisKey(result.hypotheses[0]?.key || null);
     });
     const persisted = await persistDriCase(form, result);
@@ -809,7 +829,7 @@ export default function DriDashboard() {
     }
 
     const baseDemo = buildDemoFormState(catalog);
-    const demoReferences = getMatchingQcReferences(catalog, baseDemo);
+    const demoReferences = getMatchingQcReferences(catalog, baseDemo, baseDemo.failedReagentIds);
     const selectedReference =
       demoReferences.find((reference) => reference.controlLevel === 'level_1') || demoReferences[0] || null;
 
@@ -823,12 +843,37 @@ export default function DriDashboard() {
     setPersistWarning(null);
     setEvidenceTasks({});
     setSearch('');
+    setSelectedReagentId(demoForm.failedReagentIds[0] || demoForm.correctReagentIds[0] || null);
     setForm(demoForm);
 
     const result = runDriEngine(demoForm, catalog);
     startTransition(() => {
       setAnalysis(result);
-      setSelectedNodeId(result.relationSignals[0] ? signalNodeId(result.relationSignals[0].id) : null);
+      setSelectedNodeId(null);
+      setSelectedNodeIds([]);
+      setSelectedHypothesisKey(result.hypotheses[0]?.key || null);
+    });
+    setActiveCase(null);
+  };
+
+  const handleLoadFullDemo = () => {
+    if (!catalog) {
+      return;
+    }
+
+    const demoForm = buildFullRandomDemoFormState(catalog, supportedProfiles, form.equipmentModel);
+
+    setPersistWarning(null);
+    setEvidenceTasks({});
+    setSearch('');
+    setSelectedReagentId(demoForm.failedReagentIds[0] || demoForm.correctReagentIds[0] || null);
+    setForm(demoForm);
+
+    const result = runDriEngine(demoForm, catalog);
+    startTransition(() => {
+      setAnalysis(result);
+      setSelectedNodeId(null);
+      setSelectedNodeIds([]);
       setSelectedHypothesisKey(result.hypotheses[0]?.key || null);
     });
     setActiveCase(null);
@@ -1108,6 +1153,7 @@ export default function DriDashboard() {
           onApplyQcReference={applyQcReference}
           onAnalyze={handleAnalyze}
           onLoadDemo={handleLoadDemo}
+          onLoadFullDemo={handleLoadFullDemo}
           showDemoButton={sessionEmail === DEMO_ACCOUNT_EMAIL}
           canAnalyze={Boolean(form.serialNumber.trim() && form.failedReagentIds.length)}
           saving={saving}
@@ -1119,8 +1165,13 @@ export default function DriDashboard() {
           onRemoveEvidenceItem={removeEvidenceItem}
           onSelectEvidenceFile={handleEvidenceFile}
           evidenceTasks={evidenceTasks}
+          selectedReagent={selectedReagent}
+          selectedReagentProfile={selectedReagentProfile}
           onReset={() => {
             setEvidenceTasks({});
+            setSelectedReagentId(null);
+            setSelectedNodeId(null);
+            setSelectedNodeIds([]);
             setForm(createInitialFormState());
           }}
         />
@@ -1141,8 +1192,113 @@ export default function DriDashboard() {
               </div>
             ) : null}
           </div>
+          <div className="dri-graph-controls">
+            <div className="dri-graph-controls__systems">
+              <button
+                type="button"
+                className={`dri-pill-button ${focusedSystemKey === null ? 'is-active' : ''}`}
+                onClick={() => setFocusedSystemKey(null)}
+              >
+                Todos
+              </button>
+              {graphSystemPills.map((system) => (
+                <button
+                  key={system.key}
+                  type="button"
+                  className={`dri-pill-button ${focusedSystemKey === system.key ? 'is-active' : ''}`}
+                  onClick={() => setFocusedSystemKey((current) => (current === system.key ? null : system.key))}
+                >
+                  {system.label}
+                </button>
+              ))}
+              <button
+                type="button"
+                className={`dri-pill-button ${graphMultiSelect ? 'is-active' : ''}`}
+                onClick={() => setGraphMultiSelect((current) => !current)}
+              >
+                Selección múltiple
+              </button>
+              <button type="button" className="dri-pill-button" onClick={clearGraphSelection}>
+                Limpiar selección
+              </button>
+            </div>
+            <div className="dri-graph-controls__sliders">
+              <label className="dri-graph-slider">
+                <span>Núcleo</span>
+                <strong>{graphShellControls.systemCoreRadius.toFixed(2)}</strong>
+                <input
+                  type="range"
+                  min="0.6"
+                  max="1.8"
+                  step="0.02"
+                  value={graphShellControls.systemCoreRadius}
+                  onChange={(event) => handleGraphShellControlInput('systemCoreRadius', event.currentTarget.value)}
+                  onInput={(event) => handleGraphShellControlInput('systemCoreRadius', event.currentTarget.value)}
+                />
+              </label>
+              <label className="dri-graph-slider">
+                <span>Separación estratos</span>
+                <strong>{graphShellControls.systemStep.toFixed(2)}</strong>
+                <input
+                  type="range"
+                  min="0.7"
+                  max="1.5"
+                  step="0.02"
+                  value={graphShellControls.systemStep}
+                  onChange={(event) => handleGraphShellControlInput('systemStep', event.currentTarget.value)}
+                  onInput={(event) => handleGraphShellControlInput('systemStep', event.currentTarget.value)}
+                />
+              </label>
+              <label className="dri-graph-slider">
+                <span>Base factores</span>
+                <strong>{graphShellControls.factorBaseRadius.toFixed(2)}</strong>
+                <input
+                  type="range"
+                  min="3.2"
+                  max="5.6"
+                  step="0.02"
+                  value={graphShellControls.factorBaseRadius}
+                  onChange={(event) => handleGraphShellControlInput('factorBaseRadius', event.currentTarget.value)}
+                  onInput={(event) => handleGraphShellControlInput('factorBaseRadius', event.currentTarget.value)}
+                />
+              </label>
+              <label className="dri-graph-slider">
+                <span>Paso factores</span>
+                <strong>{graphShellControls.factorStep.toFixed(2)}</strong>
+                <input
+                  type="range"
+                  min="0.75"
+                  max="1.6"
+                  step="0.02"
+                  value={graphShellControls.factorStep}
+                  onChange={(event) => handleGraphShellControlInput('factorStep', event.currentTarget.value)}
+                  onInput={(event) => handleGraphShellControlInput('factorStep', event.currentTarget.value)}
+                />
+              </label>
+              <label className="dri-graph-slider">
+                <span>Radio reactivos</span>
+                <strong>{graphShellControls.reagentRadius.toFixed(2)}</strong>
+                <input
+                  type="range"
+                  min="7.2"
+                  max="11.4"
+                  step="0.02"
+                  value={graphShellControls.reagentRadius}
+                  onChange={(event) => handleGraphShellControlInput('reagentRadius', event.currentTarget.value)}
+                  onInput={(event) => handleGraphShellControlInput('reagentRadius', event.currentTarget.value)}
+                />
+              </label>
+            </div>
+          </div>
           <div className="dri-graph-stage">
-            <DriGraph3D nodes={graphNodes} edges={graphEdges} selectedNodeId={selectedNodeId} onSelectNode={setSelectedNodeId} />
+            <DriGraph3D
+              nodes={graphNodes}
+              edges={graphEdges}
+              selectedNodeIds={selectedNodeIds}
+              onToggleNode={handleToggleGraphNode}
+              focusedSystemKey={focusedSystemKey}
+              shellControls={graphShellControls}
+            />
           </div>
           {analysis ? (
             <>
@@ -1152,7 +1308,11 @@ export default function DriDashboard() {
               </div>
               <DriRelationMatrix
                 signals={analysis.relationSignals}
-                onSelectSignal={(signalId) => setSelectedNodeId(signalNodeId(signalId))}
+                onSelectSignal={(signalId) => {
+                  const nodeId = signalNodeId(signalId);
+                  setSelectedNodeId(nodeId);
+                  setSelectedNodeIds([nodeId]);
+                }}
               />
             </>
           ) : (
@@ -1195,7 +1355,7 @@ export default function DriDashboard() {
           <div className="dri-side-block">
             <span className="dri-side-block__label">Fixtures de validación</span>
             <strong>{fixtureResults.filter((result) => result.passed).length} / {fixtureResults.length} escenarios</strong>
-            <p>Los fixtures cubren 340 nm, R2, dilución, temperatura, control y pruebas de servicio.</p>
+            <p>Los fixtures cubren 340 nm, R2, dilución, temperatura, control, linealidad, interferencias y pruebas de servicio.</p>
           </div>
         </section>
 
