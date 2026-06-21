@@ -291,13 +291,28 @@ export const getMatchingQcReferences = (
   });
 };
 
-export const assessQcReference = (reference: DriQcReference | null, obtainedValue: string): DriQcAssessment | null => {
+export const assessQcReference = (
+  reference: DriQcReference | null,
+  obtainedValue: string,
+  options?: { assumeNeutralWhenMissing?: boolean },
+): DriQcAssessment | null => {
   if (!reference) {
     return null;
   }
 
   const obtained = toNumber(obtainedValue);
   if (obtained === null) {
+    if (options?.assumeNeutralWhenMissing) {
+      return {
+        referenceId: reference.id,
+        obtainedValue: null,
+        delta: 0,
+        zScore: 0,
+        band: 'within_1s',
+        explanation: `No se capturó valor para ${reference.analyteName}; DRI lo toma como neutral y dentro de 1SD hasta recibir el dato real.`,
+        assumedNeutral: true,
+      };
+    }
     return {
       referenceId: reference.id,
       obtainedValue: null,

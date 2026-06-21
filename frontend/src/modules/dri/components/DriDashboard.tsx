@@ -6,7 +6,12 @@ import DriInputPanel from './DriInputPanel';
 import DriRelationMatrix from './DriRelationMatrix';
 import { loadDriCatalog, loadDriHistory, persistDriCase, uploadDriEvidenceAsset } from '../driData';
 import { runDriEngine, runDriValidationFixtures } from '../driEngine';
-import { buildReagentSearchText, getReagentDisplayCode, getReagentDisplayName } from '../knowledge/reagentIdentity';
+import {
+  buildReagentSearchText,
+  getCanonicalReagentKey,
+  getReagentDisplayCode,
+  getReagentDisplayName,
+} from '../knowledge/reagentIdentity';
 import { buildReagentProfiles } from '../knowledge/reagentRelations';
 import { buildBa400HierarchyGraph } from '../knowledge/ba400SubsystemHierarchy';
 import { buildObservationBlockFromEvidence, runDriEvidenceOcr } from '../utils/driEvidenceOcr';
@@ -21,12 +26,26 @@ import type {
   DriEvidenceArtifact,
   DriGraphEdge,
   DriGraphNode,
+  DriQcAssessment,
   DriQcReference,
   DriRelationSignal,
   DriReagent,
+  DriReagentMeasurementInput,
   DriReagentProfile,
   DriServiceTestInput,
 } from '../types/dri.types';
+
+const createEmptyReagentMeasurement = (reagentId: string): DriReagentMeasurementInput => ({
+  reagentId,
+  obtainedValue: '',
+  blankAbsorbance: '',
+  selectedQcReferenceId: null,
+  expectedValue: null,
+  unit: null,
+  blankUnit: 'A',
+  source: 'manual',
+  updatedAt: null,
+});
 
 const createInitialFormState = (): DriCaseFormState => ({
   equipmentModel: 'BA400',
@@ -48,6 +67,7 @@ const createInitialFormState = (): DriCaseFormState => ({
   observations: '',
   failedReagentIds: [],
   correctReagentIds: [],
+  reagentMeasurements: {},
   serviceTests: [],
   evidenceItems: [],
   signals: {
@@ -159,6 +179,75 @@ const signalColor = (signal: DriRelationSignal) => {
 };
 
 const DEMO_ACCOUNT_EMAIL = 'rmontanez@biosystems.com.mx';
+const ANCHOR_EVENT_TYPES = new Set<DriCaseFormState['eventType']>([
+  'dilution_error',
+  'non_linear',
+  'poor_repeatability',
+  'incoherent_result',
+]);
+
+const scoreReagentProfileForSelection = (profile: DriReagentProfile, canonicalKey: string) => {
+  const metadata = (profile.legacy.metadata || {}) as Record<string, unknown>;
+  const syntheticFromContext = Boolean(metadata.syntheticFromContext);
+  let score = 0;
+
+  if (!syntheticFromContext) {
+    score += 120;
+  }
+  if (profile.id === canonicalKey) {
+    score += 40;
+  }
+  if (profile.primaryWavelengthNm.value !== null) {
+    score += 30;
+  }
+  if (profile.legacy.readMode) {
+    score += 20;
+  }
+  if (profile.legacy.reagentType) {
+    score += 20;
+  }
+  if (profile.legacy.reportedMethod) {
+    score += 20;
+  }
+  if (String(profile.legacy.sourceStatus || '').toLowerCase().includes('ifu')) {
+    score += 10;
+  }
+
+  return score;
+};
+
+const dedupeProfilesByCanonicalKey = (profiles: DriReagentProfile[]) => {
+  const canonicalProfiles = new Map<string, DriReagentProfile>();
+
+  profiles.forEach((profile) => {
+    const displayCodeKey = getReagentDisplayCode(profile.legacy).trim().toUpperCase();
+    const canonicalKey = displayCodeKey || getCanonicalReagentKey(profile.legacy);
+    const existing = canonicalProfiles.get(canonicalKey);
+    if (!existing) {
+      canonicalProfiles.set(canonicalKey, profile);
+      return;
+    }
+
+    const nextScore = scoreReagentProfileForSelection(profile, canonicalKey);
+    const currentScore = scoreReagentProfileForSelection(existing, canonicalKey);
+    if (nextScore > currentScore) {
+      canonicalProfiles.set(canonicalKey, profile);
+    }
+  });
+
+  return Array.from(canonicalProfiles.values()).sort((left, right) => {
+    const codeCompare = getReagentDisplayCode(left.legacy).localeCompare(getReagentDisplayCode(right.legacy), 'es', {
+      sensitivity: 'base',
+    });
+    if (codeCompare !== 0) {
+      return codeCompare;
+    }
+
+    return getReagentDisplayName(left.legacy).localeCompare(getReagentDisplayName(right.legacy), 'es', {
+      sensitivity: 'base',
+    });
+  });
+};
 
 const GRAPH_SIGNAL_QUOTAS: Partial<Record<DriRelationSignal['category'], number>> = {
   wavelength: 12,
@@ -318,6 +407,10 @@ const inferGraphFactorTier = (signal: DriRelationSignal, index: number) => {
 
 const buildDemoFormState = (catalog: DriCatalog): DriCaseFormState => {
   const { failed, correct } = pickDemoReagentIds(catalog, 'BA400');
+  const reagentMeasurements = [...failed, ...correct].reduce<Record<string, DriReagentMeasurementInput>>((accumulator, reagentId) => {
+    accumulator[reagentId] = createEmptyReagentMeasurement(reagentId);
+    return accumulator;
+  }, {});
 
   return {
     equipmentModel: 'BA400',
@@ -340,6 +433,7 @@ const buildDemoFormState = (catalog: DriCatalog): DriCaseFormState => {
       'Demo BA400: los controles de GLU, CHOL, LDH, MG y UREA salen altos y fuera de rechazo. ALT, AST, ALB, ADA y URIC permanecen correctas. Photometry mostró deriva leve y Washing station dejó duda de arrastre. Curvas mayormente aceptables, sin rechazo óptico continuo.',
     failedReagentIds: failed,
     correctReagentIds: correct,
+    reagentMeasurements,
     serviceTests: [
       {
         id: crypto.randomUUID(),
@@ -446,6 +540,10 @@ const buildFullRandomDemoFormState = (
     obtainedValue: '',
     controlLot: '',
     controlLevel: 'not_applicable',
+    reagentMeasurements: randomizedIds.reduce<Record<string, DriReagentMeasurementInput>>((accumulator, reagentId) => {
+      accumulator[reagentId] = createEmptyReagentMeasurement(reagentId);
+      return accumulator;
+    }, {}),
   };
 };
 
@@ -498,10 +596,12 @@ export default function DriDashboard() {
   }, []);
 
   const profiles = useMemo(() => (catalog ? buildReagentProfiles(catalog) : []), [catalog]);
-  const supportedProfiles = useMemo(
-    () => profiles.filter((profile) => profile.platforms.value.length === 0 || profile.platforms.value.includes(form.equipmentModel)),
-    [form.equipmentModel, profiles],
-  );
+  const supportedProfiles = useMemo(() => {
+    const compatibleProfiles = profiles.filter(
+      (profile) => profile.platforms.value.length === 0 || profile.platforms.value.includes(form.equipmentModel),
+    );
+    return dedupeProfilesByCanonicalKey(compatibleProfiles);
+  }, [form.equipmentModel, profiles]);
   const supportedProfileById = useMemo(
     () => new Map(supportedProfiles.map((profile) => [profile.id, profile])),
     [supportedProfiles],
@@ -537,9 +637,19 @@ export default function DriDashboard() {
     [form.failedReagentIds, selectedReagentId],
   );
 
+  const caseReagentIds = useMemo(
+    () => Array.from(new Set([...form.failedReagentIds, ...form.correctReagentIds])),
+    [form.correctReagentIds, form.failedReagentIds],
+  );
+
   const qcReferenceOptions = useMemo(
     () => (catalog ? getMatchingQcReferences(catalog, form, qcReferenceReagentIds) : []),
     [catalog, form, qcReferenceReagentIds],
+  );
+
+  const caseQcReferenceOptions = useMemo(
+    () => (catalog && caseReagentIds.length ? getMatchingQcReferences(catalog, form, caseReagentIds) : []),
+    [catalog, caseReagentIds, form],
   );
 
   const selectedQcReference = useMemo<DriQcReference | null>(() => {
@@ -553,9 +663,60 @@ export default function DriDashboard() {
     return null;
   }, [catalog, form.selectedQcReferenceId, qcReferenceOptions, qcReferenceReagentIds.length]);
 
+  const reagentQcReferenceById = useMemo(() => {
+    const map = new Map<string, DriQcReference>();
+    if (!catalog) {
+      return map;
+    }
+
+    caseReagentIds.forEach((reagentId) => {
+      const explicitReferenceId =
+        form.reagentMeasurements[reagentId]?.selectedQcReferenceId ||
+        (selectedQcReference?.reagentId === reagentId ? selectedQcReference.id : '');
+      const explicitReference = explicitReferenceId ? findQcReferenceById(catalog, explicitReferenceId) : null;
+      if (explicitReference) {
+        map.set(reagentId, explicitReference);
+        return;
+      }
+
+      const fallbackReference = caseQcReferenceOptions.find((reference) => reference.reagentId === reagentId) || null;
+      if (fallbackReference) {
+        map.set(reagentId, fallbackReference);
+      }
+    });
+
+    return map;
+  }, [catalog, caseQcReferenceOptions, caseReagentIds, form.reagentMeasurements, selectedQcReference]);
+
+  const reagentQcAssessmentById = useMemo(() => {
+    const map = new Map<string, DriQcAssessment>();
+    caseReagentIds.forEach((reagentId) => {
+      const reference = reagentQcReferenceById.get(reagentId);
+      if (!reference) {
+        return;
+      }
+      const measurement = form.reagentMeasurements[reagentId];
+      const obtainedValue =
+        measurement?.obtainedValue ||
+        (caseReagentIds.length === 1 && reagentId === form.failedReagentIds[0] ? form.obtainedValue : '');
+      const assessment = assessQcReference(reference, obtainedValue, { assumeNeutralWhenMissing: true });
+      if (assessment) {
+        map.set(reagentId, assessment);
+      }
+    });
+    return map;
+  }, [caseReagentIds, form.failedReagentIds, form.obtainedValue, form.reagentMeasurements, reagentQcReferenceById]);
+
   const qcAssessment = useMemo(
-    () => assessQcReference(selectedQcReference, form.obtainedValue),
-    [form.obtainedValue, selectedQcReference],
+    () =>
+      selectedQcReference
+        ? assessQcReference(
+            selectedQcReference,
+            form.reagentMeasurements[selectedQcReference.reagentId]?.obtainedValue || form.obtainedValue,
+            { assumeNeutralWhenMissing: true },
+          )
+        : null,
+    [form.obtainedValue, form.reagentMeasurements, selectedQcReference],
   );
 
   const selectedHypothesis = useMemo(
@@ -731,6 +892,16 @@ export default function DriDashboard() {
         selectedQcReferenceId: reference.id,
         expectedValue: current.expectedValue || String(reference.targetValue),
         controlLot: current.controlLot || reference.lot || '',
+        reagentMeasurements: {
+          ...current.reagentMeasurements,
+          [reference.reagentId]: {
+            ...(current.reagentMeasurements[reference.reagentId] || createEmptyReagentMeasurement(reference.reagentId)),
+            selectedQcReferenceId: reference.id,
+            expectedValue: current.reagentMeasurements[reference.reagentId]?.expectedValue || String(reference.targetValue),
+            unit: current.reagentMeasurements[reference.reagentId]?.unit || reference.unit || null,
+            updatedAt: current.reagentMeasurements[reference.reagentId]?.updatedAt || new Date().toISOString(),
+          },
+        },
       }));
     }
   }, [form.selectedQcReferenceId, qcReferenceOptions, qcReferenceReagentIds.length]);
@@ -760,6 +931,25 @@ export default function DriDashboard() {
         ...current,
         failedReagentIds: Array.from(failedSet),
         correctReagentIds: Array.from(correctSet),
+      };
+    });
+  };
+
+  const updateReagentMeasurement = (reagentId: string, patch: Partial<DriReagentMeasurementInput>) => {
+    setForm((current) => {
+      const existing = current.reagentMeasurements[reagentId] || createEmptyReagentMeasurement(reagentId);
+      return {
+        ...current,
+        reagentMeasurements: {
+          ...current.reagentMeasurements,
+          [reagentId]: {
+            ...existing,
+            ...patch,
+            reagentId,
+            source: patch.source || existing.source || 'manual',
+            updatedAt: new Date().toISOString(),
+          },
+        },
       };
     });
   };
@@ -838,6 +1028,17 @@ export default function DriDashboard() {
       selectedQcReferenceId: selectedReference?.id || '',
       expectedValue: selectedReference ? String(selectedReference.targetValue) : baseDemo.expectedValue,
       controlLot: selectedReference?.lot || baseDemo.controlLot,
+      reagentMeasurements: selectedReference
+        ? {
+            ...baseDemo.reagentMeasurements,
+            [selectedReference.reagentId]: {
+              ...(baseDemo.reagentMeasurements[selectedReference.reagentId] || createEmptyReagentMeasurement(selectedReference.reagentId)),
+              selectedQcReferenceId: selectedReference.id,
+              expectedValue: String(selectedReference.targetValue),
+              unit: selectedReference.unit || null,
+            },
+          }
+        : baseDemo.reagentMeasurements,
     };
 
     setPersistWarning(null);
@@ -880,11 +1081,23 @@ export default function DriDashboard() {
   };
 
   const applyQcReference = (reference: DriQcReference) => {
+    setSelectedReagentId(reference.reagentId);
     setForm((current) => ({
       ...current,
       selectedQcReferenceId: reference.id,
-      expectedValue: String(reference.targetValue),
+      expectedValue: ANCHOR_EVENT_TYPES.has(current.eventType) ? String(reference.targetValue) : current.expectedValue,
       controlLot: current.controlLot || reference.lot || '',
+      reagentMeasurements: {
+        ...current.reagentMeasurements,
+        [reference.reagentId]: {
+          ...(current.reagentMeasurements[reference.reagentId] || createEmptyReagentMeasurement(reference.reagentId)),
+          selectedQcReferenceId: reference.id,
+          expectedValue: String(reference.targetValue),
+          unit: reference.unit || null,
+          source: current.reagentMeasurements[reference.reagentId]?.source || 'manual',
+          updatedAt: new Date().toISOString(),
+        },
+      },
     }));
   };
 
@@ -1145,11 +1358,15 @@ export default function DriDashboard() {
           qcReferenceOptions={qcReferenceOptions}
           selectedQcReference={selectedQcReference}
           qcAssessment={qcAssessment}
+          reagentMeasurements={form.reagentMeasurements}
+          reagentQcReferenceById={reagentQcReferenceById}
+          reagentQcAssessmentById={reagentQcAssessmentById}
           search={search}
           onSearchChange={setSearch}
           onFormChange={handleFormChange}
           onToggleSignal={handleToggleSignal}
           onCycleReagent={handleReagentCycle}
+          onUpdateReagentMeasurement={updateReagentMeasurement}
           onApplyQcReference={applyQcReference}
           onAnalyze={handleAnalyze}
           onLoadDemo={handleLoadDemo}

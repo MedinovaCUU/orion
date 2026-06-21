@@ -1,5 +1,6 @@
 import type {
   DriCaseFormState,
+  DriQcAssessment,
   DriQcReference,
   DriReagentProfile,
 } from '../types/dri.types';
@@ -73,10 +74,14 @@ export const assessProcedureLimitations = ({
   form,
   failedProfiles,
   matchedQcReference,
+  reagentQcReferenceById,
+  reagentQcAssessmentById,
 }: {
   form: DriCaseFormState;
   failedProfiles: DriReagentProfile[];
   matchedQcReference: DriQcReference | null;
+  reagentQcReferenceById?: Map<string, DriQcReference>;
+  reagentQcAssessmentById?: Map<string, DriQcAssessment>;
 }) => {
   const findings: DriProcedureFinding[] = [];
   const observations = form.observations || '';
@@ -108,18 +113,21 @@ export const assessProcedureLimitations = ({
     });
   });
 
-  const anchorProfiles =
-    matchedQcReference
-      ? failedProfiles.filter((profile) => profile.id === matchedQcReference.reagentId)
-      : failedProfiles.length === 1
-        ? failedProfiles
-        : [];
+  failedProfiles.forEach((profile) => {
+      const profileReference =
+        (matchedQcReference?.reagentId === profile.id ? matchedQcReference : null) ||
+        reagentQcReferenceById?.get(profile.id) ||
+        null;
+      const measurement = form.reagentMeasurements[profile.id];
+      const obtainedValue = parseOptionalNumeric(
+        measurement?.obtainedValue || (failedProfiles.length === 1 ? form.obtainedValue : ''),
+      );
+      const matchedUnit = normalizeUnit(profileReference?.unit || measurement?.unit || '');
+      const assessment = reagentQcAssessmentById?.get(profile.id) || null;
+      if (obtainedValue === null || assessment?.assumedNeutral) {
+        return;
+      }
 
-  const obtainedValue = parseOptionalNumeric(form.obtainedValue);
-  const matchedUnit = normalizeUnit(matchedQcReference?.unit || '');
-
-  if (obtainedValue !== null && anchorProfiles.length) {
-    anchorProfiles.forEach((profile) => {
       const reagentCode = profile.referenceCode.value || profile.id;
       const linearityLimit = profile.linearityLimit.value;
       const detectionLimit = profile.detectionLimit.value;
@@ -139,7 +147,7 @@ export const assessProcedureLimitations = ({
           title: `${reagentCode} · fuera de linealidad IFU`,
           explanation: `El valor capturado (${obtainedValue} ${linearityLimit.unit}) supera el límite de linealidad del IFU (${linearityLimit.value} ${linearityLimit.unit}).`,
           score: 86,
-          source: matchedQcReference ? 'qc_reference' : 'ifu',
+          source: profileReference ? 'qc_reference' : 'ifu',
         });
       }
 
@@ -157,7 +165,7 @@ export const assessProcedureLimitations = ({
           title: `${reagentCode} · por debajo del límite de detección`,
           explanation: `El valor capturado (${obtainedValue} ${detectionLimit.unit}) está por debajo del límite de detección del IFU (${detectionLimit.value} ${detectionLimit.unit}).`,
           score: 74,
-          source: matchedQcReference ? 'qc_reference' : 'ifu',
+          source: profileReference ? 'qc_reference' : 'ifu',
         });
       }
 
@@ -175,11 +183,10 @@ export const assessProcedureLimitations = ({
           title: `${reagentCode} · por debajo del límite de cuantificación`,
           explanation: `El valor capturado (${obtainedValue} ${quantificationLimit.unit}) cae por debajo del límite de cuantificación del IFU (${quantificationLimit.value} ${quantificationLimit.unit}).`,
           score: 76,
-          source: matchedQcReference ? 'qc_reference' : 'ifu',
+          source: profileReference ? 'qc_reference' : 'ifu',
         });
       }
-    });
-  }
+  });
 
   const sortedFindings = [...findings].sort((left, right) => right.score - left.score);
 

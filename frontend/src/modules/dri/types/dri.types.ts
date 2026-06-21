@@ -42,6 +42,7 @@ export type DriInvasivenessLevel =
   | 'possible_part';
 export type DriEvidenceArtifactType = 'photo' | 'manual' | 'report' | 'service_note';
 export type DriServiceTestResult = 'not_run' | 'normal' | 'abnormal' | 'passed' | 'failed' | 'adjusted';
+export type DriReagentMeasurementSource = 'manual' | 'auto_import';
 export type NumericLike = number | string | null;
 export type DriQcReferenceControlLevel = 'level_1' | 'level_2';
 export type DriQcBand = 'within_1s' | 'within_2s' | 'near_reject' | 'out_of_reject' | 'non_numeric' | 'missing_reference';
@@ -177,6 +178,18 @@ export interface DriCaseSignals {
   waterSensitivePattern: boolean;
 }
 
+export interface DriReagentMeasurementInput {
+  reagentId: string;
+  obtainedValue: string;
+  blankAbsorbance: string;
+  selectedQcReferenceId?: string | null;
+  expectedValue?: string | null;
+  unit?: string | null;
+  blankUnit?: string | null;
+  source: DriReagentMeasurementSource;
+  updatedAt: string | null;
+}
+
 export interface DriServiceTestInput {
   id: string;
   utilityId: DriServiceUtilityId;
@@ -260,6 +273,7 @@ export interface DriQcAssessment {
   zScore: number | null;
   band: DriQcBand;
   explanation: string;
+  assumedNeutral?: boolean;
 }
 
 export interface DriMeasurementLimit {
@@ -298,6 +312,7 @@ export interface DriCaseFormState {
   observations: string;
   failedReagentIds: string[];
   correctReagentIds: string[];
+  reagentMeasurements: Record<string, DriReagentMeasurementInput>;
   serviceTests: DriServiceTestInput[];
   evidenceItems: DriEvidenceArtifact[];
   signals: DriCaseSignals;

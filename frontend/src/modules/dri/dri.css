@@ -568,18 +568,38 @@
   color: var(--text-secondary);
 }
 
+.dri-reagent-pill-card {
+  display: grid;
+  gap: 0.34rem;
+  padding: 0.36rem;
+  border-radius: 1rem;
+  border: 1px solid rgba(124, 136, 149, 0.12);
+  background: rgba(255, 255, 255, 0.54);
+  transition: border-color 0.18s ease, background 0.18s ease, box-shadow 0.18s ease;
+}
+
+.dri-reagent-pill-card.is-failed {
+  border-color: rgba(var(--brand-red-rgb), 0.16);
+  background: linear-gradient(180deg, rgba(var(--brand-red-rgb), 0.06), rgba(255, 255, 255, 0.78));
+}
+
+.dri-reagent-pill-card.is-correct {
+  border-color: rgba(var(--food-rgb), 0.2);
+  background: linear-gradient(180deg, rgba(var(--food-rgb), 0.08), rgba(255, 255, 255, 0.78));
+}
+
 .dri-reagent-pill {
   appearance: none;
   width: 100%;
-  min-height: 3.35rem;
+  min-height: 2.5rem;
   color: inherit;
   cursor: pointer;
   display: grid;
   place-items: center;
-  padding: 0.5rem 0.65rem;
-  border-radius: 1rem;
-  border: 1px solid rgba(124, 136, 149, 0.12);
-  background: rgba(255, 255, 255, 0.68);
+  padding: 0.4rem 0.6rem;
+  border-radius: 0.9rem;
+  border: 1px solid rgba(124, 136, 149, 0.1);
+  background: rgba(255, 255, 255, 0.76);
   transition: transform 0.18s ease, border-color 0.18s ease, background 0.18s ease, box-shadow 0.18s ease;
 }
 
@@ -597,12 +617,63 @@
 
 .dri-reagent-pill.is-failed {
   border-color: rgba(var(--brand-red-rgb), 0.18);
-  background: linear-gradient(180deg, rgba(var(--brand-red-rgb), 0.08), rgba(255, 255, 255, 0.82));
+  background: linear-gradient(180deg, rgba(var(--brand-red-rgb), 0.1), rgba(255, 255, 255, 0.9));
 }
 
 .dri-reagent-pill.is-correct {
   border-color: rgba(var(--food-rgb), 0.22);
-  background: linear-gradient(180deg, rgba(var(--food-rgb), 0.1), rgba(255, 255, 255, 0.82));
+  background: linear-gradient(180deg, rgba(var(--food-rgb), 0.12), rgba(255, 255, 255, 0.9));
+}
+
+.dri-reagent-pill__capture {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0.28rem;
+}
+
+.dri-reagent-pill__capture.has-blank {
+  grid-template-columns: minmax(0, 1fr) minmax(0, 0.82fr);
+}
+
+.dri-reagent-pill__input {
+  min-height: 2rem;
+  padding: 0.26rem 0.55rem;
+  border-radius: 0.8rem;
+  font-size: 0.76rem;
+  text-align: center;
+  background: rgba(255, 255, 255, 0.86);
+}
+
+.dri-reagent-pill__input::placeholder {
+  color: var(--text-tertiary);
+}
+
+.dri-reagent-pill__input.is-critical {
+  border-color: rgba(var(--brand-red-rgb), 0.24);
+  color: #912d38;
+}
+
+.dri-reagent-pill__input.is-warning {
+  border-color: rgba(219, 162, 72, 0.28);
+  color: #8b6326;
+}
+
+.dri-reagent-pill__input.is-neutral {
+  border-color: rgba(124, 136, 149, 0.18);
+  color: var(--text-secondary);
+}
+
+.dri-reagent-pill__input--blank {
+  min-width: 0;
+}
+
+.dri-reagent-pill__meta {
+  display: flex;
+  justify-content: center;
+  min-height: 0.9rem;
+  font-size: 0.68rem;
+  color: var(--text-tertiary);
+  text-align: center;
 }
 
 .dri-pill-button.is-active {

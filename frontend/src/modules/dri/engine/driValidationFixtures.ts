@@ -21,6 +21,7 @@ const createBaseForm = (): DriCaseFormState => ({
   observations: '',
   failedReagentIds: [],
   correctReagentIds: [],
+  reagentMeasurements: {},
   serviceTests: [],
   evidenceItems: [],
   signals: {

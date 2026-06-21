@@ -1,5 +1,5 @@
 import { Billboard, CubicBezierLine, OrbitControls, Text } from '@react-three/drei';
-import { Canvas, useFrame } from '@react-three/fiber';
+import { Canvas, type ThreeEvent, useFrame } from '@react-three/fiber';
 import { useMemo, useRef } from 'react';
 import { AdditiveBlending, Vector3, type Group, type Mesh } from 'three';
 import type { DriGraphEdge, DriGraphNode } from '../driTypes';
@@ -419,6 +419,25 @@ function FloatingNode({
       ? clamp(0.16 - graphDistance * 0.02, 0.08, 0.14)
       : clamp(0.02 + distanceTextFactor * 0.12, 0.015, 0.22);
 
+  const stopNodeEvent = (event: ThreeEvent<PointerEvent | MouseEvent>) => {
+    event.stopPropagation();
+  };
+
+  const handleNodeClick = (event: ThreeEvent<MouseEvent>) => {
+    event.stopPropagation();
+    onToggle(node.id);
+  };
+
+  const handlePointerOver = (event: ThreeEvent<PointerEvent>) => {
+    event.stopPropagation();
+    document.body.style.cursor = 'pointer';
+  };
+
+  const handlePointerOut = (event: ThreeEvent<PointerEvent>) => {
+    event.stopPropagation();
+    document.body.style.cursor = 'default';
+  };
+
   useFrame(({ clock, camera }) => {
     if (!meshRef.current || !groupRef.current || !glowRef.current) {
       return;
@@ -465,7 +484,7 @@ function FloatingNode({
 
   return (
     <group ref={groupRef} position={node.position}>
-      <mesh ref={glowRef}>
+      <mesh ref={glowRef} raycast={() => null}>
         <icosahedronGeometry args={[glowNodeRadius, 1]} />
         <meshBasicMaterial
           color={highlightColor}
@@ -480,13 +499,10 @@ function FloatingNode({
       <mesh
         ref={meshRef}
         renderOrder={12}
-        onClick={() => onToggle(node.id)}
-        onPointerOver={() => {
-          document.body.style.cursor = 'pointer';
-        }}
-        onPointerOut={() => {
-          document.body.style.cursor = 'default';
-        }}
+        onPointerDown={stopNodeEvent}
+        onClick={handleNodeClick}
+        onPointerOver={handlePointerOver}
+        onPointerOut={handlePointerOut}
       >
         <icosahedronGeometry args={[baseNodeRadius, 1]} />
         <meshStandardMaterial
@@ -503,7 +519,7 @@ function FloatingNode({
           depthWrite={false}
         />
       </mesh>
-      <mesh ref={wireRef} scale={1.02} renderOrder={13}>
+      <mesh ref={wireRef} scale={1.02} renderOrder={13} raycast={() => null}>
         <icosahedronGeometry args={[baseNodeRadius, 1]} />
         <meshBasicMaterial
           color={highlightColor}

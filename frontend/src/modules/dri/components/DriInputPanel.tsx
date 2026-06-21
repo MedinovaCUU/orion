@@ -14,6 +14,7 @@ import type {
   DriQcAssessment,
   DriQcReference,
   DriReagent,
+  DriReagentMeasurementInput,
   DriReagentProfile,
   DriServiceTestInput,
   DriServiceUtilityId,
@@ -72,17 +73,45 @@ const formatMeasurement = (limit: DriMeasurementLimit | null) => {
 const formatInterferenceThreshold = (threshold: DriInterferenceThreshold) =>
   `${threshold.label} > ${threshold.thresholdValue} ${threshold.unit}`;
 
+const shouldShowAnchorMeasurements = (eventType: DriCaseFormState['eventType']) =>
+  ['dilution_error', 'non_linear', 'poor_repeatability', 'incoherent_result'].includes(eventType);
+
+const shouldShowBlankCapture = (form: DriCaseFormState) =>
+  form.eventType === 'failed_blank' ||
+  form.eventType === 'absorbance_error' ||
+  form.failureDirection === 'high_absorbance' ||
+  form.failureDirection === 'low_absorbance';
+
+const inferBlankGuidance = (profile: DriReagentProfile | null) => {
+  if (!profile) return null;
+  const notes = profile.technicalNotes.value.join(' ').toLowerCase();
+  if (notes.includes('inferior al límite') || notes.includes('inferior al limite')) {
+    return 'Esta técnica sospecha blanco demasiado bajo.';
+  }
+  if (notes.includes('superior al límite') || notes.includes('superior al limite') || notes.includes('por encima del límite')) {
+    return 'Esta técnica sospecha blanco demasiado alto.';
+  }
+  if (profile.requiresBlank.value) {
+    return 'Captura blanco si observas sesgo raro.';
+  }
+  return null;
+};
+
 export default function DriInputPanel({
   form,
   filteredReagents,
   qcReferenceOptions,
   selectedQcReference,
   qcAssessment,
+  reagentMeasurements,
+  reagentQcReferenceById,
+  reagentQcAssessmentById,
   search,
   onSearchChange,
   onFormChange,
   onToggleSignal,
   onCycleReagent,
+  onUpdateReagentMeasurement,
   onApplyQcReference,
   onReset,
   onAnalyze,
@@ -107,11 +136,15 @@ export default function DriInputPanel({
   qcReferenceOptions: DriQcReference[];
   selectedQcReference: DriQcReference | null;
   qcAssessment: DriQcAssessment | null;
+  reagentMeasurements: Record<string, DriReagentMeasurementInput>;
+  reagentQcReferenceById: Map<string, DriQcReference>;
+  reagentQcAssessmentById: Map<string, DriQcAssessment>;
   search: string;
   onSearchChange: (value: string) => void;
   onFormChange: <K extends keyof DriCaseFormState>(field: K, value: DriCaseFormState[K]) => void;
   onToggleSignal: (field: keyof DriCaseFormState['signals']) => void;
   onCycleReagent: (reagentId: string) => void;
+  onUpdateReagentMeasurement: (reagentId: string, patch: Partial<DriReagentMeasurementInput>) => void;
   onApplyQcReference: (reference: DriQcReference) => void;
   onReset: () => void;
   onAnalyze: () => void;
@@ -133,6 +166,10 @@ export default function DriInputPanel({
 }) {
   const handleInput = (field: keyof DriCaseFormState) => (event: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) =>
     onFormChange(field as never, event.target.value as never);
+  const showAnchorMeasurements = shouldShowAnchorMeasurements(form.eventType);
+  const showBlankCapture = shouldShowBlankCapture(form);
+  const selectedMeasurement = selectedReagent ? reagentMeasurements[selectedReagent.id] || null : null;
+  const selectedBlankGuidance = inferBlankGuidance(selectedReagentProfile);
 
   return (
     <section className="dri-panel dri-panel--form">
@@ -193,14 +230,18 @@ export default function DriInputPanel({
             {DRI_CONTROL_LEVEL_OPTIONS.map((option) => <option key={option.value} value={option.value}>{option.label}</option>)}
           </select>
         </label>
-        <label className="dri-field dri-field--span-2">
-          <span>Esperado</span>
-          <input className="input-field" value={form.expectedValue} onChange={handleInput('expectedValue')} placeholder="400" />
-        </label>
-        <label className="dri-field dri-field--span-2">
-          <span>Obtenido</span>
-          <input className="input-field" value={form.obtainedValue} onChange={handleInput('obtainedValue')} placeholder="200" />
-        </label>
+        {showAnchorMeasurements ? (
+          <>
+            <label className="dri-field dri-field--span-2">
+              <span>Esperado ancla</span>
+              <input className="input-field" value={form.expectedValue} onChange={handleInput('expectedValue')} placeholder="400" />
+            </label>
+            <label className="dri-field dri-field--span-2">
+              <span>Obtenido ancla</span>
+              <input className="input-field" value={form.obtainedValue} onChange={handleInput('obtainedValue')} placeholder="200" />
+            </label>
+          </>
+        ) : null}
         <label className="dri-field dri-field--span-2">
           <span>Lote reactivo</span>
           <input className="input-field" value={form.reagentLot} onChange={handleInput('reagentLot')} placeholder="RGT-..." />
@@ -258,7 +299,9 @@ export default function DriInputPanel({
                     ? 'dri-badge--red'
                     : qcAssessment?.band === 'near_reject'
                       ? 'dri-badge--amber'
-                      : 'dri-badge--teal'
+                      : qcAssessment?.assumedNeutral
+                        ? 'dri-badge--neutral'
+                        : 'dri-badge--teal'
                 }`}
                 >
                   {qcAssessment ? qcBandLabel(qcAssessment.band) : 'Referencia aplicada'}
@@ -318,16 +361,70 @@ export default function DriInputPanel({
           {filteredReagents.map((reagent) => {
             const failed = form.failedReagentIds.includes(reagent.id);
             const correct = form.correctReagentIds.includes(reagent.id);
+            const measurement = reagentMeasurements[reagent.id];
+            const reference = reagentQcReferenceById.get(reagent.id) || null;
+            const assessment = reagentQcAssessmentById.get(reagent.id) || null;
             return (
-              <button
+              <div
                 key={reagent.id}
-                type="button"
-                className={`dri-reagent-pill ${failed ? 'is-failed' : correct ? 'is-correct' : ''}`}
+                className={`dri-reagent-pill-card ${failed ? 'is-failed' : correct ? 'is-correct' : ''}`}
                 title={`${reagent.displayCode || reagent.id} · ${reagent.displayName || reagent.name}`}
-                onClick={() => onCycleReagent(reagent.id)}
               >
-                <span className="dri-reagent-pill__code">{reagent.displayCode || reagent.id}</span>
-              </button>
+                <button
+                  type="button"
+                  className={`dri-reagent-pill ${failed ? 'is-failed' : correct ? 'is-correct' : ''}`}
+                  onClick={() => onCycleReagent(reagent.id)}
+                >
+                  <span className="dri-reagent-pill__code">{reagent.displayCode || reagent.id}</span>
+                </button>
+                <div className={`dri-reagent-pill__capture ${showBlankCapture ? 'has-blank' : ''}`}>
+                  <input
+                    className={`input-field dri-reagent-pill__input ${
+                      assessment?.band === 'out_of_reject'
+                        ? 'is-critical'
+                        : assessment?.band === 'near_reject'
+                          ? 'is-warning'
+                          : assessment?.assumedNeutral
+                            ? 'is-neutral'
+                            : ''
+                    }`}
+                    value={measurement?.obtainedValue || ''}
+                    onChange={(event) =>
+                      onUpdateReagentMeasurement(reagent.id, {
+                        obtainedValue: event.target.value,
+                        unit: reference?.unit || measurement?.unit || null,
+                        expectedValue: reference ? String(reference.targetValue) : measurement?.expectedValue || null,
+                        selectedQcReferenceId: reference?.id || measurement?.selectedQcReferenceId || null,
+                        source: 'manual',
+                      })
+                    }
+                    onClick={(event) => event.stopPropagation()}
+                    placeholder={reference?.unit || 'valor'}
+                    aria-label={`Valor obtenido de ${reagent.displayCode || reagent.id}`}
+                  />
+                  {showBlankCapture ? (
+                    <input
+                      className="input-field dri-reagent-pill__input dri-reagent-pill__input--blank"
+                      value={measurement?.blankAbsorbance || ''}
+                      onChange={(event) =>
+                        onUpdateReagentMeasurement(reagent.id, {
+                          blankAbsorbance: event.target.value,
+                          blankUnit: 'A',
+                          source: 'manual',
+                        })
+                      }
+                      onClick={(event) => event.stopPropagation()}
+                      placeholder="A bl."
+                      aria-label={`Absorbancia de blanco de ${reagent.displayCode || reagent.id}`}
+                    />
+                  ) : null}
+                </div>
+                {reference ? (
+                  <div className="dri-reagent-pill__meta">
+                    <span>Tgt {formatQcValue(reference.targetValue, reference.unit)}</span>
+                  </div>
+                ) : null}
+              </div>
             );
           })}
         </div>
@@ -365,7 +462,25 @@ export default function DriInputPanel({
                 <span>Límite linealidad</span>
                 <strong>{formatMeasurement(selectedReagentProfile.linearityLimit.value)}</strong>
               </div>
+              <div className="dri-reagent-metric">
+                <span>Valor capturado</span>
+                <strong>{selectedMeasurement?.obtainedValue || 'Neutral / sin captura'}</strong>
+              </div>
             </div>
+
+            {showBlankCapture || selectedMeasurement?.blankAbsorbance ? (
+              <div className="dri-reagent-detail__group">
+                <span className="dri-panel__eyebrow">Blanco / absorbancia base</span>
+                <div className="dri-evidence-summary">
+                  <span className="dri-badge dri-badge--neutral">
+                    Blanco capturado: {selectedMeasurement?.blankAbsorbance || 'sin dato'}
+                  </span>
+                  {selectedBlankGuidance ? (
+                    <span className="dri-badge dri-badge--neutral">{selectedBlankGuidance}</span>
+                  ) : null}
+                </div>
+              </div>
+            ) : null}
 
             {selectedReagentProfile.interferenceThresholds.value.length ? (
               <div className="dri-reagent-detail__group">

@@ -34,11 +34,6 @@ const EXTRA_IDENTITY_SPECS: Record<string, DriIdentitySpec> = {
     displayName: 'Lactato deshidrogenasa',
     canonicalNames: ['LACTATE DEHYDROGENASE LDH', 'LACTATE DEHYDROGENASE'],
   },
-  HGB: {
-    displayCode: 'HGB',
-    displayName: 'Hemoglobina',
-    canonicalNames: ['HEMOGLOBIN', 'HEMOGLOBINA'],
-  },
 };
 
 const CONTEXT_SPECS: Record<string, DriIdentitySpec> = Object.fromEntries(
@@ -96,6 +91,37 @@ const buildSpecIndex = () => {
 
 const SPEC_INDEX = buildSpecIndex();
 
+const SPEC_KEY_OVERRIDES: Record<string, string> = {
+  ALT: 'ALT_GPT',
+  AST: 'AST_GOT',
+  'ALANINA AM': 'ALT_GPT',
+  'ALANINA AMINOTRANSFERASA TGP ALT': 'ALT_GPT',
+  'ALANINE AMINOTRANSFERASE ALT GPT': 'ALT_GPT',
+  ASPARTATO: 'AST_GOT',
+  'ASPARTATO AMINOTRANSFERASA AST': 'AST_GOT',
+  'ASPARTATO AMINOTRANSFERASA TGO AST': 'AST_GOT',
+  'ASPARTATE AMINOTRANS AST GOT': 'AST_GOT',
+  'PROTEINAS TOTALES': 'PROT_T',
+  'PROTEINA TOTAL': 'PROT_T',
+  'PROTEIN TOTAL': 'PROT_T',
+  'PROTEIN TOTAL BIREAGENT': 'PROT_T',
+  'BILIRRUBINA TOTAL': 'BIL_T',
+  'BILIRRUBINA TOTAL BIL T': 'BIL_T',
+  'BILIRUBINA TOTAL': 'BIL_T',
+  'BILIRUBINA TOTAL BIL T': 'BIL_T',
+  'TOTAL BILIRUBIN': 'BIL_T',
+  'BILIRRUBINA DIRECTA': 'BIL_D',
+  'BILIRRUBINA DIRECTA BIL D': 'BIL_D',
+  'BILIRUBINA DIRECTA': 'BIL_D',
+  'BILIRUBINA DIRECTA BIL D': 'BIL_D',
+  'DIRECT BILIRUBIN': 'BIL_D',
+  COLESTEROL: 'CHOL',
+  GLUCOSA: 'GLU',
+  'LACTATO DESHIDROGENASA': 'LDH',
+  'LACTATO DESHIDROGENASA LDH': 'LDH',
+  HEMOGLOBINA: 'HGB',
+};
+
 const FALLBACK_CODE_OVERRIDES: Record<string, string> = {
   HEMOGLOBIN: 'HGB',
   HEMOGLOBINA: 'HGB',
@@ -127,6 +153,13 @@ const resolveSpecKey = (
   aliasRows: DriAliasContextRow[],
   catalogRows: DriCatalogContextRow[],
 ) => {
+  for (const candidate of candidates) {
+    const override = SPEC_KEY_OVERRIDES[candidate];
+    if (override) {
+      return override;
+    }
+  }
+
   for (const candidate of candidates) {
     const direct = SPEC_INDEX.get(candidate);
     if (direct) {
@@ -161,6 +194,13 @@ const resolveSpecKey = (
   }
 
   return null;
+};
+
+export const getCanonicalReagentKey = (reagent: DriReagent) => {
+  const technicalProfile = (reagent.technicalProfile || {}) as Record<string, unknown>;
+  const identity = (technicalProfile.identity || {}) as Record<string, unknown>;
+  const reagentKey = typeof identity.reagentKey === 'string' && identity.reagentKey.trim() ? identity.reagentKey : null;
+  return reagentKey || reagent.displayCode || reagent.referenceCode || reagent.id;
 };
 
 const normalizePlatformKey = (value: string) => {
