@@ -1,0 +1,806 @@
+{
+  "name": "june-july-2026",
+  "year": 2026,
+  "auditName": "Sincronizacion planeacion junio-julio 2026",
+  "sourceFileName": "google-sheet-june-july-2026-read-only",
+  "sourceSheetUrl": "https://docs.google.com/spreadsheets/d/1V7Uhwp1esEfP7UVv-v8FrDQTUhV7SjT9/edit?pli=1&gid=1941347062#gid=1941347062",
+  "replaceWeeks": [
+    "01 AL 05 JUNIO",
+    "08 AL 12 JUNIO",
+    "15 AL 19 JUNIO",
+    "22 AL 26 JUNIO",
+    "29 AL 04 JULIO",
+    "06 AL 10 JULIO",
+    "13 AL 17 JULIO",
+    "20 AL 24 JULIO"
+  ],
+  "availabilityNotes": [
+    {
+      "week": "01 AL 05 JUNIO",
+      "dateLabel": "SIN FECHA",
+      "type": "tiempo_por_tiempo",
+      "person": "BENJAMIN"
+    },
+    {
+      "week": "01 AL 05 JUNIO",
+      "dateLabel": "SIN FECHA",
+      "type": "tiempo_por_tiempo",
+      "person": "HECTOR"
+    },
+    {
+      "week": "15 AL 19 JUNIO",
+      "dateLabel": "SIN FECHA",
+      "type": "vacaciones",
+      "person": "HECTOR"
+    },
+    {
+      "week": "22 AL 26 JUNIO",
+      "dateLabel": "24 AL 26",
+      "type": "vacaciones",
+      "person": "MARTHA"
+    },
+    {
+      "week": "22 AL 26 JUNIO",
+      "dateLabel": "24 AL 26",
+      "type": "vacaciones",
+      "person": "FRANCISCO"
+    },
+    {
+      "week": "29 AL 04 JULIO",
+      "dateLabel": "01 AL 03",
+      "type": "vacaciones",
+      "person": "CHITALA"
+    },
+    {
+      "week": "13 AL 17 JULIO",
+      "dateLabel": "09",
+      "type": "vacaciones",
+      "person": "CHITALA"
+    },
+    {
+      "week": "13 AL 17 JULIO",
+      "dateLabel": "10",
+      "type": "tiempo_por_tiempo",
+      "person": "OLIVIA"
+    },
+    {
+      "week": "13 AL 17 JULIO",
+      "dateLabel": "13 AL 17",
+      "type": "vacaciones",
+      "person": "IVONNE"
+    },
+    {
+      "week": "13 AL 17 JULIO",
+      "dateLabel": "13",
+      "type": "tiempo_por_tiempo",
+      "person": "OLIVIA"
+    },
+    {
+      "week": "13 AL 17 JULIO",
+      "dateLabel": "14",
+      "type": "tiempo_por_tiempo",
+      "person": "GUILLERMO"
+    },
+    {
+      "week": "13 AL 17 JULIO",
+      "dateLabel": "16 Y 17",
+      "type": "tiempo_por_tiempo",
+      "person": "MARTHA"
+    },
+    {
+      "week": "13 AL 17 JULIO",
+      "dateLabel": "16 Y 17",
+      "type": "tiempo_por_tiempo",
+      "person": "FRANCISCO"
+    }
+  ],
+  "rows": [
+    {
+      "week": "01 AL 05 JUNIO",
+      "serviceType": "preventivo",
+      "platform": "A15",
+      "locality": "TORREON HOSP UNIVERSIDAD",
+      "serial": "83105C1228",
+      "observations": "COMODATO RONUAG",
+      "engineers": ["MONTANEZ"],
+      "companions": []
+    },
+    {
+      "week": "01 AL 05 JUNIO",
+      "serviceType": "preventivo",
+      "platform": "BA200",
+      "locality": "ZACATELCO JUSTINIANO",
+      "serial": "832001780",
+      "observations": "REQUIERE PAGO",
+      "engineers": ["GUILLERMO"],
+      "companions": [],
+      "scheduledDay": "MARTES"
+    },
+    {
+      "week": "01 AL 05 JUNIO",
+      "serviceType": "capacitacion",
+      "platform": "A15",
+      "locality": "CD JUAREZ",
+      "serial": "831057966",
+      "observations": "PRUEBAS ESPECIALES",
+      "engineers": ["IVONNE"],
+      "companions": []
+    },
+    {
+      "week": "01 AL 05 JUNIO",
+      "serviceType": "capacitacion",
+      "platform": "TODAS",
+      "locality": "APLICATIVO PARA COMERCIAL",
+      "serial": "NA",
+      "observations": "TEAMS",
+      "engineers": ["MARTHA"],
+      "companions": [],
+      "scheduledDay": "LUN-MAR"
+    },
+    {
+      "week": "01 AL 05 JUNIO",
+      "serviceType": "recapacitacion",
+      "platform": "BA400",
+      "locality": "AIMSA",
+      "serial": "",
+      "observations": "",
+      "engineers": ["OLIVIA"],
+      "companions": []
+    },
+    {
+      "week": "01 AL 05 JUNIO",
+      "serviceType": "preventivo",
+      "platform": "A15",
+      "locality": "TECOMAN",
+      "serial": "831055818",
+      "observations": "PAGADO",
+      "engineers": ["FRANCISCO", "ERICK"],
+      "companions": []
+    },
+    {
+      "week": "01 AL 05 JUNIO",
+      "serviceType": "preventivo",
+      "platform": "A15",
+      "locality": "ACATLAN DE JUAREZ",
+      "serial": "831055410",
+      "observations": "PAGADO",
+      "engineers": ["FRANCISCO", "ERICK"],
+      "companions": []
+    },
+    {
+      "week": "01 AL 05 JUNIO",
+      "serviceType": "capacitacion",
+      "platform": "NA",
+      "locality": "APLICATIVO EN INGENIERIA",
+      "serial": "NA",
+      "observations": "LALO. MONTANEZ, ERICK",
+      "engineers": ["MARTHA"],
+      "companions": [],
+      "scheduledDay": "JUEVES"
+    },
+    {
+      "week": "01 AL 05 JUNIO",
+      "serviceType": "ingenieria_soporte",
+      "rawTypeLabel": "IMPLEMENTACION",
+      "platform": "NA",
+      "locality": "ADS PRUEBAS",
+      "serial": "834002885",
+      "observations": "TAMBIEN PRUEBAS",
+      "engineers": ["RICARDO"],
+      "companions": []
+    },
+    {
+      "week": "01 AL 05 JUNIO",
+      "serviceType": "correctivo",
+      "platform": "NA",
+      "locality": "ACAPULCO",
+      "serial": "NA",
+      "observations": "CORRECTIVO",
+      "engineers": ["DIEGO GARCIA"],
+      "companions": []
+    },
+    {
+      "week": "01 AL 05 JUNIO",
+      "serviceType": "instalacion",
+      "rawTypeLabel": "PREINSTALACION",
+      "platform": "BA200",
+      "locality": "INTERNET GDL",
+      "serial": "NA",
+      "observations": "PREINSTALACION",
+      "engineers": ["MARTHA", "CHITALA"],
+      "companions": [],
+      "scheduledDay": "JUEVES"
+    },
+    {
+      "week": "01 AL 05 JUNIO",
+      "serviceType": "correctivo",
+      "platform": "BA200",
+      "locality": "REFORMA MAZATLAN",
+      "serial": "NA",
+      "observations": "CORRECTIVO",
+      "engineers": ["FRANCISCO", "ERICK"],
+      "companions": []
+    },
+    {
+      "week": "01 AL 05 JUNIO",
+      "serviceType": "correctivo",
+      "platform": "BA400",
+      "locality": "TLALTENANGO, ZACATECAS",
+      "serial": "834000434",
+      "observations": "CORRECTIVO",
+      "engineers": ["LALO"],
+      "companions": []
+    },
+    {
+      "week": "08 AL 12 JUNIO",
+      "serviceType": "preventivo",
+      "platform": "IPRO",
+      "locality": "AGUASCALIENTES CAMPESTRE",
+      "serial": "841011145",
+      "observations": "REQUIERE PAGO",
+      "engineers": ["FRANCISCO"],
+      "companions": []
+    },
+    {
+      "week": "08 AL 12 JUNIO",
+      "serviceType": "preventivo",
+      "platform": "BA200",
+      "locality": "SLP LAB",
+      "serial": "832001686",
+      "observations": "GARANTIA 2",
+      "engineers": ["FRANCISCO"],
+      "companions": []
+    },
+    {
+      "week": "08 AL 12 JUNIO",
+      "serviceType": "preventivo",
+      "platform": "BA200",
+      "locality": "SANTA FE AGUASCALIENTES",
+      "serial": "832002109",
+      "observations": "GARANTIA 1",
+      "engineers": ["FRANCISCO"],
+      "companions": []
+    },
+    {
+      "week": "08 AL 12 JUNIO",
+      "serviceType": "preventivo",
+      "platform": "A15",
+      "locality": "CANCEROLOGIA ACAPULCO",
+      "serial": "831056420",
+      "observations": "COMODATO FALCON",
+      "engineers": ["ALFREDO"],
+      "companions": []
+    },
+    {
+      "week": "08 AL 12 JUNIO",
+      "serviceType": "preventivo",
+      "platform": "Y15",
+      "locality": "Ags Vinicola Sta Elena",
+      "serial": "831060567",
+      "observations": "REQUIEREN PAGO",
+      "engineers": ["FRANCISCO"],
+      "companions": ["CARLOS"]
+    },
+    {
+      "week": "08 AL 12 JUNIO",
+      "serviceType": "preventivo",
+      "platform": "Y15",
+      "locality": "Ags Vinicola El Secreto",
+      "serial": "831060843",
+      "observations": "REQUIEREN PAGO",
+      "engineers": ["FRANCISCO"],
+      "companions": ["CARLOS"]
+    },
+    {
+      "week": "08 AL 12 JUNIO",
+      "serviceType": "capacitacion",
+      "platform": "BA200",
+      "locality": "INTERNET",
+      "serial": "NA",
+      "observations": "CAPACITACION/INSTALACION",
+      "engineers": ["CHITALA", "IVONNE"],
+      "companions": ["FRANCISCO", "ERICK"],
+      "scheduledDay": "LUNES"
+    },
+    {
+      "week": "08 AL 12 JUNIO",
+      "serviceType": "ingenieria_soporte",
+      "rawTypeLabel": "VISITA",
+      "platform": "BA400",
+      "locality": "TIERRA BLANCA",
+      "serial": "NA",
+      "observations": "CORRECTIVO",
+      "engineers": ["HECTOR", "LALO"],
+      "companions": [],
+      "scheduledDay": "MARTES"
+    },
+    {
+      "week": "08 AL 12 JUNIO",
+      "serviceType": "ingenieria_soporte",
+      "rawTypeLabel": "VISITA",
+      "platform": "BA400",
+      "locality": "MERIDA",
+      "serial": "834002884",
+      "observations": "",
+      "engineers": ["GUILLERMO"],
+      "companions": []
+    },
+    {
+      "week": "08 AL 12 JUNIO",
+      "serviceType": "preventivo",
+      "platform": "A25",
+      "locality": "Biomedicos de Merida",
+      "serial": "831057769",
+      "observations": "COMODATO",
+      "engineers": ["GUILLERMO"],
+      "companions": []
+    },
+    {
+      "week": "08 AL 12 JUNIO",
+      "serviceType": "preventivo",
+      "platform": "A15",
+      "locality": "YURIRIA",
+      "serial": "PENDIENTE",
+      "observations": "PREVENTIVO",
+      "engineers": ["DIEGO GARCIA"],
+      "companions": []
+    },
+    {
+      "week": "08 AL 12 JUNIO",
+      "serviceType": "correctivo",
+      "platform": "BA400",
+      "locality": "SALTILLO LAGUNERA",
+      "serial": "",
+      "observations": "CORRECTIVO",
+      "engineers": ["RICARDO MONTAÑEZ"],
+      "companions": []
+    },
+    {
+      "week": "08 AL 12 JUNIO",
+      "serviceType": "ingenieria_soporte",
+      "rawTypeLabel": "VISITA",
+      "platform": "NA",
+      "locality": "PRUEBAS",
+      "serial": "",
+      "observations": "VISITA",
+      "engineers": ["RICARDO VILCHIS"],
+      "companions": ["EDUARDO QUIROZ"]
+    },
+    {
+      "week": "15 AL 19 JUNIO",
+      "serviceType": "capacitacion",
+      "platform": "BA200",
+      "locality": "INTERNET",
+      "serial": "NA",
+      "observations": "SEGUIMIENTO",
+      "engineers": ["CHITALA", "IVONNE"],
+      "companions": ["DOS EQUIPOS"]
+    },
+    {
+      "week": "15 AL 19 JUNIO",
+      "serviceType": "preventivo",
+      "platform": "BA400",
+      "locality": "CDMX Lab ADS",
+      "serial": "834002885",
+      "observations": "COMODATO",
+      "engineers": ["GUILLERMO"],
+      "companions": []
+    },
+    {
+      "week": "15 AL 19 JUNIO",
+      "serviceType": "preventivo",
+      "platform": "BA400",
+      "locality": "CDMX Lab ADS",
+      "serial": "834001909",
+      "observations": "COMODATO",
+      "engineers": ["GUILLERMO"],
+      "companions": []
+    },
+    {
+      "week": "15 AL 19 JUNIO",
+      "serviceType": "preventivo",
+      "platform": "A15",
+      "locality": "CHILON, CHIAPAS",
+      "serial": "831058019",
+      "observations": "INSTALACION/CAPACITACION",
+      "engineers": ["OLIVIA"],
+      "companions": []
+    },
+    {
+      "week": "15 AL 19 JUNIO",
+      "serviceType": "preventivo",
+      "platform": "A15",
+      "locality": "TECOMAN",
+      "serial": "831055818",
+      "observations": "PAGADO",
+      "engineers": ["FRANCISCO", "ERICK"],
+      "companions": []
+    },
+    {
+      "week": "15 AL 19 JUNIO",
+      "serviceType": "preventivo",
+      "platform": "A15",
+      "locality": "ACATLAN DE JUAREZ",
+      "serial": "831055410",
+      "observations": "PAGADO",
+      "engineers": ["FRANCISCO", "ERICK"],
+      "companions": []
+    },
+    {
+      "week": "15 AL 19 JUNIO",
+      "serviceType": "preventivo",
+      "platform": "BA400",
+      "locality": "IXMIQUILPAN",
+      "serial": "834000816",
+      "observations": "PREVENTIVO",
+      "engineers": ["LALO"],
+      "companions": []
+    },
+    {
+      "week": "15 AL 19 JUNIO",
+      "serviceType": "capacitacion",
+      "platform": "BA400",
+      "locality": "CEFERESO, OAXACA",
+      "serial": "",
+      "observations": "RECAPACITACION",
+      "engineers": ["RICARDO VILCHIS"],
+      "companions": []
+    },
+    {
+      "week": "15 AL 19 JUNIO",
+      "serviceType": "capacitacion",
+      "platform": "A15",
+      "locality": "TOLUQUILLA CRUZ ROJA",
+      "serial": "NA",
+      "observations": "INSTALACION/CAPACITACION",
+      "engineers": ["MARTHA"],
+      "companions": []
+    },
+    {
+      "week": "15 AL 19 JUNIO",
+      "serviceType": "correctivo",
+      "platform": "BA400",
+      "locality": "TEZIUTLAN",
+      "serial": "NA",
+      "observations": "CORRECTIVO",
+      "engineers": ["DIEGO GARCIA"],
+      "companions": []
+    },
+    {
+      "week": "22 AL 26 JUNIO",
+      "serviceType": "capacitacion",
+      "platform": "A15",
+      "locality": "XALAPA, VERACRUZ",
+      "serial": "831058015",
+      "observations": "INSTALACION/CAPACITACION",
+      "engineers": ["OLIVIA"],
+      "companions": []
+    },
+    {
+      "week": "22 AL 26 JUNIO",
+      "serviceType": "capacitacion",
+      "platform": "BA200",
+      "locality": "INTERMET CASIMIRO CASTILLO",
+      "serial": "NA",
+      "observations": "CAPACITACION",
+      "engineers": ["IVONNE"],
+      "companions": []
+    },
+    {
+      "week": "22 AL 26 JUNIO",
+      "serviceType": "correctivo",
+      "platform": "BA200",
+      "locality": "AJIJIC",
+      "serial": "NA",
+      "observations": "CORRECTIVO",
+      "engineers": ["FRANCISCO"],
+      "companions": []
+    },
+    {
+      "week": "22 AL 26 JUNIO",
+      "serviceType": "capacitacion",
+      "platform": "BA200",
+      "locality": "UMF #88 EL SAUZ",
+      "serial": "NA",
+      "observations": "CAPACITACION",
+      "engineers": ["CHITALA"],
+      "companions": []
+    },
+    {
+      "week": "22 AL 26 JUNIO",
+      "serviceType": "preventivo",
+      "platform": "A15",
+      "locality": "CHIAPAS",
+      "serial": "83105C1557",
+      "observations": "COMODATO",
+      "engineers": [],
+      "companions": [],
+      "explicitPending": true
+    },
+    {
+      "week": "22 AL 26 JUNIO",
+      "serviceType": "correctivo",
+      "platform": "BA400",
+      "locality": "DIVET",
+      "serial": "834001096",
+      "observations": "CORRECTIVO",
+      "engineers": ["GUILLERMO"],
+      "companions": [],
+      "scheduledDay": "LUNES"
+    },
+    {
+      "week": "22 AL 26 JUNIO",
+      "serviceType": "preventivo",
+      "platform": "BA400",
+      "locality": "ECALAB",
+      "serial": "834000426",
+      "observations": "PAGADO",
+      "engineers": ["GUILLERMO"],
+      "companions": []
+    },
+    {
+      "week": "22 AL 26 JUNIO",
+      "serviceType": "ingenieria_soporte",
+      "rawTypeLabel": "VISITA",
+      "platform": "BA200",
+      "locality": "VISITA LOS CABOS",
+      "serial": "NA",
+      "observations": "VISITA SEGUIMIENTO",
+      "engineers": ["ANGEL"],
+      "companions": []
+    },
+    {
+      "week": "22 AL 26 JUNIO",
+      "serviceType": "correctivo",
+      "platform": "A15",
+      "locality": "MORELIA",
+      "serial": "831051919",
+      "observations": "CORRECTIVO",
+      "engineers": ["DIEGO GARCIA"],
+      "companions": []
+    },
+    {
+      "week": "22 AL 26 JUNIO",
+      "serviceType": "ingenieria_soporte",
+      "rawTypeLabel": "VISITA",
+      "platform": "NA",
+      "locality": "APLICACIONES GDL",
+      "serial": "NA",
+      "observations": "VISITA PARA APLICACIONES",
+      "engineers": ["MARTHA"],
+      "companions": [],
+      "scheduledDay": "LUN-MAR"
+    },
+    {
+      "week": "29 AL 04 JULIO",
+      "serviceType": "preventivo",
+      "platform": "IPRO",
+      "locality": "Villahermosa Lab Diagnostica",
+      "serial": "841011149",
+      "observations": "COMODATOS",
+      "engineers": ["FRANCISCO"],
+      "companions": ["YA ESTA EN CDMX"]
+    },
+    {
+      "week": "29 AL 04 JULIO",
+      "serviceType": "preventivo",
+      "platform": "BA400",
+      "locality": "COMALCALCO",
+      "serial": "832002314",
+      "observations": "COMODATOS",
+      "engineers": ["FRANCISCO"],
+      "companions": []
+    },
+    {
+      "week": "29 AL 04 JULIO",
+      "serviceType": "preventivo",
+      "platform": "A15",
+      "locality": "PAKAL, PALENQUE",
+      "serial": "831057445",
+      "observations": "COMODATOS",
+      "engineers": ["FRANCISCO"],
+      "companions": ["PENDIENTE"]
+    },
+    {
+      "week": "29 AL 04 JULIO",
+      "serviceType": "preventivo",
+      "platform": "A15",
+      "locality": "ESCARCEGA",
+      "serial": "831057770",
+      "observations": "GARANTIA 1",
+      "engineers": ["FRANCISCO"],
+      "companions": []
+    },
+    {
+      "week": "29 AL 04 JULIO",
+      "serviceType": "preventivo",
+      "platform": "A25",
+      "locality": "Cuernavaca Lab Vida",
+      "serial": "831016154",
+      "observations": "COMODATOS",
+      "engineers": ["DIEGO GARCIA"],
+      "companions": []
+    },
+    {
+      "week": "29 AL 04 JULIO",
+      "serviceType": "preventivo",
+      "platform": "BA200",
+      "locality": "CUERNAVACA NAVOR",
+      "serial": "832002180",
+      "observations": "COMODATOS",
+      "engineers": ["DIEGO GARCIA"],
+      "companions": []
+    },
+    {
+      "week": "29 AL 04 JULIO",
+      "serviceType": "preventivo",
+      "rawTypeLabel": "PREVENTIVOS",
+      "platform": "Y15",
+      "locality": "COAHUILA",
+      "serial": "NA",
+      "observations": "PAGADOS",
+      "engineers": ["GUILLERMO"],
+      "companions": []
+    },
+    {
+      "week": "29 AL 04 JULIO",
+      "serviceType": "preventivo",
+      "platform": "BA200",
+      "locality": "GRUPO SANTA FE, AGUASCALIENTES",
+      "serial": "832002109",
+      "observations": "GARANTIA 1",
+      "engineers": ["ERICK"],
+      "companions": []
+    },
+    {
+      "week": "29 AL 04 JULIO",
+      "serviceType": "preventivo",
+      "platform": "A25",
+      "locality": "SLP",
+      "serial": "831014886",
+      "observations": "PENDIENTE PAGO",
+      "engineers": ["ERICK"],
+      "companions": []
+    },
+    {
+      "week": "29 AL 04 JULIO",
+      "serviceType": "preventivo",
+      "platform": "Y15",
+      "locality": "FREIXENET, QUERETARO",
+      "serial": "831060684",
+      "observations": "",
+      "engineers": ["ERICK"],
+      "companions": []
+    },
+    {
+      "week": "29 AL 04 JULIO",
+      "serviceType": "capacitacion",
+      "platform": "A15",
+      "locality": "EL GRULLO, JALISCO",
+      "serial": "831058021",
+      "observations": "INSTALACION/CAPACITACION",
+      "engineers": [],
+      "companions": []
+    },
+    {
+      "week": "13 AL 17 JULIO",
+      "serviceType": "preventivo",
+      "platform": "A15",
+      "locality": "Paracho Prevenlab",
+      "serial": "831057753",
+      "observations": "1 GARANTIA",
+      "engineers": ["ERICK"],
+      "companions": []
+    },
+    {
+      "week": "13 AL 17 JULIO",
+      "serviceType": "preventivo",
+      "platform": "BA200",
+      "locality": "PUEBLA Crystal de la Hoz",
+      "serial": "832000220",
+      "observations": "COMODATOS",
+      "engineers": ["GUILLERMO"],
+      "companions": []
+    },
+    {
+      "week": "13 AL 17 JULIO",
+      "serviceType": "preventivo",
+      "platform": "BA400",
+      "locality": "PUEBLA Crystal de la Hoz",
+      "serial": "834001901",
+      "observations": "COMODATOS",
+      "engineers": ["GUILLERMO"],
+      "companions": []
+    },
+    {
+      "week": "13 AL 17 JULIO",
+      "serviceType": "preventivo",
+      "platform": "A15",
+      "locality": "LA PENAL, GDL",
+      "serial": "831057863",
+      "observations": "GARANTIA 1",
+      "engineers": ["ERICK"],
+      "companions": []
+    },
+    {
+      "week": "13 AL 17 JULIO",
+      "serviceType": "preventivo",
+      "platform": "A15",
+      "locality": "OCOTLAN, OAXACA",
+      "serial": "831057867",
+      "observations": "GARANTIA 1",
+      "engineers": [],
+      "companions": []
+    },
+    {
+      "week": "13 AL 17 JULIO",
+      "serviceType": "preventivo",
+      "platform": "BA200",
+      "locality": "GRUPO SANTA FE, AGUASCALIENTES",
+      "serial": "832002109",
+      "observations": "GARANTIA 1",
+      "engineers": ["FRANCISCO"],
+      "companions": []
+    },
+    {
+      "week": "13 AL 17 JULIO",
+      "serviceType": "preventivo",
+      "platform": "A25",
+      "locality": "SLP",
+      "serial": "831014886",
+      "observations": "PENDIENTE PAGO",
+      "engineers": ["FRANCISCO"],
+      "companions": []
+    },
+    {
+      "week": "13 AL 17 JULIO",
+      "serviceType": "preventivo",
+      "platform": "BA200",
+      "locality": "COATZACOALCOS ISSSTE 24",
+      "serial": "832001454",
+      "observations": "COMODATOS",
+      "engineers": ["LALO"],
+      "companions": []
+    },
+    {
+      "week": "13 AL 17 JULIO",
+      "serviceType": "preventivo",
+      "platform": "BA200",
+      "locality": "ISSSTE MINATITLAN",
+      "serial": "832001364",
+      "observations": "COMODATOS",
+      "engineers": ["LALO"],
+      "companions": []
+    },
+    {
+      "week": "13 AL 17 JULIO",
+      "serviceType": "preventivo",
+      "platform": "BA400",
+      "locality": "ISSSTE ORIZABA",
+      "serial": "834002504",
+      "observations": "COMODATOS",
+      "engineers": ["LALO"],
+      "companions": []
+    },
+    {
+      "week": "13 AL 17 JULIO",
+      "serviceType": "preventivo",
+      "platform": "BA400",
+      "locality": "Quimica Medica de Cordoba",
+      "serial": "834002700",
+      "observations": "COMODATOS",
+      "engineers": ["LALO"],
+      "companions": []
+    },
+    {
+      "week": "13 AL 17 JULIO",
+      "serviceType": "preventivo",
+      "platform": "A15",
+      "locality": "COATZACOALCOS Lab JM",
+      "serial": "831057760",
+      "observations": "COMODATOS",
+      "engineers": ["LALO"],
+      "companions": []
+    }
+  ]
+}
