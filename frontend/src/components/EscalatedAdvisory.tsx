@@ -118,6 +118,7 @@ interface AdvisoryThreadSummary {
   unreadRequester: number;
   unreadTrainer: number;
   lastMessageAt: string | null;
+  firstTrainerResponseAt: string | null;
   firstTrainerResponseMinutes: number | null;
   messageCount: number;
   attachmentCount: number;
@@ -1274,13 +1275,16 @@ export default function EscalatedAdvisory({ onNotificationCountChange }: Escalat
       return;
     }
 
+    const generatedAt = new Date();
+    const generatedAtIso = generatedAt.toISOString();
     const payload = {
       areaLabel: AREA_LABELS[selectedArea],
       scopeLabel: metricsScopeLabel,
-      generatedAt: new Date().toLocaleString('es-MX', {
+      generatedAt: generatedAt.toLocaleString('es-MX', {
         dateStyle: 'medium',
         timeStyle: 'short',
       }),
+      generatedAtIso,
       summary: {
         total: metricsScopeAdvisories.length,
         averageFirstResponseLabel: formatMinutesLabel(metricsAverageFirstResponseMinutes),
@@ -1302,12 +1306,54 @@ export default function EscalatedAdvisory({ onNotificationCountChange }: Escalat
         replied: row.replied,
         closed: row.closed,
       })),
+      detailRows: metricsScopeAdvisories
+        .map((advisory) => {
+          const summary = threadSummaryByAdvisoryId.get(advisory.id);
+          const requesterName =
+            advisory.solicitante_nombre_snapshot ||
+            (advisory.solicitante_id ? profileById.get(advisory.solicitante_id)?.nombre_completo : null) ||
+            'Solicitante';
+          const resolverName =
+            advisory.respondida_por_id ? profileById.get(advisory.respondida_por_id)?.nombre_completo || null : null;
+          const typeLabel = advisory.averia?.trim() || advisory.actividad?.trim() || 'Sin tipo capturado';
+          const resolutionMinutes =
+            advisory.estado === 'cerrada'
+              ? Math.max(
+                  0,
+                  Math.round(
+                    (new Date(advisory.actualizado_en).getTime() - new Date(advisory.creado_en).getTime()) / 60000,
+                  ),
+                )
+              : null;
+
+          return {
+            advisoryId: advisory.id,
+            ticketId: advisory.ticket_id,
+            requester: requesterName,
+            resolver: resolverName,
+            platform: advisory.plataforma_snapshot,
+            typeLabel,
+            status: STATUS_LABELS[advisory.estado],
+            waitingOn: WAITING_LABELS[summary?.waitingOn || 'trainer'],
+            createdAt: advisory.creado_en,
+            updatedAt: advisory.actualizado_en,
+            firstResponseAt: summary?.firstTrainerResponseAt || null,
+            firstResponseMinutes: summary?.firstTrainerResponseMinutes ?? null,
+            resolutionMinutes,
+            attachmentCount: summary?.attachmentCount || 0,
+            messageCount: summary?.messageCount || 0,
+            responseCount: summary?.responseCount || 0,
+            evidenceTags: summary?.evidenceTags || [],
+            inquiry: advisory.consulta_escalada,
+          };
+        })
+        .sort((left, right) => new Date(right.createdAt).getTime() - new Date(left.createdAt).getTime()),
     };
 
     setExportingMetrics(format);
     try {
       if (format === 'excel') {
-        downloadAdvisoryMetricsExcel(payload);
+        await downloadAdvisoryMetricsExcel(payload);
       } else {
         await downloadAdvisoryMetricsPdf(payload);
       }

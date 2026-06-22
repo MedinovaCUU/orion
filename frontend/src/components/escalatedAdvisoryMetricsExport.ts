@@ -1,5 +1,5 @@
 import jsPDF from 'jspdf';
-import * as XLSX from 'xlsx';
+import { downloadAdvisoryMetricsWorkbook } from './escalatedAdvisoryMetricsWorkbook';
 
 export interface AdvisoryMetricsValueRow {
   label: string;
@@ -26,10 +26,32 @@ export interface AdvisoryMetricsTimelineRow {
   closed: number;
 }
 
+export interface AdvisoryMetricsDetailRow {
+  advisoryId: string;
+  ticketId: string | null;
+  requester: string;
+  resolver: string | null;
+  platform: string | null;
+  typeLabel: string;
+  status: string;
+  waitingOn: string;
+  createdAt: string;
+  updatedAt: string;
+  firstResponseAt: string | null;
+  firstResponseMinutes: number | null;
+  resolutionMinutes: number | null;
+  attachmentCount: number;
+  messageCount: number;
+  responseCount: number;
+  evidenceTags: string[];
+  inquiry: string;
+}
+
 export interface AdvisoryMetricsExportPayload {
   areaLabel: string;
   scopeLabel: string;
   generatedAt: string;
+  generatedAtIso?: string;
   summary: {
     total: number;
     averageFirstResponseLabel: string;
@@ -41,6 +63,7 @@ export interface AdvisoryMetricsExportPayload {
   trainerRows: AdvisoryMetricsTrainerRow[];
   heatmapRows: AdvisoryMetricsHeatmapRow[];
   timelineRows: AdvisoryMetricsTimelineRow[];
+  detailRows: AdvisoryMetricsDetailRow[];
 }
 
 const BRAND = {
@@ -115,84 +138,8 @@ const buildFileStamp = (generatedAt: string) =>
     .replace(/^-+|-+$/g, '')
     .toLowerCase();
 
-const addCellStyles = (sheet: XLSX.WorkSheet, columnWidths: number[]) => {
-  sheet['!cols'] = columnWidths.map((wch) => ({ wch }));
-};
-
-export const downloadAdvisoryMetricsExcel = (payload: AdvisoryMetricsExportPayload) => {
-  const workbook = XLSX.utils.book_new();
-
-  const summarySheet = XLSX.utils.aoa_to_sheet([
-    ['BioSystems', 'ORION · Métricas de asesoría'],
-    ['Área', payload.areaLabel],
-    ['Alcance', payload.scopeLabel],
-    ['Generado', payload.generatedAt],
-    [],
-    ['Indicador', 'Valor'],
-    ['Casos analizados', payload.summary.total],
-    ['Primera respuesta promedio', payload.summary.averageFirstResponseLabel],
-    ['Cobertura con evidencia', `${payload.summary.evidenceCoverage}%`],
-    ['Esperando trainer', payload.summary.waitingOnTrainer],
-  ]);
-  addCellStyles(summarySheet, [28, 48]);
-
-  const statusSheet = XLSX.utils.json_to_sheet(
-    payload.statusRows.map((row) => ({
-      Estado: row.label,
-      Casos: row.value,
-    })),
-  );
-  addCellStyles(statusSheet, [28, 14]);
-
-  const waitingSheet = XLSX.utils.json_to_sheet(
-    payload.waitingRows.map((row) => ({
-      'Espera de': row.label,
-      Casos: row.value,
-    })),
-  );
-  addCellStyles(waitingSheet, [28, 14]);
-
-  const trainerSheet = XLSX.utils.json_to_sheet(
-    payload.trainerRows.map((row) => ({
-      Trainer: row.label,
-      Asignadas: row.assigned,
-      Respondidas: row.responded,
-      'Primera respuesta': formatMinutesLabel(row.avgFirstResponseMinutes),
-    })),
-  );
-  addCellStyles(trainerSheet, [28, 14, 14, 22]);
-
-  const heatmapSheet = XLSX.utils.json_to_sheet(
-    payload.heatmapRows.map((row) => ({
-      Solicitante: row.requester,
-      'Tipo de incidencia': row.type,
-      Frecuencia: row.count,
-    })),
-  );
-  addCellStyles(heatmapSheet, [28, 32, 14]);
-
-  const timelineSheet = XLSX.utils.json_to_sheet(
-    payload.timelineRows.map((row) => ({
-      Periodo: row.label,
-      Nuevas: row.created,
-      Respondidas: row.replied,
-      Cerradas: row.closed,
-    })),
-  );
-  addCellStyles(timelineSheet, [18, 12, 14, 12]);
-
-  XLSX.utils.book_append_sheet(workbook, summarySheet, 'Resumen');
-  XLSX.utils.book_append_sheet(workbook, statusSheet, 'Estados');
-  XLSX.utils.book_append_sheet(workbook, waitingSheet, 'Espera');
-  XLSX.utils.book_append_sheet(workbook, trainerSheet, 'Trainers');
-  XLSX.utils.book_append_sheet(workbook, heatmapSheet, 'Cruces');
-  XLSX.utils.book_append_sheet(workbook, timelineSheet, 'Timeline');
-
-  XLSX.writeFile(
-    workbook,
-    `orion_metricas_asesorias_${buildExportSlug(payload.areaLabel)}_${buildFileStamp(payload.generatedAt)}.xlsx`,
-  );
-};
+export const downloadAdvisoryMetricsExcel = async (payload: AdvisoryMetricsExportPayload) =>
+  downloadAdvisoryMetricsWorkbook(payload);
 
 const drawSectionCard = (doc: jsPDF, x: number, y: number, width: number, height: number) => {
   setFill(doc, [255, 255, 255]);

@@ -20,6 +20,7 @@
     "@zxing/browser": "^0.1.5",
     "@zxing/library": "^0.21.3",
     "dotenv": "^17.4.1",
+    "exceljs": "^4.4.0",
     "jspdf": "^4.2.1",
     "pdfjs-dist": "^6.0.227",
     "react": "^19.2.4",
