@@ -19,6 +19,7 @@ import PlanningLegend from './components/PlanningLegend';
 import PlanningSidebar from './components/PlanningSidebar';
 import ServiceDetailDrawer from './components/ServiceDetailDrawer';
 import UpcomingServicesTable from './components/UpcomingServicesTable';
+import WeekendGuardsPanel from './components/WeekendGuardsPanel';
 import WeeklyBoard from './components/WeeklyBoard';
 import { calculateKpis, buildAlerts } from './helpers/calculateKpis';
 import { applyServiceFilters, buildFilterOptions, createDefaultFilters } from './helpers/filters';
@@ -32,14 +33,26 @@ import {
   getPermissions,
   resolveRole,
 } from './helpers/normalizeService';
+import {
+  buildWeekendGuardSchedule,
+  loadWeekendGuardOverrides,
+  saveWeekendGuardOverrides,
+} from './helpers/weekendGuards';
+import type { ServicePlanningSyncSummary } from './helpers/servicePlanningSync';
 import { groupServicesByWeek } from './helpers/weekGrouping';
 import type {
   PlannedService,
   QuickCreateDraft,
   ServiceDetailUpdate,
   ServicePlanningSection,
+  WeekendGuardOverrideMap,
 } from './types/servicePlanning.types';
-import type { EquipmentSummary, HistoricalServiceRecord, PendingServiceTicket } from '../../components/servicesPlanning';
+import type {
+  EquipmentSummary,
+  HistoricalServiceRecord,
+  PendingServiceTicket,
+  ProfileSummary,
+} from '../../components/servicesPlanning';
 import useSecondTicker from '../../components/useSecondTicker';
 import './servicePlanning.css';
 
@@ -49,6 +62,7 @@ interface ServicePlanningPageProps {
   userRole: string | null;
   currentUserName: string;
   engineerOptions: string[];
+  staffProfiles: ProfileSummary[];
   onCreateService: (draft: QuickCreateDraft) => Promise<void>;
   onUpdateService: (service: PlannedService, updates: ServiceDetailUpdate) => Promise<void>;
   onDeleteService: (service: PlannedService) => Promise<void>;
@@ -58,6 +72,8 @@ interface ServicePlanningPageProps {
   reactiveTickets: PendingServiceTicket[];
   historicalRecords: HistoricalServiceRecord[];
   travelAdminPanel: ReactNode;
+  canSyncPlanning?: boolean;
+  onSyncPlanning?: () => Promise<ServicePlanningSyncSummary>;
 }
 
 interface TrackedReactiveTicketEntry {
@@ -158,6 +174,7 @@ export default function ServicePlanningPage({
   userRole,
   currentUserName,
   engineerOptions,
+  staffProfiles,
   onCreateService,
   onUpdateService,
   onDeleteService,
@@ -167,11 +184,18 @@ export default function ServicePlanningPage({
   reactiveTickets,
   historicalRecords,
   travelAdminPanel,
+  canSyncPlanning = false,
+  onSyncPlanning,
 }: ServicePlanningPageProps) {
   const role = resolveRole(userRole);
   const permissions = getPermissions(role);
   const currentMonthKey = useMemo(() => getCurrentMonthKey(), []);
-  const monthOptions = useMemo(() => buildMonthOptions(services), [services]);
+  const [guardOverrides, setGuardOverrides] = useState<WeekendGuardOverrideMap>(() => loadWeekendGuardOverrides());
+  const weekendGuards = useMemo(
+    () => buildWeekendGuardSchedule(staffProfiles, guardOverrides),
+    [guardOverrides, staffProfiles],
+  );
+  const monthOptions = useMemo(() => buildMonthOptions(services, weekendGuards.months), [services, weekendGuards.months]);
   const initialMonth = monthOptions.find((option) => option.value === currentMonthKey)?.value || monthOptions[0]?.value || currentMonthKey;
   const [section, setSection] = useState<ServicePlanningSection>('calendario');
   const [filters, setFilters] = useState(() => createDefaultFilters(initialMonth));
@@ -179,6 +203,8 @@ export default function ServicePlanningPage({
   const [showComposer, setShowComposer] = useState(false);
   const [showImportPreview, setShowImportPreview] = useState(false);
   const [showFilters, setShowFilters] = useState(false);
+  const [planningSyncBusy, setPlanningSyncBusy] = useState(false);
+  const [planningSyncFeedback, setPlanningSyncFeedback] = useState<{ tone: 'success' | 'error'; message: string } | null>(null);
   const [composerDraft, setComposerDraft] = useState<QuickCreateDraft>(() => createInitialDraft(''));
   const deferredSearch = useDeferredValue(filters.search);
 
@@ -195,6 +221,17 @@ export default function ServicePlanningPage({
       setFilters(createDefaultFilters(initialMonth));
     }
   }, [filters.month, initialMonth]);
+
+  useEffect(() => {
+    saveWeekendGuardOverrides(guardOverrides);
+  }, [guardOverrides]);
+
+  useEffect(() => {
+    if (section === 'guardias') {
+      setShowFilters(false);
+      setShowComposer(false);
+    }
+  }, [section]);
 
   const monthScopedServices = useMemo(
     () => services.filter((service) => service.month === filters.month || !filters.month),
@@ -283,6 +320,35 @@ export default function ServicePlanningPage({
       return;
     }
     setFilters(createDefaultFilters(filters.month));
+  };
+
+  const handlePlanningSync = async () => {
+    if (!onSyncPlanning || planningSyncBusy) {
+      return;
+    }
+
+    const confirmed = window.confirm(
+      'Esto reemplazara las semanas incluidas en el dataset de planeacion para junio y julio 2026. ¿Deseas continuar?',
+    );
+    if (!confirmed) {
+      return;
+    }
+
+    setPlanningSyncBusy(true);
+    setPlanningSyncFeedback(null);
+
+    try {
+      const summary = await onSyncPlanning();
+      setPlanningSyncFeedback({
+        tone: 'success',
+        message: `Se sincronizaron ${summary.insertCount} actividades en ${summary.replaceWeeks.length} semanas.`,
+      });
+    } catch (error) {
+      const message = error instanceof Error ? error.message : 'No fue posible sincronizar la planeacion.';
+      setPlanningSyncFeedback({ tone: 'error', message });
+    } finally {
+      setPlanningSyncBusy(false);
+    }
   };
 
   const renderSummary = () => (
@@ -377,7 +443,7 @@ export default function ServicePlanningPage({
       return <EmptyState title="Cargando planeacion" description="Estamos recuperando tickets, modales relacionados y la capa de viajes." />;
     }
 
-    if (filteredServices.length === 0 && section !== 'reportes' && section !== 'configuracion') {
+    if (filteredServices.length === 0 && section !== 'reportes' && section !== 'configuracion' && section !== 'guardias') {
       return <EmptyState title="Sin servicios para esta combinacion" description="Prueba otro mes, semana o limpia filtros para ampliar la ventana." />;
     }
 
@@ -387,6 +453,17 @@ export default function ServicePlanningPage({
         return renderSummary();
       case 'tabla':
         return <MasterServiceTable services={filteredServices} permissions={permissions} onOpenService={setSelectedService} />;
+      case 'guardias':
+        return (
+          <WeekendGuardsPanel
+            schedule={weekendGuards}
+            overrides={guardOverrides}
+            selectedMonth={filters.month}
+            currentUserName={currentUserName}
+            canEdit={permissions.canCreate || permissions.canEditAll}
+            onSaveOverrides={setGuardOverrides}
+          />
+        );
       case 'ingenieros':
         return <EngineerLoadPanel engineers={kpis.servicesByEngineer} />;
       case 'alertas':
@@ -437,14 +514,25 @@ export default function ServicePlanningPage({
           selectedMonth={filters.month}
           showFilters={showFilters}
           canCreate={permissions.canCreate}
+          canSync={canSyncPlanning}
+          syncBusy={planningSyncBusy}
+          hideFiltersAction={section === 'guardias'}
+          hideCreateAction={section === 'guardias'}
           onMonthChange={(month) => setFilters((current) => ({ ...current, month }))}
+          onSync={() => void handlePlanningSync()}
           onToggleFilters={() => setShowFilters((current) => !current)}
           onToggleComposer={() => setShowComposer((current) => !current)}
         />
 
-        <KpiStrip kpis={kpis} />
+        {planningSyncFeedback ? (
+          <div className={`travel-banner ${planningSyncFeedback.tone === 'success' ? 'success' : 'error'}`}>
+            {planningSyncFeedback.message}
+          </div>
+        ) : null}
 
-        {showFilters ? (
+        {section !== 'guardias' ? <KpiStrip kpis={kpis} /> : null}
+
+        {showFilters && section !== 'guardias' ? (
           <PlanningFilters
             filters={filters}
             monthOptions={monthOptions}

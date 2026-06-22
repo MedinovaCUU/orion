@@ -174,7 +174,7 @@ const PERSON_ALIAS_RULES: Array<{ match: RegExp; display: string }> = [
   { match: /^olivia(?:\s+angulo)?$/i, display: 'Olivia Angulo' },
   { match: /^ivonne(?:\s+jaramillo)?$/i, display: 'Ivonne Jaramillo' },
   { match: /^francisco(?:\s+salgado)?$/i, display: 'Francisco' },
-  { match: /^(?:ricardo\s+v(?:ilchis)?|vilchis)$/i, display: 'Ricardo Vilchis' },
+  { match: /^(?:ricardo\s+v(?:ilchi?s|ilchys)?|vilchi?s|vilchys)$/i, display: 'Ricardo Vilchis' },
   { match: /^(?:ricardo\s+m(?:ontanez|ontañez)?|montanez|montañez)$/i, display: 'Ricardo Montañez' },
   { match: /^diego\s+g(?:\.|arcia)?$/i, display: 'Diego Garcia' },
   { match: /^garcia$/i, display: 'Diego Garcia' },
@@ -557,7 +557,24 @@ export const resolveScheduledDay = (scheduledDate: string | undefined, fallbackD
   return cleanText(fallbackDay) || '';
 };
 
+const isIsoDateValue = (value: unknown): value is string =>
+  typeof value === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(value);
+
+const isMonthKeyValue = (value: unknown): value is string =>
+  typeof value === 'string' && /^\d{4}-\d{2}$/.test(value);
+
 const resolveWeekRange = (ticketMeta: PlanningMetadata | null, scheduledDate: string, createdAt: string) => {
+  if (isIsoDateValue(ticketMeta?.week_start) && isIsoDateValue(ticketMeta?.week_end)) {
+    return {
+      weekLabel: cleanText(ticketMeta?.fecha_tentativa) || `${ticketMeta.week_start} al ${ticketMeta.week_end}`,
+      weekStart: ticketMeta.week_start,
+      weekEnd: ticketMeta.week_end,
+      month:
+        (isMonthKeyValue(ticketMeta?.planning_month_key) && ticketMeta.planning_month_key) ||
+        formatMonthKey(ticketMeta.week_end),
+    };
+  }
+
   const fromMeta = cleanText(ticketMeta?.fecha_tentativa);
   if (fromMeta) {
     const upper = normalizeText(fromMeta);
@@ -568,14 +585,21 @@ const resolveWeekRange = (ticketMeta: PlanningMetadata | null, scheduledDate: st
       const [, startText, endText, monthToken, yearText] = dayRangeMatch;
       const monthIndex = MONTH_INDEX[monthToken];
       const year = yearText ? (yearText.length === 2 ? 2000 + Number(yearText) : Number(yearText)) : new Date(createdAt).getFullYear();
-      const weekStart = toIsoDate(new Date(year, monthIndex, Number(startText), 12, 0, 0));
-      const weekEnd = toIsoDate(new Date(year, monthIndex, Number(endText), 12, 0, 0));
+      const startDate = new Date(year, monthIndex, Number(startText), 12, 0, 0);
+      const endDate = new Date(year, monthIndex, Number(endText), 12, 0, 0);
+      if (Number(startText) > Number(endText)) {
+        startDate.setMonth(startDate.getMonth() - 1);
+      }
+      const weekStart = toIsoDate(startDate);
+      const weekEnd = toIsoDate(endDate);
       const label = `${startText.padStart(2, '0')} al ${endText.padStart(2, '0')} ${MONTH_NAMES[monthIndex]}`;
       return {
         weekLabel: label,
         weekStart,
         weekEnd,
-        month: formatMonthKey(weekStart),
+        month:
+          (isMonthKeyValue(ticketMeta?.planning_month_key) && ticketMeta.planning_month_key) ||
+          formatMonthKey(weekEnd),
       };
     }
   }
@@ -940,8 +964,8 @@ export const createWeekOptions = (services: PlannedService[]) =>
     .filter(Boolean)
     .sort((left, right) => left.localeCompare(right, 'es'));
 
-export const buildMonthOptions = (services: PlannedService[]) =>
-  Array.from(new Set([getCurrentMonthKey(), ...services.map((service) => service.month)]))
+export const buildMonthOptions = (services: PlannedService[], extraMonthKeys: string[] = []) =>
+  Array.from(new Set([getCurrentMonthKey(), ...services.map((service) => service.month), ...extraMonthKeys]))
     .filter(Boolean)
     .sort()
     .map((month) => ({ value: month, label: formatMonthLabel(month) }));

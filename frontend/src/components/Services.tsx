@@ -6,6 +6,10 @@ import {
   buildQuickCreatePayload,
   mapPendingTicketToPlannedService,
 } from '../modules/service-planning/helpers/normalizeService';
+import {
+  canAccessPlanningSync,
+  syncServicePlanningDataset,
+} from '../modules/service-planning/helpers/servicePlanningSync';
 import type {
   PlannedService,
   QuickCreateDraft,
@@ -72,7 +76,7 @@ export default function Services() {
           .limit(60),
         supabase.from('catalogo_servicio').select('catalog_kind, catalog_code, catalog_type, catalog_detail, category_code'),
         supabase.from('equipos').select('id, numero_serie, modelo, software, firmware, pais, estado, ciudad, municipio, colonia, direccion, codigo_postal, clientes(id, razon_social, persona_contacto, telefono)'),
-        supabase.from('profiles').select('id, nombre_completo, employee_number, telefono, territorio, rol, recibe_tickets').order('nombre_completo'),
+        supabase.from('profiles').select('id, nombre_completo, employee_number, employee_type, telefono, territorio, rol, recibe_tickets').order('nombre_completo'),
         supabase.from('client_service_units').select('id, client_id, equipment_id, numero_serie, cliente, persona_contacto, unidad_negocio, analizador'),
       ]);
 
@@ -144,6 +148,7 @@ export default function Services() {
     () => plannedTickets.map((ticket) => mapPendingTicketToPlannedService(ticket, equipmentCatalog, engineerProfiles)),
     [equipmentCatalog, engineerProfiles, plannedTickets],
   );
+  const canSyncPlanning = useMemo(() => canAccessPlanningSync(currentUserName), [currentUserName]);
 
   const handleCreateService = async (draft: QuickCreateDraft) => {
     const payload = buildQuickCreatePayload(
@@ -174,6 +179,16 @@ export default function Services() {
 
     await supabase.from('tickets').delete().eq('id', service.id);
     await fetchContext();
+  };
+
+  const handleSyncPlanning = async () => {
+    const summary = await syncServicePlanningDataset({
+      datasetName: 'june-july-2026',
+      actorName: currentUserName || 'Operacion ORION',
+      profiles: engineerProfiles,
+    });
+    await fetchContext();
+    return summary;
   };
 
   const openTravelForService = (service: PlannedService) => {
@@ -227,6 +242,7 @@ export default function Services() {
         userRole={currentUserRole}
         currentUserName={currentUserName}
         engineerOptions={engineerProfiles.map((profile) => profile.nombre_completo || '').filter(Boolean)}
+        staffProfiles={engineerProfiles}
         onCreateService={handleCreateService}
         onUpdateService={handleUpdateService}
         onDeleteService={handleDeleteService}
@@ -236,6 +252,8 @@ export default function Services() {
         reactiveTickets={reactiveTickets}
         historicalRecords={historicalRecords}
         travelAdminPanel={<TravelAdminPanel refreshKey={travelRefreshKey} />}
+        canSyncPlanning={canSyncPlanning}
+        onSyncPlanning={handleSyncPlanning}
       />
 
       {travelPlannerOpen ? (

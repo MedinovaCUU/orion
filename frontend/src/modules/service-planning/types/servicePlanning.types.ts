@@ -28,10 +28,67 @@ export type ServicePlanningSection =
   | 'resumen'
   | 'calendario'
   | 'tabla'
+  | 'guardias'
   | 'ingenieros'
   | 'alertas'
   | 'reportes'
   | 'configuracion';
+
+export type GuardArea = 'aplicativo' | 'ingenieria';
+
+export interface WeekendGuardOverride {
+  weekendStart: string;
+  applicativo?: string;
+  ingenieria?: string;
+  note?: string;
+  updatedAt?: string;
+  updatedBy?: string;
+}
+
+export type WeekendGuardOverrideMap = Record<string, WeekendGuardOverride>;
+
+export interface GuardRosterMember {
+  key: string;
+  area: GuardArea;
+  fullName: string;
+  shortName: string;
+  active: boolean;
+  accentRgb: string;
+  profileId?: string;
+  employeeType?: string | null;
+  role?: string | null;
+}
+
+export interface WeekendGuardAssignment {
+  weekendStart: string;
+  weekendEnd: string;
+  month: string;
+  label: string;
+  source: 'seed' | 'generated';
+  phase: 'historico' | 'proximo' | 'programado';
+  applicativoOriginal: string;
+  applicativoAssigned: string;
+  ingenieriaOriginal: string;
+  ingenieriaAssigned: string;
+  hasOverride: boolean;
+  note?: string;
+  updatedAt?: string;
+  updatedBy?: string;
+}
+
+export interface WeekendGuardMetrics {
+  totalWeekends: number;
+  overrideCount: number;
+  upcomingCount: number;
+  nextWeekendLabel: string;
+}
+
+export interface WeekendGuardScheduleData {
+  months: string[];
+  roster: Record<GuardArea, GuardRosterMember[]>;
+  assignments: WeekendGuardAssignment[];
+  metrics: WeekendGuardMetrics;
+}
 
 export interface PlannedServiceTrace {
   source: ServiceSource;

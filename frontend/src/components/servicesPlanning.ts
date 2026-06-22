@@ -3,6 +3,10 @@ export const METADATA_DELIMITER = '[METADATA_PLANEACION]';
 export interface PlanningMetadata {
   fecha_tentativa?: string;
   fecha_acordada?: string;
+  week_start?: string;
+  week_end?: string;
+  planning_month_key?: string;
+  raw_type_label?: string;
   requiere_vuelos?: boolean;
   requiere_auto?: boolean;
   dias_laborados?: number[];

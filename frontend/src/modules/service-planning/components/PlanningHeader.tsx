@@ -6,7 +6,12 @@ interface PlanningHeaderProps {
   selectedMonth: string;
   showFilters: boolean;
   canCreate: boolean;
+  canSync?: boolean;
+  syncBusy?: boolean;
+  hideFiltersAction?: boolean;
+  hideCreateAction?: boolean;
   onMonthChange: (month: string) => void;
+  onSync?: () => void;
   onToggleFilters: () => void;
   onToggleComposer: () => void;
 }
@@ -17,14 +22,19 @@ export default function PlanningHeader({
   selectedMonth,
   showFilters,
   canCreate,
+  canSync = false,
+  syncBusy = false,
+  hideFiltersAction = false,
+  hideCreateAction = false,
   onMonthChange,
+  onSync,
   onToggleFilters,
   onToggleComposer,
 }: PlanningHeaderProps) {
   return (
     <header className="planning-header">
       <div className="planning-header__title">
-        <h2>{monthLabel.toUpperCase()} <span>• PLANEACIÓN DE SERVICIOS</span></h2>
+        <h2>{monthLabel.toUpperCase()} <span>• PLANEACIÓN Y GUARDIAS</span></h2>
       </div>
 
       <div className="planning-header__toolbar">
@@ -39,15 +49,32 @@ export default function PlanningHeader({
           </select>
         </label>
 
-        <button type="button" className={`button-primary inactive planning-header__ghost ${showFilters ? 'is-active' : ''}`} onClick={onToggleFilters}>
-          <PlanningIcon name="filter" />
-          Filtros
-        </button>
+        {!hideFiltersAction ? (
+          <button type="button" className={`button-primary inactive planning-header__ghost ${showFilters ? 'is-active' : ''}`} onClick={onToggleFilters}>
+            <PlanningIcon name="filter" />
+            Filtros
+          </button>
+        ) : null}
 
-        <button type="button" className="button-primary planning-header__primary" onClick={onToggleComposer} disabled={!canCreate}>
-          <PlanningIcon name="plus" />
-          Nueva actividad
-        </button>
+        {canSync ? (
+          <button
+            type="button"
+            className="button-primary inactive planning-header__sync"
+            onClick={onSync}
+            disabled={syncBusy}
+            title="Sincronizar planeacion desde el dataset interno"
+          >
+            <PlanningIcon name="refresh" />
+            {syncBusy ? 'Sincronizando...' : 'Sincronizar'}
+          </button>
+        ) : null}
+
+        {!hideCreateAction ? (
+          <button type="button" className="button-primary planning-header__primary" onClick={onToggleComposer} disabled={!canCreate}>
+            <PlanningIcon name="plus" />
+            Nueva actividad
+          </button>
+        ) : null}
       </div>
     </header>
   );

@@ -1,6 +1,5 @@
 import { Suspense, lazy, useEffect, useState } from 'react';
 import { supabase } from '../supabaseClient';
-import { useNavigate } from 'react-router-dom';
 import BrandLockup from './BrandLockup';
 import EmployeeCredentialModal, { type EmployeeCredentialProfile } from './EmployeeCredentialModal';
 import './Dashboard.css';
@@ -17,6 +16,9 @@ const PNO = lazy(() => import('./PNO'));
 const EquipmentMonitoring = lazy(() => import('../modules/equipment-monitoring/EquipmentMonitoring'));
 const DriPage = lazy(() => import('../modules/dri/DriPage'));
 const DEFAULT_DASHBOARD_TAB: DashboardTabKey = 'tickets';
+const PILOT_TABS: DashboardTabKey[] = ['tickets', 'servicios', 'asesoria'];
+const FULL_DASHBOARD_ACCESS_NAMES = ['ricardo montanez', 'ricardo montanez miranda'];
+const FULL_DASHBOARD_ACCESS_EMAILS = ['rmontanez@biosystems.com.mx'];
 
 type DashboardTabKey =
   | 'tickets'
@@ -41,6 +43,14 @@ interface DashboardNavigationItem {
   adminOnly?: boolean;
   showBadge?: boolean;
 }
+
+const normalizeText = (value: string | null | undefined) =>
+  (value || '')
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/\s+/g, ' ')
+    .trim()
+    .toLowerCase();
 
 const DashboardPanelFallback = () => (
   <div
@@ -72,7 +82,6 @@ interface DashboardProps {
 }
 
 export default function Dashboard({ session, initialTab }: DashboardProps) {
-  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState<DashboardTabKey>(initialTab ?? DEFAULT_DASHBOARD_TAB);
   const [authReady, setAuthReady] = useState(false);
   const [userRole, setUserRole] = useState<string | null>(null);
@@ -81,6 +90,16 @@ export default function Dashboard({ session, initialTab }: DashboardProps) {
   const [viewerProfile, setViewerProfile] = useState<EmployeeCredentialProfile | null>(null);
 
   const isStaffRole = (role: string | null) => role === 'admin' || role === 'tecnico';
+  const hasFullDashboardAccess = (() => {
+    const normalizedName = normalizeText(viewerProfile?.nombre_completo);
+    const normalizedEmail = normalizeText(session?.user?.email);
+
+    return (
+      FULL_DASHBOARD_ACCESS_NAMES.includes(normalizedName) ||
+      FULL_DASHBOARD_ACCESS_EMAILS.includes(normalizedEmail)
+    );
+  })();
+  const welcomeLabel = viewerProfile?.nombre_completo?.trim() || session?.user?.email?.trim() || 'usuario';
   const navigationItems: DashboardNavigationItem[] = [
     { key: 'tickets', label: 'Tickets', tone: 'clinical' },
     { key: 'servicios', label: 'Planeación', tone: 'environmental' },
@@ -94,8 +113,8 @@ export default function Dashboard({ session, initialTab }: DashboardProps) {
     { key: 'equipos', label: 'Equipos', tone: 'food', adminOnly: true },
     { key: 'dri', label: 'DRI', tone: 'environmental-blue' },
   ];
-  const activeTabIsVisible = navigationItems.some((item) => {
-    if (item.key !== activeTab) {
+  const visibleNavigationItems = navigationItems.filter((item) => {
+    if (!hasFullDashboardAccess && !PILOT_TABS.includes(item.key)) {
       return false;
     }
 
@@ -109,6 +128,7 @@ export default function Dashboard({ session, initialTab }: DashboardProps) {
 
     return true;
   });
+  const activeTabIsVisible = visibleNavigationItems.some((item) => item.key === activeTab);
 
   useEffect(() => {
     if (!activeTabIsVisible) {
@@ -199,7 +219,7 @@ export default function Dashboard({ session, initialTab }: DashboardProps) {
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
-    navigate('/login');
+    window.location.assign(import.meta.env.BASE_URL || '/');
   };
 
   if (!authReady) {
@@ -216,7 +236,7 @@ export default function Dashboard({ session, initialTab }: DashboardProps) {
           subtitle="Tickets, planeación, tutoriales y trazabilidad de servicio en una consola más clara, sobria y utilizable."
         />
         <div className="dashboard-header__actions">
-          <span className="dashboard-header__meta">Mesa operativa unificada</span>
+          <span className="dashboard-header__meta">{`Bienvenido ${welcomeLabel}`}</span>
           {isStaffRole(userRole) ? (
             <button
               type="button"
@@ -231,34 +251,22 @@ export default function Dashboard({ session, initialTab }: DashboardProps) {
       </header>
 
       <div className="dashboard-nav">
-        {navigationItems
-          .filter((item) => {
-            if (item.staffOnly && !isStaffRole(userRole)) {
-              return false;
-            }
+        {visibleNavigationItems.map((item) => {
+          const isActive = activeTab === item.key;
 
-            if (item.adminOnly && userRole !== 'admin') {
-              return false;
-            }
-
-            return true;
-          })
-          .map((item) => {
-            const isActive = activeTab === item.key;
-
-            return (
-              <button
-                key={item.key}
-                onClick={() => setActiveTab(item.key)}
-                className={`button-primary dashboard-nav__button dashboard-nav__button--${item.tone} ${isActive ? '' : 'inactive'}`.trim()}
-              >
-                <span>{item.label}</span>
-                {item.showBadge && advisoryUnreadCount > 0 ? (
-                  <span className="dashboard-nav__badge">{advisoryUnreadCount}</span>
-                ) : null}
-              </button>
-            );
-          })}
+          return (
+            <button
+              key={item.key}
+              onClick={() => setActiveTab(item.key)}
+              className={`button-primary dashboard-nav__button dashboard-nav__button--${item.tone} ${isActive ? '' : 'inactive'}`.trim()}
+            >
+              <span>{item.label}</span>
+              {item.showBadge && advisoryUnreadCount > 0 ? (
+                <span className="dashboard-nav__badge">{advisoryUnreadCount}</span>
+              ) : null}
+            </button>
+          );
+        })}
       </div>
 
       <div className={`card dashboard-card ${activeTab === 'trazabilidad' ? 'dashboard-card--traceability' : ''}`}>

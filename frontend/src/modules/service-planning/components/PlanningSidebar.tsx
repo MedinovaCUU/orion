@@ -14,6 +14,7 @@ const ITEMS: Array<{ key: ServicePlanningSection; label: string; icon: Component
   { key: 'resumen', label: 'Resumen', icon: 'chart' },
   { key: 'calendario', label: 'Calendario', icon: 'calendar' },
   { key: 'tabla', label: 'Tabla maestra', icon: 'table' },
+  { key: 'guardias', label: 'Guardias', icon: 'shield' },
   { key: 'ingenieros', label: 'Ingenieros', icon: 'users' },
   { key: 'alertas', label: 'Alertas', icon: 'bell' },
   { key: 'reportes', label: 'Reportes', icon: 'chart' },
