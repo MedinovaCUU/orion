@@ -16,9 +16,9 @@ const PNO = lazy(() => import('./PNO'));
 const EquipmentMonitoring = lazy(() => import('../modules/equipment-monitoring/EquipmentMonitoring'));
 const DriPage = lazy(() => import('../modules/dri/DriPage'));
 const DEFAULT_DASHBOARD_TAB: DashboardTabKey = 'tickets';
-const PILOT_TABS: DashboardTabKey[] = ['tickets', 'servicios', 'asesoria'];
-const FULL_DASHBOARD_ACCESS_NAMES = ['ricardo montanez', 'ricardo montanez miranda'];
-const FULL_DASHBOARD_ACCESS_EMAILS = ['rmontanez@biosystems.com.mx'];
+const PILOT_TABS: DashboardTabKey[] = ['tickets', 'servicios', 'asesoria', 'equipos'];
+const FULL_DASHBOARD_ACCESS_NAMES = ['ricardo montanez', 'ricardo montanez miranda', 'diego navarro'];
+const FULL_DASHBOARD_ACCESS_EMAILS = ['rmontanez@biosystems.com.mx', 'dnavarro@biosystems.com.mx'];
 
 type DashboardTabKey =
   | 'tickets'
