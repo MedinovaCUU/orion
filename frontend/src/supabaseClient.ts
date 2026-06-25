@@ -1,3 +1,4 @@
+import { processLock } from '@supabase/auth-js';
 import { createClient } from '@supabase/supabase-js';
 
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
@@ -48,8 +49,25 @@ const authStorage = resolveSupabaseStorage();
 export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
   auth: {
     storage: authStorage,
+    lock: processLock,
   },
 });
+
+export const getAppBasePath = () => {
+  const baseUrl = import.meta.env.BASE_URL || '/';
+  return baseUrl.endsWith('/') ? baseUrl : `${baseUrl}/`;
+};
+
+export const buildAbsoluteAppUrl = (path: string) => {
+  const normalizedPath = path.replace(/^\/+/, '');
+  const appBasePath = getAppBasePath();
+
+  if (typeof window === 'undefined') {
+    return `${appBasePath}${normalizedPath}`;
+  }
+
+  return new URL(normalizedPath, `${window.location.origin}${appBasePath}`).toString();
+};
 
 const INVALID_REFRESH_TOKEN_PATTERNS = [
   'invalid refresh token',
@@ -57,6 +75,8 @@ const INVALID_REFRESH_TOKEN_PATTERNS = [
   'invalid jwt',
   'jwt expired',
 ];
+
+const AUTH_LOCK_CONTENTION_PATTERNS = ['lock was stolen by another request'];
 
 export const isRecoverableAuthStorageError = (error: unknown) => {
   const message =
@@ -72,6 +92,20 @@ export const isRecoverableAuthStorageError = (error: unknown) => {
   return INVALID_REFRESH_TOKEN_PATTERNS.some((pattern) => normalizedMessage.includes(pattern));
 };
 
+export const isAuthLockContentionError = (error: unknown) => {
+  const message =
+    error instanceof Error
+      ? error.message
+      : typeof error === 'string'
+        ? error
+        : typeof error === 'object' && error && 'message' in error
+          ? String((error as { message?: unknown }).message || '')
+          : '';
+
+  const normalizedMessage = message.trim().toLowerCase();
+  return AUTH_LOCK_CONTENTION_PATTERNS.some((pattern) => normalizedMessage.includes(pattern));
+};
+
 export const clearBrokenLocalSession = async () => {
   await supabase.auth.signOut({ scope: 'local' });
 };
@@ -85,42 +119,77 @@ const withTimeout = async <T>(task: Promise<T>, timeoutMs = 5000): Promise<T | n
   ]);
 };
 
-export const getValidatedSession = async () => {
-  const sessionResult = await withTimeout(supabase.auth.getSession());
+const delay = (ms: number) =>
+  new Promise<void>((resolve) => {
+    window.setTimeout(resolve, ms);
+  });
 
-  if (!sessionResult) {
-    return null;
-  }
+let validatedSessionInFlight: Promise<Awaited<ReturnType<typeof getValidatedSessionInternal>>> | null = null;
 
-  const {
-    data: { session },
-    error: sessionError,
-  } = sessionResult;
+const getValidatedSessionInternal = async () => {
+  for (let attempt = 0; attempt < 3; attempt += 1) {
+    const sessionResult = await withTimeout(supabase.auth.getSession());
 
-  if (sessionError) {
-    if (isRecoverableAuthStorageError(sessionError)) {
-      await clearBrokenLocalSession();
+    if (!sessionResult) {
+      return null;
     }
-    return null;
-  }
 
-  if (!session) {
-    return null;
-  }
+    const {
+      data: { session },
+      error: sessionError,
+    } = sessionResult;
 
-  const userResult = await withTimeout(supabase.auth.getUser());
+    if (sessionError) {
+      if (isRecoverableAuthStorageError(sessionError)) {
+        await clearBrokenLocalSession();
+      }
 
-  if (!userResult) {
-    return null;
-  }
+      if (isAuthLockContentionError(sessionError)) {
+        if (attempt < 2) {
+          await delay(150 * (attempt + 1));
+          continue;
+        }
 
-  const {
-    data: { user },
-    error: userError,
-  } = userResult;
+        return null;
+      }
 
-  if (userError) {
-    if (isRecoverableAuthStorageError(userError)) {
+      return null;
+    }
+
+    if (!session) {
+      return null;
+    }
+
+    const userResult = await withTimeout(supabase.auth.getUser());
+
+    if (!userResult) {
+      return null;
+    }
+
+    const {
+      data: { user },
+      error: userError,
+    } = userResult;
+
+    if (userError) {
+      if (isRecoverableAuthStorageError(userError)) {
+        await clearBrokenLocalSession();
+        return null;
+      }
+
+      if (isAuthLockContentionError(userError)) {
+        if (attempt < 2) {
+          await delay(150 * (attempt + 1));
+          continue;
+        }
+
+        return session;
+      }
+
+      return session;
+    }
+
+    if (!user) {
       await clearBrokenLocalSession();
       return null;
     }
@@ -128,10 +197,58 @@ export const getValidatedSession = async () => {
     return session;
   }
 
-  if (!user) {
-    await clearBrokenLocalSession();
+  return null;
+};
+
+export const getValidatedUser = async () => {
+  const session = await getValidatedSession();
+
+  if (!session) {
     return null;
   }
 
-  return session;
+  for (let attempt = 0; attempt < 3; attempt += 1) {
+    const userResult = await withTimeout(supabase.auth.getUser());
+
+    if (!userResult) {
+      return null;
+    }
+
+    const {
+      data: { user },
+      error: userError,
+    } = userResult;
+
+    if (userError) {
+      if (isRecoverableAuthStorageError(userError)) {
+        await clearBrokenLocalSession();
+        return null;
+      }
+
+      if (isAuthLockContentionError(userError)) {
+        if (attempt < 2) {
+          await delay(150 * (attempt + 1));
+          continue;
+        }
+
+        return session.user ?? null;
+      }
+
+      return session.user ?? null;
+    }
+
+    return user ?? null;
+  }
+
+  return session.user ?? null;
+};
+
+export const getValidatedSession = async () => {
+  if (!validatedSessionInFlight) {
+    validatedSessionInFlight = getValidatedSessionInternal().finally(() => {
+      validatedSessionInFlight = null;
+    });
+  }
+
+  return validatedSessionInFlight;
 };

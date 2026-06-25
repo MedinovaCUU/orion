@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import './EscalatedAdvisory.css';
-import { supabase } from '../supabaseClient';
+import { getValidatedSession, supabase } from '../supabaseClient';
 import { stripPlaneacionMeta, type EquipmentSummary, type ProfileSummary } from './servicesPlanning';
 import {
   isAdvisoryEmailEnabled,
@@ -799,6 +799,7 @@ export default function EscalatedAdvisory({
     () => (currentUserId ? profileById.get(currentUserId) || null : null),
     [currentUserId, profileById],
   );
+  const effectiveCurrentRole = currentRole || currentRequesterProfile?.rol || null;
 
   const selectedEquipment = useMemo(() => {
     if (!selectedTicket?.numero_serie_equipo) {
@@ -990,7 +991,7 @@ export default function EscalatedAdvisory({
   }, [currentUserId, notifications]);
 
   const roleScopedAdvisories = useMemo(() => {
-    if (currentRole !== 'tecnico') {
+    if (effectiveCurrentRole !== 'tecnico') {
       return advisories;
     }
 
@@ -998,7 +999,7 @@ export default function EscalatedAdvisory({
       (advisory) =>
         assignedAdvisoryIdsForCurrentUser.has(advisory.id) || advisory.solicitante_id === currentUserId,
     );
-  }, [advisories, assignedAdvisoryIdsForCurrentUser, currentRole, currentUserId]);
+  }, [advisories, assignedAdvisoryIdsForCurrentUser, currentUserId, effectiveCurrentRole]);
 
   const filteredAdvisories = useMemo(
     () => roleScopedAdvisories.filter((advisory) => advisory.area === selectedArea),
@@ -1021,9 +1022,9 @@ export default function EscalatedAdvisory({
       myAssignedAdvisories.filter(
         (advisory) =>
           advisory.area === selectedArea &&
-          (currentRole !== 'tecnico' || assignedAdvisoryIdsForCurrentUser.has(advisory.id)),
+          (effectiveCurrentRole !== 'tecnico' || assignedAdvisoryIdsForCurrentUser.has(advisory.id)),
       ),
-    [assignedAdvisoryIdsForCurrentUser, currentRole, myAssignedAdvisories, selectedArea],
+    [assignedAdvisoryIdsForCurrentUser, effectiveCurrentRole, myAssignedAdvisories, selectedArea],
   );
 
   const areaRequestedAdvisories = useMemo(
@@ -1081,12 +1082,12 @@ export default function EscalatedAdvisory({
       : currentRequesterProfile.trainer_quimica === true;
   }, [currentRequesterProfile, selectedArea]);
 
-  const canViewMetrics = currentRole === 'admin' || isAreaTrainer;
+  const canViewMetrics = effectiveCurrentRole === 'admin' || isAreaTrainer;
 
   const metricsScopeAdvisories = useMemo(() => {
     const advisoriesForArea = advisories.filter((advisory) => advisory.area === selectedArea);
 
-    if (currentRole === 'admin') {
+    if (effectiveCurrentRole === 'admin') {
       return advisoriesForArea;
     }
 
@@ -1095,7 +1096,7 @@ export default function EscalatedAdvisory({
     }
 
     return advisoriesForArea.filter((advisory) => assignedAdvisoryIdsForCurrentUser.has(advisory.id));
-  }, [advisories, assignedAdvisoryIdsForCurrentUser, currentRole, currentUserId, isAreaTrainer, selectedArea]);
+  }, [advisories, assignedAdvisoryIdsForCurrentUser, currentUserId, effectiveCurrentRole, isAreaTrainer, selectedArea]);
 
   const metricsRequesterRows = useMemo(
     () =>
@@ -1340,12 +1341,12 @@ export default function EscalatedAdvisory({
   }, [metricsScopeAdvisories, threadSummaryByAdvisoryId]);
 
   const metricsScopeLabel = useMemo(() => {
-    if (currentRole === 'admin') {
+    if (effectiveCurrentRole === 'admin') {
       return `Vista consolidada de ${AREA_LABELS[selectedArea]}`;
     }
 
     return `Cartera visible para ${currentRequesterProfile?.nombre_completo || 'trainer actual'}`;
-  }, [currentRequesterProfile?.nombre_completo, currentRole, selectedArea]);
+  }, [currentRequesterProfile?.nombre_completo, effectiveCurrentRole, selectedArea]);
 
   const exportMetrics = async (format: 'excel' | 'pdf') => {
     if (!canViewMetrics || metricsScopeAdvisories.length === 0) {
@@ -1462,15 +1463,7 @@ export default function EscalatedAdvisory({
           setLoading(true);
         }
 
-        const {
-          data: { session },
-          error: sessionError,
-        } = await supabase.auth.getSession();
-
-        if (sessionError) {
-          throw sessionError;
-        }
-
+        const session = await getValidatedSession();
         const user = session?.user ?? null;
 
         if (!user) {
@@ -1558,7 +1551,7 @@ export default function EscalatedAdvisory({
         const normalized = message.toLowerCase();
 
         if (normalized.includes('lock was stolen by another request')) {
-          console.warn('[EscalatedAdvisory][fetchModuleData] Supabase lock contention ignored.', error);
+          console.warn('[EscalatedAdvisory][fetchModuleData] Supabase lock contention detected; retrying on next tick.', error);
           setLoading(false);
           return;
         }
@@ -2263,7 +2256,7 @@ export default function EscalatedAdvisory({
 
   const activeAreaLabel = AREA_LABELS[selectedArea];
   const areaContributorLabel = selectedArea === 'quimica' ? 'químico' : 'ingeniero';
-  const isTechnician = currentRole === 'tecnico';
+  const isTechnician = effectiveCurrentRole === 'tecnico';
 
   return (
     <div style={{ display: 'grid', gap: '1.25rem' }}>
