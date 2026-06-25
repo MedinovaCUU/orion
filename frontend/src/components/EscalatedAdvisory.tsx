@@ -3,6 +3,14 @@ import './EscalatedAdvisory.css';
 import { supabase } from '../supabaseClient';
 import { stripPlaneacionMeta, type EquipmentSummary, type ProfileSummary } from './servicesPlanning';
 import {
+  isAdvisoryEmailEnabled,
+  sendAdvisoryEmailNotification,
+} from './advisoryEmailApi';
+import {
+  isAdvisoryWhatsAppEnabled,
+  sendAdvisoryWhatsAppNotification,
+} from './advisoryWhatsAppApi';
+import {
   runAdvisoryEvidenceOcr,
   uploadAdvisoryAttachment,
 } from './escalatedAdvisoryEvidence';
@@ -25,6 +33,7 @@ import {
   getAdvisoryThreadMessages,
   markAdvisoryThreadRead,
   type AdvisoryAttachmentAnalysis,
+  type AdvisoryAttachmentKind,
   type AdvisoryAttachmentRecord,
   type AdvisoryMetadata,
   type AdvisoryThreadMessage,
@@ -97,7 +106,7 @@ interface AdvisoryMetricRow {
 
 interface PendingAdvisoryAttachment {
   localId: string;
-  kind: 'photo' | 'report' | 'service_test';
+  kind: AdvisoryAttachmentKind;
   file: File;
   fileName: string;
   previewUrl: string | null;
@@ -149,6 +158,7 @@ interface AdvisoryTimelineDay {
 
 interface EscalatedAdvisoryProps {
   onNotificationCountChange?: (count: number) => void;
+  requestedAdvisoryId?: string | null;
 }
 
 const STAFF_ROLES = new Set(['admin', 'tecnico']);
@@ -337,10 +347,72 @@ const WAITING_COLORS: Record<AdvisoryWaitingOn, string> = {
   closed: '#7c8895',
 };
 
-const EVIDENCE_KIND_LABELS: Record<PendingAdvisoryAttachment['kind'], string> = {
+const logAdvisoryIntegrationResult = (channel: 'whatsapp' | 'email', action: 'create' | 'reply', details: unknown) => {
+  console.info(`[advisory:${channel}:${action}]`, details);
+};
+
+const logAdvisoryRoutingResolution = (action: 'create' | 'empty', details: unknown) => {
+  console.info(`[advisory:routing:${action}]`, details);
+};
+
+const EVIDENCE_KIND_LABELS: Record<AdvisoryAttachmentKind, string> = {
   photo: 'Foto',
   report: 'Reporte',
   service_test: 'Prueba de servicio',
+  video: 'Video',
+};
+
+const IMAGE_ATTACHMENT_ACCEPT = 'image/*';
+const REPORT_ATTACHMENT_ACCEPT = '.pdf,.txt,image/*';
+const VIDEO_ATTACHMENT_ACCEPT = 'video/*';
+
+const getPendingAttachmentPreviewType = (attachment: Pick<PendingAdvisoryAttachment, 'kind' | 'file' | 'previewUrl'>) => {
+  if (!attachment.previewUrl) {
+    return null;
+  }
+
+  if (attachment.file.type.startsWith('image/')) {
+    return 'image';
+  }
+
+  if (attachment.kind === 'video' || attachment.file.type.startsWith('video/')) {
+    return 'video';
+  }
+
+  return null;
+};
+
+const renderPendingAttachmentPreview = (attachment: PendingAdvisoryAttachment) => {
+  const previewType = getPendingAttachmentPreviewType(attachment);
+  if (previewType === 'image') {
+    return <img className="advisory-attachment-draft__media" src={attachment.previewUrl || ''} alt={attachment.fileName} />;
+  }
+
+  if (previewType === 'video') {
+    return (
+      <video className="advisory-attachment-draft__media" controls preload="metadata" src={attachment.previewUrl || ''}>
+        Tu navegador no soporta video embebido.
+      </video>
+    );
+  }
+
+  return null;
+};
+
+const renderThreadAttachmentMedia = (attachment: AdvisoryAttachmentRecord) => {
+  if (attachment.mimeType.startsWith('image/')) {
+    return <img src={attachment.publicUrl} alt={attachment.fileName} />;
+  }
+
+  if (attachment.kind === 'video' || attachment.mimeType.startsWith('video/')) {
+    return (
+      <video controls preload="metadata" src={attachment.publicUrl}>
+        Tu navegador no soporta video embebido.
+      </video>
+    );
+  }
+
+  return null;
 };
 
 const QUICK_REPLIES: Record<AdvisoryThreadRole, string[]> = {
@@ -455,7 +527,10 @@ function ChemistryIcon({ materialKey }: { materialKey: ChemistryMaterialKey }) {
   }
 }
 
-export default function EscalatedAdvisory({ onNotificationCountChange }: EscalatedAdvisoryProps) {
+export default function EscalatedAdvisory({
+  onNotificationCountChange,
+  requestedAdvisoryId = null,
+}: EscalatedAdvisoryProps) {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [feedback, setFeedback] = useState<AdvisoryFeedback | null>(null);
@@ -488,8 +563,11 @@ export default function EscalatedAdvisory({ onNotificationCountChange }: Escalat
   const chemistryAutofillRef = useRef<ChemistryDraftFields | null>(null);
   const areaInitializedRef = useRef(false);
   const metricsFetchInFlightRef = useRef<Promise<void> | null>(null);
+  const savingAdvisoryIdsRef = useRef(new Set<string>());
+  const syncingActiveReadIdsRef = useRef(new Set<string>());
+  const handledDeepLinkAdvisoryIdRef = useRef<string | null>(null);
 
-  const isStaff = STAFF_ROLES.has(currentRole || '');
+  const advisoryWhatsAppEnabled = isAdvisoryWhatsAppEnabled();
 
   const visibleTickets = useMemo(
     () =>
@@ -548,7 +626,7 @@ export default function EscalatedAdvisory({ onNotificationCountChange }: Escalat
       kind,
       file,
       fileName: file.name,
-      previewUrl: file.type.startsWith('image/') ? URL.createObjectURL(file) : null,
+      previewUrl: file.type.startsWith('image/') || file.type.startsWith('video/') ? URL.createObjectURL(file) : null,
       status: 'processing',
       error: null,
       analysis: null,
@@ -916,8 +994,11 @@ export default function EscalatedAdvisory({ onNotificationCountChange }: Escalat
       return advisories;
     }
 
-    return advisories.filter((advisory) => assignedAdvisoryIdsForCurrentUser.has(advisory.id));
-  }, [advisories, assignedAdvisoryIdsForCurrentUser, currentRole]);
+    return advisories.filter(
+      (advisory) =>
+        assignedAdvisoryIdsForCurrentUser.has(advisory.id) || advisory.solicitante_id === currentUserId,
+    );
+  }, [advisories, assignedAdvisoryIdsForCurrentUser, currentRole, currentUserId]);
 
   const filteredAdvisories = useMemo(
     () => roleScopedAdvisories.filter((advisory) => advisory.area === selectedArea),
@@ -947,12 +1028,8 @@ export default function EscalatedAdvisory({ onNotificationCountChange }: Escalat
 
   const areaRequestedAdvisories = useMemo(
     () =>
-      myRequestedAdvisories.filter(
-        (advisory) =>
-          advisory.area === selectedArea &&
-          (currentRole !== 'tecnico' || assignedAdvisoryIdsForCurrentUser.has(advisory.id)),
-      ),
-    [assignedAdvisoryIdsForCurrentUser, currentRole, myRequestedAdvisories, selectedArea],
+      myRequestedAdvisories.filter((advisory) => advisory.area === selectedArea),
+    [myRequestedAdvisories, selectedArea],
   );
 
   const engineeringWeekdayAdvisoriesCount = useMemo(
@@ -1503,11 +1580,24 @@ export default function EscalatedAdvisory({ onNotificationCountChange }: Escalat
   useEffect(() => {
     void fetchModuleData();
 
+    const channel = supabase
+      .channel('escalated-advisory-live')
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'asesorias_escaladas' }, () => {
+        void fetchModuleData(false);
+      })
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'asesorias_escaladas_destinatarios' }, () => {
+        void fetchModuleData(false);
+      })
+      .subscribe();
+
     const timer = window.setInterval(() => {
       void fetchModuleData(false);
     }, 45000);
 
-    return () => window.clearInterval(timer);
+    return () => {
+      window.clearInterval(timer);
+      void supabase.removeChannel(channel);
+    };
   }, []);
 
   useEffect(() => {
@@ -1676,6 +1766,17 @@ export default function EscalatedAdvisory({ onNotificationCountChange }: Escalat
     }
 
     if (autoRecipientIds.length === 0) {
+      logAdvisoryRoutingResolution('empty', {
+        area: selectedArea,
+        weekdayNames: getRoutingNamesForArea(selectedArea, 'weekday'),
+        weekendNames: getRoutingNamesForArea(selectedArea, 'weekend'),
+        currentRoutingIsWeekend,
+        resolvedProfiles: autoRecipientProfiles.map((profile) => ({
+          id: profile.id,
+          name: profile.nombre_completo,
+          role: profile.rol,
+        })),
+      });
       setFeedback({ tone: 'error', message: 'No hay destinatarios automáticos resueltos para esta asesoría.' });
       return;
     }
@@ -1748,24 +1849,7 @@ export default function EscalatedAdvisory({ onNotificationCountChange }: Escalat
       return;
     }
 
-    const notificationsPayload = autoRecipientIds.map((profileId) => ({
-      asesoria_id: insertedAdvisory.id as string,
-      destinatario_id: profileId,
-    }));
-
-    const { error: notificationError } = await supabase
-      .from('asesorias_escaladas_destinatarios')
-      .insert(notificationsPayload);
-
-    if (notificationError) {
-      setSaving(false);
-      setFeedback({
-        tone: 'error',
-        message: notificationError.message || 'La asesoría se creó, pero no se pudieron generar las notificaciones.',
-      });
-      return;
-    }
-
+    let evidenceWarning: string | null = null;
     if (createEvidenceDrafts.length > 0) {
       try {
         const uploadedAttachments = await buildUploadedAttachmentRecords(
@@ -1801,16 +1885,66 @@ export default function EscalatedAdvisory({ onNotificationCountChange }: Escalat
           throw metadataError;
         }
       } catch (error) {
-        setSaving(false);
-        setFeedback({
-          tone: 'info',
-          message:
-            error instanceof Error
-              ? `La asesoría se creó, pero la evidencia no se pudo procesar por completo: ${error.message}`
-              : 'La asesoría se creó, pero la evidencia no se pudo procesar por completo.',
+        evidenceWarning =
+          error instanceof Error
+            ? `La evidencia no se pudo procesar por completo: ${error.message}`
+            : 'La evidencia no se pudo procesar por completo.';
+        console.warn('[advisory:evidence:create]', error);
+      }
+    }
+
+    const notificationsPayload = autoRecipientIds.map((profileId) => ({
+      asesoria_id: insertedAdvisory.id as string,
+      destinatario_id: profileId,
+    }));
+
+    logAdvisoryRoutingResolution('create', {
+      advisoryId: insertedAdvisory.id,
+      area: selectedArea,
+      currentRoutingIsWeekend,
+      weekdayNames: getRoutingNamesForArea(selectedArea, 'weekday'),
+      weekendNames: getRoutingNamesForArea(selectedArea, 'weekend'),
+      selectedRecipients: autoRecipientProfiles.map((profile) => ({
+        id: profile.id,
+        name: profile.nombre_completo,
+        role: profile.rol,
+      })),
+    });
+
+    const { error: notificationError } = await supabase
+      .from('asesorias_escaladas_destinatarios')
+      .insert(notificationsPayload);
+
+    if (notificationError) {
+      setSaving(false);
+      setFeedback({
+        tone: 'error',
+        message: notificationError.message || 'La asesoría se creó, pero no se pudieron generar las notificaciones.',
+      });
+      return;
+    }
+
+    if (advisoryWhatsAppEnabled) {
+      try {
+        const whatsappResponse = await sendAdvisoryWhatsAppNotification({
+          advisoryId: insertedAdvisory.id as string,
         });
-        await fetchModuleData(false);
-        return;
+        logAdvisoryIntegrationResult('whatsapp', 'create', whatsappResponse);
+      } catch (error) {
+        console.warn('[advisory:whatsapp:create]', error);
+      }
+    }
+
+    if (isAdvisoryEmailEnabled()) {
+      try {
+        const emailResponse = await sendAdvisoryEmailNotification({
+          advisoryId: insertedAdvisory.id as string,
+          eventType: 'new_advisory',
+          eventMessageId: initialMessageId,
+        });
+        logAdvisoryIntegrationResult('email', 'create', emailResponse);
+      } catch (error) {
+        console.warn('[advisory:email:create]', error);
       }
     }
 
@@ -1818,8 +1952,10 @@ export default function EscalatedAdvisory({ onNotificationCountChange }: Escalat
     setActiveAdvisoryId(insertedAdvisory.id as string);
     setSaving(false);
     setFeedback({
-      tone: 'success',
-      message: `La asesoría se escaló a ${autoRecipientIds.length} destinatario(s).`,
+      tone: evidenceWarning ? 'info' : 'success',
+      message: evidenceWarning
+        ? `La asesoría se escaló a ${autoRecipientIds.length} destinatario(s), pero ${evidenceWarning}`
+        : `La asesoría se escaló a ${autoRecipientIds.length} destinatario(s).`,
     });
     await fetchModuleData(false);
   };
@@ -1875,6 +2011,78 @@ export default function EscalatedAdvisory({ onNotificationCountChange }: Escalat
     );
   };
 
+  useEffect(() => {
+    if (!activeAdvisoryId || !currentUserId || syncingActiveReadIdsRef.current.has(activeAdvisoryId)) {
+      return;
+    }
+
+    const advisory = advisories.find((item) => item.id === activeAdvisoryId);
+    if (!advisory) {
+      return;
+    }
+
+    const threadSummary = threadSummaryByAdvisoryId.get(activeAdvisoryId);
+    const viewerRole = advisory.solicitante_id === currentUserId ? 'requester' : 'trainer';
+    const hasUnreadThread =
+      viewerRole === 'requester'
+        ? (threadSummary?.unreadRequester || 0) > 0
+        : (threadSummary?.unreadTrainer || 0) > 0;
+    const hasUnreadNotifications = notifications.some(
+      (notification) =>
+        notification.asesoria_id === activeAdvisoryId &&
+        notification.destinatario_id === currentUserId &&
+        !notification.leida_en,
+    );
+
+    if (!hasUnreadThread && !hasUnreadNotifications) {
+      return;
+    }
+
+    syncingActiveReadIdsRef.current.add(activeAdvisoryId);
+
+    void (async () => {
+      try {
+        if (hasUnreadThread) {
+          await markThreadSideRead(advisory);
+        }
+        if (hasUnreadNotifications) {
+          await markNotificationsRead(activeAdvisoryId);
+        }
+      } finally {
+        syncingActiveReadIdsRef.current.delete(activeAdvisoryId);
+      }
+    })();
+  }, [activeAdvisoryId, advisories, currentUserId, notifications, threadSummaryByAdvisoryId]);
+
+  useEffect(() => {
+    if (!requestedAdvisoryId || handledDeepLinkAdvisoryIdRef.current === requestedAdvisoryId) {
+      return;
+    }
+
+    const advisory = advisories.find((item) => item.id === requestedAdvisoryId);
+    if (!advisory) {
+      return;
+    }
+
+    if (selectedArea !== advisory.area) {
+      setSelectedArea(advisory.area);
+      return;
+    }
+
+    if (activeAdvisoryId !== advisory.id) {
+      setActiveAdvisoryId(advisory.id);
+      return;
+    }
+
+    handledDeepLinkAdvisoryIdRef.current = requestedAdvisoryId;
+    const frame = window.requestAnimationFrame(() => {
+      const advisoryNode = document.querySelector<HTMLElement>(`[data-advisory-id="${requestedAdvisoryId}"]`);
+      advisoryNode?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+
+    return () => window.cancelAnimationFrame(frame);
+  }, [activeAdvisoryId, advisories, requestedAdvisoryId, selectedArea]);
+
   const handleOpenAdvisory = async (advisoryId: string) => {
     setActiveAdvisoryId((current) => (current === advisoryId ? null : advisoryId));
 
@@ -1899,153 +2107,159 @@ export default function EscalatedAdvisory({ onNotificationCountChange }: Escalat
       return;
     }
 
+    if (savingAdvisoryIdsRef.current.has(advisoryId)) {
+      return;
+    }
+
     const draft = responseDrafts[advisoryId];
     if (!draft) {
       return;
     }
 
+    savingAdvisoryIdsRef.current.add(advisoryId);
     setSaving(true);
+    try {
+      const nextStatus = draft.estado;
+      const advisory = advisories.find((item) => item.id === advisoryId);
+      if (!advisory) {
+        return;
+      }
 
-    const nextStatus = draft.estado;
-    const advisory = advisories.find((item) => item.id === advisoryId);
-    if (!advisory) {
-      setSaving(false);
-      return;
-    }
+      const trimmedResponse = draft.mensaje.trim();
+      const viewerRole = getViewerThreadRole(advisory);
+      const canEditStatus = viewerRole === 'trainer';
+      const timestamp = new Date().toISOString();
+      const hasStatusChange = canEditStatus && nextStatus !== advisory.estado;
+      const hasBody = Boolean(trimmedResponse);
+      const hasAttachments = draft.attachments.length > 0;
 
-    const trimmedResponse = draft.mensaje.trim();
-    const viewerRole = getViewerThreadRole(advisory);
-    const canEditStatus = viewerRole === 'trainer';
-    const timestamp = new Date().toISOString();
-    const hasStatusChange = canEditStatus && nextStatus !== advisory.estado;
-    const hasBody = Boolean(trimmedResponse);
-    const hasAttachments = draft.attachments.length > 0;
-
-    if (!hasBody && !hasStatusChange && !hasAttachments) {
-      setSaving(false);
-      setFeedback({
-        tone: 'info',
-        message: 'Agrega un comentario, evidencia o cambio de estado antes de guardar.',
-      });
-      return;
-    }
-
-    const requesterName =
-      advisory.solicitante_nombre_snapshot ||
-      (advisory.solicitante_id ? profileById.get(advisory.solicitante_id)?.nombre_completo : null) ||
-      'Solicitante';
-    const actorName =
-      profileById.get(currentUserId)?.nombre_completo ||
-      (viewerRole === 'trainer' ? 'Trainer' : requesterName);
-    const source = buildThreadSource(
-      advisory,
-      requesterName,
-      advisory.respondida_por_id ? profileById.get(advisory.respondida_por_id)?.nombre_completo || null : null,
-    );
-    const messageId = crypto.randomUUID();
-    let attachments: AdvisoryAttachmentRecord[] = [];
-    if (hasAttachments) {
-      try {
-        attachments = await buildUploadedAttachmentRecords(advisoryId, messageId, draft.attachments);
-      } catch (error) {
-        setSaving(false);
+      if (!hasBody && !hasStatusChange && !hasAttachments) {
         setFeedback({
-          tone: 'error',
-          message:
-            error instanceof Error
-              ? `No se pudo subir la evidencia adjunta: ${error.message}`
-              : 'No se pudo subir la evidencia adjunta.',
+          tone: 'info',
+          message: 'Agrega un comentario, evidencia o cambio de estado antes de guardar.',
         });
         return;
       }
-    }
-    let nextMetadata: AdvisoryMetadata | unknown = advisory.metadata;
 
-    if (hasBody || hasAttachments) {
-      nextMetadata = appendAdvisoryThreadMessage({
-        metadata: advisory.metadata,
-        source,
-        message: {
-          id: messageId,
-          kind: 'reply',
-          role: viewerRole,
-          actorId: currentUserId,
-          actorName,
-          body: trimmedResponse || (attachments.length > 0 ? 'Adjuntó evidencia técnica.' : ''),
-          createdAt: timestamp,
-          attachments,
-          statusSnapshot: canEditStatus ? nextStatus : advisory.estado,
-        },
-        nextStatus: canEditStatus ? nextStatus : advisory.estado,
-      });
-    }
-
-    if (hasStatusChange) {
-      nextMetadata = appendAdvisorySystemMessage(
-        nextMetadata,
-        source,
-        `Estado actualizado a ${STATUS_LABELS[nextStatus]}.`,
-        nextStatus,
+      const requesterName =
+        advisory.solicitante_nombre_snapshot ||
+        (advisory.solicitante_id ? profileById.get(advisory.solicitante_id)?.nombre_completo : null) ||
+        'Solicitante';
+      const actorName =
+        profileById.get(currentUserId)?.nombre_completo ||
+        (viewerRole === 'trainer' ? 'Trainer' : requesterName);
+      const source = buildThreadSource(
+        advisory,
+        requesterName,
+        advisory.respondida_por_id ? profileById.get(advisory.respondida_por_id)?.nombre_completo || null : null,
       );
-    }
-
-    const payload: Record<string, unknown> = {
-      estado: canEditStatus ? nextStatus : advisory.estado,
-      metadata: nextMetadata,
-      actualizado_en: timestamp,
-    };
-
-    if (viewerRole === 'trainer' && (trimmedResponse || attachments.length > 0)) {
-      payload.respuesta_trainer = trimmedResponse || advisory.respuesta_trainer || 'Se adjuntó evidencia técnica.';
-      payload.respondida_por_id = currentUserId;
-      payload.respondida_en = timestamp;
-    }
-
-    const { error } = await supabase.from('asesorias_escaladas').update(payload).eq('id', advisoryId);
-
-    setSaving(false);
-
-    if (error) {
-      setFeedback({
-        tone: 'error',
-        message: error.message || 'No se pudo guardar la actualización de asesoría.',
-      });
-      return;
-    }
-
-    setFeedback({
-      tone: 'success',
-      message:
-        canEditStatus && nextStatus === 'cerrada'
-          ? 'La asesoría quedó cerrada.'
-          : 'La conversación y la actualización de asesoría quedaron guardadas.',
-    });
-    draft.attachments.forEach((attachment) => {
-      if (attachment.previewUrl) {
-        URL.revokeObjectURL(attachment.previewUrl);
+      const messageId = crypto.randomUUID();
+      let attachments: AdvisoryAttachmentRecord[] = [];
+      if (hasAttachments) {
+        try {
+          attachments = await buildUploadedAttachmentRecords(advisoryId, messageId, draft.attachments);
+        } catch (error) {
+          setFeedback({
+            tone: 'error',
+            message:
+              error instanceof Error
+                ? `No se pudo subir la evidencia adjunta: ${error.message}`
+                : 'No se pudo subir la evidencia adjunta.',
+          });
+          return;
+        }
       }
-    });
-    setResponseDrafts((current) => ({
-      ...current,
-      [advisoryId]: {
-        estado: canEditStatus ? nextStatus : advisory.estado,
-        mensaje: '',
-        attachments: [],
-      },
-    }));
-    await fetchModuleData(false);
-  };
+      let nextMetadata: AdvisoryMetadata | unknown = advisory.metadata;
 
-  if (!isStaff && !loading) {
-    return (
-      <div className="card" style={{ padding: '1.5rem', background: 'rgba(90, 6, 17, 0.22)', borderColor: 'rgba(186, 0, 13, 0.25)' }}>
-        <h3 style={{ marginBottom: '0.5rem' }}>Acceso restringido</h3>
-        <p style={{ color: 'var(--text-secondary)' }}>
-          Este módulo está disponible solo para personal interno con rol de administración o soporte técnico.
-        </p>
-      </div>
-    );
-  }
+      if (hasBody || hasAttachments) {
+        nextMetadata = appendAdvisoryThreadMessage({
+          metadata: advisory.metadata,
+          source,
+          message: {
+            id: messageId,
+            kind: 'reply',
+            role: viewerRole,
+            actorId: currentUserId,
+            actorName,
+            body: trimmedResponse || (attachments.length > 0 ? 'Adjuntó evidencia técnica.' : ''),
+            createdAt: timestamp,
+            attachments,
+            statusSnapshot: canEditStatus ? nextStatus : advisory.estado,
+          },
+          nextStatus: canEditStatus ? nextStatus : advisory.estado,
+        });
+      }
+
+      if (hasStatusChange) {
+        nextMetadata = appendAdvisorySystemMessage(
+          nextMetadata,
+          source,
+          `Estado actualizado a ${STATUS_LABELS[nextStatus]}.`,
+          nextStatus,
+        );
+      }
+
+      const payload: Record<string, unknown> = {
+        estado: canEditStatus ? nextStatus : advisory.estado,
+        metadata: nextMetadata,
+        actualizado_en: timestamp,
+      };
+
+      if (viewerRole === 'trainer' && (trimmedResponse || attachments.length > 0)) {
+        payload.respuesta_trainer = trimmedResponse || advisory.respuesta_trainer || 'Se adjuntó evidencia técnica.';
+        payload.respondida_por_id = currentUserId;
+        payload.respondida_en = timestamp;
+      }
+
+      const { error } = await supabase.from('asesorias_escaladas').update(payload).eq('id', advisoryId);
+
+      if (error) {
+        setFeedback({
+          tone: 'error',
+          message: error.message || 'No se pudo guardar la actualización de asesoría.',
+        });
+        return;
+      }
+
+      if (isAdvisoryEmailEnabled() && (hasBody || hasAttachments)) {
+        try {
+          const emailResponse = await sendAdvisoryEmailNotification({
+            advisoryId,
+            eventType: viewerRole === 'trainer' ? 'trainer_reply' : 'requester_reply',
+            eventMessageId: messageId,
+          });
+          logAdvisoryIntegrationResult('email', 'reply', emailResponse);
+        } catch (error) {
+          console.warn('[advisory:email:reply]', error);
+        }
+      }
+
+      setFeedback({
+        tone: 'success',
+        message:
+          canEditStatus && nextStatus === 'cerrada'
+            ? 'La asesoría quedó cerrada.'
+            : 'La conversación y la actualización de asesoría quedaron guardadas.',
+      });
+      draft.attachments.forEach((attachment) => {
+        if (attachment.previewUrl) {
+          URL.revokeObjectURL(attachment.previewUrl);
+        }
+      });
+      setResponseDrafts((current) => ({
+        ...current,
+        [advisoryId]: {
+          estado: canEditStatus ? nextStatus : advisory.estado,
+          mensaje: '',
+          attachments: [],
+        },
+      }));
+      await fetchModuleData(false);
+    } finally {
+      savingAdvisoryIdsRef.current.delete(advisoryId);
+      setSaving(false);
+    }
+  };
 
   const activeAreaLabel = AREA_LABELS[selectedArea];
   const areaContributorLabel = selectedArea === 'quimica' ? 'químico' : 'ingeniero';
@@ -2479,7 +2693,7 @@ export default function EscalatedAdvisory({ onNotificationCountChange }: Escalat
             <div className="advisory-thread-card__section-header">
               <div>
                 <div className="advisory-thread-card__eyebrow">Evidencia técnica</div>
-                <strong>Adjunta foto o reporte</strong>
+                <strong>Adjunta foto, graba video o sube uno ya guardado</strong>
               </div>
               <div className="advisory-thread-actions">
                 <label className="button-primary inactive advisory-thread-action-pill" htmlFor="advisory-create-photo">
@@ -2489,9 +2703,30 @@ export default function EscalatedAdvisory({ onNotificationCountChange }: Escalat
                   id="advisory-create-photo"
                   hidden
                   type="file"
-                  accept="image/*"
+                  accept={IMAGE_ATTACHMENT_ACCEPT}
                   capture="environment"
                   onChange={(event) => void addPendingAttachments(event.target.files, 'photo', 'create')}
+                />
+                <label className="button-primary inactive advisory-thread-action-pill" htmlFor="advisory-create-video-capture">
+                  Grabar video
+                </label>
+                <input
+                  id="advisory-create-video-capture"
+                  hidden
+                  type="file"
+                  accept={VIDEO_ATTACHMENT_ACCEPT}
+                  capture="environment"
+                  onChange={(event) => void addPendingAttachments(event.target.files, 'video', 'create')}
+                />
+                <label className="button-primary inactive advisory-thread-action-pill" htmlFor="advisory-create-video-library">
+                  Subir video
+                </label>
+                <input
+                  id="advisory-create-video-library"
+                  hidden
+                  type="file"
+                  accept={VIDEO_ATTACHMENT_ACCEPT}
+                  onChange={(event) => void addPendingAttachments(event.target.files, 'video', 'create')}
                 />
                 <label className="button-primary inactive advisory-thread-action-pill" htmlFor="advisory-create-report">
                   Reporte
@@ -2500,7 +2735,7 @@ export default function EscalatedAdvisory({ onNotificationCountChange }: Escalat
                   id="advisory-create-report"
                   hidden
                   type="file"
-                  accept=".pdf,.txt,image/*"
+                  accept={REPORT_ATTACHMENT_ACCEPT}
                   onChange={(event) => void addPendingAttachments(event.target.files, 'report', 'create')}
                 />
               </div>
@@ -2520,6 +2755,7 @@ export default function EscalatedAdvisory({ onNotificationCountChange }: Escalat
                         Quitar
                       </button>
                     </div>
+                    {renderPendingAttachmentPreview(attachment)}
                     <strong>{attachment.fileName}</strong>
                     <span>
                       {attachment.status === 'processing'
@@ -2565,7 +2801,7 @@ export default function EscalatedAdvisory({ onNotificationCountChange }: Escalat
               <h3 style={{ marginBottom: '0.35rem' }}>Bandeja de asesorías</h3>
               <p style={{ color: 'var(--text-secondary)' }}>
                 {isTechnician
-                  ? `Estás viendo únicamente los casos de ${activeAreaLabel.toLowerCase()} donde apareces como destinatario.`
+                  ? `Estás viendo los casos de ${activeAreaLabel.toLowerCase()} donde eres solicitante o apareces como destinatario.`
                   : `Estás viendo únicamente los casos de ${activeAreaLabel.toLowerCase()}, tanto los que escalaste como los que te asignaron.`}
               </p>
             </div>
@@ -2574,7 +2810,7 @@ export default function EscalatedAdvisory({ onNotificationCountChange }: Escalat
               {areaAssignedAdvisories.length} asignadas
             </span>
             <span className="button-primary inactive chip" style={{ textTransform: 'none' }}>
-              {areaRequestedAdvisories.length} {isTechnician ? 'propias y asignadas' : 'solicitadas por mí'}
+              {areaRequestedAdvisories.length} solicitadas por mí
             </span>
           </div>
         </div>
@@ -2615,6 +2851,7 @@ export default function EscalatedAdvisory({ onNotificationCountChange }: Escalat
               return (
                 <div
                   key={advisory.id}
+                  data-advisory-id={advisory.id}
                   className={`advisory-thread-card ${isExpanded ? 'is-expanded' : ''}`}
                   style={{
                     borderColor: tone.border,
@@ -2839,23 +3076,26 @@ export default function EscalatedAdvisory({ onNotificationCountChange }: Escalat
                               </div>
                               <p>{message.body}</p>
                               {message.attachments.length > 0 ? (
-                                <div className="advisory-thread-attachments">
-                                  {message.attachments.map((attachment) => (
-                                    <a
-                                      key={attachment.id}
-                                      href={attachment.publicUrl}
-                                      target="_blank"
-                                      rel="noreferrer"
-                                      className="advisory-thread-attachment"
-                                    >
-                                      {attachment.mimeType.startsWith('image/') ? (
-                                        <img src={attachment.publicUrl} alt={attachment.fileName} />
-                                      ) : (
-                                        <div className="advisory-thread-attachment__file">
-                                          <strong>{attachment.fileName}</strong>
-                                          <span>{EVIDENCE_KIND_LABELS[attachment.kind]}</span>
-                                        </div>
-                                      )}
+                                  <div className="advisory-thread-attachments">
+                                    {message.attachments.map((attachment) => (
+                                      <a
+                                        key={attachment.id}
+                                        href={attachment.publicUrl}
+                                        target="_blank"
+                                        rel="noreferrer"
+                                        className="advisory-thread-attachment"
+                                      >
+                                      {(() => {
+                                        const media = renderThreadAttachmentMedia(attachment);
+                                        return media ? (
+                                          media
+                                        ) : (
+                                          <div className="advisory-thread-attachment__file">
+                                            <strong>{attachment.fileName}</strong>
+                                            <span>{EVIDENCE_KIND_LABELS[attachment.kind]}</span>
+                                          </div>
+                                        );
+                                      })()}
                                       {attachment.analysis?.summary?.length ? (
                                         <div className="advisory-thread-attachment__chips">
                                           {attachment.analysis.summary.slice(0, 3).map((summary) => (
@@ -2941,9 +3181,30 @@ export default function EscalatedAdvisory({ onNotificationCountChange }: Escalat
                             id={`reply-photo-${advisory.id}`}
                             hidden
                             type="file"
-                            accept="image/*"
+                            accept={IMAGE_ATTACHMENT_ACCEPT}
                             capture="environment"
                             onChange={(event) => void addPendingAttachments(event.target.files, 'photo', advisory.id)}
+                          />
+                          <label className="button-primary inactive advisory-thread-action-pill" htmlFor={`reply-video-capture-${advisory.id}`}>
+                            Grabar video
+                          </label>
+                          <input
+                            id={`reply-video-capture-${advisory.id}`}
+                            hidden
+                            type="file"
+                            accept={VIDEO_ATTACHMENT_ACCEPT}
+                            capture="environment"
+                            onChange={(event) => void addPendingAttachments(event.target.files, 'video', advisory.id)}
+                          />
+                          <label className="button-primary inactive advisory-thread-action-pill" htmlFor={`reply-video-library-${advisory.id}`}>
+                            Subir video
+                          </label>
+                          <input
+                            id={`reply-video-library-${advisory.id}`}
+                            hidden
+                            type="file"
+                            accept={VIDEO_ATTACHMENT_ACCEPT}
+                            onChange={(event) => void addPendingAttachments(event.target.files, 'video', advisory.id)}
                           />
                           <label className="button-primary inactive advisory-thread-action-pill" htmlFor={`reply-report-${advisory.id}`}>
                             Reporte
@@ -2952,7 +3213,7 @@ export default function EscalatedAdvisory({ onNotificationCountChange }: Escalat
                             id={`reply-report-${advisory.id}`}
                             hidden
                             type="file"
-                            accept=".pdf,.txt,image/*"
+                            accept={REPORT_ATTACHMENT_ACCEPT}
                             onChange={(event) => void addPendingAttachments(event.target.files, 'report', advisory.id)}
                           />
                           <label className="button-primary inactive advisory-thread-action-pill" htmlFor={`reply-service-${advisory.id}`}>
@@ -2962,7 +3223,7 @@ export default function EscalatedAdvisory({ onNotificationCountChange }: Escalat
                             id={`reply-service-${advisory.id}`}
                             hidden
                             type="file"
-                            accept=".pdf,.txt,image/*"
+                            accept={REPORT_ATTACHMENT_ACCEPT}
                             onChange={(event) => void addPendingAttachments(event.target.files, 'service_test', advisory.id)}
                           />
                         </div>
@@ -2981,6 +3242,7 @@ export default function EscalatedAdvisory({ onNotificationCountChange }: Escalat
                                     Quitar
                                   </button>
                                 </div>
+                                {renderPendingAttachmentPreview(attachment)}
                                 <strong>{attachment.fileName}</strong>
                                 <span>
                                   {attachment.status === 'processing'
