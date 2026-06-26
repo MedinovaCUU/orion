@@ -1,4 +1,5 @@
-import { Suspense, lazy, useEffect, useState } from 'react';
+import { Suspense, lazy, useEffect, useRef, useState } from 'react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { supabase } from '../supabaseClient';
 import BrandLockup from './BrandLockup';
 import EmployeeCredentialModal, { type EmployeeCredentialProfile } from './EmployeeCredentialModal';
@@ -39,10 +40,22 @@ interface DashboardNavigationItem {
   key: DashboardTabKey;
   label: string;
   tone: DashboardTone;
-  staffOnly?: boolean;
-  adminOnly?: boolean;
   showBadge?: boolean;
 }
+
+const DASHBOARD_TAB_KEYS: DashboardTabKey[] = [
+  'tickets',
+  'servicios',
+  'asesoria',
+  'trazabilidad',
+  'refacciones',
+  'inventario',
+  'tutoriales',
+  'pno',
+  'equipos',
+  'monitoreo',
+  'dri',
+];
 
 const normalizeText = (value: string | null | undefined) =>
   (value || '')
@@ -82,12 +95,25 @@ interface DashboardProps {
 }
 
 export default function Dashboard({ session, initialTab }: DashboardProps) {
+  const navigate = useNavigate();
+  const actionMenuRef = useRef<HTMLDivElement | null>(null);
+  const [searchParams] = useSearchParams();
   const [activeTab, setActiveTab] = useState<DashboardTabKey>(initialTab ?? DEFAULT_DASHBOARD_TAB);
   const [authReady, setAuthReady] = useState(false);
   const [userRole, setUserRole] = useState<string | null>(null);
   const [advisoryUnreadCount, setAdvisoryUnreadCount] = useState(0);
   const [credentialOpen, setCredentialOpen] = useState(false);
+  const [isActionMenuOpen, setIsActionMenuOpen] = useState(false);
   const [viewerProfile, setViewerProfile] = useState<EmployeeCredentialProfile | null>(null);
+  const requestedAdvisoryId = searchParams.get('advisory')?.trim() || null;
+  const requestedTab = (() => {
+    const tabParam = searchParams.get('tab')?.trim() || '';
+    if (DASHBOARD_TAB_KEYS.includes(tabParam as DashboardTabKey)) {
+      return tabParam as DashboardTabKey;
+    }
+
+    return requestedAdvisoryId ? 'asesoria' : null;
+  })();
 
   const isStaffRole = (role: string | null) => role === 'admin' || role === 'tecnico';
   const hasFullDashboardAccess = (() => {
@@ -99,35 +125,22 @@ export default function Dashboard({ session, initialTab }: DashboardProps) {
       FULL_DASHBOARD_ACCESS_EMAILS.includes(normalizedEmail)
     );
   })();
+  const canAccessTab = (tab: DashboardTabKey) => hasFullDashboardAccess || PILOT_TABS.includes(tab);
   const welcomeLabel = viewerProfile?.nombre_completo?.trim() || session?.user?.email?.trim() || 'usuario';
   const navigationItems: DashboardNavigationItem[] = [
     { key: 'tickets', label: 'Tickets', tone: 'clinical' },
     { key: 'servicios', label: 'Planeación', tone: 'environmental' },
-    { key: 'asesoria', label: 'Asesoría', tone: 'veterinary', staffOnly: true, showBadge: true },
-    { key: 'monitoreo', label: 'Monitoreo', tone: 'environmental-blue', staffOnly: true },
+    { key: 'asesoria', label: 'Asesoría', tone: 'veterinary', showBadge: true },
+    { key: 'monitoreo', label: 'Monitoreo', tone: 'environmental-blue' },
     { key: 'trazabilidad', label: 'Trazabilidad', tone: 'environmental-blue' },
     { key: 'refacciones', label: 'Refacciones', tone: 'bioprocess' },
     { key: 'inventario', label: 'Inventario', tone: 'food' },
     { key: 'tutoriales', label: 'Tutoriales', tone: 'clinical' },
     { key: 'pno', label: 'PNO', tone: 'veterinary' },
-    { key: 'equipos', label: 'Equipos', tone: 'food', adminOnly: true },
+    { key: 'equipos', label: 'Equipos', tone: 'food' },
     { key: 'dri', label: 'DRI', tone: 'environmental-blue' },
   ];
-  const visibleNavigationItems = navigationItems.filter((item) => {
-    if (!hasFullDashboardAccess && !PILOT_TABS.includes(item.key)) {
-      return false;
-    }
-
-    if (item.staffOnly && !isStaffRole(userRole)) {
-      return false;
-    }
-
-    if (item.adminOnly && userRole !== 'admin') {
-      return false;
-    }
-
-    return true;
-  });
+  const visibleNavigationItems = navigationItems.filter((item) => canAccessTab(item.key));
   const activeTabIsVisible = visibleNavigationItems.some((item) => item.key === activeTab);
 
   useEffect(() => {
@@ -141,6 +154,16 @@ export default function Dashboard({ session, initialTab }: DashboardProps) {
       setActiveTab(initialTab);
     }
   }, [initialTab]);
+
+  useEffect(() => {
+    if (!requestedTab) {
+      return;
+    }
+
+    if (visibleNavigationItems.some((item) => item.key === requestedTab)) {
+      setActiveTab(requestedTab);
+    }
+  }, [requestedTab, visibleNavigationItems]);
 
   useEffect(() => {
     let mounted = true;
@@ -217,10 +240,72 @@ export default function Dashboard({ session, initialTab }: DashboardProps) {
     };
   }, [session?.user?.id]);
 
+  useEffect(() => {
+    if (!isActionMenuOpen) {
+      return;
+    }
+
+    const handlePointerDown = (event: MouseEvent) => {
+      const target = event.target;
+      if (target instanceof Node && !actionMenuRef.current?.contains(target)) {
+        setIsActionMenuOpen(false);
+      }
+    };
+
+    const handleEscape = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        setIsActionMenuOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handlePointerDown);
+    window.addEventListener('keydown', handleEscape);
+
+    return () => {
+      document.removeEventListener('mousedown', handlePointerDown);
+      window.removeEventListener('keydown', handleEscape);
+    };
+  }, [isActionMenuOpen]);
+
+  const handleOpenCredential = () => {
+    setCredentialOpen(true);
+    setIsActionMenuOpen(false);
+  };
+
+  const handleChangePassword = () => {
+    setIsActionMenuOpen(false);
+    navigate('/reset-password?mode=change');
+  };
+
   const handleLogout = async () => {
+    setIsActionMenuOpen(false);
     await supabase.auth.signOut();
     window.location.assign(import.meta.env.BASE_URL || '/');
   };
+
+  const renderHeaderActionButtons = () => (
+    <>
+      {isStaffRole(userRole) ? (
+        <button
+          type="button"
+          onClick={handleOpenCredential}
+          className="button-primary inactive dashboard-header__button dashboard-header__button--secondary"
+        >
+          Mi credencial
+        </button>
+      ) : null}
+      <button
+        type="button"
+        onClick={handleChangePassword}
+        className="button-primary inactive dashboard-header__button dashboard-header__button--secondary"
+      >
+        Cambiar contraseña
+      </button>
+      <button type="button" onClick={handleLogout} className="button-primary dashboard-header__button">
+        Cerrar sesión
+      </button>
+    </>
+  );
 
   if (!authReady) {
     return <DashboardPanelFallback />;
@@ -229,24 +314,36 @@ export default function Dashboard({ session, initialTab }: DashboardProps) {
   return (
     <div className="dashboard-shell">
       <header className="dashboard-header">
-        <BrandLockup
-          variant="header"
-          eyebrow="BioSystems"
-          title="Centro operativo Orion"
-          subtitle="Tickets, planeación, tutoriales y trazabilidad de servicio en una consola más clara, sobria y utilizable."
-        />
-        <div className="dashboard-header__actions">
-          <span className="dashboard-header__meta">{`Bienvenido ${welcomeLabel}`}</span>
-          {isStaffRole(userRole) ? (
+        <div className="dashboard-header__brand-block">
+          <BrandLockup
+            variant="header"
+            eyebrow="BioSystems"
+            title="Centro operativo Orion"
+            subtitle="Tickets, planeación, tutoriales y trazabilidad de servicio en una consola más clara, sobria y utilizable."
+          />
+          <span className="dashboard-header__meta dashboard-header__meta--mobile">{`Bienvenido ${welcomeLabel}`}</span>
+        </div>
+        <div
+          ref={actionMenuRef}
+          className={`dashboard-header__actions${isActionMenuOpen ? ' is-menu-open' : ''}`}
+        >
+          <div className="dashboard-header__actions-top">
+            <span className="dashboard-header__meta dashboard-header__meta--desktop">{`Bienvenido ${welcomeLabel}`}</span>
             <button
               type="button"
-              onClick={() => setCredentialOpen(true)}
-              className="button-primary inactive dashboard-header__button dashboard-header__button--secondary"
+              aria-label={isActionMenuOpen ? 'Cerrar menú de acciones' : 'Abrir menú de acciones'}
+              aria-expanded={isActionMenuOpen}
+              className={`dashboard-header__hamburger${isActionMenuOpen ? ' is-open' : ''}`}
+              onClick={() => setIsActionMenuOpen((current) => !current)}
             >
-              Mi credencial
+              <span className="dashboard-header__hamburger-line" />
+              <span className="dashboard-header__hamburger-line" />
+              <span className="dashboard-header__hamburger-line" />
             </button>
-          ) : null}
-          <button onClick={handleLogout} className="button-primary dashboard-header__button">Cerrar sesión</button>
+          </div>
+          <div className="dashboard-header__action-list">
+            {renderHeaderActionButtons()}
+          </div>
         </div>
       </header>
 
@@ -271,19 +368,22 @@ export default function Dashboard({ session, initialTab }: DashboardProps) {
 
       <div className={`card dashboard-card ${activeTab === 'trazabilidad' ? 'dashboard-card--traceability' : ''}`}>
         <Suspense fallback={<DashboardPanelFallback />}>
-          {activeTab === 'tickets' && <Tickets />}
-          {activeTab === 'servicios' && <Services />}
-          {activeTab === 'asesoria' && isStaffRole(userRole) && (
-            <EscalatedAdvisory onNotificationCountChange={setAdvisoryUnreadCount} />
+          {activeTab === 'tickets' && canAccessTab('tickets') && <Tickets />}
+          {activeTab === 'servicios' && canAccessTab('servicios') && <Services />}
+          {activeTab === 'asesoria' && canAccessTab('asesoria') && (
+            <EscalatedAdvisory
+              onNotificationCountChange={setAdvisoryUnreadCount}
+              requestedAdvisoryId={requestedAdvisoryId}
+            />
           )}
-          {activeTab === 'monitoreo' && isStaffRole(userRole) && <EquipmentMonitoring />}
-          {activeTab === 'trazabilidad' && <Traceability />}
-          {activeTab === 'refacciones' && <Refacciones />}
-          {activeTab === 'inventario' && <Inventario />}
-          {activeTab === 'tutoriales' && <Tutoriales />}
-          {activeTab === 'pno' && <PNO />}
-          {activeTab === 'equipos' && userRole === 'admin' && <Equipos />}
-          {activeTab === 'dri' && <DriPage />}
+          {activeTab === 'monitoreo' && canAccessTab('monitoreo') && <EquipmentMonitoring />}
+          {activeTab === 'trazabilidad' && canAccessTab('trazabilidad') && <Traceability />}
+          {activeTab === 'refacciones' && canAccessTab('refacciones') && <Refacciones />}
+          {activeTab === 'inventario' && canAccessTab('inventario') && <Inventario />}
+          {activeTab === 'tutoriales' && canAccessTab('tutoriales') && <Tutoriales />}
+          {activeTab === 'pno' && canAccessTab('pno') && <PNO />}
+          {activeTab === 'equipos' && canAccessTab('equipos') && <Equipos />}
+          {activeTab === 'dri' && canAccessTab('dri') && <DriPage />}
         </Suspense>
       </div>
 
