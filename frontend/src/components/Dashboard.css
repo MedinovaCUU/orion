@@ -272,6 +272,7 @@
   }
 
   .dashboard-header__actions {
+    position: static;
     width: 100%;
     gap: 0.7rem;
     align-items: stretch;
