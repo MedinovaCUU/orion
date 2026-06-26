@@ -529,6 +529,98 @@ function ChemistryIcon({ materialKey }: { materialKey: ChemistryMaterialKey }) {
   }
 }
 
+type AdvisoryEvidenceActionIcon = 'photo' | 'capture_video' | 'library_video' | 'report' | 'service_test';
+
+function AdvisoryEvidenceActionGlyph({ icon }: { icon: AdvisoryEvidenceActionIcon }) {
+  switch (icon) {
+    case 'photo':
+      return (
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M4.5 8.5h3l1.6-2h5.8l1.6 2h3a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2h-15a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2Z" stroke="currentColor" strokeWidth="1.9" strokeLinejoin="round" />
+          <circle cx="12" cy="13" r="3.4" stroke="currentColor" strokeWidth="1.9" />
+        </svg>
+      );
+    case 'capture_video':
+      return (
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <rect x="3.5" y="6.5" width="11.5" height="11" rx="2.2" stroke="currentColor" strokeWidth="1.9" />
+          <path d="m15 10 4.5-2.5v9L15 14" stroke="currentColor" strokeWidth="1.9" strokeLinejoin="round" />
+          <circle cx="9.25" cy="12" r="1.6" fill="currentColor" />
+        </svg>
+      );
+    case 'library_video':
+      return (
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M4 7.5a2 2 0 0 1 2-2h3.2l1.35 1.5H18a2 2 0 0 1 2 2v7.5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-9Z" stroke="currentColor" strokeWidth="1.9" strokeLinejoin="round" />
+          <path d="m10 10.2 4 2.3-4 2.3v-4.6Z" fill="currentColor" />
+        </svg>
+      );
+    case 'report':
+      return (
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M7 3.5h7l4 4V19a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 6 19V5A1.5 1.5 0 0 1 7.5 3.5Z" stroke="currentColor" strokeWidth="1.9" strokeLinejoin="round" />
+          <path d="M14 3.8V8h4.2" stroke="currentColor" strokeWidth="1.9" strokeLinejoin="round" />
+          <path d="M9 12h6M9 15.5h6" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" />
+        </svg>
+      );
+    case 'service_test':
+      return (
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <rect x="5" y="4.5" width="14" height="16" rx="2.2" stroke="currentColor" strokeWidth="1.9" />
+          <path d="M9 3.5h6" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" />
+          <path d="m8.75 12 2.1 2.1 4.4-4.6" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+      );
+    default:
+      return null;
+  }
+}
+
+interface AdvisoryEvidenceActionProps {
+  inputId: string;
+  label: string;
+  mobileLabel: string;
+  icon: AdvisoryEvidenceActionIcon;
+  accept: string;
+  capture?: 'environment' | 'user';
+  onSelect: (files: FileList | null) => void;
+}
+
+function AdvisoryEvidenceAction({
+  inputId,
+  label,
+  mobileLabel,
+  icon,
+  accept,
+  capture,
+  onSelect,
+}: AdvisoryEvidenceActionProps) {
+  return (
+    <>
+      <label
+        className="button-primary inactive advisory-thread-action-pill advisory-thread-action-pill--icon"
+        htmlFor={inputId}
+        aria-label={label}
+        title={label}
+      >
+        <span className="advisory-thread-action-pill__icon">
+          <AdvisoryEvidenceActionGlyph icon={icon} />
+        </span>
+        <span className="advisory-thread-action-pill__label advisory-thread-action-pill__label--desktop">{label}</span>
+        <span className="advisory-thread-action-pill__label advisory-thread-action-pill__label--mobile">{mobileLabel}</span>
+      </label>
+      <input
+        id={inputId}
+        hidden
+        type="file"
+        accept={accept}
+        capture={capture}
+        onChange={(event) => onSelect(event.target.files)}
+      />
+    </>
+  );
+}
+
 export default function EscalatedAdvisory({
   onNotificationCountChange,
   requestedAdvisoryId = null,
@@ -2299,39 +2391,43 @@ export default function EscalatedAdvisory({
         </button>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '1rem' }}>
-        <div className="card" style={{ padding: '1.35rem' }}>
-          <div style={{ color: 'var(--text-secondary)', fontSize: '0.76rem', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
+      <div className="advisory-overview-grid">
+        <div className="card advisory-overview-card">
+          <div className="advisory-overview-card__eyebrow">
             Notificaciones para mí
           </div>
-          <strong style={{ display: 'block', fontSize: '2rem', marginTop: '0.4rem' }}>{areaUnreadNotificationsForMe}</strong>
-          <p style={{ color: 'var(--text-secondary)', fontSize: '0.92rem', marginTop: '0.3rem' }}>
-            Pendientes dentro de la vista de {activeAreaLabel}.
-          </p>
+          <div className="advisory-overview-card__main">
+            <strong className="advisory-overview-card__value">{areaUnreadNotificationsForMe}</strong>
+            <p className="advisory-overview-card__copy">Pendientes dentro de la vista de {activeAreaLabel}.</p>
+          </div>
         </div>
-        <div className="card" style={{ padding: '1.35rem' }}>
-          <div style={{ color: 'var(--text-secondary)', fontSize: '0.76rem', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
+        <div className="card advisory-overview-card">
+          <div className="advisory-overview-card__eyebrow">
             {isTechnician ? 'Solicitudes mías visibles' : 'Mis solicitudes'}
           </div>
-          <strong style={{ display: 'block', fontSize: '2rem', marginTop: '0.4rem' }}>{areaRequestedAdvisories.length}</strong>
-          <p style={{ color: 'var(--text-secondary)', fontSize: '0.92rem', marginTop: '0.3rem' }}>
-            {isTechnician
-              ? `Casos de ${activeAreaLabel.toLowerCase()} que tú escalaste y además te fueron asignados.`
-              : `Casos de ${activeAreaLabel.toLowerCase()} escalados desde tus tickets.`}
-          </p>
+          <div className="advisory-overview-card__main">
+            <strong className="advisory-overview-card__value">{areaRequestedAdvisories.length}</strong>
+            <p className="advisory-overview-card__copy">
+              {isTechnician
+                ? `Casos de ${activeAreaLabel.toLowerCase()} que tú escalaste y además te fueron asignados.`
+                : `Casos de ${activeAreaLabel.toLowerCase()} escalados desde tus tickets.`}
+            </p>
+          </div>
         </div>
-        <div className="card" style={{ padding: '1.35rem' }}>
-          <div style={{ color: 'var(--text-secondary)', fontSize: '0.76rem', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
+        <div className="card advisory-overview-card">
+          <div className="advisory-overview-card__eyebrow">
             Bandeja asignada
           </div>
-          <strong style={{ display: 'block', fontSize: '2rem', marginTop: '0.4rem' }}>{areaAssignedAdvisories.length}</strong>
-          <p style={{ color: 'var(--text-secondary)', fontSize: '0.92rem', marginTop: '0.3rem' }}>
-            Casos de {activeAreaLabel.toLowerCase()} donde apareces como destinatario.
-          </p>
+          <div className="advisory-overview-card__main">
+            <strong className="advisory-overview-card__value">{areaAssignedAdvisories.length}</strong>
+            <p className="advisory-overview-card__copy">
+              Casos de {activeAreaLabel.toLowerCase()} donde apareces como destinatario.
+            </p>
+          </div>
         </div>
       </div>
 
-      <div className="card" style={{ padding: '1.65rem' }}>
+      <div className="card advisory-module-shell">
         <div style={{ display: 'flex', justifyContent: 'space-between', gap: '1rem', flexWrap: 'wrap', marginBottom: '1rem' }}>
           <div>
             <h3 style={{ marginBottom: '0.35rem' }}>Escalar asesoría de {activeAreaLabel.toLowerCase()}</h3>
@@ -2533,8 +2629,8 @@ export default function EscalatedAdvisory({
                     <div>
                       <label style={{ display: 'block', marginBottom: '0.45rem', color: 'var(--text-secondary)' }}>Notas rápidas del químico</label>
                       <textarea
-                        className="input-field"
-                        rows={5}
+                        className="input-field advisory-textarea--dense"
+                        rows={4}
                         value={chemistryNotes}
                         onChange={(event) => setChemistryNotes(event.target.value)}
                         placeholder="Ejemplo: control nivel 2 alto, repetido por duplicado, mismo sesgo; se recalibró con lote nuevo y persiste."
@@ -2623,7 +2719,7 @@ export default function EscalatedAdvisory({
             <div>
               <label style={{ display: 'block', marginBottom: '0.45rem', color: 'var(--text-secondary)' }}>Detalle de avería *</label>
               <textarea
-                className="input-field"
+                className="input-field advisory-textarea--dense"
                 rows={3}
                 value={detalleAveria}
                 onChange={(event) => setDetalleAveria(event.target.value)}
@@ -2641,8 +2737,8 @@ export default function EscalatedAdvisory({
             <div>
               <label style={{ display: 'block', marginBottom: '0.45rem', color: 'var(--text-secondary)' }}>Pasos ya seguidos</label>
               <textarea
-                className="input-field"
-                rows={5}
+                className="input-field advisory-textarea--dense"
+                rows={4}
                 value={pasosSeguidos}
                 onChange={(event) => setPasosSeguidos(event.target.value)}
                 placeholder="Qué revisión ya se hizo, en qué orden y con qué resultado."
@@ -2651,8 +2747,8 @@ export default function EscalatedAdvisory({
             <div>
               <label style={{ display: 'block', marginBottom: '0.45rem', color: 'var(--text-secondary)' }}>Ajustes realizados</label>
               <textarea
-                className="input-field"
-                rows={5}
+                className="input-field advisory-textarea--dense"
+                rows={4}
                 value={ajustesRealizados}
                 onChange={(event) => setAjustesRealizados(event.target.value)}
                 placeholder={
@@ -2665,8 +2761,8 @@ export default function EscalatedAdvisory({
             <div>
               <label style={{ display: 'block', marginBottom: '0.45rem', color: 'var(--text-secondary)' }}>Acciones tomadas</label>
               <textarea
-                className="input-field"
-                rows={5}
+                className="input-field advisory-textarea--dense"
+                rows={4}
                 value={accionesTomadas}
                 onChange={(event) => setAccionesTomadas(event.target.value)}
                 placeholder={
@@ -2684,7 +2780,7 @@ export default function EscalatedAdvisory({
                 {selectedArea === 'quimica' ? 'Materiales o consumibles utilizados' : 'Refacciones utilizadas'}
               </label>
               <textarea
-                className="input-field"
+                className="input-field advisory-textarea--dense"
                 rows={3}
                 value={refaccionesUtilizadas}
                 onChange={(event) => setRefaccionesUtilizadas(event.target.value)}
@@ -2698,7 +2794,7 @@ export default function EscalatedAdvisory({
             <div>
               <label style={{ display: 'block', marginBottom: '0.45rem', color: 'var(--text-secondary)' }}>Bibliografía consultada</label>
               <textarea
-                className="input-field"
+                className="input-field advisory-textarea--dense"
                 rows={3}
                 value={bibliografiaConsultada}
                 onChange={(event) => setBibliografiaConsultada(event.target.value)}
@@ -2710,8 +2806,8 @@ export default function EscalatedAdvisory({
           <div>
             <label style={{ display: 'block', marginBottom: '0.45rem', color: 'var(--text-secondary)' }}>Consulta puntual para trainer *</label>
             <textarea
-              className="input-field"
-              rows={4}
+              className="input-field advisory-textarea--dense advisory-textarea--priority"
+              rows={3}
               value={consultaEscalada}
               onChange={(event) => setConsultaEscalada(event.target.value)}
               required
@@ -2725,48 +2821,40 @@ export default function EscalatedAdvisory({
                 <div className="advisory-thread-card__eyebrow">Evidencia técnica</div>
                 <strong>Adjunta foto, graba video o sube uno ya guardado</strong>
               </div>
-              <div className="advisory-thread-actions">
-                <label className="button-primary inactive advisory-thread-action-pill" htmlFor="advisory-create-photo">
-                  Foto
-                </label>
-                <input
-                  id="advisory-create-photo"
-                  hidden
-                  type="file"
+              <div className="advisory-thread-actions advisory-thread-actions--evidence">
+                <AdvisoryEvidenceAction
+                  inputId="advisory-create-photo"
+                  label="Tomar foto"
+                  mobileLabel="Foto"
+                  icon="photo"
                   accept={IMAGE_ATTACHMENT_ACCEPT}
                   capture="environment"
-                  onChange={(event) => void addPendingAttachments(event.target.files, 'photo', 'create')}
+                  onSelect={(files) => void addPendingAttachments(files, 'photo', 'create')}
                 />
-                <label className="button-primary inactive advisory-thread-action-pill" htmlFor="advisory-create-video-capture">
-                  Grabar video
-                </label>
-                <input
-                  id="advisory-create-video-capture"
-                  hidden
-                  type="file"
+                <AdvisoryEvidenceAction
+                  inputId="advisory-create-video-capture"
+                  label="Grabar video"
+                  mobileLabel="Grabar"
+                  icon="capture_video"
                   accept={VIDEO_ATTACHMENT_ACCEPT}
                   capture="environment"
-                  onChange={(event) => void addPendingAttachments(event.target.files, 'video', 'create')}
+                  onSelect={(files) => void addPendingAttachments(files, 'video', 'create')}
                 />
-                <label className="button-primary inactive advisory-thread-action-pill" htmlFor="advisory-create-video-library">
-                  Subir video
-                </label>
-                <input
-                  id="advisory-create-video-library"
-                  hidden
-                  type="file"
+                <AdvisoryEvidenceAction
+                  inputId="advisory-create-video-library"
+                  label="Subir video"
+                  mobileLabel="Galería"
+                  icon="library_video"
                   accept={VIDEO_ATTACHMENT_ACCEPT}
-                  onChange={(event) => void addPendingAttachments(event.target.files, 'video', 'create')}
+                  onSelect={(files) => void addPendingAttachments(files, 'video', 'create')}
                 />
-                <label className="button-primary inactive advisory-thread-action-pill" htmlFor="advisory-create-report">
-                  Reporte
-                </label>
-                <input
-                  id="advisory-create-report"
-                  hidden
-                  type="file"
+                <AdvisoryEvidenceAction
+                  inputId="advisory-create-report"
+                  label="Adjuntar reporte"
+                  mobileLabel="Reporte"
+                  icon="report"
                   accept={REPORT_ATTACHMENT_ACCEPT}
-                  onChange={(event) => void addPendingAttachments(event.target.files, 'report', 'create')}
+                  onSelect={(files) => void addPendingAttachments(files, 'report', 'create')}
                 />
               </div>
             </div>
@@ -2825,7 +2913,7 @@ export default function EscalatedAdvisory({
         </form>
       </div>
 
-      <div className="card" style={{ padding: '1.65rem' }}>
+      <div className="card advisory-module-shell advisory-module-shell--list">
           <div style={{ display: 'flex', justifyContent: 'space-between', gap: '1rem', flexWrap: 'wrap', marginBottom: '1rem' }}>
             <div>
               <h3 style={{ marginBottom: '0.35rem' }}>Bandeja de asesorías</h3>
@@ -3208,8 +3296,8 @@ export default function EscalatedAdvisory({
                         <div>
                           <label style={{ display: 'block', marginBottom: '0.4rem', color: 'var(--text-secondary)' }}>Mensaje</label>
                           <textarea
-                            className="input-field"
-                            rows={4}
+                            className="input-field advisory-textarea--dense advisory-textarea--reply"
+                            rows={3}
                             value={draft.mensaje}
                             onChange={(event) => updateResponseDraft(advisory.id, { mensaje: event.target.value })}
                             placeholder={
@@ -3220,58 +3308,48 @@ export default function EscalatedAdvisory({
                           />
                         </div>
 
-                        <div className="advisory-thread-actions">
-                          <label className="button-primary inactive advisory-thread-action-pill" htmlFor={`reply-photo-${advisory.id}`}>
-                            Foto
-                          </label>
-                          <input
-                            id={`reply-photo-${advisory.id}`}
-                            hidden
-                            type="file"
+                        <div className="advisory-thread-actions advisory-thread-actions--evidence advisory-thread-actions--reply">
+                          <AdvisoryEvidenceAction
+                            inputId={`reply-photo-${advisory.id}`}
+                            label="Tomar foto"
+                            mobileLabel="Foto"
+                            icon="photo"
                             accept={IMAGE_ATTACHMENT_ACCEPT}
                             capture="environment"
-                            onChange={(event) => void addPendingAttachments(event.target.files, 'photo', advisory.id)}
+                            onSelect={(files) => void addPendingAttachments(files, 'photo', advisory.id)}
                           />
-                          <label className="button-primary inactive advisory-thread-action-pill" htmlFor={`reply-video-capture-${advisory.id}`}>
-                            Grabar video
-                          </label>
-                          <input
-                            id={`reply-video-capture-${advisory.id}`}
-                            hidden
-                            type="file"
+                          <AdvisoryEvidenceAction
+                            inputId={`reply-video-capture-${advisory.id}`}
+                            label="Grabar video"
+                            mobileLabel="Grabar"
+                            icon="capture_video"
                             accept={VIDEO_ATTACHMENT_ACCEPT}
                             capture="environment"
-                            onChange={(event) => void addPendingAttachments(event.target.files, 'video', advisory.id)}
+                            onSelect={(files) => void addPendingAttachments(files, 'video', advisory.id)}
                           />
-                          <label className="button-primary inactive advisory-thread-action-pill" htmlFor={`reply-video-library-${advisory.id}`}>
-                            Subir video
-                          </label>
-                          <input
-                            id={`reply-video-library-${advisory.id}`}
-                            hidden
-                            type="file"
+                          <AdvisoryEvidenceAction
+                            inputId={`reply-video-library-${advisory.id}`}
+                            label="Subir video"
+                            mobileLabel="Galería"
+                            icon="library_video"
                             accept={VIDEO_ATTACHMENT_ACCEPT}
-                            onChange={(event) => void addPendingAttachments(event.target.files, 'video', advisory.id)}
+                            onSelect={(files) => void addPendingAttachments(files, 'video', advisory.id)}
                           />
-                          <label className="button-primary inactive advisory-thread-action-pill" htmlFor={`reply-report-${advisory.id}`}>
-                            Reporte
-                          </label>
-                          <input
-                            id={`reply-report-${advisory.id}`}
-                            hidden
-                            type="file"
+                          <AdvisoryEvidenceAction
+                            inputId={`reply-report-${advisory.id}`}
+                            label="Adjuntar reporte"
+                            mobileLabel="Reporte"
+                            icon="report"
                             accept={REPORT_ATTACHMENT_ACCEPT}
-                            onChange={(event) => void addPendingAttachments(event.target.files, 'report', advisory.id)}
+                            onSelect={(files) => void addPendingAttachments(files, 'report', advisory.id)}
                           />
-                          <label className="button-primary inactive advisory-thread-action-pill" htmlFor={`reply-service-${advisory.id}`}>
-                            Prueba de servicio
-                          </label>
-                          <input
-                            id={`reply-service-${advisory.id}`}
-                            hidden
-                            type="file"
+                          <AdvisoryEvidenceAction
+                            inputId={`reply-service-${advisory.id}`}
+                            label="Prueba de servicio"
+                            mobileLabel="Servicio"
+                            icon="service_test"
                             accept={REPORT_ATTACHMENT_ACCEPT}
-                            onChange={(event) => void addPendingAttachments(event.target.files, 'service_test', advisory.id)}
+                            onSelect={(files) => void addPendingAttachments(files, 'service_test', advisory.id)}
                           />
                         </div>
 
