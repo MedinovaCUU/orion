@@ -94,11 +94,16 @@
 @media (max-width: 720px) {
   .brand-lockup--header {
     flex-direction: column;
-    align-items: flex-start;
+    align-items: stretch;
   }
 
   .brand-lockup--header .brand-lockup__logo--imagotipo {
     width: min(100%, 220px);
+  }
+
+  .brand-lockup--header .brand-lockup__copy {
+    width: 100%;
+    max-width: none;
   }
 
   .brand-lockup__subtitle {
