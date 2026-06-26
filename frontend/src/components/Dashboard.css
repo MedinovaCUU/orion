@@ -393,7 +393,9 @@
   }
 
   .dashboard-nav .dashboard-nav__button.button-primary:not(.chip) {
-    min-width: 124px;
+    flex: 0 0 calc((100% - 1.3rem) / 3);
+    width: calc((100% - 1.3rem) / 3);
+    min-width: calc((100% - 1.3rem) / 3);
     padding-inline: 0.9rem;
   }
 
