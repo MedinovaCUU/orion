@@ -38,12 +38,21 @@ export interface ClientSummary {
   telefono?: string | null;
 }
 
+export interface EquipmentProfileSummary {
+  nombre_completo?: string | null;
+}
+
 export interface EquipmentSummary {
   id?: string;
   numero_serie: string;
   modelo?: string | null;
   software?: string | null;
   firmware?: string | null;
+  fecha_inicio?: string | null;
+  termino_garantia?: string | null;
+  fecha_fin?: string | null;
+  doc_asignacion?: string | null;
+  doc_terminacion?: string | null;
   pais?: string | null;
   estado?: string | null;
   ciudad?: string | null;
@@ -52,6 +61,8 @@ export interface EquipmentSummary {
   direccion?: string | null;
   codigo_postal?: string | null;
   clientes?: ClientSummary | null;
+  asigna?: EquipmentProfileSummary | null;
+  retira?: EquipmentProfileSummary | null;
 }
 
 export interface PendingServiceTicket {

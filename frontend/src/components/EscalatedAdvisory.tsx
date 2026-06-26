@@ -1,7 +1,9 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import './EscalatedAdvisory.css';
 import { getValidatedSession, supabase } from '../supabaseClient';
+import EquipmentDetailsModal from './EquipmentDetailsModal';
 import { stripPlaneacionMeta, type EquipmentSummary, type ProfileSummary } from './servicesPlanning';
+import { normalizeSerialLookup } from './supremoPresets';
 import {
   isAdvisoryEmailEnabled,
   sendAdvisoryEmailNotification,
@@ -543,6 +545,7 @@ export default function EscalatedAdvisory({
   const [notifications, setNotifications] = useState<AdvisoryNotificationRecord[]>([]);
   const [routingSettings, setRoutingSettings] = useState<AdvisoryRoutingSetting[]>([]);
   const [activeAdvisoryId, setActiveAdvisoryId] = useState<string | null>(null);
+  const [equipmentDetailSerial, setEquipmentDetailSerial] = useState<string | null>(null);
   const [selectedTicketId, setSelectedTicketId] = useState('');
   const [selectedArea, setSelectedArea] = useState<AdvisoryArea>('ingenieria');
   const [pasosSeguidos, setPasosSeguidos] = useState('');
@@ -787,7 +790,7 @@ export default function EscalatedAdvisory({
   const equipmentBySerial = useMemo(() => {
     const map = new Map<string, EquipmentSummary>();
     equipments.forEach((equipment) => {
-      const normalizedSerial = equipment.numero_serie?.trim();
+      const normalizedSerial = normalizeSerialLookup(equipment.numero_serie);
       if (normalizedSerial && !map.has(normalizedSerial)) {
         map.set(normalizedSerial, equipment);
       }
@@ -806,8 +809,16 @@ export default function EscalatedAdvisory({
       return null;
     }
 
-    return equipmentBySerial.get(selectedTicket.numero_serie_equipo.trim()) || null;
+    return equipmentBySerial.get(normalizeSerialLookup(selectedTicket.numero_serie_equipo)) || null;
   }, [equipmentBySerial, selectedTicket]);
+
+  const equipmentDetailRecord = useMemo(() => {
+    if (!equipmentDetailSerial) {
+      return null;
+    }
+
+    return equipmentBySerial.get(normalizeSerialLookup(equipmentDetailSerial)) || null;
+  }, [equipmentBySerial, equipmentDetailSerial]);
 
   const selectedPlatform = selectedEquipment?.modelo?.trim() || '';
 
@@ -826,6 +837,15 @@ export default function EscalatedAdvisory({
 
     return selectedPlatform;
   }, [selectedEquipment, selectedPlatform, selectedTicket]);
+
+  const openEquipmentDetailModal = (serial: string | null | undefined) => {
+    const normalizedSerial = normalizeSerialLookup(serial);
+    if (!normalizedSerial) {
+      return;
+    }
+
+    setEquipmentDetailSerial(normalizedSerial);
+  };
 
   const chemistryDraft = useMemo(() => {
     if (!selectedChemistryMaterial || selectedChemistryIssues.length === 0) {
@@ -1488,7 +1508,9 @@ export default function EscalatedAdvisory({
             .limit(250),
           supabase
             .from('equipos')
-            .select('numero_serie, modelo, software, firmware, estado, ciudad, municipio'),
+            .select(
+              'id, numero_serie, modelo, software, firmware, fecha_inicio, termino_garantia, fecha_fin, doc_asignacion, doc_terminacion, pais, estado, ciudad, municipio, colonia, direccion, codigo_postal, clientes(id, razon_social, persona_contacto, telefono), asigna:profiles!equipos_empleado_asignado_fkey(nombre_completo), retira:profiles!equipos_empleado_retira_fkey(nombre_completo)',
+            ),
           supabase
             .from('profiles')
             .select(
@@ -2558,11 +2580,26 @@ export default function EscalatedAdvisory({
             <div className="advisory-ticket-summary">
               <strong>{selectedTicket.asunto}</strong>
               <span style={{ color: 'var(--text-secondary)', fontSize: '0.92rem' }}>
-                Serie {selectedTicket.numero_serie_equipo || 'N/D'} · ticket abierto desde {formatDateTimeLabel(selectedTicket.creado_en)}
+                Serie{' '}
+                {selectedEquipment && selectedTicket.numero_serie_equipo ? (
+                  <button
+                    type="button"
+                    className="advisory-equipment-link"
+                    onClick={() => openEquipmentDetailModal(selectedTicket.numero_serie_equipo)}
+                  >
+                    {selectedTicket.numero_serie_equipo}
+                  </button>
+                ) : (
+                  selectedTicket.numero_serie_equipo || 'N/D'
+                )}{' '}
+                · ticket abierto desde {formatDateTimeLabel(selectedTicket.creado_en)}
               </span>
               <span style={{ color: 'var(--text-secondary)', fontSize: '0.88rem' }}>
                 Plataforma: {selectedPlatformStatusLabel} · área sugerida: {AREA_LABELS[inferAdvisoryAreaFromTicket(selectedTicket)]}
               </span>
+              {selectedEquipment ? (
+                <span className="advisory-equipment-link__hint">Haz clic en la serie para abrir la ficha del equipo.</span>
+              ) : null}
             </div>
           ) : null}
 
@@ -2816,6 +2853,9 @@ export default function EscalatedAdvisory({
           <div className="advisory-thread-list">
             {filteredAdvisories.map((advisory) => {
               const ticket = advisory.ticket_id ? ticketById.get(advisory.ticket_id) || null : null;
+              const relatedEquipment = ticket?.numero_serie_equipo
+                ? equipmentBySerial.get(normalizeSerialLookup(ticket.numero_serie_equipo)) || null
+                : null;
               const requester = advisory.solicitante_id ? profileById.get(advisory.solicitante_id) || null : null;
               const recipients = notificationsByAdvisoryId.get(advisory.id) || [];
               const unreadForThisAdvisory = recipients.filter(
@@ -2936,6 +2976,20 @@ export default function EscalatedAdvisory({
                           <div>
                             <div style={{ color: 'var(--text-secondary)', fontSize: '0.72rem', marginBottom: '0.2rem' }}>Fecha</div>
                             <strong>{formatDateTimeLabel(advisory.creado_en)}</strong>
+                          </div>
+                          <div>
+                            <div style={{ color: 'var(--text-secondary)', fontSize: '0.72rem', marginBottom: '0.2rem' }}>Serie / equipo</div>
+                            {relatedEquipment && ticket?.numero_serie_equipo ? (
+                              <button
+                                type="button"
+                                className="advisory-equipment-link"
+                                onClick={() => openEquipmentDetailModal(ticket.numero_serie_equipo)}
+                              >
+                                {ticket.numero_serie_equipo}
+                              </button>
+                            ) : (
+                              <strong>{ticket?.numero_serie_equipo || 'N/D'}</strong>
+                            )}
                           </div>
                           <div>
                             <div style={{ color: 'var(--text-secondary)', fontSize: '0.72rem', marginBottom: '0.2rem' }}>Plataforma</div>
@@ -3536,6 +3590,11 @@ export default function EscalatedAdvisory({
           )}
         </div>
       ) : null}
+      <EquipmentDetailsModal
+        equipment={equipmentDetailRecord}
+        serial={equipmentDetailSerial}
+        onClose={() => setEquipmentDetailSerial(null)}
+      />
     </div>
   );
 }
