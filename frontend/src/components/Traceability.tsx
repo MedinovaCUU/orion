@@ -1,6 +1,7 @@
 import type { CSSProperties, MouseEvent as ReactMouseEvent } from 'react';
 import { useEffect, useId, useMemo, useRef, useState } from 'react';
 import { supabase } from '../supabaseClient';
+import TrackingSection from './TrackingSection';
 import './Traceability.css';
 
 type TraceabilitySource = 'structured' | 'payload' | 'demo';
@@ -2555,16 +2556,27 @@ export default function Traceability() {
   };
 
   if (loading) {
-    return <div className="traceability-loading">Construyendo capa de trazabilidad operativa…</div>;
+    return (
+      <section className="traceability-shell">
+        <TrackingSection />
+        <div className="traceability-loading">Construyendo capa de trazabilidad operativa…</div>
+      </section>
+    );
   }
 
   if (error) {
-    return <div className="traceability-error">No fue posible cargar trazabilidad: {error}</div>;
+    return (
+      <section className="traceability-shell">
+        <TrackingSection />
+        <div className="traceability-error">No fue posible cargar trazabilidad analítica: {error}</div>
+      </section>
+    );
   }
 
   if (scopedRecords.length === 0) {
     return (
       <section className="traceability-shell">
+        <TrackingSection />
         <div className="traceability-loading">
           Todavía no hay lecturas de refacciones o consumibles técnicos para construir trazabilidad. En cuanto se
           registren piezas desde reportes de servicio, este tablero empezará a mostrar uso, lotes, vigencias y
@@ -2576,6 +2588,7 @@ export default function Traceability() {
 
   return (
     <section className="traceability-shell">
+      <TrackingSection />
       <section className="traceability-source-strip">
         <div className="traceability-source-card">
           <span className={`traceability-source-badge ${source}`}>
