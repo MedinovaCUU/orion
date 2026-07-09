@@ -21,6 +21,10 @@ export const runtimeFlags = {
   addressAutocompleteEnabled: parseBooleanFlag(import.meta.env.VITE_ENABLE_ADDRESS_AUTOCOMPLETE, false),
   supremoLaunchEnabled: parseBooleanFlag(import.meta.env.VITE_ENABLE_SUPREMO_LAUNCH, true),
   trackingLookupEnabled: parseBooleanFlag(import.meta.env.VITE_ENABLE_TRACKING_LOOKUP, true),
+  // Estos datos quedan ocultos por defecto hasta reactivarlos de forma explicita.
+  monitoringErrorCodesVisible: parseBooleanFlag(import.meta.env.VITE_SHOW_MONITORING_ERROR_CODES, false),
+  monitoringTestPricingVisible: parseBooleanFlag(import.meta.env.VITE_SHOW_MONITORING_TEST_PRICING, false),
+  driFirmwareStepsVisible: parseBooleanFlag(import.meta.env.VITE_SHOW_DRI_FIRMWARE_STEPS, false),
 };
 
 export const getDisabledIntegrationMessage = (

@@ -1,5 +1,8 @@
 import { getBa400ServiceScripts } from '../knowledge/ba400.serviceScripts';
 import type { DriChecklistStep } from '../types/dri.types';
+import { runtimeFlags } from '../../../config/runtimeFlags';
+
+const showDriFirmwareSteps = runtimeFlags.driFirmwareStepsVisible;
 
 export default function DriChecklist({ steps }: { steps: DriChecklistStep[] }) {
   if (!steps.length) {
@@ -18,7 +21,7 @@ export default function DriChecklist({ steps }: { steps: DriChecklistStep[] }) {
           <p><b>Interpretación:</b> {step.interpretation}</p>
           <p><b>Si pasa:</b> {step.onPass}</p>
           <p><b>Si falla:</b> {step.onFail}</p>
-          {step.serviceScriptIds?.length ? (
+          {showDriFirmwareSteps && step.serviceScriptIds?.length ? (
             <details className="dri-script-disclosure" onClick={(event) => event.stopPropagation()}>
               <summary
                 className="dri-script-disclosure__summary"

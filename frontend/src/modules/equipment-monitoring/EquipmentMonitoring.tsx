@@ -2,6 +2,7 @@ import { useDeferredValue, useEffect, useMemo, useRef, useState } from 'react';
 import BrandLockup from '../../components/BrandLockup';
 import { getPublicAssetUrl } from '../../components/publicAssetUrl';
 import { createSupremoLaunchSession, getSupremoLaunchDisabledMessage, isSupremoLaunchEnabled } from '../../components/supremoApi';
+import { runtimeFlags } from '../../config/runtimeFlags';
 import { supabase } from '../../supabaseClient';
 import {
   getNormalizedStateLabel,
@@ -258,6 +259,16 @@ const ACTIVE_TELEMETRY_WINDOW_MS = 24 * 60 * 60 * 1000;
 const MAP_ZOOM_MIN = 1;
 const MAP_ZOOM_MAX = 7;
 const MAP_ZOOM_STEP = 0.25;
+const showMonitoringErrorCodes = runtimeFlags.monitoringErrorCodesVisible;
+const showMonitoringTestPricing = runtimeFlags.monitoringTestPricingVisible;
+
+const formatMonitoringErrorLabel = (code: string | null | undefined, fallbackLabel: string) => {
+  if (!code) {
+    return fallbackLabel;
+  }
+
+  return showMonitoringErrorCodes ? `E${code}` : 'Código oculto temporalmente';
+};
 const SUPREMO_LAUNCH_TIMEOUT_MS = 1800;
 const CURRENT_REAGENT_BUCKET_MONTH = (() => {
   const now = new Date();
@@ -636,7 +647,11 @@ const buildEquipmentList = (snapshot: MonitoringSnapshot): MonitoringEquipment[]
         equipment.ciudad,
         equipment.municipio,
         equipment.direccion,
-        ...recentErrors.flatMap((row) => [row.codigo_error, row.descripcion_error, row.seccion_error]),
+        ...recentErrors.flatMap((row) => [
+          showMonitoringErrorCodes ? row.codigo_error : null,
+          row.descripcion_error,
+          row.seccion_error,
+        ]),
       ]
         .filter(Boolean)
         .join(' ')
@@ -1640,7 +1655,11 @@ export default function EquipmentMonitoring() {
             className="input-field"
             type="text"
             value={search}
-            placeholder="Buscar serie, cliente, ciudad, estado o código de error"
+            placeholder={
+              showMonitoringErrorCodes
+                ? 'Buscar serie, cliente, ciudad, estado o código de error'
+                : 'Buscar serie, cliente, ciudad o estado'
+            }
             onChange={(event) => setSearch(event.target.value)}
           />
         </div>
@@ -1946,7 +1965,7 @@ export default function EquipmentMonitoring() {
                           </span>
                           <span>{formatDateTime(getEventTimestamp(row))}</span>
                         </div>
-                        <strong>{row.codigo_error ? `E${row.codigo_error}` : 'Evento sin código'}</strong>
+                        <strong>{formatMonitoringErrorLabel(row.codigo_error, 'Evento sin código')}</strong>
                         <p>{row.descripcion_error || 'Sin descripción registrada.'}</p>
                         <small>{[row.seccion_error, row.monitor_name, row.machine_name].filter(Boolean).join(' · ')}</small>
                       </article>
@@ -1968,7 +1987,7 @@ export default function EquipmentMonitoring() {
                     {selectedEquipment.recentErrors.map((row) => (
                       <article key={`history-${row.id}`} className="equipment-monitor__event-card equipment-monitor__event-card--compact">
                         <div className="equipment-monitor__event-head">
-                          <strong>{row.codigo_error ? `E${row.codigo_error}` : 'Evento'}</strong>
+                          <strong>{formatMonitoringErrorLabel(row.codigo_error, 'Evento')}</strong>
                           <span>{formatRelativeTime(getEventTimestamp(row))}</span>
                         </div>
                         <p>{row.descripcion_error || 'Sin descripción registrada.'}</p>
@@ -2009,23 +2028,34 @@ export default function EquipmentMonitoring() {
                       </div>
                       <div className="equipment-monitor__focus-kpi">
                         <span>Valor estimado</span>
-                        <strong>{formatCurrency(selectedReagentSummaryDisplay.valor_estimado_total_con_iva)}</strong>
+                        <strong>
+                          {showMonitoringTestPricing
+                            ? formatCurrency(selectedReagentSummaryDisplay.valor_estimado_total_con_iva)
+                            : 'Oculto temporalmente'}
+                        </strong>
                       </div>
                       <div className="equipment-monitor__focus-kpi">
                         <span>Último registro del mes</span>
                         <strong>{formatDateTime(selectedReagentSummaryDisplay.last_event_at)}</strong>
                       </div>
                     </div>
-                    <p className="equipment-monitor__focus-location">
-                      {formatInteger(selectedReagentSummaryDisplay.pruebas_distintas_con_precio)} pruebas con precio y{' '}
-                      {formatInteger(selectedReagentSummaryDisplay.pruebas_distintas_sin_precio)} sin precio catalogado.
-                    </p>
+                    {showMonitoringTestPricing ? (
+                      <p className="equipment-monitor__focus-location">
+                        {formatInteger(selectedReagentSummaryDisplay.pruebas_distintas_con_precio)} pruebas con precio y{' '}
+                        {formatInteger(selectedReagentSummaryDisplay.pruebas_distintas_sin_precio)} sin precio catalogado.
+                      </p>
+                    ) : (
+                      <p className="equipment-monitor__focus-location">
+                        {formatInteger(selectedReagentSummaryDisplay.pruebas_distintas)} pruebas distintas registradas en el mes.
+                      </p>
+                    )}
                     {!hasSelectedReagentMonthData ? (
                       <div className="equipment-monitor__empty-state">
                         No hay actividad registrada para {formatBucketMonth(selectedReagentSummaryDisplay.bucket_month)}.
                       </div>
                     ) : null}
-                    {readNumericValue(selectedReagentSummaryDisplay.valor_estimado_total_con_iva_min) > 0 &&
+                    {showMonitoringTestPricing &&
+                    readNumericValue(selectedReagentSummaryDisplay.valor_estimado_total_con_iva_min) > 0 &&
                     readNumericValue(selectedReagentSummaryDisplay.valor_estimado_total_con_iva_max) >
                       readNumericValue(selectedReagentSummaryDisplay.valor_estimado_total_con_iva_min) ? (
                       <p className="equipment-monitor__focus-location">
@@ -2050,13 +2080,19 @@ export default function EquipmentMonitoring() {
                             >
                               <div className="equipment-monitor__event-head">
                                 <strong>{formatBucketMonth(row.bucket_month)}</strong>
-                                <span>{formatCurrency(row.valor_estimado_total_con_iva)}</span>
+                                <span>
+                                  {showMonitoringTestPricing
+                                    ? formatCurrency(row.valor_estimado_total_con_iva)
+                                    : `${formatInteger(row.pruebas_registradas)} pruebas`}
+                                </span>
                               </div>
                               <div className="equipment-monitor__consumption-metrics">
                                 <span>{formatInteger(row.pruebas_registradas)} pruebas</span>
                                 <span>{formatInteger(row.muestras_paciente)} pacientes</span>
-                                <span>{formatInteger(row.pruebas_distintas_con_precio)} con precio</span>
-                                <span>{formatInteger(row.pruebas_distintas_sin_precio)} sin precio</span>
+                                <span>{formatInteger(row.pruebas_distintas)} distintas</span>
+                                {showMonitoringTestPricing ? (
+                                  <span>{formatInteger(row.pruebas_distintas_con_precio)} con precio</span>
+                                ) : null}
                               </div>
                               <small>Último registro: {formatDateTime(row.last_event_at)}</small>
                             </button>
@@ -2078,23 +2114,35 @@ export default function EquipmentMonitoring() {
                 ) : selectedReagentRowsSorted.length && !isReagentDetailCollapsed ? (
                   <div className="equipment-monitor__consumption-list">
                     <p className="equipment-monitor__focus-location">
-                      Desglose de {formatBucketMonth(selectedReagentBucketMonth)}. Las tarjetas marcadas como <strong>Sin precio</strong> son las que faltan por catalogar o corregir.
+                      {showMonitoringTestPricing
+                        ? `Desglose de ${formatBucketMonth(selectedReagentBucketMonth)}. Las tarjetas marcadas como Sin precio son las que faltan por catalogar o corregir.`
+                        : `Desglose de ${formatBucketMonth(selectedReagentBucketMonth)}. El valor economico de las pruebas esta oculto temporalmente.`}
                     </p>
                     {selectedReagentRowsSorted.map((row) => {
                       const hasPrice = Boolean(row.tiene_precio);
                       return (
                         <article
                           key={`${row.numero_serie}-${row.bucket_month}-${row.test_name}`}
-                          className={`equipment-monitor__consumption-card ${hasPrice ? '' : 'equipment-monitor__consumption-card--muted'}`.trim()}
+                          className={`equipment-monitor__consumption-card ${
+                            showMonitoringTestPricing && !hasPrice ? 'equipment-monitor__consumption-card--muted' : ''
+                          }`.trim()}
                         >
                           <div className="equipment-monitor__event-head">
                             <strong>{row.test_name}</strong>
-                            <span>{hasPrice ? formatCurrency(row.valor_estimado_total_con_iva) : 'Sin precio'}</span>
+                            <span>
+                              {showMonitoringTestPricing
+                                ? hasPrice
+                                  ? formatCurrency(row.valor_estimado_total_con_iva)
+                                  : 'Sin precio'
+                                : 'Valor oculto'}
+                            </span>
                           </div>
                           <p>
                             {row.reactivo_codigo_referencia
                               ? `${row.reactivo_codigo_referencia} · ${row.reactivo_descripcion_referencia || row.descripcion_catalogo_normalizada || 'Catálogo'}`
-                              : 'Sin reactivo/precio catalogado para esta prueba.'}
+                              : showMonitoringTestPricing
+                                ? 'Sin reactivo/precio catalogado para esta prueba.'
+                                : 'Sin referencia catalogada para esta prueba.'}
                           </p>
                           <div className="equipment-monitor__consumption-metrics">
                             <span>{formatInteger(row.pruebas_registradas)} pruebas</span>
@@ -2106,7 +2154,8 @@ export default function EquipmentMonitoring() {
                             {row.presentacion_referencia
                               ? `${row.presentacion_referencia} · rendimiento ${formatInteger(row.rendimiento_referencia)}`
                               : 'Sin presentación de referencia'}
-                            {readNumericValue(row.valor_estimado_total_con_iva_min) > 0 &&
+                            {showMonitoringTestPricing &&
+                            readNumericValue(row.valor_estimado_total_con_iva_min) > 0 &&
                             readNumericValue(row.valor_estimado_total_con_iva_max) >
                               readNumericValue(row.valor_estimado_total_con_iva_min)
                               ? ` · rango ${formatCurrency(row.valor_estimado_total_con_iva_min)} a ${formatCurrency(row.valor_estimado_total_con_iva_max)}`
