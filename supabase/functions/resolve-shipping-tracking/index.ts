@@ -5,7 +5,7 @@ const corsHeaders = {
   'Access-Control-Max-Age': '86400',
 };
 
-type TrackingCarrier = 'dhl' | 'estafeta' | 'tresguerras';
+type TrackingCarrier = 'dhl' | 'estafeta' | 'tresguerras' | 'chilexpress' | 'chibra';
 type TrackingStatus =
   | 'capturado'
   | 'pendiente_consulta'
@@ -58,10 +58,55 @@ const BROWSER_HEADERS = {
 };
 
 const DHL_TRACKING_API_URL = Deno.env.get('DHL_TRACKING_API_URL')?.trim() || 'https://api-eu.dhl.com/track/shipments';
+const CHILEXPRESS_SUBSCRIPTION_KEY =
+  Deno.env.get('CHILEXPRESS_SUBSCRIPTION_KEY')?.trim() || '7b878d2423f349e3b8bbb9b3607d4215';
+const CHILEXPRESS_CLIENT_ID =
+  Deno.env.get('CHILEXPRESS_CLIENT_ID')?.trim() || 'ea970f64-73db-4bdc-91f4-a0d58094b44b';
+const CHILEXPRESS_CLIENT_SECRET = Deno.env.get('CHILEXPRESS_CLIENT_SECRET')?.trim() || '';
+const CHILEXPRESS_SCOPE =
+  Deno.env.get('CHILEXPRESS_SCOPE')?.trim() || 'api://ea970f64-73db-4bdc-91f4-a0d58094b44b/.default';
+const CHILEXPRESS_ORIGIN = 'https://centrodeayuda.chilexpress.cl';
+const CHILEXPRESS_TOKEN_URL =
+  Deno.env.get('CHILEXPRESS_TOKEN_URL')?.trim() ||
+  'https://services.wschilexpress.com/centroayuda/api/v1/api/v1/token';
+const CHILEXPRESS_TIMELINE_URL =
+  Deno.env.get('CHILEXPRESS_TIMELINE_URL')?.trim() ||
+  'https://services.wschilexpress.com/centroayuda/api/v1/api/v1/TimeLine';
+const CHILEXPRESS_LOOKUP_URL =
+  Deno.env.get('CHILEXPRESS_LOOKUP_URL')?.trim() ||
+  'https://services.wschilexpress.com/centroayuda/api/v1/api/sugerencia/bynroot';
+const CHIBRA_BASE_URL = 'https://gtschibra.alertran.net';
+const CHIBRA_LOGIN_URL = `${CHIBRA_BASE_URL}/gts/login.seam`;
 
 const tresguerrasHttpClient = Deno.createHttpClient({
   unsafelyIgnoreCertificateErrors: ['www.tresguerras.com.mx'],
 });
+
+const HTML_ENTITY_MAP: Record<string, string> = {
+  nbsp: ' ',
+  amp: '&',
+  quot: '"',
+  apos: "'",
+  lt: '<',
+  gt: '>',
+  aacute: 'á',
+  eacute: 'é',
+  iacute: 'í',
+  oacute: 'ó',
+  uacute: 'ú',
+  Aacute: 'Á',
+  Eacute: 'É',
+  Iacute: 'Í',
+  Oacute: 'Ó',
+  Uacute: 'Ú',
+  ntilde: 'ñ',
+  Ntilde: 'Ñ',
+  uuml: 'ü',
+  Uuml: 'Ü',
+  ordm: 'º',
+  iquest: '¿',
+  iexcl: '¡',
+};
 
 const jsonRes = (status: number, payload?: unknown) =>
   new Response(status === 204 ? null : JSON.stringify(payload ?? {}), {
@@ -88,6 +133,7 @@ const decodeHtmlEntities = (value: string) =>
   value
     .replace(/&#(\d+);/g, (_match, code) => String.fromCharCode(Number(code)))
     .replace(/&#x([0-9a-f]+);/gi, (_match, code) => String.fromCharCode(Number.parseInt(code, 16)))
+    .replace(/&([A-Za-z]+);/g, (match, code) => HTML_ENTITY_MAP[code] ?? match)
     .replace(/&nbsp;/gi, ' ')
     .replace(/&amp;/gi, '&')
     .replace(/&quot;/gi, '"')
@@ -132,6 +178,44 @@ const extractAfterLabel = (sourceText: string, labels: string[]) => {
     const nextLine = lines[index + 1];
     if (nextLine) {
       return nextLine;
+    }
+  }
+
+  return '';
+};
+
+const extractBlockAfterLabel = (sourceText: string, labels: string[], maxLines = 4) => {
+  const lines = toLines(sourceText);
+  const normalizedLabels = labels.map((label) => normalizeText(label));
+
+  for (let index = 0; index < lines.length; index += 1) {
+    const normalizedLine = normalizeText(lines[index]);
+    if (!normalizedLabels.some((label) => normalizedLine.includes(label))) {
+      continue;
+    }
+
+    const block: string[] = [];
+    for (let lookAhead = 1; lookAhead <= maxLines; lookAhead += 1) {
+      const nextLine = lines[index + lookAhead];
+      if (!nextLine) {
+        break;
+      }
+
+      const normalizedNextLine = normalizeText(nextLine);
+      if (
+        normalizedLabels.some((label) => normalizedNextLine.includes(label)) ||
+        normalizedNextLine.startsWith('telefono') ||
+        normalizedNextLine.startsWith('tel') ||
+        normalizedNextLine.startsWith('contacto')
+      ) {
+        break;
+      }
+
+      block.push(nextLine);
+    }
+
+    if (block.length > 0) {
+      return compactSpaces(block.join(' · '));
     }
   }
 
@@ -207,6 +291,30 @@ const parseSpanishDateTime = (value: string) => {
   return `${datePart}T${match[4].padStart(2, '0')}:${match[5]}:00`;
 };
 
+const parseUsDateTime = (value: string) => {
+  const raw = compactSpaces(value);
+  const match = raw.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})(?:\s+(\d{1,2}):(\d{2})(?::(\d{2}))?\s*(AM|PM))?$/i);
+  if (!match) {
+    return raw;
+  }
+
+  let hour = Number(match[4] || '0');
+  const minute = (match[5] || '00').padStart(2, '0');
+  const second = (match[6] || '00').padStart(2, '0');
+  const meridiem = (match[7] || '').toUpperCase();
+  if (meridiem === 'PM' && hour < 12) {
+    hour += 12;
+  }
+  if (meridiem === 'AM' && hour === 12) {
+    hour = 0;
+  }
+
+  return `${match[3]}-${match[1].padStart(2, '0')}-${match[2].padStart(2, '0')}T${String(hour).padStart(
+    2,
+    '0',
+  )}:${minute}:${second}`;
+};
+
 const normalizeStatusFromText = (value: string): TrackingStatus => {
   const normalized = normalizeText(value);
 
@@ -215,6 +323,10 @@ const normalizeStatusFromText = (value: string): TrackingStatus => {
     normalized.includes('entregado en sucursal') ||
     normalized.includes('entregado al destinatario') ||
     normalized.includes('entregado a destinatario') ||
+    normalized.includes('entrega finalizada') ||
+    normalized.includes('pieza entregada a destinatario') ||
+    normalized.includes('envio entregado por el transportista') ||
+    normalized.includes('envio entregado al destinatario') ||
     normalized.includes('delivery completed') ||
     normalized.includes('proof of delivery') ||
     normalized.includes('recibio ')
@@ -227,7 +339,12 @@ const normalizeStatusFromText = (value: string): TrackingStatus => {
     normalized.includes('en ruta de entrega') ||
     normalized.includes('out for delivery') ||
     normalized.includes('cliente de ocurre avisado') ||
-    normalized.includes('en sucursal para entrega')
+    normalized.includes('en sucursal para entrega') ||
+    normalized.includes('despacho en reparto') ||
+    normalized.includes('repartidor llego al punto de entrega') ||
+    normalized.includes('envio en despacho al destinatario') ||
+    normalized.includes('en despacho hacia destino') ||
+    normalized.includes('disponible en punto')
   ) {
     return 'en_reparto';
   }
@@ -251,7 +368,10 @@ const normalizeStatusFromText = (value: string): TrackingStatus => {
     normalized.includes('reembarcado') ||
     normalized.includes('despachado a sucursal') ||
     normalized.includes('recibido en bodega') ||
-    normalized.includes('shipment picked up')
+    normalized.includes('shipment picked up') ||
+    normalized.includes('envio recepcionado por chilexpress') ||
+    normalized.includes('recibido por chilexpress') ||
+    normalized.includes('envio retirado por chilexpress')
   ) {
     return 'en_transito';
   }
@@ -259,7 +379,8 @@ const normalizeStatusFromText = (value: string): TrackingStatus => {
   if (
     normalized.includes('etiqueta generada') ||
     normalized.includes('label created') ||
-    normalized.includes('guia generada')
+    normalized.includes('guia generada') ||
+    normalized.includes('orden de transporte creada')
   ) {
     return 'etiqueta_generada';
   }
@@ -290,6 +411,37 @@ const extractTableRows = (html: string) => {
 
   return rows;
 };
+
+const getCookieHeader = (response: Response) => {
+  const headers = response.headers as Headers & { getSetCookie?: () => string[] };
+  const getSetCookie = typeof headers.getSetCookie === 'function' ? headers.getSetCookie.bind(headers) : null;
+  const setCookies = getSetCookie ? getSetCookie() : [];
+  if (Array.isArray(setCookies) && setCookies.length > 0) {
+    return setCookies.map((cookie) => cookie.split(';')[0].trim()).filter(Boolean).join('; ');
+  }
+
+  const singleCookie = response.headers.get('set-cookie');
+  if (!singleCookie) {
+    return '';
+  }
+
+  return singleCookie
+    .split(/,(?=\s*[A-Za-z0-9_.-]+=)/)
+    .map((cookie) => cookie.split(';')[0].trim())
+    .filter(Boolean)
+    .join('; ');
+};
+
+const mergeCookieHeaders = (...parts: string[]) =>
+  Array.from(
+    new Set(
+      parts
+        .join('; ')
+        .split(/;\s*(?=[A-Za-z0-9_.-]+=)/)
+        .map((item) => compactSpaces(item))
+        .filter(Boolean),
+    ),
+  ).join('; ');
 
 const buildSuccessResponse = (
   carrier: TrackingCarrier,
@@ -734,6 +886,414 @@ const fetchEstafetaTracking = async (trackingNumber: string) => {
   return parseEstafetaResult(trackingNumber, html);
 };
 
+const buildChilexpressHeaders = (accessToken?: string, contentType = 'application/json') => {
+  const headers: Record<string, string> = {
+    Accept: 'application/json, text/plain, */*',
+    'ocp-apim-subscription-key': CHILEXPRESS_SUBSCRIPTION_KEY,
+    'ocp-apim-trace': 'true',
+    Referer: `${CHILEXPRESS_ORIGIN}/`,
+    Origin: CHILEXPRESS_ORIGIN,
+    'User-Agent': BROWSER_HEADERS['User-Agent'],
+    'Accept-Language': BROWSER_HEADERS['Accept-Language'],
+  };
+
+  if (contentType) {
+    headers['Content-Type'] = contentType;
+  }
+
+  if (accessToken) {
+    headers.Authorization = `Bearer ${accessToken}`;
+  }
+
+  return headers;
+};
+
+const requestChilexpressAccessToken = async () => {
+  if (!CHILEXPRESS_CLIENT_SECRET) {
+    throw new Error('Falta configurar CHILEXPRESS_CLIENT_SECRET para habilitar Chilexpress en el backend.');
+  }
+
+  const response = await fetch(CHILEXPRESS_TOKEN_URL, {
+    method: 'POST',
+    headers: buildChilexpressHeaders(undefined, 'application/x-www-form-urlencoded'),
+    body: new URLSearchParams({
+      grant_type: 'client_credentials',
+      client_id: CHILEXPRESS_CLIENT_ID,
+      scope: CHILEXPRESS_SCOPE,
+      client_secret: CHILEXPRESS_CLIENT_SECRET,
+    }),
+  });
+
+  if (!response.ok) {
+    throw new Error(`Chilexpress no autorizó el token de consulta (${response.status}).`);
+  }
+
+  const payload = (await response.json()) as { access_token?: string };
+  const accessToken = compactSpaces(String(payload.access_token || ''));
+  if (!accessToken) {
+    throw new Error('Chilexpress no devolvió un token de acceso utilizable.');
+  }
+
+  return accessToken;
+};
+
+const extractChilexpressLocation = (label: string) => {
+  const inPlaceMatch = label.match(/env[ií]o en (.+)$/i);
+  if (inPlaceMatch?.[1]) {
+    return compactSpaces(inPlaceMatch[1]);
+  }
+
+  const towardsMatch = label.match(/hacia (.+)$/i);
+  if (towardsMatch?.[1]) {
+    return compactSpaces(towardsMatch[1]);
+  }
+
+  return '';
+};
+
+const parseChilexpressResult = (
+  trackingNumber: string,
+  suggestionPayload: Record<string, unknown>,
+  timelinePayload: Record<string, unknown>,
+): TrackingLookupResponse => {
+  const suggestion = (suggestionPayload.data as Record<string, unknown> | undefined) || {};
+  const timelineStatusDescription = compactSpaces(String(timelinePayload.statusDescription || ''));
+
+  if (
+    Number(suggestionPayload.resultado || 0) < 0 ||
+    Number(timelinePayload.statusCode || 0) >= 400 ||
+    normalizeText(timelineStatusDescription).includes('ot no existe')
+  ) {
+    return buildErrorResponse(
+      'chilexpress',
+      trackingNumber,
+      'Chilexpress no encontró información para esa OT.',
+    );
+  }
+
+  const rawStages = Array.isArray(timelinePayload.etapas)
+    ? (timelinePayload.etapas[0] as Record<string, unknown> | undefined)
+    : undefined;
+  const stages = rawStages
+    ? Object.values(rawStages)
+        .filter((stage) => Boolean(stage) && typeof stage === 'object')
+        .map((stage) => stage as Record<string, unknown>)
+        .filter((stage) => 'etapa' in stage)
+        .sort((left, right) => Number(left.etapa || 0) - Number(right.etapa || 0))
+    : [];
+
+  const activeStage = stages.find((stage) => Boolean(stage.etapaActiva)) || stages[stages.length - 1];
+  const timeline = stages
+    .flatMap((stage) =>
+      Array.isArray(stage.detalles)
+        ? stage.detalles.map((detail) => ({
+            label: compactSpaces(String((detail as Record<string, unknown>).gls_tracking || '')),
+            location: extractChilexpressLocation(compactSpaces(String((detail as Record<string, unknown>).gls_tracking || ''))),
+            timestamp: parseUsDateTime(compactSpaces(String((detail as Record<string, unknown>).fec_track || ''))),
+            note: compactSpaces(String(stage.titulo || '')),
+          }))
+        : [],
+    )
+    .filter((event) => event.label)
+    .sort((left, right) => Date.parse(left.timestamp || '1970-01-01') - Date.parse(right.timestamp || '1970-01-01'));
+
+  const lastEvent = timeline[timeline.length - 1];
+  const portalStatusText = compactSpaces(
+    String(activeStage?.titulo || lastEvent?.label || suggestion.glosaEstado || timelineStatusDescription || ''),
+  );
+  if (!portalStatusText && timeline.length === 0) {
+    return buildErrorResponse(
+      'chilexpress',
+      trackingNumber,
+      'Chilexpress respondió, pero no devolvió un estado reconocible para esa OT.',
+    );
+  }
+
+  const status = normalizeStatusFromText(`${portalStatusText} ${lastEvent?.label || ''}`);
+  const originParts = [suggestion.nombreRemitente, suggestion.comunaDevolucion]
+    .map((value) => compactSpaces(String(value || '')))
+    .filter(Boolean);
+  const destinationParts = [
+    suggestion.direccionDestinatario,
+    suggestion.compDireccionDestinatario,
+    suggestion.comunaDestinatario,
+  ]
+    .map((value) => compactSpaces(String(value || '')))
+    .filter(Boolean);
+  const rawSummary = JSON.stringify(
+    {
+      suggestion,
+      timeline: timelinePayload.etapas || [],
+    },
+    null,
+    2,
+  ).slice(0, 6000);
+
+  return buildSuccessResponse('chilexpress', trackingNumber, {
+    status,
+    fulfillmentState: buildFulfillmentState(status),
+    portalStatusText,
+    lastEventLabel: lastEvent?.label || portalStatusText || 'Sin evento reciente',
+    lastEventAt: lastEvent?.timestamp || '',
+    estimatedDelivery: toIsoDate(String(suggestion.fecCompromiso || suggestion.fecEntrega || '')),
+    recipient: compactSpaces(String(suggestion.nombreDestinatario || '')),
+    origin: compactSpaces(originParts.join(' · ')),
+    destination: compactSpaces(destinationParts.join(' · ')),
+    serviceType: compactSpaces(
+      [String(suggestion.servicio || ''), String(suggestion.descProducto || '')].filter(Boolean).join(' · '),
+    ),
+    deliveryProofName: compactSpaces(String(suggestion.nombreReceptor || '')),
+    timeline,
+    rawSummary,
+    note: compactSpaces(String(suggestion.motivoResolucion || '')),
+  });
+};
+
+const fetchChilexpressTracking = async (trackingNumber: string) => {
+  const accessToken = await requestChilexpressAccessToken();
+  const headers = buildChilexpressHeaders(accessToken);
+
+  const [suggestionResponse, timelineResponse] = await Promise.all([
+    fetch(`${CHILEXPRESS_LOOKUP_URL}?${new URLSearchParams({ nroot: trackingNumber }).toString()}`, { headers }),
+    fetch(
+      `${CHILEXPRESS_TIMELINE_URL}?${new URLSearchParams({ ot: trackingNumber, indPublico: '0' }).toString()}`,
+      { headers },
+    ),
+  ]);
+
+  if (!suggestionResponse.ok) {
+    throw new Error(`Chilexpress respondió ${suggestionResponse.status} al solicitar la OT.`);
+  }
+
+  if (!timelineResponse.ok) {
+    throw new Error(`Chilexpress respondió ${timelineResponse.status} al solicitar la línea de tiempo.`);
+  }
+
+  const suggestionPayload = (await suggestionResponse.json()) as Record<string, unknown>;
+  const timelinePayload = (await timelineResponse.json()) as Record<string, unknown>;
+  return parseChilexpressResult(trackingNumber, suggestionPayload, timelinePayload);
+};
+
+const resolveChibraCredentials = () => ({
+  username: Deno.env.get('CHIBRA_USERNAME')?.trim() || Deno.env.get('CHIBRA_USER')?.trim() || '',
+  password: Deno.env.get('CHIBRA_PASSWORD')?.trim() || '',
+});
+
+const extractChibraMetric = (html: string, labelPattern: string) => {
+  const match = html.match(new RegExp(`<span[^>]*>\\s*${labelPattern}\\s*<\\/span>\\s*<div[^>]*>([\\s\\S]*?)<\\/div>`, 'i'));
+  return compactSpaces(htmlToText(match?.[1] || ''));
+};
+
+const splitChibraBlock = (value: string) =>
+  value
+    .split(' · ')
+    .map((item) => compactSpaces(item))
+    .filter(Boolean);
+
+const extractChibraDeliveryProof = (timeline: TrackingTimelineEvent[]) => {
+  for (let index = timeline.length - 1; index >= 0; index -= 1) {
+    const current = timeline[index];
+    const deliveredMatch =
+      current.label.match(/A:\s*(.+)$/i) ||
+      current.label.match(/RECIBE:\s*([^)]+)/i) ||
+      current.note.match(/RECIBE:\s*([^)]+)/i);
+    if (deliveredMatch?.[1]) {
+      return compactSpaces(deliveredMatch[1].replace(/\s+-\s+\d+$/, ''));
+    }
+  }
+
+  return '';
+};
+
+const parseChibraResult = (trackingNumber: string, html: string): TrackingLookupResponse => {
+  const bodyText = htmlToText(html);
+  const rawSummary = compactSpaces(bodyText).slice(0, 6000);
+  const originBlock = extractBlockAfterLabel(bodyText, ['Remitente'], 4);
+  const recipientBlock = extractBlockAfterLabel(bodyText, ['Destinatario'], 4);
+  const recipientParts = splitChibraBlock(recipientBlock);
+  const portalStatusText = compactSpaces(
+    htmlToText(
+      html.match(
+        /class="col-12 p-0 d-flex d-md-none justify-content-center text-uppercase">\s*<span class="h4">([\s\S]*?)<\/span>/i,
+      )?.[1] || '',
+    ),
+  );
+  const timeline = extractTableRows(html)
+    .filter((cells) => /^\d{2}\/\d{2}\/\d{4}$/.test(cells[0] || '') && /^\d{2}:\d{2}$/.test(cells[1] || ''))
+    .map((cells) => ({
+      label: compactSpaces(cells[2] || ''),
+      location: compactSpaces(cells[3] || ''),
+      timestamp: `${parseDateToIso(cells[0] || '')}T${(cells[1] || '00:00').slice(0, 5)}:00`,
+      note: compactSpaces(cells.slice(4).join(' · ')),
+    }))
+    .filter((event) => event.label);
+
+  if (!portalStatusText && timeline.length === 0) {
+    return buildErrorResponse('chibra', trackingNumber, 'Chibra no devolvió un estado utilizable para esta expedición.');
+  }
+
+  const lastEvent = timeline[timeline.length - 1];
+  const status = normalizeStatusFromText(`${portalStatusText} ${lastEvent?.label || ''}`);
+
+  return buildSuccessResponse('chibra', trackingNumber, {
+    status,
+    fulfillmentState: buildFulfillmentState(status),
+    portalStatusText: portalStatusText || lastEvent?.label || 'Sin estatus textual',
+    lastEventLabel: lastEvent?.label || portalStatusText || 'Sin evento reciente',
+    lastEventAt: lastEvent?.timestamp || '',
+    estimatedDelivery: parseDateToIso(extractChibraMetric(html, 'F\\. entrega') || extractChibraMetric(html, 'F\\. objetivo')),
+    recipient: recipientParts[0] || extractAfterLabel(bodyText, ['Destinatario']),
+    origin: originBlock || extractAfterLabel(bodyText, ['Remitente']),
+    destination: compactSpaces(recipientParts.slice(1).join(' · ')) || recipientParts[0] || '',
+    serviceType: extractChibraMetric(html, 'Producto\\s*\\/\\s*Servicio'),
+    deliveryProofName: extractChibraDeliveryProof(timeline),
+    timeline,
+    rawSummary,
+    note: compactSpaces(extractAfterLabel(bodyText, ['Incidencias']) || ''),
+  });
+};
+
+const fetchChibraTracking = async (trackingNumber: string) => {
+  const credentials = resolveChibraCredentials();
+  if (!credentials.username || !credentials.password) {
+    return buildErrorResponse(
+      'chibra',
+      trackingNumber,
+      'Faltan CHIBRA_USERNAME y CHIBRA_PASSWORD en Supabase para consultar Chibra en automático.',
+      'manual_only',
+    );
+  }
+
+  const loginResponse = await fetch(CHIBRA_LOGIN_URL, {
+    headers: {
+      ...BROWSER_HEADERS,
+      Referer: CHIBRA_LOGIN_URL,
+    },
+  });
+
+  if (!loginResponse.ok) {
+    throw new Error(`Chibra respondió con ${loginResponse.status} al solicitar la pantalla de acceso.`);
+  }
+
+  const loginHtml = await loginResponse.text();
+  const loginAction = loginHtml.match(/<form id="loginForm"[^>]*action="([^"]+)"/i)?.[1];
+  const loginViewState = loginHtml.match(/name="javax\.faces\.ViewState"[^>]*value="([^"]+)"/i)?.[1];
+  if (!loginAction || !loginViewState) {
+    throw new Error('Chibra no entregó el formulario de autenticación esperado.');
+  }
+
+  const loginCookies = getCookieHeader(loginResponse);
+  const authResponse = await fetch(new URL(loginAction, CHIBRA_BASE_URL), {
+    method: 'POST',
+    headers: {
+      ...BROWSER_HEADERS,
+      'Content-Type': 'application/x-www-form-urlencoded',
+      Referer: CHIBRA_LOGIN_URL,
+      Origin: CHIBRA_BASE_URL,
+      Cookie: loginCookies,
+    },
+    body: new URLSearchParams({
+      loginForm: 'loginForm',
+      'loginForm:inputLogin': credentials.username,
+      'loginForm:inputPassword': credentials.password,
+      'loginForm:submit_login': 'Entrar',
+      'javax.faces.ViewState': loginViewState,
+    }),
+    redirect: 'manual',
+  });
+
+  const authCookies = mergeCookieHeaders(loginCookies, getCookieHeader(authResponse));
+  const homeLocation = authResponse.headers.get('location');
+  if (!homeLocation) {
+    const authHtml = await authResponse.text();
+    if (normalizeText(htmlToText(authHtml)).includes('login')) {
+      return buildErrorResponse(
+        'chibra',
+        trackingNumber,
+        'Chibra rechazó las credenciales configuradas en el backend.',
+        'manual_only',
+      );
+    }
+
+    throw new Error('Chibra no abrió la sesión de seguimiento después del login.');
+  }
+
+  const homeResponse = await fetch(new URL(homeLocation, CHIBRA_BASE_URL), {
+    headers: {
+      ...BROWSER_HEADERS,
+      Referer: CHIBRA_LOGIN_URL,
+      Cookie: authCookies,
+    },
+  });
+
+  if (!homeResponse.ok) {
+    throw new Error(`Chibra respondió con ${homeResponse.status} al abrir el home autenticado.`);
+  }
+
+  const homeCookies = mergeCookieHeaders(authCookies, getCookieHeader(homeResponse));
+  const homeHtml = await homeResponse.text();
+  const homeViewState = homeHtml.match(/name="javax\.faces\.ViewState"[^>]*value="([^"]+)"/i)?.[1];
+  if (!homeViewState) {
+    throw new Error('Chibra no entregó el estado JSF necesario para la búsqueda rápida.');
+  }
+
+  const ajaxResponse = await fetch(`${CHIBRA_BASE_URL}/gts/priv/home/inicio.seam`, {
+    method: 'POST',
+    headers: {
+      ...BROWSER_HEADERS,
+      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+      'Faces-Request': 'partial/ajax',
+      'X-Requested-With': 'XMLHttpRequest',
+      Referer: new URL(homeLocation, CHIBRA_BASE_URL).toString(),
+      Origin: CHIBRA_BASE_URL,
+      Cookie: homeCookies,
+    },
+    body: new URLSearchParams({
+      AJAXREQUEST: '_viewRoot',
+      j_id22: 'j_id22',
+      'j_id22:__centro_actual_id__': '0',
+      'j_id22:j_id50': trackingNumber,
+      'j_id22:j_id104': 'j_id22:j_id104',
+      'j_id22:j_id104:printModalPanelOpenedState': '',
+      'javax.faces.ViewState': homeViewState,
+      'j_id22:j_id23': 'j_id22:j_id23',
+    }),
+    redirect: 'manual',
+  });
+
+  const resultLocation = ajaxResponse.headers.get('location');
+  if (!resultLocation) {
+    throw new Error('Chibra no devolvió una redirección de resultado utilizable.');
+  }
+
+  if (resultLocation.includes('/busqueda.seam')) {
+    return buildErrorResponse('chibra', trackingNumber, 'Chibra no encontró una expedición exacta para ese tracking.');
+  }
+
+  if (!resultLocation.includes('/detalle2.seam')) {
+    return buildErrorResponse(
+      'chibra',
+      trackingNumber,
+      'Chibra devolvió una vista no reconocida para esta consulta.',
+    );
+  }
+
+  const detailResponse = await fetch(new URL(resultLocation, CHIBRA_BASE_URL), {
+    headers: {
+      ...BROWSER_HEADERS,
+      Referer: new URL(homeLocation, CHIBRA_BASE_URL).toString(),
+      Cookie: mergeCookieHeaders(homeCookies, getCookieHeader(ajaxResponse)),
+    },
+  });
+
+  if (!detailResponse.ok) {
+    throw new Error(`Chibra respondió con ${detailResponse.status} al abrir el detalle de la expedición.`);
+  }
+
+  const detailHtml = await detailResponse.text();
+  return parseChibraResult(trackingNumber, detailHtml);
+};
+
 Deno.serve(async (request) => {
   if (request.method === 'OPTIONS') {
     return jsonRes(204);
@@ -753,7 +1313,7 @@ Deno.serve(async (request) => {
   const carrier = body.carrier;
   const trackingNumber = sanitizeTrackingNumber(body.trackingNumber || '');
 
-  if (!carrier || !['dhl', 'estafeta', 'tresguerras'].includes(carrier)) {
+  if (!carrier || !['dhl', 'estafeta', 'tresguerras', 'chilexpress', 'chibra'].includes(carrier)) {
     return jsonRes(400, { ok: false, error: 'La mensajería solicitada no es válida.' });
   }
 
@@ -772,6 +1332,28 @@ Deno.serve(async (request) => {
 
     if (carrier === 'tresguerras') {
       return jsonRes(200, await fetchTresguerrasTracking(trackingNumber));
+    }
+
+    if (carrier === 'chilexpress') {
+      if (!/^\d{10,12}$/.test(trackingNumber)) {
+        return jsonRes(
+          200,
+          buildErrorResponse(carrier, trackingNumber, 'Chilexpress requiere una OT de 10 a 12 dígitos.'),
+        );
+      }
+
+      return jsonRes(200, await fetchChilexpressTracking(trackingNumber));
+    }
+
+    if (carrier === 'chibra') {
+      if (!/^\d{12}$/.test(trackingNumber)) {
+        return jsonRes(
+          200,
+          buildErrorResponse(carrier, trackingNumber, 'Chibra requiere una expedición de 12 dígitos.'),
+        );
+      }
+
+      return jsonRes(200, await fetchChibraTracking(trackingNumber));
     }
 
     return jsonRes(200, await fetchEstafetaTracking(trackingNumber));

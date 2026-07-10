@@ -1,4 +1,4 @@
-export type TrackingCarrier = 'dhl' | 'estafeta' | 'tresguerras';
+export type TrackingCarrier = 'dhl' | 'estafeta' | 'tresguerras' | 'chilexpress' | 'chibra';
 export type TrackingCarrierChoice = TrackingCarrier | 'auto';
 export type TrackingCaptureSource = 'manual' | 'ocr' | 'camera';
 export type TrackingStatus =
@@ -62,7 +62,7 @@ interface OcrLoggerMessage {
 const TRACKING_STORAGE_KEY = 'orion-tracking-dashboard/v1';
 const ISO_DATE_PATTERN = /^(\d{4})-(\d{2})-(\d{2})$/;
 const DAY_FIRST_DATE_PATTERN = /^(\d{1,2})[/-](\d{1,2})[/-](\d{2,4})$/;
-const MANUAL_TRACKING_PATTERN = /\b(?:[A-Z]{3}\d{8,12}|\d{10}|\d{22})\b/g;
+const MANUAL_TRACKING_PATTERN = /\b(?:[A-Z]{3}\d{8,12}|\d{10,12}|\d{22})\b/g;
 const TRACKING_LINE_PATTERN =
   /\b(?:numero\s+de\s+guia\s+aerea|guia\s+aerea|numero\s+de\s+guia|numero\s+de\s+rastreo|codigo\s+de\s+rastreo|tracking|talon|guia\/talon)\b[\s:#-]*([A-Z0-9 -]{8,28})/i;
 const SPACED_GPE_PATTERN = /\bG\s*P\s*E\s*((?:\d\s*){8,12})\b/i;
@@ -119,6 +119,18 @@ export const TRACKING_CARRIER_META: Record<
     hint: 'Talón alfanumérico tipo GPE00486943',
     accentClass: 'tresguerras',
   },
+  chilexpress: {
+    label: 'Chilexpress',
+    portalUrl: 'https://www.chilexpress.cl/estado-envio-paquete-courier',
+    hint: 'OT de 10 a 12 dígitos',
+    accentClass: 'chilexpress',
+  },
+  chibra: {
+    label: 'Chibra',
+    portalUrl: 'https://gtschibra.alertran.net/gts/login.seam',
+    hint: 'Expedición de 12 dígitos',
+    accentClass: 'chibra',
+  },
 };
 
 export const TRACKING_STATUS_LABELS: Record<TrackingStatus, string> = {
@@ -160,7 +172,8 @@ const toMultilineLines = (value: string) =>
 
 const sanitizeTrackingNumber = (value: string) => value.toUpperCase().replace(/[^A-Z0-9]/g, '');
 
-const isTrackingNumber = (value: string) => /^(?:[A-Z]{3}\d{8,12}|\d{10}|\d{22})$/.test(sanitizeTrackingNumber(value));
+const isTrackingNumber = (value: string) =>
+  /^(?:[A-Z]{3}\d{8,12}|\d{10,12}|\d{22})$/.test(sanitizeTrackingNumber(value));
 
 const parseDateToIso = (value: string) => {
   const compact = compactSpaces(value);
@@ -317,12 +330,32 @@ const inferCarrier = (trackingNumber: string, rawText: string, preferredCarrier:
     return 'estafeta';
   }
 
+  if (
+    normalized.includes('chilexpress') ||
+    normalized.includes('orden de transporte') ||
+    normalized.includes('centro de ayuda')
+  ) {
+    return 'chilexpress';
+  }
+
+  if (
+    normalized.includes('chibra') ||
+    normalized.includes('global tracking system') ||
+    normalized.includes('desarrollado por chibra')
+  ) {
+    return 'chibra';
+  }
+
   if (/^[A-Z]{3}\d{8,12}$/.test(sanitized)) {
     return 'tresguerras';
   }
 
   if (/^\d{10}$/.test(sanitized)) {
     return 'dhl';
+  }
+
+  if (/^9999\d{8}$/.test(sanitized)) {
+    return 'chibra';
   }
 
   return null;
@@ -336,6 +369,10 @@ const normalizeStatusFromText = (value: string): TrackingStatus => {
     normalized.includes('entregado en sucursal') ||
     normalized.includes('entregado a destinatario') ||
     normalized.includes('entregado al destinatario') ||
+    normalized.includes('entrega finalizada') ||
+    normalized.includes('pieza entregada a destinatario') ||
+    normalized.includes('envio entregado por el transportista') ||
+    normalized.includes('envio entregado al destinatario') ||
     normalized.includes('delivered') ||
     normalized.includes('confirmacion de entrega') ||
     normalized.includes('proof of delivery') ||
@@ -351,7 +388,12 @@ const normalizeStatusFromText = (value: string): TrackingStatus => {
     normalized.includes('cliente de ocurre avisado') ||
     normalized.includes('out for delivery') ||
     normalized.includes('salio a ruta') ||
-    normalized.includes('en ruta de entrega')
+    normalized.includes('en ruta de entrega') ||
+    normalized.includes('despacho en reparto') ||
+    normalized.includes('repartidor llego al punto de entrega') ||
+    normalized.includes('en despacho hacia destino') ||
+    normalized.includes('envio en despacho al destinatario') ||
+    normalized.includes('disponible en punto')
   ) {
     return 'en_reparto';
   }
@@ -379,7 +421,10 @@ const normalizeStatusFromText = (value: string): TrackingStatus => {
     normalized.includes('recibido en bodega embarques') ||
     normalized.includes('recibido en bodega de reparto') ||
     normalized.includes('embarque recolectado') ||
-    normalized.includes('shipment picked up')
+    normalized.includes('shipment picked up') ||
+    normalized.includes('envio recepcionado por chilexpress') ||
+    normalized.includes('recibido por chilexpress') ||
+    normalized.includes('envio retirado por chilexpress')
   ) {
     return 'en_transito';
   }
@@ -388,7 +433,8 @@ const normalizeStatusFromText = (value: string): TrackingStatus => {
     normalized.includes('etiqueta generada') ||
     normalized.includes('label created') ||
     normalized.includes('guia generada') ||
-    normalized.includes('booking confirmado')
+    normalized.includes('booking confirmado') ||
+    normalized.includes('orden de transporte creada')
   ) {
     return 'etiqueta_generada';
   }
@@ -617,7 +663,11 @@ export const runTrackingOcr = async (file: File, onProgress?: (progress: number,
 };
 
 const isTrackingCarrier = (value: unknown): value is TrackingCarrier =>
-  value === 'dhl' || value === 'estafeta' || value === 'tresguerras';
+  value === 'dhl' ||
+  value === 'estafeta' ||
+  value === 'tresguerras' ||
+  value === 'chilexpress' ||
+  value === 'chibra';
 
 const isTrackingStatus = (value: unknown): value is TrackingStatus =>
   value === 'capturado' ||

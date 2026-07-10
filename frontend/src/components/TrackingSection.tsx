@@ -42,6 +42,9 @@ interface TrackingLookupOutcome {
   message: string;
 }
 
+type AutoRefreshIntervalMs = 0 | 30000 | 60000 | 120000;
+type LiveBoardTone = 'pending' | 'moving' | 'delivered' | 'alert';
+
 const FULFILLMENT_RING_RADIUS = 62;
 const FULFILLMENT_RING_CIRCUMFERENCE = 2 * Math.PI * FULFILLMENT_RING_RADIUS;
 const SOURCE_LABELS: Record<TrackingCaptureSource, string> = {
@@ -58,6 +61,14 @@ const TRACKING_CARRIER_OPTIONS: Array<{ value: TrackingCarrierChoice; label: str
   { value: 'dhl', label: 'DHL' },
   { value: 'estafeta', label: 'Estafeta' },
   { value: 'tresguerras', label: 'Tresguerras' },
+  { value: 'chilexpress', label: 'Chilexpress' },
+  { value: 'chibra', label: 'Chibra' },
+];
+const AUTO_REFRESH_OPTIONS: Array<{ value: AutoRefreshIntervalMs; label: string }> = [
+  { value: 0, label: 'Manual' },
+  { value: 30000, label: '30 s' },
+  { value: 60000, label: '60 s' },
+  { value: 120000, label: '2 min' },
 ];
 
 const todayIso = () => new Date().toISOString().slice(0, 10);
@@ -78,11 +89,81 @@ const buildLookupKey = (carrier: TrackingCarrier | null, trackingNumber: string)
 const matchesLookupTarget = (entry: TrackingEntry, target: TrackingLookupTarget) =>
   entry.trackingNumber === target.trackingNumber && (entry.carrier === target.carrier || !entry.carrier || !target.carrier);
 
+const describeAutoRefresh = (intervalMs: AutoRefreshIntervalMs) => {
+  if (intervalMs === 0) {
+    return 'manual';
+  }
+
+  return intervalMs < 60000 ? `cada ${intervalMs / 1000}s` : `cada ${intervalMs / 60000} min`;
+};
+
+const resolveLiveBoardStatus = (entry: TrackingEntry): { label: string; tone: LiveBoardTone } => {
+  if (entry.status === 'incidencia') {
+    return { label: 'Incidencia', tone: 'alert' };
+  }
+
+  if (isPastEstimatedDelivery(entry)) {
+    return { label: 'Atrasado', tone: 'alert' };
+  }
+
+  if (entry.fulfillmentState === 'entregado') {
+    return { label: 'Entregado', tone: 'delivered' };
+  }
+
+  if (entry.status === 'en_reparto') {
+    return { label: 'En reparto', tone: 'moving' };
+  }
+
+  if (entry.status === 'en_transito') {
+    return { label: 'En tránsito', tone: 'moving' };
+  }
+
+  if (entry.status === 'etiqueta_generada') {
+    return { label: 'Etiquetado', tone: 'pending' };
+  }
+
+  if (entry.status === 'capturado') {
+    return { label: 'Capturado', tone: 'pending' };
+  }
+
+  return { label: 'Pendiente', tone: 'pending' };
+};
+
+const resolveLiveBoardPriority = (entry: TrackingEntry) => {
+  const boardStatus = resolveLiveBoardStatus(entry);
+
+  switch (boardStatus.label) {
+    case 'Incidencia':
+      return 0;
+    case 'Atrasado':
+      return 1;
+    case 'En reparto':
+      return 2;
+    case 'En tránsito':
+      return 3;
+    case 'Etiquetado':
+      return 4;
+    case 'Capturado':
+    case 'Pendiente':
+      return 5;
+    case 'Entregado':
+      return 6;
+    default:
+      return 7;
+  }
+};
+
 export default function TrackingSection() {
   const importInputRef = useRef<HTMLInputElement | null>(null);
   const cameraInputRef = useRef<HTMLInputElement | null>(null);
   const rowImportInputRef = useRef<HTMLInputElement | null>(null);
   const rowCameraInputRef = useRef<HTMLInputElement | null>(null);
+  const liveBoardRef = useRef<HTMLDivElement | null>(null);
+  const refreshTrackingTargetsRef =
+    useRef<((targets: TrackingLookupTarget[], mode?: 'manual' | 'auto') => Promise<void>) | null>(null);
+  const autoRefreshTargetsRef = useRef<TrackingLookupTarget[]>([]);
+  const lookupBusyCountRef = useRef(0);
+  const ocrBusyRef = useRef(false);
 
   const [entries, setEntries] = useState<TrackingEntry[]>(() => loadTrackingEntries());
   const [manualPayload, setManualPayload] = useState('');
@@ -98,6 +179,9 @@ export default function TrackingSection() {
   const [lookupBusyKeys, setLookupBusyKeys] = useState<string[]>([]);
   const [notice, setNotice] = useState<TrackingNotice | null>(null);
   const [rowImportTargetId, setRowImportTargetId] = useState<string | null>(null);
+  const [autoRefreshIntervalMs, setAutoRefreshIntervalMs] = useState<AutoRefreshIntervalMs>(60000);
+  const [liveBoardOpen, setLiveBoardOpen] = useState(false);
+  const [liveBoardFullscreen, setLiveBoardFullscreen] = useState(false);
 
   useEffect(() => {
     saveTrackingEntries(entries);
@@ -186,6 +270,44 @@ export default function TrackingSection() {
 
   const liveLookupCount = useMemo(
     () => sortedEntries.filter((entry) => entry.carrier && supportsLivePortalLookup(entry.carrier)).length,
+    [sortedEntries],
+  );
+
+  const autoRefreshTargets = useMemo(
+    () =>
+      sortedEntries
+        .filter(
+          (entry) =>
+            entry.carrier &&
+            supportsLivePortalLookup(entry.carrier) &&
+            entry.fulfillmentState !== 'entregado',
+        )
+        .map((entry) => ({
+          carrier: entry.carrier,
+          trackingNumber: entry.trackingNumber,
+        })),
+    [sortedEntries],
+  );
+
+  const latestLookupAt = useMemo(() => {
+    const portalTouches = sortedEntries
+      .map((entry) => entry.lastLookupAt || entry.lastEventAt || '')
+      .filter(Boolean)
+      .sort((left, right) => Date.parse(right) - Date.parse(left));
+
+    return portalTouches[0] || '';
+  }, [sortedEntries]);
+
+  const liveBoardEntries = useMemo(
+    () =>
+      [...sortedEntries].sort((left, right) => {
+        const priorityDelta = resolveLiveBoardPriority(left) - resolveLiveBoardPriority(right);
+        if (priorityDelta !== 0) {
+          return priorityDelta;
+        }
+
+        return Date.parse(right.updatedAt) - Date.parse(left.updatedAt);
+      }),
     [sortedEntries],
   );
 
@@ -361,6 +483,51 @@ export default function TrackingSection() {
       setLookupBusyKeys((current) => current.filter((key) => !busyKeys.includes(key)));
     }
   };
+
+  useEffect(() => {
+    refreshTrackingTargetsRef.current = refreshTrackingTargets;
+  }, [refreshTrackingTargets]);
+
+  useEffect(() => {
+    autoRefreshTargetsRef.current = autoRefreshTargets;
+  }, [autoRefreshTargets]);
+
+  useEffect(() => {
+    lookupBusyCountRef.current = lookupBusyKeys.length;
+  }, [lookupBusyKeys]);
+
+  useEffect(() => {
+    ocrBusyRef.current = ocrBusy;
+  }, [ocrBusy]);
+
+  useEffect(() => {
+    if (autoRefreshIntervalMs === 0) {
+      return undefined;
+    }
+
+    const timer = window.setInterval(() => {
+      if (document.visibilityState === 'hidden' || ocrBusyRef.current || lookupBusyCountRef.current > 0) {
+        return;
+      }
+
+      if (autoRefreshTargetsRef.current.length === 0) {
+        return;
+      }
+
+      void refreshTrackingTargetsRef.current?.(autoRefreshTargetsRef.current, 'auto');
+    }, autoRefreshIntervalMs);
+
+    return () => window.clearInterval(timer);
+  }, [autoRefreshIntervalMs]);
+
+  useEffect(() => {
+    const handleFullscreenChange = () => {
+      setLiveBoardFullscreen(document.fullscreenElement === liveBoardRef.current);
+    };
+
+    document.addEventListener('fullscreenchange', handleFullscreenChange);
+    return () => document.removeEventListener('fullscreenchange', handleFullscreenChange);
+  }, []);
 
   const queueLookupForEntries = (incoming: TrackingEntry[], mode: 'manual' | 'auto' = 'auto') => {
     void refreshTrackingTargets(
@@ -550,6 +717,42 @@ export default function TrackingSection() {
     );
   };
 
+  const handleOpenLiveBoard = () => {
+    setLiveBoardOpen(true);
+    window.requestAnimationFrame(() => {
+      const boardNode = liveBoardRef.current;
+      if (!boardNode || typeof boardNode.requestFullscreen !== 'function') {
+        return;
+      }
+
+      void boardNode.requestFullscreen().catch(() => undefined);
+    });
+  };
+
+  const handleToggleBoardFullscreen = () => {
+    const boardNode = liveBoardRef.current;
+    if (!boardNode) {
+      return;
+    }
+
+    if (document.fullscreenElement === boardNode) {
+      void document.exitFullscreen().catch(() => undefined);
+      return;
+    }
+
+    if (typeof boardNode.requestFullscreen === 'function') {
+      void boardNode.requestFullscreen().catch(() => undefined);
+    }
+  };
+
+  const handleCloseLiveBoard = () => {
+    if (document.fullscreenElement === liveBoardRef.current) {
+      void document.exitFullscreen().catch(() => undefined);
+    }
+
+    setLiveBoardOpen(false);
+  };
+
   return (
     <section className="tracking-section">
       {notice ? <div className={`tracking-notice tracking-notice--${notice.tone}`}>{notice.message}</div> : null}
@@ -571,7 +774,7 @@ export default function TrackingSection() {
                 className="input-field tracking-textarea"
                 value={manualPayload}
                 onChange={(event) => setManualPayload(event.target.value)}
-                placeholder={'Ejemplo:\nDHL 1492322090\n5132157796\nGPE00486943'}
+                placeholder={'Ejemplo:\nDHL 1492322090\n5132157796\nGPE00486943\n696728976344\n999901028952'}
               />
             </label>
 
@@ -667,7 +870,9 @@ export default function TrackingSection() {
               <span>DHL: screenshots con “Número de guía aérea” y “Estado”.</span>
               <span>Estafeta: guía de 10 o 22 dígitos.</span>
               <span>Tresguerras: talón alfanumérico tipo GPE00486943.</span>
-              <span>Consulta viva: levanta el relay local del navegador para resumir cada portal dentro de Orion.</span>
+              <span>Chilexpress: OT pública de 10 a 12 dígitos.</span>
+              <span>Chibra: expedición de 12 dígitos con consulta autenticada desde backend.</span>
+              <span>Consulta viva: Orion resume cada portal dentro del dashboard y en local mantiene el relay como respaldo.</span>
             </div>
           </div>
 
@@ -818,7 +1023,7 @@ export default function TrackingSection() {
               <span className="tracking-panel__eyebrow">Mensajerías</span>
               <h4>Carga por carrier y cierre relativo</h4>
             </div>
-            <p>Permite ver rápidamente si el backlog se concentra en DHL, Estafeta o Tresguerras.</p>
+            <p>Permite ver rápidamente si el backlog se concentra en DHL, Estafeta, Tresguerras, Chilexpress o Chibra.</p>
           </div>
 
           <div className="tracking-carrier-stack">
@@ -853,6 +1058,21 @@ export default function TrackingSection() {
         <div className="tracking-records__toolbar">
           <span>{metrics.total > 0 ? `${metrics.total} tracking(s) cargados` : 'Sin tracking cargados todavía'}</span>
           <div className="tracking-records__toolbar-actions">
+            <label className="tracking-refresh-select">
+              <span>Auto refresh</span>
+              <select
+                className="input-field"
+                value={autoRefreshIntervalMs}
+                onChange={(event) => setAutoRefreshIntervalMs(Number(event.target.value) as AutoRefreshIntervalMs)}
+                disabled={ocrBusy || metrics.total === 0}
+              >
+                {AUTO_REFRESH_OPTIONS.map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </select>
+            </label>
             <button
               type="button"
               className="button-primary inactive"
@@ -861,10 +1081,27 @@ export default function TrackingSection() {
             >
               {lookupBusyKeys.length > 0 ? 'Consultando...' : 'Actualizar todos'}
             </button>
+            <button type="button" className="button-primary inactive" onClick={handleOpenLiveBoard} disabled={metrics.total === 0}>
+              Tablero en vivo
+            </button>
             <button type="button" className="button-primary inactive" onClick={handleClearBoard} disabled={metrics.total === 0 || ocrBusy}>
               Vaciar tablero local
             </button>
           </div>
+        </div>
+
+        <div className="tracking-records__live-summary">
+          <span>
+            {autoRefreshIntervalMs === 0
+              ? 'Actualización automática en pausa.'
+              : `Actualización automática ${describeAutoRefresh(autoRefreshIntervalMs)}.`}
+          </span>
+          <span>
+            {autoRefreshTargets.length > 0
+              ? `${autoRefreshTargets.length} guía(s) pendientes se revisan sin tocar las ya entregadas.`
+              : 'No hay guías pendientes elegibles para refresh automático.'}
+          </span>
+          <span>{latestLookupAt ? `Último pulso portal: ${formatTrackingDateTime(latestLookupAt)}` : 'Todavía no hay un pulso vivo registrado.'}</span>
         </div>
 
         {sortedEntries.length === 0 ? (
@@ -1073,6 +1310,141 @@ export default function TrackingSection() {
           onChange={(event) => void handleImportFiles(event.target.files, 'camera', rowImportTargetId)}
         />
       </article>
+
+      <div
+        ref={liveBoardRef}
+        className={`tracking-live-board${liveBoardOpen ? ' tracking-live-board--open' : ''}`}
+        aria-hidden={!liveBoardOpen}
+      >
+        <div className="tracking-live-board__shell">
+          <div className="tracking-live-board__header">
+            <div>
+              <span className="tracking-live-board__eyebrow">Board logístico en vivo</span>
+              <h4>Tracking operativo tipo aeropuerto</h4>
+              <p>
+                Actualización {autoRefreshIntervalMs === 0 ? 'manual' : describeAutoRefresh(autoRefreshIntervalMs)}.
+                {' '}
+                {latestLookupAt ? `Último pulso ${formatTrackingDateTime(latestLookupAt)}.` : 'Aún sin lectura viva.'}
+              </p>
+            </div>
+
+            <div className="tracking-live-board__actions">
+              <button type="button" className="button-primary inactive" onClick={handleRefreshAll} disabled={lookupBusyKeys.length > 0 || liveLookupCount === 0}>
+                {lookupBusyKeys.length > 0 ? 'Sincronizando...' : 'Actualizar ahora'}
+              </button>
+              <button type="button" className="button-primary inactive" onClick={handleToggleBoardFullscreen}>
+                {liveBoardFullscreen ? 'Salir de fullscreen' : 'Pantalla completa'}
+              </button>
+              <button type="button" className="button-primary inactive" onClick={handleCloseLiveBoard}>
+                Cerrar
+              </button>
+            </div>
+          </div>
+
+          <div className="tracking-live-board__stats">
+            <article>
+              <span>Activos</span>
+              <strong>{compactFormatter.format(metrics.total)}</strong>
+            </article>
+            <article>
+              <span>En tránsito</span>
+              <strong>{compactFormatter.format(metrics.inTransit)}</strong>
+            </article>
+            <article>
+              <span>Entregados</span>
+              <strong>{compactFormatter.format(metrics.delivered)}</strong>
+            </article>
+            <article>
+              <span>Riesgo</span>
+              <strong>{compactFormatter.format(metrics.incidents + metrics.overdue)}</strong>
+            </article>
+          </div>
+
+          <div className="tracking-live-board__table">
+            <div className="tracking-live-board__table-head">
+              <span>Guía / pedido</span>
+              <span>Carrier</span>
+              <span>Destino</span>
+              <span>Ruta</span>
+              <span>Último evento</span>
+              <span>Estado</span>
+              <span>ETA / control</span>
+            </div>
+
+            <div className="tracking-live-board__table-body">
+              {liveBoardEntries.length === 0 ? (
+                <div className="tracking-live-board__empty">No hay paquetes cargados para monitoreo.</div>
+              ) : (
+                liveBoardEntries.map((entry) => {
+                  const boardStatus = resolveLiveBoardStatus(entry);
+                  const lookupKey = buildLookupKey(entry.carrier, entry.trackingNumber);
+                  const lookupBusy = lookupBusyKeys.includes(lookupKey);
+
+                  return (
+                    <article
+                      key={`board-${entry.id}`}
+                      className={`tracking-live-board__row tracking-live-board__row--${boardStatus.tone}`}
+                    >
+                      <div className="tracking-live-board__cell tracking-live-board__cell--guide">
+                        <strong>{entry.trackingNumber}</strong>
+                        <span>{entry.orderReference || 'Sin pedido'}</span>
+                      </div>
+
+                      <div className="tracking-live-board__cell">
+                        <strong>{entry.carrier ? TRACKING_CARRIER_META[entry.carrier].label : 'Por definir'}</strong>
+                        <span>{entry.serviceType || 'Sin servicio detectado'}</span>
+                      </div>
+
+                      <div className="tracking-live-board__cell">
+                        <strong>{entry.recipient || entry.destination || 'Sin destinatario'}</strong>
+                        <span>{entry.destination || 'Destino no detectado'}</span>
+                      </div>
+
+                      <div className="tracking-live-board__cell">
+                        <strong>{entry.origin || 'Origen no detectado'}</strong>
+                        <span>{entry.origin && entry.destination ? `${entry.origin} → ${entry.destination}` : 'Ruta parcial'}</span>
+                      </div>
+
+                      <div className="tracking-live-board__cell">
+                        <strong>{entry.portalStatusText || entry.lastEventLabel || TRACKING_STATUS_LABELS[entry.status]}</strong>
+                        <span>
+                          {entry.lastEventAt
+                            ? formatTrackingDateTime(entry.lastEventAt)
+                            : entry.lastLookupAt
+                              ? `Pulso ${formatTrackingDateTime(entry.lastLookupAt)}`
+                              : 'Sin evento visible'}
+                        </span>
+                      </div>
+
+                      <div className="tracking-live-board__cell tracking-live-board__cell--status">
+                        <span className={`tracking-live-board__status tracking-live-board__status--${boardStatus.tone}`}>
+                          {boardStatus.label}
+                        </span>
+                        <span>{lookupBusy ? 'Sincronizando portal...' : TRACKING_STATUS_LABELS[entry.status]}</span>
+                      </div>
+
+                      <div className="tracking-live-board__cell">
+                        <strong>{entry.estimatedDelivery ? formatTrackingDate(entry.estimatedDelivery) : 'Sin ETA'}</strong>
+                        <span>
+                          {entry.fulfillmentState === 'entregado'
+                            ? entry.deliveryProofName
+                              ? `Recibió ${entry.deliveryProofName}`
+                              : 'Cierre confirmado'
+                            : isPastEstimatedDelivery(entry)
+                              ? 'Promesa vencida'
+                              : entry.lastLookupAt
+                                ? `Portal ${formatTrackingDateTime(entry.lastLookupAt)}`
+                                : 'Sin consulta viva'}
+                        </span>
+                      </div>
+                    </article>
+                  );
+                })
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
     </section>
   );
 }

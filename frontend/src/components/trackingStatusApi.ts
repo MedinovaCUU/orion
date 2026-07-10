@@ -10,7 +10,7 @@ import type {
 const TRACKING_LOOKUP_FUNCTION = 'resolve-shipping-tracking';
 const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL || '';
 const DEFAULT_BROWSER_RELAY_URL = 'http://127.0.0.1:8788/lookup';
-const RELAY_SUPPORTED_CARRIERS: TrackingCarrier[] = ['dhl', 'estafeta', 'tresguerras'];
+const RELAY_SUPPORTED_CARRIERS: TrackingCarrier[] = ['dhl', 'estafeta', 'tresguerras', 'chilexpress', 'chibra'];
 const isLocalBrowserRuntime = () => {
   if (typeof window === 'undefined') {
     return import.meta.env.DEV;
@@ -40,9 +40,9 @@ const HOSTED_STATIC_RUNTIME_HINT =
 const LOCAL_EDGE_HINT =
   'Si estas trabajando en local, levanta tu carpeta externa de Supabase y ejecuta `cd "$SUPABASE_LOCAL_DIR" && supabase functions serve resolve-shipping-tracking --env-file functions/.env --no-verify-jwt`.';
 const LOCAL_BROWSER_RELAY_HINT =
-  'En local, `npm run dev` y `npm run preview` ya levantan el relay del navegador para DHL, Estafeta y Tresguerras. Si no aparece, reinicia Orion local.';
+  'En local, `npm run dev` y `npm run preview` ya levantan el relay del navegador para DHL, Estafeta, Tresguerras, Chilexpress y Chibra. Si no aparece, reinicia Orion local.';
 const HOSTED_EDGE_SERVICE_HINT =
-  'La consulta viva hospedada depende de `resolve-shipping-tracking` y, para DHL, de un backend con navegador real o de la API oficial.';
+  'La consulta viva hospedada depende de `resolve-shipping-tracking` y, según la mensajería, de APIs públicas, llaves oficiales o credenciales web del backend.';
 const BROWSER_RELAY_HINT = IS_LOCAL_BROWSER_RUNTIME
   ? LOCAL_BROWSER_RELAY_HINT
   : IS_HOSTED_HTTPS_RUNTIME && IS_LOCALHOST_RELAY_URL
@@ -111,7 +111,11 @@ const supportsRelayLookup = (carrier: TrackingCarrier | null) =>
   carrier !== null && Boolean(TRACKING_BROWSER_RELAY_URL) && RELAY_SUPPORTED_CARRIERS.includes(carrier);
 
 const supportsEdgeLookup = (carrier: TrackingCarrier | null) =>
-  EDGE_LOOKUP_ENABLED && (carrier === 'dhl' || carrier === 'estafeta');
+  EDGE_LOOKUP_ENABLED &&
+  (carrier === 'dhl' ||
+    carrier === 'estafeta' ||
+    carrier === 'chilexpress' ||
+    carrier === 'chibra');
 
 export const supportsLivePortalLookup = (carrier: TrackingCarrier | null) =>
   supportsRelayLookup(carrier) || supportsEdgeLookup(carrier);
