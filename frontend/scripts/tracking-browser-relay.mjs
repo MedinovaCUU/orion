@@ -14,23 +14,17 @@ const EXECUTABLE_CANDIDATES = [
   '/Applications/Microsoft Edge.app/Contents/MacOS/Microsoft Edge',
   '/Applications/Chromium.app/Contents/MacOS/Chromium',
 ].filter(Boolean);
-const CHILEXPRESS_SUBSCRIPTION_KEY =
-  process.env.CHILEXPRESS_SUBSCRIPTION_KEY || '7b878d2423f349e3b8bbb9b3607d4215';
-const CHILEXPRESS_CLIENT_ID =
-  process.env.CHILEXPRESS_CLIENT_ID || 'ea970f64-73db-4bdc-91f4-a0d58094b44b';
-const CHILEXPRESS_CLIENT_SECRET = process.env.CHILEXPRESS_CLIENT_SECRET || '';
-const CHILEXPRESS_SCOPE =
-  process.env.CHILEXPRESS_SCOPE || 'api://ea970f64-73db-4bdc-91f4-a0d58094b44b/.default';
 const CHILEXPRESS_ORIGIN = 'https://centrodeayuda.chilexpress.cl';
-const CHILEXPRESS_TOKEN_URL =
-  process.env.CHILEXPRESS_TOKEN_URL ||
-  'https://services.wschilexpress.com/centroayuda/api/v1/api/v1/token';
-const CHILEXPRESS_TIMELINE_URL =
-  process.env.CHILEXPRESS_TIMELINE_URL ||
-  'https://services.wschilexpress.com/centroayuda/api/v1/api/v1/TimeLine';
-const CHILEXPRESS_LOOKUP_URL =
-  process.env.CHILEXPRESS_LOOKUP_URL ||
-  'https://services.wschilexpress.com/centroayuda/api/v1/api/sugerencia/bynroot';
+const CHILEXPRESS_SUBSCRIPTION_KEY = process.env.CHILEXPRESS_SUBSCRIPTION_KEY || '';
+const CHILEXPRESS_CLIENT_ID = process.env.CHILEXPRESS_CLIENT_ID || '';
+const CHILEXPRESS_CLIENT_SECRET = process.env.CHILEXPRESS_CLIENT_SECRET || '';
+const CHILEXPRESS_SCOPE = process.env.CHILEXPRESS_SCOPE || '';
+const CHILEXPRESS_GRANT_TYPE = process.env.CHILEXPRESS_GRANT_TYPE || 'client_credentials';
+const CHILEXPRESS_BASE_URL = process.env.CHILEXPRESS_BASE_URL || '';
+const CHILEXPRESS_TOKEN_URL = process.env.CHILEXPRESS_TOKEN_URL || '';
+const CHILEXPRESS_TRACKING_URL = process.env.CHILEXPRESS_TRACKING_URL || '';
+const CHILEXPRESS_DETAILS_URL = process.env.CHILEXPRESS_DETAILS_URL || '';
+const CHILEXPRESS_CONFIG_CACHE_MS = 30 * 60 * 1000;
 const CHIBRA_BASE_URL = 'https://gtschibra.alertran.net';
 const CHIBRA_LOGIN_URL = `${CHIBRA_BASE_URL}/gts/login.seam`;
 
@@ -45,6 +39,8 @@ const BROWSER_HEADERS = {
   Accept: 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
   'Accept-Language': 'es-MX,es;q=0.9,en;q=0.8',
 };
+
+let chilexpressPortalConfigCache = null;
 
 const HTML_ENTITY_MAP = {
   nbsp: ' ',
@@ -885,10 +881,110 @@ const resolveEstafetaTracking = async (trackingNumber) => {
   return parseEstafetaResult(trackingNumber, html);
 };
 
-const buildChilexpressHeaders = (accessToken, contentType = 'application/json') => {
+const extractChilexpressPortalValue = (bundleSource = '', key = '') => {
+  const match = bundleSource.match(new RegExp(`${key}:\\s*"([^"]+)"`));
+  return compactSpaces(match?.[1] || '');
+};
+
+const resolveChilexpressBundleUrl = (html = '') => {
+  const bundleMatch =
+    html.match(/(?:src|href)=["']([^"']*main\.[^"']+\.js)["']/i) || html.match(/(main\.[^"'\s>]+\.js)/i);
+  return bundleMatch?.[1] ? new URL(bundleMatch[1], `${CHILEXPRESS_ORIGIN}/`).toString() : '';
+};
+
+const resolveChilexpressPortalConfig = async () => {
+  if (chilexpressPortalConfigCache && chilexpressPortalConfigCache.expiresAt > Date.now()) {
+    return chilexpressPortalConfigCache.value;
+  }
+
+  const hasStaticConfig =
+    !!CHILEXPRESS_SUBSCRIPTION_KEY &&
+    !!CHILEXPRESS_CLIENT_ID &&
+    !!CHILEXPRESS_CLIENT_SECRET &&
+    !!CHILEXPRESS_SCOPE &&
+    !!CHILEXPRESS_BASE_URL;
+
+  if (hasStaticConfig) {
+    const normalizedBaseUrl = CHILEXPRESS_BASE_URL.replace(/\/+$/, '');
+    const value = {
+      subscriptionKey: CHILEXPRESS_SUBSCRIPTION_KEY,
+      clientId: CHILEXPRESS_CLIENT_ID,
+      clientSecret: CHILEXPRESS_CLIENT_SECRET,
+      scope: CHILEXPRESS_SCOPE,
+      grantType: CHILEXPRESS_GRANT_TYPE || 'client_credentials',
+      serviceBaseUrl: normalizedBaseUrl,
+      tokenUrl: CHILEXPRESS_TOKEN_URL || `${normalizedBaseUrl}/api/v1/token`,
+      trackingUrl: CHILEXPRESS_TRACKING_URL || `${normalizedBaseUrl}/api/v1/api/v1/gettracking`,
+      detailsUrl: CHILEXPRESS_DETAILS_URL || `${normalizedBaseUrl}/api/v1/api/v1/getdatosot`,
+    };
+    chilexpressPortalConfigCache = { value, expiresAt: Date.now() + CHILEXPRESS_CONFIG_CACHE_MS };
+    return value;
+  }
+
+  const portalResponse = await fetch(`${CHILEXPRESS_ORIGIN}/`, {
+    headers: BROWSER_HEADERS,
+    redirect: 'follow',
+  });
+
+  if (!portalResponse.ok) {
+    throw new Error(`Chilexpress respondió ${portalResponse.status} al abrir su portal público.`);
+  }
+
+  const portalHtml = await portalResponse.text();
+  const bundleUrl = resolveChilexpressBundleUrl(portalHtml);
+  if (!bundleUrl) {
+    throw new Error('Chilexpress cambió su portal público y no pude localizar el bundle de configuración.');
+  }
+
+  const bundleResponse = await fetch(bundleUrl, {
+    headers: BROWSER_HEADERS,
+    redirect: 'follow',
+  });
+
+  if (!bundleResponse.ok) {
+    throw new Error(`Chilexpress respondió ${bundleResponse.status} al descargar su bundle público.`);
+  }
+
+  const bundleSource = await bundleResponse.text();
+  const serviceBaseUrl = CHILEXPRESS_BASE_URL || extractChilexpressPortalValue(bundleSource, 'serviceCDA');
+  const value = {
+    subscriptionKey: CHILEXPRESS_SUBSCRIPTION_KEY || extractChilexpressPortalValue(bundleSource, 'ocpApimSubscriptionKeyCDA'),
+    clientId: CHILEXPRESS_CLIENT_ID || extractChilexpressPortalValue(bundleSource, 'tokenCdaClient_id'),
+    clientSecret: CHILEXPRESS_CLIENT_SECRET || extractChilexpressPortalValue(bundleSource, 'tokenCdaClient_secret'),
+    scope: CHILEXPRESS_SCOPE || extractChilexpressPortalValue(bundleSource, 'tokenCdaScope'),
+    grantType: extractChilexpressPortalValue(bundleSource, 'tokenCdaGrant_type') || CHILEXPRESS_GRANT_TYPE,
+    serviceBaseUrl: serviceBaseUrl.replace(/\/+$/, ''),
+    tokenUrl: '',
+    trackingUrl: '',
+    detailsUrl: '',
+  };
+  value.tokenUrl = CHILEXPRESS_TOKEN_URL || `${value.serviceBaseUrl}/api/v1/token`;
+  value.trackingUrl = CHILEXPRESS_TRACKING_URL || `${value.serviceBaseUrl}/api/v1/api/v1/gettracking`;
+  value.detailsUrl = CHILEXPRESS_DETAILS_URL || `${value.serviceBaseUrl}/api/v1/api/v1/getdatosot`;
+
+  const missingFields = [
+    ['subscriptionKey', value.subscriptionKey],
+    ['clientId', value.clientId],
+    ['clientSecret', value.clientSecret],
+    ['scope', value.scope],
+    ['grantType', value.grantType],
+    ['serviceBaseUrl', value.serviceBaseUrl],
+  ]
+    .filter(([, fieldValue]) => !fieldValue)
+    .map(([fieldName]) => fieldName);
+
+  if (missingFields.length > 0) {
+    throw new Error(`Chilexpress no publicó la configuración mínima para tracking (${missingFields.join(', ')}).`);
+  }
+
+  chilexpressPortalConfigCache = { value, expiresAt: Date.now() + CHILEXPRESS_CONFIG_CACHE_MS };
+  return value;
+};
+
+const buildChilexpressHeaders = (config, accessToken, contentType = 'application/json') => {
   const headers = {
     Accept: 'application/json, text/plain, */*',
-    'ocp-apim-subscription-key': CHILEXPRESS_SUBSCRIPTION_KEY,
+    'ocp-apim-subscription-key': config.subscriptionKey,
     'ocp-apim-trace': 'true',
     Referer: `${CHILEXPRESS_ORIGIN}/`,
     Origin: CHILEXPRESS_ORIGIN,
@@ -908,18 +1004,15 @@ const buildChilexpressHeaders = (accessToken, contentType = 'application/json') 
 };
 
 const requestChilexpressAccessToken = async () => {
-  if (!CHILEXPRESS_CLIENT_SECRET) {
-    throw new Error('Chilexpress requiere CHILEXPRESS_CLIENT_SECRET en el relay local para consulta automática.');
-  }
-
-  const response = await fetch(CHILEXPRESS_TOKEN_URL, {
+  const config = await resolveChilexpressPortalConfig();
+  const response = await fetch(config.tokenUrl, {
     method: 'POST',
-    headers: buildChilexpressHeaders(null, 'application/x-www-form-urlencoded'),
+    headers: buildChilexpressHeaders(config, null, 'application/x-www-form-urlencoded'),
     body: new URLSearchParams({
-      grant_type: 'client_credentials',
-      client_id: CHILEXPRESS_CLIENT_ID,
-      scope: CHILEXPRESS_SCOPE,
-      client_secret: CHILEXPRESS_CLIENT_SECRET,
+      grant_type: config.grantType || 'client_credentials',
+      client_id: config.clientId,
+      scope: config.scope,
+      client_secret: config.clientSecret,
     }),
   });
 
@@ -933,7 +1026,16 @@ const requestChilexpressAccessToken = async () => {
     throw new Error('Chilexpress no devolvió un token de acceso utilizable.');
   }
 
-  return accessToken;
+  return { accessToken, config };
+};
+
+const parseChilexpressDateTime = (value = '') => {
+  const raw = compactSpaces(value);
+  if (/^\d{4}-\d{2}-\d{2}T/.test(raw)) {
+    return raw;
+  }
+
+  return parseUsDateTime(raw);
 };
 
 const extractChilexpressLocation = (label = '') => {
@@ -950,42 +1052,34 @@ const extractChilexpressLocation = (label = '') => {
   return '';
 };
 
-const parseChilexpressResult = (trackingNumber, suggestionPayload, timelinePayload) => {
-  const suggestion = suggestionPayload?.data || {};
-  const timelineStatusDescription = compactSpaces(String(timelinePayload?.statusDescription || ''));
+const parseChilexpressResult = (trackingNumber, detailsPayload, trackingPayload) => {
+  const detailsList = Array.isArray(detailsPayload?.DatosOT) ? detailsPayload.DatosOT : [];
+  const details = detailsList[0] || {};
+  const trackingDetails = trackingPayload?.DatosOT || {};
+  const trackingList = Array.isArray(trackingPayload?.ListTracking) ? trackingPayload.ListTracking : [];
 
-  if (
-    Number(suggestionPayload?.resultado || 0) < 0 ||
-    Number(timelinePayload?.statusCode || 0) >= 400 ||
-    normalizeText(timelineStatusDescription).includes('ot no existe')
-  ) {
+  if (detailsList.length === 0 && trackingList.length === 0) {
     return buildLookupError('chilexpress', trackingNumber, 'Chilexpress no encontró información para esa OT.');
   }
 
-  const rawStages = Array.isArray(timelinePayload?.etapas) ? timelinePayload.etapas[0] : null;
-  const stages = rawStages
-    ? Object.values(rawStages)
-        .filter((stage) => stage && typeof stage === 'object' && 'etapa' in stage)
-        .sort((left, right) => Number(left?.etapa || 0) - Number(right?.etapa || 0))
-    : [];
-  const activeStage = stages.find((stage) => Boolean(stage?.etapaActiva)) || stages[stages.length - 1];
-  const timeline = stages
-    .flatMap((stage) =>
-      Array.isArray(stage?.detalles)
-        ? stage.detalles.map((detail) => ({
-            label: compactSpaces(detail?.gls_tracking || ''),
-            location: extractChilexpressLocation(compactSpaces(detail?.gls_tracking || '')),
-            timestamp: parseUsDateTime(compactSpaces(detail?.fec_track || '')),
-            note: compactSpaces(stage?.titulo || ''),
-          }))
-        : [],
-    )
+  const timeline = trackingList
+    .map((event) => {
+      const label = compactSpaces(String(event?.gls_tracking || event?.gls_estado || ''));
+      const location = compactSpaces(String(event?.gls_Destino || event?.cod_destino || extractChilexpressLocation(label) || ''));
+      const note = compactSpaces([String(event?.gls_motivo || ''), String(event?.gls_observacion || '')].filter(Boolean).join(' · '));
+      return {
+        label,
+        location,
+        timestamp: parseChilexpressDateTime(String(event?.fec_track || event?.fecha_recibe || '')),
+        note,
+      };
+    })
     .filter((event) => event.label)
     .sort((left, right) => Date.parse(left.timestamp || '1970-01-01') - Date.parse(right.timestamp || '1970-01-01'));
 
   const lastEvent = timeline[timeline.length - 1];
   const portalStatusText = compactSpaces(
-    String(activeStage?.titulo || lastEvent?.label || suggestion?.glosaEstado || timelineStatusDescription || ''),
+    String(lastEvent?.label || trackingDetails?.gls_estado || details?.desc_estado || trackingPayload?.statusDescription || ''),
   );
   if (!portalStatusText && timeline.length === 0) {
     return buildLookupError(
@@ -996,24 +1090,20 @@ const parseChilexpressResult = (trackingNumber, suggestionPayload, timelinePaylo
   }
 
   const status = normalizeStatusFromText(`${portalStatusText} ${lastEvent?.label || ''}`);
-  const originParts = [suggestion?.nombreRemitente, suggestion?.comunaDevolucion]
-    .map((value) => compactSpaces(String(value || '')))
-    .filter(Boolean);
-  const destinationParts = [
-    suggestion?.direccionDestinatario,
-    suggestion?.compDireccionDestinatario,
-    suggestion?.comunaDestinatario,
-  ]
+  const originParts = [details?.origen, details?.nombre_remitente].map((value) => compactSpaces(String(value || ''))).filter(Boolean);
+  const destinationParts = [details?.destino || trackingDetails?.cod_cobertura, details?.direccion_entrega]
     .map((value) => compactSpaces(String(value || '')))
     .filter(Boolean);
   const rawSummary = JSON.stringify(
     {
-      suggestion,
-      timeline: timelinePayload?.etapas || [],
+      details,
+      trackingSummary: trackingDetails,
+      tracking: trackingList.slice(0, 20),
     },
     null,
     2,
   ).slice(0, 6000);
+  const deliveredEvent = [...trackingList].find((event) => normalizeText(String(event?.gls_tracking || '')).includes('entregado'));
 
   return buildSuccessResponse('chilexpress', trackingNumber, {
     status,
@@ -1021,40 +1111,37 @@ const parseChilexpressResult = (trackingNumber, suggestionPayload, timelinePaylo
     portalStatusText,
     lastEventLabel: lastEvent?.label || portalStatusText || 'Sin evento reciente',
     lastEventAt: lastEvent?.timestamp || '',
-    estimatedDelivery: toIsoDate(String(suggestion?.fecCompromiso || suggestion?.fecEntrega || '')),
-    recipient: compactSpaces(String(suggestion?.nombreDestinatario || '')),
+    estimatedDelivery: toIsoDate(extractFirstDate(String(details?.fecha_estimada_entrega || trackingDetails?.gls_tiempo_estimado || ''))),
+    recipient: compactSpaces(String(details?.nombre_destinatario || '')),
     origin: compactSpaces(originParts.join(' · ')),
     destination: compactSpaces(destinationParts.join(' · ')),
-    serviceType: compactSpaces([suggestion?.servicio, suggestion?.descProducto].filter(Boolean).join(' · ')),
-    deliveryProofName: compactSpaces(String(suggestion?.nombreReceptor || '')),
+    serviceType: compactSpaces([details?.desc_servicio || trackingDetails?.gls_servicio, details?.desc_producto || trackingDetails?.gls_producto].filter(Boolean).join(' · ')),
+    deliveryProofName: compactSpaces(String(deliveredEvent?.gls_recibe || details?.nombre_receptor || '')),
     timeline,
     rawSummary,
-    note: compactSpaces(String(suggestion?.motivoResolucion || '')),
+    note: compactSpaces(String(deliveredEvent?.gls_observacion || '')),
   });
 };
 
 const resolveChilexpressTracking = async (trackingNumber) => {
-  const accessToken = await requestChilexpressAccessToken();
-  const headers = buildChilexpressHeaders(accessToken);
-  const [suggestionResponse, timelineResponse] = await Promise.all([
-    fetch(`${CHILEXPRESS_LOOKUP_URL}?${new URLSearchParams({ nroot: trackingNumber }).toString()}`, { headers }),
-    fetch(
-      `${CHILEXPRESS_TIMELINE_URL}?${new URLSearchParams({ ot: trackingNumber, indPublico: '0' }).toString()}`,
-      { headers },
-    ),
+  const { accessToken, config } = await requestChilexpressAccessToken();
+  const headers = buildChilexpressHeaders(config, accessToken);
+  const [detailsResponse, trackingResponse] = await Promise.all([
+    fetch(`${config.detailsUrl}?${new URLSearchParams({ ot: trackingNumber }).toString()}`, { headers }),
+    fetch(`${config.trackingUrl}?${new URLSearchParams({ ot: trackingNumber }).toString()}`, { headers }),
   ]);
 
-  if (!suggestionResponse.ok) {
-    throw new Error(`Chilexpress respondió ${suggestionResponse.status} al solicitar la OT.`);
+  if (!detailsResponse.ok) {
+    throw new Error(`Chilexpress respondió ${detailsResponse.status} al solicitar el detalle de la OT.`);
   }
 
-  if (!timelineResponse.ok) {
-    throw new Error(`Chilexpress respondió ${timelineResponse.status} al solicitar la línea de tiempo.`);
+  if (!trackingResponse.ok) {
+    throw new Error(`Chilexpress respondió ${trackingResponse.status} al solicitar el tracking de la OT.`);
   }
 
-  const suggestionPayload = await suggestionResponse.json();
-  const timelinePayload = await timelineResponse.json();
-  return parseChilexpressResult(trackingNumber, suggestionPayload, timelinePayload);
+  const detailsPayload = await detailsResponse.json();
+  const trackingPayload = await trackingResponse.json();
+  return parseChilexpressResult(trackingNumber, detailsPayload, trackingPayload);
 };
 
 const resolveChibraCredentials = () => ({
