@@ -11,9 +11,11 @@ export interface AdvisoryAttachmentAnalysis {
   sourceReference: string;
 }
 
+export type AdvisoryAttachmentKind = 'photo' | 'report' | 'service_test' | 'video';
+
 export interface AdvisoryAttachmentRecord {
   id: string;
-  kind: 'photo' | 'report' | 'service_test';
+  kind: AdvisoryAttachmentKind;
   fileName: string;
   mimeType: string;
   size: number;
@@ -128,7 +130,7 @@ const sanitizeAttachment = (value: unknown): AdvisoryAttachmentRecord | null => 
   return {
     id: coerceString(value.id) || crypto.randomUUID(),
     kind:
-      value.kind === 'photo' || value.kind === 'report' || value.kind === 'service_test'
+      value.kind === 'photo' || value.kind === 'report' || value.kind === 'service_test' || value.kind === 'video'
         ? value.kind
         : 'report',
     fileName: coerceString(value.fileName) || 'archivo',
