@@ -267,7 +267,7 @@ const formatMonitoringErrorLabel = (code: string | null | undefined, fallbackLab
     return fallbackLabel;
   }
 
-  return showMonitoringErrorCodes ? `E${code}` : 'Código oculto temporalmente';
+  return showMonitoringErrorCodes ? `E${code}` : fallbackLabel;
 };
 const SUPREMO_LAUNCH_TIMEOUT_MS = 1800;
 const CURRENT_REAGENT_BUCKET_MONTH = (() => {
@@ -737,6 +737,7 @@ export default function EquipmentMonitoring() {
   const mountedRef = useRef(true);
   const refreshInFlightRef = useRef<Promise<void> | null>(null);
   const mapStageRef = useRef<HTMLDivElement | null>(null);
+  const mapCanvasRef = useRef<HTMLDivElement | null>(null);
   const dragStateRef = useRef<{
     equipmentId: string;
     lastPoint: EquipmentPointOverride | null;
@@ -1201,6 +1202,12 @@ export default function EquipmentMonitoring() {
     } satisfies ReagentConsumptionSummaryRow;
   }, [selectedEquipment, selectedReagentBucketMonth, selectedReagentSummary]);
   const hasSelectedReagentMonthData = Boolean(selectedReagentSummary);
+  const selectedReagentPeakTests = useMemo(() => {
+    return Math.max(
+      1,
+      ...selectedReagentMonthRows.map((row) => readNumericValue(row.pruebas_registradas)),
+    );
+  }, [selectedReagentMonthRows]);
 
   useEffect(() => {
     let cancelled = false;
@@ -1365,13 +1372,13 @@ export default function EquipmentMonitoring() {
   };
 
   const readMapPointFromClient = (clientX: number, clientY: number) => {
-    const metrics = getStageMetrics();
-    if (!metrics || !metrics.rect.width || !metrics.rect.height) {
+    const canvasRect = mapCanvasRef.current?.getBoundingClientRect();
+    if (!canvasRect || !canvasRect.width || !canvasRect.height) {
       return null;
     }
 
-    const logicalX = (clientX - metrics.rect.left - metrics.offsetX) / metrics.sceneWidth;
-    const logicalY = (clientY - metrics.rect.top - metrics.offsetY) / metrics.sceneHeight;
+    const logicalX = (clientX - canvasRect.left) / canvasRect.width;
+    const logicalY = (clientY - canvasRect.top) / canvasRect.height;
 
     return {
       x: roundMapPercent(clampPercent(logicalX * 100)),
@@ -1821,62 +1828,76 @@ export default function EquipmentMonitoring() {
                 top: `calc(${((1 - mapZoom) * 100) / 2}% + ${mapPan.y}px)`,
               }}
             >
-              <img src={MAP_URL} alt="Mapa de México" className="equipment-monitor__map-image" draggable={false} />
-              <div className="equipment-monitor__map-overlay">
-                {mappedEquipments.map((equipment) => (
-                  <button
-                    key={`${equipment.id}-${equipment.serial}`}
-                    type="button"
-                    className={`equipment-monitor__marker equipment-monitor__marker--${equipment.markerTone} ${
-                      equipment.hasSupremoHeartbeat ? 'equipment-monitor__marker--heartbeat' : ''
-                    } ${
-                      selectedEquipment?.id === equipment.id ? 'equipment-monitor__marker--selected' : ''
-                    } ${
-                      draggingEquipmentId === equipment.id ? 'equipment-monitor__marker--dragging' : ''
-                    }`.trim()}
-                    style={{
-                      left: `${equipment.mapPoint?.x || 0}%`,
-                      top: `${equipment.mapPoint?.y || 0}%`,
-                      animationDelay: `-${(equipment.serial.charCodeAt(equipment.serial.length - 1) % 9) * 0.14}s`,
-                    }}
-                    onPointerDown={(event) => {
-                      setSelectedEquipmentId(equipment.id);
+              <div ref={mapCanvasRef} className="equipment-monitor__map-canvas">
+                <img src={MAP_URL} alt="Mapa de México" className="equipment-monitor__map-image" draggable={false} />
+                <div className="equipment-monitor__map-overlay">
+                  {mappedEquipments.map((equipment) => {
+                    const heartbeatDelay = -(
+                      (equipment.serial.charCodeAt(equipment.serial.length - 1) % 9) * 0.14
+                    );
 
-                      if (!isEditMode) {
-                        return;
-                      }
+                    return (
+                      <button
+                        key={`${equipment.id}-${equipment.serial}`}
+                        type="button"
+                        className={`equipment-monitor__marker equipment-monitor__marker--${equipment.markerTone} ${
+                          equipment.hasSupremoHeartbeat ? 'equipment-monitor__marker--heartbeat' : ''
+                        } ${
+                          selectedEquipment?.id === equipment.id ? 'equipment-monitor__marker--selected' : ''
+                        } ${
+                          draggingEquipmentId === equipment.id ? 'equipment-monitor__marker--dragging' : ''
+                        }`.trim()}
+                        style={{
+                          left: `${equipment.mapPoint?.x || 0}%`,
+                          top: `${equipment.mapPoint?.y || 0}%`,
+                        }}
+                        onPointerDown={(event) => {
+                          setSelectedEquipmentId(equipment.id);
 
-                      event.preventDefault();
-                      event.stopPropagation();
+                          if (!isEditMode) {
+                            return;
+                          }
 
-                      const point = readMapPointFromClient(event.clientX, event.clientY) || equipment.mapPoint;
-                      dragStateRef.current = {
-                        equipmentId: equipment.id,
-                        lastPoint: point ? { x: point.x, y: point.y } : null,
-                      };
-                      setDraggingEquipmentId(equipment.id);
+                          event.preventDefault();
+                          event.stopPropagation();
 
-                      if (point) {
-                        setLocalMapOverrides((current) => ({
-                          ...current,
-                          [equipment.id]: {
-                            x: point.x,
-                            y: point.y,
-                          },
-                        }));
-                      }
-                    }}
-                    onClick={() => setSelectedEquipmentId(equipment.id)}
-                    title={
-                      isEditMode
-                        ? `${equipment.clientName} · ${equipment.serial} · ${getStatusLabel(equipment)} · arrastra para ajustar`
-                        : `${equipment.clientName} · ${equipment.serial} · ${getStatusLabel(equipment)}`
-                    }
-                  >
-                    <span className="equipment-monitor__marker-pulse" />
-                    <span className="equipment-monitor__marker-core" />
-                  </button>
-                ))}
+                          const point = readMapPointFromClient(event.clientX, event.clientY) || equipment.mapPoint;
+                          dragStateRef.current = {
+                            equipmentId: equipment.id,
+                            lastPoint: point ? { x: point.x, y: point.y } : null,
+                          };
+                          setDraggingEquipmentId(equipment.id);
+
+                          if (point) {
+                            setLocalMapOverrides((current) => ({
+                              ...current,
+                              [equipment.id]: {
+                                x: point.x,
+                                y: point.y,
+                              },
+                            }));
+                          }
+                        }}
+                        onClick={() => setSelectedEquipmentId(equipment.id)}
+                        title={
+                          isEditMode
+                            ? `${equipment.clientName} · ${equipment.serial} · ${getStatusLabel(equipment)} · arrastra para ajustar`
+                            : `${equipment.clientName} · ${equipment.serial} · ${getStatusLabel(equipment)}`
+                        }
+                      >
+                        <span
+                          className="equipment-monitor__marker-pulse"
+                          style={{ animationDelay: `${heartbeatDelay}s` }}
+                        />
+                        <span
+                          className="equipment-monitor__marker-pulse equipment-monitor__marker-pulse--secondary"
+                          style={{ animationDelay: `${heartbeatDelay - 0.9}s` }}
+                        />
+                        <span className="equipment-monitor__marker-core" />
+                      </button>
+                    );
+                  })}
+                </div>
               </div>
             </div>
           </div>
@@ -1885,332 +1906,352 @@ export default function EquipmentMonitoring() {
         <aside className="equipment-monitor__focus-panel">
           {selectedEquipment ? (
             <>
-              <div className={`equipment-monitor__status-pill equipment-monitor__status-pill--${selectedEquipment.markerTone}`}>
-                {getStatusLabel(selectedEquipment)}
-              </div>
-              <h3>{selectedEquipment.clientName}</h3>
-              <p className="equipment-monitor__focus-subtitle">
-                {selectedEquipment.serial} · {selectedEquipment.model}
-              </p>
-              <div className="equipment-monitor__focus-actions">
-                <button
-                  type="button"
-                  className={`button-primary ${isSupremoLaunchEnabled() && selectedEquipment.hasSupremoLink ? '' : 'inactive'}`.trim()}
-                  onClick={() => void launchSupremo()}
-                  disabled={launchingSupremo || !isSupremoLaunchEnabled() || !selectedEquipment.hasSupremoLink}
-                >
-                  <img src={SUPREMO_ICON_URL} alt="" className="equipment-monitor__focus-action-icon" />
-                  {launchingSupremo
-                    ? 'Abriendo Supremo...'
-                    : selectedEquipment.hasSupremoLink
-                      ? 'Conectar con Supremo'
-                      : 'Supremo no configurado'}
-                </button>
-              </div>
-              {supremoFeedback ? (
-                <p
-                  className={`equipment-monitor__focus-feedback equipment-monitor__focus-feedback--${supremoFeedback.tone}`}
-                >
-                  {supremoFeedback.message}
-                </p>
-              ) : null}
-
-              <div className="equipment-monitor__focus-meta">
-                <div>
-                  <span>Estado</span>
-                  <strong>{selectedEquipment.normalizedState || 'Sin dato'}</strong>
-                </div>
-                <div>
-                  <span>Ciudad</span>
-                  <strong>{selectedEquipment.city || selectedEquipment.municipality || 'Sin dato'}</strong>
-                </div>
-                <div>
-                  <span>Último error</span>
-                  <strong>{formatDateTime(selectedEquipment.lastErrorAt)}</strong>
-                </div>
-                <div>
-                  <span>Señal de telemetría</span>
-                  <strong>{formatDateTime(selectedEquipment.telemetry?.updated_at)}</strong>
-                </div>
-              </div>
-
-              <div className="equipment-monitor__focus-section">
-                <h4>Ubicación del equipo</h4>
-                <p>{selectedEquipment.address || 'Dirección no registrada.'}</p>
-                <p className="equipment-monitor__focus-location">
-                  {[selectedEquipment.city, selectedEquipment.municipality, selectedEquipment.normalizedState, selectedEquipment.postalCode]
-                    .filter(Boolean)
-                    .join(' · ') || 'Sin ciudad, estado o código postal.'}
-                </p>
-                {selectedEquipment.geoDisplayName ? (
-                  <p className="equipment-monitor__focus-location">
-                    Georreferencia: {selectedEquipment.geoDisplayName}
-                    {selectedEquipment.geoPrecision ? ` · ${selectedEquipment.geoPrecision}` : ''}
+              <div className="equipment-monitor__focus-overview">
+                <div className="equipment-monitor__focus-identity">
+                  <div className={`equipment-monitor__status-pill equipment-monitor__status-pill--${selectedEquipment.markerTone}`}>
+                    {getStatusLabel(selectedEquipment)}
+                  </div>
+                  <h3>{selectedEquipment.clientName}</h3>
+                  <p className="equipment-monitor__focus-subtitle">
+                    {selectedEquipment.serial} · {selectedEquipment.model}
                   </p>
-                ) : null}
-                {selectedEquipmentHasManualOverride ? (
-                  <p className="equipment-monitor__focus-location">Este punto tiene un ajuste manual activo.</p>
-                ) : null}
-              </div>
-
-              <div className="equipment-monitor__focus-section">
-                <h4>Errores vigentes</h4>
-                {selectedEquipment.currentErrors.length ? (
-                  <div className="equipment-monitor__event-list">
-                    {selectedEquipment.currentErrors.map((row) => (
-                      <article key={row.id} className="equipment-monitor__event-card">
-                        <div className="equipment-monitor__event-head">
-                          <span className={`equipment-monitor__event-level equipment-monitor__event-level--${coerceStatus(row.tipo_mensaje)}`}>
-                            {row.tipo_mensaje || 'ok'}
-                          </span>
-                          <span>{formatDateTime(getEventTimestamp(row))}</span>
-                        </div>
-                        <strong>{formatMonitoringErrorLabel(row.codigo_error, 'Evento sin código')}</strong>
-                        <p>{row.descripcion_error || 'Sin descripción registrada.'}</p>
-                        <small>{[row.seccion_error, row.monitor_name, row.machine_name].filter(Boolean).join(' · ')}</small>
-                      </article>
-                    ))}
-                  </div>
-                ) : (
-                  <div className="equipment-monitor__empty-state">
-                    {selectedEquipment.hasSupabaseSignal
-                      ? 'No hay warnings ni fatales vigentes para esta serie en el último corte.'
-                      : 'Esta serie todavía no ha reportado estado ni errores desde Supabase.'}
-                  </div>
-                )}
-              </div>
-
-              <div className="equipment-monitor__focus-section">
-                <h4>Historial reciente</h4>
-                {selectedEquipment.recentErrors.length ? (
-                  <div className="equipment-monitor__event-list equipment-monitor__event-list--compact">
-                    {selectedEquipment.recentErrors.map((row) => (
-                      <article key={`history-${row.id}`} className="equipment-monitor__event-card equipment-monitor__event-card--compact">
-                        <div className="equipment-monitor__event-head">
-                          <strong>{formatMonitoringErrorLabel(row.codigo_error, 'Evento')}</strong>
-                          <span>{formatRelativeTime(getEventTimestamp(row))}</span>
-                        </div>
-                        <p>{row.descripcion_error || 'Sin descripción registrada.'}</p>
-                      </article>
-                    ))}
-                  </div>
-                ) : (
-                  <div className="equipment-monitor__empty-state">No existe historial de errores para esta serie.</div>
-                )}
-              </div>
-
-              <div className="equipment-monitor__focus-section">
-                <div className="equipment-monitor__section-head">
-                  <h4>Pruebas registradas</h4>
-                  <button
-                    type="button"
-                    className={`button-primary chip ${isReagentDetailCollapsed ? 'inactive' : ''}`.trim()}
-                    onClick={() => setIsReagentDetailCollapsed((currentValue) => !currentValue)}
-                    disabled={!selectedReagentRowsSorted.length}
-                  >
-                    {isReagentDetailCollapsed ? 'Mostrar detalle' : 'Ocultar detalle'}
-                  </button>
                 </div>
-                {selectedReagentSummaryDisplay ? (
-                  <>
-                    <p className="equipment-monitor__focus-location">
-                      Mes seleccionado: {formatBucketMonth(selectedReagentSummaryDisplay.bucket_month)}
-                      {selectedReagentSummaryDisplay.bucket_month === CURRENT_REAGENT_BUCKET_MONTH ? ' · corte actual' : ' · histórico'}
+
+                <div className="equipment-monitor__focus-actions-stack">
+                  <div className="equipment-monitor__focus-actions">
+                    <button
+                      type="button"
+                      className={`button-primary ${isSupremoLaunchEnabled() && selectedEquipment.hasSupremoLink ? '' : 'inactive'}`.trim()}
+                      onClick={() => void launchSupremo()}
+                      disabled={launchingSupremo || !isSupremoLaunchEnabled() || !selectedEquipment.hasSupremoLink}
+                    >
+                      <img src={SUPREMO_ICON_URL} alt="" className="equipment-monitor__focus-action-icon" />
+                      {launchingSupremo
+                        ? 'Abriendo Supremo...'
+                        : selectedEquipment.hasSupremoLink
+                          ? 'Conectar con Supremo'
+                          : 'Supremo no configurado'}
+                    </button>
+                  </div>
+                  {supremoFeedback ? (
+                    <p
+                      className={`equipment-monitor__focus-feedback equipment-monitor__focus-feedback--${supremoFeedback.tone}`}
+                    >
+                      {supremoFeedback.message}
                     </p>
-                    <div className="equipment-monitor__focus-kpis">
-                      <div className="equipment-monitor__focus-kpi">
-                        <span>Pruebas totales</span>
-                        <strong>{formatInteger(selectedReagentSummaryDisplay.pruebas_registradas)}</strong>
-                      </div>
-                      <div className="equipment-monitor__focus-kpi">
-                        <span>Muestras de paciente</span>
-                        <strong>{formatInteger(selectedReagentSummaryDisplay.muestras_paciente)}</strong>
-                      </div>
-                      <div className="equipment-monitor__focus-kpi">
-                        <span>Valor estimado</span>
-                        <strong>
-                          {showMonitoringTestPricing
-                            ? formatCurrency(selectedReagentSummaryDisplay.valor_estimado_total_con_iva)
-                            : 'Oculto temporalmente'}
-                        </strong>
-                      </div>
-                      <div className="equipment-monitor__focus-kpi">
-                        <span>Último registro del mes</span>
-                        <strong>{formatDateTime(selectedReagentSummaryDisplay.last_event_at)}</strong>
-                      </div>
+                  ) : null}
+                </div>
+
+                <div className="equipment-monitor__focus-meta">
+                  <div>
+                    <span>Estado</span>
+                    <strong>{selectedEquipment.normalizedState || 'Sin dato'}</strong>
+                  </div>
+                  <div>
+                    <span>Ciudad</span>
+                    <strong>{selectedEquipment.city || selectedEquipment.municipality || 'Sin dato'}</strong>
+                  </div>
+                  <div>
+                    <span>Último error</span>
+                    <strong>{formatDateTime(selectedEquipment.lastErrorAt)}</strong>
+                  </div>
+                  <div>
+                    <span>Señal de telemetría</span>
+                    <strong>{formatDateTime(selectedEquipment.telemetry?.updated_at)}</strong>
+                  </div>
+                </div>
+              </div>
+
+              <div className="equipment-monitor__focus-layout">
+                <div className="equipment-monitor__focus-section equipment-monitor__focus-section--location">
+                  <h4>Ubicación del equipo</h4>
+                  <p>{selectedEquipment.address || 'Dirección no registrada.'}</p>
+                  <p className="equipment-monitor__focus-location">
+                    {[selectedEquipment.city, selectedEquipment.municipality, selectedEquipment.normalizedState, selectedEquipment.postalCode]
+                      .filter(Boolean)
+                      .join(' · ') || 'Sin ciudad, estado o código postal.'}
+                  </p>
+                  {selectedEquipment.geoDisplayName ? (
+                    <p className="equipment-monitor__focus-location">
+                      Georreferencia: {selectedEquipment.geoDisplayName}
+                      {selectedEquipment.geoPrecision ? ` · ${selectedEquipment.geoPrecision}` : ''}
+                    </p>
+                  ) : null}
+                  {selectedEquipmentHasManualOverride ? (
+                    <p className="equipment-monitor__focus-location">Este punto tiene un ajuste manual activo.</p>
+                  ) : null}
+                </div>
+
+                <div className="equipment-monitor__focus-section equipment-monitor__focus-section--errors">
+                  <h4>Errores vigentes</h4>
+                  {selectedEquipment.currentErrors.length ? (
+                    <div className="equipment-monitor__event-list">
+                      {selectedEquipment.currentErrors.map((row) => (
+                        <article key={row.id} className="equipment-monitor__event-card">
+                          <div className="equipment-monitor__event-head">
+                            <span className={`equipment-monitor__event-level equipment-monitor__event-level--${coerceStatus(row.tipo_mensaje)}`}>
+                              {row.tipo_mensaje || 'ok'}
+                            </span>
+                            <span>{formatDateTime(getEventTimestamp(row))}</span>
+                          </div>
+                          <strong>{formatMonitoringErrorLabel(row.codigo_error, 'Evento técnico')}</strong>
+                          <p>{row.descripcion_error || 'Sin descripción registrada.'}</p>
+                          <small>{[row.seccion_error, row.monitor_name, row.machine_name].filter(Boolean).join(' · ')}</small>
+                        </article>
+                      ))}
                     </div>
-                    {showMonitoringTestPricing ? (
+                  ) : (
+                    <div className="equipment-monitor__empty-state">
+                      {selectedEquipment.hasSupabaseSignal
+                        ? 'No hay warnings ni fatales vigentes para esta serie en el último corte.'
+                        : 'Esta serie todavía no ha reportado estado ni errores desde Supabase.'}
+                    </div>
+                  )}
+                </div>
+
+                <div className="equipment-monitor__focus-section equipment-monitor__focus-section--history">
+                  <h4>Historial reciente</h4>
+                  {selectedEquipment.recentErrors.length ? (
+                    <div className="equipment-monitor__event-list equipment-monitor__event-list--compact">
+                      {selectedEquipment.recentErrors.map((row) => (
+                        <article key={`history-${row.id}`} className="equipment-monitor__event-card equipment-monitor__event-card--compact">
+                          <div className="equipment-monitor__event-head">
+                            <strong>{formatMonitoringErrorLabel(row.codigo_error, 'Evento reciente')}</strong>
+                            <span>{formatRelativeTime(getEventTimestamp(row))}</span>
+                          </div>
+                          <p>{row.descripcion_error || 'Sin descripción registrada.'}</p>
+                        </article>
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="equipment-monitor__empty-state">No existe historial de errores para esta serie.</div>
+                  )}
+                </div>
+
+                <div className="equipment-monitor__focus-section equipment-monitor__focus-section--tests">
+                  <div className="equipment-monitor__section-head">
+                    <h4>Pruebas registradas</h4>
+                    <button
+                      type="button"
+                      className={`button-primary chip ${isReagentDetailCollapsed ? 'inactive' : ''}`.trim()}
+                      onClick={() => setIsReagentDetailCollapsed((currentValue) => !currentValue)}
+                      disabled={!selectedReagentRowsSorted.length}
+                    >
+                      {isReagentDetailCollapsed ? 'Mostrar detalle' : 'Ocultar detalle'}
+                    </button>
+                  </div>
+                  {selectedReagentSummaryDisplay ? (
+                    <>
                       <p className="equipment-monitor__focus-location">
-                        {formatInteger(selectedReagentSummaryDisplay.pruebas_distintas_con_precio)} pruebas con precio y{' '}
-                        {formatInteger(selectedReagentSummaryDisplay.pruebas_distintas_sin_precio)} sin precio catalogado.
+                        Mes seleccionado: {formatBucketMonth(selectedReagentSummaryDisplay.bucket_month)}
+                        {selectedReagentSummaryDisplay.bucket_month === CURRENT_REAGENT_BUCKET_MONTH ? ' · corte actual' : ' · histórico'}
                       </p>
-                    ) : (
-                      <p className="equipment-monitor__focus-location">
-                        {formatInteger(selectedReagentSummaryDisplay.pruebas_distintas)} pruebas distintas registradas en el mes.
-                      </p>
-                    )}
-                    {!hasSelectedReagentMonthData ? (
-                      <div className="equipment-monitor__empty-state">
-                        No hay actividad registrada para {formatBucketMonth(selectedReagentSummaryDisplay.bucket_month)}.
-                      </div>
-                    ) : null}
-                    {showMonitoringTestPricing &&
-                    readNumericValue(selectedReagentSummaryDisplay.valor_estimado_total_con_iva_min) > 0 &&
-                    readNumericValue(selectedReagentSummaryDisplay.valor_estimado_total_con_iva_max) >
-                      readNumericValue(selectedReagentSummaryDisplay.valor_estimado_total_con_iva_min) ? (
-                      <p className="equipment-monitor__focus-location">
-                        Rango estimado con IVA: {formatCurrency(selectedReagentSummaryDisplay.valor_estimado_total_con_iva_min)} a{' '}
-                        {formatCurrency(selectedReagentSummaryDisplay.valor_estimado_total_con_iva_max)}
-                      </p>
-                    ) : null}
-                    {selectedReagentMonthRows.length ? (
-                      <div className="equipment-monitor__monthly-history">
-                        <strong>Meses disponibles</strong>
-                        <div className="equipment-monitor__monthly-history-list">
-                          {selectedReagentMonthRows.map((row) => (
-                            <button
-                              type="button"
-                              key={`${row.numero_serie}-${row.bucket_month}`}
-                              className={`equipment-monitor__monthly-history-card ${
-                                row.bucket_month === selectedReagentBucketMonth
-                                  ? 'equipment-monitor__monthly-history-card--selected'
-                                  : ''
-                              }`.trim()}
-                              onClick={() => setSelectedReagentBucketMonth(row.bucket_month)}
-                            >
-                              <div className="equipment-monitor__event-head">
-                                <strong>{formatBucketMonth(row.bucket_month)}</strong>
-                                <span>
-                                  {showMonitoringTestPricing
-                                    ? formatCurrency(row.valor_estimado_total_con_iva)
-                                    : `${formatInteger(row.pruebas_registradas)} pruebas`}
-                                </span>
-                              </div>
-                              <div className="equipment-monitor__consumption-metrics">
-                                <span>{formatInteger(row.pruebas_registradas)} pruebas</span>
-                                <span>{formatInteger(row.muestras_paciente)} pacientes</span>
-                                <span>{formatInteger(row.pruebas_distintas)} distintas</span>
-                                {showMonitoringTestPricing ? (
-                                  <span>{formatInteger(row.pruebas_distintas_con_precio)} con precio</span>
-                                ) : null}
-                              </div>
-                              <small>Último registro: {formatDateTime(row.last_event_at)}</small>
-                            </button>
-                          ))}
+                      <div className="equipment-monitor__focus-kpis">
+                        <div className="equipment-monitor__focus-kpi">
+                          <span>Pruebas totales</span>
+                          <strong>{formatInteger(selectedReagentSummaryDisplay.pruebas_registradas)}</strong>
+                        </div>
+                        <div className="equipment-monitor__focus-kpi">
+                          <span>Muestras de paciente</span>
+                          <strong>{formatInteger(selectedReagentSummaryDisplay.muestras_paciente)}</strong>
+                        </div>
+                        <div className="equipment-monitor__focus-kpi">
+                          <span>{showMonitoringTestPricing ? 'Valor estimado' : 'Pruebas distintas'}</span>
+                          <strong>
+                            {showMonitoringTestPricing
+                              ? formatCurrency(selectedReagentSummaryDisplay.valor_estimado_total_con_iva)
+                              : formatInteger(selectedReagentSummaryDisplay.pruebas_distintas)}
+                          </strong>
+                        </div>
+                        <div className="equipment-monitor__focus-kpi">
+                          <span>Último registro del mes</span>
+                          <strong>{formatDateTime(selectedReagentSummaryDisplay.last_event_at)}</strong>
                         </div>
                       </div>
-                    ) : null}
-                  </>
-                ) : (
-                  <div className="equipment-monitor__empty-state">
-                    Esta serie todavía no tiene consumo cargado en <code>v_equipment_reagent_consumption_summary</code>.
-                  </div>
-                )}
+                      {showMonitoringTestPricing ? (
+                        <p className="equipment-monitor__focus-location">
+                          {formatInteger(selectedReagentSummaryDisplay.pruebas_distintas_con_precio)} pruebas con precio y{' '}
+                          {formatInteger(selectedReagentSummaryDisplay.pruebas_distintas_sin_precio)} sin precio catalogado.
+                        </p>
+                      ) : (
+                        <p className="equipment-monitor__focus-location">
+                          {formatInteger(selectedReagentSummaryDisplay.pruebas_distintas)} pruebas distintas registradas en el mes.
+                        </p>
+                      )}
+                      {!hasSelectedReagentMonthData ? (
+                        <div className="equipment-monitor__empty-state">
+                          No hay actividad registrada para {formatBucketMonth(selectedReagentSummaryDisplay.bucket_month)}.
+                        </div>
+                      ) : null}
+                      {showMonitoringTestPricing &&
+                      readNumericValue(selectedReagentSummaryDisplay.valor_estimado_total_con_iva_min) > 0 &&
+                      readNumericValue(selectedReagentSummaryDisplay.valor_estimado_total_con_iva_max) >
+                        readNumericValue(selectedReagentSummaryDisplay.valor_estimado_total_con_iva_min) ? (
+                        <p className="equipment-monitor__focus-location">
+                          Rango estimado con IVA: {formatCurrency(selectedReagentSummaryDisplay.valor_estimado_total_con_iva_min)} a{' '}
+                          {formatCurrency(selectedReagentSummaryDisplay.valor_estimado_total_con_iva_max)}
+                        </p>
+                      ) : null}
+                      {selectedReagentMonthRows.length ? (
+                        <div className="equipment-monitor__monthly-history">
+                          <strong>Meses disponibles</strong>
+                          <div className="equipment-monitor__monthly-history-list">
+                            {selectedReagentMonthRows.map((row) => {
+                              const activityLevel = Math.round(
+                                (readNumericValue(row.pruebas_registradas) / selectedReagentPeakTests) * 100,
+                              );
 
-                {loadingReagentRows ? (
-                  <div className="equipment-monitor__empty-state">Cargando detalle de pruebas...</div>
-                ) : reagentLoadError ? (
-                  <div className="equipment-monitor__empty-state">{reagentLoadError}</div>
-                ) : selectedReagentRowsSorted.length && !isReagentDetailCollapsed ? (
-                  <div className="equipment-monitor__consumption-list">
-                    <p className="equipment-monitor__focus-location">
-                      {showMonitoringTestPricing
-                        ? `Desglose de ${formatBucketMonth(selectedReagentBucketMonth)}. Las tarjetas marcadas como Sin precio son las que faltan por catalogar o corregir.`
-                        : `Desglose de ${formatBucketMonth(selectedReagentBucketMonth)}. El valor economico de las pruebas esta oculto temporalmente.`}
-                    </p>
-                    {selectedReagentRowsSorted.map((row) => {
-                      const hasPrice = Boolean(row.tiene_precio);
-                      return (
-                        <article
-                          key={`${row.numero_serie}-${row.bucket_month}-${row.test_name}`}
-                          className={`equipment-monitor__consumption-card ${
-                            showMonitoringTestPricing && !hasPrice ? 'equipment-monitor__consumption-card--muted' : ''
-                          }`.trim()}
-                        >
-                          <div className="equipment-monitor__event-head">
-                            <strong>{row.test_name}</strong>
-                            <span>
-                              {showMonitoringTestPricing
-                                ? hasPrice
-                                  ? formatCurrency(row.valor_estimado_total_con_iva)
-                                  : 'Sin precio'
-                                : 'Valor oculto'}
-                            </span>
+                              return (
+                                <button
+                                  type="button"
+                                  key={`${row.numero_serie}-${row.bucket_month}`}
+                                  className={`equipment-monitor__monthly-history-card ${
+                                    row.bucket_month === selectedReagentBucketMonth
+                                      ? 'equipment-monitor__monthly-history-card--selected'
+                                      : ''
+                                  }`.trim()}
+                                  onClick={() => setSelectedReagentBucketMonth(row.bucket_month)}
+                                >
+                                  <div className="equipment-monitor__event-head">
+                                    <strong>{formatBucketMonth(row.bucket_month)}</strong>
+                                    <span>
+                                      {showMonitoringTestPricing
+                                        ? formatCurrency(row.valor_estimado_total_con_iva)
+                                        : `${formatInteger(row.pruebas_registradas)} pruebas`}
+                                    </span>
+                                  </div>
+                                  <div className="equipment-monitor__consumption-metrics">
+                                    <span>{formatInteger(row.pruebas_registradas)} pruebas</span>
+                                    <span>{formatInteger(row.muestras_paciente)} pacientes</span>
+                                    <span>{formatInteger(row.pruebas_distintas)} distintas</span>
+                                    {showMonitoringTestPricing ? (
+                                      <span>{formatInteger(row.pruebas_distintas_con_precio)} con precio</span>
+                                    ) : null}
+                                  </div>
+                                  <div className="equipment-monitor__monthly-history-bar" aria-hidden="true">
+                                    <span style={{ width: `${activityLevel}%` }} />
+                                  </div>
+                                  <small>Último registro: {formatDateTime(row.last_event_at)}</small>
+                                </button>
+                              );
+                            })}
                           </div>
-                          <p>
-                            {row.reactivo_codigo_referencia
-                              ? `${row.reactivo_codigo_referencia} · ${row.reactivo_descripcion_referencia || row.descripcion_catalogo_normalizada || 'Catálogo'}`
-                              : showMonitoringTestPricing
-                                ? 'Sin reactivo/precio catalogado para esta prueba.'
-                                : 'Sin referencia catalogada para esta prueba.'}
-                          </p>
-                          <div className="equipment-monitor__consumption-metrics">
-                            <span>{formatInteger(row.pruebas_registradas)} pruebas</span>
-                            <span>{formatInteger(row.muestras_paciente)} pacientes</span>
-                            <span>{formatInteger(row.calibraciones)} calibraciones</span>
-                            <span>{formatInteger(row.controles)} controles</span>
-                          </div>
-                          <small>
-                            {row.presentacion_referencia
-                              ? `${row.presentacion_referencia} · rendimiento ${formatInteger(row.rendimiento_referencia)}`
-                              : 'Sin presentación de referencia'}
-                            {showMonitoringTestPricing &&
-                            readNumericValue(row.valor_estimado_total_con_iva_min) > 0 &&
-                            readNumericValue(row.valor_estimado_total_con_iva_max) >
-                              readNumericValue(row.valor_estimado_total_con_iva_min)
-                              ? ` · rango ${formatCurrency(row.valor_estimado_total_con_iva_min)} a ${formatCurrency(row.valor_estimado_total_con_iva_max)}`
-                              : ''}
-                          </small>
-                        </article>
-                      );
-                    })}
-                  </div>
-                ) : selectedReagentSummary && !isReagentDetailCollapsed ? (
-                  <div className="equipment-monitor__empty-state">
-                    No hay filas detalladas para esta serie en {formatBucketMonth(selectedReagentBucketMonth)} dentro de{' '}
-                    <code>v_equipment_reagent_consumption_detail</code>.
-                  </div>
-                ) : isReagentDetailCollapsed ? (
-                  <div className="equipment-monitor__empty-state">El detalle por prueba está oculto.</div>
-                ) : null}
-              </div>
-
-              <div className="equipment-monitor__focus-section">
-                <h4>Telemetría de insumos</h4>
-                {selectedEquipment.telemetry ? (
-                  <>
-                    <div className="equipment-monitor__tag-list">
-                      {renderElectrodeState('Pack ISE', selectedEquipment.telemetry.pack_ise_sn)}
-                      {renderElectrodeState('REF', selectedEquipment.telemetry.ref_electrode)}
-                      {renderElectrodeState('Na', selectedEquipment.telemetry.na_electrode)}
-                      {renderElectrodeState('K', selectedEquipment.telemetry.k_electrode)}
-                      {renderElectrodeState('Cl', selectedEquipment.telemetry.cl_electrode)}
-                      {renderElectrodeState('Li', selectedEquipment.telemetry.li_electrode)}
+                        </div>
+                      ) : null}
+                    </>
+                  ) : (
+                    <div className="equipment-monitor__empty-state">
+                      Esta serie todavía no tiene consumo cargado en <code>v_equipment_reagent_consumption_summary</code>.
                     </div>
-                    <p className="equipment-monitor__focus-location">
-                      Último evento de consumo: {formatDateTime(selectedEquipment.telemetry.ultimo_evento_consumo_at)}
-                    </p>
-                  </>
-                ) : (
-                  <div className="equipment-monitor__empty-state">
-                    Esta serie todavía no reporta estado en <code>estado_insumos_equipo_actual</code>.
-                  </div>
-                )}
-              </div>
+                  )}
 
-              <div className="equipment-monitor__focus-section">
-                <h4>Consumo de rotores</h4>
-                {selectedEquipment.rotorSummary ? (
-                  <div className="equipment-monitor__rotor-card">
-                    <strong>{selectedEquipment.rotorSummary.rotor_change_count} cambios</strong>
-                    <span>{formatBucketMonth(selectedEquipment.rotorSummary.bucket_month)}</span>
-                    <small>Último cambio: {formatDateTime(selectedEquipment.rotorSummary.last_change_at)}</small>
+                  {loadingReagentRows ? (
+                    <div className="equipment-monitor__empty-state">Cargando detalle de pruebas...</div>
+                  ) : reagentLoadError ? (
+                    <div className="equipment-monitor__empty-state">{reagentLoadError}</div>
+                  ) : selectedReagentRowsSorted.length && !isReagentDetailCollapsed ? (
+                    <div className="equipment-monitor__consumption-list">
+                      <p className="equipment-monitor__focus-location">
+                        {showMonitoringTestPricing
+                          ? `Desglose de ${formatBucketMonth(selectedReagentBucketMonth)}. Las tarjetas marcadas como Sin precio son las que faltan por catalogar o corregir.`
+                          : `Desglose de ${formatBucketMonth(selectedReagentBucketMonth)} por prueba registrada.`}
+                      </p>
+                      {selectedReagentRowsSorted.map((row) => {
+                        const hasPrice = Boolean(row.tiene_precio);
+                        return (
+                          <article
+                            key={`${row.numero_serie}-${row.bucket_month}-${row.test_name}`}
+                            className={`equipment-monitor__consumption-card ${
+                              showMonitoringTestPricing && !hasPrice ? 'equipment-monitor__consumption-card--muted' : ''
+                            }`.trim()}
+                          >
+                            <div className="equipment-monitor__event-head">
+                              <strong>{row.test_name}</strong>
+                              <span>
+                                {showMonitoringTestPricing
+                                  ? hasPrice
+                                    ? formatCurrency(row.valor_estimado_total_con_iva)
+                                    : 'Sin precio'
+                                  : `${formatInteger(row.pruebas_registradas)} pruebas`}
+                              </span>
+                            </div>
+                            <p>
+                              {row.reactivo_codigo_referencia
+                                ? `${row.reactivo_codigo_referencia} · ${row.reactivo_descripcion_referencia || row.descripcion_catalogo_normalizada || 'Catálogo'}`
+                                : showMonitoringTestPricing
+                                  ? 'Sin reactivo/precio catalogado para esta prueba.'
+                                  : 'Sin referencia catalogada para esta prueba.'}
+                            </p>
+                            <div className="equipment-monitor__consumption-metrics">
+                              <span>{formatInteger(row.pruebas_registradas)} pruebas</span>
+                              <span>{formatInteger(row.muestras_paciente)} pacientes</span>
+                              <span>{formatInteger(row.calibraciones)} calibraciones</span>
+                              <span>{formatInteger(row.controles)} controles</span>
+                            </div>
+                            <small>
+                              {row.presentacion_referencia
+                                ? `${row.presentacion_referencia} · rendimiento ${formatInteger(row.rendimiento_referencia)}`
+                                : 'Sin presentación de referencia'}
+                              {showMonitoringTestPricing &&
+                              readNumericValue(row.valor_estimado_total_con_iva_min) > 0 &&
+                              readNumericValue(row.valor_estimado_total_con_iva_max) >
+                                readNumericValue(row.valor_estimado_total_con_iva_min)
+                                ? ` · rango ${formatCurrency(row.valor_estimado_total_con_iva_min)} a ${formatCurrency(row.valor_estimado_total_con_iva_max)}`
+                                : ''}
+                            </small>
+                          </article>
+                        );
+                      })}
+                    </div>
+                  ) : selectedReagentSummary && !isReagentDetailCollapsed ? (
+                    <div className="equipment-monitor__empty-state">
+                      No hay filas detalladas para esta serie en {formatBucketMonth(selectedReagentBucketMonth)} dentro de{' '}
+                      <code>v_equipment_reagent_consumption_detail</code>.
+                    </div>
+                  ) : isReagentDetailCollapsed ? (
+                    <div className="equipment-monitor__empty-state">El detalle por prueba está oculto.</div>
+                  ) : null}
+                </div>
+
+                <div className="equipment-monitor__focus-support-grid">
+                  <div className="equipment-monitor__focus-section equipment-monitor__focus-section--support">
+                    <h4>Telemetría de insumos</h4>
+                    {selectedEquipment.telemetry ? (
+                      <>
+                        <div className="equipment-monitor__tag-list">
+                          {renderElectrodeState('Pack ISE', selectedEquipment.telemetry.pack_ise_sn)}
+                          {renderElectrodeState('REF', selectedEquipment.telemetry.ref_electrode)}
+                          {renderElectrodeState('Na', selectedEquipment.telemetry.na_electrode)}
+                          {renderElectrodeState('K', selectedEquipment.telemetry.k_electrode)}
+                          {renderElectrodeState('Cl', selectedEquipment.telemetry.cl_electrode)}
+                          {renderElectrodeState('Li', selectedEquipment.telemetry.li_electrode)}
+                        </div>
+                        <p className="equipment-monitor__focus-location">
+                          Último evento de consumo: {formatDateTime(selectedEquipment.telemetry.ultimo_evento_consumo_at)}
+                        </p>
+                      </>
+                    ) : (
+                      <div className="equipment-monitor__empty-state">
+                        Esta serie todavía no reporta estado en <code>estado_insumos_equipo_actual</code>.
+                      </div>
+                    )}
                   </div>
-                ) : (
-                  <div className="equipment-monitor__empty-state">
-                    No hay resumen de rotor cargado para esta serie.
+
+                  <div className="equipment-monitor__focus-section equipment-monitor__focus-section--support">
+                    <h4>Consumo de rotores</h4>
+                    {selectedEquipment.rotorSummary ? (
+                      <div className="equipment-monitor__rotor-card">
+                        <strong>{selectedEquipment.rotorSummary.rotor_change_count} cambios</strong>
+                        <span>{formatBucketMonth(selectedEquipment.rotorSummary.bucket_month)}</span>
+                        <small>Último cambio: {formatDateTime(selectedEquipment.rotorSummary.last_change_at)}</small>
+                      </div>
+                    ) : (
+                      <div className="equipment-monitor__empty-state">
+                        No hay resumen de rotor cargado para esta serie.
+                      </div>
+                    )}
                   </div>
-                )}
+                </div>
               </div>
             </>
           ) : (

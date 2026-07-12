@@ -2,6 +2,8 @@ interface MexicoStateGeo {
   label: string;
   lat: number;
   lng: number;
+  mapX: number;
+  mapY: number;
   spreadX?: number;
   spreadY?: number;
 }
@@ -50,38 +52,38 @@ interface ProjectionControlPoint {
 }
 
 const MEXICO_STATE_GEO: Record<string, MexicoStateGeo> = {
-  'aguascalientes': { label: 'Aguascalientes', lat: 21.8853, lng: -102.2916, spreadX: 0.7, spreadY: 0.55 },
-  'baja california': { label: 'Baja California', lat: 30.8406, lng: -115.2838, spreadX: 1.25, spreadY: 0.95 },
-  'baja california sur': { label: 'Baja California Sur', lat: 25.4674, lng: -111.9711, spreadX: 0.95, spreadY: 1.1 },
-  'campeche': { label: 'Campeche', lat: 19.8301, lng: -90.5349, spreadX: 0.95, spreadY: 0.85 },
-  'chiapas': { label: 'Chiapas', lat: 16.7569, lng: -93.1292, spreadX: 1.05, spreadY: 0.95 },
-  'chihuahua': { label: 'Chihuahua', lat: 28.632, lng: -106.0691, spreadX: 1.45, spreadY: 1.15 },
-  'ciudad de mexico': { label: 'Ciudad de México', lat: 19.4326, lng: -99.1332, spreadX: 0.65, spreadY: 0.55 },
-  'coahuila': { label: 'Coahuila', lat: 27.0587, lng: -101.7068, spreadX: 1.25, spreadY: 0.95 },
-  'colima': { label: 'Colima', lat: 19.2452, lng: -103.7241, spreadX: 0.7, spreadY: 0.6 },
-  'durango': { label: 'Durango', lat: 24.0277, lng: -104.6532, spreadX: 1.1, spreadY: 0.95 },
-  'estado de mexico': { label: 'Estado de México', lat: 19.285, lng: -99.6557, spreadX: 0.95, spreadY: 0.7 },
-  'guanajuato': { label: 'Guanajuato', lat: 21.019, lng: -101.2574, spreadX: 1, spreadY: 0.7 },
-  'guerrero': { label: 'Guerrero', lat: 17.4392, lng: -99.5451, spreadX: 1.05, spreadY: 0.85 },
-  'hidalgo': { label: 'Hidalgo', lat: 20.0911, lng: -98.7624, spreadX: 0.9, spreadY: 0.7 },
-  'jalisco': { label: 'Jalisco', lat: 20.6597, lng: -103.3496, spreadX: 1.1, spreadY: 0.85 },
-  'michoacan': { label: 'Michoacán', lat: 19.7008, lng: -101.1844, spreadX: 1.15, spreadY: 0.95 },
-  'morelos': { label: 'Morelos', lat: 18.9242, lng: -99.2216, spreadX: 0.7, spreadY: 0.6 },
-  'nayarit': { label: 'Nayarit', lat: 21.7514, lng: -104.8455, spreadX: 0.9, spreadY: 0.75 },
-  'nuevo leon': { label: 'Nuevo León', lat: 25.5922, lng: -99.9962, spreadX: 1.05, spreadY: 0.8 },
-  'oaxaca': { label: 'Oaxaca', lat: 17.0732, lng: -96.7266, spreadX: 1.25, spreadY: 1.05 },
-  'puebla': { label: 'Puebla', lat: 19.0414, lng: -98.2063, spreadX: 1, spreadY: 0.8 },
-  'queretaro': { label: 'Querétaro', lat: 20.5888, lng: -100.3899, spreadX: 0.75, spreadY: 0.6 },
-  'quintana roo': { label: 'Quintana Roo', lat: 19.1817, lng: -88.4791, spreadX: 0.95, spreadY: 1.2 },
-  'san luis potosi': { label: 'San Luis Potosí', lat: 22.1565, lng: -100.9855, spreadX: 1.05, spreadY: 0.8 },
-  'sinaloa': { label: 'Sinaloa', lat: 24.8091, lng: -107.394, spreadX: 1.1, spreadY: 0.95 },
-  'sonora': { label: 'Sonora', lat: 29.0729, lng: -110.9559, spreadX: 1.45, spreadY: 1.05 },
-  'tabasco': { label: 'Tabasco', lat: 17.9895, lng: -92.9475, spreadX: 0.9, spreadY: 0.75 },
-  'tamaulipas': { label: 'Tamaulipas', lat: 24.2669, lng: -98.8363, spreadX: 1.15, spreadY: 0.95 },
-  'tlaxcala': { label: 'Tlaxcala', lat: 19.3139, lng: -98.2404, spreadX: 0.6, spreadY: 0.5 },
-  'veracruz': { label: 'Veracruz', lat: 19.1738, lng: -96.1342, spreadX: 1.3, spreadY: 1.1 },
-  'yucatan': { label: 'Yucatán', lat: 20.9674, lng: -89.5926, spreadX: 0.95, spreadY: 0.75 },
-  'zacatecas': { label: 'Zacatecas', lat: 22.7709, lng: -102.5832, spreadX: 1.05, spreadY: 0.75 },
+  'aguascalientes': { label: 'Aguascalientes', lat: 21.8853, lng: -102.2916, mapX: 47.99, mapY: 61.35, spreadX: 0.7, spreadY: 0.55 },
+  'baja california': { label: 'Baja California', lat: 30.8406, lng: -115.2838, mapX: 16.7, mapY: 13.18, spreadX: 1.25, spreadY: 0.95 },
+  'baja california sur': { label: 'Baja California Sur', lat: 25.4674, lng: -111.9711, mapX: 22.22, mapY: 40.2, spreadX: 0.95, spreadY: 1.1 },
+  'campeche': { label: 'Campeche', lat: 19.8301, lng: -90.5349, mapX: 80.18, mapY: 75.04, spreadX: 0.95, spreadY: 0.85 },
+  'chiapas': { label: 'Chiapas', lat: 16.7569, lng: -93.1292, mapX: 77.08, mapY: 91.04, spreadX: 1.05, spreadY: 0.95 },
+  'chihuahua': { label: 'Chihuahua', lat: 28.632, lng: -106.0691, mapX: 38.71, mapY: 24.69, spreadX: 1.45, spreadY: 1.15 },
+  'ciudad de mexico': { label: 'Ciudad de México', lat: 19.4326, lng: -99.1332, mapX: 57.22, mapY: 76.09, spreadX: 0.65, spreadY: 0.55 },
+  'coahuila': { label: 'Coahuila', lat: 27.0587, lng: -101.7068, mapX: 49.67, mapY: 33.79, spreadX: 1.25, spreadY: 0.95 },
+  'colima': { label: 'Colima', lat: 19.2452, lng: -103.7241, mapX: 43.17, mapY: 76.96, spreadX: 0.7, spreadY: 0.6 },
+  'durango': { label: 'Durango', lat: 24.0277, lng: -104.6532, mapX: 41.85, mapY: 47.1, spreadX: 1.1, spreadY: 0.95 },
+  'estado de mexico': { label: 'Estado de México', lat: 19.285, lng: -99.6557, mapX: 56.13, mapY: 75.71, spreadX: 0.95, spreadY: 0.7 },
+  'guanajuato': { label: 'Guanajuato', lat: 21.019, lng: -101.2574, mapX: 52.12, mapY: 67.42, spreadX: 1, spreadY: 0.7 },
+  'guerrero': { label: 'Guerrero', lat: 17.4392, lng: -99.5451, mapX: 54.52, mapY: 85.22, spreadX: 1.05, spreadY: 0.85 },
+  'hidalgo': { label: 'Hidalgo', lat: 20.0911, lng: -98.7624, mapX: 57.77, mapY: 69.41, spreadX: 0.9, spreadY: 0.7 },
+  'jalisco': { label: 'Jalisco', lat: 20.6597, lng: -103.3496, mapX: 44.73, mapY: 67.2, spreadX: 1.1, spreadY: 0.85 },
+  'michoacan': { label: 'Michoacán', lat: 19.7008, lng: -101.1844, mapX: 49.32, mapY: 76.74, spreadX: 1.15, spreadY: 0.95 },
+  'morelos': { label: 'Morelos', lat: 18.9242, lng: -99.2216, mapX: 57.34, mapY: 78.99, spreadX: 0.7, spreadY: 0.6 },
+  'nayarit': { label: 'Nayarit', lat: 21.7514, lng: -104.8455, mapX: 41.19, mapY: 61.68, spreadX: 0.9, spreadY: 0.75 },
+  'nuevo leon': { label: 'Nuevo León', lat: 25.5922, lng: -99.9962, mapX: 55.09, mapY: 43.02, spreadX: 1.05, spreadY: 0.8 },
+  'oaxaca': { label: 'Oaxaca', lat: 17.0732, lng: -96.7266, mapX: 65.7, mapY: 86.88, spreadX: 1.25, spreadY: 1.05 },
+  'puebla': { label: 'Puebla', lat: 19.0414, lng: -98.2063, mapX: 60.59, mapY: 75.52, spreadX: 1, spreadY: 0.8 },
+  'queretaro': { label: 'Querétaro', lat: 20.5888, lng: -100.3899, mapX: 55.18, mapY: 67.68, spreadX: 0.75, spreadY: 0.6 },
+  'quintana roo': { label: 'Quintana Roo', lat: 19.1817, lng: -88.4791, mapX: 87.63, mapY: 71.26, spreadX: 0.95, spreadY: 1.2 },
+  'san luis potosi': { label: 'San Luis Potosí', lat: 22.1565, lng: -100.9855, mapX: 53.76, mapY: 56.91, spreadX: 1.05, spreadY: 0.8 },
+  'sinaloa': { label: 'Sinaloa', lat: 24.8091, lng: -107.394, mapX: 34.73, mapY: 46.12, spreadX: 1.1, spreadY: 0.95 },
+  'sonora': { label: 'Sonora', lat: 29.0729, lng: -110.9559, mapX: 25.16, mapY: 19.34, spreadX: 1.45, spreadY: 1.05 },
+  'tabasco': { label: 'Tabasco', lat: 17.9895, lng: -92.9475, mapX: 75.81, mapY: 81.51, spreadX: 0.9, spreadY: 0.75 },
+  'tamaulipas': { label: 'Tamaulipas', lat: 24.2669, lng: -98.8363, mapX: 58.26, mapY: 45.93, spreadX: 1.15, spreadY: 0.95 },
+  'tlaxcala': { label: 'Tlaxcala', lat: 19.3139, lng: -98.2404, mapX: 60.05, mapY: 75.1, spreadX: 0.6, spreadY: 0.5 },
+  'veracruz': { label: 'Veracruz', lat: 19.1738, lng: -96.1342, mapX: 65.74, mapY: 72.82, spreadX: 1.3, spreadY: 1.1 },
+  'yucatan': { label: 'Yucatán', lat: 20.9674, lng: -89.5926, mapX: 84.99, mapY: 66.21, spreadX: 0.95, spreadY: 0.75 },
+  'zacatecas': { label: 'Zacatecas', lat: 22.7709, lng: -102.5832, mapX: 47.7, mapY: 55.37, spreadX: 1.05, spreadY: 0.75 },
 };
 
 const STATE_ALIASES: Record<string, string> = {
@@ -226,7 +228,18 @@ const getProjectionCorrection = (lat: number, lng: number) => {
   );
 };
 
-const projectLatLngToMap = (lat: number, lng: number) => {
+const projectLatLngToMap = (lat: number, lng: number, stateKey?: string | null) => {
+  const state = stateKey ? MEXICO_STATE_GEO[stateKey] : null;
+  if (state) {
+    const rawPoint = projectLatLngToMapRaw(lat, lng);
+    const rawStateCenter = projectLatLngToMapRaw(state.lat, state.lng);
+
+    return {
+      x: state.mapX + rawPoint.x - rawStateCenter.x,
+      y: state.mapY + rawPoint.y - rawStateCenter.y,
+    };
+  }
+
   const basePoint = projectLatLngToMapRaw(lat, lng);
   const correction = getProjectionCorrection(lat, lng);
 
@@ -250,8 +263,7 @@ const buildClusterOffset = (
   const hash = hashString(seed);
   const slot = indexInCluster - 1;
   const angle = ((hash % 360) * Math.PI) / 180 + slot * GOLDEN_ANGLE;
-  const ring = Math.floor(slot / 6);
-  const radius = baseRadius + ring * 0.12 + ((hash >>> 8) % 17) * 0.014;
+  const radius = baseRadius + Math.sqrt(slot + 1) * 0.34 + ((hash >>> 8) % 17) * 0.018;
 
   return {
     x: Math.cos(angle) * radius * spreadX,
@@ -288,11 +300,12 @@ export const resolveEquipmentMapPoint = (
   equipment: EquipmentLocationInput,
   indexInCluster: number,
 ): EquipmentMapPoint | null => {
-  const normalizedState =
-    getNormalizedStateLabel(equipment.estado) ||
-    getNormalizedStateLabel(equipment.direccion) ||
-    getNormalizedStateLabel(equipment.municipio) ||
-    getNormalizedStateLabel(equipment.ciudad);
+  const stateKey =
+    detectStateKey(equipment.estado) ||
+    detectStateKey(equipment.direccion) ||
+    detectStateKey(equipment.municipio) ||
+    detectStateKey(equipment.ciudad);
+  const normalizedState = stateKey ? MEXICO_STATE_GEO[stateKey].label : null;
 
   if (
     typeof equipment.geoLatitude === 'number' &&
@@ -300,7 +313,7 @@ export const resolveEquipmentMapPoint = (
     typeof equipment.geoLongitude === 'number' &&
     Number.isFinite(equipment.geoLongitude)
   ) {
-    const basePoint = projectLatLngToMap(equipment.geoLatitude, equipment.geoLongitude);
+    const basePoint = projectLatLngToMap(equipment.geoLatitude, equipment.geoLongitude, stateKey);
     const offset = buildClusterOffset(
       [
         equipment.geoLocationKey,
@@ -315,7 +328,7 @@ export const resolveEquipmentMapPoint = (
       indexInCluster,
       getPreciseSpread(equipment.geoLatitude, equipment.geoLongitude, equipment.geoBoundingBox).spreadX,
       getPreciseSpread(equipment.geoLatitude, equipment.geoLongitude, equipment.geoBoundingBox).spreadY,
-      0.18,
+      0.38,
     );
 
     return {
@@ -325,18 +338,12 @@ export const resolveEquipmentMapPoint = (
     };
   }
 
-  const stateKey =
-    detectStateKey(equipment.estado) ||
-    detectStateKey(equipment.direccion) ||
-    detectStateKey(equipment.municipio) ||
-    detectStateKey(equipment.ciudad);
-
   if (!stateKey) {
     return null;
   }
 
   const state = MEXICO_STATE_GEO[stateKey];
-  const basePoint = projectLatLngToMap(state.lat, state.lng);
+  const basePoint = { x: state.mapX, y: state.mapY };
   const seed = [
     equipment.numeroSerie,
     equipment.estado,
@@ -348,7 +355,7 @@ export const resolveEquipmentMapPoint = (
     .join('|');
   const spreadX = state.spreadX ?? 1;
   const spreadY = state.spreadY ?? 0.9;
-  const offset = buildClusterOffset(seed, indexInCluster, spreadX, spreadY, 0.2);
+  const offset = buildClusterOffset(seed, indexInCluster, spreadX, spreadY, 0.58);
 
   return {
     x: clamp(basePoint.x + offset.x, 3.4, 97.2),
