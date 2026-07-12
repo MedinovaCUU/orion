@@ -114,6 +114,7 @@ const supportsEdgeLookup = (carrier: TrackingCarrier | null) =>
   EDGE_LOOKUP_ENABLED &&
   (carrier === 'dhl' ||
     carrier === 'estafeta' ||
+    carrier === 'tresguerras' ||
     carrier === 'chilexpress' ||
     carrier === 'chibra');
 
