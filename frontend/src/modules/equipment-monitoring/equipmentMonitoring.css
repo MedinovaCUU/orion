@@ -379,10 +379,31 @@ html.equipment-monitor__body-scroll-lock {
   color: #f5ffff;
 }
 
-.equipment-globe__hud--left span:last-child,
+.equipment-globe__hud--left > div > span,
 .equipment-globe__hud--right > span {
   font-size: 0.72rem;
   color: rgba(199, 225, 231, 0.7);
+}
+
+.equipment-globe__geo-level {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  margin-top: 0.12rem;
+  font-size: 0.58rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(126, 231, 222, 0.84);
+}
+
+.equipment-globe__geo-level::before {
+  width: 0.34rem;
+  height: 0.34rem;
+  border: 1px solid rgba(126, 231, 222, 0.9);
+  border-radius: 2px;
+  content: '';
+  transform: rotate(45deg);
 }
 
 .equipment-globe__scope-dot {
@@ -1468,7 +1489,7 @@ html.equipment-monitor__body-scroll-lock {
     min-height: 32rem;
   }
 
-  .equipment-globe__hud--left span:last-child {
+  .equipment-globe__hud--left > div > span {
     display: none;
   }
 

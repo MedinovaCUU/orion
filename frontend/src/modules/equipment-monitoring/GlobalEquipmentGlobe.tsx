@@ -7,6 +7,7 @@ import type { OrbitControls as OrbitControlsImpl } from 'three-stdlib';
 import { feature, mesh } from 'topojson-client';
 import type { GeometryCollection, Topology } from 'topojson-specification';
 import worldAtlasRaw from 'world-atlas/countries-110m.json?raw';
+import { getPublicAssetUrl } from '../../components/publicAssetUrl';
 
 export type GlobeNodeTone = 'ok' | 'warning' | 'fatal' | 'muted' | 'supremo';
 
@@ -58,6 +59,8 @@ const GLOBE_RADIUS = 2;
 const CLOSE_VIEW_DISTANCE = 3.65;
 const FOCUS_COLLAPSE_DISTANCE = 4.15;
 const MIN_CAMERA_DISTANCE = 2.018;
+const STATE_VIEW_DISTANCE = 6.45;
+const MUNICIPAL_VIEW_DISTANCE = 2.72;
 const MEXICO_CAMERA_POSITION: [number, number, number] = [-1.15, 2.42, 5.42];
 const STATUS_TONE_ORDER: GlobeNodeTone[] = ['ok', 'warning', 'fatal'];
 
@@ -109,6 +112,18 @@ const SIMULATED_MODELS = ['BA400', 'BA200', 'A25', 'BTS-350'] as const;
 interface CountryProperties {
   name?: string;
 }
+
+interface AdministrativeProperties {
+  cve_ent?: string;
+  cve_mun?: string;
+  nomgeo?: string;
+}
+
+interface AdministrativeTopologyObjects {
+  [key: string]: GeometryCollection<AdministrativeProperties>;
+}
+
+type AdministrativeTopology = Topology<AdministrativeTopologyObjects>;
 
 interface WorldAtlasObjects {
   [key: string]: GeometryCollection<CountryProperties>;
@@ -172,8 +187,8 @@ const pointInPolygon = (longitude: number, latitude: number, polygon: Position[]
   pointInRing(longitude, latitude, polygon[0]) &&
   !polygon.slice(1).some((hole) => pointInRing(longitude, latitude, hole));
 
-const getFeaturePolygons = (country: Feature<Polygon | MultiPolygon, CountryProperties>) =>
-  country.geometry.type === 'Polygon' ? [country.geometry.coordinates] : country.geometry.coordinates;
+const getFeaturePolygons = <Properties,>(geography: Feature<Polygon | MultiPolygon, Properties>) =>
+  geography.geometry.type === 'Polygon' ? [geography.geometry.coordinates] : geography.geometry.coordinates;
 
 const isPointInMexico = (longitude: number, latitude: number) =>
   Boolean(
@@ -218,6 +233,20 @@ const createBorderGeometry = (lines: Position[][], radius: number) => {
   geometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
   return geometry;
 };
+
+const getAdministrativeObject = (topology: AdministrativeTopology) => Object.values(topology.objects)[0];
+
+const createAdministrativeBorderGeometry = (topology: AdministrativeTopology, radius: number) => {
+  const administrativeObject = getAdministrativeObject(topology);
+  const internalBorders = mesh(topology, administrativeObject, (left, right) => left !== right).coordinates;
+  return createBorderGeometry(internalBorders, radius);
+};
+
+const getAdministrativeFeatures = (topology: AdministrativeTopology) =>
+  feature<AdministrativeProperties>(topology, getAdministrativeObject(topology)) as unknown as FeatureCollection<
+    Polygon | MultiPolygon,
+    AdministrativeProperties
+  >;
 
 const getStatusTones = (equipments: GlobeEquipmentNode[]) => {
   const presentStatuses = new Set<GlobeNodeTone>(equipments.map((equipment) => equipment.status));
@@ -366,6 +395,148 @@ function WorldGeography() {
       <lineSegments geometry={mexicoBorders} renderOrder={5}>
         <lineBasicMaterial color="#6ffff0" transparent opacity={1} depthWrite={false} toneMapped={false} />
       </lineSegments>
+    </>
+  );
+}
+
+async function loadAdministrativeTopology(path: string, signal: AbortSignal) {
+  const response = await fetch(getPublicAssetUrl(path), { signal });
+  if (!response.ok) {
+    throw new Error(`No fue posible cargar la geografía administrativa: ${response.status}`);
+  }
+
+  return (await response.json()) as AdministrativeTopology;
+}
+
+function MexicoAdministrativeGeography({ focusedCluster }: { focusedCluster: CityClusterData | null }) {
+  const { camera } = useThree();
+  const stateLayerRef = useRef<THREE.LineSegments | null>(null);
+  const municipalLayerRef = useRef<THREE.LineSegments | null>(null);
+  const municipalityGeometryCacheRef = useRef(new Map<string, THREE.BufferGeometry>());
+  const [stateGeometry, setStateGeometry] = useState<THREE.BufferGeometry | null>(null);
+  const [stateFeatures, setStateFeatures] = useState<FeatureCollection<
+    Polygon | MultiPolygon,
+    AdministrativeProperties
+  > | null>(null);
+  const [municipalityLayer, setMunicipalityLayer] = useState<{
+    stateCode: string;
+    geometry: THREE.BufferGeometry;
+  } | null>(null);
+
+  const focusedStateCode = useMemo(() => {
+    if (!focusedCluster || focusedCluster.simulated || !stateFeatures) {
+      return null;
+    }
+
+    const stateFeature = stateFeatures.features.find((state) =>
+      getFeaturePolygons(state).some((polygon) =>
+        pointInPolygon(focusedCluster.longitude, focusedCluster.latitude, polygon),
+      ),
+    );
+
+    return stateFeature?.properties?.cve_ent || null;
+  }, [focusedCluster, stateFeatures]);
+
+  useEffect(() => {
+    const controller = new AbortController();
+
+    loadAdministrativeTopology('geography/mexico/states.json', controller.signal)
+      .then((topology) => {
+        setStateGeometry(createAdministrativeBorderGeometry(topology, GLOBE_RADIUS + 0.112));
+        setStateFeatures(getAdministrativeFeatures(topology));
+      })
+      .catch((error: unknown) => {
+        if (!(error instanceof DOMException && error.name === 'AbortError')) {
+          console.warn('No fue posible mostrar las divisiones estatales.', error);
+        }
+      });
+
+    return () => controller.abort();
+  }, []);
+
+  useEffect(() => () => stateGeometry?.dispose(), [stateGeometry]);
+
+  useEffect(() => {
+    if (!focusedStateCode) {
+      return;
+    }
+
+    const cachedGeometry = municipalityGeometryCacheRef.current.get(focusedStateCode);
+    if (cachedGeometry) {
+      let active = true;
+      queueMicrotask(() => {
+        if (active) {
+          setMunicipalityLayer({ stateCode: focusedStateCode, geometry: cachedGeometry });
+        }
+      });
+      return () => {
+        active = false;
+      };
+    }
+
+    const controller = new AbortController();
+    loadAdministrativeTopology(
+      `geography/mexico/municipalities/${focusedStateCode}.json`,
+      controller.signal,
+    )
+      .then((topology) => {
+        const geometry = createAdministrativeBorderGeometry(topology, GLOBE_RADIUS + 0.124);
+        municipalityGeometryCacheRef.current.set(focusedStateCode, geometry);
+        setMunicipalityLayer({ stateCode: focusedStateCode, geometry });
+      })
+      .catch((error: unknown) => {
+        if (!(error instanceof DOMException && error.name === 'AbortError')) {
+          console.warn(`No fue posible mostrar los municipios del estado ${focusedStateCode}.`, error);
+        }
+      });
+
+    return () => controller.abort();
+  }, [focusedStateCode]);
+
+  useEffect(
+    () => () => {
+      municipalityGeometryCacheRef.current.forEach((geometry) => geometry.dispose());
+      municipalityGeometryCacheRef.current.clear();
+    },
+    [],
+  );
+
+  useFrame(() => {
+    const cameraDistance = camera.position.length();
+    if (stateLayerRef.current) {
+      stateLayerRef.current.visible = cameraDistance <= STATE_VIEW_DISTANCE;
+    }
+    if (municipalLayerRef.current) {
+      municipalLayerRef.current.visible = Boolean(
+        focusedStateCode && cameraDistance <= MUNICIPAL_VIEW_DISTANCE,
+      );
+    }
+  });
+
+  return (
+    <>
+      {stateGeometry ? (
+        <lineSegments ref={stateLayerRef} geometry={stateGeometry} renderOrder={6}>
+          <lineBasicMaterial
+            color="#55c8cf"
+            transparent
+            opacity={0.72}
+            depthWrite={false}
+            toneMapped={false}
+          />
+        </lineSegments>
+      ) : null}
+      {municipalityLayer?.stateCode === focusedStateCode ? (
+        <lineSegments ref={municipalLayerRef} geometry={municipalityLayer.geometry} renderOrder={7}>
+          <lineBasicMaterial
+            color="#b4f3ea"
+            transparent
+            opacity={0.62}
+            depthWrite={false}
+            toneMapped={false}
+          />
+        </lineSegments>
+      ) : null}
     </>
   );
 }
@@ -882,6 +1053,10 @@ function GlobeScene({
 }) {
   const { camera } = useThree();
   const controlsRef = useRef<OrbitControlsImpl | null>(null);
+  const focusedCluster = useMemo(
+    () => clusters.find((cluster) => cluster.id === focusedClusterId) || null,
+    [clusters, focusedClusterId],
+  );
 
   useFrame(() => {
     if (!controlsRef.current) {
@@ -921,7 +1096,6 @@ function GlobeScene({
       return;
     }
 
-    const focusedCluster = clusters.find((cluster) => cluster.id === focusedClusterId);
     if (!focusedCluster) {
       return;
     }
@@ -931,7 +1105,7 @@ function GlobeScene({
     controlsRef.current?.target.set(0, 0, 0);
     controlsRef.current?.update();
     onDistanceChange(3.2);
-  }, [camera, clusters, focusedClusterId, onDistanceChange]);
+  }, [camera, focusedCluster, focusedClusterId, onDistanceChange]);
 
   return (
     <>
@@ -950,6 +1124,7 @@ function GlobeScene({
         />
       </mesh>
       <WorldGeography />
+      <MexicoAdministrativeGeography focusedCluster={focusedCluster} />
       <Atmosphere />
       <NetworkArcs clusters={clusters} />
       {clusters.filter((cluster) => !focusedClusterId || cluster.id === focusedClusterId).map((cluster) => (
@@ -1013,6 +1188,12 @@ export default function GlobalEquipmentGlobe({
   const focusedCluster = focusedClusterId
     ? clusters.find((cluster) => cluster.id === focusedClusterId) || null
     : null;
+  const geographyLevel =
+    focusedCluster && !focusedCluster.simulated && cameraDistance <= MUNICIPAL_VIEW_DISTANCE
+      ? 'División municipal'
+      : cameraDistance <= STATE_VIEW_DISTANCE
+        ? 'División estatal'
+        : 'División por países';
 
   const handleSelectEquipment = (equipmentId: string | null) => {
     if (equipmentId?.startsWith('simulated-equipment-')) {
@@ -1060,6 +1241,7 @@ export default function GlobalEquipmentGlobe({
         <div>
           <strong>México en vivo</strong>
           <span>{mexicoLocationCount} ubicaciones · {equipments.length} equipos</span>
+          <small className="equipment-globe__geo-level">{geographyLevel}</small>
         </div>
       </div>
 
