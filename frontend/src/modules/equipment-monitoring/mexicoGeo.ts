@@ -28,6 +28,12 @@ export interface EquipmentMapPoint {
   normalizedState: string;
 }
 
+export interface EquipmentGeoPoint {
+  latitude: number;
+  longitude: number;
+  normalizedState: string;
+}
+
 const MAP_BOUNDS = {
   north: 32.9,
   south: 14.2,
@@ -360,6 +366,43 @@ export const resolveEquipmentMapPoint = (
   return {
     x: clamp(basePoint.x + offset.x, 3.4, 97.2),
     y: clamp(basePoint.y + offset.y, 4.1, 96.2),
+    normalizedState: state.label,
+  };
+};
+
+export const resolveEquipmentGeoPoint = (equipment: EquipmentLocationInput): EquipmentGeoPoint | null => {
+  const stateKey =
+    detectStateKey(equipment.estado) ||
+    detectStateKey(equipment.direccion) ||
+    detectStateKey(equipment.municipio) ||
+    detectStateKey(equipment.ciudad);
+  const normalizedState = stateKey ? MEXICO_STATE_GEO[stateKey].label : null;
+
+  if (
+    typeof equipment.geoLatitude === 'number' &&
+    Number.isFinite(equipment.geoLatitude) &&
+    equipment.geoLatitude >= -90 &&
+    equipment.geoLatitude <= 90 &&
+    typeof equipment.geoLongitude === 'number' &&
+    Number.isFinite(equipment.geoLongitude) &&
+    equipment.geoLongitude >= -180 &&
+    equipment.geoLongitude <= 180
+  ) {
+    return {
+      latitude: equipment.geoLatitude,
+      longitude: equipment.geoLongitude,
+      normalizedState: normalizedState || equipment.estado || 'Sin estado',
+    };
+  }
+
+  if (!stateKey) {
+    return null;
+  }
+
+  const state = MEXICO_STATE_GEO[stateKey];
+  return {
+    latitude: state.lat,
+    longitude: state.lng,
     normalizedState: state.label,
   };
 };
