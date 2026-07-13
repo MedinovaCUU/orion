@@ -510,6 +510,114 @@ html.equipment-monitor__body-scroll-lock {
   color: rgb(var(--monitor-heartbeat-rgb));
 }
 
+.equipment-globe__equipment-dock {
+  position: absolute;
+  right: 1.15rem;
+  bottom: 3.8rem;
+  left: 1.15rem;
+  z-index: 5;
+  display: grid;
+  gap: 0.55rem;
+  padding: 0.68rem;
+  border: 1px solid rgba(120, 214, 213, 0.22);
+  border-radius: 16px;
+  color: #efffff;
+  background: rgba(4, 20, 30, 0.88);
+  box-shadow: 0 18px 42px rgba(0, 8, 16, 0.34);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+}
+
+.equipment-globe__equipment-dock-header {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0 0.15rem;
+}
+
+.equipment-globe__equipment-dock-header > div {
+  display: grid;
+  gap: 0.08rem;
+}
+
+.equipment-globe__equipment-dock-header strong {
+  font-family: var(--font-heading);
+  font-size: 0.76rem;
+}
+
+.equipment-globe__equipment-dock-header span,
+.equipment-globe__equipment-dock-header small {
+  font-size: 0.62rem;
+  color: rgba(199, 225, 231, 0.68);
+}
+
+.equipment-globe__equipment-dock-list {
+  display: flex;
+  gap: 0.42rem;
+  overflow-x: auto;
+  padding: 0.08rem 0.05rem 0.2rem;
+  scrollbar-color: rgba(var(--monitor-heartbeat-rgb), 0.42) transparent;
+  scrollbar-width: thin;
+}
+
+.equipment-globe__equipment-dock-list button {
+  display: grid;
+  grid-template-columns: auto auto;
+  grid-template-areas:
+    'status serial'
+    'status model';
+  column-gap: 0.42rem;
+  min-width: 8.4rem;
+  padding: 0.48rem 0.58rem;
+  border: 1px solid rgba(153, 205, 215, 0.18);
+  border-radius: 11px;
+  color: #efffff;
+  text-align: left;
+  background: rgba(26, 65, 82, 0.58);
+  cursor: pointer;
+  transition: border-color 150ms ease, background 150ms ease, transform 150ms ease;
+}
+
+.equipment-globe__equipment-dock-list button:hover,
+.equipment-globe__equipment-dock-list button.is-selected {
+  border-color: rgba(var(--monitor-heartbeat-rgb), 0.72);
+  background: rgba(var(--monitor-heartbeat-rgb), 0.2);
+  transform: translateY(-1px);
+}
+
+.equipment-globe__equipment-dock-list i {
+  grid-area: status;
+  align-self: center;
+  width: 0.56rem;
+  height: 0.56rem;
+  border-radius: 999px;
+  background: #38d8bd;
+  box-shadow: 0 0 10px rgba(56, 216, 189, 0.46);
+}
+
+.equipment-globe__equipment-dock-list i[data-status='warning'] {
+  background: #ffca68;
+  box-shadow: 0 0 10px rgba(255, 202, 104, 0.5);
+}
+
+.equipment-globe__equipment-dock-list i[data-status='fatal'] {
+  background: #ff667c;
+  box-shadow: 0 0 10px rgba(255, 102, 124, 0.52);
+}
+
+.equipment-globe__equipment-dock-list strong {
+  grid-area: serial;
+  font-family: var(--font-heading);
+  font-size: 0.67rem;
+}
+
+.equipment-globe__equipment-dock-list span {
+  grid-area: model;
+  font-size: 0.6rem;
+  color: rgba(199, 225, 231, 0.68);
+}
+
 .equipment-monitor__map-stage {
   position: relative;
   min-height: clamp(43rem, 64vw, 78rem);
@@ -1289,6 +1397,16 @@ html.equipment-monitor__body-scroll-lock {
     width: max-content;
   }
 
+  .equipment-globe__equipment-dock {
+    right: 0.75rem;
+    bottom: 7rem;
+    left: 0.75rem;
+  }
+
+  .equipment-globe__equipment-dock-header {
+    align-items: start;
+  }
+
   .equipment-globe__demo-label {
     top: 0.85rem;
     right: 0.75rem;
@@ -1356,5 +1474,9 @@ html.equipment-monitor__body-scroll-lock {
 
   .equipment-globe__hint {
     font-size: 0.62rem;
+  }
+
+  .equipment-globe__equipment-dock-header span {
+    display: none;
   }
 }

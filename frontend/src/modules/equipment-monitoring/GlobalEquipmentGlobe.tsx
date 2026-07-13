@@ -39,6 +39,7 @@ interface CityClusterData {
   longitude: number;
   count: number;
   tone: GlobeNodeTone;
+  tones: GlobeNodeTone[];
   heartbeat: boolean;
   simulated: boolean;
   equipments: GlobeEquipmentNode[];
@@ -55,14 +56,10 @@ interface SimulatedCity {
 
 const GLOBE_RADIUS = 2;
 const CLOSE_VIEW_DISTANCE = 3.65;
+const FOCUS_COLLAPSE_DISTANCE = 4.15;
+const MIN_CAMERA_DISTANCE = 2.018;
 const MEXICO_CAMERA_POSITION: [number, number, number] = [-1.15, 2.42, 5.42];
-const TONE_PRIORITY: Record<GlobeNodeTone, number> = {
-  fatal: 5,
-  warning: 4,
-  ok: 3,
-  supremo: 2,
-  muted: 1,
-};
+const STATUS_TONE_ORDER: GlobeNodeTone[] = ['ok', 'warning', 'fatal'];
 
 const TONE_COLORS: Record<GlobeNodeTone, string> = {
   fatal: '#ff667c',
@@ -128,6 +125,7 @@ const COUNTRY_FEATURES = feature<CountryProperties>(WORLD_TOPOLOGY, WORLD_COUNTR
 const WORLD_BORDER_LINES = mesh(WORLD_TOPOLOGY, WORLD_COUNTRIES).coordinates;
 const MEXICO_GEOMETRY = WORLD_COUNTRIES.geometries.find((geometry) => String(geometry.id) === '484');
 const MEXICO_BORDER_LINES = MEXICO_GEOMETRY ? mesh(WORLD_TOPOLOGY, MEXICO_GEOMETRY).coordinates : [];
+const MEXICO_FEATURE = COUNTRY_FEATURES.features.find((country) => String(country.id) === '484');
 
 const normalizeGroupKey = (value: string) =>
   value
@@ -177,6 +175,12 @@ const pointInPolygon = (longitude: number, latitude: number, polygon: Position[]
 const getFeaturePolygons = (country: Feature<Polygon | MultiPolygon, CountryProperties>) =>
   country.geometry.type === 'Polygon' ? [country.geometry.coordinates] : country.geometry.coordinates;
 
+const isPointInMexico = (longitude: number, latitude: number) =>
+  Boolean(
+    MEXICO_FEATURE &&
+      getFeaturePolygons(MEXICO_FEATURE).some((polygon) => pointInPolygon(longitude, latitude, polygon)),
+  );
+
 const getRingBounds = (ring: Position[]) =>
   ring.reduce(
     (bounds, [longitude, latitude]) => ({
@@ -215,17 +219,19 @@ const createBorderGeometry = (lines: Position[][], radius: number) => {
   return geometry;
 };
 
-const dominantTone = (equipments: GlobeEquipmentNode[]): GlobeNodeTone =>
-  equipments.reduce<GlobeNodeTone>(
-    (current, equipment) => (TONE_PRIORITY[equipment.tone] > TONE_PRIORITY[current] ? equipment.tone : current),
-    'muted',
-  );
+const getStatusTones = (equipments: GlobeEquipmentNode[]) => {
+  const presentStatuses = new Set<GlobeNodeTone>(equipments.map((equipment) => equipment.status));
+  return STATUS_TONE_ORDER.filter((tone) => presentStatuses.has(tone));
+};
 
 const buildCityClusters = (equipments: GlobeEquipmentNode[]): CityClusterData[] => {
   const groups = new Map<string, GlobeEquipmentNode[]>();
 
   equipments.forEach((equipment) => {
-    const key = `${equipment.latitude.toFixed(3)}:${equipment.longitude.toFixed(3)}`;
+    const locality = equipment.city || equipment.municipality;
+    const key = locality
+      ? `${normalizeGroupKey(equipment.state || 'sin-estado')}:${normalizeGroupKey(locality)}`
+      : `${equipment.latitude.toFixed(3)}:${equipment.longitude.toFixed(3)}`;
     const current = groups.get(key) || [];
     current.push(equipment);
     groups.set(key, current);
@@ -238,6 +244,7 @@ const buildCityClusters = (equipments: GlobeEquipmentNode[]): CityClusterData[] 
     const localityNames = new Set(
       cityEquipments.map((equipment) => equipment.city || equipment.municipality || equipment.state).filter(Boolean),
     );
+    const tones = getStatusTones(cityEquipments);
 
     return {
       id: `mx-${key}`,
@@ -249,8 +256,9 @@ const buildCityClusters = (equipments: GlobeEquipmentNode[]): CityClusterData[] 
       latitude,
       longitude,
       count: cityEquipments.length,
-      tone: dominantTone(cityEquipments),
-      heartbeat: cityEquipments.length === 1 && cityEquipments[0].heartbeat,
+      tone: tones[0] || 'ok',
+      tones: tones.length ? tones : ['ok'],
+      heartbeat: cityEquipments.some((equipment) => equipment.heartbeat),
       simulated: false,
       equipments: cityEquipments,
     };
@@ -283,6 +291,7 @@ const buildSimulatedClusters = (): CityClusterData[] =>
       longitude: city.longitude,
       count: city.count,
       tone: city.tone,
+      tones: city.tone === 'warning' ? ['ok', 'warning'] : [city.tone],
       heartbeat: false,
       simulated: true,
       equipments,
@@ -488,7 +497,7 @@ function EquipmentPulseNode({
       return;
     }
 
-    const markerScale = THREE.MathUtils.clamp(camera.position.distanceTo(position) / 3.2, 0.065, 1.05);
+    const markerScale = THREE.MathUtils.clamp(camera.position.distanceTo(position) / 3.2, 0.008, 1.05);
     groupRef.current.scale.setScalar(markerScale);
     if (!ringRef.current) {
       return;
@@ -508,17 +517,17 @@ function EquipmentPulseNode({
         onPointerOut={handlePointerOut}
         onClick={handleClick}
       >
-        <sphereGeometry args={[selected ? 0.052 : 0.045, 14, 14]} />
+        <sphereGeometry args={[selected ? 0.032 : 0.026, 14, 14]} />
         <meshBasicMaterial transparent opacity={0} depthWrite={false} colorWrite={false} />
       </mesh>
       <mesh>
-        <sphereGeometry args={[selected ? 0.028 : 0.021, 16, 16]} />
+        <sphereGeometry args={[selected ? 0.019 : 0.014, 16, 16]} />
         <meshBasicMaterial color={TONE_COLORS[tone]} toneMapped={false} />
       </mesh>
       {equipment?.heartbeat ? (
         <Billboard follow>
           <mesh ref={ringRef}>
-            <ringGeometry args={[0.034, 0.043, 24]} />
+            <ringGeometry args={[0.022, 0.029, 24]} />
             <meshBasicMaterial
               color={TONE_COLORS.ok}
               transparent
@@ -560,32 +569,65 @@ function CityCluster({
   const groupRef = useRef<THREE.Group | null>(null);
   const markerGroupRef = useRef<THREE.Group | null>(null);
   const pulseRef = useRef<THREE.Mesh | null>(null);
+  const nodeMaterialRef = useRef<THREE.MeshBasicMaterial | null>(null);
   const hoverLeaveTimeoutRef = useRef<number | null>(null);
   const position = useMemo(
     () => latLngToVector(cluster.latitude, cluster.longitude, GLOBE_RADIUS + 0.035),
     [cluster.latitude, cluster.longitude],
   );
-  const equipmentPositions = useMemo(() => {
-    const normal = position.clone().normalize();
-    const reference = Math.abs(normal.y) > 0.92 ? new THREE.Vector3(1, 0, 0) : new THREE.Vector3(0, 1, 0);
-    const tangentX = new THREE.Vector3().crossVectors(reference, normal).normalize();
-    const tangentY = new THREE.Vector3().crossVectors(normal, tangentX).normalize();
+  const equipmentLayout = useMemo(() => {
     const visibleCount = Math.min(cluster.equipments.length || cluster.count, 72);
+    const coordinateOccurrences = new Map<string, number>();
+    const coordinateCounts = cluster.equipments.slice(0, visibleCount).reduce((counts, equipment) => {
+      const key = `${equipment.latitude.toFixed(5)}:${equipment.longitude.toFixed(5)}`;
+      counts.set(key, (counts.get(key) || 0) + 1);
+      return counts;
+    }, new Map<string, number>());
 
     return Array.from({ length: visibleCount }, (_, index) => {
-      const ring = Math.floor(Math.sqrt(index));
-      const slot = index - ring * ring;
+      const equipment = cluster.equipments[index];
+      const latitude = equipment?.latitude ?? cluster.latitude;
+      const longitude = equipment?.longitude ?? cluster.longitude;
+      const anchor = latLngToVector(latitude, longitude, GLOBE_RADIUS + 0.058);
+      const coordinateKey = `${latitude.toFixed(5)}:${longitude.toFixed(5)}`;
+      const occurrenceIndex = coordinateOccurrences.get(coordinateKey) || 0;
+      coordinateOccurrences.set(coordinateKey, occurrenceIndex + 1);
+      if ((coordinateCounts.get(coordinateKey) || 0) === 1 || occurrenceIndex === 0) {
+        return { anchor, position: anchor.clone() };
+      }
+
+      const ring = Math.floor(Math.sqrt(occurrenceIndex));
+      const slot = occurrenceIndex - ring * ring;
       const slots = ring * 2 + 1;
-      const angle = (slot / slots) * Math.PI * 2 + ring * 0.62;
-      const radius = 0.04 + ring * 0.029;
-      return position
-        .clone()
-        .addScaledVector(tangentX, Math.cos(angle) * radius)
-        .addScaledVector(tangentY, Math.sin(angle) * radius)
-        .normalize()
-        .multiplyScalar(GLOBE_RADIUS + 0.058);
+      const baseAngle = (slot / slots) * Math.PI * 2 + ring * 0.58;
+      const distanceKm = 0.18 + ring * 0.22;
+      let visualLatitude = latitude;
+      let visualLongitude = longitude;
+
+      for (let attempt = 0; attempt < 12; attempt += 1) {
+        const angle = baseAngle + attempt * (Math.PI / 6);
+        const candidateLatitude = latitude + (Math.cos(angle) * distanceKm) / 111.32;
+        const candidateLongitude =
+          longitude +
+          (Math.sin(angle) * distanceKm) /
+            (111.32 * Math.max(Math.cos(THREE.MathUtils.degToRad(latitude)), 0.25));
+
+        if (cluster.simulated || isPointInMexico(candidateLongitude, candidateLatitude)) {
+          visualLatitude = candidateLatitude;
+          visualLongitude = candidateLongitude;
+          break;
+        }
+      }
+
+      const visualPosition = latLngToVector(visualLatitude, visualLongitude, GLOBE_RADIUS + 0.058);
+
+      return { anchor, position: visualPosition };
     });
-  }, [cluster.count, cluster.equipments.length, position]);
+  }, [cluster.count, cluster.equipments, cluster.latitude, cluster.longitude, cluster.simulated]);
+  const toneColors = useMemo(
+    () => cluster.tones.map((tone) => new THREE.Color(TONE_COLORS[tone])),
+    [cluster.tones],
+  );
 
   useFrame(({ clock }) => {
     if (!groupRef.current) {
@@ -598,6 +640,17 @@ function CityCluster({
       const markerScale = THREE.MathUtils.clamp(camera.position.distanceTo(position) / 3.6, 0.06, 1.05);
       markerGroupRef.current.scale.setScalar(markerScale);
     }
+    if (nodeMaterialRef.current && toneColors.length) {
+      if (toneColors.length === 1) {
+        nodeMaterialRef.current.color.copy(toneColors[0]);
+      } else {
+        const cycle = (clock.elapsedTime * 0.65 + Math.abs(cluster.latitude) * 0.03) % toneColors.length;
+        const currentIndex = Math.floor(cycle);
+        const nextIndex = (currentIndex + 1) % toneColors.length;
+        const blend = THREE.MathUtils.smoothstep(cycle - currentIndex, 0.18, 0.82);
+        nodeMaterialRef.current.color.lerpColors(toneColors[currentIndex], toneColors[nextIndex], blend);
+      }
+    }
     if (!pulseRef.current) {
       return;
     }
@@ -605,7 +658,7 @@ function CityCluster({
     const wave = (clock.elapsedTime * 0.62 + cluster.latitude * 0.01) % 1;
     pulseRef.current.scale.setScalar(0.85 + wave * 1.75);
     const pulseMaterial = pulseRef.current.material as THREE.MeshBasicMaterial;
-    pulseMaterial.opacity = (1 - wave) * (cluster.heartbeat ? 0.66 : 0.22);
+    pulseMaterial.opacity = (1 - wave) * 0.66;
   });
 
   const nodeSize =
@@ -613,8 +666,8 @@ function CityCluster({
   const selected = cluster.equipments.some((equipment) => equipment.id === selectedEquipmentId);
   const expansionCount = expansionMode === 'focused' ? 72 : expansionMode === 'preview' ? 7 : 0;
   const displayEquipments = (cluster.equipments.length
-    ? cluster.equipments.slice(0, equipmentPositions.length)
-    : equipmentPositions.map(() => null as GlobeEquipmentNode | null)
+    ? cluster.equipments.slice(0, equipmentLayout.length)
+    : equipmentLayout.map(() => null as GlobeEquipmentNode | null)
   ).slice(0, expansionCount);
 
   const keepHover = () => {
@@ -648,62 +701,64 @@ function CityCluster({
     <group ref={groupRef}>
       <group ref={markerGroupRef} position={position}>
         {expansionMode !== 'focused' ? (
-          <mesh
-            onPointerOver={(event: ThreeEvent<PointerEvent>) => {
-              event.stopPropagation();
-              document.body.style.cursor = 'pointer';
-              keepHover();
-            }}
-            onPointerOut={(event: ThreeEvent<PointerEvent>) => {
-              event.stopPropagation();
-              document.body.style.cursor = '';
-              releaseHover();
-            }}
-            onClick={(event: ThreeEvent<MouseEvent>) => {
-              event.stopPropagation();
-              onFocus(cluster.id);
-              const preferred =
-                cluster.equipments.find((equipment) => equipment.status === 'fatal') ||
-                cluster.equipments.find((equipment) => equipment.status === 'warning') ||
-                cluster.equipments[0];
-              if (preferred) {
-                onSelectEquipment(preferred.id);
-              }
-            }}
-          >
-            <sphereGeometry args={[nodeSize * 1.65, 22, 22]} />
-            <meshBasicMaterial transparent opacity={0} depthWrite={false} />
-          </mesh>
-        ) : null}
-        <mesh>
-          <sphereGeometry args={[nodeSize, 22, 22]} />
-          <meshBasicMaterial color={TONE_COLORS[cluster.tone]} toneMapped={false} />
-        </mesh>
-        <Billboard follow>
-          {cluster.heartbeat ? (
-            <mesh ref={pulseRef}>
-              <ringGeometry args={[nodeSize * 1.2, nodeSize * 1.38, 32]} />
-              <meshBasicMaterial
-                color={TONE_COLORS.ok}
-                transparent
-                opacity={0.5}
-                side={THREE.DoubleSide}
-                depthWrite={false}
-                toneMapped={false}
-              />
+          <>
+            <mesh
+              onPointerOver={(event: ThreeEvent<PointerEvent>) => {
+                event.stopPropagation();
+                document.body.style.cursor = 'pointer';
+                keepHover();
+              }}
+              onPointerOut={(event: ThreeEvent<PointerEvent>) => {
+                event.stopPropagation();
+                document.body.style.cursor = '';
+                releaseHover();
+              }}
+              onClick={(event: ThreeEvent<MouseEvent>) => {
+                event.stopPropagation();
+                onFocus(cluster.id);
+                const preferred =
+                  cluster.equipments.find((equipment) => equipment.status === 'fatal') ||
+                  cluster.equipments.find((equipment) => equipment.status === 'warning') ||
+                  cluster.equipments[0];
+                if (preferred) {
+                  onSelectEquipment(preferred.id);
+                }
+              }}
+            >
+              <sphereGeometry args={[nodeSize * 1.65, 22, 22]} />
+              <meshBasicMaterial transparent opacity={0} depthWrite={false} />
             </mesh>
-          ) : null}
-          <mesh scale={selected ? 1.9 : 1.45}>
-            <ringGeometry args={[nodeSize * 1.08, nodeSize * 1.18, 32]} />
-            <meshBasicMaterial
-              color={selected ? '#ffffff' : TONE_COLORS[cluster.tone]}
-              transparent
-              opacity={selected ? 0.92 : 0.42}
-              side={THREE.DoubleSide}
-              depthWrite={false}
-            />
-          </mesh>
-        </Billboard>
+            <mesh>
+              <sphereGeometry args={[nodeSize, 22, 22]} />
+              <meshBasicMaterial ref={nodeMaterialRef} color={TONE_COLORS[cluster.tone]} toneMapped={false} />
+            </mesh>
+            <Billboard follow>
+              {cluster.heartbeat ? (
+                <mesh ref={pulseRef}>
+                  <ringGeometry args={[nodeSize * 1.2, nodeSize * 1.38, 32]} />
+                  <meshBasicMaterial
+                    color={TONE_COLORS.ok}
+                    transparent
+                    opacity={0.5}
+                    side={THREE.DoubleSide}
+                    depthWrite={false}
+                    toneMapped={false}
+                  />
+                </mesh>
+              ) : null}
+              <mesh scale={selected ? 1.9 : 1.45}>
+                <ringGeometry args={[nodeSize * 1.08, nodeSize * 1.18, 32]} />
+                <meshBasicMaterial
+                  color={selected ? '#ffffff' : '#b8e6e7'}
+                  transparent
+                  opacity={selected ? 0.92 : 0.42}
+                  side={THREE.DoubleSide}
+                  depthWrite={false}
+                />
+              </mesh>
+            </Billboard>
+          </>
+        ) : null}
         {expansionMode !== 'none' ? (
           <Html center className="equipment-globe__city-tooltip" zIndexRange={[20, 0]}>
             <strong>{cluster.city}</strong>
@@ -712,19 +767,36 @@ function CityCluster({
               {cluster.simulated
                 ? 'Cobertura simulada'
                 : expansionMode === 'focused'
-                  ? 'Ciudad enfocada · selecciona un equipo'
+                  ? 'Ubicación exacta · selecciona un equipo'
                   : 'Haz clic para fijar la ciudad'}
             </small>
+            {cluster.tones.length > 1 ? <small>Estado mixto · colores en ciclo</small> : null}
           </Html>
         ) : null}
       </group>
+
+      {expansionMode === 'focused'
+        ? equipmentLayout.slice(0, expansionCount).map((layout, index) =>
+            index === 0 ? null : (
+              <Line
+                key={`${cluster.id}-anchor-${index}`}
+                points={[layout.anchor, layout.position]}
+                color="#9bdfe1"
+                lineWidth={0.42}
+                transparent
+                opacity={0.38}
+                depthWrite={false}
+              />
+            ),
+          )
+        : null}
 
       {expansionMode !== 'none'
         ? displayEquipments.map((equipment, index) => (
             <EquipmentPulseNode
               key={equipment?.id || `${cluster.id}-simulated-${index}`}
               equipment={equipment}
-              position={equipmentPositions[index]}
+              position={equipmentLayout[index].position}
               selected={Boolean(equipment && equipment.id === selectedEquipmentId)}
               onHoverChange={(hovered) => {
                 if (hovered) {
@@ -794,6 +866,7 @@ function GlobeScene({
   onFocusCluster,
   onSelectEquipment,
   onDistanceChange,
+  onCollapseFocus,
 }: {
   clusters: CityClusterData[];
   selectedEquipmentId: string | null;
@@ -805,9 +878,22 @@ function GlobeScene({
   onFocusCluster: (clusterId: string) => void;
   onSelectEquipment: (equipmentId: string | null) => void;
   onDistanceChange: (distance: number) => void;
+  onCollapseFocus: () => void;
 }) {
   const { camera } = useThree();
   const controlsRef = useRef<OrbitControlsImpl | null>(null);
+
+  useFrame(() => {
+    if (!controlsRef.current) {
+      return;
+    }
+
+    const altitude = Math.max(camera.position.length() - GLOBE_RADIUS, 0);
+    const altitudeFactor = THREE.MathUtils.clamp((altitude - 0.12) / 3.8, 0, 1);
+    controlsRef.current.rotateSpeed = THREE.MathUtils.lerp(0.004, 0.48, altitudeFactor);
+    controlsRef.current.zoomSpeed = THREE.MathUtils.lerp(0.08, 0.85, altitudeFactor);
+    controlsRef.current.dampingFactor = THREE.MathUtils.lerp(0.2, 0.055, altitudeFactor);
+  });
 
   useEffect(() => {
     camera.position.set(...MEXICO_CAMERA_POSITION);
@@ -822,7 +908,9 @@ function GlobeScene({
     }
 
     const direction = camera.position.clone().normalize();
-    const nextDistance = THREE.MathUtils.clamp(camera.position.length() + zoomRequest.direction * 0.52, 2.12, 8.4);
+    const altitude = Math.max(camera.position.length() - GLOBE_RADIUS, MIN_CAMERA_DISTANCE - GLOBE_RADIUS);
+    const nextAltitude = zoomRequest.direction < 0 ? altitude * 0.58 : altitude * 1.65;
+    const nextDistance = THREE.MathUtils.clamp(GLOBE_RADIUS + nextAltitude, MIN_CAMERA_DISTANCE, 8.4);
     camera.position.copy(direction.multiplyScalar(nextDistance));
     controlsRef.current?.update();
     onDistanceChange(nextDistance);
@@ -888,11 +976,14 @@ function GlobeScene({
         dampingFactor={0.055}
         rotateSpeed={0.48}
         zoomSpeed={0.85}
-        minDistance={2.12}
+        minDistance={MIN_CAMERA_DISTANCE}
         maxDistance={8.4}
         onChange={() => {
           const distance = camera.position.length();
           onDistanceChange(distance);
+          if (focusedClusterId && distance >= FOCUS_COLLAPSE_DISTANCE) {
+            onCollapseFocus();
+          }
         }}
       />
     </>
@@ -919,6 +1010,9 @@ export default function GlobalEquipmentGlobe({
   );
   const mexicoLocationCount = clusters.filter((cluster) => !cluster.simulated).length;
   const effectiveSelectedEquipmentId = selectedSimulatedEquipmentId || selectedEquipmentId;
+  const focusedCluster = focusedClusterId
+    ? clusters.find((cluster) => cluster.id === focusedClusterId) || null
+    : null;
 
   const handleSelectEquipment = (equipmentId: string | null) => {
     if (equipmentId?.startsWith('simulated-equipment-')) {
@@ -953,6 +1047,11 @@ export default function GlobalEquipmentGlobe({
           onFocusCluster={setFocusedClusterId}
           onSelectEquipment={handleSelectEquipment}
           onDistanceChange={setCameraDistance}
+          onCollapseFocus={() => {
+            setFocusedClusterId(null);
+            setHoveredClusterId(null);
+            handleSelectEquipment(null);
+          }}
         />
       </Canvas>
 
@@ -999,8 +1098,39 @@ export default function GlobalEquipmentGlobe({
         </button>
       </div>
 
+      {focusedCluster ? (
+        <div className="equipment-globe__equipment-dock">
+          <div className="equipment-globe__equipment-dock-header">
+            <div>
+              <strong>{focusedCluster.city}</strong>
+              <span>
+                {focusedCluster.latitude.toFixed(5)}, {focusedCluster.longitude.toFixed(5)} · coordenadas sin desplazar
+              </span>
+            </div>
+            <small>{focusedCluster.count} equipos</small>
+          </div>
+          <div className="equipment-globe__equipment-dock-list" role="list" aria-label={`Equipos en ${focusedCluster.city}`}>
+            {focusedCluster.equipments.map((equipment) => (
+              <button
+                key={equipment.id}
+                type="button"
+                role="listitem"
+                className={equipment.id === effectiveSelectedEquipmentId ? 'is-selected' : ''}
+                onClick={() => handleSelectEquipment(equipment.id === effectiveSelectedEquipmentId ? null : equipment.id)}
+              >
+                <i data-status={equipment.status} />
+                <strong>{equipment.serial}</strong>
+                <span>{equipment.model}</span>
+              </button>
+            ))}
+          </div>
+        </div>
+      ) : null}
+
       <div className="equipment-globe__hint">
-        Arrastra para recorrer el mundo · Acerca para separar equipos · Pasa sobre una ciudad para desplegarla
+        {focusedCluster
+          ? 'Cada línea vuelve a la coordenada real · selecciona en el mapa o en la bandeja'
+          : 'Arrastra para recorrer el mundo · acerca para ver equipos en su ubicación real'}
       </div>
       <div className="equipment-globe__demo-label">Cobertura mundial simulada</div>
     </div>
