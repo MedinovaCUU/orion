@@ -3,6 +3,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import { supabase } from '../supabaseClient';
 import BrandLockup from './BrandLockup';
 import EmployeeCredentialModal, { type EmployeeCredentialProfile } from './EmployeeCredentialModal';
+import { DEFAULT_USER_ACCESS, MODULE_KEYS, coerceModules, type ModuleKey, type UserAccess } from '../accessControl';
 import './Dashboard.css';
 
 const Tickets = lazy(() => import('./Tickets'));
@@ -16,10 +17,8 @@ const Equipos = lazy(() => import('./Equipos'));
 const PNO = lazy(() => import('./PNO'));
 const EquipmentMonitoring = lazy(() => import('../modules/equipment-monitoring/EquipmentMonitoring'));
 const DriPage = lazy(() => import('../modules/dri/DriPage'));
+const PermissionsAdmin = lazy(() => import('./PermissionsAdmin'));
 const DEFAULT_DASHBOARD_TAB: DashboardTabKey = 'tickets';
-const PILOT_TABS: DashboardTabKey[] = ['tickets', 'servicios', 'asesoria', 'equipos'];
-const FULL_DASHBOARD_ACCESS_NAMES = ['ricardo montanez', 'ricardo montanez miranda', 'diego navarro'];
-const FULL_DASHBOARD_ACCESS_EMAILS = ['rmontanez@biosystems.com.mx', 'dnavarro@biosystems.com.mx'];
 
 type DashboardTabKey =
   | 'tickets'
@@ -32,7 +31,8 @@ type DashboardTabKey =
   | 'pno'
   | 'equipos'
   | 'monitoreo'
-  | 'dri';
+  | 'dri'
+  | 'permisos';
 
 type DashboardTone = 'clinical' | 'environmental' | 'environmental-blue' | 'veterinary' | 'bioprocess' | 'food';
 
@@ -55,15 +55,8 @@ const DASHBOARD_TAB_KEYS: DashboardTabKey[] = [
   'equipos',
   'monitoreo',
   'dri',
+  'permisos',
 ];
-
-const normalizeText = (value: string | null | undefined) =>
-  (value || '')
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '')
-    .replace(/\s+/g, ' ')
-    .trim()
-    .toLowerCase();
 
 const DashboardPanelFallback = () => (
   <div
@@ -105,6 +98,7 @@ export default function Dashboard({ session, initialTab }: DashboardProps) {
   const [credentialOpen, setCredentialOpen] = useState(false);
   const [isActionMenuOpen, setIsActionMenuOpen] = useState(false);
   const [viewerProfile, setViewerProfile] = useState<EmployeeCredentialProfile | null>(null);
+  const [userAccess, setUserAccess] = useState<UserAccess>(DEFAULT_USER_ACCESS);
   const requestedAdvisoryId = searchParams.get('advisory')?.trim() || null;
   const requestedTab = (() => {
     const tabParam = searchParams.get('tab')?.trim() || '';
@@ -116,16 +110,10 @@ export default function Dashboard({ session, initialTab }: DashboardProps) {
   })();
 
   const isStaffRole = (role: string | null) => role === 'admin' || role === 'tecnico';
-  const hasFullDashboardAccess = (() => {
-    const normalizedName = normalizeText(viewerProfile?.nombre_completo);
-    const normalizedEmail = normalizeText(session?.user?.email);
-
-    return (
-      FULL_DASHBOARD_ACCESS_NAMES.includes(normalizedName) ||
-      FULL_DASHBOARD_ACCESS_EMAILS.includes(normalizedEmail)
-    );
-  })();
-  const canAccessTab = (tab: DashboardTabKey) => hasFullDashboardAccess || PILOT_TABS.includes(tab);
+  const allowedTabs: DashboardTabKey[] = userRole === 'admin'
+    ? [...DASHBOARD_TAB_KEYS]
+    : userAccess.modules.filter((module): module is DashboardTabKey => DASHBOARD_TAB_KEYS.includes(module as DashboardTabKey));
+  const canAccessTab = (tab: DashboardTabKey) => allowedTabs.includes(tab);
   const welcomeLabel = viewerProfile?.nombre_completo?.trim() || session?.user?.email?.trim() || 'usuario';
   const navigationItems: DashboardNavigationItem[] = [
     { key: 'tickets', label: 'Tickets', tone: 'clinical' },
@@ -139,15 +127,19 @@ export default function Dashboard({ session, initialTab }: DashboardProps) {
     { key: 'pno', label: 'PNO', tone: 'veterinary' },
     { key: 'equipos', label: 'Equipos', tone: 'food' },
     { key: 'dri', label: 'DRI', tone: 'environmental-blue' },
+    { key: 'permisos', label: 'Permisos', tone: 'clinical' },
   ];
   const visibleNavigationItems = navigationItems.filter((item) => canAccessTab(item.key));
   const activeTabIsVisible = visibleNavigationItems.some((item) => item.key === activeTab);
 
   useEffect(() => {
     if (!activeTabIsVisible) {
-      setActiveTab(DEFAULT_DASHBOARD_TAB);
+      const fallbackTab = visibleNavigationItems[0]?.key ?? DEFAULT_DASHBOARD_TAB;
+      if (activeTab !== fallbackTab) {
+        setActiveTab(fallbackTab);
+      }
     }
-  }, [activeTabIsVisible]);
+  }, [activeTab, activeTabIsVisible, visibleNavigationItems]);
 
   useEffect(() => {
     if (initialTab) {
@@ -174,6 +166,7 @@ export default function Dashboard({ session, initialTab }: DashboardProps) {
     if (!userId) {
       setUserRole(null);
       setViewerProfile(null);
+      setUserAccess(DEFAULT_USER_ACCESS);
       setAdvisoryUnreadCount(0);
       setAuthReady(true);
       return () => {
@@ -182,13 +175,10 @@ export default function Dashboard({ session, initialTab }: DashboardProps) {
     }
 
     async function fetchRoleAndUnread() {
-      const { data, error } = await supabase
-        .from('profiles')
-        .select(
-          'id, nombre_completo, rol, telefono, territorio, employee_type, employee_number, puesto, credential_photo_path, credential_metadata, creado_en',
-        )
-        .eq('id', userId)
-        .maybeSingle();
+      const [{ data, error }, { data: permissionData, error: permissionError }] = await Promise.all([
+        supabase.from('profiles').select('id, nombre_completo, rol, telefono, territorio, employee_type, employee_number, puesto, credential_photo_path, credential_metadata, creado_en').eq('id', userId).maybeSingle(),
+        supabase.from('user_module_permissions').select('modules, can_receive_tickets, can_view_restricted_tutorials').eq('user_id', userId).maybeSingle(),
+      ]);
       if (!mounted) {
         return;
       }
@@ -209,6 +199,15 @@ export default function Dashboard({ session, initialTab }: DashboardProps) {
 
       setViewerProfile(data as EmployeeCredentialProfile);
       setUserRole(data.rol);
+      if (!permissionError && permissionData) {
+        setUserAccess({
+          modules: coerceModules(permissionData.modules),
+          canReceiveTickets: Boolean(permissionData.can_receive_tickets),
+          canViewRestrictedTutorials: Boolean(permissionData.can_view_restricted_tutorials),
+        });
+      } else {
+        setUserAccess(data.rol === 'admin' ? { modules: [...MODULE_KEYS] as ModuleKey[], canReceiveTickets: true, canViewRestrictedTutorials: true } : DEFAULT_USER_ACCESS);
+      }
 
       if (!isStaffRole(data.rol)) {
         setAdvisoryUnreadCount(0);
@@ -380,10 +379,11 @@ export default function Dashboard({ session, initialTab }: DashboardProps) {
           {activeTab === 'trazabilidad' && canAccessTab('trazabilidad') && <Traceability />}
           {activeTab === 'refacciones' && canAccessTab('refacciones') && <Refacciones />}
           {activeTab === 'inventario' && canAccessTab('inventario') && <Inventario />}
-          {activeTab === 'tutoriales' && canAccessTab('tutoriales') && <Tutoriales />}
+          {activeTab === 'tutoriales' && canAccessTab('tutoriales') && <Tutoriales canViewRestricted={userRole === 'admin' || userAccess.canViewRestrictedTutorials} />}
           {activeTab === 'pno' && canAccessTab('pno') && <PNO />}
           {activeTab === 'equipos' && canAccessTab('equipos') && <Equipos />}
           {activeTab === 'dri' && canAccessTab('dri') && <DriPage />}
+          {activeTab === 'permisos' && canAccessTab('permisos') && userRole === 'admin' && <PermissionsAdmin />}
         </Suspense>
       </div>
 

@@ -4,7 +4,7 @@ import TutorialModal from './TutorialModal';
 import { localTutorials, type TutorialDefinition, isStructuredTutorial } from '../data/tutorialCatalog';
 import './Tutoriales.css';
 
-export default function Tutoriales() {
+export default function Tutoriales({ canViewRestricted = false }: { canViewRestricted?: boolean }) {
   const [dbTutorials, setDbTutorials] = useState<TutorialDefinition[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedTutorialId, setSelectedTutorialId] = useState<string | null>(null);
@@ -28,7 +28,9 @@ export default function Tutoriales() {
     setLoading(false);
   };
 
-  const tutoriales = [...localTutorials, ...dbTutorials];
+  const tutoriales = [...localTutorials, ...dbTutorials].filter((tutorial) =>
+    canViewRestricted || !isStructuredTutorial(tutorial),
+  );
   const selectedTutorial = tutoriales.find((t) => t.id === selectedTutorialId) || null;
 
   useEffect(() => {
