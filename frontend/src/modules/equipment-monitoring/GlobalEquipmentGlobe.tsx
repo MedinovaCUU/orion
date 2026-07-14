@@ -80,7 +80,7 @@ const FOCUS_COLLAPSE_DISTANCE = 4.15;
 const MIN_CAMERA_DISTANCE = 2.018;
 const STATE_VIEW_DISTANCE = 6.45;
 const MUNICIPAL_VIEW_DISTANCE = 2.72;
-const MEXICO_CAMERA_POSITION: [number, number, number] = [-0.547, 1.104, 2.399];
+const MEXICO_CAMERA_POSITION: [number, number, number] = [-0.55247, 1.11504, 2.42299];
 const EQUIPMENT_NODE_RADIUS_PIXELS = {
   near: 9.4,
   far: 6.6,
