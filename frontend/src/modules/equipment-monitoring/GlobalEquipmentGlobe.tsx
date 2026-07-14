@@ -80,7 +80,7 @@ const FOCUS_COLLAPSE_DISTANCE = 4.15;
 const MIN_CAMERA_DISTANCE = 2.018;
 const STATE_VIEW_DISTANCE = 6.45;
 const MUNICIPAL_VIEW_DISTANCE = 2.72;
-const MEXICO_CAMERA_POSITION: [number, number, number] = [-0.564, 1.139, 2.473];
+const MEXICO_CAMERA_POSITION: [number, number, number] = [-0.521, 1.051, 2.285];
 const EQUIPMENT_NODE_RADIUS_PIXELS = {
   near: 9.4,
   far: 6.6,
@@ -105,6 +105,7 @@ const TONE_COLORS: Record<GlobeNodeTone, string> = {
 };
 
 const HEARTBEAT_TIME_UNIFORM = { value: 0 };
+const SELECTED_BILLBOARD_PROJECTED = new THREE.Vector3();
 
 const HEARTBEAT_PULSE_VERTEX_SHADER = `
   uniform float uTime;
@@ -254,6 +255,25 @@ const getWorldUnitsPerPixel = (camera: THREE.Camera, position: THREE.Vector3, vi
   return visibleHeight / Math.max(viewportHeight, 1);
 };
 
+const calculateSelectedBillboardPosition = (
+  object: THREE.Object3D,
+  camera: THREE.Camera,
+  size: { width: number; height: number },
+): [number, number] => {
+  const projected = SELECTED_BILLBOARD_PROJECTED.setFromMatrixPosition(object.matrixWorld).project(camera);
+  const nodeX = projected.x * (size.width / 2) + size.width / 2;
+  const nodeY = -projected.y * (size.height / 2) + size.height / 2;
+  const placeLeft = nodeX > size.width * 0.68;
+  const placeBelow = nodeY < size.height * 0.18;
+  const billboardX = nodeX + (placeLeft ? -118 : 118);
+  const billboardY = nodeY + (placeBelow ? 58 : -58);
+
+  return [
+    THREE.MathUtils.clamp(billboardX, 104, Math.max(size.width - 104, 104)),
+    THREE.MathUtils.clamp(billboardY, 44, Math.max(size.height - 44, 44)),
+  ];
+};
+
 const pointInRing = (longitude: number, latitude: number, ring: Position[]) => {
   let inside = false;
 
@@ -332,6 +352,14 @@ const getCountryView = (equipments: GlobeEquipmentNode[]): CountryView => {
   }
 
   const [key, group] = defaultGroup;
+  if (key === String(MEXICO_FEATURE?.id)) {
+    return {
+      key,
+      label: group.equipments.find((equipment) => equipment.country)?.country || 'México',
+      cameraPosition: MEXICO_CAMERA_POSITION,
+    };
+  }
+
   const countryPolygons = getFeaturePolygons(group.feature);
   const primaryPolygon = countryPolygons
     .map((polygon) => ({
@@ -987,6 +1015,20 @@ function EquipmentPulseNode({
           </Billboard>
         ) : null}
       </group>
+      {selected && equipment ? (
+        <Html
+          center
+          zIndexRange={[48, 0]}
+          pointerEvents="none"
+          calculatePosition={calculateSelectedBillboardPosition}
+        >
+          <div className="equipment-globe__selected-billboard">
+            <span data-tone={equipment.tone}>{TONE_LABELS[equipment.tone]}</span>
+            <strong>{equipment.serial}</strong>
+            <small>{equipment.model} · {equipment.clientName}</small>
+          </div>
+        </Html>
+      ) : null}
     </group>
   );
 }
@@ -1533,6 +1575,20 @@ export default function GlobalEquipmentGlobe({
   );
   const realLocationCount = clusters.filter((cluster) => !cluster.simulated).length;
   const effectiveSelectedEquipmentId = selectedSimulatedEquipmentId || selectedEquipmentId;
+  const selectedEquipment = effectiveSelectedEquipmentId
+    ? clusters
+        .flatMap((cluster) => cluster.equipments)
+        .find((equipment) => equipment.id === effectiveSelectedEquipmentId) || null
+    : null;
+  const selectedEquipmentLocation = selectedEquipment
+    ? Array.from(
+        new Set(
+          [selectedEquipment.city, selectedEquipment.municipality, selectedEquipment.state, selectedEquipment.country].filter(
+            (value): value is string => Boolean(value),
+          ),
+        ),
+      ).join(' · ')
+    : '';
   const focusedCluster = focusedClusterId
     ? clusters.find((cluster) => cluster.id === focusedClusterId) || null
     : null;
@@ -1559,7 +1615,7 @@ export default function GlobalEquipmentGlobe({
   };
 
   return (
-    <div className="equipment-globe">
+    <div className={`equipment-globe${selectedEquipment ? ' equipment-globe--has-selection' : ''}`}>
       <Canvas
         dpr={[1, 1.75]}
         camera={{ position: MEXICO_CAMERA_POSITION, fov: 44, near: 0.001, far: 100 }}
@@ -1590,6 +1646,41 @@ export default function GlobalEquipmentGlobe({
           }}
         />
       </Canvas>
+
+      {selectedEquipment ? (
+        <aside className="equipment-globe__selected-panel" aria-live="polite">
+          <div className="equipment-globe__selected-panel-head">
+            <div>
+              <span className="equipment-globe__selected-eyebrow">Equipo seleccionado</span>
+              <strong>{selectedEquipment.serial}</strong>
+            </div>
+            <button type="button" aria-label="Cerrar detalle del equipo" onClick={() => handleSelectEquipment(null)}>
+              ×
+            </button>
+          </div>
+          <div className="equipment-globe__selected-status" data-tone={selectedEquipment.tone}>
+            <i aria-hidden="true" />
+            <div>
+              <strong>{TONE_LABELS[selectedEquipment.tone]}</strong>
+              <span>{selectedEquipment.heartbeat ? 'Pulso Orion activo' : 'Sin pulso remoto'}</span>
+            </div>
+          </div>
+          <dl className="equipment-globe__selected-facts">
+            <div>
+              <dt>Modelo</dt>
+              <dd>{selectedEquipment.model}</dd>
+            </div>
+            <div>
+              <dt>Cliente</dt>
+              <dd>{selectedEquipment.clientName}</dd>
+            </div>
+            <div>
+              <dt>Ubicación</dt>
+              <dd>{selectedEquipmentLocation || 'Sin ubicación registrada'}</dd>
+            </div>
+          </dl>
+        </aside>
+      ) : null}
 
       <div className="equipment-globe__hud equipment-globe__hud--left">
         <span className="equipment-globe__scope-dot" />
