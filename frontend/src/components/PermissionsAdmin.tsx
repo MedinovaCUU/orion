@@ -22,6 +22,13 @@ interface EditableAccess {
   canViewRestrictedTutorials: boolean;
 }
 
+const MANAGEABLE_MODULE_KEYS = MODULE_KEYS.filter((key) => key !== 'permisos');
+const FULL_ACCESS_WITHOUT_PERMISSIONS: EditableAccess = {
+  modules: [...MANAGEABLE_MODULE_KEYS],
+  canReceiveTickets: true,
+  canViewRestrictedTutorials: true,
+};
+
 export default function PermissionsAdmin() {
   const [profiles, setProfiles] = useState<ProfileRow[]>([]);
   const [accessByUser, setAccessByUser] = useState<Record<string, EditableAccess>>({});
@@ -77,6 +84,13 @@ export default function PermissionsAdmin() {
     setNotice('');
   };
 
+  const grantFullAccess = (userId: string) => {
+    updateAccess(userId, () => ({
+      ...FULL_ACCESS_WITHOUT_PERMISSIONS,
+      modules: [...FULL_ACCESS_WITHOUT_PERMISSIONS.modules],
+    }));
+  };
+
   const save = async (profile: ProfileRow) => {
     setSavingId(profile.id);
     setNotice('');
@@ -108,7 +122,7 @@ export default function PermissionsAdmin() {
                   <strong>{profile.nombre_completo || 'Usuario sin nombre'}</strong><span>{profile.rol || 'Sin rol'}</span>
                 </div>
                 <div className="permissions-admin__modules">
-                  {MODULE_KEYS.filter((key) => key !== 'permisos').map((key) => (
+                  {MANAGEABLE_MODULE_KEYS.map((key) => (
                     <label key={key}>
                       <input type="checkbox" checked={access.modules.includes(key)} onChange={(event) => updateAccess(profile.id, (current) => ({ ...current, modules: event.target.checked ? [...new Set([...current.modules, key])] : current.modules.filter((module) => module !== key) }))} />
                       <span>{MODULE_LABELS[key]}</span>
@@ -119,7 +133,10 @@ export default function PermissionsAdmin() {
                   <label><input type="checkbox" checked={access.canReceiveTickets} onChange={(event) => updateAccess(profile.id, (current) => ({ ...current, canReceiveTickets: event.target.checked }))} /> Puede recibir tickets</label>
                   <label><input type="checkbox" checked={access.canViewRestrictedTutorials} onChange={(event) => updateAccess(profile.id, (current) => ({ ...current, canViewRestrictedTutorials: event.target.checked }))} /> Puede ver tutoriales restringidos</label>
                 </div>
-                <button className="button-primary" disabled={savingId === profile.id} onClick={() => void save(profile)}>{savingId === profile.id ? 'Guardando…' : 'Guardar permisos'}</button>
+                <div className="permissions-admin__actions">
+                  <button className="button-primary inactive" type="button" disabled={savingId === profile.id} onClick={() => grantFullAccess(profile.id)}>Acceso total</button>
+                  <button className="button-primary" type="button" disabled={savingId === profile.id} onClick={() => void save(profile)}>{savingId === profile.id ? 'Guardando…' : 'Guardar permisos'}</button>
+                </div>
               </article>
             );
           })}
