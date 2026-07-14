@@ -19,6 +19,7 @@ export interface GlobeEquipmentNode {
   status: 'ok' | 'warning' | 'fatal';
   tone: GlobeNodeTone;
   heartbeat: boolean;
+  country: string | null;
   city: string | null;
   municipality: string | null;
   state: string | null;
@@ -28,6 +29,7 @@ export interface GlobeEquipmentNode {
 
 interface GlobalEquipmentGlobeProps {
   equipments: GlobeEquipmentNode[];
+  countryEquipments: GlobeEquipmentNode[];
   selectedEquipmentId: string | null;
   onSelectEquipment: (equipmentId: string | null) => void;
 }
@@ -35,6 +37,8 @@ interface GlobalEquipmentGlobeProps {
 interface CityClusterData {
   id: string;
   city: string;
+  municipality: string | null;
+  state: string | null;
   country: string;
   latitude: number;
   longitude: number;
@@ -55,6 +59,12 @@ interface SimulatedCity {
   tone: GlobeNodeTone;
 }
 
+interface CountryView {
+  key: string;
+  label: string;
+  cameraPosition: [number, number, number];
+}
+
 const GLOBE_RADIUS = 2;
 const WORLD_POINT_RADIUS = GLOBE_RADIUS + 0.002;
 const MEXICO_POINT_RADIUS = GLOBE_RADIUS + 0.003;
@@ -69,8 +79,8 @@ const FOCUS_COLLAPSE_DISTANCE = 4.15;
 const MIN_CAMERA_DISTANCE = 2.018;
 const STATE_VIEW_DISTANCE = 6.45;
 const MUNICIPAL_VIEW_DISTANCE = 2.72;
-const MEXICO_CAMERA_POSITION: [number, number, number] = [-1.15, 2.42, 5.42];
-const STATUS_TONE_ORDER: GlobeNodeTone[] = ['ok', 'warning', 'fatal'];
+const MEXICO_CAMERA_POSITION: [number, number, number] = [-0.728, 1.47, 3.194];
+const STATUS_TONE_ORDER: GlobeNodeTone[] = ['fatal', 'warning', 'ok', 'supremo', 'muted'];
 
 const TONE_COLORS: Record<GlobeNodeTone, string> = {
   fatal: '#ff667c',
@@ -78,6 +88,14 @@ const TONE_COLORS: Record<GlobeNodeTone, string> = {
   ok: '#38d8bd',
   supremo: '#63a9ff',
   muted: '#9eb4c4',
+};
+
+const TONE_LABELS: Record<GlobeNodeTone, string> = {
+  fatal: 'Error fatal',
+  warning: 'Warning activo',
+  ok: 'Monitoreo en línea',
+  supremo: 'Supremo disponible',
+  muted: 'Sin señal',
 };
 
 const SIMULATED_CITIES: SimulatedCity[] = [
@@ -132,6 +150,7 @@ interface AdministrativeTopologyObjects {
 }
 
 type AdministrativeTopology = Topology<AdministrativeTopologyObjects>;
+type AdministrativeFeatures = FeatureCollection<Polygon | MultiPolygon, AdministrativeProperties>;
 
 interface WorldAtlasObjects {
   [key: string]: GeometryCollection<CountryProperties>;
@@ -147,6 +166,7 @@ const COUNTRY_FEATURES = feature<CountryProperties>(WORLD_TOPOLOGY, WORLD_COUNTR
 >;
 const WORLD_BORDER_LINES = mesh(WORLD_TOPOLOGY, WORLD_COUNTRIES).coordinates;
 const MEXICO_FEATURE = COUNTRY_FEATURES.features.find((country) => String(country.id) === '484');
+const countryFeatureCache = new Map<string, Feature<Polygon | MultiPolygon, CountryProperties> | null>();
 
 const normalizeGroupKey = (value: string) =>
   value
@@ -165,6 +185,16 @@ const latLngToVector = (latitude: number, longitude: number, radius = GLOBE_RADI
     radius * Math.cos(phi),
     radius * Math.sin(phi) * Math.sin(theta),
   );
+};
+
+const getWorldUnitsPerPixel = (camera: THREE.Camera, position: THREE.Vector3, viewportHeight: number) => {
+  if (!(camera instanceof THREE.PerspectiveCamera)) {
+    return 0.001;
+  }
+
+  const distance = Math.max(camera.position.distanceTo(position), 0.0001);
+  const visibleHeight = 2 * distance * Math.tan(THREE.MathUtils.degToRad(camera.fov / 2));
+  return visibleHeight / Math.max(viewportHeight, 1);
 };
 
 const pointInRing = (longitude: number, latitude: number, ring: Position[]) => {
@@ -201,6 +231,91 @@ const isPointInMexico = (longitude: number, latitude: number) =>
     MEXICO_FEATURE &&
       getFeaturePolygons(MEXICO_FEATURE).some((polygon) => pointInPolygon(longitude, latitude, polygon)),
   );
+
+const getCountryFeatureAtPoint = (longitude: number, latitude: number) => {
+  const cacheKey = `${longitude.toFixed(4)}:${latitude.toFixed(4)}`;
+  if (countryFeatureCache.has(cacheKey)) {
+    return countryFeatureCache.get(cacheKey) || null;
+  }
+
+  const countryFeature = COUNTRY_FEATURES.features.find((country) =>
+    getFeaturePolygons(country).some((polygon) => pointInPolygon(longitude, latitude, polygon)),
+  ) || null;
+  countryFeatureCache.set(cacheKey, countryFeature);
+  return countryFeature;
+};
+
+const getCountryView = (equipments: GlobeEquipmentNode[]): CountryView => {
+  const countryGroups = new Map<
+    string,
+    { feature: Feature<Polygon | MultiPolygon, CountryProperties>; equipments: GlobeEquipmentNode[] }
+  >();
+
+  equipments.forEach((equipment) => {
+    const countryFeature = getCountryFeatureAtPoint(equipment.longitude, equipment.latitude);
+    if (!countryFeature) {
+      return;
+    }
+
+    const key = String(countryFeature.id ?? countryFeature.properties?.name ?? equipment.country ?? 'country');
+    const group = countryGroups.get(key) || { feature: countryFeature, equipments: [] };
+    group.equipments.push(equipment);
+    countryGroups.set(key, group);
+  });
+
+  const defaultGroup = [...countryGroups.entries()].sort(
+    (left, right) => right[1].equipments.length - left[1].equipments.length,
+  )[0];
+  if (!defaultGroup) {
+    return {
+      key: String(MEXICO_FEATURE?.id || 'mexico'),
+      label: 'México',
+      cameraPosition: MEXICO_CAMERA_POSITION,
+    };
+  }
+
+  const [key, group] = defaultGroup;
+  const countryPolygons = getFeaturePolygons(group.feature);
+  const primaryPolygon = countryPolygons
+    .map((polygon) => ({
+      polygon,
+      equipmentCount: group.equipments.filter((equipment) =>
+        pointInPolygon(equipment.longitude, equipment.latitude, polygon),
+      ).length,
+    }))
+    .sort(
+      (left, right) =>
+        right.equipmentCount - left.equipmentCount || right.polygon[0].length - left.polygon[0].length,
+    )[0]?.polygon;
+  const boundaryVectors = (primaryPolygon?.[0] || []).map(([longitude, latitude]) =>
+    latLngToVector(latitude, longitude, 1),
+  );
+  const centerDirection = boundaryVectors.length
+    ? boundaryVectors.reduce((center, point) => center.add(point), new THREE.Vector3()).normalize()
+    : latLngToVector(group.equipments[0].latitude, group.equipments[0].longitude, 1).normalize();
+  const angularRadius = boundaryVectors.reduce(
+    (largestAngle, point) => Math.max(largestAngle, Math.acos(THREE.MathUtils.clamp(centerDirection.dot(point), -1, 1))),
+    0,
+  );
+  const targetHalfAngle = THREE.MathUtils.degToRad(17.5);
+  const cameraDistance = THREE.MathUtils.clamp(
+    GLOBE_RADIUS * Math.cos(angularRadius) +
+      (GLOBE_RADIUS * Math.sin(angularRadius)) / Math.tan(targetHalfAngle),
+    2.85,
+    7.8,
+  );
+  const countryLabel =
+    group.equipments.find((equipment) => equipment.country)?.country ||
+    group.feature.properties?.name ||
+    'País';
+  const cameraPosition = centerDirection.multiplyScalar(cameraDistance);
+
+  return {
+    key,
+    label: countryLabel,
+    cameraPosition: [cameraPosition.x, cameraPosition.y, cameraPosition.z],
+  };
+};
 
 const getRingBounds = (ring: Position[]) =>
   ring.reduce(
@@ -255,7 +370,7 @@ const getAdministrativeFeatures = (topology: AdministrativeTopology) =>
   >;
 
 const getStatusTones = (equipments: GlobeEquipmentNode[]) => {
-  const presentStatuses = new Set<GlobeNodeTone>(equipments.map((equipment) => equipment.status));
+  const presentStatuses = new Set<GlobeNodeTone>(equipments.map((equipment) => equipment.tone));
   return STATUS_TONE_ORDER.filter((tone) => presentStatuses.has(tone));
 };
 
@@ -263,10 +378,11 @@ const buildCityClusters = (equipments: GlobeEquipmentNode[]): CityClusterData[] 
   const groups = new Map<string, GlobeEquipmentNode[]>();
 
   equipments.forEach((equipment) => {
-    const locality = equipment.city || equipment.municipality;
+    const locality = equipment.municipality || equipment.city;
+    const country = equipment.country || 'Mexico';
     const key = locality
-      ? `${normalizeGroupKey(equipment.state || 'sin-estado')}:${normalizeGroupKey(locality)}`
-      : `${equipment.latitude.toFixed(3)}:${equipment.longitude.toFixed(3)}`;
+      ? `${normalizeGroupKey(country)}:${normalizeGroupKey(equipment.state || 'sin-estado')}:${normalizeGroupKey(locality)}`
+      : `${normalizeGroupKey(country)}:${equipment.latitude.toFixed(3)}:${equipment.longitude.toFixed(3)}`;
     const current = groups.get(key) || [];
     current.push(equipment);
     groups.set(key, current);
@@ -277,17 +393,19 @@ const buildCityClusters = (equipments: GlobeEquipmentNode[]): CityClusterData[] 
     const latitude = cityEquipments.reduce((sum, equipment) => sum + equipment.latitude, 0) / cityEquipments.length;
     const longitude = cityEquipments.reduce((sum, equipment) => sum + equipment.longitude, 0) / cityEquipments.length;
     const localityNames = new Set(
-      cityEquipments.map((equipment) => equipment.city || equipment.municipality || equipment.state).filter(Boolean),
+      cityEquipments.map((equipment) => equipment.municipality || equipment.city || equipment.state).filter(Boolean),
     );
     const tones = getStatusTones(cityEquipments);
 
     return {
-      id: `mx-${key}`,
+      id: `real-${key}`,
       city:
         localityNames.size === 1
-          ? anchor.city || anchor.municipality || anchor.state || 'Mexico'
+      ? anchor.municipality || anchor.city || anchor.state || 'México'
           : anchor.state || 'Ubicacion agrupada',
-      country: 'Mexico',
+      municipality: anchor.municipality || null,
+      state: anchor.state || null,
+      country: anchor.country || 'Mexico',
       latitude,
       longitude,
       count: cityEquipments.length,
@@ -300,8 +418,17 @@ const buildCityClusters = (equipments: GlobeEquipmentNode[]): CityClusterData[] 
   });
 };
 
-const buildSimulatedClusters = (): CityClusterData[] =>
-  SIMULATED_CITIES.map((city) => {
+const buildSimulatedClusters = (realEquipments: GlobeEquipmentNode[]): CityClusterData[] => {
+  const realCountryIds = new Set(
+    realEquipments
+      .map((equipment) => getCountryFeatureAtPoint(equipment.longitude, equipment.latitude)?.id)
+      .filter((countryId): countryId is string | number => countryId !== undefined),
+  );
+
+  return SIMULATED_CITIES.filter((city) => {
+    const countryId = getCountryFeatureAtPoint(city.longitude, city.latitude)?.id;
+    return countryId === undefined || !realCountryIds.has(countryId);
+  }).map((city) => {
     const clusterKey = normalizeGroupKey(`${city.country}-${city.city}`);
     const equipments = Array.from({ length: Math.min(city.count, 24) }, (_, index): GlobeEquipmentNode => ({
       id: `simulated-equipment-${clusterKey}-${index}`,
@@ -311,6 +438,7 @@ const buildSimulatedClusters = (): CityClusterData[] =>
       status: city.tone === 'warning' && index === 0 ? 'warning' : 'ok',
       tone: index === 0 ? city.tone : index % 5 === 0 ? 'supremo' : 'ok',
       heartbeat: false,
+      country: city.country,
       city: city.city,
       municipality: city.city,
       state: null,
@@ -321,6 +449,8 @@ const buildSimulatedClusters = (): CityClusterData[] =>
     return {
       id: `demo-${clusterKey}`,
       city: city.city,
+      municipality: city.city,
+      state: null,
       country: city.country,
       latitude: city.latitude,
       longitude: city.longitude,
@@ -332,6 +462,7 @@ const buildSimulatedClusters = (): CityClusterData[] =>
       equipments,
     };
   });
+};
 
 function WorldGeography() {
   const { worldPoints, mexicoPoints, worldBorders } = useMemo(() => {
@@ -413,19 +544,25 @@ async function loadAdministrativeTopology(path: string, signal: AbortSignal) {
   return (await response.json()) as AdministrativeTopology;
 }
 
-function MexicoAdministrativeGeography({ focusedCluster }: { focusedCluster: CityClusterData | null }) {
+function MexicoAdministrativeGeography({
+  focusedCluster,
+  onMunicipalityFeaturesChange,
+}: {
+  focusedCluster: CityClusterData | null;
+  onMunicipalityFeaturesChange: (features: AdministrativeFeatures | null) => void;
+}) {
   const { camera } = useThree();
   const stateLayerRef = useRef<THREE.LineSegments | null>(null);
   const municipalLayerRef = useRef<THREE.LineSegments | null>(null);
-  const municipalityGeometryCacheRef = useRef(new Map<string, THREE.BufferGeometry>());
+  const municipalityLayerCacheRef = useRef(
+    new Map<string, { geometry: THREE.BufferGeometry; features: AdministrativeFeatures }>(),
+  );
   const [stateGeometry, setStateGeometry] = useState<THREE.BufferGeometry | null>(null);
-  const [stateFeatures, setStateFeatures] = useState<FeatureCollection<
-    Polygon | MultiPolygon,
-    AdministrativeProperties
-  > | null>(null);
+  const [stateFeatures, setStateFeatures] = useState<AdministrativeFeatures | null>(null);
   const [municipalityLayer, setMunicipalityLayer] = useState<{
     stateCode: string;
     geometry: THREE.BufferGeometry;
+    features: AdministrativeFeatures;
   } | null>(null);
 
   const focusedStateCode = useMemo(() => {
@@ -466,12 +603,12 @@ function MexicoAdministrativeGeography({ focusedCluster }: { focusedCluster: Cit
       return;
     }
 
-    const cachedGeometry = municipalityGeometryCacheRef.current.get(focusedStateCode);
-    if (cachedGeometry) {
+    const cachedLayer = municipalityLayerCacheRef.current.get(focusedStateCode);
+    if (cachedLayer) {
       let active = true;
       queueMicrotask(() => {
         if (active) {
-          setMunicipalityLayer({ stateCode: focusedStateCode, geometry: cachedGeometry });
+          setMunicipalityLayer({ stateCode: focusedStateCode, ...cachedLayer });
         }
       });
       return () => {
@@ -486,8 +623,9 @@ function MexicoAdministrativeGeography({ focusedCluster }: { focusedCluster: Cit
     )
       .then((topology) => {
         const geometry = createAdministrativeBorderGeometry(topology, MUNICIPAL_BORDER_RADIUS);
-        municipalityGeometryCacheRef.current.set(focusedStateCode, geometry);
-        setMunicipalityLayer({ stateCode: focusedStateCode, geometry });
+        const features = getAdministrativeFeatures(topology);
+        municipalityLayerCacheRef.current.set(focusedStateCode, { geometry, features });
+        setMunicipalityLayer({ stateCode: focusedStateCode, geometry, features });
       })
       .catch((error: unknown) => {
         if (!(error instanceof DOMException && error.name === 'AbortError')) {
@@ -498,10 +636,16 @@ function MexicoAdministrativeGeography({ focusedCluster }: { focusedCluster: Cit
     return () => controller.abort();
   }, [focusedStateCode]);
 
+  useEffect(() => {
+    onMunicipalityFeaturesChange(
+      municipalityLayer?.stateCode === focusedStateCode ? municipalityLayer.features : null,
+    );
+  }, [focusedStateCode, municipalityLayer, onMunicipalityFeaturesChange]);
+
   useEffect(
     () => () => {
-      municipalityGeometryCacheRef.current.forEach((geometry) => geometry.dispose());
-      municipalityGeometryCacheRef.current.clear();
+      municipalityLayerCacheRef.current.forEach(({ geometry }) => geometry.dispose());
+      municipalityLayerCacheRef.current.clear();
     },
     [],
   );
@@ -647,7 +791,8 @@ function EquipmentPulseNode({
   onHoverChange: (hovered: boolean) => void;
   onSelect: () => void;
 }) {
-  const groupRef = useRef<THREE.Group | null>(null);
+  const visualRef = useRef<THREE.Group | null>(null);
+  const hitTargetRef = useRef<THREE.Mesh | null>(null);
   const ringRef = useRef<THREE.Mesh | null>(null);
   const tone = equipment?.tone || 'muted';
 
@@ -668,13 +813,20 @@ function EquipmentPulseNode({
     onSelect();
   };
 
-  useFrame(({ camera, clock }) => {
-    if (!groupRef.current) {
+  useFrame(({ camera, clock, size }) => {
+    if (!visualRef.current || !hitTargetRef.current) {
       return;
     }
 
-    const markerScale = THREE.MathUtils.clamp(camera.position.distanceTo(position) / 3.2, 0.008, 1.05);
-    groupRef.current.scale.setScalar(markerScale);
+    const worldUnitsPerPixel = getWorldUnitsPerPixel(camera, position, size.height);
+    const altitudeFactor = THREE.MathUtils.clamp(
+      (camera.position.length() - MIN_CAMERA_DISTANCE) / 1.3,
+      0,
+      1,
+    );
+    const visualRadiusPixels = THREE.MathUtils.lerp(2.1, 3.7, altitudeFactor) + (selected ? 0.9 : 0);
+    visualRef.current.scale.setScalar(worldUnitsPerPixel * visualRadiusPixels);
+    hitTargetRef.current.scale.setScalar(worldUnitsPerPixel * (selected ? 17 : 14));
     if (!ringRef.current) {
       return;
     }
@@ -687,39 +839,46 @@ function EquipmentPulseNode({
   });
 
   return (
-    <group ref={groupRef} position={position}>
+    <group position={position}>
       <mesh
+        ref={hitTargetRef}
         onPointerOver={handlePointerOver}
         onPointerOut={handlePointerOut}
         onClick={handleClick}
       >
-        <sphereGeometry args={[selected ? 0.032 : 0.026, 14, 14]} />
+        <sphereGeometry args={[1, 14, 14]} />
         <meshBasicMaterial transparent opacity={0} depthWrite={false} colorWrite={false} />
       </mesh>
-      <mesh>
-        <sphereGeometry args={[selected ? 0.019 : 0.014, 16, 16]} />
-        <meshBasicMaterial color={TONE_COLORS[tone]} toneMapped={false} />
-      </mesh>
-      {equipment?.heartbeat ? (
-        <Billboard follow>
-          <mesh ref={ringRef}>
-            <ringGeometry args={[0.022, 0.029, 24]} />
-            <meshBasicMaterial
-              color={TONE_COLORS.ok}
-              transparent
-              opacity={0.5}
-              side={THREE.DoubleSide}
-              depthWrite={false}
-              toneMapped={false}
-            />
-          </mesh>
-        </Billboard>
-      ) : null}
+      <group ref={visualRef}>
+        <mesh scale={selected ? 1.18 : 1}>
+          <sphereGeometry args={[1, 16, 16]} />
+          <meshBasicMaterial color={TONE_COLORS[tone]} toneMapped={false} />
+        </mesh>
+        {equipment?.heartbeat ? (
+          <Billboard follow>
+            <mesh ref={ringRef}>
+              <ringGeometry args={[1.35, 1.68, 24]} />
+              <meshBasicMaterial
+                color={TONE_COLORS.ok}
+                transparent
+                opacity={0.5}
+                side={THREE.DoubleSide}
+                depthWrite={false}
+                toneMapped={false}
+              />
+            </mesh>
+          </Billboard>
+        ) : null}
+      </group>
       {selected && equipment ? (
         <Html center className="equipment-globe__equipment-tooltip" zIndexRange={[30, 0]}>
+          <small className="equipment-globe__equipment-location">
+            {equipment.municipality || equipment.city || equipment.state || 'Ubicación sin municipio'}
+          </small>
           <strong>{equipment.serial}</strong>
           <span>{equipment.model}</span>
           <small>{equipment.clientName}</small>
+          <em data-tone={tone}>{TONE_LABELS[tone]}</em>
         </Html>
       ) : null}
     </group>
@@ -730,6 +889,7 @@ function CityCluster({
   cluster,
   expansionMode,
   selectedEquipmentId,
+  municipalityFeatures,
   onHover,
   onFocus,
   onSelectEquipment,
@@ -737,6 +897,7 @@ function CityCluster({
   cluster: CityClusterData;
   expansionMode: 'none' | 'preview' | 'focused';
   selectedEquipmentId: string | null;
+  municipalityFeatures: AdministrativeFeatures | null;
   onHover: (clusterId: string | null) => void;
   onFocus: (clusterId: string) => void;
   onSelectEquipment: (equipmentId: string | null) => void;
@@ -744,6 +905,8 @@ function CityCluster({
   const { camera } = useThree();
   const groupRef = useRef<THREE.Group | null>(null);
   const markerGroupRef = useRef<THREE.Group | null>(null);
+  const nodeVisualRef = useRef<THREE.Group | null>(null);
+  const nodeHitTargetRef = useRef<THREE.Mesh | null>(null);
   const pulseRef = useRef<THREE.Mesh | null>(null);
   const nodeMaterialRef = useRef<THREE.MeshBasicMaterial | null>(null);
   const hoverLeaveTimeoutRef = useRef<number | null>(null);
@@ -751,8 +914,28 @@ function CityCluster({
     () => latLngToVector(cluster.latitude, cluster.longitude, CITY_MARKER_RADIUS),
     [cluster.latitude, cluster.longitude],
   );
+  const municipalityPolygons = useMemo(() => {
+    if (cluster.simulated || expansionMode !== 'focused' || !municipalityFeatures) {
+      return null;
+    }
+
+    const localityKeys = [cluster.municipality, cluster.city]
+      .filter((value): value is string => Boolean(value))
+      .map(normalizeGroupKey);
+    const namedFeature = municipalityFeatures.features.find((municipality) =>
+      localityKeys.includes(normalizeGroupKey(municipality.properties?.nomgeo || '')),
+    );
+    const containingFeature = municipalityFeatures.features.find((municipality) =>
+      getFeaturePolygons(municipality).some((polygon) =>
+        pointInPolygon(cluster.longitude, cluster.latitude, polygon),
+      ),
+    );
+    const municipalityFeature = namedFeature || containingFeature;
+    return municipalityFeature ? getFeaturePolygons(municipalityFeature) : null;
+  }, [cluster.city, cluster.latitude, cluster.longitude, cluster.municipality, cluster.simulated, expansionMode, municipalityFeatures]);
   const equipmentLayout = useMemo(() => {
     const visibleCount = Math.min(cluster.equipments.length || cluster.count, 72);
+    const clusterIsInMexico = isPointInMexico(cluster.longitude, cluster.latitude);
     const coordinateOccurrences = new Map<string, number>();
     const coordinateCounts = cluster.equipments.slice(0, visibleCount).reduce((counts, equipment) => {
       const key = `${equipment.latitude.toFixed(5)}:${equipment.longitude.toFixed(5)}`;
@@ -788,7 +971,14 @@ function CityCluster({
           (Math.sin(angle) * distanceKm) /
             (111.32 * Math.max(Math.cos(THREE.MathUtils.degToRad(latitude)), 0.25));
 
-        if (cluster.simulated || isPointInMexico(candidateLongitude, candidateLatitude)) {
+        const insideMunicipality = municipalityPolygons?.some((polygon) =>
+          pointInPolygon(candidateLongitude, candidateLatitude, polygon),
+        );
+        if (
+          cluster.simulated ||
+          !clusterIsInMexico ||
+          (municipalityPolygons?.length ? insideMunicipality : isPointInMexico(candidateLongitude, candidateLatitude))
+        ) {
           visualLatitude = candidateLatitude;
           visualLongitude = candidateLongitude;
           break;
@@ -799,22 +989,33 @@ function CityCluster({
 
       return { anchor, position: visualPosition };
     });
-  }, [cluster.count, cluster.equipments, cluster.latitude, cluster.longitude, cluster.simulated]);
+  }, [cluster.count, cluster.equipments, cluster.latitude, cluster.longitude, cluster.simulated, municipalityPolygons]);
   const toneColors = useMemo(
     () => cluster.tones.map((tone) => new THREE.Color(TONE_COLORS[tone])),
     [cluster.tones],
   );
+  const nodeSize =
+    expansionMode === 'focused' ? 0.016 : 0.026 + Math.min(Math.sqrt(cluster.count) * 0.0022, 0.028);
+  const selected = cluster.equipments.some((equipment) => equipment.id === selectedEquipmentId);
 
-  useFrame(({ clock }) => {
+  useFrame(({ clock, size }) => {
     if (!groupRef.current) {
       return;
     }
 
     const cameraDirection = camera.position.clone().normalize();
     groupRef.current.visible = position.clone().normalize().dot(cameraDirection) > 0.035;
-    if (markerGroupRef.current) {
-      const markerScale = THREE.MathUtils.clamp(camera.position.distanceTo(position) / 3.6, 0.06, 1.05);
-      markerGroupRef.current.scale.setScalar(markerScale);
+    if (nodeVisualRef.current && nodeHitTargetRef.current) {
+      const worldUnitsPerPixel = getWorldUnitsPerPixel(camera, position, size.height);
+      const distanceFactor = THREE.MathUtils.clamp(
+        (camera.position.length() - MIN_CAMERA_DISTANCE) / (8.4 - MIN_CAMERA_DISTANCE),
+        0,
+        1,
+      );
+      const farRadiusPixels = 4 + Math.min(Math.sqrt(cluster.count) * 0.275, 2.5);
+      const visualRadiusPixels = THREE.MathUtils.lerp(2.1, farRadiusPixels, distanceFactor);
+      nodeVisualRef.current.scale.setScalar((worldUnitsPerPixel * visualRadiusPixels) / nodeSize);
+      nodeHitTargetRef.current.scale.setScalar((worldUnitsPerPixel * 15) / (nodeSize * 1.65));
     }
     if (nodeMaterialRef.current && toneColors.length) {
       if (toneColors.length === 1) {
@@ -837,9 +1038,6 @@ function CityCluster({
     pulseMaterial.opacity = (1 - wave) * 0.66;
   });
 
-  const nodeSize =
-    expansionMode === 'focused' ? 0.016 : 0.026 + Math.min(Math.sqrt(cluster.count) * 0.0022, 0.028);
-  const selected = cluster.equipments.some((equipment) => equipment.id === selectedEquipmentId);
   const expansionCount = expansionMode === 'focused' ? 72 : expansionMode === 'preview' ? 7 : 0;
   const displayEquipments = (cluster.equipments.length
     ? cluster.equipments.slice(0, equipmentLayout.length)
@@ -879,6 +1077,7 @@ function CityCluster({
         {expansionMode !== 'focused' ? (
           <>
             <mesh
+              ref={nodeHitTargetRef}
               onPointerOver={(event: ThreeEvent<PointerEvent>) => {
                 event.stopPropagation();
                 document.body.style.cursor = 'pointer';
@@ -904,38 +1103,40 @@ function CityCluster({
               <sphereGeometry args={[nodeSize * 1.65, 22, 22]} />
               <meshBasicMaterial transparent opacity={0} depthWrite={false} />
             </mesh>
-            <mesh>
-              <sphereGeometry args={[nodeSize, 22, 22]} />
-              <meshBasicMaterial ref={nodeMaterialRef} color={TONE_COLORS[cluster.tone]} toneMapped={false} />
-            </mesh>
-            <Billboard follow>
-              {cluster.heartbeat ? (
-                <mesh ref={pulseRef}>
-                  <ringGeometry args={[nodeSize * 1.2, nodeSize * 1.38, 32]} />
+            <group ref={nodeVisualRef}>
+              <mesh>
+                <sphereGeometry args={[nodeSize, 22, 22]} />
+                <meshBasicMaterial ref={nodeMaterialRef} color={TONE_COLORS[cluster.tone]} toneMapped={false} />
+              </mesh>
+              <Billboard follow>
+                {cluster.heartbeat ? (
+                  <mesh ref={pulseRef}>
+                    <ringGeometry args={[nodeSize * 1.2, nodeSize * 1.38, 32]} />
+                    <meshBasicMaterial
+                      color={TONE_COLORS.ok}
+                      transparent
+                      opacity={0.5}
+                      side={THREE.DoubleSide}
+                      depthWrite={false}
+                      toneMapped={false}
+                    />
+                  </mesh>
+                ) : null}
+                <mesh scale={selected ? 1.9 : 1.45}>
+                  <ringGeometry args={[nodeSize * 1.08, nodeSize * 1.18, 32]} />
                   <meshBasicMaterial
-                    color={TONE_COLORS.ok}
+                    color={selected ? '#ffffff' : '#b8e6e7'}
                     transparent
-                    opacity={0.5}
+                    opacity={selected ? 0.92 : 0.42}
                     side={THREE.DoubleSide}
                     depthWrite={false}
-                    toneMapped={false}
                   />
                 </mesh>
-              ) : null}
-              <mesh scale={selected ? 1.9 : 1.45}>
-                <ringGeometry args={[nodeSize * 1.08, nodeSize * 1.18, 32]} />
-                <meshBasicMaterial
-                  color={selected ? '#ffffff' : '#b8e6e7'}
-                  transparent
-                  opacity={selected ? 0.92 : 0.42}
-                  side={THREE.DoubleSide}
-                  depthWrite={false}
-                />
-              </mesh>
-            </Billboard>
+              </Billboard>
+            </group>
           </>
         ) : null}
-        {expansionMode !== 'none' ? (
+        {expansionMode === 'preview' || (expansionMode === 'focused' && !selected) ? (
           <Html center className="equipment-globe__city-tooltip" zIndexRange={[20, 0]}>
             <strong>{cluster.city}</strong>
             <span>{cluster.country} · {cluster.count} equipos</span>
@@ -953,7 +1154,7 @@ function CityCluster({
 
       {expansionMode === 'focused'
         ? equipmentLayout.slice(0, expansionCount).map((layout, index) =>
-            index === 0 ? null : (
+            layout.anchor.distanceToSquared(layout.position) < 1e-12 ? null : (
               <Line
                 key={`${cluster.id}-anchor-${index}`}
                 points={[layout.anchor, layout.position]}
@@ -1040,6 +1241,7 @@ function NetworkArcs({ clusters }: { clusters: CityClusterData[] }) {
 
 function GlobeScene({
   clusters,
+  initialView,
   selectedEquipmentId,
   hoveredClusterId,
   focusedClusterId,
@@ -1052,6 +1254,7 @@ function GlobeScene({
   onCollapseFocus,
 }: {
   clusters: CityClusterData[];
+  initialView: CountryView;
   selectedEquipmentId: string | null;
   hoveredClusterId: string | null;
   focusedClusterId: string | null;
@@ -1065,10 +1268,12 @@ function GlobeScene({
 }) {
   const { camera } = useThree();
   const controlsRef = useRef<OrbitControlsImpl | null>(null);
+  const [municipalityFeatures, setMunicipalityFeatures] = useState<AdministrativeFeatures | null>(null);
   const focusedCluster = useMemo(
     () => clusters.find((cluster) => cluster.id === focusedClusterId) || null,
     [clusters, focusedClusterId],
   );
+  const [initialCameraX, initialCameraY, initialCameraZ] = initialView.cameraPosition;
 
   useFrame(() => {
     if (!controlsRef.current) {
@@ -1083,11 +1288,11 @@ function GlobeScene({
   });
 
   useEffect(() => {
-    camera.position.set(...MEXICO_CAMERA_POSITION);
+    camera.position.set(initialCameraX, initialCameraY, initialCameraZ);
     controlsRef.current?.target.set(0, 0, 0);
     controlsRef.current?.update();
     onDistanceChange(camera.position.length());
-  }, [camera, onDistanceChange, resetVersion]);
+  }, [camera, initialCameraX, initialCameraY, initialCameraZ, initialView.key, onDistanceChange, resetVersion]);
 
   useEffect(() => {
     if (!zoomRequest.version) {
@@ -1136,7 +1341,10 @@ function GlobeScene({
         />
       </mesh>
       <WorldGeography />
-      <MexicoAdministrativeGeography focusedCluster={focusedCluster} />
+      <MexicoAdministrativeGeography
+        focusedCluster={focusedCluster}
+        onMunicipalityFeaturesChange={setMunicipalityFeatures}
+      />
       <Atmosphere />
       {focusedCluster ? null : <NetworkArcs clusters={clusters} />}
       {clusters.filter((cluster) => !focusedClusterId || cluster.id === focusedClusterId).map((cluster) => (
@@ -1151,6 +1359,7 @@ function GlobeScene({
                 : 'none'
           }
           selectedEquipmentId={selectedEquipmentId}
+          municipalityFeatures={focusedClusterId === cluster.id ? municipalityFeatures : null}
           onHover={onHoverCluster}
           onFocus={onFocusCluster}
           onSelectEquipment={onSelectEquipment}
@@ -1179,11 +1388,15 @@ function GlobeScene({
 
 export default function GlobalEquipmentGlobe({
   equipments,
+  countryEquipments,
   selectedEquipmentId,
   onSelectEquipment,
 }: GlobalEquipmentGlobeProps) {
+  const defaultCountryView = useMemo(() => getCountryView(countryEquipments), [countryEquipments]);
   const [resetVersion, setResetVersion] = useState(0);
-  const [cameraDistance, setCameraDistance] = useState(6.05);
+  const [cameraDistance, setCameraDistance] = useState(() =>
+    new THREE.Vector3(...defaultCountryView.cameraPosition).length(),
+  );
   const [hoveredClusterId, setHoveredClusterId] = useState<string | null>(null);
   const [focusedClusterId, setFocusedClusterId] = useState<string | null>(null);
   const [selectedSimulatedEquipmentId, setSelectedSimulatedEquipmentId] = useState<string | null>(null);
@@ -1192,18 +1405,21 @@ export default function GlobalEquipmentGlobe({
     direction: 1,
   });
   const clusters = useMemo(
-    () => [...buildCityClusters(equipments), ...buildSimulatedClusters()],
-    [equipments],
+    () => [...buildCityClusters(equipments), ...buildSimulatedClusters(countryEquipments)],
+    [countryEquipments, equipments],
   );
-  const mexicoLocationCount = clusters.filter((cluster) => !cluster.simulated).length;
+  const realLocationCount = clusters.filter((cluster) => !cluster.simulated).length;
   const effectiveSelectedEquipmentId = selectedSimulatedEquipmentId || selectedEquipmentId;
   const focusedCluster = focusedClusterId
     ? clusters.find((cluster) => cluster.id === focusedClusterId) || null
     : null;
   const geographyLevel =
-    focusedCluster && !focusedCluster.simulated && cameraDistance <= MUNICIPAL_VIEW_DISTANCE
+    defaultCountryView.key === String(MEXICO_FEATURE?.id) &&
+    focusedCluster &&
+    !focusedCluster.simulated &&
+    cameraDistance <= MUNICIPAL_VIEW_DISTANCE
       ? 'División municipal'
-      : cameraDistance <= STATE_VIEW_DISTANCE
+      : defaultCountryView.key === String(MEXICO_FEATURE?.id) && cameraDistance <= STATE_VIEW_DISTANCE
         ? 'División estatal'
         : 'División por países';
 
@@ -1231,6 +1447,7 @@ export default function GlobalEquipmentGlobe({
       >
         <GlobeScene
           clusters={clusters}
+          initialView={defaultCountryView}
           selectedEquipmentId={effectiveSelectedEquipmentId}
           hoveredClusterId={hoveredClusterId}
           focusedClusterId={focusedClusterId}
@@ -1251,8 +1468,8 @@ export default function GlobalEquipmentGlobe({
       <div className="equipment-globe__hud equipment-globe__hud--left">
         <span className="equipment-globe__scope-dot" />
         <div>
-          <strong>México en vivo</strong>
-          <span>{mexicoLocationCount} ubicaciones · {equipments.length} equipos</span>
+          <strong>{defaultCountryView.label} en vivo</strong>
+          <span>{realLocationCount} ubicaciones · {equipments.length} equipos</span>
           <small className="equipment-globe__geo-level">{geographyLevel}</small>
         </div>
       </div>
@@ -1276,7 +1493,7 @@ export default function GlobalEquipmentGlobe({
             setResetVersion((current) => current + 1);
           }}
         >
-          México
+          {defaultCountryView.label}
         </button>
         {effectiveSelectedEquipmentId ? (
           <button type="button" aria-label="Deseleccionar equipo" onClick={() => handleSelectEquipment(null)}>
@@ -1298,7 +1515,8 @@ export default function GlobalEquipmentGlobe({
             <div>
               <strong>{focusedCluster.city}</strong>
               <span>
-                {focusedCluster.latitude.toFixed(5)}, {focusedCluster.longitude.toFixed(5)} · coordenadas sin desplazar
+                {focusedCluster.state ? `${focusedCluster.state} · ` : ''}
+                {focusedCluster.latitude.toFixed(5)}, {focusedCluster.longitude.toFixed(5)} · ancla geocodificada
               </span>
             </div>
             <small>{focusedCluster.count} equipos</small>
@@ -1312,7 +1530,11 @@ export default function GlobalEquipmentGlobe({
                 className={equipment.id === effectiveSelectedEquipmentId ? 'is-selected' : ''}
                 onClick={() => handleSelectEquipment(equipment.id === effectiveSelectedEquipmentId ? null : equipment.id)}
               >
-                <i data-status={equipment.status} />
+                <i
+                  data-tone={equipment.tone}
+                  data-heartbeat={equipment.heartbeat ? 'true' : 'false'}
+                  title={TONE_LABELS[equipment.tone]}
+                />
                 <strong>{equipment.serial}</strong>
                 <span>{equipment.model}</span>
               </button>

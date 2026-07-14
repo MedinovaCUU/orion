@@ -510,7 +510,7 @@ html.equipment-monitor__body-scroll-lock {
   box-shadow:
     0 10px 26px rgba(0, 8, 16, 0.38),
     0 0 18px rgba(var(--monitor-heartbeat-rgb), 0.18);
-  transform: translate(56%, 36%);
+  transform: translate(54%, -118%);
 }
 
 .equipment-globe__equipment-tooltip strong {
@@ -529,6 +529,47 @@ html.equipment-monitor__body-scroll-lock {
 
 .equipment-globe__equipment-tooltip span {
   color: rgb(var(--monitor-heartbeat-rgb));
+}
+
+.equipment-globe__equipment-tooltip .equipment-globe__equipment-location {
+  color: rgba(223, 244, 245, 0.82);
+  font-weight: 700;
+  letter-spacing: 0.045em;
+  text-transform: uppercase;
+}
+
+.equipment-globe__equipment-tooltip em {
+  width: fit-content;
+  margin-top: 0.14rem;
+  padding: 0.16rem 0.34rem;
+  border-radius: 999px;
+  color: #06231f;
+  font-size: 0.54rem;
+  font-style: normal;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  background: #38d8bd;
+}
+
+.equipment-globe__equipment-tooltip em[data-tone='warning'] {
+  color: #3e2b02;
+  background: #ffca68;
+}
+
+.equipment-globe__equipment-tooltip em[data-tone='fatal'] {
+  color: #3b0710;
+  background: #ff667c;
+}
+
+.equipment-globe__equipment-tooltip em[data-tone='supremo'] {
+  color: #071d3a;
+  background: #63a9ff;
+}
+
+.equipment-globe__equipment-tooltip em[data-tone='muted'] {
+  color: #10212c;
+  background: #9eb4c4;
 }
 
 .equipment-globe__equipment-dock {
@@ -617,14 +658,29 @@ html.equipment-monitor__body-scroll-lock {
   box-shadow: 0 0 10px rgba(56, 216, 189, 0.46);
 }
 
-.equipment-globe__equipment-dock-list i[data-status='warning'] {
+.equipment-globe__equipment-dock-list i[data-tone='warning'] {
   background: #ffca68;
   box-shadow: 0 0 10px rgba(255, 202, 104, 0.5);
 }
 
-.equipment-globe__equipment-dock-list i[data-status='fatal'] {
+.equipment-globe__equipment-dock-list i[data-tone='fatal'] {
   background: #ff667c;
   box-shadow: 0 0 10px rgba(255, 102, 124, 0.52);
+}
+
+.equipment-globe__equipment-dock-list i[data-tone='supremo'] {
+  background: #63a9ff;
+  box-shadow: 0 0 10px rgba(99, 169, 255, 0.5);
+}
+
+.equipment-globe__equipment-dock-list i[data-tone='muted'] {
+  background: #9eb4c4;
+  box-shadow: 0 0 10px rgba(158, 180, 196, 0.34);
+}
+
+.equipment-globe__equipment-dock-list i[data-heartbeat='true'] {
+  outline: 2px solid rgba(56, 216, 189, 0.28);
+  outline-offset: 2px;
 }
 
 .equipment-globe__equipment-dock-list strong {

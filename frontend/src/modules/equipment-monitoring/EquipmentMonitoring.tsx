@@ -233,9 +233,10 @@ interface MonitoringEquipment {
   markerTone: EquipmentMarkerTone;
   hasSupremoLink: boolean;
   hasSupabaseSignal: boolean;
-  hasSupremoHeartbeat: boolean;
+  hasMonitoringHeartbeat: boolean;
   mapPoint: { x: number; y: number } | null;
   geoPoint: { latitude: number; longitude: number } | null;
+  country: string | null;
   normalizedState: string | null;
   city: string | null;
   municipality: string | null;
@@ -253,6 +254,28 @@ interface MonitoringEquipment {
   reagentSummaries: ReagentConsumptionSummaryRow[];
   searchText: string;
 }
+
+const toGlobeEquipmentNode = (equipment: MonitoringEquipment): GlobeEquipmentNode | null => {
+  if (!equipment.geoPoint) {
+    return null;
+  }
+
+  return {
+    id: equipment.id,
+    serial: equipment.serial,
+    clientName: equipment.clientName,
+    model: equipment.model,
+    status: equipment.status,
+    tone: equipment.markerTone,
+    heartbeat: equipment.hasMonitoringHeartbeat,
+    country: equipment.country,
+    city: equipment.city,
+    municipality: equipment.municipality,
+    state: equipment.normalizedState,
+    latitude: equipment.geoPoint.latitude,
+    longitude: equipment.geoPoint.longitude,
+  };
+};
 
 const MAP_URL = getPublicAssetUrl('mexico_map.svg');
 const SUPREMO_ICON_URL = getPublicAssetUrl('supremo_icon.png');
@@ -342,6 +365,15 @@ const formatRelativeTime = (value?: string | null) => {
   return formatter.format(Math.round(diffMs / day), 'day');
 };
 
+const isActiveMonitoringTimestamp = (value?: string | null) => {
+  if (!value) {
+    return false;
+  }
+
+  const timestamp = new Date(value).getTime();
+  return Number.isFinite(timestamp) && Date.now() - timestamp <= ACTIVE_TELEMETRY_WINDOW_MS;
+};
+
 const formatInteger = (value: NumericLike) =>
   new Intl.NumberFormat('es-MX', {
     maximumFractionDigits: 0,
@@ -389,8 +421,12 @@ const resolveMarkerTone = (
   hasSupremoLink: boolean,
   status: EquipmentHealthStatus,
 ): EquipmentMarkerTone => {
-  if (hasSupabaseSignal) {
+  if (status === 'fatal' || status === 'warning') {
     return status;
+  }
+
+  if (hasSupabaseSignal) {
+    return 'ok';
   }
 
   if (hasSupremoLink) {
@@ -401,16 +437,16 @@ const resolveMarkerTone = (
 };
 
 const getStatusLabel = (equipment: Pick<MonitoringEquipment, 'status' | 'markerTone' | 'hasSupabaseSignal' | 'hasSupremoLink'>) => {
-  if (!equipment.hasSupabaseSignal) {
-    return equipment.hasSupremoLink ? 'Supremo listo' : 'Sin señal';
-  }
-
   if (equipment.status === 'fatal') {
     return 'Fatal';
   }
 
   if (equipment.status === 'warning') {
     return 'Warning';
+  }
+
+  if (!equipment.hasSupabaseSignal) {
+    return equipment.hasSupremoLink ? 'Supremo listo' : 'Sin señal';
   }
 
   return 'Operativo';
@@ -634,7 +670,7 @@ const buildEquipmentList = (snapshot: MonitoringSnapshot): MonitoringEquipment[]
       const reagentSummary =
         reagentSummaries.find((row) => row.bucket_month === CURRENT_REAGENT_BUCKET_MONTH) || null;
       const hasSupremoLink = hasSupremoConnection(equipment);
-      const hasSupabaseSignal = Boolean(currentState || errorState || telemetry || rotorSummary || reagentSummaries.length);
+      const hasSupabaseSignal = [currentState?.lastEventAt, telemetry?.updated_at].some(isActiveMonitoringTimestamp);
       const status = currentState?.status || errorState?.status || 'ok';
       const normalizedState = mapPoint?.normalizedState || equipment.estado || null;
       const model =
@@ -648,6 +684,7 @@ const buildEquipmentList = (snapshot: MonitoringSnapshot): MonitoringEquipment[]
         clientName,
         model,
         normalizedState,
+        equipment.pais,
         equipment.ciudad,
         equipment.municipio,
         equipment.direccion,
@@ -670,9 +707,10 @@ const buildEquipmentList = (snapshot: MonitoringSnapshot): MonitoringEquipment[]
         markerTone: resolveMarkerTone(hasSupabaseSignal, hasSupremoLink, status),
         hasSupremoLink,
         hasSupabaseSignal,
-        hasSupremoHeartbeat: hasSupremoLink && hasSupabaseSignal,
+        hasMonitoringHeartbeat: hasSupabaseSignal,
         mapPoint: mapPoint ? { x: mapPoint.x, y: mapPoint.y } : null,
         geoPoint: geoPoint ? { latitude: geoPoint.latitude, longitude: geoPoint.longitude } : null,
+        country: equipment.pais,
         normalizedState,
         city: equipment.ciudad,
         municipality: equipment.municipio,
@@ -1113,30 +1151,12 @@ export default function EquipmentMonitoring() {
 
   const selectedEquipment = filteredEquipments.find((equipment) => equipment.id === selectedEquipmentId) || null;
   const mappedEquipments = filteredEquipments.filter((equipment) => equipment.mapPoint);
+  const allGlobeEquipments = useMemo(
+    () => equipments.map(toGlobeEquipmentNode).filter((equipment): equipment is GlobeEquipmentNode => Boolean(equipment)),
+    [equipments],
+  );
   const globeEquipments = useMemo<GlobeEquipmentNode[]>(
-    () =>
-      filteredEquipments.flatMap((equipment) => {
-        if (!equipment.geoPoint) {
-          return [];
-        }
-
-        return [
-          {
-            id: equipment.id,
-            serial: equipment.serial,
-            clientName: equipment.clientName,
-            model: equipment.model,
-            status: equipment.status,
-            tone: equipment.markerTone,
-            heartbeat: equipment.hasSupremoHeartbeat,
-            city: equipment.city,
-            municipality: equipment.municipality,
-            state: equipment.normalizedState,
-            latitude: equipment.geoPoint.latitude,
-            longitude: equipment.geoPoint.longitude,
-          },
-        ];
-      }),
+    () => filteredEquipments.map(toGlobeEquipmentNode).filter((equipment): equipment is GlobeEquipmentNode => Boolean(equipment)),
     [filteredEquipments],
   );
   const selectedEquipmentHasManualOverride = selectedEquipment ? effectiveOverrideMap.has(selectedEquipment.id) : false;
@@ -1882,7 +1902,7 @@ export default function EquipmentMonitoring() {
                         key={`${equipment.id}-${equipment.serial}`}
                         type="button"
                         className={`equipment-monitor__marker equipment-monitor__marker--${equipment.markerTone} ${
-                          equipment.hasSupremoHeartbeat ? 'equipment-monitor__marker--heartbeat' : ''
+                          equipment.hasMonitoringHeartbeat ? 'equipment-monitor__marker--heartbeat' : ''
                         } ${
                           selectedEquipment?.id === equipment.id ? 'equipment-monitor__marker--selected' : ''
                         } ${
@@ -1945,6 +1965,7 @@ export default function EquipmentMonitoring() {
           ) : (
             <GlobalEquipmentGlobe
               equipments={globeEquipments}
+              countryEquipments={allGlobeEquipments}
               selectedEquipmentId={selectedEquipmentId}
               onSelectEquipment={setSelectedEquipmentId}
             />
