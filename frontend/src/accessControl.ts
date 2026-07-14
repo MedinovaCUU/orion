@@ -17,6 +17,7 @@ export type ModuleKey = (typeof MODULE_KEYS)[number];
 
 export const DEFAULT_MODULES: ModuleKey[] = ['tickets', 'tutoriales'];
 export const PERMISSIONS_OWNER_USER_IDS = ['2a87dde5-76ef-4365-8690-870efc7d9d82'] as const;
+export const PERMISSIONS_OWNER_EMAILS = ['rmontanez@biosystems.com.mx'] as const;
 
 export const MODULE_LABELS: Record<ModuleKey, string> = {
   tickets: 'Tickets',
@@ -52,5 +53,10 @@ export const coerceModules = (value: unknown): ModuleKey[] => {
   );
 };
 
-export const canManageUserPermissions = (userId?: string | null) =>
-  Boolean(userId && PERMISSIONS_OWNER_USER_IDS.includes(userId as (typeof PERMISSIONS_OWNER_USER_IDS)[number]));
+export const canManageUserPermissions = (userId?: string | null, email?: string | null) => {
+  const normalizedEmail = email?.trim().toLocaleLowerCase('en-US') || '';
+  return Boolean(
+    (userId && PERMISSIONS_OWNER_USER_IDS.includes(userId as (typeof PERMISSIONS_OWNER_USER_IDS)[number])) ||
+    (normalizedEmail && PERMISSIONS_OWNER_EMAILS.includes(normalizedEmail as (typeof PERMISSIONS_OWNER_EMAILS)[number])),
+  );
+};

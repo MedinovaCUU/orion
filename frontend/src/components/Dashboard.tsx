@@ -110,10 +110,13 @@ export default function Dashboard({ session, initialTab }: DashboardProps) {
   })();
 
   const isStaffRole = (role: string | null) => role === 'admin' || role === 'tecnico';
-  const canManagePermissions = canManageUserPermissions(session?.user?.id);
-  const allowedTabs: DashboardTabKey[] = userRole === 'admin'
-    ? DASHBOARD_TAB_KEYS.filter((tab) => tab !== 'permisos' || canManagePermissions)
+  const canManagePermissions = canManageUserPermissions(session?.user?.id, session?.user?.email);
+  const baseAllowedTabs: DashboardTabKey[] = userRole === 'admin'
+    ? DASHBOARD_TAB_KEYS.filter((tab) => tab !== 'permisos')
     : userAccess.modules.filter((module): module is DashboardTabKey => DASHBOARD_TAB_KEYS.includes(module as DashboardTabKey));
+  const allowedTabs: DashboardTabKey[] = canManagePermissions
+    ? [...new Set([...baseAllowedTabs, 'permisos' as DashboardTabKey])]
+    : baseAllowedTabs;
   const canAccessTab = (tab: DashboardTabKey) => allowedTabs.includes(tab);
   const welcomeLabel = viewerProfile?.nombre_completo?.trim() || session?.user?.email?.trim() || 'usuario';
   const navigationItems: DashboardNavigationItem[] = [
