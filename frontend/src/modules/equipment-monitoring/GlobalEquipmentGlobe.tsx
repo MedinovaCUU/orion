@@ -74,7 +74,8 @@ const MUNICIPAL_BORDER_RADIUS = GLOBE_RADIUS + 0.006;
 const CITY_MARKER_RADIUS = GLOBE_RADIUS + 0.007;
 const EQUIPMENT_MARKER_RADIUS = GLOBE_RADIUS + 0.008;
 const NETWORK_ANCHOR_RADIUS = GLOBE_RADIUS + 0.009;
-const CLOSE_VIEW_DISTANCE = 3.65;
+const AUTOMATIC_EQUIPMENT_DISTANCE = 2.085;
+const CITY_FOCUS_DISTANCE = 2.075;
 const FOCUS_COLLAPSE_DISTANCE = 4.15;
 const MIN_CAMERA_DISTANCE = 2.018;
 const STATE_VIEW_DISTANCE = 6.45;
@@ -1000,7 +1001,7 @@ function CityCluster({
   onSelectEquipment,
 }: {
   cluster: CityClusterData;
-  expansionMode: 'none' | 'preview' | 'focused';
+  expansionMode: 'none' | 'preview' | 'automatic' | 'focused';
   selectedEquipmentId: string | null;
   municipalityFeatures: AdministrativeFeatures | null;
   onHover: (clusterId: string | null) => void;
@@ -1034,7 +1035,9 @@ function CityCluster({
         pointInPolygon(cluster.longitude, cluster.latitude, polygon),
       ),
     );
-    const municipalityFeature = namedFeature || containingFeature;
+    // The coordinate is authoritative when locality labels disagree with the
+    // administrative dataset or refer to a neighboring metropolitan area.
+    const municipalityFeature = containingFeature || namedFeature;
     return municipalityFeature ? getFeaturePolygons(municipalityFeature) : null;
   }, [cluster.city, cluster.latitude, cluster.longitude, cluster.municipality, cluster.simulated, expansionMode, municipalityFeatures]);
   const equipmentLayout = useMemo(() => {
@@ -1055,24 +1058,27 @@ function CityCluster({
       const coordinateKey = `${latitude.toFixed(5)}:${longitude.toFixed(5)}`;
       const occurrenceIndex = coordinateOccurrences.get(coordinateKey) || 0;
       coordinateOccurrences.set(coordinateKey, occurrenceIndex + 1);
-      if ((coordinateCounts.get(coordinateKey) || 0) === 1 || occurrenceIndex === 0) {
+      const duplicateCount = coordinateCounts.get(coordinateKey) || 0;
+      if (duplicateCount === 1) {
         return { anchor, position: anchor.clone() };
       }
 
-      const ring = Math.floor(Math.sqrt(occurrenceIndex));
-      const slot = occurrenceIndex - ring * ring;
-      const slots = ring * 2 + 1;
-      const baseAngle = (slot / slots) * Math.PI * 2 + ring * 0.58;
-      const distanceKm = 0.18 + ring * 0.22;
+      // Repeated city-level coordinates are geocoding anchors, not distinct
+      // physical positions. Keep the group centered on that anchor while
+      // separating every device enough to remain selectable at close zoom.
+      const centeredIndex = occurrenceIndex - (duplicateCount - 1) / 2;
+      const baseAngle = centeredIndex * Math.PI * (3 - Math.sqrt(5));
+      const distanceKm = Math.sqrt(Math.abs(centeredIndex) + 0.42) * 2.15;
       let visualLatitude = latitude;
       let visualLongitude = longitude;
 
-      for (let attempt = 0; attempt < 12; attempt += 1) {
-        const angle = baseAngle + attempt * (Math.PI / 6);
-        const candidateLatitude = latitude + (Math.cos(angle) * distanceKm) / 111.32;
+      for (let attempt = 0; attempt < 24; attempt += 1) {
+        const angle = baseAngle + attempt * (Math.PI / 12);
+        const candidateDistanceKm = distanceKm * (1 - Math.floor(attempt / 12) * 0.28);
+        const candidateLatitude = latitude + (Math.cos(angle) * candidateDistanceKm) / 111.32;
         const candidateLongitude =
           longitude +
-          (Math.sin(angle) * distanceKm) /
+          (Math.sin(angle) * candidateDistanceKm) /
             (111.32 * Math.max(Math.cos(THREE.MathUtils.degToRad(latitude)), 0.25));
 
         const insideMunicipality = municipalityPolygons?.some((polygon) =>
@@ -1099,7 +1105,9 @@ function CityCluster({
     [cluster.tones],
   );
   const nodeSize =
-    expansionMode === 'focused' ? 0.016 : 0.026 + Math.min(Math.sqrt(cluster.count) * 0.0022, 0.028);
+    expansionMode === 'focused' || expansionMode === 'automatic'
+      ? 0.016
+      : 0.026 + Math.min(Math.sqrt(cluster.count) * 0.0022, 0.028);
   const selected = cluster.equipments.some((equipment) => equipment.id === selectedEquipmentId);
 
   useFrame(({ clock, size }) => {
@@ -1142,7 +1150,8 @@ function CityCluster({
     }
   });
 
-  const expansionCount = expansionMode === 'focused' ? 72 : expansionMode === 'preview' ? 7 : 0;
+  const detailed = expansionMode === 'focused' || expansionMode === 'automatic';
+  const expansionCount = detailed ? 72 : expansionMode === 'preview' ? 7 : 0;
   const displayEquipments = (cluster.equipments.length
     ? cluster.equipments.slice(0, equipmentLayout.length)
     : equipmentLayout.map(() => null as GlobeEquipmentNode | null)
@@ -1178,7 +1187,7 @@ function CityCluster({
   return (
     <group ref={groupRef}>
       <group ref={markerGroupRef} position={position}>
-        {expansionMode !== 'focused' ? (
+        {!detailed ? (
           <>
             <mesh
               ref={nodeHitTargetRef}
@@ -1354,6 +1363,7 @@ function GlobeScene({
   selectedEquipmentId,
   hoveredClusterId,
   focusedClusterId,
+  cameraDistance,
   resetVersion,
   zoomRequest,
   onHoverCluster,
@@ -1367,6 +1377,7 @@ function GlobeScene({
   selectedEquipmentId: string | null;
   hoveredClusterId: string | null;
   focusedClusterId: string | null;
+  cameraDistance: number;
   resetVersion: number;
   zoomRequest: { version: number; direction: 1 | -1 };
   onHoverCluster: (clusterId: string | null) => void;
@@ -1427,10 +1438,10 @@ function GlobeScene({
     }
 
     const cameraDirection = latLngToVector(focusedCluster.latitude, focusedCluster.longitude, 1).normalize();
-    camera.position.copy(cameraDirection.multiplyScalar(3.2));
+    camera.position.copy(cameraDirection.multiplyScalar(CITY_FOCUS_DISTANCE));
     controlsRef.current?.target.set(0, 0, 0);
     controlsRef.current?.update();
-    onDistanceChange(3.2);
+    onDistanceChange(CITY_FOCUS_DISTANCE);
   }, [camera, focusedCluster, focusedClusterId, onDistanceChange]);
 
   return (
@@ -1464,9 +1475,11 @@ function GlobeScene({
           expansionMode={
             focusedClusterId === cluster.id
               ? 'focused'
-              : hoveredClusterId === cluster.id
-                ? 'preview'
-                : 'none'
+              : !focusedClusterId && cameraDistance <= AUTOMATIC_EQUIPMENT_DISTANCE
+                ? 'automatic'
+                : hoveredClusterId === cluster.id
+                  ? 'preview'
+                  : 'none'
           }
           selectedEquipmentId={selectedEquipmentId}
           municipalityFeatures={focusedClusterId === cluster.id ? municipalityFeatures : null}
@@ -1563,6 +1576,7 @@ export default function GlobalEquipmentGlobe({
           selectedEquipmentId={effectiveSelectedEquipmentId}
           hoveredClusterId={hoveredClusterId}
           focusedClusterId={focusedClusterId}
+          cameraDistance={cameraDistance}
           resetVersion={resetVersion}
           zoomRequest={zoomRequest}
           onHoverCluster={setHoveredClusterId}
@@ -1587,7 +1601,9 @@ export default function GlobalEquipmentGlobe({
       </div>
 
       <div className="equipment-globe__hud equipment-globe__hud--right">
-        <span>Vista {cameraDistance <= CLOSE_VIEW_DISTANCE ? 'por equipo' : 'por ciudad'}</span>
+        <span>
+          Vista {focusedCluster || cameraDistance <= AUTOMATIC_EQUIPMENT_DISTANCE ? 'por equipo' : 'por ciudad'}
+        </span>
         <button
           type="button"
           aria-label="Alejar globo"
