@@ -79,19 +79,19 @@ const FOCUS_COLLAPSE_DISTANCE = 4.15;
 const MIN_CAMERA_DISTANCE = 2.018;
 const STATE_VIEW_DISTANCE = 6.45;
 const MUNICIPAL_VIEW_DISTANCE = 2.72;
-const MEXICO_CAMERA_POSITION: [number, number, number] = [-0.646, 1.304, 2.832];
+const MEXICO_CAMERA_POSITION: [number, number, number] = [-0.607, 1.226, 2.662];
 const EQUIPMENT_NODE_RADIUS_PIXELS = {
-  near: 3.8,
-  far: 5.6,
-  selectedBoost: 1.1,
-  hit: 18,
-  selectedHit: 21,
+  near: 9.4,
+  far: 6.6,
+  selectedBoost: 1.6,
+  hit: 28,
+  selectedHit: 32,
 };
 const CITY_NODE_RADIUS_PIXELS = {
-  near: 3.35,
-  baseFar: 4.8,
-  countBoost: 2.8,
-  hit: 17,
+  near: 8.2,
+  baseFar: 6,
+  countBoost: 3.2,
+  hit: 24,
 };
 const STATUS_TONE_ORDER: GlobeNodeTone[] = ['fatal', 'warning', 'ok', 'supremo', 'muted'];
 
@@ -102,6 +102,49 @@ const TONE_COLORS: Record<GlobeNodeTone, string> = {
   supremo: '#63a9ff',
   muted: '#9eb4c4',
 };
+
+const HEARTBEAT_TIME_UNIFORM = { value: 0 };
+
+const HEARTBEAT_PULSE_VERTEX_SHADER = `
+  uniform float uTime;
+  uniform float uSpeed;
+  uniform float uPhaseOffset;
+  uniform float uMinScale;
+  uniform float uMaxScale;
+  varying float vWave;
+  varying float vShimmer;
+
+  float hash(vec3 value) {
+    return fract(sin(dot(value, vec3(12.9898, 78.233, 37.719))) * 43758.5453123);
+  }
+
+  void main() {
+    float phase = fract(hash(modelMatrix[3].xyz) + uPhaseOffset);
+    float wave = fract(uTime * uSpeed + phase);
+    float easedWave = smoothstep(0.0, 1.0, wave);
+    float scale = mix(uMinScale, uMaxScale, easedWave);
+    vec3 transformed = position * scale;
+
+    vWave = wave;
+    vShimmer = 0.82 + sin((uTime * 1.8 + phase * 6.28318)) * 0.18;
+    gl_Position = projectionMatrix * modelViewMatrix * vec4(transformed, 1.0);
+  }
+`;
+
+const HEARTBEAT_PULSE_FRAGMENT_SHADER = `
+  uniform vec3 uColor;
+  uniform float uOpacity;
+  varying float vWave;
+  varying float vShimmer;
+
+  void main() {
+    float fade = pow(1.0 - vWave, 1.35);
+    float ignition = smoothstep(0.0, 0.14, vWave);
+    float alpha = uOpacity * fade * ignition * vShimmer;
+    if (alpha < 0.015) discard;
+    gl_FragColor = vec4(uColor, alpha);
+  }
+`;
 
 const TONE_LABELS: Record<GlobeNodeTone, string> = {
   fatal: 'Error fatal',
@@ -791,6 +834,61 @@ function Atmosphere() {
   );
 }
 
+function HeartbeatClock() {
+  useFrame(({ clock }) => {
+    HEARTBEAT_TIME_UNIFORM.value = clock.elapsedTime;
+  });
+
+  return null;
+}
+
+function HeartbeatPulse({
+  innerRadius,
+  outerRadius,
+  opacity,
+  speed,
+  phaseOffset,
+  minScale,
+  maxScale,
+}: {
+  innerRadius: number;
+  outerRadius: number;
+  opacity: number;
+  speed: number;
+  phaseOffset: number;
+  minScale: number;
+  maxScale: number;
+}) {
+  const uniforms = useMemo(
+    () => ({
+      uTime: HEARTBEAT_TIME_UNIFORM,
+      uColor: { value: new THREE.Color(TONE_COLORS.ok) },
+      uOpacity: { value: opacity },
+      uSpeed: { value: speed },
+      uPhaseOffset: { value: phaseOffset },
+      uMinScale: { value: minScale },
+      uMaxScale: { value: maxScale },
+    }),
+    [maxScale, minScale, opacity, phaseOffset, speed],
+  );
+
+  return (
+    <mesh renderOrder={12}>
+      <ringGeometry args={[innerRadius, outerRadius, 44]} />
+      <shaderMaterial
+        transparent
+        side={THREE.DoubleSide}
+        depthWrite={false}
+        blending={THREE.AdditiveBlending}
+        toneMapped={false}
+        uniforms={uniforms}
+        vertexShader={HEARTBEAT_PULSE_VERTEX_SHADER}
+        fragmentShader={HEARTBEAT_PULSE_FRAGMENT_SHADER}
+      />
+    </mesh>
+  );
+}
+
 function EquipmentPulseNode({
   equipment,
   position,
@@ -806,7 +904,6 @@ function EquipmentPulseNode({
 }) {
   const visualRef = useRef<THREE.Group | null>(null);
   const hitTargetRef = useRef<THREE.Mesh | null>(null);
-  const ringRef = useRef<THREE.Mesh | null>(null);
   const tone = equipment?.tone || 'muted';
 
   const handlePointerOver = (event: ThreeEvent<PointerEvent>) => {
@@ -826,7 +923,7 @@ function EquipmentPulseNode({
     onSelect();
   };
 
-  useFrame(({ camera, clock, size }) => {
+  useFrame(({ camera, size }) => {
     if (!visualRef.current || !hitTargetRef.current) {
       return;
     }
@@ -848,15 +945,6 @@ function EquipmentPulseNode({
       worldUnitsPerPixel *
         (selected ? EQUIPMENT_NODE_RADIUS_PIXELS.selectedHit : EQUIPMENT_NODE_RADIUS_PIXELS.hit),
     );
-    if (!ringRef.current) {
-      return;
-    }
-
-    const seed = equipment?.serial.charCodeAt(equipment.serial.length - 1) || 3;
-    const wave = (clock.elapsedTime * 0.8 + seed * 0.11) % 1;
-    ringRef.current.scale.setScalar(0.7 + wave * 1.6);
-    const ringMaterial = ringRef.current.material as THREE.MeshBasicMaterial;
-    ringMaterial.opacity = (1 - wave) * (equipment?.heartbeat ? 0.72 : 0.24);
   });
 
   return (
@@ -877,43 +965,27 @@ function EquipmentPulseNode({
         </mesh>
         {equipment?.heartbeat ? (
           <Billboard follow>
-            <mesh ref={ringRef}>
-              <ringGeometry args={[1.35, 1.68, 24]} />
-              <meshBasicMaterial
-                color={TONE_COLORS.ok}
-                transparent
-                opacity={0.5}
-                side={THREE.DoubleSide}
-                depthWrite={false}
-                toneMapped={false}
-              />
-            </mesh>
+            <HeartbeatPulse
+              innerRadius={1.04}
+              outerRadius={1.82}
+              opacity={0.9}
+              speed={0.72}
+              phaseOffset={0}
+              minScale={0.84}
+              maxScale={2.72}
+            />
+            <HeartbeatPulse
+              innerRadius={1.36}
+              outerRadius={2.14}
+              opacity={0.42}
+              speed={0.52}
+              phaseOffset={0.38}
+              minScale={0.98}
+              maxScale={3.16}
+            />
           </Billboard>
         ) : null}
       </group>
-      {selected && equipment ? (
-        <Html
-          center
-          className="equipment-globe__equipment-tooltip"
-          zIndexRange={[30, 0]}
-          onPointerOver={(event) => {
-            event.stopPropagation();
-            onHoverChange(true);
-          }}
-          onPointerOut={(event) => {
-            event.stopPropagation();
-            onHoverChange(false);
-          }}
-        >
-          <small className="equipment-globe__equipment-location">
-            {equipment.municipality || equipment.city || equipment.state || 'Ubicación sin municipio'}
-          </small>
-          <strong>{equipment.serial}</strong>
-          <span>{equipment.model}</span>
-          <small>{equipment.clientName}</small>
-          <em data-tone={tone}>{TONE_LABELS[tone]}</em>
-        </Html>
-      ) : null}
     </group>
   );
 }
@@ -940,7 +1012,6 @@ function CityCluster({
   const markerGroupRef = useRef<THREE.Group | null>(null);
   const nodeVisualRef = useRef<THREE.Group | null>(null);
   const nodeHitTargetRef = useRef<THREE.Mesh | null>(null);
-  const pulseRef = useRef<THREE.Mesh | null>(null);
   const nodeMaterialRef = useRef<THREE.MeshBasicMaterial | null>(null);
   const hoverLeaveTimeoutRef = useRef<number | null>(null);
   const position = useMemo(
@@ -1069,14 +1140,6 @@ function CityCluster({
         nodeMaterialRef.current.color.lerpColors(toneColors[currentIndex], toneColors[nextIndex], blend);
       }
     }
-    if (!pulseRef.current) {
-      return;
-    }
-
-    const wave = (clock.elapsedTime * 0.62 + cluster.latitude * 0.01) % 1;
-    pulseRef.current.scale.setScalar(0.85 + wave * 1.75);
-    const pulseMaterial = pulseRef.current.material as THREE.MeshBasicMaterial;
-    pulseMaterial.opacity = (1 - wave) * 0.66;
   });
 
   const expansionCount = expansionMode === 'focused' ? 72 : expansionMode === 'preview' ? 7 : 0;
@@ -1151,17 +1214,26 @@ function CityCluster({
               </mesh>
               <Billboard follow>
                 {cluster.heartbeat ? (
-                  <mesh ref={pulseRef}>
-                    <ringGeometry args={[nodeSize * 1.2, nodeSize * 1.38, 32]} />
-                    <meshBasicMaterial
-                      color={TONE_COLORS.ok}
-                      transparent
-                      opacity={0.5}
-                      side={THREE.DoubleSide}
-                      depthWrite={false}
-                      toneMapped={false}
+                  <>
+                    <HeartbeatPulse
+                      innerRadius={nodeSize * 1.08}
+                      outerRadius={nodeSize * 1.86}
+                      opacity={0.92}
+                      speed={0.66}
+                      phaseOffset={0}
+                      minScale={0.9}
+                      maxScale={2.7}
                     />
-                  </mesh>
+                    <HeartbeatPulse
+                      innerRadius={nodeSize * 1.42}
+                      outerRadius={nodeSize * 2.18}
+                      opacity={0.38}
+                      speed={0.48}
+                      phaseOffset={0.42}
+                      minScale={1.02}
+                      maxScale={3.2}
+                    />
+                  </>
                 ) : null}
                 <mesh scale={selected ? 1.9 : 1.45}>
                   <ringGeometry args={[nodeSize * 1.08, nodeSize * 1.18, 32]} />
@@ -1365,6 +1437,7 @@ function GlobeScene({
     <>
       <ambientLight intensity={0.6} />
       <directionalLight position={[3, 4, 6]} intensity={1.6} color="#ccefff" />
+      <HeartbeatClock />
       <mesh>
         <sphereGeometry args={[GLOBE_RADIUS, 96, 96]} />
         <meshPhysicalMaterial
@@ -1450,6 +1523,8 @@ export default function GlobalEquipmentGlobe({
   const focusedCluster = focusedClusterId
     ? clusters.find((cluster) => cluster.id === focusedClusterId) || null
     : null;
+  const focusedSelectedEquipment =
+    focusedCluster?.equipments.find((equipment) => equipment.id === effectiveSelectedEquipmentId) || null;
   const geographyLevel =
     defaultCountryView.key === String(MEXICO_FEATURE?.id) &&
     focusedCluster &&
@@ -1552,9 +1627,15 @@ export default function GlobalEquipmentGlobe({
             <div>
               <strong>{focusedCluster.city}</strong>
               <span>
-                {focusedCluster.state ? `${focusedCluster.state} · ` : ''}
-                {focusedCluster.latitude.toFixed(5)}, {focusedCluster.longitude.toFixed(5)} · ancla geocodificada
+                {focusedSelectedEquipment
+                  ? `${focusedSelectedEquipment.serial} · ${focusedSelectedEquipment.model} · ${
+                      TONE_LABELS[focusedSelectedEquipment.tone]
+                    }`
+                  : `${focusedCluster.state ? `${focusedCluster.state} · ` : ''}${focusedCluster.latitude.toFixed(
+                      5,
+                    )}, ${focusedCluster.longitude.toFixed(5)} · ancla geocodificada`}
               </span>
+              {focusedSelectedEquipment ? <small>{focusedSelectedEquipment.clientName}</small> : null}
             </div>
             <small>{focusedCluster.count} equipos</small>
           </div>

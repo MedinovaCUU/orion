@@ -355,7 +355,6 @@ html.equipment-monitor__body-scroll-lock {
 }
 
 .equipment-globe__hud {
-  top: 1.15rem;
   display: flex;
   align-items: center;
   gap: 0.7rem;
@@ -366,6 +365,7 @@ html.equipment-monitor__body-scroll-lock {
 
 .equipment-globe__hud--left {
   left: 1.15rem;
+  bottom: 1.15rem;
 }
 
 .equipment-globe__hud--left > div {
@@ -419,6 +419,7 @@ html.equipment-monitor__body-scroll-lock {
 }
 
 .equipment-globe__hud--right {
+  top: 1.15rem;
   right: 1.15rem;
 }
 
@@ -494,84 +495,6 @@ html.equipment-monitor__body-scroll-lock {
 
 .equipment-globe__city-tooltip small {
   color: rgb(var(--monitor-heartbeat-rgb));
-}
-
-.equipment-globe__equipment-tooltip {
-  display: grid;
-  gap: 0.12rem;
-  min-width: 7.6rem;
-  max-width: 13rem;
-  padding: 0.48rem 0.6rem;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  border-radius: 10px;
-  color: #f5ffff;
-  cursor: default;
-  pointer-events: auto;
-  user-select: text;
-  background: rgba(4, 20, 30, 0.94);
-  box-shadow:
-    0 10px 26px rgba(0, 8, 16, 0.38),
-    0 0 18px rgba(var(--monitor-heartbeat-rgb), 0.18);
-  transform: translate(54%, -118%);
-}
-
-.equipment-globe__equipment-tooltip strong {
-  font-family: var(--font-heading);
-  font-size: 0.72rem;
-}
-
-.equipment-globe__equipment-tooltip span,
-.equipment-globe__equipment-tooltip small {
-  overflow: hidden;
-  font-size: 0.61rem;
-  color: rgba(205, 230, 234, 0.74);
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.equipment-globe__equipment-tooltip span {
-  color: rgb(var(--monitor-heartbeat-rgb));
-}
-
-.equipment-globe__equipment-tooltip .equipment-globe__equipment-location {
-  color: rgba(223, 244, 245, 0.82);
-  font-weight: 700;
-  letter-spacing: 0.045em;
-  text-transform: uppercase;
-}
-
-.equipment-globe__equipment-tooltip em {
-  width: fit-content;
-  margin-top: 0.14rem;
-  padding: 0.16rem 0.34rem;
-  border-radius: 999px;
-  color: #06231f;
-  font-size: 0.54rem;
-  font-style: normal;
-  font-weight: 800;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  background: #38d8bd;
-}
-
-.equipment-globe__equipment-tooltip em[data-tone='warning'] {
-  color: #3e2b02;
-  background: #ffca68;
-}
-
-.equipment-globe__equipment-tooltip em[data-tone='fatal'] {
-  color: #3b0710;
-  background: #ff667c;
-}
-
-.equipment-globe__equipment-tooltip em[data-tone='supremo'] {
-  color: #071d3a;
-  background: #63a9ff;
-}
-
-.equipment-globe__equipment-tooltip em[data-tone='muted'] {
-  color: #10212c;
-  background: #9eb4c4;
 }
 
 .equipment-globe__equipment-dock {
@@ -1455,6 +1378,7 @@ html.equipment-monitor__body-scroll-lock {
   }
 
   .equipment-globe__hud--left {
+    bottom: auto;
     left: 0.75rem;
   }
 
