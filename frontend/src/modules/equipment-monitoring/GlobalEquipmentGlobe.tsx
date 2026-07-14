@@ -138,8 +138,6 @@ const COUNTRY_FEATURES = feature<CountryProperties>(WORLD_TOPOLOGY, WORLD_COUNTR
   CountryProperties
 >;
 const WORLD_BORDER_LINES = mesh(WORLD_TOPOLOGY, WORLD_COUNTRIES).coordinates;
-const MEXICO_GEOMETRY = WORLD_COUNTRIES.geometries.find((geometry) => String(geometry.id) === '484');
-const MEXICO_BORDER_LINES = MEXICO_GEOMETRY ? mesh(WORLD_TOPOLOGY, MEXICO_GEOMETRY).coordinates : [];
 const MEXICO_FEATURE = COUNTRY_FEATURES.features.find((country) => String(country.id) === '484');
 
 const normalizeGroupKey = (value: string) =>
@@ -328,7 +326,7 @@ const buildSimulatedClusters = (): CityClusterData[] =>
   });
 
 function WorldGeography() {
-  const { worldPoints, mexicoPoints, worldBorders, mexicoBorders } = useMemo(() => {
+  const { worldPoints, mexicoPoints, worldBorders } = useMemo(() => {
     const worldPositions: number[] = [];
     const mexicoPositions: number[] = [];
 
@@ -371,7 +369,6 @@ function WorldGeography() {
       worldPoints: createPointGeometry(worldPositions),
       mexicoPoints: createPointGeometry(mexicoPositions),
       worldBorders: createBorderGeometry(WORLD_BORDER_LINES, GLOBE_RADIUS + 0.075),
-      mexicoBorders: createBorderGeometry(MEXICO_BORDER_LINES, GLOBE_RADIUS + 0.1),
     };
   }, []);
 
@@ -380,9 +377,8 @@ function WorldGeography() {
       worldPoints.dispose();
       mexicoPoints.dispose();
       worldBorders.dispose();
-      mexicoBorders.dispose();
     },
-    [mexicoBorders, mexicoPoints, worldBorders, worldPoints],
+    [mexicoPoints, worldBorders, worldPoints],
   );
 
   return (
@@ -391,9 +387,6 @@ function WorldGeography() {
       <GlobePointCloud geometry={mexicoPoints} color="#38e2c5" pixelSize={3.8} opacity={1} />
       <lineSegments geometry={worldBorders} renderOrder={4}>
         <lineBasicMaterial color="#a1e4e8" transparent opacity={0.82} depthWrite={false} toneMapped={false} />
-      </lineSegments>
-      <lineSegments geometry={mexicoBorders} renderOrder={5}>
-        <lineBasicMaterial color="#6ffff0" transparent opacity={1} depthWrite={false} toneMapped={false} />
       </lineSegments>
     </>
   );
