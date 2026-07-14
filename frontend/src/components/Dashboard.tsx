@@ -3,7 +3,16 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import { supabase } from '../supabaseClient';
 import BrandLockup from './BrandLockup';
 import EmployeeCredentialModal, { type EmployeeCredentialProfile } from './EmployeeCredentialModal';
-import { DEFAULT_USER_ACCESS, MODULE_KEYS, canManageUserPermissions, coerceModules, type ModuleKey, type UserAccess } from '../accessControl';
+import {
+  DEFAULT_USER_ACCESS,
+  MODULE_KEYS,
+  canManageUserPermissions,
+  coerceModules,
+  coerceSubPermissions,
+  getModuleSubPermissions,
+  type ModuleKey,
+  type UserAccess,
+} from '../accessControl';
 import './Dashboard.css';
 
 const Tickets = lazy(() => import('./Tickets'));
@@ -181,7 +190,7 @@ export default function Dashboard({ session, initialTab }: DashboardProps) {
     async function fetchRoleAndUnread() {
       const [{ data, error }, { data: permissionData, error: permissionError }] = await Promise.all([
         supabase.from('profiles').select('id, nombre_completo, rol, telefono, territorio, employee_type, employee_number, puesto, credential_photo_path, credential_metadata, creado_en').eq('id', userId).maybeSingle(),
-        supabase.from('user_module_permissions').select('modules, can_receive_tickets, can_view_restricted_tutorials').eq('user_id', userId).maybeSingle(),
+        supabase.from('user_module_permissions').select('modules, sub_permissions, can_receive_tickets, can_view_restricted_tutorials').eq('user_id', userId).maybeSingle(),
       ]);
       if (!mounted) {
         return;
@@ -208,9 +217,10 @@ export default function Dashboard({ session, initialTab }: DashboardProps) {
           modules: coerceModules(permissionData.modules),
           canReceiveTickets: Boolean(permissionData.can_receive_tickets),
           canViewRestrictedTutorials: Boolean(permissionData.can_view_restricted_tutorials),
+          subPermissions: coerceSubPermissions(permissionData.sub_permissions),
         });
       } else {
-        setUserAccess(data.rol === 'admin' ? { modules: [...MODULE_KEYS] as ModuleKey[], canReceiveTickets: true, canViewRestrictedTutorials: true } : DEFAULT_USER_ACCESS);
+        setUserAccess(data.rol === 'admin' ? { modules: [...MODULE_KEYS] as ModuleKey[], canReceiveTickets: true, canViewRestrictedTutorials: true, subPermissions: {} } : DEFAULT_USER_ACCESS);
       }
 
       if (!isStaffRole(data.rol)) {
@@ -380,8 +390,8 @@ export default function Dashboard({ session, initialTab }: DashboardProps) {
             />
           )}
           {activeTab === 'monitoreo' && canAccessTab('monitoreo') && <EquipmentMonitoring />}
-          {activeTab === 'trazabilidad' && canAccessTab('trazabilidad') && <Traceability />}
-          {activeTab === 'refacciones' && canAccessTab('refacciones') && <Refacciones />}
+          {activeTab === 'trazabilidad' && canAccessTab('trazabilidad') && <Traceability subPermissions={getModuleSubPermissions(userAccess, 'trazabilidad')} />}
+          {activeTab === 'refacciones' && canAccessTab('refacciones') && <Refacciones subPermissions={getModuleSubPermissions(userAccess, 'refacciones')} />}
           {activeTab === 'inventario' && canAccessTab('inventario') && <Inventario />}
           {activeTab === 'tutoriales' && canAccessTab('tutoriales') && <Tutoriales canViewRestricted={userRole === 'admin' || userAccess.canViewRestrictedTutorials} />}
           {activeTab === 'pno' && canAccessTab('pno') && <PNO />}

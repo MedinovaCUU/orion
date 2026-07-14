@@ -1,5 +1,15 @@
 import { useEffect, useMemo, useState } from 'react';
-import { DEFAULT_USER_ACCESS, MODULE_KEYS, MODULE_LABELS, coerceModules, type ModuleKey } from '../accessControl';
+import {
+  DEFAULT_USER_ACCESS,
+  MODULE_KEYS,
+  MODULE_LABELS,
+  MODULE_SUBPERMISSIONS,
+  SUBPERMISSION_LABELS,
+  coerceModules,
+  coerceSubPermissions,
+  type ModuleKey,
+  type ModuleWithSubpermissions,
+} from '../accessControl';
 import { supabase } from '../supabaseClient';
 import './PermissionsAdmin.css';
 
@@ -12,6 +22,7 @@ interface ProfileRow {
 interface AccessRow {
   user_id: string;
   modules: unknown;
+  sub_permissions?: unknown;
   can_receive_tickets: boolean;
   can_view_restricted_tutorials: boolean;
 }
@@ -20,13 +31,20 @@ interface EditableAccess {
   modules: ModuleKey[];
   canReceiveTickets: boolean;
   canViewRestrictedTutorials: boolean;
+  subPermissions: Partial<Record<ModuleWithSubpermissions, string[]>>;
 }
 
 const MANAGEABLE_MODULE_KEYS = MODULE_KEYS.filter((key) => key !== 'permisos');
+const MODULES_WITH_SUBPERMISSIONS = Object.keys(MODULE_SUBPERMISSIONS) as ModuleWithSubpermissions[];
+const ALL_SUBPERMISSIONS = MODULES_WITH_SUBPERMISSIONS.reduce<EditableAccess['subPermissions']>((acc, module) => {
+  acc[module] = [...MODULE_SUBPERMISSIONS[module]];
+  return acc;
+}, {});
 const FULL_ACCESS_WITHOUT_PERMISSIONS: EditableAccess = {
   modules: [...MANAGEABLE_MODULE_KEYS],
   canReceiveTickets: true,
   canViewRestrictedTutorials: true,
+  subPermissions: ALL_SUBPERMISSIONS,
 };
 
 export default function PermissionsAdmin() {
@@ -43,7 +61,7 @@ export default function PermissionsAdmin() {
       setLoading(true);
       const [{ data: profileRows, error: profileError }, { data: accessRows, error: accessError }] = await Promise.all([
         supabase.from('profiles').select('id, nombre_completo, rol').order('nombre_completo'),
-        supabase.from('user_module_permissions').select('user_id, modules, can_receive_tickets, can_view_restricted_tutorials'),
+        supabase.from('user_module_permissions').select('user_id, modules, sub_permissions, can_receive_tickets, can_view_restricted_tutorials'),
       ]);
 
       if (!mounted) return;
@@ -57,6 +75,7 @@ export default function PermissionsAdmin() {
       (accessRows as AccessRow[] | null)?.forEach((row) => {
         mapped[row.user_id] = {
           modules: coerceModules(row.modules),
+          subPermissions: coerceSubPermissions(row.sub_permissions),
           canReceiveTickets: row.can_receive_tickets,
           canViewRestrictedTutorials: row.can_view_restricted_tutorials,
         };
@@ -77,7 +96,11 @@ export default function PermissionsAdmin() {
     );
   }, [profiles, search]);
 
-  const getAccess = (userId: string) => accessByUser[userId] || { ...DEFAULT_USER_ACCESS, modules: [...DEFAULT_USER_ACCESS.modules] };
+  const getAccess = (userId: string) => accessByUser[userId] || {
+    ...DEFAULT_USER_ACCESS,
+    modules: [...DEFAULT_USER_ACCESS.modules],
+    subPermissions: { ...DEFAULT_USER_ACCESS.subPermissions },
+  };
 
   const updateAccess = (userId: string, updater: (current: EditableAccess) => EditableAccess) => {
     setAccessByUser((current) => ({ ...current, [userId]: updater(getAccess(userId)) }));
@@ -88,7 +111,38 @@ export default function PermissionsAdmin() {
     updateAccess(userId, () => ({
       ...FULL_ACCESS_WITHOUT_PERMISSIONS,
       modules: [...FULL_ACCESS_WITHOUT_PERMISSIONS.modules],
+      subPermissions: { ...FULL_ACCESS_WITHOUT_PERMISSIONS.subPermissions },
     }));
+  };
+
+  const getSubPermissions = (access: EditableAccess, module: ModuleWithSubpermissions) =>
+    access.subPermissions[module] ?? [...MODULE_SUBPERMISSIONS[module]];
+
+  const toggleModule = (userId: string, module: ModuleKey, checked: boolean) => {
+    updateAccess(userId, (current) => {
+      const nextModules = checked
+        ? [...new Set([...current.modules, module])]
+        : current.modules.filter((item) => item !== module);
+      const nextSubPermissions = { ...current.subPermissions };
+
+      if (checked && module in MODULE_SUBPERMISSIONS) {
+        nextSubPermissions[module as ModuleWithSubpermissions] = [...MODULE_SUBPERMISSIONS[module as ModuleWithSubpermissions]];
+      }
+
+      return { ...current, modules: nextModules, subPermissions: nextSubPermissions };
+    });
+  };
+
+  const toggleSubPermission = (userId: string, module: ModuleWithSubpermissions, key: string, checked: boolean) => {
+    updateAccess(userId, (current) => {
+      const currentKeys = getSubPermissions(current, module);
+      const nextKeys = checked ? [...new Set([...currentKeys, key])] : currentKeys.filter((item) => item !== key);
+      return {
+        ...current,
+        modules: current.modules.includes(module) ? current.modules : [...current.modules, module],
+        subPermissions: { ...current.subPermissions, [module]: nextKeys },
+      };
+    });
   };
 
   const save = async (profile: ProfileRow) => {
@@ -98,6 +152,7 @@ export default function PermissionsAdmin() {
     const { error } = await supabase.from('user_module_permissions').upsert({
       user_id: profile.id,
       modules: access.modules,
+      sub_permissions: access.subPermissions,
       can_receive_tickets: access.canReceiveTickets,
       can_view_restricted_tutorials: access.canViewRestrictedTutorials,
     });
@@ -121,14 +176,36 @@ export default function PermissionsAdmin() {
                 <div className="permissions-admin__identity">
                   <strong>{profile.nombre_completo || 'Usuario sin nombre'}</strong><span>{profile.rol || 'Sin rol'}</span>
                 </div>
-                <div className="permissions-admin__modules">
-                  {MANAGEABLE_MODULE_KEYS.map((key) => (
-                    <label key={key}>
-                      <input type="checkbox" checked={access.modules.includes(key)} onChange={(event) => updateAccess(profile.id, (current) => ({ ...current, modules: event.target.checked ? [...new Set([...current.modules, key])] : current.modules.filter((module) => module !== key) }))} />
-                      <span>{MODULE_LABELS[key]}</span>
-                    </label>
-                  ))}
-                </div>
+                <details className="permissions-admin__details">
+                  <summary>Módulos y subpermisos</summary>
+                  <div className="permissions-admin__modules">
+                    {MANAGEABLE_MODULE_KEYS.map((key) => {
+                      const hasSubPermissions = key in MODULE_SUBPERMISSIONS;
+                      return (
+                        <div className="permissions-admin__module-group" key={key}>
+                          <label>
+                            <input type="checkbox" checked={access.modules.includes(key)} onChange={(event) => toggleModule(profile.id, key, event.target.checked)} />
+                            <span>{MODULE_LABELS[key]}</span>
+                          </label>
+                          {hasSubPermissions && access.modules.includes(key) ? (
+                            <div className="permissions-admin__submodules">
+                              {(MODULE_SUBPERMISSIONS[key as ModuleWithSubpermissions] as readonly string[]).map((subKey) => (
+                                <label key={subKey}>
+                                  <input
+                                    type="checkbox"
+                                    checked={getSubPermissions(access, key as ModuleWithSubpermissions).includes(subKey)}
+                                    onChange={(event) => toggleSubPermission(profile.id, key as ModuleWithSubpermissions, subKey, event.target.checked)}
+                                  />
+                                  <span>{SUBPERMISSION_LABELS[key as ModuleWithSubpermissions][subKey]}</span>
+                                </label>
+                              ))}
+                            </div>
+                          ) : null}
+                        </div>
+                      );
+                    })}
+                  </div>
+                </details>
                 <div className="permissions-admin__capabilities">
                   <label><input type="checkbox" checked={access.canReceiveTickets} onChange={(event) => updateAccess(profile.id, (current) => ({ ...current, canReceiveTickets: event.target.checked }))} /> Puede recibir tickets</label>
                   <label><input type="checkbox" checked={access.canViewRestrictedTutorials} onChange={(event) => updateAccess(profile.id, (current) => ({ ...current, canViewRestrictedTutorials: event.target.checked }))} /> Puede ver tutoriales restringidos</label>

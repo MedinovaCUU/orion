@@ -19,6 +19,27 @@ export const DEFAULT_MODULES: ModuleKey[] = ['tickets', 'tutoriales'];
 export const PERMISSIONS_OWNER_USER_IDS = ['2a87dde5-76ef-4365-8690-870efc7d9d82'] as const;
 export const PERMISSIONS_OWNER_EMAILS = ['rmontanez@biosystems.com.mx'] as const;
 
+export const MODULE_SUBPERMISSIONS = {
+  trazabilidad: ['tracking', 'eventos_refacciones', 'analitica'],
+  refacciones: ['solicitud', 'catalogo', 'historial'],
+} as const;
+
+export type ModuleWithSubpermissions = keyof typeof MODULE_SUBPERMISSIONS;
+export type SubPermissionKey = (typeof MODULE_SUBPERMISSIONS)[ModuleWithSubpermissions][number];
+
+export const SUBPERMISSION_LABELS: Record<ModuleWithSubpermissions, Record<string, string>> = {
+  trazabilidad: {
+    tracking: 'Tracking de paquetería',
+    eventos_refacciones: 'Eventos de refacciones',
+    analitica: 'Analítica y tableros',
+  },
+  refacciones: {
+    solicitud: 'Solicitud y destino',
+    catalogo: 'Catálogo y partidas',
+    historial: 'Seguimiento histórico',
+  },
+};
+
 export const MODULE_LABELS: Record<ModuleKey, string> = {
   tickets: 'Tickets',
   servicios: 'Planeación',
@@ -38,12 +59,14 @@ export interface UserAccess {
   modules: ModuleKey[];
   canReceiveTickets: boolean;
   canViewRestrictedTutorials: boolean;
+  subPermissions: Partial<Record<ModuleWithSubpermissions, string[]>>;
 }
 
 export const DEFAULT_USER_ACCESS: UserAccess = {
   modules: DEFAULT_MODULES,
   canReceiveTickets: false,
   canViewRestrictedTutorials: false,
+  subPermissions: {},
 };
 
 export const coerceModules = (value: unknown): ModuleKey[] => {
@@ -52,6 +75,25 @@ export const coerceModules = (value: unknown): ModuleKey[] => {
     typeof module === 'string' && MODULE_KEYS.includes(module as ModuleKey),
   );
 };
+
+export const coerceSubPermissions = (value: unknown): UserAccess['subPermissions'] => {
+  if (!value || typeof value !== 'object' || Array.isArray(value)) return {};
+  return Object.entries(value as Record<string, unknown>).reduce<UserAccess['subPermissions']>((acc, [module, rawKeys]) => {
+    if (!(module in MODULE_SUBPERMISSIONS) || !Array.isArray(rawKeys)) return acc;
+    const moduleKey = module as ModuleWithSubpermissions;
+    const allowed = MODULE_SUBPERMISSIONS[moduleKey] as readonly string[];
+    acc[moduleKey] = rawKeys.filter((key): key is string => typeof key === 'string' && allowed.includes(key));
+    return acc;
+  }, {});
+};
+
+export const getModuleSubPermissions = (access: UserAccess, module: ModuleWithSubpermissions) => {
+  const configured = access.subPermissions[module];
+  return configured ?? [...MODULE_SUBPERMISSIONS[module]];
+};
+
+export const canAccessSubPermission = (access: UserAccess, module: ModuleWithSubpermissions, key: string) =>
+  access.modules.includes(module) && getModuleSubPermissions(access, module).includes(key);
 
 export const canManageUserPermissions = (userId?: string | null, email?: string | null) => {
   const normalizedEmail = email?.trim().toLocaleLowerCase('en-US') || '';
