@@ -56,6 +56,14 @@ interface SimulatedCity {
 }
 
 const GLOBE_RADIUS = 2;
+const WORLD_POINT_RADIUS = GLOBE_RADIUS + 0.002;
+const MEXICO_POINT_RADIUS = GLOBE_RADIUS + 0.003;
+const COUNTRY_BORDER_RADIUS = GLOBE_RADIUS + 0.004;
+const STATE_BORDER_RADIUS = GLOBE_RADIUS + 0.005;
+const MUNICIPAL_BORDER_RADIUS = GLOBE_RADIUS + 0.006;
+const CITY_MARKER_RADIUS = GLOBE_RADIUS + 0.007;
+const EQUIPMENT_MARKER_RADIUS = GLOBE_RADIUS + 0.008;
+const NETWORK_ANCHOR_RADIUS = GLOBE_RADIUS + 0.009;
 const CLOSE_VIEW_DISTANCE = 3.65;
 const FOCUS_COLLAPSE_DISTANCE = 4.15;
 const MIN_CAMERA_DISTANCE = 2.018;
@@ -351,7 +359,11 @@ function WorldGeography() {
               continue;
             }
 
-            const point = latLngToVector(latitude, longitude, GLOBE_RADIUS + (isMexico ? 0.04 : 0.025));
+            const point = latLngToVector(
+              latitude,
+              longitude,
+              isMexico ? MEXICO_POINT_RADIUS : WORLD_POINT_RADIUS,
+            );
             const target = isMexico ? mexicoPositions : worldPositions;
             target.push(point.x, point.y, point.z);
           }
@@ -368,7 +380,7 @@ function WorldGeography() {
     return {
       worldPoints: createPointGeometry(worldPositions),
       mexicoPoints: createPointGeometry(mexicoPositions),
-      worldBorders: createBorderGeometry(WORLD_BORDER_LINES, GLOBE_RADIUS + 0.075),
+      worldBorders: createBorderGeometry(WORLD_BORDER_LINES, COUNTRY_BORDER_RADIUS),
     };
   }, []);
 
@@ -435,7 +447,7 @@ function MexicoAdministrativeGeography({ focusedCluster }: { focusedCluster: Cit
 
     loadAdministrativeTopology('geography/mexico/states.json', controller.signal)
       .then((topology) => {
-        setStateGeometry(createAdministrativeBorderGeometry(topology, GLOBE_RADIUS + 0.112));
+        setStateGeometry(createAdministrativeBorderGeometry(topology, STATE_BORDER_RADIUS));
         setStateFeatures(getAdministrativeFeatures(topology));
       })
       .catch((error: unknown) => {
@@ -473,7 +485,7 @@ function MexicoAdministrativeGeography({ focusedCluster }: { focusedCluster: Cit
       controller.signal,
     )
       .then((topology) => {
-        const geometry = createAdministrativeBorderGeometry(topology, GLOBE_RADIUS + 0.124);
+        const geometry = createAdministrativeBorderGeometry(topology, MUNICIPAL_BORDER_RADIUS);
         municipalityGeometryCacheRef.current.set(focusedStateCode, geometry);
         setMunicipalityLayer({ stateCode: focusedStateCode, geometry });
       })
@@ -588,7 +600,7 @@ function Atmosphere() {
   });
 
   return (
-    <mesh scale={1.045}>
+    <mesh scale={1.006}>
       <sphereGeometry args={[GLOBE_RADIUS, 96, 96]} />
       <shaderMaterial
         ref={materialRef}
@@ -736,7 +748,7 @@ function CityCluster({
   const nodeMaterialRef = useRef<THREE.MeshBasicMaterial | null>(null);
   const hoverLeaveTimeoutRef = useRef<number | null>(null);
   const position = useMemo(
-    () => latLngToVector(cluster.latitude, cluster.longitude, GLOBE_RADIUS + 0.035),
+    () => latLngToVector(cluster.latitude, cluster.longitude, CITY_MARKER_RADIUS),
     [cluster.latitude, cluster.longitude],
   );
   const equipmentLayout = useMemo(() => {
@@ -752,7 +764,7 @@ function CityCluster({
       const equipment = cluster.equipments[index];
       const latitude = equipment?.latitude ?? cluster.latitude;
       const longitude = equipment?.longitude ?? cluster.longitude;
-      const anchor = latLngToVector(latitude, longitude, GLOBE_RADIUS + 0.058);
+      const anchor = latLngToVector(latitude, longitude, EQUIPMENT_MARKER_RADIUS);
       const coordinateKey = `${latitude.toFixed(5)}:${longitude.toFixed(5)}`;
       const occurrenceIndex = coordinateOccurrences.get(coordinateKey) || 0;
       coordinateOccurrences.set(coordinateKey, occurrenceIndex + 1);
@@ -783,7 +795,7 @@ function CityCluster({
         }
       }
 
-      const visualPosition = latLngToVector(visualLatitude, visualLongitude, GLOBE_RADIUS + 0.058);
+      const visualPosition = latLngToVector(visualLatitude, visualLongitude, EQUIPMENT_MARKER_RADIUS);
 
       return { anchor, position: visualPosition };
     });
@@ -982,6 +994,7 @@ function CityCluster({
 }
 
 function NetworkArcs({ clusters }: { clusters: CityClusterData[] }) {
+  const groupRef = useRef<THREE.Group | null>(null);
   const arcs = useMemo(() => {
     const mexicoClusters = clusters.filter((cluster) => !cluster.simulated).slice(0, 6);
     const globalClusters = clusters.filter((cluster) => cluster.simulated);
@@ -990,8 +1003,8 @@ function NetworkArcs({ clusters }: { clusters: CityClusterData[] }) {
       [globalClusters[(originIndex * 5 + 2) % globalClusters.length], globalClusters[(originIndex * 7 + 9) % globalClusters.length]]
         .filter(Boolean)
         .map((destination, destinationIndex) => {
-          const start = latLngToVector(origin.latitude, origin.longitude, GLOBE_RADIUS + 0.02);
-          const end = latLngToVector(destination.latitude, destination.longitude, GLOBE_RADIUS + 0.02);
+          const start = latLngToVector(origin.latitude, origin.longitude, NETWORK_ANCHOR_RADIUS);
+          const end = latLngToVector(destination.latitude, destination.longitude, NETWORK_ANCHOR_RADIUS);
           const midpoint = start.clone().add(end).normalize().multiplyScalar(GLOBE_RADIUS + 0.34 + destinationIndex * 0.08);
           const curve = new THREE.QuadraticBezierCurve3(start, midpoint, end);
           return {
@@ -1002,8 +1015,14 @@ function NetworkArcs({ clusters }: { clusters: CityClusterData[] }) {
     );
   }, [clusters]);
 
+  useFrame(({ camera }) => {
+    if (groupRef.current) {
+      groupRef.current.visible = camera.position.length() > STATE_VIEW_DISTANCE;
+    }
+  });
+
   return (
-    <>
+    <group ref={groupRef}>
       {arcs.map((arc, index) => (
         <Line
           key={arc.id}
@@ -1015,7 +1034,7 @@ function NetworkArcs({ clusters }: { clusters: CityClusterData[] }) {
           depthWrite={false}
         />
       ))}
-    </>
+    </group>
   );
 }
 
@@ -1119,7 +1138,7 @@ function GlobeScene({
       <WorldGeography />
       <MexicoAdministrativeGeography focusedCluster={focusedCluster} />
       <Atmosphere />
-      <NetworkArcs clusters={clusters} />
+      {focusedCluster ? null : <NetworkArcs clusters={clusters} />}
       {clusters.filter((cluster) => !focusedClusterId || cluster.id === focusedClusterId).map((cluster) => (
         <CityCluster
           key={cluster.id}
@@ -1202,7 +1221,7 @@ export default function GlobalEquipmentGlobe({
     <div className="equipment-globe">
       <Canvas
         dpr={[1, 1.75]}
-        camera={{ position: MEXICO_CAMERA_POSITION, fov: 44, near: 0.1, far: 100 }}
+        camera={{ position: MEXICO_CAMERA_POSITION, fov: 44, near: 0.001, far: 100 }}
         gl={{ antialias: true, alpha: true, powerPreference: 'high-performance' }}
         onPointerMissed={() => {
           document.body.style.cursor = '';
