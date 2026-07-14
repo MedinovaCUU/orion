@@ -381,22 +381,23 @@ export default function Dashboard({ session, initialTab }: DashboardProps) {
 
       <div className={`card dashboard-card ${activeTab === 'trazabilidad' ? 'dashboard-card--traceability' : ''}`}>
         <Suspense fallback={<DashboardPanelFallback />}>
-          {activeTab === 'tickets' && canAccessTab('tickets') && <Tickets />}
-          {activeTab === 'servicios' && canAccessTab('servicios') && <Services />}
+          {activeTab === 'tickets' && canAccessTab('tickets') && <Tickets subPermissions={getModuleSubPermissions(userAccess, 'tickets')} />}
+          {activeTab === 'servicios' && canAccessTab('servicios') && <Services subPermissions={getModuleSubPermissions(userAccess, 'servicios')} />}
           {activeTab === 'asesoria' && canAccessTab('asesoria') && (
             <EscalatedAdvisory
               onNotificationCountChange={setAdvisoryUnreadCount}
               requestedAdvisoryId={requestedAdvisoryId}
+              subPermissions={getModuleSubPermissions(userAccess, 'asesoria')}
             />
           )}
-          {activeTab === 'monitoreo' && canAccessTab('monitoreo') && <EquipmentMonitoring />}
+          {activeTab === 'monitoreo' && canAccessTab('monitoreo') && <EquipmentMonitoring subPermissions={getModuleSubPermissions(userAccess, 'monitoreo')} />}
           {activeTab === 'trazabilidad' && canAccessTab('trazabilidad') && <Traceability subPermissions={getModuleSubPermissions(userAccess, 'trazabilidad')} />}
           {activeTab === 'refacciones' && canAccessTab('refacciones') && <Refacciones subPermissions={getModuleSubPermissions(userAccess, 'refacciones')} />}
-          {activeTab === 'inventario' && canAccessTab('inventario') && <Inventario />}
+          {activeTab === 'inventario' && canAccessTab('inventario') && <Inventario subPermissions={getModuleSubPermissions(userAccess, 'inventario')} />}
           {activeTab === 'tutoriales' && canAccessTab('tutoriales') && <Tutoriales canViewRestricted={userRole === 'admin' || userAccess.canViewRestrictedTutorials} />}
-          {activeTab === 'pno' && canAccessTab('pno') && <PNO />}
+          {activeTab === 'pno' && canAccessTab('pno') && <PNO subPermissions={getModuleSubPermissions(userAccess, 'pno')} />}
           {activeTab === 'equipos' && canAccessTab('equipos') && <Equipos />}
-          {activeTab === 'dri' && canAccessTab('dri') && <DriPage />}
+          {activeTab === 'dri' && canAccessTab('dri') && <DriPage subPermissions={getModuleSubPermissions(userAccess, 'dri')} />}
           {activeTab === 'permisos' && canAccessTab('permisos') && canManagePermissions && <PermissionsAdmin />}
         </Suspense>
       </div>

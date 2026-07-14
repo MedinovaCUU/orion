@@ -738,7 +738,9 @@ const attemptSupremoClientLaunch = async (launchUrl: string) =>
     }, SUPREMO_LAUNCH_TIMEOUT_MS);
   });
 
-export default function EquipmentMonitoring() {
+export default function EquipmentMonitoring({ subPermissions = ['mapa', 'alertas'] }: { subPermissions?: string[] }) {
+  const canViewMap = subPermissions.includes('mapa');
+  const canViewAlerts = subPermissions.includes('alertas');
   const mountedRef = useRef(true);
   const refreshInFlightRef = useRef<Promise<void> | null>(null);
   const mapStageRef = useRef<HTMLDivElement | null>(null);
@@ -1785,7 +1787,7 @@ export default function EquipmentMonitoring() {
         está en cache, Orion usa temporalmente el centro de su estado como respaldo.
       </div>
 
-      <section className="equipment-monitor__main-grid">
+      {canViewMap ? <section className="equipment-monitor__main-grid">
         <div className="equipment-monitor__map-panel">
           <div className="equipment-monitor__map-header">
             <div>
@@ -2308,9 +2310,9 @@ export default function EquipmentMonitoring() {
             </div>
           )}
         </aside>
-      </section>
+      </section> : null}
 
-      <section className="equipment-monitor__lists-grid">
+      {canViewAlerts ? <section className="equipment-monitor__lists-grid">
         <div className="equipment-monitor__list-panel">
           <div className="equipment-monitor__list-header">
             <h3>Alertas activas</h3>
@@ -2362,7 +2364,7 @@ export default function EquipmentMonitoring() {
             <div className="equipment-monitor__empty-state">Todos los equipos visibles hoy ya encontraron un punto en el mapa.</div>
           )}
         </div>
-      </section>
+      </section> : null}
     </div>
   );
 }

@@ -547,7 +547,10 @@ const buildFullRandomDemoFormState = (
   };
 };
 
-export default function DriDashboard() {
+export default function DriDashboard({ subPermissions = ['captura', 'grafo', 'diagnostico'] }: { subPermissions?: string[] }) {
+  const canCapture = subPermissions.includes('captura');
+  const canViewGraph = subPermissions.includes('grafo');
+  const canViewDiagnosis = subPermissions.includes('diagnostico');
   const [catalog, setCatalog] = useState<DriCatalog | null>(null);
   const [catalogSource, setCatalogSource] = useState('Cargando');
   const [catalogWarning, setCatalogWarning] = useState<string | null>(null);
@@ -1352,7 +1355,7 @@ export default function DriDashboard() {
       {persistWarning ? <div className="dri-alert dri-alert--warning">{persistWarning}</div> : null}
 
       <div className="dri-stack">
-        <DriInputPanel
+        {canCapture ? <DriInputPanel
           form={form}
           filteredReagents={filteredReagents}
           qcReferenceOptions={qcReferenceOptions}
@@ -1391,9 +1394,9 @@ export default function DriDashboard() {
             setSelectedNodeIds([]);
             setForm(createInitialFormState());
           }}
-        />
+        /> : null}
 
-        <section className="dri-panel dri-panel--graph">
+        {canViewGraph ? <section className="dri-panel dri-panel--graph">
           <div className="dri-panel__head">
             <div>
               <span className="dri-panel__eyebrow">Grafo de reactivos y factores</span>
@@ -1535,9 +1538,9 @@ export default function DriDashboard() {
           ) : (
             <div className="dri-empty-state">Selecciona fallidas y correctas, luego genera el diagnóstico diferencial.</div>
           )}
-        </section>
+        </section> : null}
 
-        <section className="dri-panel dri-panel--side">
+        {canViewDiagnosis ? <section className="dri-panel dri-panel--side">
           <div className="dri-panel__head">
             <div>
               <span className="dri-panel__eyebrow">Lectura guiada del caso</span>
@@ -1574,9 +1577,9 @@ export default function DriDashboard() {
             <strong>{fixtureResults.filter((result) => result.passed).length} / {fixtureResults.length} escenarios</strong>
             <p>Los fixtures cubren 340 nm, R2, dilución, temperatura, control, linealidad, interferencias y pruebas de servicio.</p>
           </div>
-        </section>
+        </section> : null}
 
-        {analysis ? (
+        {canViewDiagnosis && analysis ? (
           <DriEvidencePanel evidenceRows={analysis.evidenceRows} logs={analysis.logs} history={history} />
         ) : null}
       </div>

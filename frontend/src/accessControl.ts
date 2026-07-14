@@ -20,14 +20,36 @@ export const PERMISSIONS_OWNER_USER_IDS = ['2a87dde5-76ef-4365-8690-870efc7d9d82
 export const PERMISSIONS_OWNER_EMAILS = ['rmontanez@biosystems.com.mx'] as const;
 
 export const MODULE_SUBPERMISSIONS = {
+  tickets: ['crear', 'seguimiento', 'diagnostico'],
+  servicios: ['planeacion', 'viajes', 'reportes'],
+  asesoria: ['crear', 'bandeja', 'metricas'],
   trazabilidad: ['tracking', 'eventos_refacciones', 'analitica'],
   refacciones: ['solicitud', 'catalogo', 'historial'],
+  inventario: ['captura', 'historial'],
+  pno: ['consulta', 'edicion'],
+  monitoreo: ['mapa', 'alertas'],
+  dri: ['captura', 'grafo', 'diagnostico'],
 } as const;
 
 export type ModuleWithSubpermissions = keyof typeof MODULE_SUBPERMISSIONS;
 export type SubPermissionKey = (typeof MODULE_SUBPERMISSIONS)[ModuleWithSubpermissions][number];
 
 export const SUBPERMISSION_LABELS: Record<ModuleWithSubpermissions, Record<string, string>> = {
+  tickets: {
+    crear: 'Crear tickets',
+    seguimiento: 'Consultar tickets',
+    diagnostico: 'Diagnosticar y cerrar',
+  },
+  servicios: {
+    planeacion: 'Planeación de servicios',
+    viajes: 'Solicitudes de viaje',
+    reportes: 'Reportes de servicio',
+  },
+  asesoria: {
+    crear: 'Escalar asesorías',
+    bandeja: 'Bandeja y seguimiento',
+    metricas: 'Métricas y exportaciones',
+  },
   trazabilidad: {
     tracking: 'Tracking de paquetería',
     eventos_refacciones: 'Eventos de refacciones',
@@ -37,6 +59,23 @@ export const SUBPERMISSION_LABELS: Record<ModuleWithSubpermissions, Record<strin
     solicitud: 'Solicitud y destino',
     catalogo: 'Catálogo y partidas',
     historial: 'Seguimiento histórico',
+  },
+  inventario: {
+    captura: 'Captura de conteos',
+    historial: 'Historial de conteos',
+  },
+  pno: {
+    consulta: 'Consultar biblioteca',
+    edicion: 'Crear y editar PNO',
+  },
+  monitoreo: {
+    mapa: 'Mapa y detalle de equipos',
+    alertas: 'Alertas y pendientes',
+  },
+  dri: {
+    captura: 'Captura y evidencia',
+    grafo: 'Grafo de relaciones',
+    diagnostico: 'Hipótesis y diagnóstico',
   },
 };
 

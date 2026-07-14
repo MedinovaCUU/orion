@@ -329,7 +329,10 @@ const TicketFalconAlertsBridge = React.memo(function TicketFalconAlertsBridge({
   return <FalconSlaAlerts contextLabel={contextLabel} entries={alertEntries} />;
 });
 
-export default function Tickets() {
+export default function Tickets({ subPermissions = ['crear', 'seguimiento', 'diagnostico'] }: { subPermissions?: string[] }) {
+  const canCreateTickets = subPermissions.includes('crear');
+  const canViewTickets = subPermissions.includes('seguimiento');
+  const canDiagnoseTickets = subPermissions.includes('diagnostico');
   const [tickets, setTickets] = useState<TicketRecord[]>([]);
   const [loading, setLoading] = useState(true);
   const [asunto, setAsunto] = useState('');
@@ -685,7 +688,7 @@ export default function Tickets() {
 
   return (
     <div className="tickets-shell">
-      <div className="card" style={{ background: 'var(--bg-secondary)', border: 'none', marginBottom: '1rem' }}>
+      {canCreateTickets ? <div className="card" style={{ background: 'var(--bg-secondary)', border: 'none', marginBottom: '1rem' }}>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '0.28rem', marginBottom: '0.35rem' }}>
           <h3 style={{ margin: 0 }}>Abrir un Nuevo Ticket</h3>
           {ocrBusy ? (
@@ -805,9 +808,9 @@ export default function Tickets() {
             </button>
           </div>
         </form>
-      </div>
+      </div> : null}
 
-      <div className="card" style={{ background: 'var(--bg-secondary)', border: 'none' }}>
+      {canViewTickets ? <div className="card" style={{ background: 'var(--bg-secondary)', border: 'none' }}>
         <h3 style={{ marginBottom: '1rem' }}>Mis Tickets de Soporte</h3>
       {loading ? (
         <p>Cargando tickets...</p>
@@ -906,7 +909,7 @@ export default function Tickets() {
                     </button>
                   )}
               
-                  {ticket.estado !== 'cerrado' && (
+                  {canDiagnoseTickets && ticket.estado !== 'cerrado' && (
                       <div className="tickets-list-card__footer">
                           <button 
                              className="button-primary" 
@@ -928,7 +931,7 @@ export default function Tickets() {
           })}
         </ul>
       )}
-      </div>
+      </div> : null}
 
       {travelPlannerOpen && (
         <TravelPlannerModal
@@ -945,7 +948,7 @@ export default function Tickets() {
 
       <TicketFalconAlertsBridge contextLabel="Mis Tickets" entries={trackedFalconTickets} />
 
-      {cerrarModalOpen && selectedTicket && createPortal(
+      {canDiagnoseTickets && cerrarModalOpen && selectedTicket && createPortal(
         <div 
             style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(0,0,0,0.8)', display: 'flex', justifyContent: 'center', alignItems: 'center', zIndex: 1000, padding: '1rem', backdropFilter: 'blur(5px)' }}
             onClick={() => setCerrarModalOpen(false)}

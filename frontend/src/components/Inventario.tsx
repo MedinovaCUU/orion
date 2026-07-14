@@ -232,7 +232,9 @@ const reindexLines = (lines: InventoryDraftLine[]) =>
     folio: index + 1,
   }));
 
-export default function Inventario() {
+export default function Inventario({ subPermissions = ['captura', 'historial'] }: { subPermissions?: string[] }) {
+  const canCaptureInventory = subPermissions.includes('captura');
+  const canViewInventoryHistory = subPermissions.includes('historial');
   const codeInputRef = useRef<HTMLInputElement | null>(null);
   const [profile, setProfile] = useState<ProfileSummary | null>(null);
   const [catalog, setCatalog] = useState<InventoryCatalogEntry[]>([]);
@@ -841,6 +843,7 @@ export default function Inventario() {
       )}
 
       <div className="inventory-layout">
+        {canCaptureInventory ? <>
         <section className="inventory-panel inventory-panel--session">
           <div className="inventory-panel__header">
             <div>
@@ -1138,7 +1141,9 @@ export default function Inventario() {
           </div>
         </section>
 
-        <section className="inventory-panel inventory-panel--history">
+        </> : null}
+
+        {canViewInventoryHistory ? <section className="inventory-panel inventory-panel--history">
           <div className="inventory-panel__header">
             <div>
               <span className="inventory-panel__eyebrow">Historial reciente</span>
@@ -1210,7 +1215,7 @@ export default function Inventario() {
               })}
             </div>
           )}
-        </section>
+        </section> : null}
       </div>
 
       <datalist id="inventory-catalog-list">

@@ -176,9 +176,7 @@ export default function PermissionsAdmin() {
                 <div className="permissions-admin__identity">
                   <strong>{profile.nombre_completo || 'Usuario sin nombre'}</strong><span>{profile.rol || 'Sin rol'}</span>
                 </div>
-                <details className="permissions-admin__details">
-                  <summary>Módulos y subpermisos</summary>
-                  <div className="permissions-admin__modules">
+                <div className="permissions-admin__modules">
                     {MANAGEABLE_MODULE_KEYS.map((key) => {
                       const hasSubPermissions = key in MODULE_SUBPERMISSIONS;
                       return (
@@ -204,8 +202,7 @@ export default function PermissionsAdmin() {
                         </div>
                       );
                     })}
-                  </div>
-                </details>
+                </div>
                 <div className="permissions-admin__capabilities">
                   <label><input type="checkbox" checked={access.canReceiveTickets} onChange={(event) => updateAccess(profile.id, (current) => ({ ...current, canReceiveTickets: event.target.checked }))} /> Puede recibir tickets</label>
                   <label><input type="checkbox" checked={access.canViewRestrictedTutorials} onChange={(event) => updateAccess(profile.id, (current) => ({ ...current, canViewRestrictedTutorials: event.target.checked }))} /> Puede ver tutoriales restringidos</label>
