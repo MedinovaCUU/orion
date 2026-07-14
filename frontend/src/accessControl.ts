@@ -16,6 +16,7 @@ export const MODULE_KEYS = [
 export type ModuleKey = (typeof MODULE_KEYS)[number];
 
 export const DEFAULT_MODULES: ModuleKey[] = ['tickets', 'tutoriales'];
+export const PERMISSIONS_OWNER_USER_IDS = ['2a87dde5-76ef-4365-8690-870efc7d9d82'] as const;
 
 export const MODULE_LABELS: Record<ModuleKey, string> = {
   tickets: 'Tickets',
@@ -50,3 +51,6 @@ export const coerceModules = (value: unknown): ModuleKey[] => {
     typeof module === 'string' && MODULE_KEYS.includes(module as ModuleKey),
   );
 };
+
+export const canManageUserPermissions = (userId?: string | null) =>
+  Boolean(userId && PERMISSIONS_OWNER_USER_IDS.includes(userId as (typeof PERMISSIONS_OWNER_USER_IDS)[number]));

@@ -3,7 +3,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import { supabase } from '../supabaseClient';
 import BrandLockup from './BrandLockup';
 import EmployeeCredentialModal, { type EmployeeCredentialProfile } from './EmployeeCredentialModal';
-import { DEFAULT_USER_ACCESS, MODULE_KEYS, coerceModules, type ModuleKey, type UserAccess } from '../accessControl';
+import { DEFAULT_USER_ACCESS, MODULE_KEYS, canManageUserPermissions, coerceModules, type ModuleKey, type UserAccess } from '../accessControl';
 import './Dashboard.css';
 
 const Tickets = lazy(() => import('./Tickets'));
@@ -110,8 +110,9 @@ export default function Dashboard({ session, initialTab }: DashboardProps) {
   })();
 
   const isStaffRole = (role: string | null) => role === 'admin' || role === 'tecnico';
+  const canManagePermissions = canManageUserPermissions(session?.user?.id);
   const allowedTabs: DashboardTabKey[] = userRole === 'admin'
-    ? [...DASHBOARD_TAB_KEYS]
+    ? DASHBOARD_TAB_KEYS.filter((tab) => tab !== 'permisos' || canManagePermissions)
     : userAccess.modules.filter((module): module is DashboardTabKey => DASHBOARD_TAB_KEYS.includes(module as DashboardTabKey));
   const canAccessTab = (tab: DashboardTabKey) => allowedTabs.includes(tab);
   const welcomeLabel = viewerProfile?.nombre_completo?.trim() || session?.user?.email?.trim() || 'usuario';
@@ -383,7 +384,7 @@ export default function Dashboard({ session, initialTab }: DashboardProps) {
           {activeTab === 'pno' && canAccessTab('pno') && <PNO />}
           {activeTab === 'equipos' && canAccessTab('equipos') && <Equipos />}
           {activeTab === 'dri' && canAccessTab('dri') && <DriPage />}
-          {activeTab === 'permisos' && canAccessTab('permisos') && userRole === 'admin' && <PermissionsAdmin />}
+          {activeTab === 'permisos' && canAccessTab('permisos') && canManagePermissions && <PermissionsAdmin />}
         </Suspense>
       </div>
 
