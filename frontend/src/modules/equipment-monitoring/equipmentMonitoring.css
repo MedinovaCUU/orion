@@ -505,7 +505,9 @@ html.equipment-monitor__body-scroll-lock {
   border: 1px solid rgba(255, 255, 255, 0.3);
   border-radius: 10px;
   color: #f5ffff;
-  pointer-events: none;
+  cursor: default;
+  pointer-events: auto;
+  user-select: text;
   background: rgba(4, 20, 30, 0.94);
   box-shadow:
     0 10px 26px rgba(0, 8, 16, 0.38),

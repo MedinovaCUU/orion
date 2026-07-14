@@ -79,7 +79,20 @@ const FOCUS_COLLAPSE_DISTANCE = 4.15;
 const MIN_CAMERA_DISTANCE = 2.018;
 const STATE_VIEW_DISTANCE = 6.45;
 const MUNICIPAL_VIEW_DISTANCE = 2.72;
-const MEXICO_CAMERA_POSITION: [number, number, number] = [-0.728, 1.47, 3.194];
+const MEXICO_CAMERA_POSITION: [number, number, number] = [-0.646, 1.304, 2.832];
+const EQUIPMENT_NODE_RADIUS_PIXELS = {
+  near: 3.8,
+  far: 5.6,
+  selectedBoost: 1.1,
+  hit: 18,
+  selectedHit: 21,
+};
+const CITY_NODE_RADIUS_PIXELS = {
+  near: 3.35,
+  baseFar: 4.8,
+  countBoost: 2.8,
+  hit: 17,
+};
 const STATUS_TONE_ORDER: GlobeNodeTone[] = ['fatal', 'warning', 'ok', 'supremo', 'muted'];
 
 const TONE_COLORS: Record<GlobeNodeTone, string> = {
@@ -824,9 +837,17 @@ function EquipmentPulseNode({
       0,
       1,
     );
-    const visualRadiusPixels = THREE.MathUtils.lerp(2.1, 3.7, altitudeFactor) + (selected ? 0.9 : 0);
+    const visualRadiusPixels =
+      THREE.MathUtils.lerp(
+        EQUIPMENT_NODE_RADIUS_PIXELS.near,
+        EQUIPMENT_NODE_RADIUS_PIXELS.far,
+        altitudeFactor,
+      ) + (selected ? EQUIPMENT_NODE_RADIUS_PIXELS.selectedBoost : 0);
     visualRef.current.scale.setScalar(worldUnitsPerPixel * visualRadiusPixels);
-    hitTargetRef.current.scale.setScalar(worldUnitsPerPixel * (selected ? 17 : 14));
+    hitTargetRef.current.scale.setScalar(
+      worldUnitsPerPixel *
+        (selected ? EQUIPMENT_NODE_RADIUS_PIXELS.selectedHit : EQUIPMENT_NODE_RADIUS_PIXELS.hit),
+    );
     if (!ringRef.current) {
       return;
     }
@@ -871,7 +892,19 @@ function EquipmentPulseNode({
         ) : null}
       </group>
       {selected && equipment ? (
-        <Html center className="equipment-globe__equipment-tooltip" zIndexRange={[30, 0]}>
+        <Html
+          center
+          className="equipment-globe__equipment-tooltip"
+          zIndexRange={[30, 0]}
+          onPointerOver={(event) => {
+            event.stopPropagation();
+            onHoverChange(true);
+          }}
+          onPointerOut={(event) => {
+            event.stopPropagation();
+            onHoverChange(false);
+          }}
+        >
           <small className="equipment-globe__equipment-location">
             {equipment.municipality || equipment.city || equipment.state || 'Ubicación sin municipio'}
           </small>
@@ -1012,10 +1045,18 @@ function CityCluster({
         0,
         1,
       );
-      const farRadiusPixels = 4 + Math.min(Math.sqrt(cluster.count) * 0.275, 2.5);
-      const visualRadiusPixels = THREE.MathUtils.lerp(2.1, farRadiusPixels, distanceFactor);
+      const farRadiusPixels =
+        CITY_NODE_RADIUS_PIXELS.baseFar +
+        Math.min(Math.sqrt(cluster.count) * 0.24, CITY_NODE_RADIUS_PIXELS.countBoost);
+      const visualRadiusPixels = THREE.MathUtils.lerp(
+        CITY_NODE_RADIUS_PIXELS.near,
+        farRadiusPixels,
+        distanceFactor,
+      );
       nodeVisualRef.current.scale.setScalar((worldUnitsPerPixel * visualRadiusPixels) / nodeSize);
-      nodeHitTargetRef.current.scale.setScalar((worldUnitsPerPixel * 15) / (nodeSize * 1.65));
+      nodeHitTargetRef.current.scale.setScalar(
+        (worldUnitsPerPixel * CITY_NODE_RADIUS_PIXELS.hit) / (nodeSize * 1.65),
+      );
     }
     if (nodeMaterialRef.current && toneColors.length) {
       if (toneColors.length === 1) {
@@ -1136,16 +1177,12 @@ function CityCluster({
             </group>
           </>
         ) : null}
-        {expansionMode === 'preview' || (expansionMode === 'focused' && !selected) ? (
+        {expansionMode === 'preview' && !selected ? (
           <Html center className="equipment-globe__city-tooltip" zIndexRange={[20, 0]}>
             <strong>{cluster.city}</strong>
             <span>{cluster.country} · {cluster.count} equipos</span>
             <small>
-              {cluster.simulated
-                ? 'Cobertura simulada'
-                : expansionMode === 'focused'
-                  ? 'Ubicación exacta · selecciona un equipo'
-                  : 'Haz clic para fijar la ciudad'}
+              {cluster.simulated ? 'Cobertura simulada' : 'Haz clic para fijar la ciudad'}
             </small>
             {cluster.tones.length > 1 ? <small>Estado mixto · colores en ciclo</small> : null}
           </Html>
