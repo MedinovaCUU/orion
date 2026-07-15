@@ -107,102 +107,6 @@ const TONE_COLORS: Record<GlobeNodeTone, string> = {
 const HEARTBEAT_TIME_UNIFORM = { value: 0 };
 const SELECTED_BILLBOARD_PROJECTED = new THREE.Vector3();
 
-const HEARTBEAT_PULSE_VERTEX_SHADER = `
-  uniform float uTime;
-  uniform float uSpeed;
-  uniform float uPhaseOffset;
-  uniform float uMinScale;
-  uniform float uMaxScale;
-  varying float vWave;
-  varying float vShimmer;
-  varying vec2 vUv;
-
-  float hash(vec3 value) {
-    return fract(sin(dot(value, vec3(12.9898, 78.233, 37.719))) * 43758.5453123);
-  }
-
-  void main() {
-    float phase = fract(hash(modelMatrix[3].xyz) + uPhaseOffset);
-    float wave = fract(uTime * uSpeed + phase);
-    float easedWave = smoothstep(0.0, 1.0, wave);
-    float scale = mix(uMinScale, uMaxScale, easedWave);
-    vec3 transformed = position * scale;
-
-    vWave = wave;
-    vShimmer = 0.82 + sin((uTime * 1.8 + phase * 6.28318)) * 0.18;
-    vUv = uv;
-    gl_Position = projectionMatrix * modelViewMatrix * vec4(transformed, 1.0);
-  }
-`;
-
-const HEARTBEAT_PULSE_FRAGMENT_SHADER = `
-  uniform vec3 uColor;
-  uniform float uOpacity;
-  varying float vWave;
-  varying float vShimmer;
-  varying vec2 vUv;
-
-  void main() {
-    vec2 centeredUv = vUv * 2.0 - 1.0;
-    float radius = length(centeredUv);
-    float edgeMask = smoothstep(0.16, 0.36, radius) * (1.0 - smoothstep(0.88, 1.02, radius));
-    float wavefront = exp(-pow((radius - (0.42 + vWave * 0.52)) / 0.12, 2.0));
-    float sparkle = 0.78 + 0.22 * sin(atan(centeredUv.y, centeredUv.x) * 7.0 + vWave * 10.0);
-    float fade = pow(1.0 - vWave, 0.72);
-    float ignition = smoothstep(0.0, 0.14, vWave);
-    float alpha = uOpacity * edgeMask * wavefront * fade * ignition * vShimmer * sparkle;
-    if (alpha < 0.015) discard;
-    gl_FragColor = vec4(uColor, alpha);
-  }
-`;
-
-const HEARTBEAT_AURA_VERTEX_SHADER = `
-  uniform float uTime;
-  uniform float uSpeed;
-  uniform float uPhaseOffset;
-  uniform float uBaseScale;
-  uniform float uScaleRange;
-  varying vec2 vUv;
-  varying float vBreath;
-  varying float vSpark;
-
-  float hash(vec3 value) {
-    return fract(sin(dot(value, vec3(12.9898, 78.233, 37.719))) * 43758.5453123);
-  }
-
-  void main() {
-    float phase = fract(hash(modelMatrix[3].xyz) + uPhaseOffset);
-    float breath = 0.5 + 0.5 * sin(uTime * uSpeed + phase * 6.28318);
-    float scale = uBaseScale + breath * uScaleRange;
-    vec3 transformed = position * scale;
-
-    vUv = uv;
-    vBreath = breath;
-    vSpark = 0.84 + 0.16 * sin(uTime * 4.2 + phase * 12.56636);
-    gl_Position = projectionMatrix * modelViewMatrix * vec4(transformed, 1.0);
-  }
-`;
-
-const HEARTBEAT_AURA_FRAGMENT_SHADER = `
-  uniform vec3 uColor;
-  uniform float uOpacity;
-  varying vec2 vUv;
-  varying float vBreath;
-  varying float vSpark;
-
-  void main() {
-    vec2 centeredUv = vUv * 2.0 - 1.0;
-    float radius = length(centeredUv);
-    float halo = pow(max(0.0, 1.0 - radius), 2.8);
-    float corona = exp(-pow((radius - (0.46 + vBreath * 0.08)) / 0.19, 2.0));
-    float shimmer = 0.82 + 0.18 * sin(atan(centeredUv.y, centeredUv.x) * 8.0 + vBreath * 6.28318);
-    float alpha = uOpacity * (halo * (0.34 + vBreath * 0.26) + corona * shimmer * 0.78) * vSpark;
-    alpha *= 1.0 - smoothstep(0.88, 1.05, radius);
-    if (alpha < 0.01) discard;
-    gl_FragColor = vec4(uColor, alpha);
-  }
-`;
-
 const TONE_LABELS: Record<GlobeNodeTone, string> = {
   fatal: 'Error fatal',
   warning: 'Warning activo',
@@ -930,98 +834,6 @@ function HeartbeatClock() {
   return null;
 }
 
-function HeartbeatPulse({
-  innerRadius,
-  outerRadius,
-  opacity,
-  speed,
-  phaseOffset,
-  minScale,
-  maxScale,
-}: {
-  innerRadius: number;
-  outerRadius: number;
-  opacity: number;
-  speed: number;
-  phaseOffset: number;
-  minScale: number;
-  maxScale: number;
-}) {
-  const uniforms = useMemo(
-    () => ({
-      uTime: HEARTBEAT_TIME_UNIFORM,
-      uColor: { value: new THREE.Color(TONE_COLORS.ok) },
-      uOpacity: { value: opacity },
-      uSpeed: { value: speed },
-      uPhaseOffset: { value: phaseOffset },
-      uMinScale: { value: minScale },
-      uMaxScale: { value: maxScale },
-    }),
-    [maxScale, minScale, opacity, phaseOffset, speed],
-  );
-
-  return (
-    <mesh renderOrder={12}>
-      <ringGeometry args={[innerRadius, outerRadius, 44]} />
-      <shaderMaterial
-        transparent
-        side={THREE.DoubleSide}
-        depthWrite={false}
-        blending={THREE.AdditiveBlending}
-        toneMapped={false}
-        uniforms={uniforms}
-        vertexShader={HEARTBEAT_PULSE_VERTEX_SHADER}
-        fragmentShader={HEARTBEAT_PULSE_FRAGMENT_SHADER}
-      />
-    </mesh>
-  );
-}
-
-function HeartbeatAura({
-  radius,
-  opacity,
-  baseScale,
-  scaleRange,
-  speed,
-  phaseOffset,
-}: {
-  radius: number;
-  opacity: number;
-  baseScale: number;
-  scaleRange: number;
-  speed: number;
-  phaseOffset: number;
-}) {
-  const uniforms = useMemo(
-    () => ({
-      uTime: HEARTBEAT_TIME_UNIFORM,
-      uColor: { value: new THREE.Color(TONE_COLORS.ok) },
-      uOpacity: { value: opacity },
-      uSpeed: { value: speed },
-      uPhaseOffset: { value: phaseOffset },
-      uBaseScale: { value: baseScale },
-      uScaleRange: { value: scaleRange },
-    }),
-    [baseScale, opacity, phaseOffset, scaleRange, speed],
-  );
-
-  return (
-    <mesh renderOrder={11}>
-      <circleGeometry args={[radius, 44]} />
-      <shaderMaterial
-        transparent
-        side={THREE.DoubleSide}
-        depthWrite={false}
-        blending={THREE.AdditiveBlending}
-        toneMapped={false}
-        uniforms={uniforms}
-        vertexShader={HEARTBEAT_AURA_VERTEX_SHADER}
-        fragmentShader={HEARTBEAT_AURA_FRAGMENT_SHADER}
-      />
-    </mesh>
-  );
-}
-
 function HeartbeatBeacon({
   radius,
   intensity = 'equipment',
@@ -1030,46 +842,62 @@ function HeartbeatBeacon({
   intensity?: 'equipment' | 'cluster';
 }) {
   const isCluster = intensity === 'cluster';
+  const ringRef = useRef<THREE.Mesh | null>(null);
+  const materialRef = useRef<THREE.MeshBasicMaterial | null>(null);
+
+  useFrame(() => {
+    if (!ringRef.current || !materialRef.current) {
+      return;
+    }
+
+    const wave = getHeartbeatWave(
+      HEARTBEAT_TIME_UNIFORM.value,
+      isCluster ? 0.07 : 0,
+    );
+    const travel = 1 - Math.pow(1 - wave.progress, 1.8);
+    const scale = 0.92 + travel * (isCluster ? 2.62 : 2.82);
+    ringRef.current.scale.setScalar(scale);
+    ringRef.current.visible = wave.opacity > 0.01;
+    materialRef.current.opacity = wave.opacity;
+  });
 
   return (
     <Billboard follow>
-      <HeartbeatAura
-        radius={radius * (isCluster ? 1.42 : 1.28)}
-        opacity={isCluster ? 0.54 : 0.62}
-        baseScale={isCluster ? 1.12 : 1.06}
-        scaleRange={isCluster ? 0.28 : 0.24}
-        speed={isCluster ? 2.05 : 2.35}
-        phaseOffset={isCluster ? 0.08 : 0.16}
-      />
-      <HeartbeatPulse
-        innerRadius={radius * 1.02}
-        outerRadius={radius * 1.84}
-        opacity={isCluster ? 0.96 : 0.92}
-        speed={isCluster ? 0.9 : 1.02}
-        phaseOffset={0}
-        minScale={0.72}
-        maxScale={isCluster ? 2.92 : 2.64}
-      />
-      <HeartbeatPulse
-        innerRadius={radius * 1.28}
-        outerRadius={radius * 2.08}
-        opacity={isCluster ? 0.44 : 0.38}
-        speed={isCluster ? 0.66 : 0.78}
-        phaseOffset={0.34}
-        minScale={0.94}
-        maxScale={isCluster ? 3.38 : 3.02}
-      />
-      <HeartbeatPulse
-        innerRadius={radius * 0.94}
-        outerRadius={radius * 1.42}
-        opacity={isCluster ? 0.34 : 0.3}
-        speed={isCluster ? 1.24 : 1.36}
-        phaseOffset={0.58}
-        minScale={0.82}
-        maxScale={isCluster ? 1.98 : 1.82}
-      />
+      <mesh ref={ringRef} renderOrder={12}>
+        <ringGeometry args={[radius * 1.04, radius * 1.24, 48]} />
+        <meshBasicMaterial
+          ref={materialRef}
+          color="#5dffe7"
+          transparent
+          side={THREE.DoubleSide}
+          depthTest={false}
+          depthWrite={false}
+          blending={THREE.AdditiveBlending}
+          toneMapped={false}
+        />
+      </mesh>
     </Billboard>
   );
+}
+
+function getHeartbeatImpulse(time: number, phaseOffset = 0) {
+  const cycle = ((time * 0.58 + phaseOffset) % 1 + 1) % 1;
+  const firstBeat = Math.exp(-Math.pow((cycle - 0.035) / 0.044, 2));
+  const secondBeat = Math.exp(-Math.pow((cycle - 0.315) / 0.058, 2)) * 0.72;
+  return Math.min(1, firstBeat + secondBeat);
+}
+
+function getHeartbeatWave(time: number, phaseOffset = 0) {
+  const cycle = ((time * 0.58 + phaseOffset) % 1 + 1) % 1;
+  if (cycle < 0.25) {
+    const progress = cycle / 0.25;
+    return { progress, opacity: Math.pow(1 - progress, 0.58) };
+  }
+  if (cycle >= 0.29 && cycle < 0.57) {
+    const progress = (cycle - 0.29) / 0.28;
+    return { progress, opacity: Math.pow(1 - progress, 0.62) * 0.78 };
+  }
+  return { progress: 1, opacity: 0 };
 }
 
 function EquipmentPulseNode({
@@ -1127,7 +955,7 @@ function EquipmentPulseNode({
     const baseScale = worldUnitsPerPixel * visualRadiusPixels;
     const heartbeatPulse =
       equipment?.heartbeat
-        ? 1 + (0.1 + (selected ? 0.03 : 0)) * (0.5 + 0.5 * Math.sin(HEARTBEAT_TIME_UNIFORM.value * 5.4))
+        ? 1 + (0.27 + (selected ? 0.05 : 0)) * getHeartbeatImpulse(HEARTBEAT_TIME_UNIFORM.value)
         : 1;
     visualRef.current.scale.setScalar(baseScale);
     hitTargetRef.current.scale.setScalar(
@@ -1323,7 +1151,7 @@ function CityCluster({
       );
       if (nodeCoreRef.current) {
         const heartbeatPulse = cluster.heartbeat
-          ? 1 + (selected ? 0.11 : 0.085) * (0.5 + 0.5 * Math.sin(HEARTBEAT_TIME_UNIFORM.value * 4.9))
+          ? 1 + (selected ? 0.28 : 0.24) * getHeartbeatImpulse(HEARTBEAT_TIME_UNIFORM.value, 0.07)
           : 1;
         nodeCoreRef.current.scale.setScalar(heartbeatPulse);
       }
