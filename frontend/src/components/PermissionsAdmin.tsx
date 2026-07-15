@@ -17,6 +17,7 @@ interface ProfileRow {
   id: string;
   nombre_completo: string | null;
   rol: string | null;
+  puesto: string | null;
 }
 
 interface AccessRow {
@@ -60,7 +61,7 @@ export default function PermissionsAdmin() {
     const load = async () => {
       setLoading(true);
       const [{ data: profileRows, error: profileError }, { data: accessRows, error: accessError }] = await Promise.all([
-        supabase.from('profiles').select('id, nombre_completo, rol').order('nombre_completo'),
+        supabase.from('profiles').select('id, nombre_completo, rol, puesto').order('nombre_completo'),
         supabase.from('user_module_permissions').select('user_id, modules, sub_permissions, can_receive_tickets, can_view_restricted_tutorials'),
       ]);
 
@@ -92,7 +93,7 @@ export default function PermissionsAdmin() {
     const query = search.trim().toLocaleLowerCase('es-MX');
     if (!query) return profiles;
     return profiles.filter((profile) =>
-      `${profile.nombre_completo || ''} ${profile.rol || ''}`.toLocaleLowerCase('es-MX').includes(query),
+      `${profile.nombre_completo || ''} ${profile.rol || ''} ${profile.puesto || ''}`.toLocaleLowerCase('es-MX').includes(query),
     );
   }, [profiles, search]);
 
@@ -104,6 +105,11 @@ export default function PermissionsAdmin() {
 
   const updateAccess = (userId: string, updater: (current: EditableAccess) => EditableAccess) => {
     setAccessByUser((current) => ({ ...current, [userId]: updater(getAccess(userId)) }));
+    setNotice('');
+  };
+
+  const updateJobTitle = (userId: string, puesto: string) => {
+    setProfiles((current) => current.map((profile) => profile.id === userId ? { ...profile, puesto } : profile));
     setNotice('');
   };
 
@@ -156,15 +162,25 @@ export default function PermissionsAdmin() {
     setSavingId(profile.id);
     setNotice('');
     const access = getAccess(profile.id);
-    const { error } = await supabase.from('user_module_permissions').upsert({
-      user_id: profile.id,
-      modules: access.modules,
-      sub_permissions: access.subPermissions,
-      can_receive_tickets: access.canReceiveTickets,
-      can_view_restricted_tutorials: access.canViewRestrictedTutorials,
-    });
+    const [{ error: permissionError }, { error: profileError }] = await Promise.all([
+      supabase.from('user_module_permissions').upsert({
+        user_id: profile.id,
+        modules: access.modules,
+        sub_permissions: access.subPermissions,
+        can_receive_tickets: access.canReceiveTickets,
+        can_view_restricted_tutorials: access.canViewRestrictedTutorials,
+      }),
+      supabase.rpc('update_user_job_title', {
+        target_user_id: profile.id,
+        new_job_title: profile.puesto || '',
+      }),
+    ]);
     setSavingId(null);
-    setNotice(error ? `No se guardaron los permisos de ${profile.nombre_completo || 'este usuario'}.` : 'Permisos guardados correctamente.');
+    setNotice(
+      permissionError || profileError
+        ? `No se guardaron todos los cambios de ${profile.nombre_completo || 'este usuario'}.`
+        : 'Perfil y permisos guardados correctamente.',
+    );
   };
 
   return (
@@ -181,7 +197,17 @@ export default function PermissionsAdmin() {
             return (
               <article className="permissions-admin__user" key={profile.id}>
                 <div className="permissions-admin__identity">
-                  <strong>{profile.nombre_completo || 'Usuario sin nombre'}</strong><span>{profile.rol || 'Sin rol'}</span>
+                  <strong>{profile.nombre_completo || 'Usuario sin nombre'}</strong>
+                  <label className="permissions-admin__job-title">
+                    <span>Puesto</span>
+                    <input
+                      className="input-field"
+                      value={profile.puesto || ''}
+                      onChange={(event) => updateJobTitle(profile.id, event.target.value)}
+                      placeholder="Escribe el puesto"
+                    />
+                  </label>
+                  <small>Rol de acceso: {profile.rol || 'Sin rol'}</small>
                 </div>
                 <div className="permissions-admin__modules">
                     {MANAGEABLE_MODULE_KEYS.map((key) => {
@@ -223,7 +249,7 @@ export default function PermissionsAdmin() {
                 </div>
                 <div className="permissions-admin__actions">
                   <button className="button-primary inactive" type="button" disabled={savingId === profile.id} onClick={() => grantFullAccess(profile.id)}>Acceso total</button>
-                  <button className="button-primary" type="button" disabled={savingId === profile.id} onClick={() => void save(profile)}>{savingId === profile.id ? 'Guardando…' : 'Guardar permisos'}</button>
+                  <button className="button-primary" type="button" disabled={savingId === profile.id} onClick={() => void save(profile)}>{savingId === profile.id ? 'Guardando…' : 'Guardar cambios'}</button>
                 </div>
               </article>
             );
