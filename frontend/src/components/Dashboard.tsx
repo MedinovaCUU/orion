@@ -121,6 +121,14 @@ const DashboardTabIcon = ({ name }: { name: DashboardTabKey }) => {
       </svg>
     );
   }
+  if (name === 'dri') {
+    return (
+      <svg className="dashboard-nav__icon" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M12 2 21 7v10l-9 5-9-5V7Z" />
+        <path d="m12 2-4.8 7.2L3 7M12 2l4.8 7.2L21 7M7.2 9.2 12 18l4.8-8.8M3 17l4.2-7.8M21 17l-4.2-7.8M3 17l9 1 9-1M12 18v4" />
+      </svg>
+    );
+  }
   const paths: Record<DashboardTabKey, string> = {
     tickets: 'M5 7h14v10H5zM8 7V5h8v2M8 11h8M8 14h5',
     servicios: 'M5 6h14v13H5zM8 4v4M16 4v4M5 10h14M8 13h3M13 13h3M8 16h3',
@@ -132,7 +140,7 @@ const DashboardTabIcon = ({ name }: { name: DashboardTabKey }) => {
     tutoriales: 'M5 5h14v14H5zM10 9l5 3-5 3z',
     pno: 'M7 3h7l4 4v14H7zM14 3v5h5M10 12h5M10 15h5',
     equipos: '',
-    dri: 'M6 7l6 5 6-5M6 17l6-5 6 5M6 7v10M18 7v10',
+    dri: '',
     permisos: 'M6 5v14M12 5v14M18 5v14M4 9h4M10 15h4M16 11h4',
   };
   return (
