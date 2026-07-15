@@ -105,7 +105,48 @@ const TONE_COLORS: Record<GlobeNodeTone, string> = {
 };
 
 const HEARTBEAT_TIME_UNIFORM = { value: 0 };
+const HEARTBEAT_HIGHLIGHT_COLOR = new THREE.Color('#d9fff8');
 const SELECTED_BILLBOARD_PROJECTED = new THREE.Vector3();
+
+const HEARTBEAT_RING_VERTEX_SHADER = `
+  varying vec2 vLocalPosition;
+
+  void main() {
+    vLocalPosition = position.xy;
+    gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+  }
+`;
+
+const HEARTBEAT_RING_FRAGMENT_SHADER = `
+  uniform float uTime;
+  uniform float uOpacity;
+  uniform float uBeat;
+  uniform float uInnerRadius;
+  uniform float uOuterRadius;
+  varying vec2 vLocalPosition;
+
+  void main() {
+    float radius = length(vLocalPosition);
+    float radialPosition = clamp(
+      (radius - uInnerRadius) / max(uOuterRadius - uInnerRadius, 0.0001),
+      0.0,
+      1.0
+    );
+    float softEdge = pow(sin(radialPosition * 3.14159265), 0.72);
+    float angle = atan(vLocalPosition.y, vLocalPosition.x);
+    float orbit = angle - uTime * 2.6;
+    float primarySpark = pow(0.5 + 0.5 * cos(orbit), 26.0);
+    float secondarySpark = pow(0.5 + 0.5 * cos(orbit + 2.35), 42.0) * 0.56;
+    float shimmer = 0.82 + 0.18 * sin(angle * 11.0 - uTime * 5.2);
+    float energy = clamp(primarySpark + secondarySpark + uBeat * 0.24, 0.0, 1.0);
+    vec3 turquoise = vec3(0.18, 0.91, 0.79);
+    vec3 hotLight = vec3(0.86, 1.0, 0.97);
+    vec3 color = mix(turquoise, hotLight, energy);
+    float alpha = uOpacity * softEdge * (0.7 + energy * 0.52) * shimmer;
+    if (alpha < 0.012) discard;
+    gl_FragColor = vec4(color, alpha);
+  }
+`;
 
 const TONE_LABELS: Record<GlobeNodeTone, string> = {
   fatal: 'Error fatal',
@@ -843,7 +884,19 @@ function HeartbeatBeacon({
 }) {
   const isCluster = intensity === 'cluster';
   const ringRef = useRef<THREE.Mesh | null>(null);
-  const materialRef = useRef<THREE.MeshBasicMaterial | null>(null);
+  const materialRef = useRef<THREE.ShaderMaterial | null>(null);
+  const innerRadius = radius * 1.01;
+  const outerRadius = radius * 1.3;
+  const uniforms = useMemo(
+    () => ({
+      uTime: HEARTBEAT_TIME_UNIFORM,
+      uOpacity: { value: 0 },
+      uBeat: { value: 0 },
+      uInnerRadius: { value: innerRadius },
+      uOuterRadius: { value: outerRadius },
+    }),
+    [innerRadius, outerRadius],
+  );
 
   useFrame(() => {
     if (!ringRef.current || !materialRef.current) {
@@ -858,22 +911,28 @@ function HeartbeatBeacon({
     const scale = 0.92 + travel * (isCluster ? 2.62 : 2.82);
     ringRef.current.scale.setScalar(scale);
     ringRef.current.visible = wave.opacity > 0.01;
-    materialRef.current.opacity = wave.opacity;
+    materialRef.current.uniforms.uOpacity.value = wave.opacity;
+    materialRef.current.uniforms.uBeat.value = getHeartbeatImpulse(
+      HEARTBEAT_TIME_UNIFORM.value,
+      isCluster ? 0.07 : 0,
+    );
   });
 
   return (
     <Billboard follow>
       <mesh ref={ringRef} renderOrder={12}>
-        <ringGeometry args={[radius * 1.04, radius * 1.24, 48]} />
-        <meshBasicMaterial
+        <ringGeometry args={[innerRadius, outerRadius, 64]} />
+        <shaderMaterial
           ref={materialRef}
-          color="#5dffe7"
           transparent
           side={THREE.DoubleSide}
           depthTest={false}
           depthWrite={false}
           blending={THREE.AdditiveBlending}
           toneMapped={false}
+          uniforms={uniforms}
+          vertexShader={HEARTBEAT_RING_VERTEX_SHADER}
+          fragmentShader={HEARTBEAT_RING_FRAGMENT_SHADER}
         />
       </mesh>
     </Billboard>
@@ -916,7 +975,9 @@ function EquipmentPulseNode({
   const visualRef = useRef<THREE.Group | null>(null);
   const hitTargetRef = useRef<THREE.Mesh | null>(null);
   const coreRef = useRef<THREE.Mesh | null>(null);
+  const coreMaterialRef = useRef<THREE.MeshBasicMaterial | null>(null);
   const tone = equipment?.tone || 'muted';
+  const toneColor = useMemo(() => new THREE.Color(TONE_COLORS[tone]), [tone]);
 
   const handlePointerOver = (event: ThreeEvent<PointerEvent>) => {
     event.stopPropagation();
@@ -953,10 +1014,10 @@ function EquipmentPulseNode({
         altitudeFactor,
       ) + (selected ? EQUIPMENT_NODE_RADIUS_PIXELS.selectedBoost : 0);
     const baseScale = worldUnitsPerPixel * visualRadiusPixels;
-    const heartbeatPulse =
-      equipment?.heartbeat
-        ? 1 + (0.27 + (selected ? 0.05 : 0)) * getHeartbeatImpulse(HEARTBEAT_TIME_UNIFORM.value)
-        : 1;
+    const heartbeatImpulse = equipment?.heartbeat
+      ? getHeartbeatImpulse(HEARTBEAT_TIME_UNIFORM.value)
+      : 0;
+    const heartbeatPulse = 1 + (0.27 + (selected ? 0.05 : 0)) * heartbeatImpulse;
     visualRef.current.scale.setScalar(baseScale);
     hitTargetRef.current.scale.setScalar(
       worldUnitsPerPixel *
@@ -964,6 +1025,11 @@ function EquipmentPulseNode({
     );
     if (coreRef.current) {
       coreRef.current.scale.setScalar((selected ? 1.18 : 1) * heartbeatPulse);
+    }
+    if (coreMaterialRef.current) {
+      coreMaterialRef.current.color
+        .copy(toneColor)
+        .lerp(HEARTBEAT_HIGHLIGHT_COLOR, heartbeatImpulse * 0.64);
     }
   });
 
@@ -981,7 +1047,7 @@ function EquipmentPulseNode({
       <group ref={visualRef}>
         <mesh ref={coreRef} scale={selected ? 1.18 : 1}>
           <sphereGeometry args={[1, 16, 16]} />
-          <meshBasicMaterial color={TONE_COLORS[tone]} toneMapped={false} />
+          <meshBasicMaterial ref={coreMaterialRef} color={TONE_COLORS[tone]} toneMapped={false} />
         </mesh>
         {equipment?.heartbeat ? <HeartbeatBeacon radius={1} intensity="equipment" /> : null}
       </group>
@@ -1165,6 +1231,13 @@ function CityCluster({
         const nextIndex = (currentIndex + 1) % toneColors.length;
         const blend = THREE.MathUtils.smoothstep(cycle - currentIndex, 0.18, 0.82);
         nodeMaterialRef.current.color.lerpColors(toneColors[currentIndex], toneColors[nextIndex], blend);
+      }
+      if (cluster.heartbeat) {
+        const heartbeatImpulse = getHeartbeatImpulse(HEARTBEAT_TIME_UNIFORM.value, 0.07);
+        nodeMaterialRef.current.color.lerp(
+          HEARTBEAT_HIGHLIGHT_COLOR,
+          heartbeatImpulse * 0.58,
+        );
       }
     }
   });
