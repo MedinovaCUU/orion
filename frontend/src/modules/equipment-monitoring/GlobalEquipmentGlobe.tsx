@@ -115,6 +115,7 @@ const HEARTBEAT_PULSE_VERTEX_SHADER = `
   uniform float uMaxScale;
   varying float vWave;
   varying float vShimmer;
+  varying vec2 vUv;
 
   float hash(vec3 value) {
     return fract(sin(dot(value, vec3(12.9898, 78.233, 37.719))) * 43758.5453123);
@@ -129,6 +130,7 @@ const HEARTBEAT_PULSE_VERTEX_SHADER = `
 
     vWave = wave;
     vShimmer = 0.82 + sin((uTime * 1.8 + phase * 6.28318)) * 0.18;
+    vUv = uv;
     gl_Position = projectionMatrix * modelViewMatrix * vec4(transformed, 1.0);
   }
 `;
@@ -138,12 +140,65 @@ const HEARTBEAT_PULSE_FRAGMENT_SHADER = `
   uniform float uOpacity;
   varying float vWave;
   varying float vShimmer;
+  varying vec2 vUv;
 
   void main() {
-    float fade = pow(1.0 - vWave, 1.35);
+    vec2 centeredUv = vUv * 2.0 - 1.0;
+    float radius = length(centeredUv);
+    float edgeMask = smoothstep(0.16, 0.36, radius) * (1.0 - smoothstep(0.88, 1.02, radius));
+    float wavefront = exp(-pow((radius - (0.42 + vWave * 0.52)) / 0.12, 2.0));
+    float sparkle = 0.78 + 0.22 * sin(atan(centeredUv.y, centeredUv.x) * 7.0 + vWave * 10.0);
+    float fade = pow(1.0 - vWave, 0.72);
     float ignition = smoothstep(0.0, 0.14, vWave);
-    float alpha = uOpacity * fade * ignition * vShimmer;
+    float alpha = uOpacity * edgeMask * wavefront * fade * ignition * vShimmer * sparkle;
     if (alpha < 0.015) discard;
+    gl_FragColor = vec4(uColor, alpha);
+  }
+`;
+
+const HEARTBEAT_AURA_VERTEX_SHADER = `
+  uniform float uTime;
+  uniform float uSpeed;
+  uniform float uPhaseOffset;
+  uniform float uBaseScale;
+  uniform float uScaleRange;
+  varying vec2 vUv;
+  varying float vBreath;
+  varying float vSpark;
+
+  float hash(vec3 value) {
+    return fract(sin(dot(value, vec3(12.9898, 78.233, 37.719))) * 43758.5453123);
+  }
+
+  void main() {
+    float phase = fract(hash(modelMatrix[3].xyz) + uPhaseOffset);
+    float breath = 0.5 + 0.5 * sin(uTime * uSpeed + phase * 6.28318);
+    float scale = uBaseScale + breath * uScaleRange;
+    vec3 transformed = position * scale;
+
+    vUv = uv;
+    vBreath = breath;
+    vSpark = 0.84 + 0.16 * sin(uTime * 4.2 + phase * 12.56636);
+    gl_Position = projectionMatrix * modelViewMatrix * vec4(transformed, 1.0);
+  }
+`;
+
+const HEARTBEAT_AURA_FRAGMENT_SHADER = `
+  uniform vec3 uColor;
+  uniform float uOpacity;
+  varying vec2 vUv;
+  varying float vBreath;
+  varying float vSpark;
+
+  void main() {
+    vec2 centeredUv = vUv * 2.0 - 1.0;
+    float radius = length(centeredUv);
+    float halo = pow(max(0.0, 1.0 - radius), 2.8);
+    float corona = exp(-pow((radius - (0.46 + vBreath * 0.08)) / 0.19, 2.0));
+    float shimmer = 0.82 + 0.18 * sin(atan(centeredUv.y, centeredUv.x) * 8.0 + vBreath * 6.28318);
+    float alpha = uOpacity * (halo * (0.34 + vBreath * 0.26) + corona * shimmer * 0.78) * vSpark;
+    alpha *= 1.0 - smoothstep(0.88, 1.05, radius);
+    if (alpha < 0.01) discard;
     gl_FragColor = vec4(uColor, alpha);
   }
 `;
@@ -922,6 +977,101 @@ function HeartbeatPulse({
   );
 }
 
+function HeartbeatAura({
+  radius,
+  opacity,
+  baseScale,
+  scaleRange,
+  speed,
+  phaseOffset,
+}: {
+  radius: number;
+  opacity: number;
+  baseScale: number;
+  scaleRange: number;
+  speed: number;
+  phaseOffset: number;
+}) {
+  const uniforms = useMemo(
+    () => ({
+      uTime: HEARTBEAT_TIME_UNIFORM,
+      uColor: { value: new THREE.Color(TONE_COLORS.ok) },
+      uOpacity: { value: opacity },
+      uSpeed: { value: speed },
+      uPhaseOffset: { value: phaseOffset },
+      uBaseScale: { value: baseScale },
+      uScaleRange: { value: scaleRange },
+    }),
+    [baseScale, opacity, phaseOffset, scaleRange, speed],
+  );
+
+  return (
+    <mesh renderOrder={11}>
+      <circleGeometry args={[radius, 44]} />
+      <shaderMaterial
+        transparent
+        side={THREE.DoubleSide}
+        depthWrite={false}
+        blending={THREE.AdditiveBlending}
+        toneMapped={false}
+        uniforms={uniforms}
+        vertexShader={HEARTBEAT_AURA_VERTEX_SHADER}
+        fragmentShader={HEARTBEAT_AURA_FRAGMENT_SHADER}
+      />
+    </mesh>
+  );
+}
+
+function HeartbeatBeacon({
+  radius,
+  intensity = 'equipment',
+}: {
+  radius: number;
+  intensity?: 'equipment' | 'cluster';
+}) {
+  const isCluster = intensity === 'cluster';
+
+  return (
+    <Billboard follow>
+      <HeartbeatAura
+        radius={radius * (isCluster ? 1.42 : 1.28)}
+        opacity={isCluster ? 0.54 : 0.62}
+        baseScale={isCluster ? 1.12 : 1.06}
+        scaleRange={isCluster ? 0.28 : 0.24}
+        speed={isCluster ? 2.05 : 2.35}
+        phaseOffset={isCluster ? 0.08 : 0.16}
+      />
+      <HeartbeatPulse
+        innerRadius={radius * 1.02}
+        outerRadius={radius * 1.84}
+        opacity={isCluster ? 0.96 : 0.92}
+        speed={isCluster ? 0.9 : 1.02}
+        phaseOffset={0}
+        minScale={0.72}
+        maxScale={isCluster ? 2.92 : 2.64}
+      />
+      <HeartbeatPulse
+        innerRadius={radius * 1.28}
+        outerRadius={radius * 2.08}
+        opacity={isCluster ? 0.44 : 0.38}
+        speed={isCluster ? 0.66 : 0.78}
+        phaseOffset={0.34}
+        minScale={0.94}
+        maxScale={isCluster ? 3.38 : 3.02}
+      />
+      <HeartbeatPulse
+        innerRadius={radius * 0.94}
+        outerRadius={radius * 1.42}
+        opacity={isCluster ? 0.34 : 0.3}
+        speed={isCluster ? 1.24 : 1.36}
+        phaseOffset={0.58}
+        minScale={0.82}
+        maxScale={isCluster ? 1.98 : 1.82}
+      />
+    </Billboard>
+  );
+}
+
 function EquipmentPulseNode({
   equipment,
   position,
@@ -937,6 +1087,7 @@ function EquipmentPulseNode({
 }) {
   const visualRef = useRef<THREE.Group | null>(null);
   const hitTargetRef = useRef<THREE.Mesh | null>(null);
+  const coreRef = useRef<THREE.Mesh | null>(null);
   const tone = equipment?.tone || 'muted';
 
   const handlePointerOver = (event: ThreeEvent<PointerEvent>) => {
@@ -973,11 +1124,19 @@ function EquipmentPulseNode({
         EQUIPMENT_NODE_RADIUS_PIXELS.far,
         altitudeFactor,
       ) + (selected ? EQUIPMENT_NODE_RADIUS_PIXELS.selectedBoost : 0);
-    visualRef.current.scale.setScalar(worldUnitsPerPixel * visualRadiusPixels);
+    const baseScale = worldUnitsPerPixel * visualRadiusPixels;
+    const heartbeatPulse =
+      equipment?.heartbeat
+        ? 1 + (0.1 + (selected ? 0.03 : 0)) * (0.5 + 0.5 * Math.sin(HEARTBEAT_TIME_UNIFORM.value * 5.4))
+        : 1;
+    visualRef.current.scale.setScalar(baseScale);
     hitTargetRef.current.scale.setScalar(
       worldUnitsPerPixel *
         (selected ? EQUIPMENT_NODE_RADIUS_PIXELS.selectedHit : EQUIPMENT_NODE_RADIUS_PIXELS.hit),
     );
+    if (coreRef.current) {
+      coreRef.current.scale.setScalar((selected ? 1.18 : 1) * heartbeatPulse);
+    }
   });
 
   return (
@@ -992,32 +1151,11 @@ function EquipmentPulseNode({
         <meshBasicMaterial transparent opacity={0} depthWrite={false} colorWrite={false} />
       </mesh>
       <group ref={visualRef}>
-        <mesh scale={selected ? 1.18 : 1}>
+        <mesh ref={coreRef} scale={selected ? 1.18 : 1}>
           <sphereGeometry args={[1, 16, 16]} />
           <meshBasicMaterial color={TONE_COLORS[tone]} toneMapped={false} />
         </mesh>
-        {equipment?.heartbeat ? (
-          <Billboard follow>
-            <HeartbeatPulse
-              innerRadius={1.04}
-              outerRadius={1.82}
-              opacity={0.9}
-              speed={0.72}
-              phaseOffset={0}
-              minScale={0.84}
-              maxScale={2.72}
-            />
-            <HeartbeatPulse
-              innerRadius={1.36}
-              outerRadius={2.14}
-              opacity={0.42}
-              speed={0.52}
-              phaseOffset={0.38}
-              minScale={0.98}
-              maxScale={3.16}
-            />
-          </Billboard>
-        ) : null}
+        {equipment?.heartbeat ? <HeartbeatBeacon radius={1} intensity="equipment" /> : null}
       </group>
       {selected && equipment ? (
         <Html
@@ -1059,6 +1197,7 @@ function CityCluster({
   const markerGroupRef = useRef<THREE.Group | null>(null);
   const nodeVisualRef = useRef<THREE.Group | null>(null);
   const nodeHitTargetRef = useRef<THREE.Mesh | null>(null);
+  const nodeCoreRef = useRef<THREE.Mesh | null>(null);
   const nodeMaterialRef = useRef<THREE.MeshBasicMaterial | null>(null);
   const hoverLeaveTimeoutRef = useRef<number | null>(null);
   const position = useMemo(
@@ -1182,6 +1321,12 @@ function CityCluster({
       nodeHitTargetRef.current.scale.setScalar(
         (worldUnitsPerPixel * CITY_NODE_RADIUS_PIXELS.hit) / (nodeSize * 1.65),
       );
+      if (nodeCoreRef.current) {
+        const heartbeatPulse = cluster.heartbeat
+          ? 1 + (selected ? 0.11 : 0.085) * (0.5 + 0.5 * Math.sin(HEARTBEAT_TIME_UNIFORM.value * 4.9))
+          : 1;
+        nodeCoreRef.current.scale.setScalar(heartbeatPulse);
+      }
     }
     if (nodeMaterialRef.current && toneColors.length) {
       if (toneColors.length === 1) {
@@ -1263,33 +1408,12 @@ function CityCluster({
               <meshBasicMaterial transparent opacity={0} depthWrite={false} />
             </mesh>
             <group ref={nodeVisualRef}>
-              <mesh>
+              <mesh ref={nodeCoreRef}>
                 <sphereGeometry args={[nodeSize, 22, 22]} />
                 <meshBasicMaterial ref={nodeMaterialRef} color={TONE_COLORS[cluster.tone]} toneMapped={false} />
               </mesh>
+              {cluster.heartbeat ? <HeartbeatBeacon radius={nodeSize} intensity="cluster" /> : null}
               <Billboard follow>
-                {cluster.heartbeat ? (
-                  <>
-                    <HeartbeatPulse
-                      innerRadius={nodeSize * 1.08}
-                      outerRadius={nodeSize * 1.86}
-                      opacity={0.92}
-                      speed={0.66}
-                      phaseOffset={0}
-                      minScale={0.9}
-                      maxScale={2.7}
-                    />
-                    <HeartbeatPulse
-                      innerRadius={nodeSize * 1.42}
-                      outerRadius={nodeSize * 2.18}
-                      opacity={0.38}
-                      speed={0.48}
-                      phaseOffset={0.42}
-                      minScale={1.02}
-                      maxScale={3.2}
-                    />
-                  </>
-                ) : null}
                 <mesh scale={selected ? 1.62 : 1.22}>
                   <ringGeometry args={[nodeSize * 1.08, nodeSize * 1.18, 32]} />
                   <meshBasicMaterial
