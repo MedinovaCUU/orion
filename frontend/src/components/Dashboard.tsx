@@ -86,6 +86,31 @@ const DashboardPanelFallback = () => (
   </div>
 );
 
+const HeaderActionIcon = ({ name }: { name: 'credential' | 'password' | 'logout' }) => {
+  if (name === 'credential') {
+    return (
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <rect x="3" y="5" width="18" height="14" rx="3" />
+        <circle cx="8.5" cy="11" r="2" />
+        <path d="M6 16c.7-1.7 4.3-1.7 5 0M14 10h4M14 14h4" />
+      </svg>
+    );
+  }
+  if (name === 'password') {
+    return (
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <rect x="5" y="10" width="14" height="10" rx="3" />
+        <path d="M8 10V7a4 4 0 0 1 8 0v3M12 14v2" />
+      </svg>
+    );
+  }
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M10 5H6a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h4M14 8l4 4-4 4M9 12h9" />
+    </svg>
+  );
+};
+
 interface DashboardProps {
   session: {
     user?: {
@@ -303,19 +328,26 @@ export default function Dashboard({ session, initialTab }: DashboardProps) {
           type="button"
           onClick={handleOpenCredential}
           className="button-primary inactive dashboard-header__button dashboard-header__button--secondary"
+          aria-label="Mi credencial"
+          data-tooltip="Mi credencial"
         >
-          Mi credencial
+          <HeaderActionIcon name="credential" />
+          <span className="dashboard-header__button-label">Mi credencial</span>
         </button>
       ) : null}
       <button
         type="button"
         onClick={handleChangePassword}
         className="button-primary inactive dashboard-header__button dashboard-header__button--secondary"
+        aria-label="Cambiar contraseña"
+        data-tooltip="Cambiar contraseña"
       >
-        Cambiar contraseña
+        <HeaderActionIcon name="password" />
+        <span className="dashboard-header__button-label">Cambiar contraseña</span>
       </button>
-      <button type="button" onClick={handleLogout} className="button-primary dashboard-header__button">
-        Cerrar sesión
+      <button type="button" onClick={handleLogout} className="button-primary dashboard-header__button" aria-label="Cerrar sesión" data-tooltip="Cerrar sesión">
+        <HeaderActionIcon name="logout" />
+        <span className="dashboard-header__button-label">Cerrar sesión</span>
       </button>
     </>
   );

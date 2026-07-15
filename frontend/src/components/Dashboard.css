@@ -8,7 +8,7 @@
   position: relative;
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
+  align-items: center;
   gap: 1.5rem;
   padding: 1.45rem 1.6rem;
   margin-bottom: 1.2rem;
@@ -33,16 +33,16 @@
 .dashboard-header__actions {
   position: relative;
   display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 0.85rem;
+  flex-direction: row;
+  align-items: center;
+  gap: 1rem;
 }
 
 .dashboard-header__actions-top {
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  width: 100%;
+  width: auto;
 }
 
 .dashboard-header__meta {
@@ -59,13 +59,73 @@
 
 .dashboard-header__action-list {
   display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 0.85rem;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.55rem;
 }
 
 .dashboard-header__button {
-  min-width: 152px;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 46px;
+  height: 46px;
+  min-width: 46px;
+  padding: 0;
+  border-radius: 999px;
+}
+
+.dashboard-header__button svg {
+  width: 20px;
+  height: 20px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.dashboard-header__button-label {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.dashboard-header__button::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  z-index: 20;
+  top: calc(100% + 0.65rem);
+  right: 0;
+  width: max-content;
+  max-width: 190px;
+  padding: 0.45rem 0.65rem;
+  border: 1px solid rgba(124, 136, 149, 0.18);
+  border-radius: 10px;
+  background: rgba(30, 38, 48, 0.94);
+  color: #fff;
+  font-size: 0.72rem;
+  font-weight: 650;
+  letter-spacing: 0.01em;
+  text-transform: none;
+  box-shadow: 0 12px 28px rgba(22, 29, 38, 0.2);
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-4px);
+  transition: opacity 0.16s ease, transform 0.16s ease;
+}
+
+.dashboard-header__button:hover::after,
+.dashboard-header__button:focus-visible::after {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .dashboard-header__hamburger {
@@ -325,6 +385,25 @@
 
   .dashboard-header__button {
     width: 100%;
+    height: auto;
+    min-width: 0;
+    padding: 0.75rem 1rem;
+    border-radius: 14px;
+    justify-content: flex-start;
+    gap: 0.65rem;
+  }
+
+  .dashboard-header__button-label {
+    position: static;
+    width: auto;
+    height: auto;
+    margin: 0;
+    overflow: visible;
+    clip: auto;
+  }
+
+  .dashboard-header__button::after {
+    display: none;
   }
 
   .dashboard-nav {
