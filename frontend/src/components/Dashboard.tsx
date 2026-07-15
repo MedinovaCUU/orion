@@ -6,7 +6,6 @@ import EmployeeCredentialModal, { type EmployeeCredentialProfile } from './Emplo
 import {
   DEFAULT_USER_ACCESS,
   MODULE_KEYS,
-  MODULE_SUBPERMISSIONS,
   canManageUserPermissions,
   coerceModules,
   coerceSubPermissions,
@@ -121,9 +120,9 @@ export default function Dashboard({ session, initialTab }: DashboardProps) {
 
   const isStaffRole = (role: string | null) => role === 'admin' || role === 'tecnico';
   const canManagePermissions = canManageUserPermissions(session?.user?.id, session?.user?.email);
-  const baseAllowedTabs: DashboardTabKey[] = userRole === 'admin'
-    ? DASHBOARD_TAB_KEYS.filter((tab) => tab !== 'permisos')
-    : userAccess.modules.filter((module): module is DashboardTabKey => DASHBOARD_TAB_KEYS.includes(module as DashboardTabKey));
+  const baseAllowedTabs: DashboardTabKey[] = userAccess.modules.filter(
+    (module): module is DashboardTabKey => DASHBOARD_TAB_KEYS.includes(module as DashboardTabKey),
+  );
   const allowedTabs: DashboardTabKey[] = canManagePermissions
     ? [...new Set([...baseAllowedTabs, 'permisos' as DashboardTabKey])]
     : baseAllowedTabs;
@@ -397,7 +396,7 @@ export default function Dashboard({ session, initialTab }: DashboardProps) {
           {activeTab === 'inventario' && canAccessTab('inventario') && <Inventario subPermissions={getModuleSubPermissions(userAccess, 'inventario')} />}
           {activeTab === 'tutoriales' && canAccessTab('tutoriales') && (
             <Tutoriales
-              allowedImportance={userRole === 'admin' ? [...MODULE_SUBPERMISSIONS.tutoriales] : getModuleSubPermissions(userAccess, 'tutoriales')}
+              allowedImportance={getModuleSubPermissions(userAccess, 'tutoriales')}
             />
           )}
           {activeTab === 'pno' && canAccessTab('pno') && <PNO subPermissions={getModuleSubPermissions(userAccess, 'pno')} />}

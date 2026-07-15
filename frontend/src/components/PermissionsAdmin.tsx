@@ -35,6 +35,8 @@ interface EditableAccess {
   subPermissions: Partial<Record<ModuleWithSubpermissions, string[]>>;
 }
 
+type AccessRole = 'cliente' | 'tecnico' | 'admin';
+
 const MANAGEABLE_MODULE_KEYS = MODULE_KEYS.filter((key) => key !== 'permisos');
 const MODULES_WITH_SUBPERMISSIONS = Object.keys(MODULE_SUBPERMISSIONS) as ModuleWithSubpermissions[];
 const ALL_SUBPERMISSIONS = MODULES_WITH_SUBPERMISSIONS.reduce<EditableAccess['subPermissions']>((acc, module) => {
@@ -47,6 +49,43 @@ const FULL_ACCESS_WITHOUT_PERMISSIONS: EditableAccess = {
   canViewRestrictedTutorials: true,
   subPermissions: ALL_SUBPERMISSIONS,
 };
+const ROLE_ACCESS_PRESETS: Record<AccessRole, EditableAccess> = {
+  cliente: {
+    modules: ['tickets', 'tutoriales'],
+    canReceiveTickets: false,
+    canViewRestrictedTutorials: false,
+    subPermissions: { tickets: ['crear'], tutoriales: ['basico'] },
+  },
+  tecnico: {
+    modules: ['tickets', 'asesoria', 'tutoriales', 'equipos'],
+    canReceiveTickets: true,
+    canViewRestrictedTutorials: true,
+    subPermissions: {
+      tickets: [...MODULE_SUBPERMISSIONS.tickets],
+      asesoria: [...MODULE_SUBPERMISSIONS.asesoria],
+      tutoriales: ['basico', 'medio', 'alto'],
+    },
+  },
+  admin: {
+    modules: ['tickets', 'servicios', 'asesoria', 'tutoriales', 'equipos'],
+    canReceiveTickets: true,
+    canViewRestrictedTutorials: true,
+    subPermissions: {
+      tickets: [...MODULE_SUBPERMISSIONS.tickets],
+      servicios: [...MODULE_SUBPERMISSIONS.servicios],
+      asesoria: [...MODULE_SUBPERMISSIONS.asesoria],
+      tutoriales: [...MODULE_SUBPERMISSIONS.tutoriales],
+    },
+  },
+};
+
+const cloneAccess = (access: EditableAccess): EditableAccess => ({
+  ...access,
+  modules: [...access.modules],
+  subPermissions: Object.fromEntries(
+    Object.entries(access.subPermissions).map(([module, permissions]) => [module, permissions ? [...permissions] : permissions]),
+  ) as EditableAccess['subPermissions'],
+});
 
 export default function PermissionsAdmin() {
   const [profiles, setProfiles] = useState<ProfileRow[]>([]);
@@ -113,6 +152,12 @@ export default function PermissionsAdmin() {
     setNotice('');
   };
 
+  const applyRolePreset = (userId: string, role: AccessRole) => {
+    setProfiles((current) => current.map((profile) => profile.id === userId ? { ...profile, rol: role } : profile));
+    setAccessByUser((current) => ({ ...current, [userId]: cloneAccess(ROLE_ACCESS_PRESETS[role]) }));
+    setNotice(`Perfil predeterminado de ${role === 'tecnico' ? 'técnico' : role} cargado. Guarda los cambios para aplicarlo.`);
+  };
+
   const grantFullAccess = (userId: string) => {
     updateAccess(userId, () => ({
       ...FULL_ACCESS_WITHOUT_PERMISSIONS,
@@ -162,7 +207,7 @@ export default function PermissionsAdmin() {
     setSavingId(profile.id);
     setNotice('');
     const access = getAccess(profile.id);
-    const [{ error: permissionError }, { error: profileError }] = await Promise.all([
+    const [{ error: permissionError }, { error: profileError }, { error: roleError }] = await Promise.all([
       supabase.from('user_module_permissions').upsert({
         user_id: profile.id,
         modules: access.modules,
@@ -174,10 +219,14 @@ export default function PermissionsAdmin() {
         target_user_id: profile.id,
         new_job_title: profile.puesto || '',
       }),
+      supabase.rpc('update_user_access_role', {
+        target_user_id: profile.id,
+        new_role: profile.rol || 'cliente',
+      }),
     ]);
     setSavingId(null);
     setNotice(
-      permissionError || profileError
+      permissionError || profileError || roleError
         ? `No se guardaron todos los cambios de ${profile.nombre_completo || 'este usuario'}.`
         : 'Perfil y permisos guardados correctamente.',
     );
@@ -207,7 +256,18 @@ export default function PermissionsAdmin() {
                       placeholder="Escribe el puesto"
                     />
                   </label>
-                  <small>Rol de acceso: {profile.rol || 'Sin rol'}</small>
+                  <label className="permissions-admin__access-role">
+                    <span>Rol de acceso</span>
+                    <select
+                      className="input-field"
+                      value={profile.rol || 'cliente'}
+                      onChange={(event) => applyRolePreset(profile.id, event.target.value as AccessRole)}
+                    >
+                      <option value="cliente">Cliente</option>
+                      <option value="tecnico">Técnico</option>
+                      <option value="admin">Admin</option>
+                    </select>
+                  </label>
                 </div>
                 <div className="permissions-admin__modules">
                     {MANAGEABLE_MODULE_KEYS.map((key) => {
