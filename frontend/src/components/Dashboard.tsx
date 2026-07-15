@@ -112,6 +112,15 @@ const HeaderActionIcon = ({ name }: { name: 'credential' | 'password' | 'logout'
 };
 
 const DashboardTabIcon = ({ name }: { name: DashboardTabKey }) => {
+  if (name === 'equipos') {
+    return (
+      <svg className="dashboard-nav__icon" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M5.2 3h13.6c.8 0 1.4.6 1.5 1.4l.7 4.5c.1.6-.3 1.1-.9 1.1H3.9c-.6 0-1-.5-.9-1.1l.7-4.5C3.8 3.6 4.4 3 5.2 3Z" />
+        <path d="m4 10-1 3v6.3c0 .9.7 1.7 1.7 1.7h14.6c1 0 1.7-.8 1.7-1.7V13l-1-3M7 10.2V21M17 10.2V21M12 14.5V21" />
+        <path d="M9.6 10.2v3.2c0 .6.5 1.1 1.1 1.1h2.6c.6 0 1.1-.5 1.1-1.1v-3.2M6.2 21v.5M17.8 21v.5" />
+      </svg>
+    );
+  }
   const paths: Record<DashboardTabKey, string> = {
     tickets: 'M5 7h14v10H5zM8 7V5h8v2M8 11h8M8 14h5',
     servicios: 'M5 6h14v13H5zM8 4v4M16 4v4M5 10h14M8 13h3M13 13h3M8 16h3',
@@ -122,7 +131,7 @@ const DashboardTabIcon = ({ name }: { name: DashboardTabKey }) => {
     inventario: 'M4 8l8-4 8 4-8 4zM4 8v9l8 4 8-4V8M12 12v9',
     tutoriales: 'M5 5h14v14H5zM10 9l5 3-5 3z',
     pno: 'M7 3h7l4 4v14H7zM14 3v5h5M10 12h5M10 15h5',
-    equipos: 'M4 5h16v11H4zM9 20h6M12 16v4',
+    equipos: '',
     dri: 'M6 7l6 5 6-5M6 17l6-5 6 5M6 7v10M18 7v10',
     permisos: 'M6 5v14M12 5v14M18 5v14M4 9h4M10 15h4M16 11h4',
   };
