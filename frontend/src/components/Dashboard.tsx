@@ -111,6 +111,28 @@ const HeaderActionIcon = ({ name }: { name: 'credential' | 'password' | 'logout'
   );
 };
 
+const DashboardTabIcon = ({ name }: { name: DashboardTabKey }) => {
+  const paths: Record<DashboardTabKey, string> = {
+    tickets: 'M5 7h14v10H5zM8 7V5h8v2M8 11h8M8 14h5',
+    servicios: 'M5 6h14v13H5zM8 4v4M16 4v4M5 10h14M8 13h3M13 13h3M8 16h3',
+    asesoria: 'M5 6h14v10H9l-4 3zM8 10h8M8 13h5',
+    monitoreo: 'M3 12h4l2-5 4 10 2-5h6',
+    trazabilidad: 'M6 18c0-5 12-3 12-9M6 18a2 2 0 1 0 0 .1M18 7a2 2 0 1 0 0 .1',
+    refacciones: 'M14 6a4 4 0 0 0-5 5L4 16l4 4 5-5a4 4 0 0 0 5-5l-3 1-2-2 1-3z',
+    inventario: 'M4 8l8-4 8 4-8 4zM4 8v9l8 4 8-4V8M12 12v9',
+    tutoriales: 'M5 5h14v14H5zM10 9l5 3-5 3z',
+    pno: 'M7 3h7l4 4v14H7zM14 3v5h5M10 12h5M10 15h5',
+    equipos: 'M4 5h16v11H4zM9 20h6M12 16v4',
+    dri: 'M6 7l6 5 6-5M6 17l6-5 6 5M6 7v10M18 7v10',
+    permisos: 'M6 5v14M12 5v14M18 5v14M4 9h4M10 15h4M16 11h4',
+  };
+  return (
+    <svg className="dashboard-nav__icon" viewBox="0 0 24 24" aria-hidden="true">
+      <path d={paths[name]} />
+    </svg>
+  );
+};
+
 interface DashboardProps {
   session: {
     user?: {
@@ -401,8 +423,10 @@ export default function Dashboard({ session, initialTab }: DashboardProps) {
               key={item.key}
               onClick={() => setActiveTab(item.key)}
               className={`button-primary dashboard-nav__button dashboard-nav__button--${item.tone} ${isActive ? '' : 'inactive'}`.trim()}
+              aria-label={item.label}
             >
-              <span>{item.label}</span>
+              <DashboardTabIcon name={item.key} />
+              <span className="dashboard-nav__label">{item.label}</span>
               {item.showBadge && advisoryUnreadCount > 0 ? (
                 <span className="dashboard-nav__badge">{advisoryUnreadCount}</span>
               ) : null}
