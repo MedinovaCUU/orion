@@ -26,6 +26,7 @@ export const MODULE_SUBPERMISSIONS = {
   trazabilidad: ['tracking', 'eventos_refacciones', 'analitica'],
   refacciones: ['solicitud', 'catalogo', 'historial'],
   inventario: ['captura', 'historial'],
+  tutoriales: ['basico', 'medio', 'alto', 'critico'],
   pno: ['consulta', 'edicion'],
   monitoreo: ['mapa', 'alertas'],
   dri: ['captura', 'grafo', 'diagnostico'],
@@ -63,6 +64,12 @@ export const SUBPERMISSION_LABELS: Record<ModuleWithSubpermissions, Record<strin
   inventario: {
     captura: 'Captura de conteos',
     historial: 'Historial de conteos',
+  },
+  tutoriales: {
+    basico: 'Básico (siempre permitido)',
+    medio: 'Importancia media',
+    alto: 'Importancia alta',
+    critico: 'Importancia crítica',
   },
   pno: {
     consulta: 'Consultar biblioteca',
@@ -128,6 +135,10 @@ export const coerceSubPermissions = (value: unknown): UserAccess['subPermissions
 
 export const getModuleSubPermissions = (access: UserAccess, module: ModuleWithSubpermissions) => {
   const configured = access.subPermissions[module];
+  if (module === 'tutoriales') {
+    if (configured) return [...new Set(['basico', ...configured])];
+    return access.canViewRestrictedTutorials ? [...MODULE_SUBPERMISSIONS.tutoriales] : ['basico'];
+  }
   return configured ?? [...MODULE_SUBPERMISSIONS[module]];
 };
 

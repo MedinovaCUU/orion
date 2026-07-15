@@ -116,7 +116,11 @@ export default function PermissionsAdmin() {
   };
 
   const getSubPermissions = (access: EditableAccess, module: ModuleWithSubpermissions) =>
-    access.subPermissions[module] ?? [...MODULE_SUBPERMISSIONS[module]];
+    access.subPermissions[module] ?? (
+      module === 'tutoriales' && !access.canViewRestrictedTutorials
+        ? ['basico']
+        : [...MODULE_SUBPERMISSIONS[module]]
+    );
 
   const toggleModule = (userId: string, module: ModuleKey, checked: boolean) => {
     updateAccess(userId, (current) => {
@@ -141,6 +145,9 @@ export default function PermissionsAdmin() {
         ...current,
         modules: current.modules.includes(module) ? current.modules : [...current.modules, module],
         subPermissions: { ...current.subPermissions, [module]: nextKeys },
+        canViewRestrictedTutorials: module === 'tutoriales'
+          ? nextKeys.some((item) => item !== 'basico')
+          : current.canViewRestrictedTutorials,
       };
     });
   };
@@ -192,6 +199,7 @@ export default function PermissionsAdmin() {
                                   <input
                                     type="checkbox"
                                     checked={getSubPermissions(access, key as ModuleWithSubpermissions).includes(subKey)}
+                                    disabled={key === 'tutoriales' && subKey === 'basico'}
                                     onChange={(event) => toggleSubPermission(profile.id, key as ModuleWithSubpermissions, subKey, event.target.checked)}
                                   />
                                   <span>{SUBPERMISSION_LABELS[key as ModuleWithSubpermissions][subKey]}</span>
@@ -205,7 +213,6 @@ export default function PermissionsAdmin() {
                 </div>
                 <div className="permissions-admin__capabilities">
                   <label><input type="checkbox" checked={access.canReceiveTickets} onChange={(event) => updateAccess(profile.id, (current) => ({ ...current, canReceiveTickets: event.target.checked }))} /> Puede recibir tickets</label>
-                  <label><input type="checkbox" checked={access.canViewRestrictedTutorials} onChange={(event) => updateAccess(profile.id, (current) => ({ ...current, canViewRestrictedTutorials: event.target.checked }))} /> Puede ver tutoriales restringidos</label>
                 </div>
                 <div className="permissions-admin__actions">
                   <button className="button-primary inactive" type="button" disabled={savingId === profile.id} onClick={() => grantFullAccess(profile.id)}>Acceso total</button>

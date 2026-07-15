@@ -6,6 +6,7 @@ import EmployeeCredentialModal, { type EmployeeCredentialProfile } from './Emplo
 import {
   DEFAULT_USER_ACCESS,
   MODULE_KEYS,
+  MODULE_SUBPERMISSIONS,
   canManageUserPermissions,
   coerceModules,
   coerceSubPermissions,
@@ -394,7 +395,11 @@ export default function Dashboard({ session, initialTab }: DashboardProps) {
           {activeTab === 'trazabilidad' && canAccessTab('trazabilidad') && <Traceability subPermissions={getModuleSubPermissions(userAccess, 'trazabilidad')} />}
           {activeTab === 'refacciones' && canAccessTab('refacciones') && <Refacciones subPermissions={getModuleSubPermissions(userAccess, 'refacciones')} />}
           {activeTab === 'inventario' && canAccessTab('inventario') && <Inventario subPermissions={getModuleSubPermissions(userAccess, 'inventario')} />}
-          {activeTab === 'tutoriales' && canAccessTab('tutoriales') && <Tutoriales canViewRestricted={userRole === 'admin' || userAccess.canViewRestrictedTutorials} />}
+          {activeTab === 'tutoriales' && canAccessTab('tutoriales') && (
+            <Tutoriales
+              allowedImportance={userRole === 'admin' ? [...MODULE_SUBPERMISSIONS.tutoriales] : getModuleSubPermissions(userAccess, 'tutoriales')}
+            />
+          )}
           {activeTab === 'pno' && canAccessTab('pno') && <PNO subPermissions={getModuleSubPermissions(userAccess, 'pno')} />}
           {activeTab === 'equipos' && canAccessTab('equipos') && <Equipos />}
           {activeTab === 'dri' && canAccessTab('dri') && <DriPage subPermissions={getModuleSubPermissions(userAccess, 'dri')} />}

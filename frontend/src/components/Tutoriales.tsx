@@ -1,10 +1,23 @@
 import { useEffect, useState } from 'react';
 import { supabase } from '../supabaseClient';
 import TutorialModal from './TutorialModal';
-import { localTutorials, type TutorialDefinition, isStructuredTutorial } from '../data/tutorialCatalog';
+import {
+  getTutorialImportance,
+  localTutorials,
+  type TutorialDefinition,
+  type TutorialImportance,
+  isStructuredTutorial,
+} from '../data/tutorialCatalog';
 import './Tutoriales.css';
 
-export default function Tutoriales({ canViewRestricted = false }: { canViewRestricted?: boolean }) {
+const IMPORTANCE_LABELS: Record<TutorialImportance, string> = {
+  basico: 'Básico',
+  medio: 'Medio',
+  alto: 'Alto',
+  critico: 'Crítico',
+};
+
+export default function Tutoriales({ allowedImportance = ['basico'] }: { allowedImportance?: string[] }) {
   const [dbTutorials, setDbTutorials] = useState<TutorialDefinition[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedTutorialId, setSelectedTutorialId] = useState<string | null>(null);
@@ -28,8 +41,9 @@ export default function Tutoriales({ canViewRestricted = false }: { canViewRestr
     setLoading(false);
   };
 
+  const allowedLevels = new Set(['basico', ...allowedImportance]);
   const tutoriales = [...localTutorials, ...dbTutorials].filter((tutorial) =>
-    canViewRestricted || !isStructuredTutorial(tutorial),
+    allowedLevels.has(getTutorialImportance(tutorial)),
   );
   const selectedTutorial = tutoriales.find((t) => t.id === selectedTutorialId) || null;
 
@@ -37,15 +51,15 @@ export default function Tutoriales({ canViewRestricted = false }: { canViewRestr
     fetchTutoriales();
   }, []);
 
-  const getSeverityClass = (level: string) => {
+  const getSeverityClass = (level: TutorialImportance) => {
     switch (level) {
-      case 'Crítico':
+      case 'critico':
         return 'tutoriales-item__severity tutoriales-item__severity--critico';
-      case 'Alto':
+      case 'alto':
         return 'tutoriales-item__severity tutoriales-item__severity--alto';
-      case 'Medio':
+      case 'medio':
         return 'tutoriales-item__severity tutoriales-item__severity--medio';
-      case 'Bajo':
+      case 'basico':
         return 'tutoriales-item__severity tutoriales-item__severity--bajo';
       default:
         return 'tutoriales-item__severity';
@@ -68,16 +82,13 @@ export default function Tutoriales({ canViewRestricted = false }: { canViewRestr
           <div className="tutoriales-grid">
             {tutoriales.map((tut) => {
               const structured = isStructuredTutorial(tut);
+              const importance = getTutorialImportance(tut);
               return (
                 <div key={tut.id} onClick={() => setSelectedTutorialId(tut.id)} className="tutoriales-item">
                   <div className="tutoriales-item__hero">
                     <div className="tutoriales-item__top">
                       <span className="tutoriales-item__eyebrow">{structured ? tut.equipo : 'Tutorial'}</span>
-                      {structured && (
-                        <span className={getSeverityClass(tut.criticidad.nivel)}>
-                          {tut.criticidad.nivel}
-                        </span>
-                      )}
+                      <span className={getSeverityClass(importance)}>{IMPORTANCE_LABELS[importance]}</span>
                     </div>
 
                     <div className="tutoriales-item__copy">
