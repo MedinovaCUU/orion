@@ -89,9 +89,9 @@ const EQUIPMENT_NODE_RADIUS_PIXELS = {
   selectedHit: 32,
 };
 const CITY_NODE_RADIUS_PIXELS = {
-  near: 8.2,
-  baseFar: 6,
-  countBoost: 3.2,
+  near: 6.4,
+  baseFar: 4.8,
+  countBoost: 2.1,
   hit: 24,
 };
 const STATUS_TONE_ORDER: GlobeNodeTone[] = ['fatal', 'warning', 'ok', 'supremo', 'muted'];
@@ -444,7 +444,11 @@ const getAdministrativeObject = (topology: AdministrativeTopology) => Object.val
 
 const createAdministrativeBorderGeometry = (topology: AdministrativeTopology, radius: number) => {
   const administrativeObject = getAdministrativeObject(topology);
-  const internalBorders = mesh(topology, administrativeObject, (left, right) => left !== right).coordinates;
+  const internalBorders = mesh(
+    topology,
+    administrativeObject,
+    (left, right) => Boolean(left && right && left !== right),
+  ).coordinates;
   return createBorderGeometry(internalBorders, radius);
 };
 
@@ -1286,12 +1290,12 @@ function CityCluster({
                     />
                   </>
                 ) : null}
-                <mesh scale={selected ? 1.9 : 1.45}>
+                <mesh scale={selected ? 1.62 : 1.22}>
                   <ringGeometry args={[nodeSize * 1.08, nodeSize * 1.18, 32]} />
                   <meshBasicMaterial
                     color={selected ? '#ffffff' : '#b8e6e7'}
                     transparent
-                    opacity={selected ? 0.92 : 0.42}
+                    opacity={selected ? 0.88 : 0.26}
                     side={THREE.DoubleSide}
                     depthWrite={false}
                   />
@@ -1714,7 +1718,7 @@ export default function GlobalEquipmentGlobe({
         >
           {defaultCountryView.label}
         </button>
-        {effectiveSelectedEquipmentId ? (
+        {selectedEquipment ? (
           <button type="button" aria-label="Deseleccionar equipo" onClick={() => handleSelectEquipment(null)}>
             Limpiar
           </button>
