@@ -205,14 +205,21 @@ export default function PermissionsAdmin() {
                                   <span>{SUBPERMISSION_LABELS[key as ModuleWithSubpermissions][subKey]}</span>
                                 </label>
                               ))}
+                              {key === 'tickets' ? (
+                                <label className="permissions-admin__ticket-capability">
+                                  <input
+                                    type="checkbox"
+                                    checked={access.canReceiveTickets}
+                                    onChange={(event) => updateAccess(profile.id, (current) => ({ ...current, canReceiveTickets: event.target.checked }))}
+                                  />
+                                  <span>Puede recibir tickets</span>
+                                </label>
+                              ) : null}
                             </div>
                           ) : null}
                         </div>
                       );
                     })}
-                </div>
-                <div className="permissions-admin__capabilities">
-                  <label><input type="checkbox" checked={access.canReceiveTickets} onChange={(event) => updateAccess(profile.id, (current) => ({ ...current, canReceiveTickets: event.target.checked }))} /> Puede recibir tickets</label>
                 </div>
                 <div className="permissions-admin__actions">
                   <button className="button-primary inactive" type="button" disabled={savingId === profile.id} onClick={() => grantFullAccess(profile.id)}>Acceso total</button>
