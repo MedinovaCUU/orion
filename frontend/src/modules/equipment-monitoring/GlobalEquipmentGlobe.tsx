@@ -245,6 +245,17 @@ const latLngToVector = (latitude: number, longitude: number, radius = GLOBE_RADI
   );
 };
 
+const vectorToLatLng = (vector: THREE.Vector3) => {
+  const direction = vector.clone().normalize();
+
+  return {
+    latitude: THREE.MathUtils.radToDeg(
+      Math.asin(THREE.MathUtils.clamp(direction.y, -1, 1)),
+    ),
+    longitude: THREE.MathUtils.radToDeg(Math.atan2(-direction.z, direction.x)),
+  };
+};
+
 const getWorldUnitsPerPixel = (camera: THREE.Camera, position: THREE.Vector3, viewportHeight: number) => {
   if (!(camera instanceof THREE.PerspectiveCamera)) {
     return 0.001;
@@ -643,11 +654,14 @@ function MexicoAdministrativeGeography({
   const { camera } = useThree();
   const stateLayerRef = useRef<THREE.LineSegments | null>(null);
   const municipalLayerRef = useRef<THREE.LineSegments | null>(null);
+  const lastInspectedDirectionRef = useRef<THREE.Vector3 | null>(null);
+  const viewedStateCodeRef = useRef<string | null>(null);
   const municipalityLayerCacheRef = useRef(
     new Map<string, { geometry: THREE.BufferGeometry; features: AdministrativeFeatures }>(),
   );
   const [stateGeometry, setStateGeometry] = useState<THREE.BufferGeometry | null>(null);
   const [stateFeatures, setStateFeatures] = useState<AdministrativeFeatures | null>(null);
+  const [viewedStateCode, setViewedStateCode] = useState<string | null>(null);
   const [municipalityLayer, setMunicipalityLayer] = useState<{
     stateCode: string;
     geometry: THREE.BufferGeometry;
@@ -667,6 +681,7 @@ function MexicoAdministrativeGeography({
 
     return stateFeature?.properties?.cve_ent || null;
   }, [focusedCluster, stateFeatures]);
+  const activeStateCode = focusedStateCode || viewedStateCode;
 
   useEffect(() => {
     const controller = new AbortController();
@@ -688,16 +703,16 @@ function MexicoAdministrativeGeography({
   useEffect(() => () => stateGeometry?.dispose(), [stateGeometry]);
 
   useEffect(() => {
-    if (!focusedStateCode) {
+    if (!activeStateCode) {
       return;
     }
 
-    const cachedLayer = municipalityLayerCacheRef.current.get(focusedStateCode);
+    const cachedLayer = municipalityLayerCacheRef.current.get(activeStateCode);
     if (cachedLayer) {
       let active = true;
       queueMicrotask(() => {
         if (active) {
-          setMunicipalityLayer({ stateCode: focusedStateCode, ...cachedLayer });
+          setMunicipalityLayer({ stateCode: activeStateCode, ...cachedLayer });
         }
       });
       return () => {
@@ -707,29 +722,29 @@ function MexicoAdministrativeGeography({
 
     const controller = new AbortController();
     loadAdministrativeTopology(
-      `geography/mexico/municipalities/${focusedStateCode}.json`,
+      `geography/mexico/municipalities/${activeStateCode}.json`,
       controller.signal,
     )
       .then((topology) => {
         const geometry = createAdministrativeBorderGeometry(topology, MUNICIPAL_BORDER_RADIUS);
         const features = getAdministrativeFeatures(topology);
-        municipalityLayerCacheRef.current.set(focusedStateCode, { geometry, features });
-        setMunicipalityLayer({ stateCode: focusedStateCode, geometry, features });
+        municipalityLayerCacheRef.current.set(activeStateCode, { geometry, features });
+        setMunicipalityLayer({ stateCode: activeStateCode, geometry, features });
       })
       .catch((error: unknown) => {
         if (!(error instanceof DOMException && error.name === 'AbortError')) {
-          console.warn(`No fue posible mostrar los municipios del estado ${focusedStateCode}.`, error);
+          console.warn(`No fue posible mostrar los municipios del estado ${activeStateCode}.`, error);
         }
       });
 
     return () => controller.abort();
-  }, [focusedStateCode]);
+  }, [activeStateCode]);
 
   useEffect(() => {
     onMunicipalityFeaturesChange(
-      municipalityLayer?.stateCode === focusedStateCode ? municipalityLayer.features : null,
+      municipalityLayer?.stateCode === activeStateCode ? municipalityLayer.features : null,
     );
-  }, [focusedStateCode, municipalityLayer, onMunicipalityFeaturesChange]);
+  }, [activeStateCode, municipalityLayer, onMunicipalityFeaturesChange]);
 
   useEffect(
     () => () => {
@@ -744,9 +759,39 @@ function MexicoAdministrativeGeography({
     if (stateLayerRef.current) {
       stateLayerRef.current.visible = cameraDistance <= STATE_VIEW_DISTANCE;
     }
+
+    if (!focusedStateCode && stateFeatures) {
+      if (cameraDistance > MUNICIPAL_VIEW_DISTANCE) {
+        lastInspectedDirectionRef.current = null;
+        if (viewedStateCodeRef.current !== null) {
+          viewedStateCodeRef.current = null;
+          setViewedStateCode(null);
+        }
+      } else {
+        const cameraDirection = camera.position.clone().normalize();
+        const lastDirection = lastInspectedDirectionRef.current;
+
+        if (!lastDirection || lastDirection.distanceToSquared(cameraDirection) > 0.000001) {
+          lastInspectedDirectionRef.current = cameraDirection;
+          const center = vectorToLatLng(cameraDirection);
+          const viewedState = stateFeatures.features.find((state) =>
+            getFeaturePolygons(state).some((polygon) =>
+              pointInPolygon(center.longitude, center.latitude, polygon),
+            ),
+          );
+          const nextStateCode = viewedState?.properties?.cve_ent || null;
+
+          if (nextStateCode && viewedStateCodeRef.current !== nextStateCode) {
+            viewedStateCodeRef.current = nextStateCode;
+            setViewedStateCode(nextStateCode);
+          }
+        }
+      }
+    }
+
     if (municipalLayerRef.current) {
       municipalLayerRef.current.visible = Boolean(
-        focusedStateCode && cameraDistance <= MUNICIPAL_VIEW_DISTANCE,
+        activeStateCode && cameraDistance <= MUNICIPAL_VIEW_DISTANCE,
       );
     }
   });
@@ -764,7 +809,7 @@ function MexicoAdministrativeGeography({
           />
         </lineSegments>
       ) : null}
-      {municipalityLayer?.stateCode === focusedStateCode ? (
+      {municipalityLayer?.stateCode === activeStateCode ? (
         <lineSegments ref={municipalLayerRef} geometry={municipalityLayer.geometry} renderOrder={7}>
           <lineBasicMaterial
             color="#b4f3ea"
@@ -1625,8 +1670,6 @@ export default function GlobalEquipmentGlobe({
     focusedCluster?.equipments.find((equipment) => equipment.id === effectiveSelectedEquipmentId) || null;
   const geographyLevel =
     defaultCountryView.key === String(MEXICO_FEATURE?.id) &&
-    focusedCluster &&
-    !focusedCluster.simulated &&
     cameraDistance <= MUNICIPAL_VIEW_DISTANCE
       ? 'División municipal'
       : defaultCountryView.key === String(MEXICO_FEATURE?.id) && cameraDistance <= STATE_VIEW_DISTANCE
