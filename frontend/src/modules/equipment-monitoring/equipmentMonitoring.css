@@ -1559,28 +1559,42 @@ html.equipment-monitor__body-scroll-lock {
   }
 
   .equipment-monitor__map-stage {
-    min-height: 32rem;
+    min-height: 30rem;
   }
 
   .equipment-globe {
-    min-height: 38rem;
+    min-height: 34rem;
+    border-radius: 20px;
   }
 
   .equipment-globe__hud {
-    top: 0.75rem;
+    min-height: 2.65rem;
+    padding: 0.48rem 0.62rem;
+    border-radius: 13px;
   }
 
   .equipment-globe__hud--left {
+    top: 0.65rem;
     bottom: auto;
-    left: 0.75rem;
+    left: 0.65rem;
+    max-width: calc(100% - 1.3rem);
   }
 
   .equipment-globe__hud--right {
     top: auto;
-    right: auto;
-    bottom: 3.8rem;
-    left: 50%;
-    transform: translateX(-50%);
+    right: 0.65rem;
+    bottom: 3.55rem;
+    left: 0.65rem;
+    justify-content: center;
+    gap: 0.38rem;
+    transform: none;
+  }
+
+  .equipment-globe__hud--right button {
+    min-width: 2rem;
+    height: 2rem;
+    padding: 0 0.55rem;
+    border-radius: 9px;
   }
 
   .equipment-globe__hud--right > span {
@@ -1588,28 +1602,67 @@ html.equipment-monitor__body-scroll-lock {
   }
 
   .equipment-globe__hint {
-    bottom: 0.75rem;
-    max-width: calc(100% - 1.5rem);
-    width: max-content;
+    right: 0.65rem;
+    bottom: 0.6rem;
+    left: 0.65rem;
+    width: auto;
+    max-width: none;
+    padding: 0.46rem 0.65rem;
+    transform: none;
   }
 
   .equipment-globe__equipment-dock {
-    right: 0.75rem;
-    bottom: 7rem;
-    left: 0.75rem;
+    right: 0.65rem;
+    bottom: 6.55rem;
+    left: 0.65rem;
   }
 
   .equipment-globe__selected-panel {
     top: auto;
-    right: 0.75rem;
-    bottom: 7rem;
-    left: 0.75rem;
+    right: 0.65rem;
+    bottom: 6.55rem;
+    left: 0.65rem;
+    gap: 0.52rem;
     width: auto;
+    padding: 0.68rem;
+    border-radius: 15px;
     transform: none;
   }
 
   .equipment-globe--has-selection .equipment-globe__equipment-dock {
-    bottom: 19rem;
+    display: none;
+  }
+
+  .equipment-globe__selected-billboard {
+    display: none;
+  }
+
+  .equipment-globe__selected-panel-head strong {
+    font-size: 0.88rem;
+  }
+
+  .equipment-globe__selected-panel-head button {
+    width: 1.7rem;
+    height: 1.7rem;
+  }
+
+  .equipment-globe__selected-status {
+    gap: 0.52rem;
+    padding: 0.48rem 0.55rem;
+  }
+
+  .equipment-globe__selected-facts {
+    grid-template-columns: 0.7fr 0.9fr 1.55fr;
+    gap: 0.42rem;
+  }
+
+  .equipment-globe__selected-facts > div {
+    align-content: start;
+    min-width: 0;
+  }
+
+  .equipment-globe__selected-facts dd {
+    overflow-wrap: anywhere;
   }
 
   .equipment-globe__equipment-dock-header {
@@ -1617,15 +1670,7 @@ html.equipment-monitor__body-scroll-lock {
   }
 
   .equipment-globe__demo-label {
-    top: 0.85rem;
-    right: 0.75rem;
-    bottom: auto;
-    max-width: 8rem;
-    border: 0;
-    text-align: right;
-    background: transparent;
-    box-shadow: none;
-    backdrop-filter: none;
+    display: none;
   }
 
   .equipment-monitor__map-header,
@@ -1643,7 +1688,22 @@ html.equipment-monitor__body-scroll-lock {
   }
 
   .equipment-monitor__legend {
+    width: 100%;
+    flex-wrap: nowrap;
     justify-content: flex-start;
+    gap: 0.7rem;
+    overflow-x: auto;
+    padding: 0.1rem 0 0.3rem;
+    font-size: 0.76rem;
+    scrollbar-width: none;
+  }
+
+  .equipment-monitor__legend::-webkit-scrollbar {
+    display: none;
+  }
+
+  .equipment-monitor__legend span {
+    flex: 0 0 auto;
   }
 
   .equipment-monitor__zoom-controls {
@@ -1674,7 +1734,7 @@ html.equipment-monitor__body-scroll-lock {
   }
 
   .equipment-globe {
-    min-height: 32rem;
+    min-height: 30rem;
   }
 
   .equipment-globe__hud--left > div > span {
@@ -1683,6 +1743,20 @@ html.equipment-monitor__body-scroll-lock {
 
   .equipment-globe__hint {
     font-size: 0.62rem;
+  }
+
+  .equipment-globe__selected-eyebrow,
+  .equipment-globe__selected-facts dt {
+    font-size: 0.5rem;
+  }
+
+  .equipment-globe__selected-status strong,
+  .equipment-globe__selected-facts dd {
+    font-size: 0.6rem;
+  }
+
+  .equipment-globe__selected-status span {
+    font-size: 0.55rem;
   }
 
   .equipment-globe__equipment-dock-header span {
