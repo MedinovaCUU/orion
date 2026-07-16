@@ -73,6 +73,7 @@ const STATE_BORDER_RADIUS = GLOBE_RADIUS + 0.005;
 const MUNICIPAL_BORDER_RADIUS = GLOBE_RADIUS + 0.006;
 const CITY_MARKER_RADIUS = GLOBE_RADIUS + 0.007;
 const EQUIPMENT_MARKER_RADIUS = GLOBE_RADIUS + 0.008;
+const DISCONNECTED_EQUIPMENT_MARKER_RADIUS = GLOBE_RADIUS + 0.0065;
 const NETWORK_ANCHOR_RADIUS = GLOBE_RADIUS + 0.009;
 const AUTOMATIC_EQUIPMENT_DISTANCE = 2.085;
 const CITY_FOCUS_DISTANCE = 2.075;
@@ -1022,6 +1023,7 @@ function EquipmentPulseNode({
   const coreRef = useRef<THREE.Mesh | null>(null);
   const coreMaterialRef = useRef<THREE.MeshBasicMaterial | null>(null);
   const tone = equipment?.tone || 'muted';
+  const disconnected = tone === 'muted';
   const toneColor = useMemo(() => new THREE.Color(TONE_COLORS[tone]), [tone]);
 
   const handlePointerOver = (event: ThreeEvent<PointerEvent>) => {
@@ -1089,10 +1091,17 @@ function EquipmentPulseNode({
         <sphereGeometry args={[1, 14, 14]} />
         <meshBasicMaterial transparent opacity={0} depthWrite={false} colorWrite={false} />
       </mesh>
-      <group ref={visualRef}>
-        <mesh ref={coreRef} scale={selected ? 1.18 : 1}>
+      <group ref={visualRef} renderOrder={disconnected ? 8 : 16}>
+        <mesh ref={coreRef} scale={selected ? 1.18 : 1} renderOrder={disconnected ? 8 : 16}>
           <sphereGeometry args={[1, 16, 16]} />
-          <meshBasicMaterial ref={coreMaterialRef} color={TONE_COLORS[tone]} toneMapped={false} />
+          <meshBasicMaterial
+            ref={coreMaterialRef}
+            color={TONE_COLORS[tone]}
+            transparent={disconnected}
+            opacity={disconnected ? 0.5 : 1}
+            depthWrite={!disconnected}
+            toneMapped={false}
+          />
         </mesh>
         {equipment?.heartbeat ? <HeartbeatBeacon radius={1} intensity="equipment" /> : null}
       </group>
@@ -1178,7 +1187,10 @@ function CityCluster({
       const equipment = cluster.equipments[index];
       const latitude = equipment?.latitude ?? cluster.latitude;
       const longitude = equipment?.longitude ?? cluster.longitude;
-      const anchor = latLngToVector(latitude, longitude, EQUIPMENT_MARKER_RADIUS);
+      const markerRadius = equipment?.tone === 'muted'
+        ? DISCONNECTED_EQUIPMENT_MARKER_RADIUS
+        : EQUIPMENT_MARKER_RADIUS;
+      const anchor = latLngToVector(latitude, longitude, markerRadius);
       const coordinateKey = `${latitude.toFixed(5)}:${longitude.toFixed(5)}`;
       const occurrenceIndex = coordinateOccurrences.get(coordinateKey) || 0;
       coordinateOccurrences.set(coordinateKey, occurrenceIndex + 1);
@@ -1219,7 +1231,7 @@ function CityCluster({
         }
       }
 
-      const visualPosition = latLngToVector(visualLatitude, visualLongitude, EQUIPMENT_MARKER_RADIUS);
+      const visualPosition = latLngToVector(visualLatitude, visualLongitude, markerRadius);
 
       return { anchor, position: visualPosition };
     });
@@ -1233,6 +1245,7 @@ function CityCluster({
       ? 0.016
       : 0.026 + Math.min(Math.sqrt(cluster.count) * 0.0022, 0.028);
   const selected = cluster.equipments.some((equipment) => equipment.id === selectedEquipmentId);
+  const disconnectedCluster = cluster.tones.every((tone) => tone === 'muted');
 
   useFrame(({ clock, size }) => {
     if (!groupRef.current) {
@@ -1354,9 +1367,16 @@ function CityCluster({
               <meshBasicMaterial transparent opacity={0} depthWrite={false} />
             </mesh>
             <group ref={nodeVisualRef}>
-              <mesh ref={nodeCoreRef}>
+              <mesh ref={nodeCoreRef} renderOrder={disconnectedCluster ? 8 : 16}>
                 <sphereGeometry args={[nodeSize, 22, 22]} />
-                <meshBasicMaterial ref={nodeMaterialRef} color={TONE_COLORS[cluster.tone]} toneMapped={false} />
+                <meshBasicMaterial
+                  ref={nodeMaterialRef}
+                  color={TONE_COLORS[cluster.tone]}
+                  transparent={disconnectedCluster}
+                  opacity={disconnectedCluster ? 0.5 : 1}
+                  depthWrite={!disconnectedCluster}
+                  toneMapped={false}
+                />
               </mesh>
               {cluster.heartbeat ? <HeartbeatBeacon radius={nodeSize} intensity="cluster" /> : null}
               <Billboard follow>
