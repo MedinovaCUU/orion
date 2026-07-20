@@ -188,6 +188,12 @@ export interface DriReagentMeasurementInput {
   blankUnit?: string | null;
   source: DriReagentMeasurementSource;
   updatedAt: string | null;
+  controlLevel?: DriQcReferenceControlLevel | null;
+  controlLot?: string | null;
+  observedAt?: string | null;
+  sourceResultId?: string | null;
+  qcBand?: DriQcBand | null;
+  matchConfidence?: 'exact' | 'compatible' | 'unmatched' | null;
 }
 
 export interface DriServiceTestInput {

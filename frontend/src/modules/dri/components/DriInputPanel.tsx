@@ -380,9 +380,9 @@ export default function DriInputPanel({
                 <div className={`dri-reagent-pill__capture ${showBlankCapture ? 'has-blank' : ''}`}>
                   <input
                     className={`input-field dri-reagent-pill__input ${
-                      assessment?.band === 'out_of_reject'
+                      (assessment?.band || measurement?.qcBand) === 'out_of_reject'
                         ? 'is-critical'
-                        : assessment?.band === 'near_reject'
+                        : (assessment?.band || measurement?.qcBand) === 'near_reject'
                           ? 'is-warning'
                           : assessment?.assumedNeutral
                             ? 'is-neutral'
@@ -402,6 +402,14 @@ export default function DriInputPanel({
                     placeholder={reference?.unit || 'valor'}
                     aria-label={`Valor obtenido de ${reagent.displayCode || reagent.id}`}
                   />
+                  {measurement?.source === 'auto_import' ? (
+                    <span
+                      className={`dri-reagent-pill__qc-origin ${measurement.qcBand === 'out_of_reject' ? 'is-failed' : measurement.qcBand === 'near_reject' ? 'is-warning' : ''}`}
+                      title={`${measurement.controlLot ? `Lote ${measurement.controlLot} · ` : ''}${measurement.observedAt ? new Date(measurement.observedAt).toLocaleString('es-MX') : 'fecha no disponible'}`}
+                    >
+                      {measurement.controlLevel === 'level_1' ? 'N1' : measurement.controlLevel === 'level_2' ? 'N2' : 'QC'}
+                    </span>
+                  ) : null}
                   {showBlankCapture ? (
                     <input
                       className="input-field dri-reagent-pill__input dri-reagent-pill__input--blank"

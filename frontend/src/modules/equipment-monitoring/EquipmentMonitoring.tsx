@@ -4,6 +4,7 @@ import { getPublicAssetUrl } from '../../components/publicAssetUrl';
 import { createSupremoLaunchSession, getSupremoLaunchDisabledMessage, isSupremoLaunchEnabled } from '../../components/supremoApi';
 import { runtimeFlags } from '../../config/runtimeFlags';
 import { supabase } from '../../supabaseClient';
+import SatReportImporter from '../sat-report/SatReportImporter';
 import GlobalEquipmentGlobe, { type GlobeEquipmentNode } from './GlobalEquipmentGlobe';
 import {
   getNormalizedStateLabel,
@@ -1746,6 +1747,12 @@ export default function EquipmentMonitoring({ subPermissions = ['mapa', 'alertas
           <button type="button" className="button-primary chip" onClick={() => void loadMonitoringSnapshot('refresh')}>
             Actualizar ahora
           </button>
+          <SatReportImporter
+            onImported={() => {
+              setLoadNotice('Reporte SAT incorporado. Actualizando consumos y trazabilidad del equipo.');
+              void loadMonitoringSnapshot('refresh');
+            }}
+          />
           <button
             type="button"
             className={`button-primary chip ${isEditMode ? '' : 'inactive'}`.trim()}

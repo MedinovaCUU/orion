@@ -91,14 +91,22 @@ with numbered_cases as (
   where numero_caso is null
 )
 update public.tickets as ticket
-set numero_caso = public.format_ticket_case_number(numbered.case_date, numbered.daily_number)
+set numero_caso = case
+  when numbered.daily_number <= 99 then
+    public.format_ticket_case_number(numbered.case_date, numbered.daily_number)
+  else
+    -- Historical imports can exceed the operational limit. Keep the normal
+    -- eight-character folio and add a deterministic suffix only for overflow.
+    public.format_ticket_case_number(numbered.case_date, ((numbered.daily_number - 1) % 99) + 1)
+      || '-' || lpad(numbered.daily_number::text, 3, '0')
+end
 from numbered_cases as numbered
 where ticket.id = numbered.id;
 
 insert into public.ticket_case_daily_counters (case_date, last_value)
 select
   timezone('America/Chihuahua', creado_en)::date,
-  count(*)::smallint
+  least(count(*), 99)::smallint
 from public.tickets
 group by timezone('America/Chihuahua', creado_en)::date
 on conflict (case_date) do update

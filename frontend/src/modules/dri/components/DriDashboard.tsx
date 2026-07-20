@@ -17,7 +17,9 @@ import { buildBa400HierarchyGraph } from '../knowledge/ba400SubsystemHierarchy';
 import { buildObservationBlockFromEvidence, runDriEvidenceOcr } from '../utils/driEvidenceOcr';
 import { createDriLogger } from '../utils/driLogging';
 import { assessQcReference, findQcReferenceById, getMatchingQcReferences } from '../utils/qcReferenceUtils';
+import { classifySatQcResults } from '../utils/satQcClassifier';
 import { getValidatedSession } from '../../../supabaseClient';
+import type { SatReportSummary } from '../../sat-report/satReportTypes';
 import type {
   DriCaseFormState,
   DriCatalog,
@@ -547,7 +549,13 @@ const buildFullRandomDemoFormState = (
   };
 };
 
-export default function DriDashboard({ subPermissions = ['captura', 'grafo', 'diagnostico'] }: { subPermissions?: string[] }) {
+export default function DriDashboard({
+  subPermissions = ['captura', 'grafo', 'diagnostico'],
+  satContext = null,
+}: {
+  subPermissions?: string[];
+  satContext?: SatReportSummary | null;
+}) {
   const canCapture = subPermissions.includes('captura');
   const canViewGraph = subPermissions.includes('grafo');
   const canViewDiagnosis = subPermissions.includes('diagnostico');
@@ -578,6 +586,63 @@ export default function DriDashboard({ subPermissions = ['captura', 'grafo', 'di
   const [evidenceTasks, setEvidenceTasks] = useState<Record<string, DriEvidenceTaskState>>({});
   const [sessionEmail, setSessionEmail] = useState<string | null>(null);
   const deferredSearch = useDeferredValue(search);
+
+  useEffect(() => {
+    if (!satContext) return;
+    const latestLot = (kind: 'reagent' | 'control' | 'calibrator') =>
+      [...satContext.lots]
+        .filter((lot) => lot.kind === kind)
+        .sort((left, right) => (right.lastSeenAt || '').localeCompare(left.lastSeenAt || ''))[0];
+    const latestReagentLot = latestLot('reagent')?.lot || '';
+    const latestControlLot = latestLot('control')?.lot || '';
+    const latestCalibrator = latestLot('calibrator');
+    const eventExcerpt = satContext.events
+      .filter((event) => event.category === 'error' || event.category === 'warning')
+      .slice(-8)
+      .map((event) => `[${event.category.toUpperCase()}${event.code ? ` ${event.code}` : ''}] ${event.message}`)
+      .join('\n');
+    const contextBlock = [
+      `[SAT:${satContext.sha256.slice(0, 12)}] ${satContext.fileName}`,
+      `Cobertura: ${satContext.coverage.processedFiles}/${satContext.coverage.totalFiles} archivos; ${satContext.findings.distinctTests} pruebas; ${satContext.findings.distinctLots} lotes.`,
+      eventExcerpt,
+    ].filter(Boolean).join('\n');
+
+    setForm((current) => ({
+      ...current,
+      equipmentModel: satContext.equipmentModel,
+      serialNumber: satContext.serialNumber,
+      eventDate: (satContext.reportGeneratedAt || new Date().toISOString()).slice(0, 10),
+      reagentLot: latestReagentLot || current.reagentLot,
+      controlLot: latestControlLot || current.controlLot,
+      calibratorLot: latestCalibrator?.lot || current.calibratorLot,
+      calibratorName: latestCalibrator?.name || current.calibratorName,
+      observations: [current.observations.replace(/\[SAT:[\s\S]*$/m, '').trim(), contextBlock].filter(Boolean).join('\n\n'),
+    }));
+    setPersistWarning(
+      satContext.coverage.hasDatabaseBackup
+        ? 'Contexto SAT aplicado. La evidencia legible está disponible; el respaldo .bak permanece pendiente de extracción profunda.'
+        : 'Contexto SAT aplicado al diagnóstico.',
+    );
+  }, [satContext]);
+
+  useEffect(() => {
+    if (!satContext?.qcResults?.length || !catalog) return;
+    const projection = classifySatQcResults(catalog, satContext.qcResults);
+    setForm((current) => ({
+      ...current,
+      failedReagentIds: projection.failedReagentIds,
+      correctReagentIds: projection.correctReagentIds,
+      reagentMeasurements: {
+        ...current.reagentMeasurements,
+        ...projection.reagentMeasurements,
+      },
+    }));
+    setPersistWarning(
+      `${projection.matchedCount} controles recientes evaluados con referencias EInfo; ` +
+        `${projection.failedReagentIds.length} reactivos fallidos, ${projection.correctReagentIds.length} correctos` +
+        (projection.pendingCount ? ` y ${projection.pendingCount} resultados pendientes por lote, nivel o unidad.` : '.'),
+    );
+  }, [catalog, satContext]);
 
   useEffect(() => {
     let mounted = true;
