@@ -16,6 +16,8 @@ import {
   type TicketIntakeDraft,
 } from './ticketIntake';
 import useSecondTicker from './useSecondTicker';
+import TicketCaseDetail from './TicketCaseDetail';
+import { formatCaseNumber } from './ticketCaseUtils';
 import {
   extractPlaneacionMeta,
   stripPlaneacionMeta,
@@ -33,6 +35,8 @@ interface TicketRecord {
   descripcion: string | null;
   estado: string;
   creado_en: string;
+  actualizado_en?: string | null;
+  numero_caso?: string | null;
   numero_serie_equipo?: string | null;
   nombre_cliente_guest?: string | null;
   telefono_cliente_guest?: string | null;
@@ -367,6 +371,7 @@ export default function Tickets({ subPermissions = ['crear', 'seguimiento', 'dia
   const [travelPlannerOpen, setTravelPlannerOpen] = useState(false);
   const [travelPlannerRequestId, setTravelPlannerRequestId] = useState<string | null>(null);
   const [travelPlannerTicketId, setTravelPlannerTicketId] = useState<string | null>(null);
+  const [expandedCaseId, setExpandedCaseId] = useState<string | null>(null);
   const ticketImageInputRef = useRef<HTMLInputElement | null>(null);
 
   useEffect(() => {
@@ -392,9 +397,11 @@ export default function Tickets({ subPermissions = ['crear', 'seguimiento', 'dia
     if (user) {
       const { data: profile } = await supabase
         .from('profiles')
-        .select('nombre_completo')
+        .select('nombre_completo, rol, recibe_tickets')
         .eq('id', user.id)
         .maybeSingle();
+
+      const isSupportStaff = profile?.rol === 'admin' || profile?.rol === 'tecnico';
 
       const currentProfileName = normalizeComparableText(
         (profile?.nombre_completo as string | null | undefined) || user.user_metadata?.nombre_completo || user.email,
@@ -417,7 +424,9 @@ export default function Tickets({ subPermissions = ['crear', 'seguimiento', 'dia
             return belongsByEngineerName || belongsByUserId;
           }
 
-          return belongsByUserId;
+          // La bandeja de soporte debe incluir altas externas (user_id null) y
+          // casos creados por otros tecnicos para que realmente puedan escalarse.
+          return isSupportStaff || belongsByUserId;
         });
 
         setTickets(visibleTickets);
@@ -811,7 +820,7 @@ export default function Tickets({ subPermissions = ['crear', 'seguimiento', 'dia
       </div> : null}
 
       {canViewTickets ? <div className="card" style={{ background: 'var(--bg-secondary)', border: 'none' }}>
-        <h3 style={{ marginBottom: '1rem' }}>Mis Tickets de Soporte</h3>
+        <h3 style={{ marginBottom: '1rem' }}>Bandeja de Casos de Soporte</h3>
       {loading ? (
         <p>Cargando tickets...</p>
       ) : tickets.length === 0 ? (
@@ -826,6 +835,10 @@ export default function Tickets({ subPermissions = ['crear', 'seguimiento', 'dia
                 <li key={ticket.id} className={`tickets-list-card${isPlanningTicket ? ' tickets-list-card--planning' : ''}`}>
                   <div className="tickets-list-card__header">
                     <div className="tickets-list-card__copy">
+                      <div className="tickets-list-card__case-line">
+                        <span className="tickets-list-card__case-number">{formatCaseNumber(ticket)}</span>
+                        <span>Actualizado {new Date(ticket.actualizado_en || ticket.creado_en).toLocaleDateString('es-MX')}</span>
+                      </div>
                       <strong className="tickets-list-card__title">{ticket.asunto}</strong>
                       <div className="tickets-list-card__chips">
                         {ticket.numero_serie_equipo && (
@@ -859,7 +872,7 @@ export default function Tickets({ subPermissions = ['crear', 'seguimiento', 'dia
                       </div>
                     </div>
                     <span
-                      className={`tickets-list-card__status ${ticket.estado === 'abierto' ? 'tickets-list-card__status--open' : 'tickets-list-card__status--closed'}`}
+                      className={`tickets-list-card__status tickets-list-card__status--${ticket.estado}`}
                     >
                       {formatSupportStatus(ticket.estado)}
                     </span>
@@ -908,6 +921,28 @@ export default function Tickets({ subPermissions = ['crear', 'seguimiento', 'dia
                       <div className="tickets-list-card__ops-cta">Clic para abrir la solicitud de viaje ligada a esta planeación.</div>
                     </button>
                   )}
+
+                  <button
+                    type="button"
+                    className="tickets-list-card__case-toggle"
+                    aria-expanded={expandedCaseId === ticket.id}
+                    onClick={() => setExpandedCaseId((current) => current === ticket.id ? null : ticket.id)}
+                  >
+                    <span>
+                      <strong>{expandedCaseId === ticket.id ? 'Cerrar expediente' : 'Abrir expediente completo'}</strong>
+                      <small>Historial global del equipo y registro rápido de avances</small>
+                    </span>
+                    <span aria-hidden="true">{expandedCaseId === ticket.id ? '−' : '+'}</span>
+                  </button>
+
+                  {expandedCaseId === ticket.id ? (
+                    <TicketCaseDetail
+                      ticket={ticket}
+                      equipment={resolvedEquipment}
+                      canWrite={canDiagnoseTickets && ticket.estado !== 'cerrado'}
+                      onChanged={fetchTickets}
+                    />
+                  ) : null}
               
                   {canDiagnoseTickets && ticket.estado !== 'cerrado' && (
                       <div className="tickets-list-card__footer">
@@ -946,7 +981,7 @@ export default function Tickets({ subPermissions = ['crear', 'seguimiento', 'dia
         />
       )}
 
-      <TicketFalconAlertsBridge contextLabel="Mis Tickets" entries={trackedFalconTickets} />
+      <TicketFalconAlertsBridge contextLabel="Casos de soporte" entries={trackedFalconTickets} />
 
       {canDiagnoseTickets && cerrarModalOpen && selectedTicket && createPortal(
         <div 
