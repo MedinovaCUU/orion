@@ -1,6 +1,10 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { supabase } from '../supabaseClient';
-import type { EquipmentSummary } from './servicesPlanning';
+import {
+  extractPlaneacionMeta,
+  METADATA_DELIMITER,
+  type EquipmentSummary,
+} from './servicesPlanning';
 import { formatCaseNumber } from './ticketCaseUtils';
 
 export interface CaseTicketRecord {
@@ -176,15 +180,34 @@ export default function TicketCaseDetail({ ticket, equipment, canWrite, onChange
   }, [loadCase]);
 
   const timeline = useMemo<TimelineEntry[]>(() => {
-    const ticketEntries = equipmentTickets.map((row) => ({
-      id: `ticket-${row.id}`,
-      timestamp: row.creado_en,
-      eyebrow: formatCaseNumber(row),
-      title: row.asunto,
-      detail: row.descripcion?.trim() || 'Ticket generado sin descripción adicional.',
-      meta: `Estado: ${statusLabels[row.estado] || row.estado}`,
-      tone: 'ticket' as const,
-    }));
+    const ticketEntries = equipmentTickets.map((row) => {
+      const planning = extractPlaneacionMeta(row.descripcion);
+      const cleanDescription = row.descripcion?.includes(METADATA_DELIMITER)
+        ? row.descripcion.slice(0, row.descripcion.indexOf(METADATA_DELIMITER)).trim()
+        : row.descripcion?.trim();
+      const planningMeta = planning
+        ? [
+            planning.fecha_acordada
+              ? `Fecha acordada: ${planning.fecha_acordada}`
+              : planning.fecha_tentativa
+                ? `Fecha tentativa: ${planning.fecha_tentativa}`
+                : '',
+            planning.ingeniero_csv ? `Ingeniero: ${planning.ingeniero_csv}` : '',
+            planning.service_type ? `Servicio: ${planning.service_type}` : '',
+            planning.status_values?.length ? `Condición: ${planning.status_values.join(', ')}` : '',
+          ].filter(Boolean)
+        : [];
+
+      return {
+        id: `ticket-${row.id}`,
+        timestamp: row.creado_en,
+        eyebrow: `${formatCaseNumber(row)}${planning ? ' · Planeación ORION' : ''}`,
+        title: row.asunto,
+        detail: cleanDescription || 'Ticket generado sin descripción adicional.',
+        meta: [`Estado: ${statusLabels[row.estado] || row.estado}`, ...planningMeta].join(' · '),
+        tone: 'ticket' as const,
+      };
+    });
     const logEntries = logs.map((row) => ({
       id: `log-${row.id}`,
       timestamp: row.creado_en,

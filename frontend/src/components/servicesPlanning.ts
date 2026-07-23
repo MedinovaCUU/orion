@@ -7,6 +7,9 @@ export interface PlanningMetadata {
   week_end?: string;
   planning_month_key?: string;
   raw_type_label?: string;
+  service_type?: string;
+  priority_csv?: string;
+  status_values?: string[];
   requiere_vuelos?: boolean;
   requiere_auto?: boolean;
   dias_laborados?: number[];
