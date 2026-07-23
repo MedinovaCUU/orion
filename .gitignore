@@ -39,6 +39,7 @@ frontend/update_users.cjs
 /planeaciones/
 /respaldo-servicios-*/
 /scripts/
+/tools/sap-service-report-ingestor/.env
 /catalog.json
 /equipment_index.json
 /ignored_files.json
@@ -73,3 +74,7 @@ frontend/update_users.cjs
 *.njsproj
 *.sln
 *.sw?
+
+# Python runtime artifacts
+__pycache__/
+*.py[cod]

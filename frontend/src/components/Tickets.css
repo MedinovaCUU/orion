@@ -292,6 +292,39 @@
 .ticket-case__timeline-card > strong { display: block; margin-top: 0.25rem; font-size: 0.86rem; }
 .ticket-case__timeline-card p { margin: 0.3rem 0; color: var(--text-secondary); font-size: 0.82rem; white-space: pre-line; }
 .ticket-case__timeline-card small { color: var(--text-tertiary); }
+.ticket-case__document-link {
+  display: inline-flex;
+  margin-top: 0.65rem;
+  padding: 0.42rem 0.7rem;
+  border: 1px solid color-mix(in srgb, var(--success-color) 42%, var(--surface-outline));
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--success-color) 9%, white);
+  color: color-mix(in srgb, var(--success-color) 78%, #102418);
+  font: inherit;
+  font-size: 0.74rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+.ticket-case__document-link:hover { transform: translateY(-1px); filter: brightness(0.98); }
+.ticket-case__sap-details { margin-top: 0.7rem; border-top: 1px solid var(--surface-outline); padding-top: 0.65rem; }
+.ticket-case__sap-details > summary { color: var(--primary-color); font-size: 0.76rem; font-weight: 800; cursor: pointer; }
+.ticket-case__sap-sections { display: grid; gap: 0.75rem; margin-top: 0.75rem; }
+.ticket-case__sap-sections section { padding: 0.75rem; border: 1px solid var(--surface-outline); border-radius: 12px; background: rgba(248, 250, 252, 0.86); }
+.ticket-case__sap-sections h5 { margin: 0 0 0.55rem; color: var(--text-primary); font-size: 0.78rem; }
+.ticket-case__sap-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.55rem; margin: 0; }
+.ticket-case__sap-grid > div { min-width: 0; padding: 0.52rem 0.6rem; border-radius: 9px; background: white; }
+.ticket-case__sap-grid > div.is-wide { grid-column: 1 / -1; }
+.ticket-case__sap-grid dt { color: var(--text-tertiary); font-size: 0.64rem; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; }
+.ticket-case__sap-grid dd { margin: 0.18rem 0 0; color: var(--text-primary); font-size: 0.76rem; overflow-wrap: anywhere; }
+.ticket-case__sap-table-wrap { overflow-x: auto; }
+.ticket-case__sap-table { width: 100%; border-collapse: collapse; font-size: 0.72rem; }
+.ticket-case__sap-table th,
+.ticket-case__sap-table td { padding: 0.48rem 0.55rem; border-bottom: 1px solid var(--surface-outline); text-align: left; vertical-align: top; }
+.ticket-case__sap-table th { color: var(--text-tertiary); font-size: 0.62rem; letter-spacing: 0.05em; text-transform: uppercase; }
+.ticket-case__sap-checklist { display: grid; gap: 0.4rem; max-height: 420px; overflow-y: auto; padding-right: 0.2rem; }
+.ticket-case__sap-checklist > div { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 0.8rem; align-items: start; padding: 0.52rem 0.6rem; border-radius: 9px; background: white; }
+.ticket-case__sap-checklist span { color: var(--text-secondary); font-size: 0.72rem; }
+.ticket-case__sap-checklist strong { color: var(--text-primary); font-size: 0.72rem; white-space: nowrap; }
 .ticket-case__empty { color: var(--text-secondary); font-size: 0.85rem; }
 
 .tickets-list-card--planning .tickets-list-card__footer .button-primary {
@@ -311,4 +344,6 @@
   .ticket-case__quick-grid { grid-template-columns: 1fr; }
   .ticket-case__quick-actions { align-items: stretch; flex-direction: column; }
   .ticket-case__timeline-card > div { flex-direction: column; gap: 0.15rem; }
+  .ticket-case__sap-grid { grid-template-columns: 1fr; }
+  .ticket-case__sap-grid > div.is-wide { grid-column: auto; }
 }
