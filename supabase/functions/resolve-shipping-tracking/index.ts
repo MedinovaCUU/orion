@@ -272,11 +272,35 @@ const extractFirstDate = (value: string) => {
   return match?.[1] || '';
 };
 
+const buildValidIsoDate = (year: string, first: string, second: string) => {
+  let month = Number(first);
+  let day = Number(second);
+
+  if (month > 12 && day >= 1 && day <= 12) {
+    [month, day] = [day, month];
+  }
+
+  const numericYear = Number(year);
+  const candidate = new Date(Date.UTC(numericYear, month - 1, day));
+  if (
+    month < 1 ||
+    month > 12 ||
+    day < 1 ||
+    candidate.getUTCFullYear() !== numericYear ||
+    candidate.getUTCMonth() !== month - 1 ||
+    candidate.getUTCDate() !== day
+  ) {
+    return '';
+  }
+
+  return `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+};
+
 const parseDateToIso = (value: string) => {
   const raw = compactSpaces(value);
   const isoMatch = raw.match(/^(\d{4})[-/](\d{2})[-/](\d{2})$/);
   if (isoMatch) {
-    return `${isoMatch[1]}-${isoMatch[2]}-${isoMatch[3]}`;
+    return buildValidIsoDate(isoMatch[1], isoMatch[2], isoMatch[3]);
   }
 
   const dayFirstMatch = raw.match(/^(\d{1,2})[-/](\d{1,2})[-/](\d{2,4})$/);
@@ -285,10 +309,10 @@ const parseDateToIso = (value: string) => {
   }
 
   const year = dayFirstMatch[3].length === 2 ? `20${dayFirstMatch[3]}` : dayFirstMatch[3];
-  return `${year}-${dayFirstMatch[2].padStart(2, '0')}-${dayFirstMatch[1].padStart(2, '0')}`;
+  return buildValidIsoDate(year, dayFirstMatch[2], dayFirstMatch[1]);
 };
 
-const toIsoDate = (value: string) => (/^\d{4}-\d{2}-\d{2}/.test(value) ? value.slice(0, 10) : parseDateToIso(value));
+const toIsoDate = (value: string) => parseDateToIso(extractFirstDate(value));
 
 const SPANISH_MONTHS: Record<string, string> = {
   enero: '01',

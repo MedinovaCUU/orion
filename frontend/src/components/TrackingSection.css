@@ -595,6 +595,24 @@
   font-size: 0.85rem;
 }
 
+.tracking-storage-state {
+  font-weight: 700;
+}
+
+.tracking-storage-state--synced {
+  color: #237949;
+}
+
+.tracking-storage-state--loading,
+.tracking-storage-state--saving {
+  color: #2168b0;
+}
+
+.tracking-storage-state--local_only,
+.tracking-storage-state--error {
+  color: #b54853;
+}
+
 .tracking-empty-state {
   padding: 1.4rem;
   border-radius: 24px;
