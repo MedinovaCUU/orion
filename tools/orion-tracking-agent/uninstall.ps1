@@ -1,6 +1,9 @@
 #Requires -RunAsAdministrator
 [CmdletBinding()]
-param([string]$InstallDir = "C:\ProgramData\OrionTrackingAgent")
+param(
+  [string]$InstallDir = "$env:ProgramFiles\OrionTrackingAgent",
+  [string]$DataDir = "$env:ProgramData\OrionTrackingAgent"
+)
 
 $TaskName = "Orion DHL Tracking Agent"
 $startupShortcut = Join-Path ([Environment]::GetFolderPath("Startup")) "Orion DHL Tracking Agent.lnk"
@@ -13,4 +16,5 @@ if (Test-Path $startupShortcut) {
 }
 
 Write-Host "El inicio automatico fue eliminado."
-Write-Host "Los archivos y logs permanecen en $InstallDir para recuperacion manual."
+Write-Host "Los binarios permanecen en $InstallDir."
+Write-Host "La configuracion y logs permanecen en $DataDir para recuperacion manual."

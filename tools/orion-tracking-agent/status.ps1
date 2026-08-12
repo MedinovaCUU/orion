@@ -1,10 +1,13 @@
 [CmdletBinding()]
-param([string]$InstallDir = "C:\ProgramData\OrionTrackingAgent")
+param(
+  [string]$InstallDir = "$env:ProgramFiles\OrionTrackingAgent",
+  [string]$DataDir = "$env:ProgramData\OrionTrackingAgent"
+)
 
 $TaskName = "Orion DHL Tracking Agent"
 $startupShortcut = Join-Path ([Environment]::GetFolderPath("Startup")) "Orion DHL Tracking Agent.lnk"
 $task = Get-ScheduledTask -TaskName $TaskName -ErrorAction SilentlyContinue
-$logPath = Join-Path $InstallDir "data\agent.log"
+$logPath = Join-Path $DataDir "data\agent.log"
 $agentProcess = Get-CimInstance Win32_Process -Filter "Name = 'node.exe'" -ErrorAction SilentlyContinue |
   Where-Object { $_.CommandLine -and $_.CommandLine -like "*OrionTrackingAgent*src*main.mjs*" } |
   Select-Object -First 1

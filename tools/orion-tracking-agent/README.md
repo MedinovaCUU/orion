@@ -34,13 +34,13 @@ Set-ExecutionPolicy -Scope Process Bypass
 .\install.ps1
 ```
 
-El paquete completo incluye Node.js portátil y las dependencias del agente, así que no necesita instalar Node ni ejecutar `npm` por internet. El instalador registra `Orion DHL Tracking Agent` para iniciar con Windows en la sesión interactiva actual. Chrome queda minimizado y utiliza un perfil separado dentro de `C:\ProgramData\OrionTrackingAgent\data\chrome-profile`.
+El paquete completo incluye Node.js portátil y las dependencias del agente, así que no necesita instalar Node ni ejecutar `npm` por internet. Los ejecutables se instalan en `C:\Program Files\OrionTrackingAgent`; la configuración, el perfil de Chrome y los logs quedan en `C:\ProgramData\OrionTrackingAgent`. El instalador registra el agente para iniciar con Windows en la sesión interactiva actual.
 
 Al reinstalar, el instalador detiene exclusivamente procesos anteriores de Orion Tracking Agent, recupera los permisos de su carpeta y elimina la copia incompleta antes de desplegar la versión nueva.
 
 El paquete privado preparado por el administrador puede incluir `agent-credentials.json`; en ese caso no solicita claves y elimina ese archivo de la carpeta extraída cuando termina. El ZIP original todavía contiene la credencial y debe borrarse después de instalar.
 
-Después de reiniciar, la tarea arranca al iniciar sesión. Si el equipo dedicado debe recuperarse sin intervención humana tras un corte eléctrico, configura el encendido automático en BIOS y el inicio de sesión automático de esa cuenta de Windows. Ejecutarlo como `SYSTEM` no es compatible porque DHL bloquea el navegador headless y Windows no permite un navegador gráfico en la sesión de servicio.
+Después de reiniciar, el agente arranca al iniciar sesión. Si el equipo dedicado debe recuperarse sin intervención humana tras un corte eléctrico, configura el encendido automático en BIOS y el inicio de sesión automático de esa cuenta de Windows. Ejecutarlo como `SYSTEM` no es compatible porque DHL bloquea el navegador headless y Windows no permite un navegador gráfico en la sesión de servicio.
 
 ## Operación
 
@@ -49,7 +49,7 @@ Después de reiniciar, la tarea arranca al iniciar sesión. Si el equipo dedicad
 .\run-once.ps1
 ```
 
-También puedes abrir `VER-ESTADO.cmd` para ver la tarea y los últimos eventos sin escribir comandos.
+También puedes abrir `VER-ESTADO.cmd` para ver el estado y los últimos eventos sin escribir comandos.
 
 Si la instalación falla, la ventana permanece abierta con el motivo y guarda el diagnóstico en:
 
@@ -57,7 +57,7 @@ Si la instalación falla, la ventana permanece abierta con el motivo y guarda el
 C:\ProgramData\OrionTrackingAgent-install.log
 ```
 
-Si Windows no permite registrar la tarea programada, el instalador configura automáticamente un acceso equivalente en la carpeta Inicio de la cuenta actual.
+El instalador registra un acceso en la carpeta Inicio de la cuenta actual para que Chrome pueda operar en la sesión visible.
 
 El botón `Actualizar por agente` en Orion fuerza una revisión remota. `run-once.ps1` procesa inmediatamente la cola disponible si el servicio no está ejecutándose.
 
@@ -71,4 +71,4 @@ Ante un error de lectura del portal, las capturas quedan en `data\screenshots`.
 
 ## Desinstalación
 
-Ejecuta `uninstall.ps1` como administrador. La tarea se elimina y los logs quedan preservados para diagnóstico.
+Ejecuta `uninstall.ps1` como administrador. El inicio automático se elimina y los logs quedan preservados para diagnóstico.

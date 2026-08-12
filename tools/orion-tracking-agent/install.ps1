@@ -5,7 +5,8 @@ param(
   [string]$SupabaseAnonKey = "",
   [string]$AgentToken = "",
   [string]$CredentialsFile = "",
-  [string]$InstallDir = "C:\ProgramData\OrionTrackingAgent"
+  [string]$InstallDir = "$env:ProgramFiles\OrionTrackingAgent",
+  [string]$DataDir = "$env:ProgramData\OrionTrackingAgent"
 )
 
 $ErrorActionPreference = "Stop"
@@ -14,6 +15,17 @@ $StartupShortcutName = "Orion DHL Tracking Agent.lnk"
 
 function Write-Step([string]$Message) {
   Write-Host "`n[Orion] $Message" -ForegroundColor Cyan
+}
+
+function Remove-OrionDirectory([string]$Path) {
+  if (-not (Test-Path $Path)) {
+    return
+  }
+
+  # Usa SIDs independientes del idioma; no usa TAKEOWN /D, que cambia entre Y y S.
+  & icacls.exe $Path /setowner '*S-1-5-32-544' /T /C /Q | Out-Null
+  & icacls.exe $Path /grant:r '*S-1-5-32-544:(OI)(CI)F' /T /C /Q | Out-Null
+  Remove-Item -LiteralPath $Path -Recurse -Force -ErrorAction Stop
 }
 
 function Install-NodeIfMissing {
@@ -125,21 +137,27 @@ if (Test-Path $startupShortcut) {
 Get-CimInstance Win32_Process -Filter "Name = 'node.exe'" -ErrorAction SilentlyContinue |
   Where-Object { $_.CommandLine -and $_.CommandLine -like "*OrionTrackingAgent*src*main.mjs*" } |
   ForEach-Object { Stop-Process -Id $_.ProcessId -Force -ErrorAction SilentlyContinue }
+Get-CimInstance Win32_Process -ErrorAction SilentlyContinue |
+  Where-Object {
+    $_.Name -in @('chrome.exe', 'msedge.exe') -and
+    $_.CommandLine -and
+    $_.CommandLine -like "*OrionTrackingAgent*chrome-profile*"
+  } |
+  ForEach-Object { Stop-Process -Id $_.ProcessId -Force -ErrorAction SilentlyContinue }
 Start-Sleep -Seconds 2
 
-if (Test-Path $InstallDir) {
-  # Versiones anteriores restringian la ACL antes de completar la instalacion.
-  & takeown.exe /F $InstallDir /R /D Y | Out-Null
-  & icacls.exe $InstallDir /reset /T /C /Q | Out-Null
-  & icacls.exe $InstallDir /grant:r '*S-1-5-32-544:(OI)(CI)F' /T /C /Q | Out-Null
-  Remove-Item -LiteralPath $InstallDir -Recurse -Force -ErrorAction Stop
-}
+Remove-OrionDirectory $InstallDir
+Remove-OrionDirectory $DataDir
 
 Write-Step "Instalando archivos en $InstallDir..."
 New-Item -ItemType Directory -Path $InstallDir -Force | Out-Null
 Get-ChildItem -LiteralPath $PSScriptRoot -Force |
   Where-Object { $_.Name -notin @("data", "config.json", "agent-credentials.json") } |
   ForEach-Object { Copy-Item -LiteralPath $_.FullName -Destination $InstallDir -Recurse -Force }
+
+# Explorer propaga la marca de descarga del ZIP; se retira después de copiar a Program Files.
+Get-ChildItem -LiteralPath $InstallDir -Recurse -File -Force -ErrorAction SilentlyContinue |
+  Unblock-File -ErrorAction SilentlyContinue
 
 $installedPortableNode = Join-Path $InstallDir "runtime\node\node.exe"
 if (Test-Path $installedPortableNode) {
@@ -155,10 +173,12 @@ $config = [ordered]@{
   browserExecutablePath = $browserPath
   browserDebugPort = 9223
 }
-$configPath = Join-Path $InstallDir "config.json"
+New-Item -ItemType Directory -Path $DataDir -Force | Out-Null
+$configPath = Join-Path $DataDir "config.json"
 $utf8WithoutBom = New-Object System.Text.UTF8Encoding($false)
 [System.IO.File]::WriteAllText($configPath, ($config | ConvertTo-Json), $utf8WithoutBom)
-New-Item -ItemType Directory -Path (Join-Path $InstallDir "data") -Force | Out-Null
+$agentDataDir = Join-Path $DataDir "data"
+New-Item -ItemType Directory -Path $agentDataDir -Force | Out-Null
 
 Write-Step "Instalando dependencias del agente..."
 $playwrightPackage = Join-Path $InstallDir "node_modules\playwright-core\package.json"
@@ -172,15 +192,29 @@ if (Test-Path $playwrightPackage) {
   }
 }
 
-# La cuenta interactiva necesita escribir logs y mantener el perfil exclusivo de Chrome.
-$currentUserGrant = "*$currentUserSid`:(OI)(CI)F"
-& icacls.exe $InstallDir /inheritance:r /grant:r '*S-1-5-18:(OI)(CI)F' '*S-1-5-32-544:(OI)(CI)F' $currentUserGrant /T /C | Out-Null
+# Los binarios quedan en Program Files; datos, perfil de Chrome y logs quedan en ProgramData.
+$currentUserReadGrant = "*$currentUserSid`:(OI)(CI)RX"
+$currentUserFullGrant = "*$currentUserSid`:(OI)(CI)F"
+& icacls.exe $InstallDir /inheritance:r /grant:r '*S-1-5-18:(OI)(CI)F' '*S-1-5-32-544:(OI)(CI)F' $currentUserReadGrant /T /C | Out-Null
 if ($LASTEXITCODE -ne 0) {
   throw "Windows no pudo asignar permisos al directorio del agente."
 }
+& icacls.exe $DataDir /inheritance:r /grant:r '*S-1-5-18:(OI)(CI)F' '*S-1-5-32-544:(OI)(CI)F' $currentUserFullGrant /T /C | Out-Null
+if ($LASTEXITCODE -ne 0) {
+  throw "Windows no pudo asignar permisos al directorio de datos del agente."
+}
+
+Write-Step "Validando el runtime portatil..."
+$nodeVersionPath = Join-Path $agentDataDir "node-version.txt"
+$nodeVersionProcess = Start-Process -FilePath $nodePath -ArgumentList "--version" -WorkingDirectory $InstallDir -Wait -PassThru -NoNewWindow -RedirectStandardOutput $nodeVersionPath
+if ($nodeVersionProcess.ExitCode -ne 0) {
+  throw "Windows no permitio ejecutar Node.js desde Program Files."
+}
 
 Write-Step "Ejecutando autodiagnostico del agente..."
-$selfTestLogPath = Join-Path $InstallDir "data\self-test.log"
+$env:ORION_TRACKING_AGENT_CONFIG = $configPath
+$env:ORION_TRACKING_AGENT_DATA = $agentDataDir
+$selfTestLogPath = Join-Path $agentDataDir "self-test.log"
 & $nodePath (Join-Path $InstallDir "src\main.mjs") --self-test *>&1 |
   Out-File -LiteralPath $selfTestLogPath -Encoding utf8
 if ($LASTEXITCODE -ne 0) {
@@ -191,9 +225,9 @@ if ($LASTEXITCODE -ne 0) {
 if (-not ((Get-Content -LiteralPath $selfTestLogPath -Raw) -match "Autodiagnostico completado")) {
   throw "Node.js inicio, pero no completo la prueba de conexion con Supabase. Revisa $selfTestLogPath."
 }
-$agentLogPath = Join-Path $InstallDir "data\agent.log"
+$agentLogPath = Join-Path $agentDataDir "agent.log"
 $startCountBeforeLaunch = @(
-  Select-String -LiteralPath $agentLogPath -Pattern "Orion Tracking Agent 1.0.4 iniciado" -ErrorAction SilentlyContinue
+  Select-String -LiteralPath $agentLogPath -Pattern "Orion Tracking Agent 1.0.5 iniciado" -ErrorAction SilentlyContinue
 ).Count
 
 Write-Step "Registrando inicio automatico para la sesion interactiva actual..."
@@ -229,10 +263,10 @@ if (-not $agentProcess) {
 
 $agentLog = Get-Content -LiteralPath $agentLogPath -Tail 30 -ErrorAction SilentlyContinue
 $startCountAfterLaunch = @(
-  Select-String -LiteralPath $agentLogPath -Pattern "Orion Tracking Agent 1.0.4 iniciado" -ErrorAction SilentlyContinue
+  Select-String -LiteralPath $agentLogPath -Pattern "Orion Tracking Agent 1.0.5 iniciado" -ErrorAction SilentlyContinue
 ).Count
 if ($startCountAfterLaunch -le $startCountBeforeLaunch) {
-  throw "node.exe esta activo, pero el log no confirma la version 1.0.4. Revisa $agentLogPath."
+  throw "node.exe esta activo, pero el log no confirma la version 1.0.5. Revisa $agentLogPath."
 }
 
 Write-Host "`nInstalacion completa." -ForegroundColor Green
