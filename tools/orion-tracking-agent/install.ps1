@@ -112,12 +112,27 @@ $currentUserSid = $currentIdentity.User.Value
 $startupPath = [Environment]::GetFolderPath("Startup")
 $startupShortcut = Join-Path $startupPath $StartupShortcutName
 
+Write-Step "Preparando una instalacion limpia..."
 if (Get-ScheduledTask -TaskName $TaskName -ErrorAction SilentlyContinue) {
   Stop-ScheduledTask -TaskName $TaskName -ErrorAction SilentlyContinue
   Unregister-ScheduledTask -TaskName $TaskName -Confirm:$false
 }
 if (Test-Path $startupShortcut) {
   Remove-Item -LiteralPath $startupShortcut -Force
+}
+
+# Detiene solamente procesos Node iniciados desde una instalacion anterior del agente.
+Get-CimInstance Win32_Process -Filter "Name = 'node.exe'" -ErrorAction SilentlyContinue |
+  Where-Object { $_.CommandLine -and $_.CommandLine -like "*OrionTrackingAgent*src*main.mjs*" } |
+  ForEach-Object { Stop-Process -Id $_.ProcessId -Force -ErrorAction SilentlyContinue }
+Start-Sleep -Seconds 2
+
+if (Test-Path $InstallDir) {
+  # Versiones anteriores restringian la ACL antes de completar la instalacion.
+  & takeown.exe /F $InstallDir /R /D Y | Out-Null
+  & icacls.exe $InstallDir /reset /T /C /Q | Out-Null
+  & icacls.exe $InstallDir /grant:r '*S-1-5-32-544:(OI)(CI)F' /T /C /Q | Out-Null
+  Remove-Item -LiteralPath $InstallDir -Recurse -Force -ErrorAction Stop
 }
 
 Write-Step "Instalando archivos en $InstallDir..."
@@ -178,7 +193,7 @@ if (-not ((Get-Content -LiteralPath $selfTestLogPath -Raw) -match "Autodiagnosti
 }
 $agentLogPath = Join-Path $InstallDir "data\agent.log"
 $startCountBeforeLaunch = @(
-  Select-String -LiteralPath $agentLogPath -Pattern "Orion Tracking Agent 1.0.3 iniciado" -ErrorAction SilentlyContinue
+  Select-String -LiteralPath $agentLogPath -Pattern "Orion Tracking Agent 1.0.4 iniciado" -ErrorAction SilentlyContinue
 ).Count
 
 Write-Step "Registrando inicio automatico para la sesion interactiva actual..."
@@ -214,10 +229,10 @@ if (-not $agentProcess) {
 
 $agentLog = Get-Content -LiteralPath $agentLogPath -Tail 30 -ErrorAction SilentlyContinue
 $startCountAfterLaunch = @(
-  Select-String -LiteralPath $agentLogPath -Pattern "Orion Tracking Agent 1.0.3 iniciado" -ErrorAction SilentlyContinue
+  Select-String -LiteralPath $agentLogPath -Pattern "Orion Tracking Agent 1.0.4 iniciado" -ErrorAction SilentlyContinue
 ).Count
 if ($startCountAfterLaunch -le $startCountBeforeLaunch) {
-  throw "node.exe esta activo, pero el log no confirma la version 1.0.3. Revisa $agentLogPath."
+  throw "node.exe esta activo, pero el log no confirma la version 1.0.4. Revisa $agentLogPath."
 }
 
 Write-Host "`nInstalacion completa." -ForegroundColor Green

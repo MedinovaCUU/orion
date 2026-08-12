@@ -36,6 +36,8 @@ Set-ExecutionPolicy -Scope Process Bypass
 
 El paquete completo incluye Node.js portátil y las dependencias del agente, así que no necesita instalar Node ni ejecutar `npm` por internet. El instalador registra `Orion DHL Tracking Agent` para iniciar con Windows en la sesión interactiva actual. Chrome queda minimizado y utiliza un perfil separado dentro de `C:\ProgramData\OrionTrackingAgent\data\chrome-profile`.
 
+Al reinstalar, el instalador detiene exclusivamente procesos anteriores de Orion Tracking Agent, recupera los permisos de su carpeta y elimina la copia incompleta antes de desplegar la versión nueva.
+
 El paquete privado preparado por el administrador puede incluir `agent-credentials.json`; en ese caso no solicita claves y elimina ese archivo de la carpeta extraída cuando termina. El ZIP original todavía contiene la credencial y debe borrarse después de instalar.
 
 Después de reiniciar, la tarea arranca al iniciar sesión. Si el equipo dedicado debe recuperarse sin intervención humana tras un corte eléctrico, configura el encendido automático en BIOS y el inicio de sesión automático de esa cuenta de Windows. Ejecutarlo como `SYSTEM` no es compatible porque DHL bloquea el navegador headless y Windows no permite un navegador gráfico en la sesión de servicio.
