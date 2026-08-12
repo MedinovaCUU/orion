@@ -18,6 +18,7 @@ DHL bloquea los navegadores headless con un desafío HTTP 428. Por eso el agente
 - Windows 10 u 11 de 64 bits.
 - Acceso a internet.
 - Google Chrome o Microsoft Edge instalado.
+- Node.js 22 LTS x64 instalado desde `https://nodejs.org/dist/v22.23.2/node-v22.23.2-x64.msi`.
 - PowerShell ejecutado como administrador desde la cuenta de Windows que operará el agente.
 - `SUPABASE_URL`, publishable/anon key y `TRACKING_AGENT_TOKEN` proporcionados por el administrador de Orion.
 
@@ -25,16 +26,17 @@ Internet Explorer no es compatible con el portal moderno de DHL.
 
 ## Instalación
 
-1. Copia esta carpeta al equipo Windows.
-2. Haz doble clic en `INSTALAR-ORION.cmd` y acepta el permiso de administrador.
-3. Alternativamente, abre PowerShell como administrador y ejecuta:
+1. Instala Node.js 22 LTS x64 con el MSI oficial indicado en los requisitos.
+2. Copia esta carpeta al equipo Windows.
+3. Haz doble clic en `INSTALAR-ORION.cmd` y acepta el permiso de administrador.
+4. Alternativamente, abre PowerShell como administrador y ejecuta:
 
 ```powershell
 Set-ExecutionPolicy -Scope Process Bypass
 .\install.ps1
 ```
 
-El paquete completo incluye el MSI oficial de Node.js 22 y las dependencias del agente, así que no necesita descargar Node ni ejecutar `npm` por internet. Windows Installer instala el runtime firmado; los ejecutables del agente se instalan en `C:\Program Files\OrionTrackingAgent`, y la configuración, el perfil de Chrome y los logs quedan en `C:\ProgramData\OrionTrackingAgentData`. El instalador registra el agente para iniciar con Windows en la sesión interactiva actual.
+El paquete incluye las dependencias del agente, pero no incluye Node.js ni intenta descargarlo. Los ejecutables del agente se instalan en `C:\Program Files\OrionTrackingAgent`; la configuración, el perfil de Chrome y los logs quedan en `C:\ProgramData\OrionTrackingAgentData`. El instalador registra el agente para iniciar con Windows en la sesión interactiva actual.
 
 Al reinstalar, el instalador detiene exclusivamente procesos anteriores de Orion Tracking Agent y elimina la copia incompleta de `Program Files`. Una carpeta antigua bloqueada en `C:\ProgramData\OrionTrackingAgent` se deja intacta y no impide la instalación nueva.
 

@@ -56,58 +56,14 @@ function Find-InstalledNode {
     Select-Object -First 1
 }
 
-function Install-NodeIfMissing {
+function Require-InstalledNode {
   $installedNode = Find-InstalledNode
   if ($installedNode) {
     Write-Step "Usando Node.js instalado en $installedNode"
     return $installedNode
   }
 
-  $bundledMsiDir = Join-Path $PSScriptRoot "runtime\node-installer"
-  $bundledMsi = Get-ChildItem -LiteralPath $bundledMsiDir -Filter "node-v22*-x64.msi" -File -ErrorAction SilentlyContinue |
-    Select-Object -First 1
-  if ($bundledMsi) {
-    Write-Step "Instalando Node.js 22 con el MSI oficial incluido..."
-    Unblock-File -LiteralPath $bundledMsi.FullName -ErrorAction SilentlyContinue
-    $msiLogPath = Join-Path $env:TEMP "Orion-Node-install.log"
-    $arguments = "/i `"$($bundledMsi.FullName)`" /qn /norestart /L*v `"$msiLogPath`""
-    $process = Start-Process msiexec.exe -ArgumentList $arguments -Wait -PassThru
-    $installedNode = Find-InstalledNode
-    if ($installedNode) {
-      return $installedNode
-    }
-    throw "Windows Installer no dejo Node.js ejecutable. Codigo MSI: $($process.ExitCode). Diagnostico: $msiLogPath"
-  }
-
-  $bundledNode = Join-Path $PSScriptRoot "runtime\node\node.exe"
-  if (Test-Path $bundledNode) {
-    Write-Step "Usando Node.js portatil incluido en el paquete."
-    return $bundledNode
-  }
-
-  Write-Step "Node.js no esta instalado. Consultando la distribucion oficial LTS..."
-  [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
-  $releases = Invoke-RestMethod -UseBasicParsing "https://nodejs.org/dist/index.json"
-  $release = $releases |
-    Where-Object { $_.lts -and $_.files -contains "win-x64-msi" } |
-    Select-Object -First 1
-  if (-not $release) {
-    throw "No se pudo localizar una distribucion LTS de Node.js para Windows x64. Usa el paquete completo de Orion que ya incluye Node.js."
-  }
-
-  $msiName = "node-$($release.version)-x64.msi"
-  $msiPath = Join-Path $env:TEMP $msiName
-  Invoke-WebRequest -UseBasicParsing "https://nodejs.org/dist/$($release.version)/$msiName" -OutFile $msiPath
-  $process = Start-Process msiexec.exe -ArgumentList "/i `"$msiPath`" /qn /norestart" -Wait -PassThru
-  if ($process.ExitCode -notin @(0, 3010)) {
-    throw "Node.js no pudo instalarse. Codigo MSI: $($process.ExitCode)."
-  }
-
-  $nodePath = Find-InstalledNode
-  if (-not $nodePath) {
-    throw "Node.js termino de instalarse, pero no se encontro node.exe."
-  }
-  return $nodePath
+  throw "Node.js 22 x64 no esta instalado o Windows impide ejecutarlo. Instala https://nodejs.org/dist/v22.23.2/node-v22.23.2-x64.msi y vuelve a ejecutar INSTALAR-ORION.cmd."
 }
 
 function Confirm-BrowserAvailable {
@@ -159,7 +115,7 @@ if (-not $SupabaseUrl -or -not $SupabaseAnonKey -or -not $AgentToken) {
   throw "SupabaseUrl, SupabaseAnonKey y AgentToken son obligatorios."
 }
 
-$nodePath = Install-NodeIfMissing
+$nodePath = Require-InstalledNode
 $browserPath = Confirm-BrowserAvailable
 Write-Step "Navegador detectado: $browserPath"
 
@@ -253,7 +209,7 @@ if ($LASTEXITCODE -ne 0) {
   throw "Windows no pudo asignar permisos al directorio de datos del agente."
 }
 
-Write-Step "Validando el runtime portatil..."
+Write-Step "Validando Node.js instalado..."
 $nodeVersionPath = Join-Path $agentDataDir "node-version.txt"
 $nodeVersionProcess = Start-Process -FilePath $nodePath -ArgumentList "--version" -WorkingDirectory $InstallDir -Wait -PassThru -NoNewWindow -RedirectStandardOutput $nodeVersionPath
 if ($nodeVersionProcess.ExitCode -ne 0) {
@@ -276,7 +232,7 @@ if (-not ((Get-Content -LiteralPath $selfTestLogPath -Raw) -match "Autodiagnosti
 }
 $agentLogPath = Join-Path $agentDataDir "agent.log"
 $startCountBeforeLaunch = @(
-  Select-String -LiteralPath $agentLogPath -Pattern "Orion Tracking Agent 1.0.7 iniciado" -ErrorAction SilentlyContinue
+  Select-String -LiteralPath $agentLogPath -Pattern "Orion Tracking Agent 1.0.8 iniciado" -ErrorAction SilentlyContinue
 ).Count
 
 Write-Step "Registrando inicio automatico para la sesion interactiva actual..."
@@ -312,10 +268,10 @@ if (-not $agentProcess) {
 
 $agentLog = Get-Content -LiteralPath $agentLogPath -Tail 30 -ErrorAction SilentlyContinue
 $startCountAfterLaunch = @(
-  Select-String -LiteralPath $agentLogPath -Pattern "Orion Tracking Agent 1.0.7 iniciado" -ErrorAction SilentlyContinue
+  Select-String -LiteralPath $agentLogPath -Pattern "Orion Tracking Agent 1.0.8 iniciado" -ErrorAction SilentlyContinue
 ).Count
 if ($startCountAfterLaunch -le $startCountBeforeLaunch) {
-  throw "node.exe esta activo, pero el log no confirma la version 1.0.7. Revisa $agentLogPath."
+  throw "node.exe esta activo, pero el log no confirma la version 1.0.8. Revisa $agentLogPath."
 }
 
 Write-Host "`nInstalacion completa." -ForegroundColor Green
