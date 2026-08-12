@@ -34,7 +34,7 @@ Set-ExecutionPolicy -Scope Process Bypass
 .\install.ps1
 ```
 
-El paquete completo incluye Node.js portátil y las dependencias del agente, así que no necesita instalar Node ni ejecutar `npm` por internet. Los ejecutables se instalan en `C:\Program Files\OrionTrackingAgent`; la configuración, el perfil de Chrome y los logs quedan en `C:\ProgramData\OrionTrackingAgentData`. El instalador registra el agente para iniciar con Windows en la sesión interactiva actual.
+El paquete completo incluye el MSI oficial de Node.js 22 y las dependencias del agente, así que no necesita descargar Node ni ejecutar `npm` por internet. Windows Installer instala el runtime firmado; los ejecutables del agente se instalan en `C:\Program Files\OrionTrackingAgent`, y la configuración, el perfil de Chrome y los logs quedan en `C:\ProgramData\OrionTrackingAgentData`. El instalador registra el agente para iniciar con Windows en la sesión interactiva actual.
 
 Al reinstalar, el instalador detiene exclusivamente procesos anteriores de Orion Tracking Agent y elimina la copia incompleta de `Program Files`. Una carpeta antigua bloqueada en `C:\ProgramData\OrionTrackingAgent` se deja intacta y no impide la instalación nueva.
 
