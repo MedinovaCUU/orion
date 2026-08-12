@@ -1,6 +1,9 @@
 $ErrorActionPreference = "Continue"
 $AgentDir = Split-Path -Parent $MyInvocation.MyCommand.Path
-$NodePath = "C:\Program Files\nodejs\node.exe"
+$NodePath = Join-Path $AgentDir "runtime\node\node.exe"
+if (-not (Test-Path $NodePath)) {
+  $NodePath = "C:\Program Files\nodejs\node.exe"
+}
 if (-not (Test-Path $NodePath)) {
   $NodePath = (Get-Command node.exe -ErrorAction Stop).Source
 }

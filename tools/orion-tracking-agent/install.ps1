@@ -17,22 +17,32 @@ function Write-Step([string]$Message) {
 }
 
 function Install-NodeIfMissing {
+  $bundledNode = Join-Path $PSScriptRoot "runtime\node\node.exe"
+  if (Test-Path $bundledNode) {
+    Write-Step "Usando Node.js portátil incluido en el paquete."
+    return $bundledNode
+  }
+
   $node = Get-Command node.exe -ErrorAction SilentlyContinue
   if ($node) {
     return $node.Source
   }
 
-  Write-Step "Node.js no está instalado. Descargando Node.js 22 LTS..."
-  $index = Invoke-WebRequest -UseBasicParsing "https://nodejs.org/dist/latest-v22.x/"
-  $msiName = [regex]::Match($index.Content, 'href="(node-v22\.[0-9.]+-x64\.msi)"').Groups[1].Value
-  if (-not $msiName) {
-    throw "No se pudo localizar el instalador oficial de Node.js 22."
+  Write-Step "Node.js no está instalado. Consultando la distribución oficial LTS..."
+  [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+  $releases = Invoke-RestMethod -UseBasicParsing "https://nodejs.org/dist/index.json"
+  $release = $releases |
+    Where-Object { $_.lts -and $_.files -contains "win-x64-msi" } |
+    Select-Object -First 1
+  if (-not $release) {
+    throw "No se pudo localizar una distribución LTS de Node.js para Windows x64. Usa el paquete completo de Orion que ya incluye Node.js."
   }
 
+  $msiName = "node-$($release.version)-x64.msi"
   $msiPath = Join-Path $env:TEMP $msiName
-  Invoke-WebRequest -UseBasicParsing "https://nodejs.org/dist/latest-v22.x/$msiName" -OutFile $msiPath
+  Invoke-WebRequest -UseBasicParsing "https://nodejs.org/dist/$($release.version)/$msiName" -OutFile $msiPath
   $process = Start-Process msiexec.exe -ArgumentList "/i `"$msiPath`" /qn /norestart" -Wait -PassThru
-  if ($process.ExitCode -ne 0) {
+  if ($process.ExitCode -notin @(0, 3010)) {
     throw "Node.js no pudo instalarse. Código MSI: $($process.ExitCode)."
   }
 
@@ -113,8 +123,13 @@ if (Test-Path $startupShortcut) {
 Write-Step "Instalando archivos en $InstallDir..."
 New-Item -ItemType Directory -Path $InstallDir -Force | Out-Null
 Get-ChildItem -LiteralPath $PSScriptRoot -Force |
-  Where-Object { $_.Name -notin @("node_modules", "data", "config.json", "agent-credentials.json") } |
+  Where-Object { $_.Name -notin @("data", "config.json", "agent-credentials.json") } |
   ForEach-Object { Copy-Item -LiteralPath $_.FullName -Destination $InstallDir -Recurse -Force }
+
+$installedPortableNode = Join-Path $InstallDir "runtime\node\node.exe"
+if (Test-Path $installedPortableNode) {
+  $nodePath = $installedPortableNode
+}
 
 $config = [ordered]@{
   supabaseUrl = $SupabaseUrl.TrimEnd('/')
@@ -131,10 +146,15 @@ $utf8WithoutBom = New-Object System.Text.UTF8Encoding($false)
 New-Item -ItemType Directory -Path (Join-Path $InstallDir "data") -Force | Out-Null
 
 Write-Step "Instalando dependencias del agente..."
-$npmPath = Join-Path (Split-Path $nodePath) "npm.cmd"
-$npm = Start-Process $npmPath -ArgumentList "ci --omit=dev --no-audit --no-fund" -WorkingDirectory $InstallDir -Wait -PassThru -NoNewWindow
-if ($npm.ExitCode -ne 0) {
-  throw "No se pudieron instalar las dependencias del agente."
+$playwrightPackage = Join-Path $InstallDir "node_modules\playwright-core\package.json"
+if (Test-Path $playwrightPackage) {
+  Write-Host "Dependencias incluidas en el paquete; no se requiere descarga." -ForegroundColor Green
+} else {
+  $npmPath = Join-Path (Split-Path $nodePath) "npm.cmd"
+  $npm = Start-Process $npmPath -ArgumentList "ci --omit=dev --no-audit --no-fund" -WorkingDirectory $InstallDir -Wait -PassThru -NoNewWindow
+  if ($npm.ExitCode -ne 0) {
+    throw "No se pudieron instalar las dependencias del agente."
+  }
 }
 
 # La cuenta interactiva necesita escribir logs y mantener el perfil exclusivo de Chrome.
