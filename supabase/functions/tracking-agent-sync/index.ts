@@ -7,7 +7,7 @@ const corsHeaders = {
   'Access-Control-Max-Age': '86400',
 };
 
-type AgentAction = 'heartbeat' | 'claim' | 'report';
+type AgentAction = 'heartbeat' | 'claim' | 'report' | 'download';
 
 interface AgentRequest {
   action?: AgentAction;
@@ -21,6 +21,7 @@ interface AgentRequest {
   jobId?: string;
   result?: Record<string, unknown>;
   metadata?: Record<string, unknown>;
+  fileName?: string;
 }
 
 interface ShippingTrackingRow {
@@ -168,6 +169,27 @@ Deno.serve(async (request) => {
   const now = new Date().toISOString();
 
   try {
+    if (body.action === 'download') {
+      const fileName = compact(body.fileName);
+      if (!/^[A-Za-z0-9_.-]+\.zip$/.test(fileName)) {
+        return jsonRes(400, { ok: false, error: 'Nombre de instalador inválido.' });
+      }
+
+      const { data, error } = await serviceClient.storage
+        .from('tracking-agent-installers')
+        .createSignedUrl(fileName, 24 * 60 * 60, { download: fileName });
+
+      if (error || !data?.signedUrl) {
+        throw error || new Error('No fue posible crear el enlace privado del instalador.');
+      }
+
+      return jsonRes(200, {
+        ok: true,
+        signedUrl: data.signedUrl,
+        expiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString(),
+      });
+    }
+
     if (body.action === 'heartbeat') {
       const { error } = await serviceClient.from('tracking_agents').upsert({
         agent_id: agentId,
