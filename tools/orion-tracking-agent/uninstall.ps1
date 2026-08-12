@@ -12,5 +12,5 @@ if (Test-Path $startupShortcut) {
   Remove-Item -LiteralPath $startupShortcut -Force
 }
 
-Write-Host "El inicio automático fue eliminado."
-Write-Host "Los archivos y logs permanecen en $InstallDir para recuperación manual."
+Write-Host "El inicio automatico fue eliminado."
+Write-Host "Los archivos y logs permanecen en $InstallDir para recuperacion manual."

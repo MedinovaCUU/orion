@@ -7,11 +7,12 @@ import { randomUUID } from 'node:crypto';
 import { DhlBrowser } from './dhl-browser.mjs';
 import { OrionTrackingApi } from './orion-api.mjs';
 
-const VERSION = '1.0.2';
+const VERSION = '1.0.3';
 const APP_DIR = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const CONFIG_PATH = process.env.ORION_TRACKING_AGENT_CONFIG || path.join(APP_DIR, 'config.json');
 const DATA_DIR = process.env.ORION_TRACKING_AGENT_DATA || path.join(APP_DIR, 'data');
 const ONCE = process.argv.includes('--once');
+const SELF_TEST = process.argv.includes('--self-test');
 
 fs.mkdirSync(DATA_DIR, { recursive: true });
 
@@ -146,6 +147,12 @@ const run = async () => {
 
   logger.info(`Orion Tracking Agent ${VERSION} iniciado como ${agent.agentId}.`);
   await api.heartbeat({ status: 'online', metadata: browser.metadata() });
+
+  if (SELF_TEST) {
+    logger.info('Autodiagnostico completado: Node.js, configuracion y Supabase disponibles.');
+    await shutdown('autodiagnostico terminado');
+    return;
+  }
 
   do {
     try {

@@ -19,7 +19,7 @@ function Write-Step([string]$Message) {
 function Install-NodeIfMissing {
   $bundledNode = Join-Path $PSScriptRoot "runtime\node\node.exe"
   if (Test-Path $bundledNode) {
-    Write-Step "Usando Node.js portátil incluido en el paquete."
+    Write-Step "Usando Node.js portatil incluido en el paquete."
     return $bundledNode
   }
 
@@ -28,14 +28,14 @@ function Install-NodeIfMissing {
     return $node.Source
   }
 
-  Write-Step "Node.js no está instalado. Consultando la distribución oficial LTS..."
+  Write-Step "Node.js no esta instalado. Consultando la distribucion oficial LTS..."
   [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
   $releases = Invoke-RestMethod -UseBasicParsing "https://nodejs.org/dist/index.json"
   $release = $releases |
     Where-Object { $_.lts -and $_.files -contains "win-x64-msi" } |
     Select-Object -First 1
   if (-not $release) {
-    throw "No se pudo localizar una distribución LTS de Node.js para Windows x64. Usa el paquete completo de Orion que ya incluye Node.js."
+    throw "No se pudo localizar una distribucion LTS de Node.js para Windows x64. Usa el paquete completo de Orion que ya incluye Node.js."
   }
 
   $msiName = "node-$($release.version)-x64.msi"
@@ -43,12 +43,12 @@ function Install-NodeIfMissing {
   Invoke-WebRequest -UseBasicParsing "https://nodejs.org/dist/$($release.version)/$msiName" -OutFile $msiPath
   $process = Start-Process msiexec.exe -ArgumentList "/i `"$msiPath`" /qn /norestart" -Wait -PassThru
   if ($process.ExitCode -notin @(0, 3010)) {
-    throw "Node.js no pudo instalarse. Código MSI: $($process.ExitCode)."
+    throw "Node.js no pudo instalarse. Codigo MSI: $($process.ExitCode)."
   }
 
   $nodePath = "C:\Program Files\nodejs\node.exe"
   if (-not (Test-Path $nodePath)) {
-    throw "Node.js terminó de instalarse, pero no se encontró node.exe."
+    throw "Node.js termino de instalarse, pero no se encontro node.exe."
   }
   return $nodePath
 }
@@ -64,7 +64,7 @@ function Confirm-BrowserAvailable {
 
   $browser = $candidates | Where-Object { $_ -and (Test-Path $_) } | Select-Object -First 1
   if (-not $browser) {
-    throw "No se encontró Google Chrome ni Microsoft Edge. Instala uno de los dos y vuelve a ejecutar este instalador."
+    throw "No se encontro Google Chrome ni Microsoft Edge. Instala uno de los dos y vuelve a ejecutar este instalador."
   }
   return $browser
 }
@@ -164,60 +164,67 @@ if ($LASTEXITCODE -ne 0) {
   throw "Windows no pudo asignar permisos al directorio del agente."
 }
 
-Write-Step "Registrando inicio automático para la sesión interactiva actual..."
-$launcher = Join-Path $InstallDir "run-agent.ps1"
-$action = New-ScheduledTaskAction -Execute "powershell.exe" -Argument "-NoProfile -WindowStyle Hidden -ExecutionPolicy Bypass -File `"$launcher`""
-$trigger = New-ScheduledTaskTrigger -AtLogOn -User $currentUser
-$principal = New-ScheduledTaskPrincipal -UserId $currentUser -LogonType Interactive -RunLevel Highest
-$settings = New-ScheduledTaskSettingsSet `
-  -AllowStartIfOnBatteries `
-  -DontStopIfGoingOnBatteries `
-  -StartWhenAvailable `
-  -RestartCount 999 `
-  -RestartInterval (New-TimeSpan -Minutes 1) `
-  -ExecutionTimeLimit ([TimeSpan]::Zero) `
-  -MultipleInstances IgnoreNew
-
-$startupMode = "Tarea programada"
-try {
-  Register-ScheduledTask -TaskName $TaskName -Action $action -Trigger $trigger -Principal $principal -Settings $settings -Force | Out-Null
-  Start-ScheduledTask -TaskName $TaskName
-} catch {
-  Write-Host "Windows rechazó la tarea programada; usando la carpeta Inicio como respaldo." -ForegroundColor Yellow
-  $shortcutShell = New-Object -ComObject WScript.Shell
-  $shortcut = $shortcutShell.CreateShortcut($startupShortcut)
-  $shortcut.TargetPath = "powershell.exe"
-  $shortcut.Arguments = "-NoProfile -WindowStyle Hidden -ExecutionPolicy Bypass -File `"$launcher`""
-  $shortcut.WorkingDirectory = $InstallDir
-  $shortcut.WindowStyle = 7
-  $shortcut.Save()
-  Start-Process powershell.exe -WindowStyle Hidden -ArgumentList $shortcut.Arguments
-  $startupMode = "Carpeta Inicio"
+Write-Step "Ejecutando autodiagnostico del agente..."
+$selfTestLogPath = Join-Path $InstallDir "data\self-test.log"
+& $nodePath (Join-Path $InstallDir "src\main.mjs") --self-test *>&1 |
+  Out-File -LiteralPath $selfTestLogPath -Encoding utf8
+if ($LASTEXITCODE -ne 0) {
+  $selfTestDetails = (Get-Content -LiteralPath $selfTestLogPath -Tail 20 -ErrorAction SilentlyContinue) -join " | "
+  throw "El autodiagnostico del agente fallo. $selfTestDetails"
 }
 
-Start-Sleep -Seconds 8
-$task = Get-ScheduledTask -TaskName $TaskName -ErrorAction SilentlyContinue
+if (-not ((Get-Content -LiteralPath $selfTestLogPath -Raw) -match "Autodiagnostico completado")) {
+  throw "Node.js inicio, pero no completo la prueba de conexion con Supabase. Revisa $selfTestLogPath."
+}
 $agentLogPath = Join-Path $InstallDir "data\agent.log"
-if (-not $task -and -not (Test-Path $startupShortcut)) {
-  throw "No quedó registrado ningún método de inicio automático."
+$startCountBeforeLaunch = @(
+  Select-String -LiteralPath $agentLogPath -Pattern "Orion Tracking Agent 1.0.3 iniciado" -ErrorAction SilentlyContinue
+).Count
+
+Write-Step "Registrando inicio automatico para la sesion interactiva actual..."
+$launcher = Join-Path $InstallDir "run-agent.ps1"
+$shortcutShell = New-Object -ComObject WScript.Shell
+$shortcut = $shortcutShell.CreateShortcut($startupShortcut)
+$shortcut.TargetPath = "powershell.exe"
+$shortcut.Arguments = "-NoProfile -WindowStyle Hidden -ExecutionPolicy Bypass -File `"$launcher`""
+$shortcut.WorkingDirectory = $InstallDir
+$shortcut.WindowStyle = 7
+$shortcut.Save()
+
+Start-Process powershell.exe -WindowStyle Hidden -ArgumentList $shortcut.Arguments
+
+$agentProcess = $null
+for ($attempt = 0; $attempt -lt 20; $attempt += 1) {
+  Start-Sleep -Seconds 1
+  $agentProcess = Get-CimInstance Win32_Process -Filter "Name = 'node.exe'" -ErrorAction SilentlyContinue |
+    Where-Object { $_.CommandLine -and $_.CommandLine -like "*OrionTrackingAgent*src*main.mjs*" } |
+    Select-Object -First 1
+  if ($agentProcess) {
+    break
+  }
 }
-if (-not (Test-Path $agentLogPath)) {
-  throw "El proceso se registró, pero no creó su log. Revisa si el antivirus bloqueó Node.js o Chrome."
+
+if (-not (Test-Path $startupShortcut)) {
+  throw "No quedo registrado el acceso de inicio automatico."
+}
+if (-not $agentProcess) {
+  $agentDetails = (Get-Content -LiteralPath $agentLogPath -Tail 20 -ErrorAction SilentlyContinue) -join " | "
+  throw "El autodiagnostico fue correcto, pero Windows no mantuvo node.exe activo. $agentDetails"
 }
 
 $agentLog = Get-Content -LiteralPath $agentLogPath -Tail 30 -ErrorAction SilentlyContinue
-if (-not ($agentLog -match "Orion Tracking Agent")) {
-  throw "El proceso inició, pero el log no confirma que Orion Tracking Agent esté ejecutándose."
-}
-if ($task -and $task.State -ne "Running") {
-  throw "La tarea se registró, pero terminó antes de tiempo. Revisa $agentLogPath."
+$startCountAfterLaunch = @(
+  Select-String -LiteralPath $agentLogPath -Pattern "Orion Tracking Agent 1.0.3 iniciado" -ErrorAction SilentlyContinue
+).Count
+if ($startCountAfterLaunch -le $startCountBeforeLaunch) {
+  throw "node.exe esta activo, pero el log no confirma la version 1.0.3. Revisa $agentLogPath."
 }
 
-Write-Host "`nInstalación completa." -ForegroundColor Green
-Write-Host "Tarea: $TaskName"
+Write-Host "`nInstalacion completa." -ForegroundColor Green
 Write-Host "Usuario interactivo: $currentUser"
-Write-Host "Inicio automático: $startupMode"
-Write-Host "Estado: $(if ($task) { $task.State } else { 'Ejecutándose desde Inicio' })"
+Write-Host "Inicio automatico: Carpeta Inicio"
+Write-Host "Estado: Running"
+Write-Host "Proceso node.exe: $($agentProcess.ProcessId)"
 Write-Host "Log: $agentLogPath"
 Write-Host "Usa status.ps1 para revisar el estado y uninstall.ps1 para retirarlo."
 
