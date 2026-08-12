@@ -40,6 +40,10 @@ frontend/update_users.cjs
 /respaldo-servicios-*/
 /scripts/
 /tools/sap-service-report-ingestor/.env
+/tools/orion-tracking-agent/config.json
+/tools/orion-tracking-agent/agent-credentials.json
+/tools/orion-tracking-agent/data/
+/tools/orion-tracking-agent/node_modules/
 /catalog.json
 /equipment_index.json
 /ignored_files.json

@@ -12,6 +12,9 @@ interface ShippingTrackingRow {
   fulfillment_state: TrackingEntry['fulfillmentState'];
   payload: Record<string, unknown>;
   last_lookup_at: string | null;
+  refresh_requested_at?: string | null;
+  last_agent_id?: string | null;
+  last_agent_seen_at?: string | null;
   created_at: string;
   updated_at: string;
 }
@@ -19,6 +22,17 @@ interface ShippingTrackingRow {
 export interface CloudTrackingSnapshot {
   entries: TrackingEntry[];
   userId: string;
+  queuedEntryIds: string[];
+}
+
+export interface TrackingAgentHealth {
+  agentId: string;
+  hostname: string;
+  version: string;
+  status: 'online' | 'busy' | 'degraded' | 'offline';
+  currentTrackingNumber: string;
+  lastError: string;
+  lastSeenAt: string;
 }
 
 const toShippingTrackingRow = (entry: TrackingEntry, userId: string): ShippingTrackingRow => ({
@@ -56,7 +70,7 @@ export const loadCloudTrackingEntries = async (): Promise<CloudTrackingSnapshot>
   const { data, error } = await supabase
     .from(TRACKING_TABLE)
     .select(
-      'id, user_id, tracking_number, carrier, status, fulfillment_state, payload, last_lookup_at, created_at, updated_at',
+      'id, user_id, tracking_number, carrier, status, fulfillment_state, payload, last_lookup_at, refresh_requested_at, last_agent_id, last_agent_seen_at, created_at, updated_at',
     )
     .eq('user_id', user.id)
     .order('updated_at', { ascending: false });
@@ -70,6 +84,48 @@ export const loadCloudTrackingEntries = async (): Promise<CloudTrackingSnapshot>
     entries: (data || [])
       .map((row) => fromShippingTrackingRow(row as ShippingTrackingRow))
       .filter((entry): entry is TrackingEntry => Boolean(entry)),
+    queuedEntryIds: (data || [])
+      .filter((row) => Boolean((row as ShippingTrackingRow).refresh_requested_at))
+      .map((row) => String((row as ShippingTrackingRow).id)),
+  };
+};
+
+export const requestCloudTrackingRefresh = async (entryId: string) => {
+  const { data, error } = await supabase.rpc('request_shipping_tracking_refresh', {
+    p_tracking_id: entryId,
+  });
+
+  if (error) {
+    throw new Error(`No fue posible solicitar la actualización: ${error.message}`);
+  }
+
+  return String(data || new Date().toISOString());
+};
+
+export const loadTrackingAgentHealth = async (): Promise<TrackingAgentHealth | null> => {
+  const { data, error } = await supabase
+    .from('tracking_agents')
+    .select('agent_id, hostname, version, status, current_tracking_number, last_error, last_seen_at')
+    .order('last_seen_at', { ascending: false })
+    .limit(1)
+    .maybeSingle();
+
+  if (error) {
+    throw new Error(`No fue posible leer el estado del agente DHL: ${error.message}`);
+  }
+
+  if (!data) {
+    return null;
+  }
+
+  return {
+    agentId: String(data.agent_id || ''),
+    hostname: String(data.hostname || ''),
+    version: String(data.version || ''),
+    status: data.status as TrackingAgentHealth['status'],
+    currentTrackingNumber: String(data.current_tracking_number || ''),
+    lastError: String(data.last_error || ''),
+    lastSeenAt: String(data.last_seen_at || ''),
   };
 };
 

@@ -820,7 +820,7 @@ export const coerceTrackingEntry = (value: unknown): TrackingEntry | null => {
   };
 };
 
-export const loadTrackingEntries = (): TrackingEntry[] => {
+export const loadTrackingEntries = (userId = ''): TrackingEntry[] => {
   if (typeof window === 'undefined') {
     return [];
   }
@@ -831,7 +831,12 @@ export const loadTrackingEntries = (): TrackingEntry[] => {
       return [];
     }
 
-    const parsed = JSON.parse(raw) as { entries?: unknown[] } | unknown[];
+    const parsed = JSON.parse(raw) as { entries?: unknown[]; userId?: string } | unknown[];
+    const storedUserId = Array.isArray(parsed) ? '' : String(parsed.userId || '');
+    if (userId && storedUserId && storedUserId !== userId) {
+      return [];
+    }
+
     const source = Array.isArray(parsed) ? parsed : Array.isArray(parsed.entries) ? parsed.entries : [];
     const entries = source.map(coerceTrackingEntry).filter((entry): entry is TrackingEntry => Boolean(entry));
     return upsertTrackingEntries([], entries);
@@ -840,12 +845,22 @@ export const loadTrackingEntries = (): TrackingEntry[] => {
   }
 };
 
-export const saveTrackingEntries = (entries: TrackingEntry[]) => {
+export const saveTrackingEntries = (entries: TrackingEntry[], userId = '') => {
   if (typeof window === 'undefined') {
     return;
   }
 
-  window.localStorage.setItem(TRACKING_STORAGE_KEY, JSON.stringify({ entries }));
+  let storedUserId = userId;
+  if (!storedUserId) {
+    try {
+      const current = JSON.parse(window.localStorage.getItem(TRACKING_STORAGE_KEY) || '{}') as { userId?: string };
+      storedUserId = String(current.userId || '');
+    } catch {
+      storedUserId = '';
+    }
+  }
+
+  window.localStorage.setItem(TRACKING_STORAGE_KEY, JSON.stringify({ userId: storedUserId, entries }));
 };
 
 export const mergeTrackingEntries = (current: TrackingEntry, incoming: TrackingEntry): TrackingEntry => {

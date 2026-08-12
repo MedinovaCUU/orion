@@ -1,0 +1,14 @@
+{
+  "name": "orion-tracking-agent",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node src/main.mjs",
+    "once": "node src/main.mjs --once",
+    "check": "node --check src/main.mjs && node --check src/dhl-browser.mjs && node --check src/orion-api.mjs"
+  },
+  "dependencies": {
+    "playwright-core": "1.61.1"
+  }
+}

@@ -121,6 +121,9 @@ const supportsEdgeLookup = (carrier: TrackingCarrier | null) =>
 export const supportsLivePortalLookup = (carrier: TrackingCarrier | null) =>
   supportsRelayLookup(carrier) || supportsEdgeLookup(carrier);
 
+export const usesCloudTrackingAgentLookup = (carrier: TrackingCarrier | null) =>
+  carrier === 'dhl' && !supportsRelayLookup(carrier);
+
 const extractFunctionErrorMessage = async (error: unknown) => {
   if (error && typeof error === 'object' && 'context' in error) {
     const context = (error as { context?: unknown }).context;

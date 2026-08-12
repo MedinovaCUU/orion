@@ -20,10 +20,17 @@ import {
   type TrackingEntry,
   type TrackingStatus,
 } from './orionTracking';
-import { loadCloudTrackingEntries, replaceCloudTrackingEntries } from './trackingPersistenceApi';
+import {
+  loadCloudTrackingEntries,
+  loadTrackingAgentHealth,
+  replaceCloudTrackingEntries,
+  requestCloudTrackingRefresh,
+  type TrackingAgentHealth,
+} from './trackingPersistenceApi';
 import {
   lookupTrackingInCarrierPortal,
   supportsLivePortalLookup,
+  usesCloudTrackingAgentLookup,
   type TrackingLookupResponse,
 } from './trackingStatusApi';
 
@@ -170,7 +177,7 @@ export default function TrackingSection() {
   const initialAutoRefreshDoneRef = useRef(false);
   const lastAutoRefreshAtRef = useRef(0);
 
-  const [entries, setEntries] = useState<TrackingEntry[]>(() => loadTrackingEntries());
+  const [entries, setEntries] = useState<TrackingEntry[]>([]);
   const [manualPayload, setManualPayload] = useState('');
   const [preferredCarrier, setPreferredCarrier] = useState<TrackingCarrierChoice>('auto');
   const [manualOrderReference, setManualOrderReference] = useState('');
@@ -191,19 +198,29 @@ export default function TrackingSection() {
   const [trackingStorageReady, setTrackingStorageReady] = useState(false);
   const [trackingStorageState, setTrackingStorageState] = useState<TrackingStorageState>('loading');
   const [trackingStorageMessage, setTrackingStorageMessage] = useState('Recuperando trackings guardados...');
+  const [agentQueuedEntryIds, setAgentQueuedEntryIds] = useState<Set<string>>(() => new Set());
+  const [trackingAgentHealth, setTrackingAgentHealth] = useState<TrackingAgentHealth | null>(null);
+  const [trackingAgentOnline, setTrackingAgentOnline] = useState(false);
 
   useEffect(() => {
     let cancelled = false;
-    const localEntries = loadTrackingEntries();
 
-    void loadCloudTrackingEntries()
-      .then((snapshot) => {
+    void Promise.all([loadCloudTrackingEntries(), loadTrackingAgentHealth().catch(() => null)])
+      .then(([snapshot, agentHealth]) => {
         if (cancelled) {
           return;
         }
 
         setCloudUserId(snapshot.userId);
+        const localEntries = loadTrackingEntries(snapshot.userId);
         setEntries(reconcileTrackingEntries(localEntries, snapshot.entries));
+        setAgentQueuedEntryIds(new Set(snapshot.queuedEntryIds));
+        setTrackingAgentHealth(agentHealth);
+        setTrackingAgentOnline(
+          Boolean(agentHealth?.lastSeenAt) &&
+            Date.now() - Date.parse(agentHealth?.lastSeenAt || '') < 90000 &&
+            agentHealth?.status !== 'offline',
+        );
         setTrackingStorageState('synced');
         setTrackingStorageMessage('Guardado en Supabase para esta cuenta.');
         setTrackingStorageReady(true);
@@ -219,6 +236,7 @@ export default function TrackingSection() {
             ? `${error.message} Los cambios seguirán disponibles en este navegador.`
             : 'Supabase no está disponible; los cambios seguirán disponibles en este navegador.',
         );
+        setEntries(loadTrackingEntries());
         setTrackingStorageReady(true);
       });
 
@@ -228,8 +246,62 @@ export default function TrackingSection() {
   }, []);
 
   useEffect(() => {
-    saveTrackingEntries(entries);
-  }, [entries]);
+    if (!trackingStorageReady || !cloudUserId) {
+      return undefined;
+    }
+
+    let cancelled = false;
+    const refreshCloudState = async () => {
+      if (document.visibilityState === 'hidden') {
+        return;
+      }
+
+      try {
+        const [snapshot, agentHealth] = await Promise.all([
+          loadCloudTrackingEntries(),
+          loadTrackingAgentHealth().catch(() => null),
+        ]);
+        if (cancelled || snapshot.userId !== cloudUserId) {
+          return;
+        }
+
+        setEntries((current) =>
+          JSON.stringify(current) === JSON.stringify(snapshot.entries) ? current : snapshot.entries,
+        );
+        setAgentQueuedEntryIds(new Set(snapshot.queuedEntryIds));
+        setTrackingAgentHealth(agentHealth);
+        setTrackingAgentOnline(
+          Boolean(agentHealth?.lastSeenAt) &&
+            Date.now() - Date.parse(agentHealth?.lastSeenAt || '') < 90000 &&
+            agentHealth?.status !== 'offline',
+        );
+      } catch {
+        // La copia local sigue disponible; el indicador de guardado reporta fallos de escritura.
+      }
+    };
+
+    const timer = window.setInterval(() => void refreshCloudState(), 15000);
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === 'visible') {
+        void refreshCloudState();
+      }
+    };
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+
+    return () => {
+      cancelled = true;
+      window.clearInterval(timer);
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+    };
+  }, [cloudUserId, trackingStorageReady]);
+
+  useEffect(() => {
+    if (!trackingStorageReady) {
+      return;
+    }
+
+    saveTrackingEntries(entries, cloudUserId);
+  }, [cloudUserId, entries, trackingStorageReady]);
 
   useEffect(() => {
     if (!trackingStorageReady || !cloudUserId) {
@@ -354,7 +426,12 @@ export default function TrackingSection() {
   );
 
   const liveLookupCount = useMemo(
-    () => sortedEntries.filter((entry) => entry.carrier && supportsLivePortalLookup(entry.carrier)).length,
+    () =>
+      sortedEntries.filter(
+        (entry) =>
+          entry.carrier &&
+          (supportsLivePortalLookup(entry.carrier) || usesCloudTrackingAgentLookup(entry.carrier)),
+      ).length,
     [sortedEntries],
   );
 
@@ -365,6 +442,7 @@ export default function TrackingSection() {
           (entry) =>
             entry.carrier &&
             supportsLivePortalLookup(entry.carrier) &&
+            !usesCloudTrackingAgentLookup(entry.carrier) &&
             entry.fulfillmentState !== 'entregado',
         )
         .map((entry) => ({
@@ -490,6 +568,13 @@ export default function TrackingSection() {
       return {
         outcome: 'skipped',
         message: `${target.trackingNumber} no tiene mensajería definida todavía.`,
+      };
+    }
+
+    if (usesCloudTrackingAgentLookup(target.carrier)) {
+      return {
+        outcome: 'skipped',
+        message: `${target.trackingNumber} se actualiza mediante el agente Windows de DHL.`,
       };
     }
 
@@ -668,10 +753,12 @@ export default function TrackingSection() {
 
   const queueLookupForEntries = (incoming: TrackingEntry[], mode: 'manual' | 'auto' = 'auto') => {
     void refreshTrackingTargets(
-      incoming.map((entry) => ({
-        carrier: entry.carrier,
-        trackingNumber: entry.trackingNumber,
-      })),
+      incoming
+        .filter((entry) => !usesCloudTrackingAgentLookup(entry.carrier))
+        .map((entry) => ({
+          carrier: entry.carrier,
+          trackingNumber: entry.trackingNumber,
+        })),
       mode,
     );
   };
@@ -867,14 +954,61 @@ export default function TrackingSection() {
     pushNotice('success', 'El tablero de tracking quedó limpio. La eliminación se está sincronizando con Supabase.');
   };
 
+  const handleRequestAgentRefresh = async (entry: TrackingEntry, silent = false) => {
+    const lookupKey = buildLookupKey(entry.carrier, entry.trackingNumber);
+    setLookupBusyKeys((current) => Array.from(new Set([...current, lookupKey])));
+
+    try {
+      await requestCloudTrackingRefresh(entry.id);
+      setAgentQueuedEntryIds((current) => new Set([...current, entry.id]));
+      if (!silent) {
+        pushNotice(
+          'success',
+          trackingAgentOnline
+            ? `DHL ${entry.trackingNumber} quedó en cola. El agente conectado la tomará en su siguiente pulso.`
+            : `DHL ${entry.trackingNumber} quedó en cola. Se procesará cuando un agente Windows vuelva a conectarse.`,
+        );
+      }
+    } catch (error) {
+      if (!silent) {
+        pushNotice(
+          'error',
+          error instanceof Error ? error.message : `No fue posible poner ${entry.trackingNumber} en la cola DHL.`,
+        );
+      }
+      throw error;
+    } finally {
+      setLookupBusyKeys((current) => current.filter((key) => key !== lookupKey));
+    }
+  };
+
   const handleRefreshAll = () => {
-    void refreshTrackingTargets(
-      sortedEntries.map((entry) => ({
-        carrier: entry.carrier,
-        trackingNumber: entry.trackingNumber,
-      })),
-      'manual',
-    );
+    const agentEntries = sortedEntries.filter((entry) => usesCloudTrackingAgentLookup(entry.carrier));
+    const directTargets = sortedEntries
+      .filter(
+        (entry) =>
+          !usesCloudTrackingAgentLookup(entry.carrier) &&
+          entry.carrier &&
+          supportsLivePortalLookup(entry.carrier),
+      )
+      .map((entry) => ({ carrier: entry.carrier, trackingNumber: entry.trackingNumber }));
+
+    void Promise.allSettled(agentEntries.map((entry) => handleRequestAgentRefresh(entry, true))).then((results) => {
+      const queued = results.filter((result) => result.status === 'fulfilled').length;
+      const failed = results.length - queued;
+      if (queued > 0) {
+        pushNotice(
+          failed > 0 ? 'warning' : 'success',
+          `${queued} guía(s) DHL quedaron en cola${failed > 0 ? ` y ${failed} no pudieron solicitarse` : ''}.`,
+        );
+      } else if (failed > 0 && directTargets.length === 0) {
+        pushNotice('error', 'No fue posible poner las guías DHL en la cola del agente.');
+      }
+    });
+
+    if (directTargets.length > 0) {
+      void refreshTrackingTargets(directTargets, 'manual');
+    }
   };
 
   const handleOpenLiveBoard = () => {
@@ -1262,6 +1396,16 @@ export default function TrackingSection() {
               : 'No hay guías pendientes elegibles para refresh automático.'}
           </span>
           <span>{latestLookupAt ? `Último pulso portal: ${formatTrackingDateTime(latestLookupAt)}` : 'Todavía no hay un pulso vivo registrado.'}</span>
+          <span
+            className={`tracking-agent-state tracking-agent-state--${trackingAgentOnline ? 'online' : 'offline'}`}
+            title={trackingAgentHealth?.lastError || undefined}
+          >
+            {trackingAgentOnline
+              ? `Agente DHL conectado${trackingAgentHealth?.hostname ? ` en ${trackingAgentHealth.hostname}` : ''}. Revisión automática cada 5 min.`
+              : trackingAgentHealth?.lastSeenAt
+                ? `Agente DHL desconectado. Último pulso ${formatTrackingDateTime(trackingAgentHealth.lastSeenAt)}.`
+                : 'Agente DHL todavía no instalado o sin conexión.'}
+          </span>
           <span className={`tracking-storage-state tracking-storage-state--${trackingStorageState}`}>
             {trackingStorageMessage}
           </span>
@@ -1278,7 +1422,11 @@ export default function TrackingSection() {
               const lookupKey = buildLookupKey(entry.carrier, entry.trackingNumber);
               const lookupBusy = lookupBusyKeys.includes(lookupKey);
               const liveLookupAvailable = entry.carrier ? supportsLivePortalLookup(entry.carrier) : false;
-              const showPortalBlock = Boolean(entry.portalStatusText || entry.timeline.length || entry.lookupError || entry.serviceType);
+              const agentLookup = usesCloudTrackingAgentLookup(entry.carrier);
+              const agentQueued = agentQueuedEntryIds.has(entry.id);
+              const showPortalBlock = Boolean(
+                entry.portalStatusText || entry.timeline.length || entry.lookupError || entry.serviceType || agentQueued,
+              );
 
               return (
                 <article key={entry.id} className={`tracking-record tracking-record--${entry.status}`}>
@@ -1373,6 +1521,11 @@ export default function TrackingSection() {
                       </div>
 
                       {entry.lookupError ? <div className="tracking-record__lookup-error">{entry.lookupError}</div> : null}
+                      {agentQueued ? (
+                        <div className="tracking-record__agent-queue">
+                          Actualización DHL en cola. El agente Windows publicará aquí el resultado al terminar.
+                        </div>
+                      ) : null}
 
                       {entry.timeline.length > 0 ? (
                         <div className="tracking-record__timeline">
@@ -1404,20 +1557,36 @@ export default function TrackingSection() {
                       <button
                         type="button"
                         className="button-primary inactive"
-                        onClick={() =>
+                        onClick={() => {
+                          if (agentLookup) {
+                            void handleRequestAgentRefresh(entry);
+                            return;
+                          }
+
                           void refreshTrackingTargets(
-                            [
-                              {
-                                carrier: entry.carrier,
-                                trackingNumber: entry.trackingNumber,
-                              },
-                            ],
+                            [{ carrier: entry.carrier, trackingNumber: entry.trackingNumber }],
                             'manual',
-                          )
+                          );
+                        }}
+                        disabled={
+                          ocrBusy ||
+                          lookupBusy ||
+                          agentQueued ||
+                          !entry.carrier ||
+                          (!agentLookup && !liveLookupAvailable)
                         }
-                        disabled={ocrBusy || lookupBusy || !entry.carrier || !liveLookupAvailable}
                       >
-                        {lookupBusy ? 'Consultando...' : liveLookupAvailable ? 'Consultar portal' : 'Consulta no disponible'}
+                        {lookupBusy
+                          ? agentLookup
+                            ? 'Solicitando...'
+                            : 'Consultando...'
+                          : agentQueued
+                            ? 'En cola del agente'
+                            : agentLookup
+                              ? 'Actualizar por agente'
+                              : liveLookupAvailable
+                                ? 'Consultar portal'
+                                : 'Consulta no disponible'}
                       </button>
                       <button
                         type="button"
@@ -1485,7 +1654,9 @@ export default function TrackingSection() {
               <span className="tracking-live-board__eyebrow">Board logístico en vivo</span>
               <h4>Tracking operativo tipo aeropuerto</h4>
               <p>
-                Actualización {autoRefreshIntervalMs === 0 ? 'manual' : describeAutoRefresh(autoRefreshIntervalMs)}.
+                Portales directos: {autoRefreshIntervalMs === 0 ? 'actualización manual' : describeAutoRefresh(autoRefreshIntervalMs)}.
+                {' '}
+                DHL: agente Windows cada 5 min y bajo demanda.
                 {' '}
                 {latestLookupAt ? `Último pulso ${formatTrackingDateTime(latestLookupAt)}.` : 'Aún sin lectura viva.'}
               </p>
