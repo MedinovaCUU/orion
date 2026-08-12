@@ -7,7 +7,7 @@ import { randomUUID } from 'node:crypto';
 import { DhlBrowser } from './dhl-browser.mjs';
 import { OrionTrackingApi } from './orion-api.mjs';
 
-const VERSION = '1.0.0';
+const VERSION = '1.0.1';
 const APP_DIR = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const CONFIG_PATH = process.env.ORION_TRACKING_AGENT_CONFIG || path.join(APP_DIR, 'config.json');
 const DATA_DIR = process.env.ORION_TRACKING_AGENT_DATA || path.join(APP_DIR, 'data');
@@ -29,7 +29,7 @@ const logger = {
 
 const loadConfig = () => {
   const fileConfig = fs.existsSync(CONFIG_PATH)
-    ? JSON.parse(fs.readFileSync(CONFIG_PATH, 'utf8'))
+    ? JSON.parse(fs.readFileSync(CONFIG_PATH, 'utf8').replace(/^\uFEFF/, ''))
     : {};
   const config = {
     ...fileConfig,

@@ -49,6 +49,14 @@ Después de reiniciar, la tarea arranca al iniciar sesión. Si el equipo dedicad
 
 También puedes abrir `VER-ESTADO.cmd` para ver la tarea y los últimos eventos sin escribir comandos.
 
+Si la instalación falla, la ventana permanece abierta con el motivo y guarda el diagnóstico en:
+
+```text
+C:\ProgramData\OrionTrackingAgent-install.log
+```
+
+Si Windows no permite registrar la tarea programada, el instalador configura automáticamente un acceso equivalente en la carpeta Inicio de la cuenta actual.
+
 El botón `Actualizar por agente` en Orion fuerza una revisión remota. `run-once.ps1` procesa inmediatamente la cola disponible si el servicio no está ejecutándose.
 
 Los logs están en:

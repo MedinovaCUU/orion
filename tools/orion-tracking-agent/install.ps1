@@ -10,6 +10,7 @@ param(
 
 $ErrorActionPreference = "Stop"
 $TaskName = "Orion DHL Tracking Agent"
+$StartupShortcutName = "Orion DHL Tracking Agent.lnk"
 
 function Write-Step([string]$Message) {
   Write-Host "`n[Orion] $Message" -ForegroundColor Cyan
@@ -95,9 +96,18 @@ $nodePath = Install-NodeIfMissing
 $browserPath = Confirm-BrowserAvailable
 Write-Step "Navegador detectado: $browserPath"
 
+$currentIdentity = [System.Security.Principal.WindowsIdentity]::GetCurrent()
+$currentUser = $currentIdentity.Name
+$currentUserSid = $currentIdentity.User.Value
+$startupPath = [Environment]::GetFolderPath("Startup")
+$startupShortcut = Join-Path $startupPath $StartupShortcutName
+
 if (Get-ScheduledTask -TaskName $TaskName -ErrorAction SilentlyContinue) {
   Stop-ScheduledTask -TaskName $TaskName -ErrorAction SilentlyContinue
   Unregister-ScheduledTask -TaskName $TaskName -Confirm:$false
+}
+if (Test-Path $startupShortcut) {
+  Remove-Item -LiteralPath $startupShortcut -Force
 }
 
 Write-Step "Instalando archivos en $InstallDir..."
@@ -115,7 +125,9 @@ $config = [ordered]@{
   browserExecutablePath = $browserPath
   browserDebugPort = 9223
 }
-$config | ConvertTo-Json | Set-Content -LiteralPath (Join-Path $InstallDir "config.json") -Encoding UTF8
+$configPath = Join-Path $InstallDir "config.json"
+$utf8WithoutBom = New-Object System.Text.UTF8Encoding($false)
+[System.IO.File]::WriteAllText($configPath, ($config | ConvertTo-Json), $utf8WithoutBom)
 New-Item -ItemType Directory -Path (Join-Path $InstallDir "data") -Force | Out-Null
 
 Write-Step "Instalando dependencias del agente..."
@@ -125,17 +137,17 @@ if ($npm.ExitCode -ne 0) {
   throw "No se pudieron instalar las dependencias del agente."
 }
 
-# Solo SYSTEM y administradores pueden leer la credencial local.
-& icacls.exe $InstallDir /inheritance:r /grant:r '*S-1-5-18:(OI)(CI)F' '*S-1-5-32-544:(OI)(CI)F' /T /C | Out-Null
+# La cuenta interactiva necesita escribir logs y mantener el perfil exclusivo de Chrome.
+$currentUserGrant = "*$currentUserSid`:(OI)(CI)F"
+& icacls.exe $InstallDir /inheritance:r /grant:r '*S-1-5-18:(OI)(CI)F' '*S-1-5-32-544:(OI)(CI)F' $currentUserGrant /T /C | Out-Null
+if ($LASTEXITCODE -ne 0) {
+  throw "Windows no pudo asignar permisos al directorio del agente."
+}
 
 Write-Step "Registrando inicio automático para la sesión interactiva actual..."
 $launcher = Join-Path $InstallDir "run-agent.ps1"
-$currentUser = [System.Security.Principal.WindowsIdentity]::GetCurrent().Name
 $action = New-ScheduledTaskAction -Execute "powershell.exe" -Argument "-NoProfile -WindowStyle Hidden -ExecutionPolicy Bypass -File `"$launcher`""
-$triggers = @(
-  (New-ScheduledTaskTrigger -AtStartup),
-  (New-ScheduledTaskTrigger -AtLogOn -User $currentUser)
-)
+$trigger = New-ScheduledTaskTrigger -AtLogOn -User $currentUser
 $principal = New-ScheduledTaskPrincipal -UserId $currentUser -LogonType Interactive -RunLevel Highest
 $settings = New-ScheduledTaskSettingsSet `
   -AllowStartIfOnBatteries `
@@ -146,16 +158,47 @@ $settings = New-ScheduledTaskSettingsSet `
   -ExecutionTimeLimit ([TimeSpan]::Zero) `
   -MultipleInstances IgnoreNew
 
-Register-ScheduledTask -TaskName $TaskName -Action $action -Trigger $triggers -Principal $principal -Settings $settings -Force | Out-Null
-Start-ScheduledTask -TaskName $TaskName
+$startupMode = "Tarea programada"
+try {
+  Register-ScheduledTask -TaskName $TaskName -Action $action -Trigger $trigger -Principal $principal -Settings $settings -Force | Out-Null
+  Start-ScheduledTask -TaskName $TaskName
+} catch {
+  Write-Host "Windows rechazó la tarea programada; usando la carpeta Inicio como respaldo." -ForegroundColor Yellow
+  $shortcutShell = New-Object -ComObject WScript.Shell
+  $shortcut = $shortcutShell.CreateShortcut($startupShortcut)
+  $shortcut.TargetPath = "powershell.exe"
+  $shortcut.Arguments = "-NoProfile -WindowStyle Hidden -ExecutionPolicy Bypass -File `"$launcher`""
+  $shortcut.WorkingDirectory = $InstallDir
+  $shortcut.WindowStyle = 7
+  $shortcut.Save()
+  Start-Process powershell.exe -WindowStyle Hidden -ArgumentList $shortcut.Arguments
+  $startupMode = "Carpeta Inicio"
+}
 
-Start-Sleep -Seconds 4
-$task = Get-ScheduledTask -TaskName $TaskName
+Start-Sleep -Seconds 8
+$task = Get-ScheduledTask -TaskName $TaskName -ErrorAction SilentlyContinue
+$agentLogPath = Join-Path $InstallDir "data\agent.log"
+if (-not $task -and -not (Test-Path $startupShortcut)) {
+  throw "No quedó registrado ningún método de inicio automático."
+}
+if (-not (Test-Path $agentLogPath)) {
+  throw "El proceso se registró, pero no creó su log. Revisa si el antivirus bloqueó Node.js o Chrome."
+}
+
+$agentLog = Get-Content -LiteralPath $agentLogPath -Tail 30 -ErrorAction SilentlyContinue
+if (-not ($agentLog -match "Orion Tracking Agent")) {
+  throw "El proceso inició, pero el log no confirma que Orion Tracking Agent esté ejecutándose."
+}
+if ($task -and $task.State -ne "Running") {
+  throw "La tarea se registró, pero terminó antes de tiempo. Revisa $agentLogPath."
+}
+
 Write-Host "`nInstalación completa." -ForegroundColor Green
 Write-Host "Tarea: $TaskName"
 Write-Host "Usuario interactivo: $currentUser"
-Write-Host "Estado: $($task.State)"
-Write-Host "Log: $InstallDir\data\agent.log"
+Write-Host "Inicio automático: $startupMode"
+Write-Host "Estado: $(if ($task) { $task.State } else { 'Ejecutándose desde Inicio' })"
+Write-Host "Log: $agentLogPath"
 Write-Host "Usa status.ps1 para revisar el estado y uninstall.ps1 para retirarlo."
 
 if (Test-Path $CredentialsFile) {
