@@ -34,9 +34,9 @@ Set-ExecutionPolicy -Scope Process Bypass
 .\install.ps1
 ```
 
-El paquete completo incluye Node.js portátil y las dependencias del agente, así que no necesita instalar Node ni ejecutar `npm` por internet. Los ejecutables se instalan en `C:\Program Files\OrionTrackingAgent`; la configuración, el perfil de Chrome y los logs quedan en `C:\ProgramData\OrionTrackingAgent`. El instalador registra el agente para iniciar con Windows en la sesión interactiva actual.
+El paquete completo incluye Node.js portátil y las dependencias del agente, así que no necesita instalar Node ni ejecutar `npm` por internet. Los ejecutables se instalan en `C:\Program Files\OrionTrackingAgent`; la configuración, el perfil de Chrome y los logs quedan en `C:\ProgramData\OrionTrackingAgentData`. El instalador registra el agente para iniciar con Windows en la sesión interactiva actual.
 
-Al reinstalar, el instalador detiene exclusivamente procesos anteriores de Orion Tracking Agent, recupera los permisos de su carpeta y elimina la copia incompleta antes de desplegar la versión nueva.
+Al reinstalar, el instalador detiene exclusivamente procesos anteriores de Orion Tracking Agent y elimina la copia incompleta de `Program Files`. Una carpeta antigua bloqueada en `C:\ProgramData\OrionTrackingAgent` se deja intacta y no impide la instalación nueva.
 
 El paquete privado preparado por el administrador puede incluir `agent-credentials.json`; en ese caso no solicita claves y elimina ese archivo de la carpeta extraída cuando termina. El ZIP original todavía contiene la credencial y debe borrarse después de instalar.
 
@@ -64,7 +64,7 @@ El botón `Actualizar por agente` en Orion fuerza una revisión remota. `run-onc
 Los logs están en:
 
 ```text
-C:\ProgramData\OrionTrackingAgent\data\agent.log
+C:\ProgramData\OrionTrackingAgentData\data\agent.log
 ```
 
 Ante un error de lectura del portal, las capturas quedan en `data\screenshots`.

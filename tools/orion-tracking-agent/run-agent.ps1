@@ -1,7 +1,7 @@
 $ErrorActionPreference = "Continue"
 $AgentDir = Split-Path -Parent $MyInvocation.MyCommand.Path
-$env:ORION_TRACKING_AGENT_CONFIG = Join-Path $env:ProgramData "OrionTrackingAgent\config.json"
-$env:ORION_TRACKING_AGENT_DATA = Join-Path $env:ProgramData "OrionTrackingAgent\data"
+$env:ORION_TRACKING_AGENT_CONFIG = Join-Path $env:ProgramData "OrionTrackingAgentData\config.json"
+$env:ORION_TRACKING_AGENT_DATA = Join-Path $env:ProgramData "OrionTrackingAgentData\data"
 $NodePath = Join-Path $AgentDir "runtime\node\node.exe"
 if (-not (Test-Path $NodePath)) {
   $NodePath = "C:\Program Files\nodejs\node.exe"

@@ -6,7 +6,7 @@ param(
   [string]$AgentToken = "",
   [string]$CredentialsFile = "",
   [string]$InstallDir = "$env:ProgramFiles\OrionTrackingAgent",
-  [string]$DataDir = "$env:ProgramData\OrionTrackingAgent"
+  [string]$DataDir = "$env:ProgramData\OrionTrackingAgentData"
 )
 
 $ErrorActionPreference = "Stop"
@@ -147,7 +147,11 @@ Get-CimInstance Win32_Process -ErrorAction SilentlyContinue |
 Start-Sleep -Seconds 2
 
 Remove-OrionDirectory $InstallDir
-Remove-OrionDirectory $DataDir
+$legacyInstallDir = Join-Path $env:ProgramData "OrionTrackingAgent"
+if (Test-Path $legacyInstallDir) {
+  Write-Host "Se detecto una instalacion antigua bloqueada en $legacyInstallDir." -ForegroundColor Yellow
+  Write-Host "Se dejara intacta; el agente nuevo utilizara rutas independientes." -ForegroundColor Yellow
+}
 
 Write-Step "Instalando archivos en $InstallDir..."
 New-Item -ItemType Directory -Path $InstallDir -Force | Out-Null
@@ -227,7 +231,7 @@ if (-not ((Get-Content -LiteralPath $selfTestLogPath -Raw) -match "Autodiagnosti
 }
 $agentLogPath = Join-Path $agentDataDir "agent.log"
 $startCountBeforeLaunch = @(
-  Select-String -LiteralPath $agentLogPath -Pattern "Orion Tracking Agent 1.0.5 iniciado" -ErrorAction SilentlyContinue
+  Select-String -LiteralPath $agentLogPath -Pattern "Orion Tracking Agent 1.0.6 iniciado" -ErrorAction SilentlyContinue
 ).Count
 
 Write-Step "Registrando inicio automatico para la sesion interactiva actual..."
@@ -263,10 +267,10 @@ if (-not $agentProcess) {
 
 $agentLog = Get-Content -LiteralPath $agentLogPath -Tail 30 -ErrorAction SilentlyContinue
 $startCountAfterLaunch = @(
-  Select-String -LiteralPath $agentLogPath -Pattern "Orion Tracking Agent 1.0.5 iniciado" -ErrorAction SilentlyContinue
+  Select-String -LiteralPath $agentLogPath -Pattern "Orion Tracking Agent 1.0.6 iniciado" -ErrorAction SilentlyContinue
 ).Count
 if ($startCountAfterLaunch -le $startCountBeforeLaunch) {
-  throw "node.exe esta activo, pero el log no confirma la version 1.0.5. Revisa $agentLogPath."
+  throw "node.exe esta activo, pero el log no confirma la version 1.0.6. Revisa $agentLogPath."
 }
 
 Write-Host "`nInstalacion completa." -ForegroundColor Green

@@ -1,7 +1,7 @@
 [CmdletBinding()]
 param(
   [string]$InstallDir = "$env:ProgramFiles\OrionTrackingAgent",
-  [string]$DataDir = "$env:ProgramData\OrionTrackingAgent"
+  [string]$DataDir = "$env:ProgramData\OrionTrackingAgentData"
 )
 
 $TaskName = "Orion DHL Tracking Agent"
