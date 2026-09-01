@@ -38,8 +38,105 @@ const topSignal = (signals: DriRelationSignal[], category: DriRelationSignal['ca
 const hasAbnormalServiceTest = (form: DriCaseFormState, utilityId: string) =>
   form.serviceTests.some((test) => test.utilityId === utilityId && (test.result === 'abnormal' || test.result === 'failed'));
 
-const hasNormalServiceTest = (form: DriCaseFormState, utilityId: string) =>
-  form.serviceTests.some((test) => test.utilityId === utilityId && (test.result === 'normal' || test.result === 'passed'));
+const hasRecordedServiceTest = (form: DriCaseFormState, utilityId: string) =>
+  form.serviceTests.some((test) => test.utilityId === utilityId && test.result !== 'not_run');
+
+const SERVICE_RESULT_PRIORITY = {
+  not_run: 0,
+  normal: 1,
+  passed: 1,
+  adjusted: 2,
+  abnormal: 3,
+  failed: 4,
+} as const;
+
+const CONTEXTUAL_SERVICE_UTILITIES = new Set(['historical_reports', 'analyzer_information']);
+
+const buildRuleServiceEvidence = (
+  form: DriCaseFormState,
+  rule: DriPlatformKnowledge['rules'][number],
+) => {
+  const primaryUtilities = new Set(rule.checklist.map((step) => step.utilityId));
+  const strongestByUtility = new Map<string, DriCaseFormState['serviceTests'][number]>();
+
+  form.serviceTests.forEach((test) => {
+    if (!rule.serviceUtilities.includes(test.utilityId) || test.result === 'not_run') return;
+    const current = strongestByUtility.get(test.utilityId);
+    if (!current || SERVICE_RESULT_PRIORITY[test.result] > SERVICE_RESULT_PRIORITY[current.result]) {
+      strongestByUtility.set(test.utilityId, test);
+    }
+  });
+
+  const positive: DriScoreContribution[] = [];
+  const negative: DriScoreContribution[] = [];
+  let confirmedAbnormal = false;
+  let confirmedPrimaryAbnormal = false;
+
+  strongestByUtility.forEach((test) => {
+    const tier = primaryUtilities.has(test.utilityId)
+      ? 'primary'
+      : CONTEXTUAL_SERVICE_UTILITIES.has(test.utilityId)
+        ? 'contextual'
+        : 'supporting';
+    const positivePoints =
+      tier === 'primary'
+        ? test.result === 'failed'
+          ? 28
+          : test.result === 'abnormal'
+            ? 24
+            : 10
+        : tier === 'supporting'
+          ? test.result === 'failed'
+            ? 16
+            : test.result === 'abnormal'
+              ? 14
+              : 6
+          : test.result === 'failed'
+            ? 8
+            : test.result === 'abnormal'
+              ? 7
+              : 3;
+    const negativePoints =
+      tier === 'primary'
+        ? test.result === 'passed'
+          ? 16
+          : 14
+        : tier === 'supporting'
+          ? test.result === 'passed'
+            ? 10
+            : 8
+          : test.result === 'passed'
+            ? 5
+            : 4;
+
+    if (test.result === 'failed' || test.result === 'abnormal' || test.result === 'adjusted') {
+      confirmedAbnormal ||= test.result === 'failed' || test.result === 'abnormal';
+      confirmedPrimaryAbnormal ||=
+        primaryUtilities.has(test.utilityId) && (test.result === 'failed' || test.result === 'abnormal');
+      positive.push({
+        label:
+          test.result === 'adjusted'
+            ? `${test.label} requirió ajuste; aporta evidencia parcial a ${rule.title}.`
+            : `${test.label} fue ${test.result === 'failed' ? 'fallida' : 'anormal'} y respalda ${rule.title}.`,
+        points: positivePoints,
+      });
+      return;
+    }
+
+    negative.push({
+      label: `${test.label} resultó ${test.result === 'passed' ? 'passed' : 'normal'} y reduce ${rule.title}.`,
+      points: negativePoints,
+    });
+  });
+
+  return {
+    positive,
+    negative,
+    confirmedAbnormal,
+    confirmedPrimaryAbnormal,
+    evaluatedUtilities: strongestByUtility.size,
+  };
+};
 
 const buildEvidenceRows = (signals: DriRelationSignal[]): DriEvidenceRow[] =>
   signals.slice(0, 14).map((signal) => ({
@@ -191,7 +288,6 @@ export function runDifferentialDiagnosisEngine(form: DriCaseFormState, catalog: 
   const abnormalPumps = hasAbnormalServiceTest(form, 'motors_valves_pumps');
   const abnormalThermostat = hasAbnormalServiceTest(form, 'thermostatting');
   const abnormalWash = hasAbnormalServiceTest(form, 'washing_station');
-  const normalPhotometry = hasNormalServiceTest(form, 'photometry');
   const procedureFindings = procedureAssessment.findings.filter((item) => item.type === 'interference');
   const metrologyFindings = procedureAssessment.findings.filter((item) => item.type !== 'interference');
   const strongestProcedureFinding = procedureAssessment.findings[0] || null;
@@ -233,6 +329,9 @@ export function runDifferentialDiagnosisEngine(form: DriCaseFormState, catalog: 
     const positive: DriScoreContribution[] = [];
     const negative: DriScoreContribution[] = [];
     const missingEvidence: string[] = [];
+    const serviceEvidence = buildRuleServiceEvidence(form, rule);
+    positive.push(...serviceEvidence.positive);
+    negative.push(...serviceEvidence.negative);
     if (wavelengthSignal?.failedCoverage && wavelengthSignal.failedCoverage >= 0.6) {
       positive.push({ label: `${Math.round(wavelengthSignal.failedCoverage * 100)}% de fallidas comparten ${wavelengthSignal.label}.`, points: 26 });
     }
@@ -241,19 +340,13 @@ export function runDifferentialDiagnosisEngine(form: DriCaseFormState, catalog: 
     } else {
       negative.push({ label: 'Las pruebas correctas también usan el mismo filtro/subsistema.', points: 16 });
     }
-    if (abnormalPhotometry) {
-      positive.push({ label: 'Photometry fue capturado como anormal.', points: 30 });
-    }
-    if (normalPhotometry) {
-      negative.push({ label: 'Photometry salió normal en las utilidades de servicio.', points: 14 });
-    }
     if (form.eventType === 'absorbance_error' || form.eventType === 'failed_blank') {
       positive.push({ label: 'El tipo de problema es compatible con fotometría/absorbancia.', points: 14 });
     }
     if (strongestProcedureFinding) {
       negative.push({ label: `Existe una explicación analítica más directa: ${strongestProcedureFinding.explanation}`, points: 18 });
     }
-    if (!abnormalPhotometry) {
+    if (!hasRecordedServiceTest(form, 'photometry') && !hasRecordedServiceTest(form, 'baseline_darkness_current')) {
       missingEvidence.push('Resultado de Photometry / baseline');
     }
     if (positive.length) {
@@ -268,7 +361,7 @@ export function runDifferentialDiagnosisEngine(form: DriCaseFormState, catalog: 
           missingEvidence,
           'El patrón agrupa fallas alrededor de la misma ruta óptica o su confirmación funcional.',
           rule,
-          abnormalPhotometry,
+          serviceEvidence.confirmedPrimaryAbnormal,
         ),
       );
     }
@@ -279,14 +372,14 @@ export function runDifferentialDiagnosisEngine(form: DriCaseFormState, catalog: 
     const positive: DriScoreContribution[] = [];
     const negative: DriScoreContribution[] = [];
     const missingEvidence: string[] = [];
+    const serviceEvidence = buildRuleServiceEvidence(form, rule);
+    positive.push(...serviceEvidence.positive);
+    negative.push(...serviceEvidence.negative);
     if ((bireactiveSignal?.failedCoverage || 0) >= 0.55) {
       positive.push({ label: 'Las fallidas se concentran en técnicas bireactivas.', points: 24 });
     }
     if ((monoreactiveSignal?.correctCoverage || 0) >= 0.25) {
       positive.push({ label: 'Las monoreactivas comparables se mantienen correctas.', points: 18 });
-    }
-    if (abnormalPumps) {
-      positive.push({ label: 'Motors, valves and pumps mostró una anomalía.', points: 24 });
     }
     if ((monoreactiveSignal?.correctCoverage || 0) === 0) {
       missingEvidence.push('Comparativo monoreactivo equivalente');
@@ -309,7 +402,7 @@ export function runDifferentialDiagnosisEngine(form: DriCaseFormState, catalog: 
           missingEvidence,
           'La falla apunta a la rama de R2, mezcla o dispensación secundaria del BA400.',
           rule,
-          abnormalPumps,
+          serviceEvidence.confirmedPrimaryAbnormal,
         ),
       );
     }
@@ -320,11 +413,11 @@ export function runDifferentialDiagnosisEngine(form: DriCaseFormState, catalog: 
     const positive: DriScoreContribution[] = [];
     const negative: DriScoreContribution[] = [];
     const missingEvidence: string[] = [];
+    const serviceEvidence = buildRuleServiceEvidence(form, rule);
+    positive.push(...serviceEvidence.positive);
+    negative.push(...serviceEvidence.negative);
     if ((temperatureSignal?.failedCoverage || 0) >= 0.45) {
       positive.push({ label: 'Las fallidas son sensibles a temperatura o cinética.', points: 20 });
-    }
-    if (abnormalThermostat) {
-      positive.push({ label: 'Thermostatting fue capturado como anormal.', points: 28 });
     }
     if (Number(form.ambientTemperatureC) >= 28) {
       positive.push({ label: `La temperatura ambiente reportada (${form.ambientTemperatureC} °C) es elevada.`, points: 8 });
@@ -335,7 +428,7 @@ export function runDifferentialDiagnosisEngine(form: DriCaseFormState, catalog: 
     if (strongestProcedureFinding) {
       negative.push({ label: `Existe una limitación del procedimiento documentada que puede explicar el sesgo: ${strongestProcedureFinding.title}.`, points: 16 });
     }
-    if (!abnormalThermostat) {
+    if (!hasRecordedServiceTest(form, 'thermostatting')) {
       missingEvidence.push('Resultado de Thermostatting');
     }
     if (positive.length) {
@@ -350,7 +443,7 @@ export function runDifferentialDiagnosisEngine(form: DriCaseFormState, catalog: 
           missingEvidence,
           'El patrón es compatible con termostatización, estabilidad abordo o refrigeración.',
           rule,
-          abnormalThermostat,
+          serviceEvidence.confirmedPrimaryAbnormal,
         ),
       );
     }
@@ -361,14 +454,11 @@ export function runDifferentialDiagnosisEngine(form: DriCaseFormState, catalog: 
     const positive: DriScoreContribution[] = [];
     const negative: DriScoreContribution[] = [];
     const missingEvidence: string[] = [];
+    const serviceEvidence = buildRuleServiceEvidence(form, rule);
+    positive.push(...serviceEvidence.positive);
+    negative.push(...serviceEvidence.negative);
     if (dilutionAssessment.nonProportionalPattern) {
       positive.push({ label: dilutionAssessment.explanation || 'La dilución no mantiene proporcionalidad.', points: 28 });
-    }
-    if (abnormalPumps) {
-      positive.push({ label: 'Motors, valves and pumps confirmó una anomalía.', points: 24 });
-    }
-    if (hasAbnormalServiceTest(form, 'level_detection')) {
-      positive.push({ label: 'Level detection fue anormal.', points: 18 });
     }
     if (form.eventType === 'poor_repeatability' || form.eventType === 'dilution_error') {
       positive.push({ label: 'El tipo de problema coincide con pipeteo o dilución.', points: 14 });
@@ -394,7 +484,7 @@ export function runDifferentialDiagnosisEngine(form: DriCaseFormState, catalog: 
           missingEvidence,
           'La desviación se parece a una falla de pipeteo, aspiración, mezcla o línea fluídica.',
           rule,
-          abnormalPumps || hasAbnormalServiceTest(form, 'level_detection'),
+          serviceEvidence.confirmedPrimaryAbnormal,
         ),
       );
     }
@@ -405,6 +495,9 @@ export function runDifferentialDiagnosisEngine(form: DriCaseFormState, catalog: 
     const positive: DriScoreContribution[] = [];
     const negative: DriScoreContribution[] = [];
     const missingEvidence: string[] = [];
+    const serviceEvidence = buildRuleServiceEvidence(form, rule);
+    positive.push(...serviceEvidence.positive);
+    negative.push(...serviceEvidence.negative);
     if (dilutionAssessment.exactHalfPattern) {
       positive.push({ label: dilutionAssessment.explanation || 'El valor diluido cae exactamente a la mitad.', points: 30 });
     }
@@ -432,7 +525,7 @@ export function runDifferentialDiagnosisEngine(form: DriCaseFormState, catalog: 
           missingEvidence,
           'La tendencia sugiere que el equipo diluye físicamente, pero el software o el reporte no corrigen el factor.',
           rule,
-          false,
+          serviceEvidence.confirmedPrimaryAbnormal,
         ),
       );
     }
@@ -443,6 +536,9 @@ export function runDifferentialDiagnosisEngine(form: DriCaseFormState, catalog: 
     const positive: DriScoreContribution[] = [];
     const negative: DriScoreContribution[] = [];
     const missingEvidence: string[] = [];
+    const serviceEvidence = buildRuleServiceEvidence(form, rule);
+    positive.push(...serviceEvidence.positive);
+    negative.push(...serviceEvidence.negative);
     if (form.eventType === 'failed_blank' || form.signals.opticalRejectObserved) {
       positive.push({ label: 'El caso fue marcado como blanco/rechazo óptico.', points: 20 });
     }
@@ -452,13 +548,10 @@ export function runDifferentialDiagnosisEngine(form: DriCaseFormState, catalog: 
     if ((washSignal?.failedCoverage || 0) >= 0.2) {
       positive.push({ label: 'Hay reactivos sensibles a agua/lavado entre las fallidas.', points: 12 });
     }
-    if (abnormalWash) {
-      positive.push({ label: 'Washing station fue capturada como anormal.', points: 26 });
-    }
     if (procedureFindings.length) {
       negative.push({ label: 'La interferencia documentada por IFU compite con una causa de carryover puro.', points: 14 });
     }
-    if (!abnormalWash) {
+    if (!hasRecordedServiceTest(form, 'washing_station')) {
       missingEvidence.push('Resultado de Washing station / carryover');
     }
     if (positive.length) {
@@ -473,7 +566,7 @@ export function runDifferentialDiagnosisEngine(form: DriCaseFormState, catalog: 
           missingEvidence,
           'La evidencia apunta a lavado, carryover, contaminación o cubeta local.',
           rule,
-          abnormalWash,
+          serviceEvidence.confirmedPrimaryAbnormal,
         ),
       );
     }
@@ -484,6 +577,9 @@ export function runDifferentialDiagnosisEngine(form: DriCaseFormState, catalog: 
     const positive: DriScoreContribution[] = [];
     const negative: DriScoreContribution[] = [];
     const missingEvidence: string[] = [];
+    const serviceEvidence = buildRuleServiceEvidence(form, rule);
+    positive.push(...serviceEvidence.positive);
+    negative.push(...serviceEvidence.negative);
     if (weakPattern) {
       positive.push({ label: 'No hay un patrón técnico común dominante entre las fallidas.', points: 22 });
     }
@@ -521,7 +617,7 @@ export function runDifferentialDiagnosisEngine(form: DriCaseFormState, catalog: 
           missingEvidence,
           'Antes de tocar hardware, el caso exige descartar control, calibrador, preparación o error operativo.',
           rule,
-          false,
+          serviceEvidence.confirmedPrimaryAbnormal,
         ),
       );
     }
@@ -532,6 +628,9 @@ export function runDifferentialDiagnosisEngine(form: DriCaseFormState, catalog: 
     const positive: DriScoreContribution[] = [];
     const negative: DriScoreContribution[] = [];
     const missingEvidence: string[] = [];
+    const serviceEvidence = buildRuleServiceEvidence(form, rule);
+    positive.push(...serviceEvidence.positive);
+    negative.push(...serviceEvidence.negative);
 
     procedureFindings.forEach((finding, index) => {
       positive.push({
@@ -560,7 +659,7 @@ export function runDifferentialDiagnosisEngine(form: DriCaseFormState, catalog: 
           missingEvidence,
           'El IFU del reactivo documenta una limitación del procedimiento o interferencia que puede explicar el sesgo analítico.',
           rule,
-          false,
+          serviceEvidence.confirmedPrimaryAbnormal,
         ),
       );
     }
@@ -571,6 +670,9 @@ export function runDifferentialDiagnosisEngine(form: DriCaseFormState, catalog: 
     const positive: DriScoreContribution[] = [];
     const negative: DriScoreContribution[] = [];
     const missingEvidence: string[] = [];
+    const serviceEvidence = buildRuleServiceEvidence(form, rule);
+    positive.push(...serviceEvidence.positive);
+    negative.push(...serviceEvidence.negative);
 
     metrologyFindings.forEach((finding, index) => {
       positive.push({
@@ -599,7 +701,7 @@ export function runDifferentialDiagnosisEngine(form: DriCaseFormState, catalog: 
           missingEvidence,
           'El valor capturado exige revisar rango metrológico, linealidad y dilución antes de concluir una falla del equipo.',
           rule,
-          false,
+          serviceEvidence.confirmedPrimaryAbnormal,
         ),
       );
     }

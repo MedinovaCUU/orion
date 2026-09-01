@@ -22,9 +22,13 @@ import type {
 
 const SERVICE_UTILITY_OPTIONS: Array<{ value: DriServiceUtilityId; label: string }> = [
   { value: 'photometry', label: 'Photometry' },
+  { value: 'baseline_darkness_current', label: 'Baseline and darkness current' },
+  { value: 'metrology', label: 'Metrology' },
   { value: 'motors_valves_pumps', label: 'Motors, valves and pumps' },
   { value: 'thermostatting', label: 'Thermostatting' },
+  { value: 'analyzer_information', label: 'Analyzer information' },
   { value: 'level_detection', label: 'Level detection' },
+  { value: 'dilution_review', label: 'Dilution review' },
   { value: 'washing_station', label: 'Washing station' },
   { value: 'conditioning', label: 'Conditioning' },
   { value: 'positioning', label: 'Positioning' },

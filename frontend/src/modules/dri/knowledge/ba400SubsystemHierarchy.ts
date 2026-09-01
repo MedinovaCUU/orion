@@ -21,16 +21,49 @@ interface DriBa400HierarchyNodeDefinition {
   signalIds?: string[];
 }
 
-const ROOT_COLORS: Record<string, string> = {
-  chemistry: '#7bd6df',
-  optics: '#e8bc65',
-  reaction: '#b9cad9',
-  sample: '#a9dcd2',
-  reagent: '#9fd7cf',
-  fluidics: '#aac9d0',
-  pipetting: '#9eb9d9',
-  wash: '#b4d5cb',
+/** Colores semanticos por sistema: saturados, distinguibles y coherentes entre niveles. */
+export const DRI_SYSTEM_COLORS: Record<string, string> = {
+  chemistry: '#668fb3',
+  optics: '#d2a443',
+  reaction: '#7892ad',
+  sample: '#aa7899',
+  reagent: '#79a65f',
+  // Azul celeste frio: separado del verde turquesa de reactivos correctos.
+  fluidics: '#45aee8',
+  pipetting: '#747fc2',
+  wash: '#55a493',
 };
+
+/** Estados principales: son los unicos colores deliberadamente saturados. */
+export const DRI_REAGENT_STATE_COLORS = {
+  failed: '#cf6d73',
+  correct: '#4fc3b0',
+};
+
+/**
+ * PALETA EDITABLE DE FACTORES DIAGNOSTICOS
+ * Mantener estos tonos separados de reactivos correctos (#4fc3b0)
+ * y reactivos fallidos (#cf6d73).
+ */
+export const DRI_SIGNAL_CATEGORY_COLORS: Partial<Record<DriRelationSignal['category'], string>> = {
+  wavelength: '#a09176',
+  reaction: '#7888a0',
+  technique: '#718c94',
+  trend: '#7e919d',
+  scheme: '#8390a2',
+  r2: '#8390a2',
+  temperature: '#8f8198',
+  storage: '#9a897e',
+  // Azul limpio: evita confundirse con el verde turquesa de reactivos correctos.
+  water: '#527db8',
+  contamination: '#948b73',
+  blank: '#9a8977',
+  // Índigo técnico: reservado a evidencia de servicio y separado del rojo de fallidas.
+  service: '#596fa8',
+};
+
+export const getDriSignalCategoryColor = (category: DriRelationSignal['category']) =>
+  DRI_SIGNAL_CATEGORY_COLORS[category] || '#88939d';
 
 const ambientNodeId = (definitionId: string) => `ambient:${definitionId}`;
 const signalNodeId = (signalId: string) => `signal:${signalId}`;
@@ -153,7 +186,22 @@ BA400_HIERARCHY.forEach((definition) => {
 
 const clamp = (value: number, min: number, max: number) => Math.max(min, Math.min(max, value));
 
+/**
+ * Intensidad visual diferencial:
+ * - la cobertura de reactivos fallidos suma;
+ * - la cobertura de reactivos correctos resta;
+ * - se conserva un minimo tenue para que el factor no desaparezca por completo.
+ */
+export const getDriDifferentialVisualStrength = (failedCoverage: number, correctCoverage: number) =>
+  clamp(0.06 + (failedCoverage - correctCoverage) * 0.94, 0.04, 1);
+
 const nodeMatchesSignal = (node: DriBa400HierarchyNodeDefinition, signal: DriRelationSignal) => {
+  // Las pruebas de servicio evalúan sistemas, no factores analíticos ni piezas aisladas.
+  // Se aplican únicamente al nodo raíz de cada sistema mecánico indicado por la prueba.
+  if (signal.category === 'service') {
+    if (node.depth !== 1 || !node.mechanicalSubsystems?.length) return false;
+    return signal.suspectedSubsystems.some((subsystem) => node.mechanicalSubsystems?.includes(subsystem));
+  }
   if (node.signalIds?.includes(signal.id)) return true;
   if (node.signalCategories?.includes(signal.category)) return true;
   if (!node.mechanicalSubsystems?.length) return false;
@@ -164,21 +212,6 @@ const subsystemCoverage = (profiles: DriReagentProfile[], subsystem: DriMechanic
   profiles.length > 0
     ? profiles.filter((profile) => profile.mechanicalSubsystems.value.includes(subsystem)).length / profiles.length
     : 0;
-
-const hierarchySignalColor = (category: DriRelationSignal['category']) => {
-  if (category === 'wavelength') return '#efbf69';
-  if (category === 'reaction') return '#4fd0d7';
-  if (category === 'technique') return '#38c5d3';
-  if (category === 'trend') return '#5fd4ea';
-  if (category === 'scheme' || category === 'r2') return '#76bee8';
-  if (category === 'temperature') return '#ff9b68';
-  if (category === 'storage') return '#f6a67c';
-  if (category === 'water') return '#79d9c1';
-  if (category === 'contamination') return '#6fd2b3';
-  if (category === 'blank') return '#d9aa78';
-  if (category === 'service') return '#ff676f';
-  return '#9cb1c9';
-};
 
 const maxSignalScore = (signals: DriRelationSignal[]) => Math.max(...signals.map((signal) => signal.suspicionScore), 1);
 
@@ -201,7 +234,10 @@ export const buildBa400HierarchyGraph = ({
     nodeSignals.set(definition.id, matchedSignals);
 
     const signalScore = matchedSignals.reduce((max, signal) => {
-      const score = clamp(signal.failedCoverage * 0.58 + signal.suspicionScore / globalSignalPeak, 0, 1.1);
+      const score =
+        signal.category === 'service'
+          ? clamp(signal.suspicionScore / 100, 0, 1)
+          : clamp(signal.failedCoverage * 0.58 + signal.suspicionScore / globalSignalPeak, 0, 1.1);
       return Math.max(max, score);
     }, 0);
 
@@ -231,7 +267,7 @@ export const buildBa400HierarchyGraph = ({
       subtitle: definition.subtitle,
       type: 'ambient_factor',
       clusterKey: `ambient:${definition.rootId}`,
-      color: ROOT_COLORS[definition.rootId],
+      color: DRI_SYSTEM_COLORS[definition.rootId],
       emphasis: 0.38 + score * 0.98 + direct * 0.12,
       associationCount: Math.max(1, signalCount + (CHILDREN_BY_PARENT.get(definition.id)?.length || 0)),
       associationStrength: Math.max(definition.alwaysVisible ? 0.24 : 0.1, score),
@@ -250,7 +286,7 @@ export const buildBa400HierarchyGraph = ({
       id: `${ambientNodeId(definition.parentId)}:${ambientNodeId(definition.id)}`,
       sourceId: ambientNodeId(definition.parentId),
       targetId: ambientNodeId(definition.id),
-      color: ROOT_COLORS[definition.rootId],
+      color: DRI_SYSTEM_COLORS[definition.rootId],
       weight: 0.62 + ownScore * 0.8,
       relationType: 'ambient_hierarchy',
       opacity: 0.08 + Math.max(ownScore, parentScore) * 0.24,
@@ -259,6 +295,9 @@ export const buildBa400HierarchyGraph = ({
   });
 
   signals.forEach((signal) => {
+    // La evidencia de servicio ya está absorbida por la intensidad del sistema;
+    // no se dibuja como un nodo ni como una conexión independiente.
+    if (signal.category === 'service') return;
     const matchingDefinitions = BA400_HIERARCHY
       .filter((definition) => nodeMatchesSignal(definition, signal))
       .sort((left, right) => {
@@ -278,7 +317,7 @@ export const buildBa400HierarchyGraph = ({
         id: `${signalNodeId(signal.id)}:${ambientNodeId(definition.id)}`,
         sourceId: signalNodeId(signal.id),
         targetId: ambientNodeId(definition.id),
-        color: hierarchySignalColor(signal.category),
+        color: getDriSignalCategoryColor(signal.category),
         weight: 0.88 + signal.suspicionScore / 62,
         relationType: `signal_hierarchy:${signal.category}`,
         opacity: 0.16 + relevance * 0.42,
@@ -295,3 +334,8 @@ export const BA400_HIERARCHY_LABELS = Object.fromEntries(
 );
 
 export const BA400_HIERARCHY_DEFINITION = (nodeId: string) => HIERARCHY_BY_ID.get(nodeId) || null;
+
+export const getBa400SystemNodeIdsForSignal = (signal: DriRelationSignal) =>
+  BA400_HIERARCHY.filter((definition) => definition.depth === 1 && nodeMatchesSignal(definition, signal)).map(
+    (definition) => ambientNodeId(definition.id),
+  );

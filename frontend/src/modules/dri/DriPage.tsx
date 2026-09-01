@@ -5,7 +5,13 @@ import { loadLatestEquipmentQc, loadLatestSatReport } from '../sat-report/satRep
 import type { SatReportSummary } from '../sat-report/satReportTypes';
 import './dri.css';
 
-export default function DriPage({ subPermissions }: { subPermissions?: string[] }) {
+export default function DriPage({
+  subPermissions,
+  previewMode = false,
+}: {
+  subPermissions?: string[];
+  previewMode?: boolean;
+}) {
   const [satContext, setSatContext] = useState<SatReportSummary | null>(null);
   const [applySatContext, setApplySatContext] = useState(false);
 
@@ -55,7 +61,11 @@ export default function DriPage({ subPermissions }: { subPermissions?: string[] 
           />
         </div>
       </section>
-      <DriDashboard subPermissions={subPermissions} satContext={applySatContext ? satContext : null} />
+      <DriDashboard
+        subPermissions={subPermissions}
+        satContext={applySatContext ? satContext : null}
+        previewMode={previewMode}
+      />
     </>
   );
 }

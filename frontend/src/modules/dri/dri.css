@@ -929,6 +929,9 @@
 }
 
 .dri-graph-stage {
+  /* AJUSTE RAPIDO: altura del contenedor principal del grafo. */
+  height: 100vh;
+  height: 100dvh;
   min-height: 42rem;
   border-radius: 1.5rem;
   overflow: visible;
@@ -1457,6 +1460,10 @@
   .dri-graph-canvas canvas,
   .dri-graph-empty {
     min-height: 26rem;
+  }
+
+  .dri-graph-stage {
+    height: min(70dvh, 42rem);
   }
 }
 
