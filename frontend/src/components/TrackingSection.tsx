@@ -1526,6 +1526,9 @@ export default function TrackingSection() {
                           Actualización DHL en cola. El agente Windows publicará aquí el resultado al terminar.
                         </div>
                       ) : null}
+                      {entry.carrier === 'dhl' ? (
+                        <small className="tracking-record__dhl-attribution">Delivered by Deutsche Post DHL Group</small>
+                      ) : null}
 
                       {entry.timeline.length > 0 ? (
                         <div className="tracking-record__timeline">
@@ -1727,6 +1730,7 @@ export default function TrackingSection() {
                       <div className="tracking-live-board__cell">
                         <strong>{entry.carrier ? TRACKING_CARRIER_META[entry.carrier].label : 'Por definir'}</strong>
                         <span>{entry.serviceType || 'Sin servicio detectado'}</span>
+                        {entry.carrier === 'dhl' ? <small>Delivered by Deutsche Post DHL Group</small> : null}
                       </div>
 
                       <div className="tracking-live-board__cell">

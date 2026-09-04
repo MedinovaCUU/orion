@@ -774,6 +774,12 @@
   line-height: 1.5;
 }
 
+.tracking-record__dhl-attribution {
+  color: var(--tracking-copy-soft);
+  font-size: 0.72rem;
+  letter-spacing: 0.02em;
+}
+
 .tracking-record__timeline {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -1022,6 +1028,12 @@
   flex-direction: column;
   gap: 0.14rem;
   min-width: 0;
+}
+
+.tracking-live-board__cell small {
+  color: rgba(195, 212, 235, 0.58);
+  font-size: 0.66rem;
+  line-height: 1.25;
 }
 
 .tracking-live-board__cell strong,
