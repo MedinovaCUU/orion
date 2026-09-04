@@ -29,7 +29,10 @@ import {
 import type { ClientServiceUnitSummary, ServiceReportMode } from './serviceReports';
 import type { TravelFormData } from './travelPlanner';
 
-export default function Services() {
+export default function Services({ subPermissions = ['planeacion', 'viajes', 'reportes'] }: { subPermissions?: string[] }) {
+  const canViewPlanning = subPermissions.includes('planeacion');
+  const canManageTravel = subPermissions.includes('viajes');
+  const canManageReports = subPermissions.includes('reportes');
   const [loading, setLoading] = useState(true);
   const [currentUserId, setCurrentUserId] = useState<string | null>(null);
   const [currentUserName, setCurrentUserName] = useState('');
@@ -252,11 +255,14 @@ export default function Services() {
         reactiveTickets={reactiveTickets}
         historicalRecords={historicalRecords}
         travelAdminPanel={<TravelAdminPanel refreshKey={travelRefreshKey} />}
+        canViewPlanning={canViewPlanning}
+        canManageTravel={canManageTravel}
+        canManageReports={canManageReports}
         canSyncPlanning={canSyncPlanning}
         onSyncPlanning={handleSyncPlanning}
       />
 
-      {travelPlannerOpen ? (
+      {canManageTravel && travelPlannerOpen ? (
         <TravelPlannerModal
           isOpen={travelPlannerOpen}
           onClose={closeTravelPlanner}
@@ -271,7 +277,7 @@ export default function Services() {
         />
       ) : null}
 
-      {serviceReportOpen ? (
+      {canManageReports && serviceReportOpen ? (
         <ServiceReportModal
           isOpen={serviceReportOpen}
           mode={serviceReportMode}

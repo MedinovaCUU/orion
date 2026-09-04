@@ -172,14 +172,60 @@ const toMultilineLines = (value: string) =>
 
 const sanitizeTrackingNumber = (value: string) => value.toUpperCase().replace(/[^A-Z0-9]/g, '');
 
+const inferStrongCarrierFromTrackingNumber = (trackingNumber: string): TrackingCarrier | null => {
+  const sanitized = sanitizeTrackingNumber(trackingNumber);
+
+  if (sanitized.startsWith('GPE') || /^[A-Z]{3}\d{8,12}$/.test(sanitized)) {
+    return 'tresguerras';
+  }
+
+  if (/^9999\d{8}$/.test(sanitized)) {
+    return 'chibra';
+  }
+
+  if (/^696\d{9}$/.test(sanitized)) {
+    return 'chilexpress';
+  }
+
+  if (/^\d{22}$/.test(sanitized)) {
+    return 'estafeta';
+  }
+
+  return null;
+};
+
 const isTrackingNumber = (value: string) =>
   /^(?:[A-Z]{3}\d{8,12}|\d{10,12}|\d{22})$/.test(sanitizeTrackingNumber(value));
+
+const buildValidIsoDate = (year: string, first: string, second: string) => {
+  let month = Number(first);
+  let day = Number(second);
+
+  if (month > 12 && day >= 1 && day <= 12) {
+    [month, day] = [day, month];
+  }
+
+  const numericYear = Number(year);
+  const candidate = new Date(Date.UTC(numericYear, month - 1, day));
+  if (
+    month < 1 ||
+    month > 12 ||
+    day < 1 ||
+    candidate.getUTCFullYear() !== numericYear ||
+    candidate.getUTCMonth() !== month - 1 ||
+    candidate.getUTCDate() !== day
+  ) {
+    return '';
+  }
+
+  return `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+};
 
 const parseDateToIso = (value: string) => {
   const compact = compactSpaces(value);
   const isoMatch = compact.match(ISO_DATE_PATTERN);
   if (isoMatch) {
-    return `${isoMatch[1]}-${isoMatch[2]}-${isoMatch[3]}`;
+    return buildValidIsoDate(isoMatch[1], isoMatch[2], isoMatch[3]);
   }
 
   const dayFirstMatch = compact.match(DAY_FIRST_DATE_PATTERN);
@@ -188,9 +234,7 @@ const parseDateToIso = (value: string) => {
   }
 
   const year = dayFirstMatch[3].length === 2 ? `20${dayFirstMatch[3]}` : dayFirstMatch[3];
-  const month = dayFirstMatch[2].padStart(2, '0');
-  const day = dayFirstMatch[1].padStart(2, '0');
-  return `${year}-${month}-${day}`;
+  return buildValidIsoDate(year, dayFirstMatch[2], dayFirstMatch[1]);
 };
 
 export const formatTrackingDate = (value: string) => {
@@ -304,37 +348,19 @@ const extractBlockAfterLabel = (rawText: string, labels: string[], maxLines = 3)
   return '';
 };
 
-const inferCarrier = (trackingNumber: string, rawText: string, preferredCarrier: TrackingCarrierChoice) => {
-  if (preferredCarrier !== 'auto') {
-    return preferredCarrier;
-  }
-
+const inferCarrierFromText = (rawText: string): TrackingCarrier | null => {
   const normalized = normalizeText(rawText);
-  const sanitized = sanitizeTrackingNumber(trackingNumber);
 
   if (
     normalized.includes('tresguerras') ||
     normalized.includes('tres guerras') ||
     normalized.includes('guia / talon') ||
-    normalized.includes('talon') ||
-    sanitized.startsWith('GPE')
+    normalized.includes('talon')
   ) {
     return 'tresguerras';
   }
 
-  if (normalized.includes('dhl') || normalized.includes('guia aerea') || normalized.includes('detalles del envio')) {
-    return 'dhl';
-  }
-
-  if (normalized.includes('estafeta') || normalized.includes('codigo de rastreo') || sanitized.length === 22) {
-    return 'estafeta';
-  }
-
-  if (
-    normalized.includes('chilexpress') ||
-    normalized.includes('orden de transporte') ||
-    normalized.includes('centro de ayuda')
-  ) {
+  if (normalized.includes('chilexpress') || normalized.includes('orden de transporte') || normalized.includes('centro de ayuda')) {
     return 'chilexpress';
   }
 
@@ -346,16 +372,71 @@ const inferCarrier = (trackingNumber: string, rawText: string, preferredCarrier:
     return 'chibra';
   }
 
-  if (/^[A-Z]{3}\d{8,12}$/.test(sanitized)) {
-    return 'tresguerras';
+  if (normalized.includes('dhl') || normalized.includes('guia aerea') || normalized.includes('detalles del envio')) {
+    return 'dhl';
+  }
+
+  if (normalized.includes('estafeta') || normalized.includes('codigo de rastreo')) {
+    return 'estafeta';
+  }
+
+  return null;
+};
+
+const buildCarrierContextByTrackingNumber = (rawText: string) => {
+  const carrierByTrackingNumber = new Map<string, TrackingCarrier>();
+  let activeCarrier: TrackingCarrier | null = null;
+
+  toMultilineLines(rawText).forEach((line) => {
+    const lineCarrier = inferCarrierFromText(line);
+    if (lineCarrier) {
+      activeCarrier = lineCarrier;
+    }
+
+    const trackingNumbers = extractManualTrackingNumbers(line);
+    trackingNumbers.forEach((trackingNumber) => {
+      const strongCarrier = inferStrongCarrierFromTrackingNumber(trackingNumber);
+      const resolvedCarrier = strongCarrier || lineCarrier || activeCarrier;
+      if (resolvedCarrier) {
+        carrierByTrackingNumber.set(trackingNumber, resolvedCarrier);
+      }
+    });
+  });
+
+  return carrierByTrackingNumber;
+};
+
+const inferCarrier = (
+  trackingNumber: string,
+  rawText: string,
+  preferredCarrier: TrackingCarrierChoice,
+  contextualCarrier?: TrackingCarrier,
+) => {
+  if (preferredCarrier !== 'auto') {
+    return preferredCarrier;
+  }
+
+  const sanitized = sanitizeTrackingNumber(trackingNumber);
+  const strongCarrier = inferStrongCarrierFromTrackingNumber(sanitized);
+  if (strongCarrier) {
+    return strongCarrier;
+  }
+
+  if (contextualCarrier) {
+    return contextualCarrier;
+  }
+
+  const globalCarrierHints = new Set(
+    toMultilineLines(rawText)
+      .map((line) => inferCarrierFromText(line))
+      .filter((carrier): carrier is TrackingCarrier => Boolean(carrier)),
+  );
+  if (globalCarrierHints.size === 1) {
+    return Array.from(globalCarrierHints)[0];
   }
 
   if (/^\d{10}$/.test(sanitized)) {
     return 'dhl';
-  }
-
-  if (/^9999\d{8}$/.test(sanitized)) {
-    return 'chibra';
   }
 
   return null;
@@ -582,9 +663,15 @@ export const buildTrackingEntriesFromText = (rawText: string, options: TrackingI
     (sourceText.match(MAT_REFERENCE_PATTERN)?.[0] || '') ||
     extractValueAfterLabel(sourceText, ['folio fiscal', 'orden', 'pedido']);
   const now = new Date().toISOString();
+  const carrierContextByTrackingNumber = buildCarrierContextByTrackingNumber(sourceText);
 
   return trackingNumbers.map((trackingNumber) => {
-    const carrier = inferCarrier(trackingNumber, sourceText, options.preferredCarrier);
+    const carrier = inferCarrier(
+      trackingNumber,
+      sourceText,
+      options.preferredCarrier,
+      carrierContextByTrackingNumber.get(trackingNumber),
+    );
     return {
       id: crypto.randomUUID(),
       orderReference: embeddedOrderReference,
@@ -678,7 +765,7 @@ const isTrackingStatus = (value: unknown): value is TrackingStatus =>
   value === 'entregado' ||
   value === 'incidencia';
 
-const coerceEntry = (value: unknown): TrackingEntry | null => {
+export const coerceTrackingEntry = (value: unknown): TrackingEntry | null => {
   if (!value || typeof value !== 'object') {
     return null;
   }
@@ -693,10 +780,12 @@ const coerceEntry = (value: unknown): TrackingEntry | null => {
   const createdAt = typeof candidate.createdAt === 'string' && candidate.createdAt ? candidate.createdAt : new Date().toISOString();
   const updatedAt = typeof candidate.updatedAt === 'string' && candidate.updatedAt ? candidate.updatedAt : createdAt;
 
+  const strongCarrier = inferStrongCarrierFromTrackingNumber(trackingNumber);
+
   return {
     id: typeof candidate.id === 'string' && candidate.id ? candidate.id : crypto.randomUUID(),
     orderReference: typeof candidate.orderReference === 'string' ? candidate.orderReference : '',
-    carrier: isTrackingCarrier(candidate.carrier) ? candidate.carrier : null,
+    carrier: strongCarrier || (isTrackingCarrier(candidate.carrier) ? candidate.carrier : null),
     trackingNumber,
     status,
     fulfillmentState: candidate.fulfillmentState === 'entregado' || status === 'entregado' ? 'entregado' : 'pendiente',
@@ -731,7 +820,7 @@ const coerceEntry = (value: unknown): TrackingEntry | null => {
   };
 };
 
-export const loadTrackingEntries = (): TrackingEntry[] => {
+export const loadTrackingEntries = (userId = ''): TrackingEntry[] => {
   if (typeof window === 'undefined') {
     return [];
   }
@@ -742,20 +831,36 @@ export const loadTrackingEntries = (): TrackingEntry[] => {
       return [];
     }
 
-    const parsed = JSON.parse(raw) as { entries?: unknown[] } | unknown[];
+    const parsed = JSON.parse(raw) as { entries?: unknown[]; userId?: string } | unknown[];
+    const storedUserId = Array.isArray(parsed) ? '' : String(parsed.userId || '');
+    if (userId && storedUserId && storedUserId !== userId) {
+      return [];
+    }
+
     const source = Array.isArray(parsed) ? parsed : Array.isArray(parsed.entries) ? parsed.entries : [];
-    return source.map(coerceEntry).filter((entry): entry is TrackingEntry => Boolean(entry));
+    const entries = source.map(coerceTrackingEntry).filter((entry): entry is TrackingEntry => Boolean(entry));
+    return upsertTrackingEntries([], entries);
   } catch {
     return [];
   }
 };
 
-export const saveTrackingEntries = (entries: TrackingEntry[]) => {
+export const saveTrackingEntries = (entries: TrackingEntry[], userId = '') => {
   if (typeof window === 'undefined') {
     return;
   }
 
-  window.localStorage.setItem(TRACKING_STORAGE_KEY, JSON.stringify({ entries }));
+  let storedUserId = userId;
+  if (!storedUserId) {
+    try {
+      const current = JSON.parse(window.localStorage.getItem(TRACKING_STORAGE_KEY) || '{}') as { userId?: string };
+      storedUserId = String(current.userId || '');
+    } catch {
+      storedUserId = '';
+    }
+  }
+
+  window.localStorage.setItem(TRACKING_STORAGE_KEY, JSON.stringify({ userId: storedUserId, entries }));
 };
 
 export const mergeTrackingEntries = (current: TrackingEntry, incoming: TrackingEntry): TrackingEntry => {
@@ -863,4 +968,34 @@ export const upsertTrackingEntries = (current: TrackingEntry[], incoming: Tracki
   });
 
   return next.sort((left, right) => Date.parse(right.updatedAt) - Date.parse(left.updatedAt));
+};
+
+export const reconcileTrackingEntries = (localEntries: TrackingEntry[], cloudEntries: TrackingEntry[]) => {
+  const reconciled = [...cloudEntries];
+
+  localEntries.forEach((localEntry) => {
+    const cloudIndex = reconciled.findIndex((candidate) => candidate.trackingNumber === localEntry.trackingNumber);
+    if (cloudIndex === -1) {
+      reconciled.push(localEntry);
+      return;
+    }
+
+    const cloudEntry = reconciled[cloudIndex];
+    const localIsNewer = Date.parse(localEntry.updatedAt) > Date.parse(cloudEntry.updatedAt);
+    const olderEntry = localIsNewer ? cloudEntry : localEntry;
+    const newerEntry = localIsNewer ? localEntry : cloudEntry;
+    const mergedEntry = mergeTrackingEntries(olderEntry, newerEntry);
+
+    reconciled[cloudIndex] = {
+      ...mergedEntry,
+      id: cloudEntry.id,
+      createdAt:
+        Date.parse(localEntry.createdAt) < Date.parse(cloudEntry.createdAt)
+          ? localEntry.createdAt
+          : cloudEntry.createdAt,
+      updatedAt: newerEntry.updatedAt,
+    };
+  });
+
+  return reconciled.sort((left, right) => Date.parse(right.updatedAt) - Date.parse(left.updatedAt));
 };

@@ -72,6 +72,9 @@ interface ServicePlanningPageProps {
   reactiveTickets: PendingServiceTicket[];
   historicalRecords: HistoricalServiceRecord[];
   travelAdminPanel: ReactNode;
+  canViewPlanning?: boolean;
+  canManageTravel?: boolean;
+  canManageReports?: boolean;
   canSyncPlanning?: boolean;
   onSyncPlanning?: () => Promise<ServicePlanningSyncSummary>;
 }
@@ -184,6 +187,9 @@ export default function ServicePlanningPage({
   reactiveTickets,
   historicalRecords,
   travelAdminPanel,
+  canViewPlanning = true,
+  canManageTravel = true,
+  canManageReports = true,
   canSyncPlanning = false,
   onSyncPlanning,
 }: ServicePlanningPageProps) {
@@ -207,6 +213,12 @@ export default function ServicePlanningPage({
   const [planningSyncFeedback, setPlanningSyncFeedback] = useState<{ tone: 'success' | 'error'; message: string } | null>(null);
   const [composerDraft, setComposerDraft] = useState<QuickCreateDraft>(() => createInitialDraft(''));
   const deferredSearch = useDeferredValue(filters.search);
+
+  useEffect(() => {
+    if (!canViewPlanning && section !== 'reportes') {
+      setSection('reportes');
+    }
+  }, [canViewPlanning, section]);
 
   useEffect(() => {
     if (!initialMonth) {
@@ -367,7 +379,7 @@ export default function ServicePlanningPage({
 
   const renderReports = () => (
     <div className="planning-main">
-      <div className="planning-report-grid">
+      {canManageReports ? <div className="planning-report-grid">
         <section className="planning-report-card">
           <div className="planning-report-card__header">
             <div>
@@ -432,9 +444,9 @@ export default function ServicePlanningPage({
             {historicalRecords.length === 0 ? <EmptyState title="Sin historico" description="Todavia no hay servicios cerrados para este entorno." /> : null}
           </div>
         </section>
-      </div>
+      </div> : null}
 
-      {travelAdminPanel}
+      {canManageTravel ? travelAdminPanel : null}
     </div>
   );
 
@@ -497,6 +509,9 @@ export default function ServicePlanningPage({
   };
 
   return (
+    !canViewPlanning && !canManageTravel && !canManageReports ? (
+      <div className="planning-shell"><EmptyState title="Sin secciones habilitadas" description="Solicita acceso a una sección de Planeación." /></div>
+    ) :
     <div className="planning-shell">
       <PlanningFalconAlertsBridge contextLabel="Planeación" entries={falconTrackedReactiveTickets} />
       <PlanningSidebar
@@ -505,6 +520,9 @@ export default function ServicePlanningPage({
         alertsCount={alerts.reduce((total, alert) => total + alert.count, 0)}
         currentUserName={currentUserName}
         roleLabel={role}
+        canViewPlanning={canViewPlanning}
+        canViewReports={canManageReports || canManageTravel}
+        reportsLabel={canManageReports ? 'Reportes' : 'Viajes'}
       />
 
       <div className="planning-main">
@@ -651,6 +669,8 @@ export default function ServicePlanningPage({
         onDelete={onDeleteService}
         onOpenTravel={onOpenTravel}
         onOpenReport={onOpenReport}
+        canOpenTravel={canManageTravel}
+        canOpenReport={canManageReports}
       />
     </div>
   );

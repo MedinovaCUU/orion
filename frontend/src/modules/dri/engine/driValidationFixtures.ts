@@ -131,20 +131,102 @@ export const DRI_VALIDATION_FIXTURES: DriValidationFixture[] = [
     expectedTopHypothesis: 'interferencia',
     expectedRuleIds: ['ba400_procedure_limitation_interference'],
   },
+  {
+    id: 'case-13',
+    title: 'Convergencia completa de pruebas R2',
+    input: {
+      ...createBaseForm(),
+      eventType: 'poor_repeatability',
+      failedReagentIds: ['GLU_HK', 'CREA_ENZ'],
+      correctReagentIds: ['ALB'],
+      serviceTests: [
+        { id: 'svc-r2-1', utilityId: 'motors_valves_pumps', label: 'Motors, valves and pumps', result: 'abnormal', observedValue: '', notes: '' },
+        { id: 'svc-r2-2', utilityId: 'positioning', label: 'Positioning', result: 'failed', observedValue: '', notes: '' },
+        { id: 'svc-r2-3', utilityId: 'stress_mode', label: 'Stress mode', result: 'abnormal', observedValue: '', notes: '' },
+        { id: 'svc-r2-4', utilityId: 'conditioning', label: 'Conditioning', result: 'abnormal', observedValue: '', notes: '' },
+      ],
+    },
+    expectedTopHypothesis: 'R2',
+    expectedRuleIds: ['ba400_r2_dispensing'],
+    minimumTopProbability: 90,
+  },
+  {
+    id: 'case-14',
+    title: 'Convergencia completa de pruebas ópticas',
+    input: {
+      ...createBaseForm(),
+      eventType: 'absorbance_error',
+      failedReagentIds: ['ADA', 'ALT_GPT'],
+      correctReagentIds: ['ALB'],
+      serviceTests: [
+        { id: 'svc-opt-1', utilityId: 'photometry', label: 'Photometry', result: 'abnormal', observedValue: '', notes: '' },
+        { id: 'svc-opt-2', utilityId: 'baseline_darkness_current', label: 'Baseline and darkness current', result: 'failed', observedValue: '', notes: '' },
+        { id: 'svc-opt-3', utilityId: 'metrology', label: 'Metrology', result: 'abnormal', observedValue: '', notes: '' },
+        { id: 'svc-opt-4', utilityId: 'historical_reports', label: 'Historical reports', result: 'abnormal', observedValue: '', notes: '' },
+      ],
+    },
+    expectedTopHypothesis: 'óptica',
+    expectedRuleIds: ['ba400_optical_photometry'],
+    minimumTopProbability: 90,
+  },
+  {
+    id: 'case-15',
+    title: 'Demo BA400 con pruebas de servicio reales',
+    input: {
+      ...createBaseForm(),
+      eventType: 'qc_out_of_range',
+      failedReagentIds: ['GLU', 'CHOL', 'LACTATO_DE', 'MG', 'UREA_COLOR'],
+      correctReagentIds: ['ALT_GPT', 'AST_GOT', 'ALB', 'ADA', 'URIC'],
+      ambientTemperatureC: '27.4',
+      observations:
+        'Demo BA400: Photometry mostró deriva leve y Washing station dejó duda de arrastre. Curvas mayormente aceptables, sin rechazo óptico continuo.',
+      serviceTests: [
+        { id: 'svc-demo-1', utilityId: 'photometry', label: 'Photometry', result: 'abnormal', observedValue: 'Deriva 340/505 nm', notes: 'Baseline y repetibilidad con dispersión leve en fotometría.' },
+        { id: 'svc-demo-2', utilityId: 'washing_station', label: 'Washing station', result: 'adjusted', observedValue: 'Lavado ajustado', notes: 'Se detectó sospecha de carryover bajo y se corrigió prime.' },
+        { id: 'svc-demo-3', utilityId: 'thermostatting', label: 'Thermostatting', result: 'normal', observedValue: '37.0 °C', notes: 'Rotor estable durante corrida de verificación.' },
+        { id: 'svc-demo-4', utilityId: 'motors_valves_pumps', label: 'Motors, valves and pumps', result: 'normal', observedValue: 'Sin fuga', notes: 'Pipeteo y válvulas sin anomalía evidente.' },
+        { id: 'svc-demo-5', utilityId: 'level_detection', label: 'Level detection', result: 'normal', observedValue: 'OK', notes: 'Detección de nivel consistente en muestra y reactivo.' },
+      ],
+    },
+    expectedTopHypothesis: 'óptica',
+    expectedRuleIds: ['ba400_optical_photometry'],
+    minimumTopProbability: 85,
+    minimumProbabilityByRule: {
+      ba400_wash_carryover: 25,
+    },
+    maximumProbabilityByRule: {
+      ba400_r2_dispensing: 60,
+      ba400_temperature: 55,
+      ba400_fluidics_pipetting: 55,
+    },
+  },
 ];
 
 export const runDriValidationFixtures = (catalog: DriCatalog) =>
   DRI_VALIDATION_FIXTURES.map((fixture) => {
     const result = runDifferentialDiagnosisEngine(fixture.input, catalog);
     const top = result.hypotheses[0];
+    const probabilityForRule = (ruleId: string) =>
+      result.hypotheses.find((hypothesis) => hypothesis.matchedRuleIds.includes(ruleId))?.probabilityScore ?? 0;
+    const minimumRulesPassed = Object.entries(fixture.minimumProbabilityByRule || {}).every(
+      ([ruleId, minimum]) => probabilityForRule(ruleId) >= minimum,
+    );
+    const maximumRulesPassed = Object.entries(fixture.maximumProbabilityByRule || {}).every(
+      ([ruleId, maximum]) => probabilityForRule(ruleId) <= maximum,
+    );
     return {
       id: fixture.id,
       title: fixture.title,
       passed:
         Boolean(top) &&
-        top.title.toLowerCase().includes(fixture.expectedTopHypothesis) &&
-        fixture.expectedRuleIds.every((ruleId) => top.matchedRuleIds.includes(ruleId)),
+        top.title.toLowerCase().includes(fixture.expectedTopHypothesis.toLowerCase()) &&
+        fixture.expectedRuleIds.every((ruleId) => top.matchedRuleIds.includes(ruleId)) &&
+        (fixture.minimumTopProbability === undefined ||
+          (top?.probabilityScore || 0) >= fixture.minimumTopProbability) &&
+        minimumRulesPassed &&
+        maximumRulesPassed,
       topHypothesis: top?.title || null,
+      topProbability: top?.probabilityScore || null,
       topRuleIds: top?.matchedRuleIds || [],
     };
   });

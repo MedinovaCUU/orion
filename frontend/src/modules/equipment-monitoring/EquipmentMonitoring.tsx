@@ -1,11 +1,14 @@
-import { useDeferredValue, useEffect, useMemo, useRef, useState } from 'react';
+import { useDeferredValue, useEffect, useEffectEvent, useMemo, useRef, useState } from 'react';
 import BrandLockup from '../../components/BrandLockup';
 import { getPublicAssetUrl } from '../../components/publicAssetUrl';
 import { createSupremoLaunchSession, getSupremoLaunchDisabledMessage, isSupremoLaunchEnabled } from '../../components/supremoApi';
 import { runtimeFlags } from '../../config/runtimeFlags';
 import { supabase } from '../../supabaseClient';
+import SatReportImporter from '../sat-report/SatReportImporter';
+import GlobalEquipmentGlobe, { type GlobeEquipmentNode } from './GlobalEquipmentGlobe';
 import {
   getNormalizedStateLabel,
+  resolveEquipmentGeoPoint,
   resolveEquipmentMapPoint,
   type EquipmentLocationInput,
 } from './mexicoGeo';
@@ -231,8 +234,10 @@ interface MonitoringEquipment {
   markerTone: EquipmentMarkerTone;
   hasSupremoLink: boolean;
   hasSupabaseSignal: boolean;
-  hasSupremoHeartbeat: boolean;
+  hasMonitoringHeartbeat: boolean;
   mapPoint: { x: number; y: number } | null;
+  geoPoint: { latitude: number; longitude: number } | null;
+  country: string | null;
   normalizedState: string | null;
   city: string | null;
   municipality: string | null;
@@ -250,6 +255,28 @@ interface MonitoringEquipment {
   reagentSummaries: ReagentConsumptionSummaryRow[];
   searchText: string;
 }
+
+const toGlobeEquipmentNode = (equipment: MonitoringEquipment): GlobeEquipmentNode | null => {
+  if (!equipment.geoPoint) {
+    return null;
+  }
+
+  return {
+    id: equipment.id,
+    serial: equipment.serial,
+    clientName: equipment.clientName,
+    model: equipment.model,
+    status: equipment.status,
+    tone: equipment.markerTone,
+    heartbeat: equipment.hasMonitoringHeartbeat,
+    country: equipment.country,
+    city: equipment.city,
+    municipality: equipment.municipality,
+    state: equipment.normalizedState,
+    latitude: equipment.geoPoint.latitude,
+    longitude: equipment.geoPoint.longitude,
+  };
+};
 
 const MAP_URL = getPublicAssetUrl('mexico_map.svg');
 const SUPREMO_ICON_URL = getPublicAssetUrl('supremo_icon.png');
@@ -339,6 +366,15 @@ const formatRelativeTime = (value?: string | null) => {
   return formatter.format(Math.round(diffMs / day), 'day');
 };
 
+const isActiveMonitoringTimestamp = (value?: string | null) => {
+  if (!value) {
+    return false;
+  }
+
+  const timestamp = new Date(value).getTime();
+  return Number.isFinite(timestamp) && Date.now() - timestamp <= ACTIVE_TELEMETRY_WINDOW_MS;
+};
+
 const formatInteger = (value: NumericLike) =>
   new Intl.NumberFormat('es-MX', {
     maximumFractionDigits: 0,
@@ -386,8 +422,12 @@ const resolveMarkerTone = (
   hasSupremoLink: boolean,
   status: EquipmentHealthStatus,
 ): EquipmentMarkerTone => {
-  if (hasSupabaseSignal) {
+  if (status === 'fatal' || status === 'warning') {
     return status;
+  }
+
+  if (hasSupabaseSignal) {
+    return 'ok';
   }
 
   if (hasSupremoLink) {
@@ -398,16 +438,16 @@ const resolveMarkerTone = (
 };
 
 const getStatusLabel = (equipment: Pick<MonitoringEquipment, 'status' | 'markerTone' | 'hasSupabaseSignal' | 'hasSupremoLink'>) => {
-  if (!equipment.hasSupabaseSignal) {
-    return equipment.hasSupremoLink ? 'Supremo listo' : 'Sin señal';
-  }
-
   if (equipment.status === 'fatal') {
     return 'Fatal';
   }
 
   if (equipment.status === 'warning') {
     return 'Warning';
+  }
+
+  if (!equipment.hasSupabaseSignal) {
+    return equipment.hasSupremoLink ? 'Supremo listo' : 'Sin señal';
   }
 
   return 'Operativo';
@@ -619,6 +659,7 @@ const buildEquipmentList = (snapshot: MonitoringSnapshot): MonitoringEquipment[]
       locationCounters.set(locationCounterKey, currentIndex + 1);
 
       const mapPoint = resolveEquipmentMapPoint(locationSeed, currentIndex);
+      const geoPoint = resolveEquipmentGeoPoint(locationSeed);
       const clientName = normalizeClientName(equipment.clientes);
       const errorState = normalizedSerial ? errorIndex.get(normalizedSerial) : undefined;
       const currentState = normalizedSerial ? currentStateIndex.get(normalizedSerial) : undefined;
@@ -630,7 +671,7 @@ const buildEquipmentList = (snapshot: MonitoringSnapshot): MonitoringEquipment[]
       const reagentSummary =
         reagentSummaries.find((row) => row.bucket_month === CURRENT_REAGENT_BUCKET_MONTH) || null;
       const hasSupremoLink = hasSupremoConnection(equipment);
-      const hasSupabaseSignal = Boolean(currentState || errorState || telemetry || rotorSummary || reagentSummaries.length);
+      const hasSupabaseSignal = [currentState?.lastEventAt, telemetry?.updated_at].some(isActiveMonitoringTimestamp);
       const status = currentState?.status || errorState?.status || 'ok';
       const normalizedState = mapPoint?.normalizedState || equipment.estado || null;
       const model =
@@ -644,6 +685,7 @@ const buildEquipmentList = (snapshot: MonitoringSnapshot): MonitoringEquipment[]
         clientName,
         model,
         normalizedState,
+        equipment.pais,
         equipment.ciudad,
         equipment.municipio,
         equipment.direccion,
@@ -666,8 +708,10 @@ const buildEquipmentList = (snapshot: MonitoringSnapshot): MonitoringEquipment[]
         markerTone: resolveMarkerTone(hasSupabaseSignal, hasSupremoLink, status),
         hasSupremoLink,
         hasSupabaseSignal,
-        hasSupremoHeartbeat: hasSupremoLink && hasSupabaseSignal,
+        hasMonitoringHeartbeat: hasSupabaseSignal,
         mapPoint: mapPoint ? { x: mapPoint.x, y: mapPoint.y } : null,
+        geoPoint: geoPoint ? { latitude: geoPoint.latitude, longitude: geoPoint.longitude } : null,
+        country: equipment.pais,
         normalizedState,
         city: equipment.ciudad,
         municipality: equipment.municipio,
@@ -733,7 +777,9 @@ const attemptSupremoClientLaunch = async (launchUrl: string) =>
     }, SUPREMO_LAUNCH_TIMEOUT_MS);
   });
 
-export default function EquipmentMonitoring() {
+export default function EquipmentMonitoring({ subPermissions = ['mapa', 'alertas'] }: { subPermissions?: string[] }) {
+  const canViewMap = subPermissions.includes('mapa');
+  const canViewAlerts = subPermissions.includes('alertas');
   const mountedRef = useRef(true);
   const refreshInFlightRef = useRef<Promise<void> | null>(null);
   const mapStageRef = useRef<HTMLDivElement | null>(null);
@@ -1059,7 +1105,7 @@ export default function EquipmentMonitoring() {
         }
 
         if (filter === 'unmapped') {
-          return !equipment.mapPoint;
+          return !equipment.geoPoint;
         }
 
         return true;
@@ -1100,7 +1146,7 @@ export default function EquipmentMonitoring() {
     const preferred =
       filteredEquipments.find((equipment) => equipment.status === 'fatal') ||
       filteredEquipments.find((equipment) => equipment.status === 'warning') ||
-      filteredEquipments.find((equipment) => Boolean(equipment.mapPoint)) ||
+      filteredEquipments.find((equipment) => Boolean(equipment.geoPoint)) ||
       filteredEquipments[0];
 
     setSelectedEquipmentId(preferred.id);
@@ -1108,6 +1154,14 @@ export default function EquipmentMonitoring() {
 
   const selectedEquipment = filteredEquipments.find((equipment) => equipment.id === selectedEquipmentId) || null;
   const mappedEquipments = filteredEquipments.filter((equipment) => equipment.mapPoint);
+  const allGlobeEquipments = useMemo(
+    () => equipments.map(toGlobeEquipmentNode).filter((equipment): equipment is GlobeEquipmentNode => Boolean(equipment)),
+    [equipments],
+  );
+  const globeEquipments = useMemo<GlobeEquipmentNode[]>(
+    () => filteredEquipments.map(toGlobeEquipmentNode).filter((equipment): equipment is GlobeEquipmentNode => Boolean(equipment)),
+    [filteredEquipments],
+  );
   const selectedEquipmentHasManualOverride = selectedEquipment ? effectiveOverrideMap.has(selectedEquipment.id) : false;
 
   useEffect(() => {
@@ -1259,7 +1313,7 @@ export default function EquipmentMonitoring() {
   const summary = useMemo(() => {
     const fatal = equipments.filter((equipment) => equipment.status === 'fatal').length;
     const warning = equipments.filter((equipment) => equipment.status === 'warning').length;
-    const mapped = equipments.filter((equipment) => equipment.mapPoint).length;
+    const mapped = equipments.filter((equipment) => equipment.geoPoint).length;
     const telemetryLive = equipments.filter((equipment) => {
       const updatedAt = equipment.telemetry?.updated_at;
       return updatedAt ? Date.now() - new Date(updatedAt).getTime() <= ACTIVE_TELEMETRY_WINDOW_MS : false;
@@ -1281,7 +1335,7 @@ export default function EquipmentMonitoring() {
   );
 
   const unmappedEquipments = useMemo(
-    () => equipments.filter((equipment) => !equipment.mapPoint).slice(0, 8),
+    () => equipments.filter((equipment) => !equipment.geoPoint).slice(0, 8),
     [equipments],
   );
 
@@ -1432,6 +1486,9 @@ export default function EquipmentMonitoring() {
     setEditorNotice(`Se restableció el punto de ${selectedEquipment.serial} al cálculo automático.`);
   };
 
+  const updateMapZoomEvent = useEffectEvent(updateMapZoom);
+  const persistManualOverrideEvent = useEffectEvent(persistManualOverride);
+
   useEffect(() => {
     if (!isEditMode) {
       dragStateRef.current = null;
@@ -1465,7 +1522,7 @@ export default function EquipmentMonitoring() {
         return;
       }
 
-      updateMapZoom(
+      updateMapZoomEvent(
         (gestureStartZoomRef.current || mapZoomRef.current) * gestureEvent.scale,
         gestureEvent.clientX,
         gestureEvent.clientY,
@@ -1487,7 +1544,7 @@ export default function EquipmentMonitoring() {
       stage.removeEventListener('gesturechange', handleGestureChange as EventListener);
       stage.removeEventListener('gestureend', handleGestureEnd as EventListener);
     };
-  }, []);
+  }, [isEditMode]);
 
   useEffect(() => {
     const handlePointerMove = (event: PointerEvent) => {
@@ -1542,7 +1599,7 @@ export default function EquipmentMonitoring() {
       setDraggingEquipmentId(null);
 
       try {
-        await persistManualOverride(dragState.equipmentId, dragState.lastPoint);
+        await persistManualOverrideEvent(dragState.equipmentId, dragState.lastPoint);
       } catch (error) {
         const message = error instanceof Error ? error.message : 'No se pudo guardar el ajuste manual del mapa.';
         setEditorError(message);
@@ -1631,8 +1688,8 @@ export default function EquipmentMonitoring() {
         <BrandLockup
           variant="loading"
           eyebrow="Monitoreo Orion"
-          title="Levantando mapa y telemetría"
-          subtitle="Cargando equipos, eventos de error e insumos para dibujar la consola nacional."
+          title="Levantando red global y telemetría"
+          subtitle="Cargando equipos, ciudades y señales operativas para construir el globo Orion."
         />
       </div>
     );
@@ -1643,10 +1700,10 @@ export default function EquipmentMonitoring() {
       <section className="equipment-monitor__hero">
         <div className="equipment-monitor__hero-copy">
           <span className="equipment-monitor__eyebrow">Monitoreo en vivo</span>
-          <h2>Mapa operativo nacional de equipos Orion</h2>
+          <h2>Red global de equipos Orion</h2>
           <p>
-            El mapa cruza presencia remota y señal operativa real. Gris indica equipos sin Supremo ni rastro en
-            Supabase, azul marca Supremo listo, y verde/ámbar/rojo muestran la salud reportada por Supabase.
+            México concentra la telemetría real disponible. El globo agrupa equipos por ciudad, despliega cada unidad
+            al acercarse y simula la futura cobertura internacional para validar la experiencia global.
           </p>
         </div>
         <div className="equipment-monitor__hero-meta">
@@ -1690,6 +1747,12 @@ export default function EquipmentMonitoring() {
           <button type="button" className="button-primary chip" onClick={() => void loadMonitoringSnapshot('refresh')}>
             Actualizar ahora
           </button>
+          <SatReportImporter
+            onImported={() => {
+              setLoadNotice('Reporte SAT incorporado. Actualizando consumos y trazabilidad del equipo.');
+              void loadMonitoringSnapshot('refresh');
+            }}
+          />
           <button
             type="button"
             className={`button-primary chip ${isEditMode ? '' : 'inactive'}`.trim()}
@@ -1699,7 +1762,7 @@ export default function EquipmentMonitoring() {
               setEditorNotice(null);
             }}
           >
-            {isEditMode ? 'Salir de ajuste' : 'Ajustar puntos'}
+            {isEditMode ? 'Volver al globo' : 'Ajustar georreferencia'}
           </button>
           {selectedEquipmentHasManualOverride ? (
             <button type="button" className="button-primary chip inactive" onClick={() => void resetSelectedManualOverride()}>
@@ -1747,16 +1810,20 @@ export default function EquipmentMonitoring() {
       ) : null}
       {editorNotice ? <div className="equipment-monitor__banner">{editorNotice}</div> : null}
       <div className="equipment-monitor__banner equipment-monitor__banner--soft">
-        La posición ahora prioriza coordenadas geocodificadas por ciudad o municipio y estado. Cuando una localidad
-        todavía no está en cache, el mapa cae a un punto estatal de respaldo.
+        Los nodos de México usan coordenadas geocodificadas por ciudad o municipio. Cuando una localidad todavía no
+        está en cache, Orion usa temporalmente el centro de su estado como respaldo.
       </div>
 
-      <section className="equipment-monitor__main-grid">
+      {canViewMap ? <section className="equipment-monitor__main-grid">
         <div className="equipment-monitor__map-panel">
           <div className="equipment-monitor__map-header">
             <div>
-              <h3>México operativo</h3>
-              <p>{mappedEquipments.length} equipos visibles en el lienzo actual.</p>
+              <h3>{isEditMode ? 'Editor geográfico de México' : 'Planeta operativo Biosystems'}</h3>
+              <p>
+                {isEditMode
+                  ? `${mappedEquipments.length} equipos disponibles para ajuste manual.`
+                  : `${globeEquipments.length} equipos reales en México y cobertura mundial simulada.`}
+              </p>
             </div>
             <div className="equipment-monitor__map-tools">
               <div className="equipment-monitor__legend">
@@ -1767,21 +1834,24 @@ export default function EquipmentMonitoring() {
                 <span><i className="equipment-monitor__legend-dot equipment-monitor__legend-dot--fatal" /> Fatal</span>
                 <span><i className="equipment-monitor__legend-dot equipment-monitor__legend-dot--heartbeat" /> Pulso remoto</span>
               </div>
-              <div className="equipment-monitor__zoom-controls" aria-label="Controles de zoom del mapa">
-                <button type="button" className="button-primary chip inactive" onClick={() => updateMapZoom(mapZoom - MAP_ZOOM_STEP)}>
-                  -
-                </button>
-                <button type="button" className="button-primary chip inactive" onClick={() => updateMapZoom(1)}>
-                  {Math.round(mapZoom * 100)}%
-                </button>
-                <button type="button" className="button-primary chip inactive" onClick={() => updateMapZoom(mapZoom + MAP_ZOOM_STEP)}>
-                  +
-                </button>
-              </div>
+              {isEditMode ? (
+                <div className="equipment-monitor__zoom-controls" aria-label="Controles de zoom del mapa">
+                  <button type="button" className="button-primary chip inactive" onClick={() => updateMapZoom(mapZoom - MAP_ZOOM_STEP)}>
+                    -
+                  </button>
+                  <button type="button" className="button-primary chip inactive" onClick={() => updateMapZoom(1)}>
+                    {Math.round(mapZoom * 100)}%
+                  </button>
+                  <button type="button" className="button-primary chip inactive" onClick={() => updateMapZoom(mapZoom + MAP_ZOOM_STEP)}>
+                    +
+                  </button>
+                </div>
+              ) : null}
             </div>
           </div>
 
-          <div
+          {isEditMode ? (
+            <div
             ref={mapStageRef}
             className={`equipment-monitor__map-stage ${isEditMode ? 'equipment-monitor__map-stage--edit' : ''} ${
               isPanningMap ? 'equipment-monitor__map-stage--panning' : ''
@@ -1841,7 +1911,7 @@ export default function EquipmentMonitoring() {
                         key={`${equipment.id}-${equipment.serial}`}
                         type="button"
                         className={`equipment-monitor__marker equipment-monitor__marker--${equipment.markerTone} ${
-                          equipment.hasSupremoHeartbeat ? 'equipment-monitor__marker--heartbeat' : ''
+                          equipment.hasMonitoringHeartbeat ? 'equipment-monitor__marker--heartbeat' : ''
                         } ${
                           selectedEquipment?.id === equipment.id ? 'equipment-monitor__marker--selected' : ''
                         } ${
@@ -1900,7 +1970,15 @@ export default function EquipmentMonitoring() {
                 </div>
               </div>
             </div>
-          </div>
+            </div>
+          ) : (
+            <GlobalEquipmentGlobe
+              equipments={globeEquipments}
+              countryEquipments={allGlobeEquipments}
+              selectedEquipmentId={selectedEquipmentId}
+              onSelectEquipment={setSelectedEquipmentId}
+            />
+          )}
         </div>
 
         <aside className="equipment-monitor__focus-panel">
@@ -2260,9 +2338,9 @@ export default function EquipmentMonitoring() {
             </div>
           )}
         </aside>
-      </section>
+      </section> : null}
 
-      <section className="equipment-monitor__lists-grid">
+      {canViewAlerts ? <section className="equipment-monitor__lists-grid">
         <div className="equipment-monitor__list-panel">
           <div className="equipment-monitor__list-header">
             <h3>Alertas activas</h3>
@@ -2314,7 +2392,7 @@ export default function EquipmentMonitoring() {
             <div className="equipment-monitor__empty-state">Todos los equipos visibles hoy ya encontraron un punto en el mapa.</div>
           )}
         </div>
-      </section>
+      </section> : null}
     </div>
   );
 }

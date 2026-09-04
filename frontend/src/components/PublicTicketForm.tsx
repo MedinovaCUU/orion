@@ -4,6 +4,22 @@ import { useNavigate } from 'react-router-dom';
 import './Login.css';
 import BrandLockup from './BrandLockup';
 
+interface PublicCaseTimelineEntry {
+  tipo: string;
+  detalle: string;
+  estado_resultante?: string | null;
+  creado_en: string;
+}
+
+interface PublicCaseTrackingResult {
+  numero_caso: string;
+  asunto: string;
+  estado: string;
+  numero_serie_equipo: string;
+  actualizado_en: string;
+  bitacora: PublicCaseTimelineEntry[];
+}
+
 export default function PublicTicketForm() {
   const [tipoSoporte, setTipoSoporte] = useState<'Ingeniero' | 'Químico' | null>(null);
   const [numeroSerie, setNumeroSerie] = useState('');
@@ -12,7 +28,14 @@ export default function PublicTicketForm() {
   const [descripcion, setDescripcion] = useState('');
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
+  const [createdCaseNumber, setCreatedCaseNumber] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
+  const [trackingOpen, setTrackingOpen] = useState(false);
+  const [trackingCase, setTrackingCase] = useState('');
+  const [trackingPhone, setTrackingPhone] = useState('');
+  const [trackingLoading, setTrackingLoading] = useState(false);
+  const [trackingResult, setTrackingResult] = useState<PublicCaseTrackingResult | null>(null);
+  const [trackingError, setTrackingError] = useState('');
   
   const navigate = useNavigate();
   const supportOptions: Array<{
@@ -55,22 +78,50 @@ export default function PublicTicketForm() {
     setLoading(true);
     setErrorMsg('');
     
-    const { error } = await supabase.from('tickets').insert([{
-        asunto: `Soporte ${tipoSoporte}: Reporte en equipo ${trimmedSerie}`,
-        descripcion: trimmedDescripcion,
-        numero_serie_equipo: trimmedSerie,
-        nombre_cliente_guest: trimmedNombre,
-        telefono_cliente_guest: trimmedCelular,
-        estado: 'abierto'
-    }]);
+    const { data, error } = await supabase.rpc('create_public_support_case', {
+      p_support_type: tipoSoporte,
+      p_serial: trimmedSerie,
+      p_contact_name: trimmedNombre,
+      p_phone: trimmedCelular,
+      p_description: trimmedDescripcion,
+    });
 
     if (error) {
         setErrorMsg('Error al enviar el ticket: ' + error.message);
     } else {
+        const resultRow = Array.isArray(data) ? data[0] : data;
+        setCreatedCaseNumber(resultRow?.numero_caso || 'Caso registrado');
         setSuccess(true);
     }
     setLoading(false);
   };
+
+  const handleTracking = async (event: React.FormEvent) => {
+    event.preventDefault();
+    setTrackingLoading(true);
+    setTrackingError('');
+    setTrackingResult(null);
+    const { data, error } = await supabase.rpc('track_public_support_case', {
+      p_case_number: trackingCase.trim(),
+      p_phone: trackingPhone.trim(),
+    });
+    if (error) {
+      setTrackingError('No fue posible consultar el caso en este momento.');
+    } else if (!data) {
+      setTrackingError('No encontramos un caso con ese folio y teléfono. Revisa ambos datos.');
+    } else {
+      setTrackingResult(data as PublicCaseTrackingResult);
+    }
+    setTrackingLoading(false);
+  };
+
+  const statusLabel = (status: string) => ({
+    abierto: 'Abierto',
+    en_progreso: 'En progreso',
+    pendiente_piezas: 'Pendiente por piezas',
+    en_observacion: 'En observación',
+    cerrado: 'Cerrado',
+  })[status] || status;
 
   if (success) {
       return (
@@ -88,6 +139,11 @@ export default function PublicTicketForm() {
                     <p className="login-subtitle">
                       Recibimos la información del equipo y la descripción del problema.
                     </p>
+                    <div className="public-ticket-case-number">
+                      <span>Tu número de caso</span>
+                      <strong>{createdCaseNumber}</strong>
+                      <small>Guárdalo junto con el teléfono registrado para consultar cada avance.</small>
+                    </div>
                     <p className="public-ticket-success-note">
                       Un ingeniero o químico se pondrá en contacto contigo muy pronto al número registrado.
                     </p>
@@ -102,6 +158,7 @@ export default function PublicTicketForm() {
                           setCelular('');
                           setDescripcion('');
                           setTipoSoporte(null);
+                          setCreatedCaseNumber('');
                       }}
                   >
                       Enviar otro ticket
@@ -129,6 +186,51 @@ export default function PublicTicketForm() {
         />
 
         {errorMsg && <div className="error-alert">{errorMsg}</div>}
+
+        <button
+          type="button"
+          className="public-ticket-tracking-toggle"
+          aria-expanded={trackingOpen}
+          onClick={() => setTrackingOpen((current) => !current)}
+        >
+          <span><strong>¿Ya tienes un caso?</strong><small>Consulta rápidamente en qué nos quedamos</small></span>
+          <span aria-hidden="true">{trackingOpen ? '−' : '+'}</span>
+        </button>
+
+        {trackingOpen ? (
+          <form className="public-ticket-tracking" onSubmit={handleTracking}>
+            <div className="public-ticket-tracking-grid">
+              <div className="form-group">
+                <label>Número de caso</label>
+                <input className="input-field" value={trackingCase} maxLength={8} onChange={(event) => setTrackingCase(event.target.value.toUpperCase().replace(/[^A-Z0-9]/g, ''))} placeholder="Ej. 1J209L61" required />
+              </div>
+              <div className="form-group">
+                <label>Teléfono registrado</label>
+                <input className="input-field" type="tel" value={trackingPhone} onChange={(event) => setTrackingPhone(event.target.value)} pattern="[0-9]{10}" placeholder="10 dígitos" required />
+              </div>
+            </div>
+            <button className="button-primary" type="submit" disabled={trackingLoading}>{trackingLoading ? 'Consultando…' : 'Consultar caso'}</button>
+            {trackingError ? <div className="error-alert">{trackingError}</div> : null}
+            {trackingResult ? (
+              <div className="public-ticket-tracking-result">
+                <div><span>{trackingResult.numero_caso}</span><strong>{statusLabel(trackingResult.estado)}</strong></div>
+                <h3>{trackingResult.asunto}</h3>
+                <p>Equipo {trackingResult.numero_serie_equipo} · Actualizado {new Date(trackingResult.actualizado_en).toLocaleString('es-MX')}</p>
+                {trackingResult.bitacora?.length ? (
+                  <ol>
+                    {trackingResult.bitacora.map((entry, index) => (
+                      <li key={`${entry.creado_en}-${index}`}>
+                        <time>{new Date(entry.creado_en).toLocaleString('es-MX')}</time>
+                        <strong>{entry.detalle}</strong>
+                        {entry.estado_resultante ? <small>{statusLabel(entry.estado_resultante)}</small> : null}
+                      </li>
+                    ))}
+                  </ol>
+                ) : <p>Aún no hay avances públicos; el equipo de soporte ya recibió tu solicitud.</p>}
+              </div>
+            ) : null}
+          </form>
+        ) : null}
 
         <form onSubmit={handleSubmit} className="login-form">
           <div className="form-group">

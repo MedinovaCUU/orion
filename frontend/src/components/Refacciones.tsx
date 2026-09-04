@@ -342,7 +342,15 @@ const buildSearchScore = (
   return score;
 };
 
-export default function Refacciones() {
+interface RefaccionesProps {
+  subPermissions?: string[];
+}
+
+export default function Refacciones({ subPermissions }: RefaccionesProps) {
+  const enabledSubPermissions = subPermissions ?? ['solicitud', 'catalogo', 'historial'];
+  const canUseRequest = enabledSubPermissions.includes('solicitud');
+  const canUseCatalog = enabledSubPermissions.includes('catalogo');
+  const canViewHistory = enabledSubPermissions.includes('historial');
   const [profile, setProfile] = useState<ProfileSummary | null>(null);
   const [requests, setRequests] = useState<SparePartRequestRow[]>([]);
   const [catalog, setCatalog] = useState<SparePartCatalogEntry[]>([]);
@@ -969,7 +977,7 @@ export default function Refacciones() {
       )}
 
       <div className="spare-parts-layout">
-        <section className="spare-parts-panel spare-parts-panel--context">
+        {canUseRequest ? <section className="spare-parts-panel spare-parts-panel--context">
           <div className="spare-parts-panel__header">
             <div>
               <span className="spare-parts-panel__eyebrow">Contexto operativo</span>
@@ -1062,9 +1070,9 @@ export default function Refacciones() {
               placeholder="Restricciones de entrega, validaciones con el cliente, guía de embarque previa, horario o cualquier aclaración útil."
             />
           </label>
-        </section>
+        </section> : null}
 
-        <section className="spare-parts-panel spare-parts-panel--equipment">
+        {canUseRequest ? <section className="spare-parts-panel spare-parts-panel--equipment">
           <div className="spare-parts-panel__header">
             <div>
               <span className="spare-parts-panel__eyebrow">Equipo y destino</span>
@@ -1196,9 +1204,9 @@ export default function Refacciones() {
               placeholder="Dirección útil para entrega, paquetería o referencia en sitio."
             />
           </label>
-        </section>
+        </section> : null}
 
-        <section className="spare-parts-panel spare-parts-panel--catalog">
+        {canUseCatalog ? <section className="spare-parts-panel spare-parts-panel--catalog">
           <div className="spare-parts-panel__header">
             <div>
               <span className="spare-parts-panel__eyebrow">Catálogo inteligente</span>
@@ -1395,9 +1403,9 @@ export default function Refacciones() {
               </div>
             </div>
           </div>
-        </section>
+        </section> : null}
 
-        <section className="spare-parts-panel spare-parts-panel--lines">
+        {canUseCatalog ? <section className="spare-parts-panel spare-parts-panel--lines">
           <div className="spare-parts-panel__header">
             <div>
               <span className="spare-parts-panel__eyebrow">Partidas capturadas</span>
@@ -1481,9 +1489,9 @@ export default function Refacciones() {
               ))}
             </div>
           )}
-        </section>
+        </section> : null}
 
-        <section className="spare-parts-panel spare-parts-panel--summary">
+        {canUseRequest ? <section className="spare-parts-panel spare-parts-panel--summary">
           <div className="spare-parts-panel__header">
             <div>
               <span className="spare-parts-panel__eyebrow">Resumen administrativo</span>
@@ -1549,9 +1557,9 @@ export default function Refacciones() {
               {submittingMode === 'notify' ? 'Procesando correo...' : 'Guardar y notificar'}
             </button>
           </div>
-        </section>
+        </section> : null}
 
-        <section className="spare-parts-panel spare-parts-panel--history">
+        {canViewHistory ? <section className="spare-parts-panel spare-parts-panel--history">
           <div className="spare-parts-panel__header">
             <div>
               <span className="spare-parts-panel__eyebrow">Seguimiento</span>
@@ -1621,7 +1629,7 @@ export default function Refacciones() {
               })}
             </div>
           )}
-        </section>
+        </section> : null}
       </div>
 
       {modalAlert &&

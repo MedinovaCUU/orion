@@ -188,6 +188,12 @@ export interface DriReagentMeasurementInput {
   blankUnit?: string | null;
   source: DriReagentMeasurementSource;
   updatedAt: string | null;
+  controlLevel?: DriQcReferenceControlLevel | null;
+  controlLot?: string | null;
+  observedAt?: string | null;
+  sourceResultId?: string | null;
+  qcBand?: DriQcBand | null;
+  matchConfidence?: 'exact' | 'compatible' | 'unmatched' | null;
 }
 
 export interface DriServiceTestInput {
@@ -573,6 +579,9 @@ export interface DriValidationFixture {
   input: DriCaseFormState;
   expectedTopHypothesis: string;
   expectedRuleIds: string[];
+  minimumTopProbability?: number;
+  minimumProbabilityByRule?: Record<string, number>;
+  maximumProbabilityByRule?: Record<string, number>;
 }
 
 export const DRI_EVENT_OPTIONS: Array<{ value: DriFailurePatternType; label: string }> = [

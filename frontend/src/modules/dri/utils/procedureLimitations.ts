@@ -28,7 +28,11 @@ const parseOptionalNumeric = (value: string | number | null | undefined) => {
   if (typeof value !== 'string') {
     return null;
   }
-  const parsed = Number(value.replace(',', '.').trim());
+  const normalized = value.replace(',', '.').trim();
+  if (!normalized) {
+    return null;
+  }
+  const parsed = Number(normalized);
   return Number.isFinite(parsed) ? parsed : null;
 };
 
