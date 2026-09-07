@@ -584,9 +584,25 @@ const normalizeDhlStatus = (description, statusCode) => {
     normalized.includes('demora') ||
     normalized.includes('problema') ||
     normalized.includes('retenido') ||
-    normalized.includes('incidencia')
+    normalized.includes('incidencia') ||
+    normalized.includes('incidente inesperado') ||
+    normalized.includes('afectado por un incidente') ||
+    normalized.includes('contacte a dhl')
   ) {
     return 'incidencia';
+  }
+
+  if (
+    normalizedCode === 'pre-transit' ||
+    normalized.includes('pre-transit') ||
+    normalized.includes('pre transit') ||
+    normalized.includes('informacion recibida') ||
+    normalized.includes('label created') ||
+    normalized.includes('numero de guia ha sido creado') ||
+    normalized.includes('guia ha sido creada') ||
+    normalized.includes('aun no ha sido recolectado por dhl')
+  ) {
+    return 'etiqueta_generada';
   }
 
   if (
@@ -599,10 +615,6 @@ const normalizeDhlStatus = (description, statusCode) => {
     normalized.includes('transito')
   ) {
     return 'en_transito';
-  }
-
-  if (normalized.includes('informacion recibida') || normalized.includes('label created')) {
-    return 'etiqueta_generada';
   }
 
   return 'pendiente_consulta';

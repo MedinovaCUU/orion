@@ -126,10 +126,25 @@ const normalizeStatus = (status: JsonRecord) => {
     text.includes('exception') ||
     text.includes('failed') ||
     text.includes('incidencia') ||
+    text.includes('incidente inesperado') ||
+    text.includes('afectado por un incidente') ||
+    text.includes('contacte a dhl') ||
     text.includes('demora') ||
     text.includes('retenido')
   ) {
     return 'incidencia';
+  }
+  if (
+    text.includes('pre-transit') ||
+    text.includes('pre transit') ||
+    text.includes('label created') ||
+    text.includes('information received') ||
+    text.includes('informacion recibida') ||
+    text.includes('numero de guia ha sido creado') ||
+    text.includes('guia ha sido creada') ||
+    text.includes('aun no ha sido recolectado por dhl')
+  ) {
+    return 'etiqueta_generada';
   }
   if (
     text.includes('transit') ||
@@ -140,15 +155,6 @@ const normalizeStatus = (status: JsonRecord) => {
     text.includes('transito')
   ) {
     return 'en_transito';
-  }
-  if (
-    text.includes('pre-transit') ||
-    text.includes('pre transit') ||
-    text.includes('label created') ||
-    text.includes('information received') ||
-    text.includes('informacion recibida')
-  ) {
-    return 'etiqueta_generada';
   }
   return 'pendiente_consulta';
 };
