@@ -1,0 +1,60 @@
+.tracking-section--mission { --mission-ink: #142b36; --mission-accent: #097f86; }
+.tracking-mission-header { display:flex; justify-content:space-between; align-items:center; gap:24px; padding:20px 4px; }
+.tracking-mission-header h3 { font-family:'Avenir Next', 'Trebuchet MS', sans-serif; font-size:clamp(26px,3vw,44px); letter-spacing:-1.6px; margin:8px 0; color:var(--mission-ink); }
+.tracking-mission-header p { color:#627583; margin:0; }
+.tracking-section--mission > .tracking-grid--top { display:none; }
+.tracking-section--mission.is-capturing > .tracking-grid--top { display:grid; }
+.tracking-section--mission > .tracking-grid--middle { display:none; }
+.tracking-section--mission.is-overview > .tracking-grid--middle { display:grid; }
+.tracking-section--mission.is-overview > .tracking-grid--top { display:grid; }
+.tracking-section--mission:not(.is-capturing) .tracking-panel--composer { display:none; }
+.tracking-section--mission:not(.is-capturing).is-overview > .tracking-grid--top { grid-template-columns:1fr; }
+.tracking-section--mission .tracking-panel--records { border-radius:24px; background:linear-gradient(120deg,#edf5f5,#f6f8fb); box-shadow:none; }
+.tracking-section--mission .tracking-record-list { margin-top:24px; }
+.tracking-section--mission .tracking-record__timeline { display:none; }
+.mission { display:grid; grid-template-columns:minmax(280px,.85fr) minmax(0,1.4fr); gap:28px; margin-top:24px; align-items:start; }
+.mission-search { display:grid; gap:10px; color:#55727e; font-size:10px; letter-spacing:2px; }
+.mission-search input { width:100%; box-sizing:border-box; background:#fff; border:1px solid #ccdadf; border-radius:12px; padding:15px; color:#183443; font:inherit; font-size:14px; letter-spacing:0; }
+.mission-count { display:block; font-size:12px; margin:15px 3px; color:#657c85; }
+.mission-stack-scroll { max-height:690px; overflow:auto; padding:4px 8px 30px 2px; }
+.mission-card { position:relative; display:block; width:100%; text-align:left; color:#38535f; border:1px solid #c2d8de; border-radius:18px; background:linear-gradient(125deg,#fff,#e9f1f5); padding:18px 20px 34px; margin-bottom:-17px; box-shadow:0 -3px 12px #1c475508; cursor:pointer; transition:transform .22s, background .22s, margin .22s; }
+.mission-card:hover { transform:translateY(-5px); }
+.mission-card.is-selected { background:linear-gradient(120deg,#133848,#155b61); color:#f2ffff; border-color:#299f9d; margin-bottom:10px; padding-bottom:22px; box-shadow:0 10px 22px #15444b22; }
+.mission-card:focus-visible, .mission-search input:focus-visible { outline:3px solid #0fa7a0; outline-offset:2px; }
+.mission-card-top,.mission-card-bottom { display:flex; justify-content:space-between; gap:12px; font-size:11px; }
+.mission-card-top { text-transform:uppercase; letter-spacing:1.5px; }
+.mission-card > strong { display:block; font-family:'Avenir Next',monospace; font-size:25px; letter-spacing:1px; margin:12px 0; overflow-wrap:anywhere; }
+.mission-card-bottom { align-items:center; }
+.mission-card-bottom > span:first-child { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:50%; }
+.mission-state { border:1px solid currentColor; padding:5px 8px; border-radius:20px; font-size:10px; }
+.mission-state--entregado { color:#21885b; }
+.mission-card.is-selected .mission-state--entregado { color:#8aebba; }
+.mission-state--incidencia { color:#c56731; }
+.mission-detail { position:sticky; top:20px; background:radial-gradient(ellipse at top right,#d5f1ec80,transparent 65%),#fff; border:1px solid #d5e5e8; border-radius:22px; padding:30px; box-shadow:0 18px 50px #183f4d08; animation:mission-in .3s ease-out; }
+.mission-detail-heading { display:flex; justify-content:space-between; color:#557a83; font-size:10px; letter-spacing:2px; gap:12px; }
+.mission-detail h4 { font-family:'Avenir Next',monospace; font-size:clamp(26px,3vw,38px); color:#173b46; margin:20px 0 10px; overflow-wrap:anywhere; }
+.mission-status { font-size:17px; color:#137d81; line-height:1.5; }
+.mission-route { display:grid; grid-template-columns:1fr 30px 1fr; gap:15px; padding:25px 0; margin-top:18px; border-top:1px solid #e1ebed; align-items:center; }
+.mission-route small,.mission-facts small { display:block; color:#789098; font-size:10px; letter-spacing:1.4px; margin-bottom:10px; }
+.mission-route strong { color:#2b4b58; font-size:16px; }
+.mission-progress { list-style:none; padding:12px 0; display:grid; grid-template-columns:repeat(4,1fr); }
+.mission-progress li { position:relative; color:#7c929a; font-size:11px; display:grid; gap:10px; }
+.mission-progress li:before { content:''; height:2px; background:#dbe7ea; position:absolute; top:17px; left:35px; right:0; }
+.mission-progress li:last-child:before { display:none; }
+.mission-progress li > span { display:grid; place-items:center; width:34px; height:34px; border:1px solid #cfdee3; border-radius:50%; font-size:10px; }
+.mission-progress .is-reached > span { background:#177c80; border-color:#177c80; color:white; }
+.mission-progress .is-reached:before { background:#279392; }
+.mission-facts { display:grid; grid-template-columns:1fr 1fr; gap:16px; background:#eff6f6; border-radius:12px; padding:18px; margin:20px 0; }
+.mission-facts strong { font-size:13px; color:#325460; }
+.mission-detail h5 { font-size:15px; margin:26px 0 20px; color:#214b58; }
+.mission-detail h5 span { color:#7b939c; margin-left:12px; }
+.mission-events { max-height:300px; overflow:auto; }
+.mission-events article { display:flex; gap:16px; padding:0 5px 22px; }
+.mission-event-dot { width:8px; height:8px; border-radius:50%; background:#2d8b8b; margin-top:6px; flex-shrink:0; box-shadow:0 0 0 4px #ecf6f5; }
+.mission-events strong { font-size:13px; color:#345460; }
+.mission-events p,.mission-events time { font-size:12px; color:#738991; margin:5px 0; }
+.mission-warning { padding:12px; background:#fff3e4; color:#8e5425; border-radius:10px; font-size:13px; }
+.mission-no-results { padding:20px; color:#5c747e; }
+@keyframes mission-in { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
+@media(max-width:850px) { .mission { grid-template-columns:1fr; } .mission-stack-scroll { max-height:330px; } .mission-detail { position:static; padding:20px; } .tracking-mission-header { align-items:flex-start; flex-direction:column; } }
+@media(prefers-reduced-motion:reduce) { .mission-detail { animation:none; } .mission-card { transition:none; } }

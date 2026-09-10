@@ -1,3 +1,5 @@
+import { fetchMyDhlTracking } from './mydhl.ts';
+
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Methods': 'POST, OPTIONS',
@@ -554,6 +556,8 @@ const normalizeDhlStatus = (description: string, statusCode: string): TrackingSt
   }
 
   if (
+    normalizedCode === 'out-for-delivery' ||
+    normalized.includes('out with courier') ||
     normalized.includes('mensajero para su entrega') ||
     normalized.includes('out for delivery') ||
     normalized.includes('disponible para recolectar') ||
@@ -699,6 +703,17 @@ const parseDhlErrorMessage = async (response: Response) => {
 };
 
 const requestDhlTracking = async (trackingNumber: string, includeServiceHint = true) => {
+  const username = Deno.env.get('DHL_MYDHL_USERNAME')?.trim();
+  const password = Deno.env.get('DHL_MYDHL_PASSWORD');
+  if (username && password) {
+    try {
+      const shipment = await fetchMyDhlTracking(trackingNumber, username, password);
+      return shipment ? buildDhlResponse(trackingNumber, shipment) :
+        buildErrorResponse('dhl', trackingNumber, 'DHL todavía no devuelve eventos para esta guía.');
+    } catch (error) {
+      return buildErrorResponse('dhl', trackingNumber, error instanceof Error ? error.message : 'No fue posible consultar DHL.');
+    }
+  }
   const apiKey = resolveDhlApiKey();
   if (!apiKey) {
     return buildErrorResponse(

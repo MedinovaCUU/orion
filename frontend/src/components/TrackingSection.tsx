@@ -1,5 +1,6 @@
 import { useEffect, useEffectEvent, useMemo, useRef, useState } from 'react';
 import './TrackingSection.css';
+import { TrackingMission } from './TrackingMission';
 import {
   applyTrackingPortalSnapshot,
   TRACKING_CARRIER_META,
@@ -51,7 +52,7 @@ interface TrackingLookupOutcome {
   message: string;
 }
 
-type AutoRefreshIntervalMs = 0 | 30000 | 60000 | 120000;
+type AutoRefreshIntervalMs = 0 | 30000 | 60000 | 120000 | 300000;
 type LiveBoardTone = 'pending' | 'moving' | 'delivered' | 'alert';
 type TrackingStorageState = 'loading' | 'saving' | 'synced' | 'local_only' | 'error';
 
@@ -75,6 +76,7 @@ const TRACKING_CARRIER_OPTIONS: Array<{ value: TrackingCarrierChoice; label: str
   { value: 'chibra', label: 'Chibra' },
 ];
 const AUTO_REFRESH_OPTIONS: Array<{ value: AutoRefreshIntervalMs; label: string }> = [
+  { value: 300000, label: '5 min (recomendado)' },
   { value: 0, label: 'Manual' },
   { value: 30000, label: '30 s' },
   { value: 60000, label: '60 s' },
@@ -191,7 +193,11 @@ export default function TrackingSection() {
   const [lookupBusyKeys, setLookupBusyKeys] = useState<string[]>([]);
   const [notice, setNotice] = useState<TrackingNotice | null>(null);
   const [rowImportTargetId, setRowImportTargetId] = useState<string | null>(null);
-  const [autoRefreshIntervalMs, setAutoRefreshIntervalMs] = useState<AutoRefreshIntervalMs>(30000);
+  const [autoRefreshIntervalMs, setAutoRefreshIntervalMs] = useState<AutoRefreshIntervalMs>(300000);
+  const [selectedGuideId, setSelectedGuideId] = useState('');
+  const [guideSearch, setGuideSearch] = useState('');
+  const [captureOpen, setCaptureOpen] = useState(false);
+  const [overviewOpen, setOverviewOpen] = useState(false);
   const [liveBoardOpen, setLiveBoardOpen] = useState(false);
   const [liveBoardFullscreen, setLiveBoardFullscreen] = useState(false);
   const [cloudUserId, setCloudUserId] = useState('');
@@ -1048,7 +1054,11 @@ export default function TrackingSection() {
   };
 
   return (
-    <section className="tracking-section">
+    <section className={`tracking-section tracking-section--mission ${captureOpen ? 'is-capturing' : ''} ${overviewOpen ? 'is-overview' : ''}`}>
+      <header className="tracking-mission-header">
+        <div><span className="tracking-panel__eyebrow">ORION / CONTROL LOGÍSTICO</span><h3>Cada envío. Bajo control.</h3><p>Selecciona una guía para explorar su último movimiento.</p></div>
+        <div className="tracking-records__toolbar-actions"><button type="button" className="button-primary inactive" aria-expanded={overviewOpen} onClick={() => setOverviewOpen(!overviewOpen)}>{overviewOpen ? 'Ocultar resumen' : 'Resumen fulfillment'}</button><button type="button" className="button-primary" aria-expanded={captureOpen} onClick={() => setCaptureOpen(!captureOpen)}>{captureOpen ? 'Cerrar captura' : '+ Agregar guías'}</button></div>
+      </header>
       {notice ? <div className={`tracking-notice tracking-notice--${notice.tone}`}>{notice.message}</div> : null}
 
       <div className="tracking-grid tracking-grid--top">
@@ -1058,7 +1068,7 @@ export default function TrackingSection() {
               <span className="tracking-panel__eyebrow">Captura</span>
               <h4>Alta de tracking por manual, OCR o cámara</h4>
             </div>
-            <p>Sirve para subir una sola guía o un lote pequeño sin depender todavía de APIs externas.</p>
+            <p>Agrega tus guías por texto, imagen o cámara. DHL se consulta con su API oficial.</p>
           </div>
 
           <div className="tracking-composer">
@@ -1400,7 +1410,7 @@ export default function TrackingSection() {
             className={`tracking-agent-state tracking-agent-state--${trackingAgentOnline ? 'online' : 'offline'}`}
             title={trackingAgentHealth?.lastError || undefined}
           >
-            {trackingAgentOnline
+            {!usesCloudTrackingAgentLookup('dhl') ? 'DHL: consulta directa mediante MyDHL Express.' : trackingAgentOnline
               ? `Agente DHL conectado${trackingAgentHealth?.hostname ? ` en ${trackingAgentHealth.hostname}` : ''}. Revisión automática cada 5 min.`
               : trackingAgentHealth?.lastSeenAt
                 ? `Agente DHL desconectado. Último pulso ${formatTrackingDateTime(trackingAgentHealth.lastSeenAt)}.`
@@ -1411,6 +1421,7 @@ export default function TrackingSection() {
           </span>
         </div>
 
+        <TrackingMission entries={sortedEntries} selectedId={selectedGuideId} onSelect={setSelectedGuideId} search={guideSearch} onSearch={setGuideSearch} />
         {sortedEntries.length === 0 ? (
           <div className="tracking-empty-state">
             <strong>No hay tracking activos.</strong>
@@ -1418,7 +1429,7 @@ export default function TrackingSection() {
           </div>
         ) : (
           <div className="tracking-record-list">
-            {sortedEntries.map((entry) => {
+            {sortedEntries.filter(entry => entry.id === (sortedEntries.find(item => item.id === selectedGuideId)?.id || sortedEntries[0]?.id)).map((entry) => {
               const lookupKey = buildLookupKey(entry.carrier, entry.trackingNumber);
               const lookupBusy = lookupBusyKeys.includes(lookupKey);
               const liveLookupAvailable = entry.carrier ? supportsLivePortalLookup(entry.carrier) : false;
@@ -1532,7 +1543,7 @@ export default function TrackingSection() {
 
                       {entry.timeline.length > 0 ? (
                         <div className="tracking-record__timeline">
-                          {entry.timeline.slice(-3).reverse().map((event, index) => (
+                          {[...entry.timeline].sort((a, b) => (Date.parse(b.timestamp || '') || 0) - (Date.parse(a.timestamp || '') || 0)).slice(0, 3).map((event, index) => (
                             <article key={`${entry.id}-${event.timestamp}-${index}`} className="tracking-record__timeline-item">
                               <strong>{event.label || 'Evento sin descripción'}</strong>
                               <span>{event.location || 'Ubicación no disponible'}</span>
@@ -1659,7 +1670,7 @@ export default function TrackingSection() {
               <p>
                 Portales directos: {autoRefreshIntervalMs === 0 ? 'actualización manual' : describeAutoRefresh(autoRefreshIntervalMs)}.
                 {' '}
-                DHL: agente Windows cada 5 min y bajo demanda.
+                {usesCloudTrackingAgentLookup('dhl') ? 'DHL: agente Windows cada 5 min y bajo demanda.' : 'DHL: API oficial MyDHL Express.'}
                 {' '}
                 {latestLookupAt ? `Último pulso ${formatTrackingDateTime(latestLookupAt)}.` : 'Aún sin lectura viva.'}
               </p>

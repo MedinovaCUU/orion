@@ -29,6 +29,7 @@ const TRACKING_EDGE_LOOKUP_FLAG = String(import.meta.env.VITE_ENABLE_TRACKING_ED
 const USING_LOCAL_SUPABASE = /127\.0\.0\.1:54321|localhost:54321/.test(SUPABASE_URL);
 const EDGE_LOOKUP_ENABLED =
   USING_LOCAL_SUPABASE || ['1', 'true', 'yes', 'on'].includes(TRACKING_EDGE_LOOKUP_FLAG);
+const DHL_DIRECT_API_ENABLED = (import.meta.env.VITE_DHL_LOOKUP_MODE || 'mydhl') === 'mydhl';
 const IS_LOCAL_BROWSER_RUNTIME = isLocalBrowserRuntime();
 const IS_HOSTED_HTTPS_RUNTIME =
   typeof window !== 'undefined' && window.location.protocol === 'https:' && !IS_LOCAL_BROWSER_RUNTIME;
@@ -108,10 +109,10 @@ export const isTrackingLookupEnabled = () => runtimeFlags.trackingLookupEnabled;
 export const getTrackingLookupDisabledMessage = () => getDisabledIntegrationMessage('trackingLookup');
 
 const supportsRelayLookup = (carrier: TrackingCarrier | null) =>
-  carrier !== null && Boolean(TRACKING_BROWSER_RELAY_URL) && RELAY_SUPPORTED_CARRIERS.includes(carrier);
+  carrier !== null && !(carrier === 'dhl' && DHL_DIRECT_API_ENABLED) && Boolean(TRACKING_BROWSER_RELAY_URL) && RELAY_SUPPORTED_CARRIERS.includes(carrier);
 
 const supportsEdgeLookup = (carrier: TrackingCarrier | null) =>
-  EDGE_LOOKUP_ENABLED &&
+  (EDGE_LOOKUP_ENABLED || (carrier === 'dhl' && DHL_DIRECT_API_ENABLED)) &&
   (carrier === 'dhl' ||
     carrier === 'estafeta' ||
     carrier === 'tresguerras' ||
@@ -122,7 +123,7 @@ export const supportsLivePortalLookup = (carrier: TrackingCarrier | null) =>
   supportsRelayLookup(carrier) || supportsEdgeLookup(carrier);
 
 export const usesCloudTrackingAgentLookup = (carrier: TrackingCarrier | null) =>
-  carrier === 'dhl' && !supportsRelayLookup(carrier);
+  carrier === 'dhl' && !DHL_DIRECT_API_ENABLED && !supportsRelayLookup(carrier);
 
 const extractFunctionErrorMessage = async (error: unknown) => {
   if (error && typeof error === 'object' && 'context' in error) {
