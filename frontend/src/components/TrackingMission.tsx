@@ -21,16 +21,21 @@ export function TrackingMission({ entries, selectedId, onSelect, search, onSearc
         <span className="mission-count">{visible.length} envíos en esta vista</span>
         <div className="mission-stack-scroll" role="group" aria-label="Seleccionar envío">
           {visible.map((entry, index) => (
-            <button key={entry.id} type="button" className={`mission-card ${selected?.id === entry.id ? 'is-selected' : ''}`} aria-pressed={selected?.id === entry.id} onClick={() => onSelect(entry.id)}>
-              <span className="mission-card-top"><span>{entry.carrier ? TRACKING_CARRIER_META[entry.carrier].label : 'Sin mensajería'}</span><span>{String(index + 1).padStart(2, '0')}</span></span>
-              <strong>{entry.trackingNumber}</strong>
-              <span className="mission-card-bottom"><span>{entry.destination || entry.recipient || 'Destino por confirmar'}</span><span className={`mission-state mission-state--${entry.status}`}>{TRACKING_STATUS_LABELS[entry.status]}</span></span>
+            <button key={entry.id} type="button" data-status={entry.status} className={`mission-card ${selected?.id === entry.id ? 'is-selected' : ''}`} aria-pressed={selected?.id === entry.id} aria-label={`${entry.trackingNumber}, ${TRACKING_STATUS_LABELS[entry.status]}`} onClick={() => onSelect(entry.id)}>
+              <span className="mission-card-top"><span>{entry.carrier ? TRACKING_CARRIER_META[entry.carrier].label : 'Sin mensajería'} <span className="mission-card-serial">/ {String(index + 1).padStart(2, '0')}</span></span><span className="mission-card-signal">{TRACKING_STATUS_LABELS[entry.status]}</span></span>
+              <strong>{entry.trackingNumber}<span className="mission-card-open" aria-hidden="true">↗</span></strong>
+              <span className="mission-card-content" aria-hidden={selected?.id !== entry.id}>
+                <span className="mission-card-itinerary"><span><small>DESDE</small><b>{entry.origin || 'Origen por confirmar'}</b></span><span aria-hidden="true">→</span><span><small>HACIA</small><b>{entry.destination || 'Destino por confirmar'}</b></span></span>
+                <span className="mission-card-recipient"><small>DESTINATARIO / REFERENCIA</small><b>{entry.recipient || 'Destinatario por confirmar'}</b><span>{entry.orderReference || 'Sin referencia de pedido'}</span></span>
+                <span className="mission-card-bottom"><span><small>{entry.status === 'entregado' ? 'ÚLTIMO MOVIMIENTO' : 'LLEGADA ESTIMADA'}</small><b>{entry.status === 'entregado' ? entry.lastEventAt ? formatTrackingDateTime(entry.lastEventAt) : 'Entrega confirmada' : entry.estimatedDelivery ? formatTrackingDate(entry.estimatedDelivery) : 'Por confirmar'}</b></span><span className="mission-card-seal" aria-hidden="true">{entry.status === 'entregado' ? '✓' : entry.status === 'incidencia' ? '!' : '↗'}</span></span>
+                <span className="mission-card-caption">{entry.lookupError ? 'No se pudo actualizar · revisa el detalle' : entry.lastEventLabel || entry.portalStatusText || 'Esperando información de la mensajería'}</span>
+              </span>
             </button>
           ))}
           {!visible.length && <p className="mission-no-results">{entries.length ? 'No hay coincidencias. Prueba con otra guía o destino.' : 'Agrega tu primera guía para iniciar el seguimiento.'}</p>}
         </div>
       </div>
-      {selected && <section className="mission-detail" key={selected.id} aria-label={`Progreso de ${selected.trackingNumber}`}>
+      {selected && <section className="mission-detail" data-status={selected.status} key={selected.id} aria-label={`Progreso de ${selected.trackingNumber}`}>
         <div className="mission-detail-heading"><span>EXPEDIENTE DE ENVÍO</span><span>{selected.carrier ? TRACKING_CARRIER_META[selected.carrier].label : 'Sin mensajería'}</span></div>
         <h4>{selected.trackingNumber}</h4>
         <p className={`mission-status mission-state--${selected.status}`}>{selected.portalStatusText || TRACKING_STATUS_LABELS[selected.status]}</p>
