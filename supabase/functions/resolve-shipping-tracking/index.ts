@@ -1537,6 +1537,18 @@ Deno.serve(async (request) => {
 
   try {
     if (carrier === 'dhl') {
+      // Push notifications contain customer names; never expose them to anonymous clients.
+      if (Deno.env.get('DHL_LOOKUP_PROVIDER') === 'push') {
+        const authorization = request.headers.get('authorization') || '';
+        const serviceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') || '';
+        if (!serviceKey || authorization !== `Bearer ${serviceKey}`) {
+          const auth = await fetch(new URL('/auth/v1/user', Deno.env.get('SUPABASE_URL')), {
+            headers: { apikey: Deno.env.get('SUPABASE_ANON_KEY') || '', Authorization: authorization },
+            signal: AbortSignal.timeout(10000),
+          });
+          if (!auth.ok) return jsonRes(401, { ok: false, error: 'Inicia sesión en Orion para consultar los datos de DHL Push.' });
+        }
+      }
       if (!/^\d{10}$/.test(trackingNumber)) {
         return jsonRes(200, buildErrorResponse(carrier, trackingNumber, 'DHL requiere una guía aérea de 10 dígitos.'));
       }
