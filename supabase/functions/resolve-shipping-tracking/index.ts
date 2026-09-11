@@ -703,6 +703,37 @@ const parseDhlErrorMessage = async (response: Response) => {
 };
 
 const requestDhlTracking = async (trackingNumber: string, includeServiceHint = true) => {
+  if (Deno.env.get('DHL_LOOKUP_PROVIDER') === 'push') {
+    const url = new URL('/rest/v1/dhl_push_shipments', Deno.env.get('SUPABASE_URL'));
+    url.searchParams.set('tracking_number', `eq.${trackingNumber}`);
+    url.searchParams.set('select', 'payload,received_at');
+    const key = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') || '';
+    const response = await fetch(url, {
+      headers: { apikey: key, Authorization: `Bearer ${key}` },
+      signal: AbortSignal.timeout(10000),
+    });
+    if (!response.ok) return buildErrorResponse('dhl', trackingNumber, 'No fue posible leer las notificaciones de DHL Push.');
+    const rows = await response.json();
+    const row = rows[0];
+    if (!row) return buildErrorResponse('dhl', trackingNumber, 'DHL Unified Push todavía no ha enviado una notificación para esta guía. Actualizar revisa las notificaciones recibidas; no solicita un rastreo nuevo a DHL.');
+    const snapshot = row.payload as Record<string, unknown>;
+    return buildSuccessResponse('dhl', trackingNumber, {
+      status: snapshot.status as TrackingStatus,
+      fulfillmentState: snapshot.fulfillmentState as FulfillmentState,
+      portalStatusText: String(snapshot.portalStatusText || ''),
+      lastEventLabel: String(snapshot.lastEventLabel || ''),
+      lastEventAt: String(snapshot.lastEventAt || ''),
+      estimatedDelivery: String(snapshot.estimatedDelivery || '').slice(0, 10),
+      recipient: String(snapshot.recipient || ''),
+      origin: String(snapshot.origin || ''),
+      destination: String(snapshot.destination || ''),
+      serviceType: 'DHL Unified Push',
+      deliveryProofName: String(snapshot.deliveryProofName || ''),
+      timeline: snapshot.timeline as TrackingTimelineEvent[],
+      rawSummary: String(snapshot.rawEvidenceText || ''),
+      note: `Fuente: DHL Unified Push. Notificación recibida: ${row.received_at}.`,
+    });
+  }
   const username = Deno.env.get('DHL_MYDHL_USERNAME')?.trim();
   const password = Deno.env.get('DHL_MYDHL_PASSWORD');
   if (username && password) {

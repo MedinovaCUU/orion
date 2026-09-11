@@ -1068,7 +1068,7 @@ export default function TrackingSection() {
               <span className="tracking-panel__eyebrow">Captura</span>
               <h4>Alta de tracking por manual, OCR o cámara</h4>
             </div>
-            <p>Agrega tus guías por texto, imagen o cámara. DHL se consulta con su API oficial.</p>
+            <p>Agrega tus guías por texto, imagen o cámara. DHL recibe actualizaciones de Unified Push.</p>
           </div>
 
           <div className="tracking-composer">
@@ -1410,7 +1410,7 @@ export default function TrackingSection() {
             className={`tracking-agent-state tracking-agent-state--${trackingAgentOnline ? 'online' : 'offline'}`}
             title={trackingAgentHealth?.lastError || undefined}
           >
-            {!usesCloudTrackingAgentLookup('dhl') ? 'DHL: consulta directa mediante MyDHL Express.' : trackingAgentOnline
+            {!usesCloudTrackingAgentLookup('dhl') ? 'DHL Unified Push: actualizar revisa las notificaciones recibidas; no solicita un rastreo nuevo.' : trackingAgentOnline
               ? `Agente DHL conectado${trackingAgentHealth?.hostname ? ` en ${trackingAgentHealth.hostname}` : ''}. Revisión automática cada 5 min.`
               : trackingAgentHealth?.lastSeenAt
                 ? `Agente DHL desconectado. Último pulso ${formatTrackingDateTime(trackingAgentHealth.lastSeenAt)}.`
@@ -1670,7 +1670,7 @@ export default function TrackingSection() {
               <p>
                 Portales directos: {autoRefreshIntervalMs === 0 ? 'actualización manual' : describeAutoRefresh(autoRefreshIntervalMs)}.
                 {' '}
-                {usesCloudTrackingAgentLookup('dhl') ? 'DHL: agente Windows cada 5 min y bajo demanda.' : 'DHL: API oficial MyDHL Express.'}
+                {usesCloudTrackingAgentLookup('dhl') ? 'DHL: agente Windows cada 5 min y bajo demanda.' : 'DHL: notificaciones de Unified Push.'}
                 {' '}
                 {latestLookupAt ? `Último pulso ${formatTrackingDateTime(latestLookupAt)}.` : 'Aún sin lectura viva.'}
               </p>

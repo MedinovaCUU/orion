@@ -222,7 +222,8 @@ const buildSnapshot = (shipment: JsonRecord, currentPayload: JsonRecord, receive
     estimatedDelivery: compact(
       shipment.estimatedTimeOfDelivery || shipment.estimatedDeliveryDate || asRecord(shipment.delivery).estimated,
     ).slice(0, 100),
-    recipient: deliveryProofName(shipment) || compact(asRecord(asRecord(shipment.details).consignee).name),
+    recipient: compact(asRecord(asRecord(shipment.details).receiver).name) ||
+      compact(asRecord(asRecord(shipment.details).consignee).name) || compact(currentPayload.recipient),
     origin: localityFrom(shipment.origin),
     destination: localityFrom(shipment.destination),
     serviceType: compact(shipment.service || asRecord(asRecord(shipment.details).product).productName),

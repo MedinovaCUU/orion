@@ -1,5 +1,22 @@
 # MyDHL Express tracking
 
+## Temporary Unified Push mode
+
+Set the backend secret `DHL_LOOKUP_PROVIDER=push` to serve the latest stored
+`dhl_push_shipments` notification, without making MyDHL requests. Missing
+notifications produce an explicit pending-notification error. Manual refresh in
+this mode only reads received notifications; it cannot force DHL to send an event.
+Set the secret back to `mydhl` to restore direct MyDHL requests. Do not delete
+either integration's credentials.
+
+Push recipient names come from `details.receiver.name`, with `details.consignee.name`
+as a fallback. The delivery signatory remains separate from the recipient.
+Migration `20260911003000_restore_dhl_push_recipients.sql` recovers receiver names
+from original notifications and fills missing saved tracking recipients without
+replacing already entered names.
+
+## Direct MyDHL mode
+
 Production tracking uses MyDHL REST with HTTP Basic authentication. Configure
 `DHL_MYDHL_USERNAME` and `DHL_MYDHL_PASSWORD` as Supabase secrets only. Do not put
 them in Vite variables, source files, artifacts, or GitHub Pages.
