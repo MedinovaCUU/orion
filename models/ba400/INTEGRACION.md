@@ -1,3 +1,9 @@
+> Actualización de Orion: el GLB actual tiene 318 componentes (81 356 700 bytes).
+> El catálogo se regeneró desde sus metadatos y geometría. La guía y el informe de
+> verificación que siguen proceden del ZIP original de 309 piezas; son históricos.
+> Las pruebas actuales están en frontend/tests y la documentación en
+> frontend/docs/DRI_BA400_3D.md.
+
 # BA400 para web
 
 Usa **BA400_web.glb**. Contiene el equipo completo montado, sus materiales y
