@@ -96,8 +96,6 @@ export default function PermissionsAdmin() {
   const [savingId, setSavingId] = useState<string | null>(null);
   const [notice, setNotice] = useState('');
   const [warehouseByUser, setWarehouseByUser] = useState<Record<string, boolean>>({});
-  const [guideByUser, setGuideByUser] = useState<Record<string, string>>({});
-  const [assigningId, setAssigningId] = useState<string | null>(null);
 
   useEffect(() => {
     let mounted = true;
@@ -316,22 +314,6 @@ export default function PermissionsAdmin() {
                 <div className="permissions-admin__module-group">
                   <label><input type="checkbox" checked={Boolean(warehouseByUser[profile.id])} onChange={event => setWarehouseByUser(current => ({ ...current, [profile.id]: event.target.checked }))} /> Personal de almacén: recibir automáticamente todas las guías DHL</label>
                   <small>Al guardar se habilita Tracking. Al desmarcar se retiran las guías automáticas, excepto las asignadas individualmente.</small>
-                  <label>Asignar una guía DHL a este perfil
-                    <input className="input-field" inputMode="numeric" placeholder="Número de guía" value={guideByUser[profile.id] || ''} onChange={event => setGuideByUser(current => ({ ...current, [profile.id]: event.target.value }))} />
-                  </label>
-                  <button className="button-primary inactive" type="button" disabled={assigningId !== null || !/^\d{10}$/.test((guideByUser[profile.id] || '').trim())} onClick={async () => {
-                    setAssigningId(profile.id);
-                    try {
-                      const { error } = await supabase.rpc('assign_dhl_tracking', { target_user_id: profile.id, guide: guideByUser[profile.id].trim() });
-                      if (!error) updateAccess(profile.id, current => ({
-                        ...current,
-                        modules: current.modules.includes('trazabilidad') ? current.modules : [...current.modules, 'trazabilidad'],
-                        subPermissions: { ...current.subPermissions, trazabilidad: [...new Set([...(current.subPermissions.trazabilidad || []), 'tracking'])] },
-                      }));
-                      setNotice(error ? error.message : `Guía asignada a ${profile.nombre_completo || 'este usuario'}. Acceso a Tracking habilitado.`);
-                    } catch { setNotice('No fue posible asignar la guía. Intenta nuevamente.'); }
-                    finally { setAssigningId(null); }
-                  }}>{assigningId === profile.id ? 'Asignando…' : 'Asignar envío'}</button>
                 </div>
                 <div className="permissions-admin__actions">
                   <button className="button-primary inactive" type="button" disabled={savingId === profile.id} onClick={() => grantFullAccess(profile.id)}>Acceso total</button>

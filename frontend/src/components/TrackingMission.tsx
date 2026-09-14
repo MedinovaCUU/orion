@@ -1,5 +1,6 @@
 import { TRACKING_CARRIER_META, TRACKING_STATUS_LABELS, formatTrackingDate, formatTrackingDateTime, type TrackingEntry } from './orionTracking';
 import './TrackingMission.css';
+import { TrackingAssignment } from './TrackingAssignment';
 
 interface Props {
   entries: TrackingEntry[];
@@ -38,6 +39,7 @@ export function TrackingMission({ entries, selectedId, onSelect, search, onSearc
       {selected && <section className="mission-detail" data-status={selected.status} key={selected.id} aria-label={`Progreso de ${selected.trackingNumber}`}>
         <div className="mission-detail-heading"><span>EXPEDIENTE DE ENVÍO</span><span>{selected.carrier ? TRACKING_CARRIER_META[selected.carrier].label : 'Sin mensajería'}</span></div>
         <h4>{selected.trackingNumber}</h4>
+        {selected.carrier === 'dhl' && <TrackingAssignment key={selected.id} guide={selected.trackingNumber} />}
         <p className={`mission-status mission-state--${selected.status}`}>{selected.portalStatusText || TRACKING_STATUS_LABELS[selected.status]}</p>
         {selected.lookupError && <p className="mission-warning">No se pudo actualizar: {selected.lookupError}. Se conserva la última información disponible.</p>}
         <div className="mission-route"><div><small>ORIGEN</small><strong>{selected.origin || 'Por confirmar'}</strong></div><span aria-hidden="true">→</span><div><small>DESTINO</small><strong>{selected.destination || 'Por confirmar'}</strong></div></div>
