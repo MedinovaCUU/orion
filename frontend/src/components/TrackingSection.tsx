@@ -59,6 +59,7 @@ type TrackingStorageState = 'loading' | 'saving' | 'synced' | 'local_only' | 'er
 const FULFILLMENT_RING_RADIUS = 62;
 const FULFILLMENT_RING_CIRCUMFERENCE = 2 * Math.PI * FULFILLMENT_RING_RADIUS;
 const SOURCE_LABELS: Record<TrackingCaptureSource, string> = {
+  dhl_push: 'DHL automático',
   manual: 'Manual',
   ocr: 'OCR',
   camera: 'Cámara',

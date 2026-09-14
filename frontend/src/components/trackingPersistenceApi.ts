@@ -145,7 +145,8 @@ export const replaceCloudTrackingEntries = async (userId: string, entries: Track
   const { data: persistedRows, error: selectError } = await supabase
     .from(TRACKING_TABLE)
     .select('id, tracking_number')
-    .eq('user_id', userId);
+    .eq('user_id', userId)
+    .eq('dhl_auto_imported', false);
 
   if (selectError) {
     throw new Error(`No fue posible verificar los trackings guardados: ${selectError.message}`);
@@ -164,6 +165,7 @@ export const replaceCloudTrackingEntries = async (userId: string, entries: Track
     .from(TRACKING_TABLE)
     .delete()
     .eq('user_id', userId)
+    .eq('dhl_auto_imported', false)
     .in('id', staleIds);
 
   if (deleteError) {

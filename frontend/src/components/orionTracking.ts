@@ -1,6 +1,6 @@
 export type TrackingCarrier = 'dhl' | 'estafeta' | 'tresguerras' | 'chilexpress' | 'chibra';
 export type TrackingCarrierChoice = TrackingCarrier | 'auto';
-export type TrackingCaptureSource = 'manual' | 'ocr' | 'camera';
+export type TrackingCaptureSource = 'manual' | 'ocr' | 'camera' | 'dhl_push';
 export type TrackingStatus =
   | 'capturado'
   | 'pendiente_consulta'
@@ -814,7 +814,7 @@ export const coerceTrackingEntry = (value: unknown): TrackingEntry | null => {
     notes: typeof candidate.notes === 'string' ? candidate.notes : '',
     rawEvidenceText: typeof candidate.rawEvidenceText === 'string' ? candidate.rawEvidenceText : '',
     source:
-      candidate.source === 'manual' || candidate.source === 'ocr' || candidate.source === 'camera' ? candidate.source : 'manual',
+      candidate.source === 'manual' || candidate.source === 'ocr' || candidate.source === 'camera' || candidate.source === 'dhl_push' ? candidate.source : 'manual',
     createdAt,
     updatedAt,
   };
@@ -974,6 +974,9 @@ export const reconcileTrackingEntries = (localEntries: TrackingEntry[], cloudEnt
   const reconciled = [...cloudEntries];
 
   localEntries.forEach((localEntry) => {
+    // Do not resurrect deliveries removed by server retention from an old browser cache.
+    if (localEntry.carrier === 'dhl' && localEntry.status === 'entregado' &&
+      Date.parse(localEntry.lastEventAt) <= Date.now() - 7 * 86400000) return;
     const cloudIndex = reconciled.findIndex((candidate) => candidate.trackingNumber === localEntry.trackingNumber);
     if (cloudIndex === -1) {
       reconciled.push(localEntry);

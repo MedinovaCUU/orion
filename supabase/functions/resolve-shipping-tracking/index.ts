@@ -1547,6 +1547,19 @@ Deno.serve(async (request) => {
             signal: AbortSignal.timeout(10000),
           });
           if (!auth.ok) return jsonRes(401, { ok: false, error: 'Inicia sesión en Orion para consultar los datos de DHL Push.' });
+          const user = await auth.json();
+          let authorized = false;
+          for (const table of ['dhl_tracking_subscribers', 'dhl_tracking_assignments']) {
+            const accessUrl = new URL(`/rest/v1/${table}`, Deno.env.get('SUPABASE_URL'));
+            accessUrl.searchParams.set('user_id', `eq.${user.id}`);
+            accessUrl.searchParams.set('select', 'user_id');
+            accessUrl.searchParams.set('limit', '1');
+            if (table === 'dhl_tracking_assignments') accessUrl.searchParams.set('tracking_number', `eq.${trackingNumber}`);
+            const access = await fetch(accessUrl, { headers: { apikey: serviceKey, Authorization: `Bearer ${serviceKey}` }, signal: AbortSignal.timeout(10000) });
+            if (!access.ok) return jsonRes(503, { ok: false, error: 'No fue posible verificar el acceso al envío.' });
+            if ((await access.json()).length) { authorized = true; break; }
+          }
+          if (!authorized) return jsonRes(403, { ok: false, error: 'Esta guía debe ser asignada a tu perfil por administración.' });
         }
       }
       if (!/^\d{10}$/.test(trackingNumber)) {
