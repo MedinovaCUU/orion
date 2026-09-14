@@ -979,6 +979,7 @@ export const reconcileTrackingEntries = (localEntries: TrackingEntry[], cloudEnt
       Date.parse(localEntry.lastEventAt) <= Date.now() - 7 * 86400000) return;
     const cloudIndex = reconciled.findIndex((candidate) => candidate.trackingNumber === localEntry.trackingNumber);
     if (cloudIndex === -1) {
+      if (localEntry.source === 'dhl_push') return;
       reconciled.push(localEntry);
       return;
     }
