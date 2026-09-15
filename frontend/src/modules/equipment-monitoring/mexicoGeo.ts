@@ -1,3 +1,9 @@
+/**
+ * Ubicación para las dos vistas del monitoreo: mapa SVG y globo 3D.
+ * No consulta GPS, IP ni Supabase: transforma los datos recibidos del registro
+ * del equipo y de la geocodificación. Si faltan coordenadas, usa un ancla estatal.
+ * Los desplazamientos del mapa separan marcadores; no son ubicaciones físicas.
+ */
 interface MexicoStateGeo {
   label: string;
   lat: number;
@@ -8,6 +14,7 @@ interface MexicoStateGeo {
   spreadY?: number;
 }
 
+/** Datos administrativos y coordenadas opcionales con los que se resuelve la ubicación. */
 export interface EquipmentLocationInput {
   numeroSerie: string;
   pais?: string | null;
@@ -22,18 +29,21 @@ export interface EquipmentLocationInput {
   geoLocationKey?: string | null;
 }
 
+/** Posición visual en porcentajes del SVG, no en grados geográficos. */
 export interface EquipmentMapPoint {
   x: number;
   y: number;
   normalizedState: string;
 }
 
+/** Latitud y longitud para el globo; pueden corresponder al ancla estatal de respaldo. */
 export interface EquipmentGeoPoint {
   latitude: number;
   longitude: number;
   normalizedState: string;
 }
 
+// Extensión geográfica y márgenes de la ilustración de México usada como fondo.
 const MAP_BOUNDS = {
   north: 32.9,
   south: 14.2,
@@ -48,6 +58,7 @@ const MAP_PADDING = {
   bottom: 8.2,
 };
 
+// Ángulo en radianes que distribuye los marcadores en espiral sin alinearlos en filas.
 const GOLDEN_ANGLE = 2.399963229728653;
 
 interface ProjectionControlPoint {
@@ -57,6 +68,8 @@ interface ProjectionControlPoint {
   dy: number;
 }
 
+// Anclas aproximadas: lat/lng sirven al globo; mapX/mapY se ajustan al dibujo SVG.
+// spreadX/spreadY regulan la separación visual de equipos sin ubicación más precisa.
 const MEXICO_STATE_GEO: Record<string, MexicoStateGeo> = {
   'aguascalientes': { label: 'Aguascalientes', lat: 21.8853, lng: -102.2916, mapX: 47.99, mapY: 61.35, spreadX: 0.7, spreadY: 0.55 },
   'baja california': { label: 'Baja California', lat: 30.8406, lng: -115.2838, mapX: 16.7, mapY: 13.18, spreadX: 1.25, spreadY: 0.95 },
@@ -92,6 +105,7 @@ const MEXICO_STATE_GEO: Record<string, MexicoStateGeo> = {
   'zacatecas': { label: 'Zacatecas', lat: 22.7709, lng: -102.5832, mapX: 47.7, mapY: 55.37, spreadX: 1.05, spreadY: 0.75 },
 };
 
+// Variantes de captura y abreviaturas que se traducen a las claves del catálogo estatal.
 const STATE_ALIASES: Record<string, string> = {
   'bc': 'baja california',
   'bcs': 'baja california sur',
@@ -114,6 +128,7 @@ const STATE_ALIASES: Record<string, string> = {
   'yucatan': 'yucatan',
 };
 
+// Correcciones visuales locales para alinear coordenadas con el SVG cuando no hay estado.
 const PROJECTION_CONTROL_POINTS: ProjectionControlPoint[] = [
   { lat: 32.5149, lng: -117.0382, dx: 0, dy: 0 },
   { lat: 24.1426, lng: -110.3128, dx: 0, dy: 0 },
@@ -132,6 +147,7 @@ const PROJECTION_CONTROL_POINTS: ProjectionControlPoint[] = [
   { lat: 18.5141, lng: -88.3038, dx: 3.8, dy: 2.5 },
 ];
 
+/** Iguala nombres con acentos, signos, espacios o mayúsculas diferentes. */
 const normalizeText = (value: string) =>
   value
     .normalize('NFD')
@@ -143,6 +159,7 @@ const normalizeText = (value: string) =>
 
 const clamp = (value: number, min: number, max: number) => Math.min(max, Math.max(min, value));
 
+/** Semilla determinista para que la distribución no cambie aleatoriamente al renderizar. */
 const hashString = (value: string) => {
   let hash = 0;
 
@@ -153,6 +170,7 @@ const hashString = (value: string) => {
   return hash;
 };
 
+/** Interpreta los límites de localidad en orden sur, norte, oeste, este; devuelve null si no son legibles. */
 const parseBoundingBox = (value: unknown) => {
   if (!Array.isArray(value) || value.length < 4) {
     return null;
@@ -171,6 +189,7 @@ const parseBoundingBox = (value: unknown) => {
   return { south, north, west, east };
 };
 
+/** Busca coincidencia exacta o parcial con estados y alias; es una heurística de texto. */
 const detectStateKey = (rawValue?: string | null) => {
   const normalizedValue = normalizeText(rawValue || '');
 
@@ -195,6 +214,7 @@ const detectStateKey = (rawValue?: string | null) => {
   return stateEntry || null;
 };
 
+/** Proyección lineal a porcentajes: el norte queda arriba y el oeste a la izquierda. */
 const projectLatLngToMapRaw = (lat: number, lng: number) => {
   const usableWidth = 100 - MAP_PADDING.left - MAP_PADDING.right;
   const usableHeight = 100 - MAP_PADDING.top - MAP_PADDING.bottom;
@@ -207,6 +227,7 @@ const projectLatLngToMapRaw = (lat: number, lng: number) => {
   };
 };
 
+/** Interpola las correcciones del SVG dando mayor peso a los puntos de control cercanos. */
 const getProjectionCorrection = (lat: number, lng: number) => {
   const weighted = PROJECTION_CONTROL_POINTS.map((point) => {
     const distance = Math.sqrt(((lat - point.lat) / 4.8) ** 2 + ((lng - point.lng) / 5.8) ** 2);
@@ -234,6 +255,7 @@ const getProjectionCorrection = (lat: number, lng: number) => {
   );
 };
 
+/** Alinea la proyección al ancla del estado o, en su ausencia, a los puntos de control. */
 const projectLatLngToMap = (lat: number, lng: number, stateKey?: string | null) => {
   const state = stateKey ? MEXICO_STATE_GEO[stateKey] : null;
   if (state) {
@@ -255,6 +277,7 @@ const projectLatLngToMap = (lat: number, lng: number, stateKey?: string | null) 
   };
 };
 
+/** Separa equipos de una misma agrupación; el primero permanece en el ancla original. */
 const buildClusterOffset = (
   seed: string,
   indexInCluster: number,
@@ -277,6 +300,7 @@ const buildClusterOffset = (
   };
 };
 
+/** Ajusta la dispersión visual al tamaño de la localidad, con límites para mantener legibilidad. */
 const getPreciseSpread = (lat: number, lng: number, boundingBox: unknown) => {
   const bounds = parseBoundingBox(boundingBox);
 
@@ -302,6 +326,11 @@ const getPreciseSpread = (lat: number, lng: number, boundingBox: unknown) => {
   };
 };
 
+/**
+ * Devuelve la posición SVG: prefiere coordenadas recibidas, luego el ancla estatal.
+ * indexInCluster separa equipos agrupados en una misma localidad o estado.
+ * Sin coordenadas ni un estado reconocible devuelve null para indicar que no hay ubicación.
+ */
 export const resolveEquipmentMapPoint = (
   equipment: EquipmentLocationInput,
   indexInCluster: number,
@@ -370,6 +399,11 @@ export const resolveEquipmentMapPoint = (
   };
 };
 
+/**
+ * Devuelve coordenadas para el globo, sin aplicar la dispersión del SVG.
+ * Valida los rangos de latitud/longitud y recurre al ancla estatal si no son válidos.
+ * Tener coordenadas no garantiza precisión de domicilio: pueden ser de localidad o estado.
+ */
 export const resolveEquipmentGeoPoint = (equipment: EquipmentLocationInput): EquipmentGeoPoint | null => {
   const stateKey =
     detectStateKey(equipment.estado) ||
@@ -407,6 +441,7 @@ export const resolveEquipmentGeoPoint = (equipment: EquipmentLocationInput): Equ
   };
 };
 
+/** Expone el nombre legible del estado reconocido, o null cuando no se puede identificar. */
 export const getNormalizedStateLabel = (rawValue?: string | null) => {
   const stateKey = detectStateKey(rawValue);
   return stateKey ? MEXICO_STATE_GEO[stateKey].label : null;

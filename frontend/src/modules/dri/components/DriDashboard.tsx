@@ -3,8 +3,9 @@ import DriGraph3D, { DRI_GRAPH_CONFIG } from './DriGraph3D';
 import DriEvidencePanel from './DriEvidencePanel';
 import DriHypothesisCard from './DriHypothesisCard';
 import DriInputPanel from './DriInputPanel';
+import Ba400DiagnosticViewer from '../model3d/Ba400DiagnosticViewer';
 import DriRelationMatrix from './DriRelationMatrix';
-import { loadDriCatalog, loadDriHistory, persistDriCase, uploadDriEvidenceAsset } from '../driData';
+import { getLocalDriCatalog, loadDriCatalog, loadDriHistory, persistDriCase, uploadDriEvidenceAsset } from '../driData';
 import { runDriEngine, runDriValidationFixtures } from '../driEngine';
 import {
   buildReagentSearchText,
@@ -573,7 +574,10 @@ export default function DriDashboard({
   const [selectedNodeId, setSelectedNodeId] = useState<string | null>(null);
   const [selectedNodeIds, setSelectedNodeIds] = useState<string[]>([]);
   const [selectedHypothesisKey, setSelectedHypothesisKey] = useState<string | null>(null);
+  const [spatialSelectionVersion, setSpatialSelectionVersion] = useState(0);
+  const [demoActive, setDemoActive] = useState(false);
   const [focusedSystemKey, setFocusedSystemKey] = useState<string | null>(null);
+  const [showRelationGraph, setShowRelationGraph] = useState(false);
   const [graphMultiSelect, setGraphMultiSelect] = useState(false);
   const [graphShellControls, setGraphShellControls] = useState(() => ({ ...DRI_GRAPH_CONFIG.layout.defaultRadii }));
   const [loading, setLoading] = useState(true);
@@ -585,6 +589,7 @@ export default function DriDashboard({
 
   useEffect(() => {
     if (!satContext) return;
+    setAnalysis(null); setActiveCase(null); setSelectedHypothesisKey(null);
     const latestLot = (kind: 'reagent' | 'control' | 'calibrator') =>
       [...satContext.lots]
         .filter((lot) => lot.kind === kind)
@@ -644,6 +649,16 @@ export default function DriDashboard({
     let mounted = true;
     async function hydrate() {
       setLoading(true);
+      if (previewMode) {
+        const localCatalog = getLocalDriCatalog();
+        const demoForm = buildDemoFormState(localCatalog);
+        const result = runDriEngine(demoForm, localCatalog);
+        setCatalog(localCatalog); setCatalogSource('Catálogo documental local'); setHistory([]);
+        setForm(demoForm); setAnalysis(result); setDemoActive(true);
+        setSelectedHypothesisKey(result.hypotheses.find(h => h.matchedRuleIds.includes('ba400_optical_photometry'))?.key || result.hypotheses[0]?.key || null);
+        setLoading(false);
+        return;
+      }
       const [catalogResult, historyResult, session] = await Promise.all([loadDriCatalog(), loadDriHistory(), getValidatedSession()]);
       if (!mounted) return;
       setCatalog(catalogResult.catalog);
@@ -657,7 +672,7 @@ export default function DriDashboard({
     return () => {
       mounted = false;
     };
-  }, []);
+  }, [previewMode]);
 
   const profiles = useMemo(() => (catalog ? buildReagentProfiles(catalog) : []), [catalog]);
   const supportedProfiles = useMemo(() => {
@@ -977,6 +992,10 @@ export default function DriDashboard({
 
   const handleFormChange = <K extends keyof DriCaseFormState>(field: K, value: DriCaseFormState[K]) => {
     setForm((current) => ({ ...current, [field]: value }));
+    if (field === 'equipmentModel' || field === 'serialNumber') {
+      // Keep demo provenance until a full form reset; editing a serial is not real evidence.
+      setAnalysis(null); setActiveCase(null); setSelectedHypothesisKey(null);
+    }
   };
 
   const handleToggleSignal = (field: keyof DriCaseFormState['signals']) => {
@@ -1075,6 +1094,11 @@ export default function DriDashboard({
       setSelectedNodeIds([]);
       setSelectedHypothesisKey(result.hypotheses[0]?.key || null);
     });
+    if (previewMode || demoActive) {
+      setPersistWarning('Prueba local: el diagnóstico no se guarda en producción.');
+      setSaving(false);
+      return;
+    }
     const persisted = await persistDriCase(form, result);
     setActiveCase(persisted.caseRecord);
     setPersistWarning(persisted.persistWarning);
@@ -1083,6 +1107,7 @@ export default function DriDashboard({
   };
 
   const handleLoadDemo = () => {
+    setDemoActive(true); setSpatialSelectionVersion(0);
     if (!catalog) {
       return;
     }
@@ -1127,6 +1152,7 @@ export default function DriDashboard({
   };
 
   const handleLoadFullDemo = () => {
+    setDemoActive(true); setSpatialSelectionVersion(0);
     if (!catalog) {
       return;
     }
@@ -1404,10 +1430,11 @@ export default function DriDashboard({
         <div className="dri-hero__identity">
           <div>
             <div className="dri-hero__eyebrow">DRI · Diagnóstico por Relaciones Inteligentes</div>
-            <h2>Radar diferencial para BA400 y futuras especializaciones</h2>
+            <h2>Inteligencia diagnóstica. Precisión espacial.</h2>
           </div>
         </div>
         <div className="dri-hero__status">
+          {previewMode || sessionEmail === DEMO_ACCOUNT_EMAIL ? <button type="button" className="dri-pill-button" onClick={handleLoadDemo}>Demo BA400</button> : null}
           <span className="dri-badge dri-badge--teal">{catalogSource}</span>
           <span className="dri-badge dri-badge--neutral">{supportedProfiles.length} reactivos visibles</span>
           {analysis ? <span className="dri-badge dri-badge--amber">{analysis.hypotheses.length} hipótesis</span> : null}
@@ -1416,6 +1443,17 @@ export default function DriDashboard({
 
       {catalogWarning ? <div className="dri-alert dri-alert--warning">{catalogWarning}</div> : null}
       {persistWarning ? <div className="dri-alert dri-alert--warning">{persistWarning}</div> : null}
+
+      {canViewDiagnosis ? <Ba400DiagnosticViewer
+        equipment={form.equipmentModel}
+        serialNumber={form.serialNumber}
+        analysis={analysis?.platform === form.equipmentModel ? analysis : null}
+        selectedFinding={analysis?.platform === form.equipmentModel ? selectedHypothesis : null}
+        selectionVersion={spatialSelectionVersion}
+        onSelectFinding={(key) => { setSelectedHypothesisKey(key); setSpatialSelectionVersion(v => v + 1); }}
+        onEquipmentChange={canCapture ? model => handleFormChange('equipmentModel', model) : undefined}
+        fixtureLabel={demoActive ? 'Demostración del motor DRI' : null}
+      /> : null}
 
       <div className="dri-stack">
         {canCapture ? <DriInputPanel
@@ -1452,6 +1490,7 @@ export default function DriDashboard({
           selectedReagentProfile={selectedReagentProfile}
           onReset={() => {
             setEvidenceTasks({});
+            setAnalysis(null); setActiveCase(null); setSelectedHypothesisKey(null); setDemoActive(false);
             setSelectedReagentId(null);
             setSelectedNodeId(null);
             setSelectedNodeIds([]);
@@ -1459,7 +1498,8 @@ export default function DriDashboard({
           }}
         /> : null}
 
-        {canViewGraph ? <section className="dri-panel dri-panel--graph">
+        {canViewGraph ? <button type="button" className="dri-pill-button" aria-expanded={showRelationGraph} onClick={() => setShowRelationGraph(current => !current)}>{showRelationGraph ? 'Ocultar mapa de relaciones' : 'Abrir mapa de relaciones DRI'}</button> : null}
+        {canViewGraph && showRelationGraph ? <section className="dri-panel dri-panel--graph">
           <div className="dri-panel__head">
             <div>
               <span className="dri-panel__eyebrow">Grafo de reactivos y factores</span>
@@ -1511,8 +1551,8 @@ export default function DriDashboard({
                 <strong>{graphShellControls.systemCoreRadius.toFixed(2)}</strong>
                 <input
                   type="range"
-                  min="0.6"
-                  max="1.8"
+                  min="0"
+                  max="2"
                   step="0.02"
                   value={graphShellControls.systemCoreRadius}
                   onChange={(event) => handleGraphShellControlInput('systemCoreRadius', event.currentTarget.value)}
@@ -1524,8 +1564,8 @@ export default function DriDashboard({
                 <strong>{graphShellControls.systemStep.toFixed(2)}</strong>
                 <input
                   type="range"
-                  min="0.7"
-                  max="1.5"
+                  min="0"
+                  max="1.4"
                   step="0.02"
                   value={graphShellControls.systemStep}
                   onChange={(event) => handleGraphShellControlInput('systemStep', event.currentTarget.value)}
@@ -1537,9 +1577,9 @@ export default function DriDashboard({
                 <strong>{graphShellControls.factorBaseRadius.toFixed(2)}</strong>
                 <input
                   type="range"
-                  min="3.2"
-                  max="5.6"
-                  step="0.02"
+                  min="3"
+                  max="8"
+                  step="0.05"
                   value={graphShellControls.factorBaseRadius}
                   onChange={(event) => handleGraphShellControlInput('factorBaseRadius', event.currentTarget.value)}
                   onInput={(event) => handleGraphShellControlInput('factorBaseRadius', event.currentTarget.value)}
@@ -1552,7 +1592,7 @@ export default function DriDashboard({
                   type="range"
                   min="0.75"
                   max="1.6"
-                  step="0.02"
+                  step="0.01"
                   value={graphShellControls.factorStep}
                   onChange={(event) => handleGraphShellControlInput('factorStep', event.currentTarget.value)}
                   onInput={(event) => handleGraphShellControlInput('factorStep', event.currentTarget.value)}
@@ -1563,9 +1603,9 @@ export default function DriDashboard({
                 <strong>{graphShellControls.reagentRadius.toFixed(2)}</strong>
                 <input
                   type="range"
-                  min="7.2"
-                  max="11.4"
-                  step="0.02"
+                  min="5"
+                  max="15"
+                  step="0.01"
                   value={graphShellControls.reagentRadius}
                   onChange={(event) => handleGraphShellControlInput('reagentRadius', event.currentTarget.value)}
                   onInput={(event) => handleGraphShellControlInput('reagentRadius', event.currentTarget.value)}
@@ -1633,7 +1673,10 @@ export default function DriDashboard({
                   key={hypothesis.key}
                   hypothesis={hypothesis}
                   selected={selectedHypothesis?.key === hypothesis.key}
-                  onSelect={() => setSelectedHypothesisKey(hypothesis.key)}
+                  onSelect={() => {
+                    setSelectedHypothesisKey(hypothesis.key); setSpatialSelectionVersion(v => v + 1);
+                    document.getElementById('dri-equipment-3d')?.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth', block: 'start' });
+                  }}
                 />
               ))}
             </div>

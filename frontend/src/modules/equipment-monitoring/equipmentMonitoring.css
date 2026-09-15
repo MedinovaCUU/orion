@@ -1,6 +1,7 @@
 .equipment-monitor {
   --monitor-heartbeat-rgb: 29, 199, 184;
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: 1.45rem;
 }
 
@@ -179,7 +180,7 @@ html.equipment-monitor__body-scroll-lock {
 
 .equipment-monitor__main-grid {
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: minmax(0, 1fr);
   gap: 1.15rem;
   align-items: start;
 }
@@ -187,6 +188,7 @@ html.equipment-monitor__body-scroll-lock {
 .equipment-monitor__map-panel,
 .equipment-monitor__focus-panel,
 .equipment-monitor__list-panel {
+  min-width: 0;
   padding: 1.15rem;
   border-radius: 28px;
   background:
@@ -1763,3 +1765,22 @@ html.equipment-monitor__body-scroll-lock {
     display: none;
   }
 }
+
+/* Lista operativa que sustituye la ficha flotante del equipo. */
+.equipment-priority { position:absolute; z-index:6; top:90px; left:16px; width:280px; max-width:calc(100% - 32px); color:#d5f6ff; background:#03151eef; border:1px solid #55d9ff55; border-radius:16px; padding:12px; }
+.equipment-priority header { display:grid; gap:3px; }
+.equipment-priority header strong { font-size:14px; }
+.equipment-priority header span,.equipment-priority > p { font-size:10px; color:#93b8c5; }
+.equipment-priority > p { margin:8px 0; }
+.equipment-priority__list { display:grid; gap:6px; max-height: min(60vh, 640px); overflow:auto; overscroll-behavior:contain; }
+.equipment-priority__list button { display:grid; gap:5px; width:100%; text-align:left; padding:10px; border:1px solid #55d9ff26; border-radius:10px; background:#0a2530; color:#d5f6ff; cursor:pointer; font-size:11px; }
+.equipment-priority__list button[aria-pressed=true] { border-color:#64deff; background:#123c4b; }
+.equipment-priority__list button:focus-visible { outline:2px solid #64deff; outline-offset:-2px; }
+.equipment-priority__row { display:flex; justify-content:space-between; gap:6px; flex-wrap:wrap; }
+.equipment-priority__row b { color:#76d4a8; font-size:10px; }
+.equipment-priority__list [data-tone=fatal] b { color:#ff697d; }
+.equipment-priority__list [data-tone=warning] b { color:#ffd178; }
+.equipment-priority__list small { color:#93b8c5; font-size:10px; }
+.is-inspecting > .equipment-priority { width:calc(27% - 32px); }
+@media(max-width:1100px) { .is-inspecting > .equipment-priority { position:relative; top:auto; left:auto; width:100%; max-width:none; grid-column:1 / -1; margin-bottom:12px; } .is-inspecting > .equipment-priority .equipment-priority__list { max-height:220px; } }
+@media(max-width:720px) { .equipment-priority { position:relative; top:auto; left:auto; width:100%; max-width:none; margin-bottom:10px; } .equipment-priority__list { max-height:240px; } }

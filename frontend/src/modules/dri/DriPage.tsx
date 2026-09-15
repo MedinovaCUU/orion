@@ -16,6 +16,7 @@ export default function DriPage({
   const [applySatContext, setApplySatContext] = useState(false);
 
   useEffect(() => {
+    if (previewMode) return;
     let active = true;
     void loadLatestSatReport().then(async (summary) => {
       if (!summary) {
@@ -28,11 +29,11 @@ export default function DriPage({
     return () => {
       active = false;
     };
-  }, []);
+  }, [previewMode]);
 
   return (
     <>
-      <section className="dri-sat-context card">
+      {!previewMode ? <section className="dri-sat-context card">
         <div>
           <span>Contexto SAT</span>
           <strong>
@@ -60,7 +61,7 @@ export default function DriPage({
             }}
           />
         </div>
-      </section>
+      </section> : null}
       <DriDashboard
         subPermissions={subPermissions}
         satContext={applySatContext ? satContext : null}

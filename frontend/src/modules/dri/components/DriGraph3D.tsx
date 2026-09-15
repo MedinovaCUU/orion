@@ -43,10 +43,10 @@ export const DRI_GRAPH_CONFIG = {
   layout: {
     // Radios usados cuando el panel de controles no envia un valor propio.
     defaultRadii: {
-      systemCoreRadius: 2.5,
-      systemStep: 1.16,
-      factorBaseRadius: 4.18,
-      factorStep: 1.34,
+      systemCoreRadius: 0.6,
+      systemStep: 0.7,
+      factorBaseRadius: 5,
+      factorStep: 1.2,
       reagentRadius: 8.88,
     },
     // Multiplicadores de systemStep para las cuatro capas del sistema.
@@ -62,11 +62,8 @@ export const DRI_GRAPH_CONFIG = {
       middleStep: 1,
       outerStep: 2,
     },
-    // Espacio minimo que impide que una familia invada la siguiente.
-    minimumGap: {
-      systemToFactor: 2.54,
-      factorToReagents: 1.5,
-    },
+    // Los radios del panel se aplican directamente. No se corrigen en secreto:
+    // cada slider debe producir un cambio visible y predecible en su estrato.
     // Distribucion de reactivos fallidos (izquierda) y correctos (derecha).
     reagentHemispheres: {
       // Aumenta este valor para llevar ambos grupos mas hacia los lados.
@@ -945,16 +942,10 @@ function GraphScene({ nodes, edges, selectedNodeIds, onToggleNode, focusedSystem
     const systemCore = shellControls?.systemCoreRadius ?? layoutConfig.defaultRadii.systemCoreRadius;
     const systemStep = shellControls?.systemStep ?? layoutConfig.defaultRadii.systemStep;
     const systemMicro = systemCore + systemStep * layoutConfig.systemShells.microStep;
-    const factorBase = Math.max(
-      shellControls?.factorBaseRadius ?? layoutConfig.defaultRadii.factorBaseRadius,
-      systemMicro + layoutConfig.minimumGap.systemToFactor,
-    );
+    const factorBase = shellControls?.factorBaseRadius ?? layoutConfig.defaultRadii.factorBaseRadius;
     const factorStep = shellControls?.factorStep ?? layoutConfig.defaultRadii.factorStep;
     const factorOuter = factorBase + factorStep * layoutConfig.factorShells.outerStep;
-    const reagentRadius = Math.max(
-      shellControls?.reagentRadius ?? layoutConfig.defaultRadii.reagentRadius,
-      factorOuter + layoutConfig.minimumGap.factorToReagents,
-    );
+    const reagentRadius = shellControls?.reagentRadius ?? layoutConfig.defaultRadii.reagentRadius;
 
     const shellRadii = {
       systemCore,

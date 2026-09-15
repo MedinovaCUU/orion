@@ -12,7 +12,10 @@
     "preview": "node ./scripts/run-with-relay.mjs preview",
     "tracking:relay": "node ./scripts/tracking-browser-relay.mjs",
     "planning:sync": "node ./scripts/service-planning-sync/sync.mjs",
-    "planning:sync:dry": "node ./scripts/service-planning-sync/sync.mjs --dry-run"
+    "planning:sync:dry": "node ./scripts/service-planning-sync/sync.mjs --dry-run",
+    "test:ba400:model": "node tests/ba400-model.test.mjs",
+    "test:ba400:browser": "node tests/ba400-browser.test.mjs",
+    "ba400:catalog": "node tools/prepare-ba400-catalog.mjs"
   },
   "dependencies": {
     "@react-three/drei": "^10.7.7",

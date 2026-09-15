@@ -9,8 +9,16 @@ import type { GeometryCollection, Topology } from 'topojson-specification';
 import worldAtlasRaw from 'world-atlas/countries-110m.json?raw';
 import { getPublicAssetUrl } from '../../components/publicAssetUrl';
 
+/**
+ * Visualización geográfica 3D del monitoreo con React Three Fiber y Three.js.
+ * Recibe equipos ya preparados por EquipmentMonitoring: aquí no se consultan
+ * tablas de Supabase ni se leen logs. Agrupa ubicaciones, dibuja marcadores y
+ * comunica la selección al componente padre. También incluye cobertura simulada
+ * identificada como tal, que no debe interpretarse como telemetría de la flota.
+ */
 export type GlobeNodeTone = 'ok' | 'warning' | 'fatal' | 'muted' | 'supremo';
 
+/** Contrato de entrada: identidad, estado visual, ubicación y señal reciente calculada por el padre. */
 export interface GlobeEquipmentNode {
   id: string;
   serial: string;
@@ -27,13 +35,16 @@ export interface GlobeEquipmentNode {
   longitude: number;
 }
 
+/** equipments es la lista filtrada; countryEquipments conserva el contexto general para encuadre y demos. */
 interface GlobalEquipmentGlobeProps {
   equipments: GlobeEquipmentNode[];
   countryEquipments: GlobeEquipmentNode[];
   selectedEquipmentId: string | null;
   onSelectEquipment: (equipmentId: string | null) => void;
+  paused?: boolean;
 }
 
+/** Agrupación visual de localidad, con centro promedio, estados presentes y equipos seleccionables. */
 interface CityClusterData {
   id: string;
   city: string;
@@ -50,6 +61,7 @@ interface CityClusterData {
   equipments: GlobeEquipmentNode[];
 }
 
+/** Datos de demostración: cantidades y estados predefinidos, no leídos desde analizadores. */
 interface SimulatedCity {
   city: string;
   country: string;
@@ -59,12 +71,14 @@ interface SimulatedCity {
   tone: GlobeNodeTone;
 }
 
+/** País y posición de cámara que se recuperan al restablecer la vista. */
 interface CountryView {
   key: string;
   label: string;
   cameraPosition: [number, number, number];
 }
 
+// Radios en unidades de escena: pequeñas diferencias separan capas y evitan solapamiento de superficies.
 const GLOBE_RADIUS = 2;
 const WORLD_POINT_RADIUS = GLOBE_RADIUS + 0.002;
 const MEXICO_POINT_RADIUS = GLOBE_RADIUS + 0.003;
@@ -75,6 +89,7 @@ const CITY_MARKER_RADIUS = GLOBE_RADIUS + 0.007;
 const EQUIPMENT_MARKER_RADIUS = GLOBE_RADIUS + 0.008;
 const DISCONNECTED_EQUIPMENT_MARKER_RADIUS = GLOBE_RADIUS + 0.0065;
 const NETWORK_ANCHOR_RADIUS = GLOBE_RADIUS + 0.009;
+// Umbrales de cámara para pasar de países a estados, municipios y equipos individuales.
 const AUTOMATIC_EQUIPMENT_DISTANCE = 2.085;
 const CITY_FOCUS_DISTANCE = 2.075;
 const FOCUS_COLLAPSE_DISTANCE = 4.15;
@@ -82,6 +97,7 @@ const MIN_CAMERA_DISTANCE = 2.018;
 const STATE_VIEW_DISTANCE = 6.45;
 const MUNICIPAL_VIEW_DISTANCE = 2.72;
 const MEXICO_CAMERA_POSITION: [number, number, number] = [-0.4850, 1.12019, 2.48659];
+// Tamaños visuales y áreas de clic en píxeles; se convierten a unidades 3D según la cámara.
 const EQUIPMENT_NODE_RADIUS_PIXELS = {
   near: 9.4,
   far: 6.6,
@@ -95,6 +111,7 @@ const CITY_NODE_RADIUS_PIXELS = {
   countBoost: 2.1,
   hit: 24,
 };
+// Prioridad del estado representativo de una ciudad; los estados mixtos también alternan colores.
 const STATUS_TONE_ORDER: GlobeNodeTone[] = ['fatal', 'warning', 'ok', 'supremo', 'muted'];
 
 const TONE_COLORS: Record<GlobeNodeTone, string> = {
@@ -105,10 +122,12 @@ const TONE_COLORS: Record<GlobeNodeTone, string> = {
   muted: '#9eb4c4',
 };
 
+// Reloj compartido por las animaciones: el pulso es visual, no un paquete recibido ni una consulta de red.
 const HEARTBEAT_TIME_UNIFORM = { value: 0 };
 const HEARTBEAT_HIGHLIGHT_COLOR = new THREE.Color('#d9fff8');
 const SELECTED_BILLBOARD_PROJECTED = new THREE.Vector3();
 
+// Shaders del halo: transforman el anillo y calculan brillo/transparencia en la GPU.
 const HEARTBEAT_RING_VERTEX_SHADER = `
   varying vec2 vLocalPosition;
 
@@ -157,6 +176,7 @@ const TONE_LABELS: Record<GlobeNodeTone, string> = {
   muted: 'Sin señal',
 };
 
+// Cobertura mundial ficticia para demostrar la navegación. Se excluyen países con equipos reales.
 const SIMULATED_CITIES: SimulatedCity[] = [
   { city: 'Barcelona', country: 'Espana', latitude: 41.3874, longitude: 2.1686, count: 42, tone: 'ok' },
   { city: 'Madrid', country: 'Espana', latitude: 40.4168, longitude: -3.7038, count: 31, tone: 'ok' },
@@ -194,6 +214,7 @@ const SIMULATED_CITIES: SimulatedCity[] = [
 ];
 const SIMULATED_MODELS = ['BA400', 'BA200', 'A25', 'BTS-350'] as const;
 
+// Contratos de los archivos cartográficos TopoJSON; no contienen información clínica ni de equipos.
 interface CountryProperties {
   name?: string;
 }
@@ -217,6 +238,7 @@ interface WorldAtlasObjects {
   land: GeometryCollection<CountryProperties>;
 }
 
+// Convierte el atlas empaquetado en polígonos y líneas; 484 es el identificador de México en el atlas.
 const WORLD_TOPOLOGY = JSON.parse(worldAtlasRaw) as Topology<WorldAtlasObjects>;
 const WORLD_COUNTRIES = WORLD_TOPOLOGY.objects.countries;
 const COUNTRY_FEATURES = feature<CountryProperties>(WORLD_TOPOLOGY, WORLD_COUNTRIES) as unknown as FeatureCollection<
@@ -227,6 +249,7 @@ const WORLD_BORDER_LINES = mesh(WORLD_TOPOLOGY, WORLD_COUNTRIES).coordinates;
 const MEXICO_FEATURE = COUNTRY_FEATURES.features.find((country) => String(country.id) === '484');
 const countryFeatureCache = new Map<string, Feature<Polygon | MultiPolygon, CountryProperties> | null>();
 
+/** Genera claves de agrupación consistentes pese a diferencias de acentos, signos o mayúsculas. */
 const normalizeGroupKey = (value: string) =>
   value
     .normalize('NFD')
@@ -235,6 +258,7 @@ const normalizeGroupKey = (value: string) =>
     .replace(/^-+|-+$/g, '')
     .toLowerCase();
 
+/** Convierte grados geográficos a una posición cartesiana sobre la esfera de radio indicado. */
 const latLngToVector = (latitude: number, longitude: number, radius = GLOBE_RADIUS) => {
   const phi = THREE.MathUtils.degToRad(90 - latitude);
   const theta = THREE.MathUtils.degToRad(longitude + 180);
@@ -246,6 +270,7 @@ const latLngToVector = (latitude: number, longitude: number, radius = GLOBE_RADI
   );
 };
 
+/** Transformación inversa para saber qué región apunta la dirección de la cámara. */
 const vectorToLatLng = (vector: THREE.Vector3) => {
   const direction = vector.clone().normalize();
 
@@ -257,6 +282,7 @@ const vectorToLatLng = (vector: THREE.Vector3) => {
   };
 };
 
+/** Mantiene los marcadores legibles en pantalla aunque cambie la distancia de la cámara. */
 const getWorldUnitsPerPixel = (camera: THREE.Camera, position: THREE.Vector3, viewportHeight: number) => {
   if (!(camera instanceof THREE.PerspectiveCamera)) {
     return 0.001;
@@ -267,6 +293,7 @@ const getWorldUnitsPerPixel = (camera: THREE.Camera, position: THREE.Vector3, vi
   return visibleHeight / Math.max(viewportHeight, 1);
 };
 
+/** Coloca la etiqueta HTML junto al nodo seleccionado y la limita al área visible del lienzo. */
 const calculateSelectedBillboardPosition = (
   object: THREE.Object3D,
   camera: THREE.Camera,
@@ -286,6 +313,7 @@ const calculateSelectedBillboardPosition = (
   ];
 };
 
+/** Prueba de punto dentro de un contorno contando cruces de un rayo con sus segmentos. */
 const pointInRing = (longitude: number, latitude: number, ring: Position[]) => {
   let inside = false;
 
@@ -307,20 +335,24 @@ const pointInRing = (longitude: number, latitude: number, ring: Position[]) => {
   return inside;
 };
 
+/** Exige estar dentro del contorno exterior y fuera de los huecos interiores del polígono. */
 const pointInPolygon = (longitude: number, latitude: number, polygon: Position[][]) =>
   Boolean(polygon[0]?.length) &&
   pointInRing(longitude, latitude, polygon[0]) &&
   !polygon.slice(1).some((hole) => pointInRing(longitude, latitude, hole));
 
+/** Unifica Polygon y MultiPolygon en una lista para reutilizar los recorridos geográficos. */
 const getFeaturePolygons = <Properties,>(geography: Feature<Polygon | MultiPolygon, Properties>) =>
   geography.geometry.type === 'Polygon' ? [geography.geometry.coordinates] : geography.geometry.coordinates;
 
+/** Verifica pertenencia al contorno de México del atlas para limitar la dispersión de nodos. */
 const isPointInMexico = (longitude: number, latitude: number) =>
   Boolean(
     MEXICO_FEATURE &&
       getFeaturePolygons(MEXICO_FEATURE).some((polygon) => pointInPolygon(longitude, latitude, polygon)),
   );
 
+/** Resuelve país por geometría y guarda el resultado en memoria con coordenadas redondeadas. */
 const getCountryFeatureAtPoint = (longitude: number, latitude: number) => {
   const cacheKey = `${longitude.toFixed(4)}:${latitude.toFixed(4)}`;
   if (countryFeatureCache.has(cacheKey)) {
@@ -334,6 +366,7 @@ const getCountryFeatureAtPoint = (longitude: number, latitude: number) => {
   return countryFeature;
 };
 
+/** Encuadra el país con más equipos ubicables; sin candidatos conserva la vista predeterminada de México. */
 const getCountryView = (equipments: GlobeEquipmentNode[]): CountryView => {
   const countryGroups = new Map<
     string,
@@ -414,6 +447,7 @@ const getCountryView = (equipments: GlobeEquipmentNode[]): CountryView => {
   };
 };
 
+/** Caja mínima del contorno para recorrer solo su extensión al generar puntos de tierra. */
 const getRingBounds = (ring: Position[]) =>
   ring.reduce(
     (bounds, [longitude, latitude]) => ({
@@ -430,6 +464,7 @@ const getRingBounds = (ring: Position[]) =>
     },
   );
 
+/** Construye segmentos 3D; omite saltos mayores a 180 grados para no cruzar el globo por el antimeridiano. */
 const createBorderGeometry = (lines: Position[][], radius: number) => {
   const positions: number[] = [];
 
@@ -452,8 +487,10 @@ const createBorderGeometry = (lines: Position[][], radius: number) => {
   return geometry;
 };
 
+// Los archivos administrativos usados aquí contienen su colección en el primer objeto TopoJSON.
 const getAdministrativeObject = (topology: AdministrativeTopology) => Object.values(topology.objects)[0];
 
+/** Extrae fronteras compartidas entre regiones para dibujar divisiones internas sin duplicarlas. */
 const createAdministrativeBorderGeometry = (topology: AdministrativeTopology, radius: number) => {
   const administrativeObject = getAdministrativeObject(topology);
   const internalBorders = mesh(
@@ -464,17 +501,24 @@ const createAdministrativeBorderGeometry = (topology: AdministrativeTopology, ra
   return createBorderGeometry(internalBorders, radius);
 };
 
+/** Expone los polígonos administrativos para búsquedas de estado/municipio por coordenadas. */
 const getAdministrativeFeatures = (topology: AdministrativeTopology) =>
   feature<AdministrativeProperties>(topology, getAdministrativeObject(topology)) as unknown as FeatureCollection<
     Polygon | MultiPolygon,
     AdministrativeProperties
   >;
 
+/** Obtiene los tonos presentes sin repetirlos y respeta la prioridad de gravedad definida arriba. */
 const getStatusTones = (equipments: GlobeEquipmentNode[]) => {
   const presentStatuses = new Set<GlobeNodeTone>(equipments.map((equipment) => equipment.tone));
   return STATUS_TONE_ORDER.filter((tone) => presentStatuses.has(tone));
 };
 
+/**
+ * Agrupa equipos reales por país, estado y municipio (o ciudad si falta municipio).
+ * Sin localidad usa coordenadas redondeadas. El centro es un promedio visual;
+ * un pulso de ciudad indica que al menos uno de sus equipos tiene señal reciente.
+ */
 const buildCityClusters = (equipments: GlobeEquipmentNode[]): CityClusterData[] => {
   const groups = new Map<string, GlobeEquipmentNode[]>();
 
@@ -519,6 +563,7 @@ const buildCityClusters = (equipments: GlobeEquipmentNode[]): CityClusterData[] 
   });
 };
 
+/** Crea nodos SIM locales, sin escritura en Supabase ni pulso remoto, fuera de países con datos reales. */
 const buildSimulatedClusters = (realEquipments: GlobeEquipmentNode[]): CityClusterData[] => {
   const realCountryIds = new Set(
     realEquipments
@@ -565,6 +610,7 @@ const buildSimulatedClusters = (realEquipments: GlobeEquipmentNode[]): CityClust
   });
 };
 
+/** Dibuja tierra como nubes de puntos y fronteras; usa mayor densidad en México y libera geometrías al salir. */
 function WorldGeography() {
   const { worldPoints, mexicoPoints, worldBorders } = useMemo(() => {
     const worldPositions: number[] = [];
@@ -636,6 +682,7 @@ function WorldGeography() {
   );
 }
 
+/** Descarga un recurso cartográfico estático; permite cancelar la petición al cambiar de vista o desmontar. */
 async function loadAdministrativeTopology(path: string, signal: AbortSignal) {
   const response = await fetch(getPublicAssetUrl(path), { signal });
   if (!response.ok) {
@@ -645,6 +692,11 @@ async function loadAdministrativeTopology(path: string, signal: AbortSignal) {
   return (await response.json()) as AdministrativeTopology;
 }
 
+/**
+ * Añade divisiones estatales y carga municipios por estado bajo demanda.
+ * Mantiene una caché local de geometrías, ajusta visibilidad según zoom y entrega
+ * polígonos al grupo enfocado para mantener dentro de ellos la separación visual.
+ */
 function MexicoAdministrativeGeography({
   focusedCluster,
   onMunicipalityFeaturesChange,
@@ -682,6 +734,7 @@ function MexicoAdministrativeGeography({
 
     return stateFeature?.properties?.cve_ent || null;
   }, [focusedCluster, stateFeatures]);
+  // La ciudad fijada tiene prioridad sobre el estado al que apunta actualmente la cámara.
   const activeStateCode = focusedStateCode || viewedStateCode;
 
   useEffect(() => {
@@ -708,6 +761,7 @@ function MexicoAdministrativeGeography({
       return;
     }
 
+    // Reutiliza municipios ya descargados durante esta sesión en lugar de pedirlos en cada acercamiento.
     const cachedLayer = municipalityLayerCacheRef.current.get(activeStateCode);
     if (cachedLayer) {
       let active = true;
@@ -825,6 +879,7 @@ function MexicoAdministrativeGeography({
   );
 }
 
+/** Renderiza los puntos del relieve cartográfico con material propio; no son marcadores de equipos. */
 function GlobePointCloud({
   geometry,
   color,
@@ -869,6 +924,7 @@ function GlobePointCloud({
   );
 }
 
+/** Capa decorativa de brillo alrededor de la esfera, sin significado de estado operativo. */
 function Atmosphere() {
   const materialRef = useRef<THREE.ShaderMaterial | null>(null);
 
@@ -913,6 +969,7 @@ function Atmosphere() {
   );
 }
 
+/** Actualiza el reloj compartido una vez por cuadro; no ejecuta sondeos ni envíos de telemetría. */
 function HeartbeatClock() {
   useFrame(({ clock }) => {
     HEARTBEAT_TIME_UNIFORM.value = clock.elapsedTime;
@@ -921,6 +978,7 @@ function HeartbeatClock() {
   return null;
 }
 
+/** Halo animado orientado hacia la cámara para equipos o ciudades con señal reciente. */
 function HeartbeatBeacon({
   radius,
   intensity = 'equipment',
@@ -985,6 +1043,7 @@ function HeartbeatBeacon({
   );
 }
 
+/** Patrón visual de doble latido que modula el tamaño y el brillo del núcleo. */
 function getHeartbeatImpulse(time: number, phaseOffset = 0) {
   const cycle = ((time * 0.58 + phaseOffset) % 1 + 1) % 1;
   const firstBeat = Math.exp(-Math.pow((cycle - 0.035) / 0.044, 2));
@@ -992,6 +1051,7 @@ function getHeartbeatImpulse(time: number, phaseOffset = 0) {
   return Math.min(1, firstBeat + secondBeat);
 }
 
+/** Expansión y desvanecimiento del anillo en dos ondas por ciclo de animación. */
 function getHeartbeatWave(time: number, phaseOffset = 0) {
   const cycle = ((time * 0.58 + phaseOffset) % 1 + 1) % 1;
   if (cycle < 0.25) {
@@ -1005,6 +1065,7 @@ function getHeartbeatWave(time: number, phaseOffset = 0) {
   return { progress: 1, opacity: 0 };
 }
 
+/** Nodo individual: área invisible de clic, color de estado, pulso opcional y etiqueta de selección. */
 function EquipmentPulseNode({
   equipment,
   position,
@@ -1123,6 +1184,11 @@ function EquipmentPulseNode({
   );
 }
 
+/**
+ * Cambia entre un marcador de localidad y sus equipos según foco, zoom o puntero.
+ * La vista previa muestra hasta siete nodos y la vista detallada hasta 72;
+ * la bandeja del componente principal permite consultar el resto de la agrupación.
+ */
 function CityCluster({
   cluster,
   expansionMode,
@@ -1168,8 +1234,8 @@ function CityCluster({
         pointInPolygon(cluster.longitude, cluster.latitude, polygon),
       ),
     );
-    // The coordinate is authoritative when locality labels disagree with the
-    // administrative dataset or refer to a neighboring metropolitan area.
+    // La coordenada prevalece si el nombre de localidad difiere del catálogo
+    // administrativo o corresponde a una zona metropolitana vecina.
     const municipalityFeature = containingFeature || namedFeature;
     return municipalityFeature ? getFeaturePolygons(municipalityFeature) : null;
   }, [cluster.city, cluster.latitude, cluster.longitude, cluster.municipality, cluster.simulated, expansionMode, municipalityFeatures]);
@@ -1199,15 +1265,16 @@ function CityCluster({
         return { anchor, position: anchor.clone() };
       }
 
-      // Repeated city-level coordinates are geocoding anchors, not distinct
-      // physical positions. Keep the group centered on that anchor while
-      // separating every device enough to remain selectable at close zoom.
+      // Las coordenadas de localidad repetidas son anclas, no domicilios distintos.
+      // Se separan visualmente los equipos alrededor del ancla para poder elegirlos;
+      // el desplazamiento no se guarda como ubicación física del analizador.
       const centeredIndex = occurrenceIndex - (duplicateCount - 1) / 2;
       const baseAngle = centeredIndex * Math.PI * (3 - Math.sqrt(5));
       const distanceKm = Math.sqrt(Math.abs(centeredIndex) + 0.42) * 2.15;
       let visualLatitude = latitude;
       let visualLongitude = longitude;
 
+      // Prueba hasta 24 posiciones, evitando salir del municipio o de México cuando aplica.
       for (let attempt = 0; attempt < 24; attempt += 1) {
         const angle = baseAngle + attempt * (Math.PI / 12);
         const candidateDistanceKm = distanceKm * (1 - Math.floor(attempt / 12) * 0.28);
@@ -1253,6 +1320,7 @@ function CityCluster({
     }
 
     const cameraDirection = camera.position.clone().normalize();
+    // Oculta ciudades del hemisferio posterior para que no se vean a través de la esfera.
     groupRef.current.visible = position.clone().normalize().dot(cameraDirection) > 0.035;
     if (nodeVisualRef.current && nodeHitTargetRef.current) {
       const worldUnitsPerPixel = getWorldUnitsPerPixel(camera, position, size.height);
@@ -1315,6 +1383,7 @@ function CityCluster({
     onHover(cluster.id);
   };
 
+  // Una espera breve evita cerrar la vista previa al cruzar entre marcadores de la misma ciudad.
   const releaseHover = () => {
     if (hoverLeaveTimeoutRef.current !== null) {
       window.clearTimeout(hoverLeaveTimeoutRef.current);
@@ -1448,6 +1517,7 @@ function CityCluster({
   );
 }
 
+/** Arcos decorativos hacia ciudades simuladas: no representan conexiones ni tráfico real de red. */
 function NetworkArcs({ clusters }: { clusters: CityClusterData[] }) {
   const groupRef = useRef<THREE.Group | null>(null);
   const arcs = useMemo(() => {
@@ -1493,6 +1563,7 @@ function NetworkArcs({ clusters }: { clusters: CityClusterData[] }) {
   );
 }
 
+/** Compone las capas 3D y controla cámara, zoom, enfoque de ciudad y expansión de equipos. */
 function GlobeScene({
   clusters,
   initialView,
@@ -1507,6 +1578,7 @@ function GlobeScene({
   onSelectEquipment,
   onDistanceChange,
   onCollapseFocus,
+  inspectionMode = false,
 }: {
   clusters: CityClusterData[];
   initialView: CountryView;
@@ -1521,8 +1593,17 @@ function GlobeScene({
   onSelectEquipment: (equipmentId: string | null) => void;
   onDistanceChange: (distance: number) => void;
   onCollapseFocus: () => void;
+  inspectionMode?: boolean;
 }) {
-  const { camera } = useThree();
+  const { camera, size, invalidate } = useThree();
+  // Desplaza la proyección, no la ubicación geográfica: deja México a la izquierda del cristal.
+  useEffect(() => {
+    if (!(camera instanceof THREE.PerspectiveCamera)) return;
+    if (inspectionMode && size.width > 720) camera.setViewOffset(size.width, size.height, size.width * .27, 0, size.width, size.height);
+    else camera.clearViewOffset();
+    invalidate();
+    return () => { camera.clearViewOffset(); };
+  }, [camera, size.width, size.height, inspectionMode, invalidate]);
   const controlsRef = useRef<OrbitControlsImpl | null>(null);
   const [municipalityFeatures, setMunicipalityFeatures] = useState<AdministrativeFeatures | null>(null);
   const focusedCluster = useMemo(
@@ -1536,6 +1617,7 @@ function GlobeScene({
       return;
     }
 
+    // Reduce la sensibilidad cerca de la superficie para facilitar la selección de equipos.
     const altitude = Math.max(camera.position.length() - GLOBE_RADIUS, 0);
     const altitudeFactor = THREE.MathUtils.clamp((altitude - 0.12) / 3.8, 0, 1);
     controlsRef.current.rotateSpeed = THREE.MathUtils.lerp(0.004, 0.48, altitudeFactor);
@@ -1645,11 +1727,13 @@ function GlobeScene({
   );
 }
 
+/** Contenedor público: combina grupos reales/demostración y coordina lienzo, controles y ficha HTML. */
 export default function GlobalEquipmentGlobe({
   equipments,
   countryEquipments,
   selectedEquipmentId,
   onSelectEquipment,
+  paused = false,
 }: GlobalEquipmentGlobeProps) {
   const defaultCountryView = useMemo(() => getCountryView(countryEquipments), [countryEquipments]);
   const [resetVersion, setResetVersion] = useState(0);
@@ -1667,6 +1751,7 @@ export default function GlobalEquipmentGlobe({
     () => [...buildCityClusters(equipments), ...buildSimulatedClusters(countryEquipments)],
     [countryEquipments, equipments],
   );
+  // Los indicadores de equipos y ubicaciones reales no suman la cobertura de demostración.
   const realLocationCount = clusters.filter((cluster) => !cluster.simulated).length;
   const effectiveSelectedEquipmentId = selectedSimulatedEquipmentId || selectedEquipmentId;
   const selectedEquipment = effectiveSelectedEquipmentId
@@ -1674,15 +1759,6 @@ export default function GlobalEquipmentGlobe({
         .flatMap((cluster) => cluster.equipments)
         .find((equipment) => equipment.id === effectiveSelectedEquipmentId) || null
     : null;
-  const selectedEquipmentLocation = selectedEquipment
-    ? Array.from(
-        new Set(
-          [selectedEquipment.city, selectedEquipment.municipality, selectedEquipment.state, selectedEquipment.country].filter(
-            (value): value is string => Boolean(value),
-          ),
-        ),
-      ).join(' · ')
-    : '';
   const focusedCluster = focusedClusterId
     ? clusters.find((cluster) => cluster.id === focusedClusterId) || null
     : null;
@@ -1696,6 +1772,7 @@ export default function GlobalEquipmentGlobe({
         ? 'División estatal'
         : 'División por países';
 
+  // La selección simulada permanece aquí; solo los IDs reales se propagan a la ficha del padre.
   const handleSelectEquipment = (equipmentId: string | null) => {
     if (equipmentId?.startsWith('simulated-equipment-')) {
       setSelectedSimulatedEquipmentId(equipmentId);
@@ -1708,7 +1785,10 @@ export default function GlobalEquipmentGlobe({
 
   return (
     <div className={`equipment-globe${selectedEquipment ? ' equipment-globe--has-selection' : ''}`}>
+      {/* Lienzo WebGL: limita la densidad de píxeles para equilibrar nitidez y carga de renderizado. */}
       <Canvas
+        // En modo combinado el mapa sigue respondiendo a los controles sin animarse continuamente.
+        frameloop={paused ? 'demand' : 'always'}
         dpr={[1, 1.75]}
         camera={{ position: MEXICO_CAMERA_POSITION, fov: 44, near: 0.001, far: 100 }}
         gl={{ antialias: true, alpha: true, powerPreference: 'high-performance' }}
@@ -1719,6 +1799,7 @@ export default function GlobalEquipmentGlobe({
         }}
       >
         <GlobeScene
+          inspectionMode={paused}
           clusters={clusters}
           initialView={defaultCountryView}
           selectedEquipmentId={effectiveSelectedEquipmentId}
@@ -1738,41 +1819,6 @@ export default function GlobalEquipmentGlobe({
           }}
         />
       </Canvas>
-
-      {selectedEquipment ? (
-        <aside className="equipment-globe__selected-panel" aria-live="polite">
-          <div className="equipment-globe__selected-panel-head">
-            <div>
-              <span className="equipment-globe__selected-eyebrow">Equipo seleccionado</span>
-              <strong>{selectedEquipment.serial}</strong>
-            </div>
-            <button type="button" aria-label="Cerrar detalle del equipo" onClick={() => handleSelectEquipment(null)}>
-              ×
-            </button>
-          </div>
-          <div className="equipment-globe__selected-status" data-tone={selectedEquipment.tone}>
-            <i aria-hidden="true" />
-            <div>
-              <strong>{TONE_LABELS[selectedEquipment.tone]}</strong>
-              <span>{selectedEquipment.heartbeat ? 'Pulso Orion activo' : 'Sin pulso remoto'}</span>
-            </div>
-          </div>
-          <dl className="equipment-globe__selected-facts">
-            <div>
-              <dt>Modelo</dt>
-              <dd>{selectedEquipment.model}</dd>
-            </div>
-            <div>
-              <dt>Cliente</dt>
-              <dd>{selectedEquipment.clientName}</dd>
-            </div>
-            <div>
-              <dt>Ubicación</dt>
-              <dd>{selectedEquipmentLocation || 'Sin ubicación registrada'}</dd>
-            </div>
-          </dl>
-        </aside>
-      ) : null}
 
       <div className="equipment-globe__hud equipment-globe__hud--left">
         <span className="equipment-globe__scope-dot" />
@@ -1820,6 +1866,7 @@ export default function GlobalEquipmentGlobe({
         </button>
       </div>
 
+      {/* Bandeja de todos los equipos de la ciudad fijada, incluso los no dibujados por el límite visual. */}
       {focusedCluster ? (
         <div className="equipment-globe__equipment-dock">
           <div className="equipment-globe__equipment-dock-header">
