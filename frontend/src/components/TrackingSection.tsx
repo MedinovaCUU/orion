@@ -205,6 +205,8 @@ export default function TrackingSection() {
   const [trackingStorageReady, setTrackingStorageReady] = useState(false);
   const [trackingStorageState, setTrackingStorageState] = useState<TrackingStorageState>('loading');
   const [trackingStorageMessage, setTrackingStorageMessage] = useState('Recuperando trackings guardados...');
+  const [cloudRefreshVersion, setCloudRefreshVersion] = useState(0);
+  const [cloudReadMessage, setCloudReadMessage] = useState('');
   const [agentQueuedEntryIds, setAgentQueuedEntryIds] = useState<Set<string>>(() => new Set());
   const [trackingAgentHealth, setTrackingAgentHealth] = useState<TrackingAgentHealth | null>(null);
   const [trackingAgentOnline, setTrackingAgentOnline] = useState(false);
@@ -219,6 +221,7 @@ export default function TrackingSection() {
         }
 
         setCloudUserId(snapshot.userId);
+        setCloudReadMessage(`${snapshot.entries.length} envíos recuperados de Supabase · ${formatTrackingDateTime(new Date().toISOString())}`);
         const localEntries = loadTrackingEntries(snapshot.userId);
         setEntries(reconcileTrackingEntries(localEntries, snapshot.entries));
         setAgentQueuedEntryIds(new Set(snapshot.queuedEntryIds));
@@ -275,6 +278,7 @@ export default function TrackingSection() {
         setEntries((current) =>
           JSON.stringify(current) === JSON.stringify(snapshot.entries) ? current : snapshot.entries,
         );
+        setCloudReadMessage(`${snapshot.entries.length} envíos recuperados de Supabase · ${formatTrackingDateTime(new Date().toISOString())}`);
         setAgentQueuedEntryIds(new Set(snapshot.queuedEntryIds));
         setTrackingAgentHealth(agentHealth);
         setTrackingAgentOnline(
@@ -282,11 +286,14 @@ export default function TrackingSection() {
             Date.now() - Date.parse(agentHealth?.lastSeenAt || '') < 90000 &&
             agentHealth?.status !== 'offline',
         );
-      } catch {
-        // La copia local sigue disponible; el indicador de guardado reporta fallos de escritura.
+      } catch (error) {
+        if (!cancelled) {
+          setCloudReadMessage(`No se pudo recuperar la lista actual. ${error instanceof Error ? error.message : 'Revisa la conexión.'} Se conserva la última lista disponible.`);
+        }
       }
     };
 
+    void refreshCloudState();
     const timer = window.setInterval(() => void refreshCloudState(), 15000);
     const handleVisibilityChange = () => {
       if (document.visibilityState === 'visible') {
@@ -300,7 +307,7 @@ export default function TrackingSection() {
       window.clearInterval(timer);
       document.removeEventListener('visibilitychange', handleVisibilityChange);
     };
-  }, [cloudUserId, trackingStorageReady]);
+  }, [cloudUserId, trackingStorageReady, cloudRefreshVersion]);
 
   useEffect(() => {
     if (!trackingStorageReady) {
@@ -1420,6 +1427,11 @@ export default function TrackingSection() {
           <span className={`tracking-storage-state tracking-storage-state--${trackingStorageState}`}>
             {trackingStorageMessage}
           </span>
+          <span role="status">{cloudReadMessage}</span>
+          <button type="button" className="button-primary inactive" disabled={!cloudUserId} onClick={() => setCloudRefreshVersion((version) => version + 1)}>
+            Recuperar lista de Supabase
+          </button>
+          <span>DHL automático incorpora las notificaciones recibidas para BIOSIMEX. Las etiquetas de MyDHL “Listo para enviar” pueden no tener movimientos ni aparecer todavía en este flujo.</span>
         </div>
 
         <TrackingMission entries={sortedEntries} selectedId={selectedGuideId} onSelect={setSelectedGuideId} search={guideSearch} onSearch={setGuideSearch} />

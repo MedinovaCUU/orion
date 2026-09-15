@@ -19,7 +19,7 @@ export function TrackingMission({ entries, selectedId, onSelect, search, onSearc
     <div className="mission">
       <div className="mission-stack">
         <label className="mission-search"><span>LOCALIZAR ENVÍO</span><input type="search" placeholder="Guía, destino, estado o destinatario" value={search} onChange={event => onSearch(event.target.value)} /></label>
-        <span className="mission-count">{visible.length} envíos en esta vista</span>
+        <span className="mission-count">{visible.length} de {entries.length} envíos · {entries.filter(entry => entry.fulfillmentState !== 'entregado').length} pendientes{search && <button type="button" onClick={() => onSearch('')}>Limpiar búsqueda</button>}</span>
         <div className="mission-stack-scroll" role="group" aria-label="Seleccionar envío">
           {visible.map((entry, index) => (
             <button key={entry.id} type="button" data-status={entry.status} className={`mission-card ${selected?.id === entry.id ? 'is-selected' : ''}`} aria-pressed={selected?.id === entry.id} aria-label={`${entry.trackingNumber}, ${TRACKING_STATUS_LABELS[entry.status]}`} onClick={() => onSelect(entry.id)}>
