@@ -5,8 +5,10 @@ import type {
   DriEngineLogEntry,
   DriFactor,
   DriFactorAggregate,
+  DriMechanicalSubsystemId,
   DriRelationSignal,
   DriReagentProfile,
+  DriServiceUtilityId,
 } from '../types/dri.types';
 import { createDriLogger } from '../utils/driLogging';
 
@@ -24,6 +26,30 @@ const SCHEME_LABELS: Record<string, string> = {
   multireactive: 'Multirreactiva',
   variable: 'Variable por programa',
   unknown: 'Esquema pendiente',
+};
+
+const SERVICE_SIGNAL_SCORE = {
+  failed: 90,
+  abnormal: 82,
+  adjusted: 58,
+} as const;
+
+const SERVICE_UTILITY_SUBSYSTEMS: Partial<Record<DriServiceUtilityId, DriMechanicalSubsystemId[]>> = {
+  photometry: ['optical_system'],
+  baseline_darkness_current: ['optical_system'],
+  metrology: ['optical_system'],
+  motors_valves_pumps: ['fluidics', 'reagent_arm_r1', 'reagent_arm_r2'],
+  thermostatting: ['reaction_rotor', 'fridge'],
+  level_detection: ['level_detection', 'sample_arm', 'reagent_arm_r1', 'reagent_arm_r2'],
+  washing_station: ['wash_station'],
+  conditioning: ['fluidics', 'wash_station', 'reagent_arm_r1', 'reagent_arm_r2'],
+  positioning: ['sample_arm', 'reagent_arm_r1', 'reagent_arm_r2', 'stirrer'],
+  stress_mode: ['reaction_rotor', 'sample_arm', 'reagent_arm_r1', 'reagent_arm_r2', 'stirrer'],
+  bottle_level: ['reagent_arm_r1', 'reagent_arm_r2', 'level_detection'],
+  barcode: ['barcode'],
+  ise_module: ['ise'],
+  clot_sensor: ['clot_sensor'],
+  dilution_review: ['fluidics', 'sample_arm'],
 };
 
 const WATER_KEYWORDS = ['agua', 'water', 'wash', 'lavado', 'destilada', 'conductividad'];
@@ -396,25 +422,27 @@ export const buildRelationSignals = (
   correctProfiles.forEach((profile) => pushProfileSignals(profile, 'correct'));
 
   form.serviceTests
-    .filter((test) => test.result === 'abnormal' || test.result === 'failed')
+    .filter((test) => test.result === 'abnormal' || test.result === 'failed' || test.result === 'adjusted')
     .forEach((test) => {
+      const score =
+        test.result === 'failed'
+          ? SERVICE_SIGNAL_SCORE.failed
+          : test.result === 'abnormal'
+            ? SERVICE_SIGNAL_SCORE.abnormal
+            : SERVICE_SIGNAL_SCORE.adjusted;
+      const signalId = `service:${test.utilityId}`;
+      const existing = signalMap.get(signalId);
+      if (existing && existing.suspicionScore >= score) return;
       signalMap.set(`service:${test.utilityId}`, {
-        id: `service:${test.utilityId}`,
+        id: signalId,
         category: 'service',
-        label: `Servicio anormal: ${test.label}`,
+        label: `${test.result === 'adjusted' ? 'Servicio ajustado' : 'Servicio anormal'}: ${test.label}`,
         failedCoverage: 1,
         correctCoverage: 0,
-        suspicionScore: 82,
+        suspicionScore: score,
         relatedReagentIds: [],
         contrastReagentIds: [],
-        suspectedSubsystems:
-          test.utilityId === 'photometry'
-            ? ['optical_system']
-            : test.utilityId === 'motors_valves_pumps'
-              ? ['fluidics', 'reagent_arm_r1', 'reagent_arm_r2']
-              : test.utilityId === 'thermostatting'
-                ? ['reaction_rotor', 'fridge']
-                : ['sample_arm'],
+        suspectedSubsystems: SERVICE_UTILITY_SUBSYSTEMS[test.utilityId] || [],
         evidenceFor: [`${test.label} fue capturado como ${test.result}.`],
         evidenceAgainst: [],
       });
@@ -422,6 +450,9 @@ export const buildRelationSignals = (
 
   const signals = Array.from(signalMap.values())
     .map((signal) => {
+      if (signal.category === 'service') {
+        return signal;
+      }
       const failedCoverage = countCoverage(signal.relatedReagentIds.length, failedProfiles.length);
       const correctCoverage = countCoverage(signal.contrastReagentIds.length, correctProfiles.length);
       const matchingFactorBoost = factorAggregates

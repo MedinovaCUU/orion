@@ -1,3 +1,5 @@
+import { fetchMyDhlTracking } from './mydhl.ts';
+
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Methods': 'POST, OPTIONS',
@@ -272,11 +274,35 @@ const extractFirstDate = (value: string) => {
   return match?.[1] || '';
 };
 
+const buildValidIsoDate = (year: string, first: string, second: string) => {
+  let month = Number(first);
+  let day = Number(second);
+
+  if (month > 12 && day >= 1 && day <= 12) {
+    [month, day] = [day, month];
+  }
+
+  const numericYear = Number(year);
+  const candidate = new Date(Date.UTC(numericYear, month - 1, day));
+  if (
+    month < 1 ||
+    month > 12 ||
+    day < 1 ||
+    candidate.getUTCFullYear() !== numericYear ||
+    candidate.getUTCMonth() !== month - 1 ||
+    candidate.getUTCDate() !== day
+  ) {
+    return '';
+  }
+
+  return `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+};
+
 const parseDateToIso = (value: string) => {
   const raw = compactSpaces(value);
   const isoMatch = raw.match(/^(\d{4})[-/](\d{2})[-/](\d{2})$/);
   if (isoMatch) {
-    return `${isoMatch[1]}-${isoMatch[2]}-${isoMatch[3]}`;
+    return buildValidIsoDate(isoMatch[1], isoMatch[2], isoMatch[3]);
   }
 
   const dayFirstMatch = raw.match(/^(\d{1,2})[-/](\d{1,2})[-/](\d{2,4})$/);
@@ -285,10 +311,10 @@ const parseDateToIso = (value: string) => {
   }
 
   const year = dayFirstMatch[3].length === 2 ? `20${dayFirstMatch[3]}` : dayFirstMatch[3];
-  return `${year}-${dayFirstMatch[2].padStart(2, '0')}-${dayFirstMatch[1].padStart(2, '0')}`;
+  return buildValidIsoDate(year, dayFirstMatch[2], dayFirstMatch[1]);
 };
 
-const toIsoDate = (value: string) => (/^\d{4}-\d{2}-\d{2}/.test(value) ? value.slice(0, 10) : parseDateToIso(value));
+const toIsoDate = (value: string) => parseDateToIso(extractFirstDate(value));
 
 const SPANISH_MONTHS: Record<string, string> = {
   enero: '01',
@@ -530,6 +556,8 @@ const normalizeDhlStatus = (description: string, statusCode: string): TrackingSt
   }
 
   if (
+    normalizedCode === 'out-for-delivery' ||
+    normalized.includes('out with courier') ||
     normalized.includes('mensajero para su entrega') ||
     normalized.includes('out for delivery') ||
     normalized.includes('disponible para recolectar') ||
@@ -675,6 +703,48 @@ const parseDhlErrorMessage = async (response: Response) => {
 };
 
 const requestDhlTracking = async (trackingNumber: string, includeServiceHint = true) => {
+  if (Deno.env.get('DHL_LOOKUP_PROVIDER') === 'push') {
+    const url = new URL('/rest/v1/dhl_push_shipments', Deno.env.get('SUPABASE_URL'));
+    url.searchParams.set('tracking_number', `eq.${trackingNumber}`);
+    url.searchParams.set('select', 'payload,received_at');
+    const key = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') || '';
+    const response = await fetch(url, {
+      headers: { apikey: key, Authorization: `Bearer ${key}` },
+      signal: AbortSignal.timeout(10000),
+    });
+    if (!response.ok) return buildErrorResponse('dhl', trackingNumber, 'No fue posible leer las notificaciones de DHL Push.');
+    const rows = await response.json();
+    const row = rows[0];
+    if (!row) return buildErrorResponse('dhl', trackingNumber, 'DHL Unified Push todavía no ha enviado una notificación para esta guía. Actualizar revisa las notificaciones recibidas; no solicita un rastreo nuevo a DHL.');
+    const snapshot = row.payload as Record<string, unknown>;
+    return buildSuccessResponse('dhl', trackingNumber, {
+      status: snapshot.status as TrackingStatus,
+      fulfillmentState: snapshot.fulfillmentState as FulfillmentState,
+      portalStatusText: String(snapshot.portalStatusText || ''),
+      lastEventLabel: String(snapshot.lastEventLabel || ''),
+      lastEventAt: String(snapshot.lastEventAt || ''),
+      estimatedDelivery: String(snapshot.estimatedDelivery || '').slice(0, 10),
+      recipient: String(snapshot.recipient || ''),
+      origin: String(snapshot.origin || ''),
+      destination: String(snapshot.destination || ''),
+      serviceType: 'DHL Unified Push',
+      deliveryProofName: String(snapshot.deliveryProofName || ''),
+      timeline: snapshot.timeline as TrackingTimelineEvent[],
+      rawSummary: String(snapshot.rawEvidenceText || ''),
+      note: `Fuente: DHL Unified Push. Notificación recibida: ${row.received_at}.`,
+    });
+  }
+  const username = Deno.env.get('DHL_MYDHL_USERNAME')?.trim();
+  const password = Deno.env.get('DHL_MYDHL_PASSWORD');
+  if (username && password) {
+    try {
+      const shipment = await fetchMyDhlTracking(trackingNumber, username, password);
+      return shipment ? buildDhlResponse(trackingNumber, shipment) :
+        buildErrorResponse('dhl', trackingNumber, 'DHL todavía no devuelve eventos para esta guía.');
+    } catch (error) {
+      return buildErrorResponse('dhl', trackingNumber, error instanceof Error ? error.message : 'No fue posible consultar DHL.');
+    }
+  }
   const apiKey = resolveDhlApiKey();
   if (!apiKey) {
     return buildErrorResponse(
@@ -1467,6 +1537,31 @@ Deno.serve(async (request) => {
 
   try {
     if (carrier === 'dhl') {
+      // Push notifications contain customer names; never expose them to anonymous clients.
+      if (Deno.env.get('DHL_LOOKUP_PROVIDER') === 'push') {
+        const authorization = request.headers.get('authorization') || '';
+        const serviceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') || '';
+        if (!serviceKey || authorization !== `Bearer ${serviceKey}`) {
+          const auth = await fetch(new URL('/auth/v1/user', Deno.env.get('SUPABASE_URL')), {
+            headers: { apikey: Deno.env.get('SUPABASE_ANON_KEY') || '', Authorization: authorization },
+            signal: AbortSignal.timeout(10000),
+          });
+          if (!auth.ok) return jsonRes(401, { ok: false, error: 'Inicia sesión en Orion para consultar los datos de DHL Push.' });
+          const user = await auth.json();
+          let authorized = false;
+          for (const table of ['dhl_tracking_subscribers', 'dhl_tracking_assignments']) {
+            const accessUrl = new URL(`/rest/v1/${table}`, Deno.env.get('SUPABASE_URL'));
+            accessUrl.searchParams.set('user_id', `eq.${user.id}`);
+            accessUrl.searchParams.set('select', 'user_id');
+            accessUrl.searchParams.set('limit', '1');
+            if (table === 'dhl_tracking_assignments') accessUrl.searchParams.set('tracking_number', `eq.${trackingNumber}`);
+            const access = await fetch(accessUrl, { headers: { apikey: serviceKey, Authorization: `Bearer ${serviceKey}` }, signal: AbortSignal.timeout(10000) });
+            if (!access.ok) return jsonRes(503, { ok: false, error: 'No fue posible verificar el acceso al envío.' });
+            if ((await access.json()).length) { authorized = true; break; }
+          }
+          if (!authorized) return jsonRes(403, { ok: false, error: 'Esta guía debe ser asignada a tu perfil por administración.' });
+        }
+      }
       if (!/^\d{10}$/.test(trackingNumber)) {
         return jsonRes(200, buildErrorResponse(carrier, trackingNumber, 'DHL requiere una guía aérea de 10 dígitos.'));
       }

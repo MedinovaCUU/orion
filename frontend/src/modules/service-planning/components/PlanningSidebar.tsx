@@ -8,6 +8,9 @@ interface PlanningSidebarProps {
   alertsCount: number;
   currentUserName: string;
   roleLabel: string;
+  canViewPlanning?: boolean;
+  canViewReports?: boolean;
+  reportsLabel?: string;
 }
 
 const ITEMS: Array<{ key: ServicePlanningSection; label: string; icon: ComponentProps<typeof PlanningIcon>['name'] }> = [
@@ -29,7 +32,8 @@ const getInitials = (name: string) =>
     .map((chunk) => chunk[0]?.toUpperCase() || '')
     .join('');
 
-export default function PlanningSidebar({ active, onChange, alertsCount, currentUserName, roleLabel }: PlanningSidebarProps) {
+export default function PlanningSidebar({ active, onChange, alertsCount, currentUserName, roleLabel, canViewPlanning = true, canViewReports = true, reportsLabel = 'Reportes' }: PlanningSidebarProps) {
+  const visibleItems = ITEMS.filter((item) => item.key === 'reportes' ? canViewReports : canViewPlanning);
   return (
     <aside className="planning-sidebar">
       <div className="planning-sidebar__brand">
@@ -38,7 +42,7 @@ export default function PlanningSidebar({ active, onChange, alertsCount, current
       </div>
 
       <nav className="planning-sidebar__nav" aria-label="Navegacion de planeacion de servicios">
-        {ITEMS.map((item) => (
+        {visibleItems.map((item) => (
           <button
             key={item.key}
             type="button"
@@ -48,7 +52,7 @@ export default function PlanningSidebar({ active, onChange, alertsCount, current
             <span className="planning-sidebar__item-icon">
               <PlanningIcon name={item.icon} />
             </span>
-            <strong>{item.label}</strong>
+            <strong>{item.key === 'reportes' ? reportsLabel : item.label}</strong>
             {item.key === 'alertas' && alertsCount > 0 ? <em className="planning-sidebar__count">{alertsCount}</em> : null}
           </button>
         ))}

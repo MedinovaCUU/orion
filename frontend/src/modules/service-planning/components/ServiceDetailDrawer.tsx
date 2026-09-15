@@ -20,6 +20,8 @@ interface ServiceDetailDrawerProps {
   onDelete: (service: PlannedService) => Promise<void>;
   onOpenTravel: (service: PlannedService) => void;
   onOpenReport: (service: PlannedService, mode: 'servicio' | 'remoto') => void;
+  canOpenTravel?: boolean;
+  canOpenReport?: boolean;
 }
 
 interface DrawerDraft {
@@ -59,6 +61,8 @@ export default function ServiceDetailDrawer({
   onDelete,
   onOpenTravel,
   onOpenReport,
+  canOpenTravel = true,
+  canOpenReport = true,
 }: ServiceDetailDrawerProps) {
   const [draft, setDraft] = useState<DrawerDraft | null>(null);
   const [saving, setSaving] = useState(false);
@@ -302,15 +306,17 @@ export default function ServiceDetailDrawer({
               <p>Viajes, viaticos y reportes siguen el flujo actual sin salir del tablero.</p>
             </div>
             <div className="planning-drawer__actions-grid">
-              <button type="button" className="button-primary inactive" onClick={() => onOpenTravel(service)}>
+              {canOpenTravel ? <button type="button" className="button-primary inactive" onClick={() => onOpenTravel(service)}>
                 {service.links.linkedTravelRequestId ? 'Abrir viaje ligado' : 'Planear vuelo / viaticos'}
-              </button>
-              <button type="button" className="button-primary inactive" onClick={() => onOpenReport(service, 'servicio')}>
-                {service.links.linkedServiceReportId ? 'Abrir reporte ligado' : 'Crear reporte servicio'}
-              </button>
-              <button type="button" className="button-primary inactive" onClick={() => onOpenReport(service, 'remoto')}>
-                Crear reporte remoto
-              </button>
+              </button> : null}
+              {canOpenReport ? <>
+                <button type="button" className="button-primary inactive" onClick={() => onOpenReport(service, 'servicio')}>
+                  {service.links.linkedServiceReportId ? 'Abrir reporte ligado' : 'Crear reporte servicio'}
+                </button>
+                <button type="button" className="button-primary inactive" onClick={() => onOpenReport(service, 'remoto')}>
+                  Crear reporte remoto
+                </button>
+              </> : null}
             </div>
           </section>
 

@@ -1,0 +1,9 @@
+{
+  "supabaseUrl": "https://YOUR_PROJECT.supabase.co",
+  "supabaseAnonKey": "YOUR_SUPABASE_PUBLISHABLE_KEY",
+  "agentToken": "YOUR_TRACKING_AGENT_TOKEN",
+  "pollSeconds": 15,
+  "batchSize": 5,
+  "browserExecutablePath": "",
+  "browserDebugPort": 9223
+}

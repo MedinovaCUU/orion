@@ -1,5 +1,6 @@
 export type CriticidadNivel = 'Crítico' | 'Alto' | 'Medio' | 'Bajo';
 export type DificultadNivel = 'Básico' | 'Intermedio' | 'Avanzado' | 'Experto';
+export type TutorialImportance = 'basico' | 'medio' | 'alto' | 'critico';
 
 export interface LegacyTutorial {
   kind?: 'legacy';
@@ -20,6 +21,7 @@ export interface LegacyTutorial {
   }>;
   advertencias_criticas?: string[];
   criterios_aceptacion?: string[];
+  importancia?: TutorialImportance;
 }
 
 export interface StructuredTutorial {
@@ -59,6 +61,14 @@ export function isStructuredTutorial(
   tutorial: TutorialDefinition | null | undefined,
 ): tutorial is StructuredTutorial {
   return Boolean(tutorial && tutorial.kind === 'structured');
+}
+
+export function getTutorialImportance(tutorial: TutorialDefinition): TutorialImportance {
+  if (!isStructuredTutorial(tutorial)) return tutorial.importancia || 'basico';
+  if (tutorial.criticidad.nivel === 'Crítico') return 'critico';
+  if (tutorial.criticidad.nivel === 'Alto') return 'alto';
+  if (tutorial.criticidad.nivel === 'Medio') return 'medio';
+  return 'basico';
 }
 
 const a15TutorialLegacy: LegacyTutorial = {
