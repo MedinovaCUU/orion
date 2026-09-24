@@ -549,7 +549,10 @@ function AssignedFalconSlaAlerts({ contextLabel, entries, userId }: FalconSlaAle
       persistThresholds();
     }
 
-    setQueue((current) => current.filter((item) => openIds.has(item.ticketId)));
+    setQueue((current) => {
+      const remaining = current.filter((item) => openIds.has(item.ticketId));
+      return remaining.length === current.length ? current : remaining;
+    });
   }, [openEntries, persistThresholds]);
 
   useEffect(() => {

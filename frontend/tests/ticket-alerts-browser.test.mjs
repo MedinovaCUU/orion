@@ -3,6 +3,7 @@ import { chromium } from 'playwright-core';
 const browser=await chromium.launch({channel:'chrome',headless:true});
 const page=await browser.newPage();
 const errors=[];page.on('pageerror',e=>errors.push(e.message));
+page.on('console', message => { if (message.type()==='error' && /Maximum update depth/.test(message.text())) errors.push(message.text()); });
 let assigned=true;let reads=0;
 await page.addInitScript(()=>{
  window.__played=0;
