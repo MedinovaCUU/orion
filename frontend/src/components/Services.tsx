@@ -55,7 +55,7 @@ export default function Services({ subPermissions = ['planeacion', 'viajes', 're
   const [travelRefreshKey, setTravelRefreshKey] = useState(0);
 
   const fetchContext = async () => {
-    setLoading(true);
+    // Keep mounted views and unsaved drafts during background refreshes.
 
     const {
       data: { user },

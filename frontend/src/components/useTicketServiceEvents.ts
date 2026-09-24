@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { supabase } from '../supabaseClient';
 import type { TicketServiceEvent } from './ticketControlModel';
 
@@ -6,11 +6,18 @@ export default function useTicketServiceEvents(refreshKey: unknown, ticketId?: s
   const [events, setEvents] = useState<TicketServiceEvent[]>([]);
   const [error, setError] = useState('');
   const [loaded, setLoaded] = useState(false);
+  const scope = useRef(ticketId);
   const [canApprove, setCanApprove] = useState(false);
   useEffect(() => {
     let active = true;
     void (async () => {
-      setLoaded(false);
+      // Refresh the same case in place. Only a different case needs an initial loader.
+      if (scope.current !== ticketId) {
+        scope.current = ticketId;
+        setLoaded(false);
+        setEvents([]);
+        setCanApprove(false);
+      }
       setError('');
       try {
         const all: TicketServiceEvent[] = [];

@@ -398,7 +398,7 @@ export default function Tickets({ subPermissions = ['crear', 'seguimiento', 'dia
   }, [cerrarModalOpen]);
 
   const fetchTickets = async () => {
-    setLoading(true);
+    // Keep mounted views and unsaved drafts during background refreshes.
     const { data: { user } } = await supabase.auth.getUser();
     if (user) {
       const { data: profile } = await supabase

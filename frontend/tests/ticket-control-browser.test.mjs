@@ -70,6 +70,16 @@ try {
  await page.getByRole('button',{name:'Ver expediente',exact:true}).click();
  await page.getByLabel('Movimiento',{exact:true}).waitFor();
  assert.equal(await page.locator('textarea').count(),1,'One capture field replaces the duplicated forms');
+ // A refresh must not unmount the open case or erase a draft.
+ await page.getByLabel('Detalle del movimiento').fill('Borrador que debe sobrevivir a la actualización.');
+ await page.evaluate(() => { const field = document.querySelector('textarea'); window.__draftField = field; window.__draftRemoved = false; window.__draftObserver = new MutationObserver(() => { if (!field.isConnected) window.__draftRemoved = true; }); window.__draftObserver.observe(document.body, {childList:true,subtree:true}); });
+ await Promise.all([page.waitForResponse(response => response.url().includes('/rpc/can_approve_ticket_delay')), page.getByRole('button',{name:'Actualizar',exact:true}).click()]);
+ await page.evaluate(() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve))));
+ await page.getByText('Trazabilidad disponible',{exact:true}).waitFor();
+ await page.waitForFunction(() => document.querySelector('textarea') === window.__draftField);
+ assert.equal(await page.getByLabel('Detalle del movimiento').inputValue(),'Borrador que debe sobrevivir a la actualización.');
+ assert.equal(await page.evaluate(() => window.__draftRemoved),false,'Background refresh must keep the form mounted');
+ await page.evaluate(() => window.__draftObserver.disconnect());
  await page.getByLabel('Movimiento',{exact:true}).selectOption('revision_cierre');
  await page.getByLabel('Detalle del movimiento').fill('Gerencia validó la evidencia del cierre. La demora sigue sin justificar.');
  await page.getByRole('button',{name:'Guardar movimiento',exact:true}).click();
