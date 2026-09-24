@@ -20,7 +20,7 @@ export const PERMISSIONS_OWNER_USER_IDS = ['2a87dde5-76ef-4365-8690-870efc7d9d82
 export const PERMISSIONS_OWNER_EMAILS = ['rmontanez@biosystems.com.mx'] as const;
 
 export const MODULE_SUBPERMISSIONS = {
-  tickets: ['crear', 'seguimiento', 'diagnostico'],
+  tickets: ['crear', 'seguimiento', 'diagnostico', 'aprobar_demoras'],
   servicios: ['planeacion', 'viajes', 'reportes'],
   asesoria: ['crear', 'bandeja', 'metricas'],
   trazabilidad: ['tracking', 'eventos_refacciones', 'analitica'],
@@ -37,6 +37,7 @@ export type SubPermissionKey = (typeof MODULE_SUBPERMISSIONS)[ModuleWithSubpermi
 
 export const SUBPERMISSION_LABELS: Record<ModuleWithSubpermissions, Record<string, string>> = {
   tickets: {
+    aprobar_demoras: 'Aprobar demoras de servicio (gerencia)',
     crear: 'Crear tickets',
     seguimiento: 'Consultar tickets',
     diagnostico: 'Diagnosticar y cerrar',

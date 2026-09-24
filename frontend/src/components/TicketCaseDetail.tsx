@@ -1,3 +1,4 @@
+import TicketServiceMetrics from './TicketServiceMetrics';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { supabase } from '../supabaseClient';
 import {
@@ -347,6 +348,8 @@ export default function TicketCaseDetail({ ticket, equipment, canWrite, onChange
         </div>
       </div>
 
+      <TicketServiceMetrics ticket={ticket} canWrite={canWrite} onChanged={() => { void loadCase(); onChanged(); }} />
+
       {canWrite ? (
         <div className="ticket-case__quick-log">
           <div className="ticket-case__quick-log-heading">
@@ -358,7 +361,7 @@ export default function TicketCaseDetail({ ticket, equipment, canWrite, onChange
               {Object.entries(activityLabels).map(([value, label]) => <option key={value} value={value}>{label}</option>)}
             </select>
             <select className="input-field" value={nextStatus} onChange={(event) => setNextStatus(event.target.value)}>
-              {Object.entries(statusLabels).map(([value, label]) => <option key={value} value={value}>{label}</option>)}
+              {Object.entries(statusLabels).filter(([value]) => value !== 'cerrado').map(([value, label]) => <option key={value} value={value}>{label}</option>)}
             </select>
           </div>
           <textarea className="input-field" rows={3} value={detail} onChange={(event) => setDetail(event.target.value)} placeholder="Ej. Se revisó presión, se ajustó la bomba y quedó operando; validar nuevamente mañana a las 10:00." />

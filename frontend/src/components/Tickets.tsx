@@ -1,3 +1,4 @@
+import TicketServiceMetrics from './TicketServiceMetrics';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { supabase } from '../supabaseClient';
@@ -339,6 +340,7 @@ export default function Tickets({ subPermissions = ['crear', 'seguimiento', 'dia
   const canDiagnoseTickets = subPermissions.includes('diagnostico');
   const [tickets, setTickets] = useState<TicketRecord[]>([]);
   const [loading, setLoading] = useState(true);
+  const [caseFilter, setCaseFilter] = useState('abiertos');
   const [asunto, setAsunto] = useState('');
   const [descripcion, setDescripcion] = useState('');
   const [submitting, setSubmitting] = useState(false);
@@ -407,11 +409,16 @@ export default function Tickets({ subPermissions = ['crear', 'seguimiento', 'dia
         (profile?.nombre_completo as string | null | undefined) || user.user_metadata?.nombre_completo || user.email,
       );
 
-      const { data, error } = await supabase
-        .from('tickets')
-        .select('*')
-        .neq('estado', 'cerrado')
-        .order('creado_en', { ascending: false });
+      const data: TicketRecord[] = [];
+      let error: { message: string } | null = null;
+      for (let offset = 0; ; offset += 1000) {
+        const page = await supabase.from('tickets').select('*')
+          .order('creado_en', { ascending: false }).order('id').range(offset, offset + 999);
+        if (page.error) { error = page.error; break; }
+        data.push(...(page.data || []) as TicketRecord[]);
+        if ((page.data?.length || 0) < 1000) break;
+      }
+      if (error) setTicketFeedback({ tone: 'error', message: `No se pudieron cargar los casos: ${error.message}` });
       
       if (!error && data) {
         const visibleTickets = (data as TicketRecord[]).filter((ticket) => {
@@ -599,7 +606,20 @@ export default function Tickets({ subPermissions = ['crear', 'seguimiento', 'dia
       const parsedCds = cerrarData.cds ? cerrarData.cds.split(' - ')[0].trim() : null;
       
       // 1. Cerrar o Actualizar Ticket
-      await supabase.from('tickets').update({ estado: estadoAAsignar }).eq('id', selectedTicket.id);
+      const solution = [cerrarData.cds, cerrarData.comentarios].filter(Boolean).join(' · ').trim();
+      if (estadoAAsignar === 'cerrado' && solution.length < 2) {
+          window.alert('Registra la solución aplicada o describe la solución en comentarios.');
+          setSubmitting(false);
+          return;
+      }
+      const { error: closeError } = estadoAAsignar === 'cerrado'
+        ? await supabase.rpc('register_ticket_service_event', { p_ticket_id: selectedTicket.id, p_kind: 'cierre', p_detail: solution })
+        : await supabase.from('tickets').update({ estado: estadoAAsignar }).eq('id', selectedTicket.id);
+      if (closeError) {
+          window.alert(`No se pudo guardar: ${closeError.message}`);
+          setSubmitting(false);
+          return;
+      }
 
       // 2. Crear Servicio Historial
       const { data: servData, error: servErr } = await supabase.from('servicios_historial').insert({
@@ -611,6 +631,7 @@ export default function Tickets({ subPermissions = ['crear', 'seguimiento', 'dia
           tecnico_id: user?.id
       }).select('id').single();
 
+      if (servErr) window.alert(`El estado se guardó, pero el historial de servicio falló: ${servErr.message}`);
       if (!servErr && servData && cerrarData.refaccionesUsadas.length > 0) {
           // 3. Registrar refacciones usadas en puente
           const refPayload = cerrarData.refaccionesUsadas.filter(r => r.codigo.trim() !== '').map(r => ({
@@ -821,13 +842,15 @@ export default function Tickets({ subPermissions = ['crear', 'seguimiento', 'dia
 
       {canViewTickets ? <div className="card" style={{ background: 'var(--bg-secondary)', border: 'none' }}>
         <h3 style={{ marginBottom: '1rem' }}>Bandeja de Casos de Soporte</h3>
+      {(canDiagnoseTickets || subPermissions.includes('aprobar_demoras')) && <TicketServiceMetrics tickets={tickets} />}
+      <label>Mostrar casos <select className="input-field" value={caseFilter} onChange={event => setCaseFilter(event.target.value)}><option value="abiertos">Abiertos</option><option value="cerrados">Cerrados</option><option value="todos">Todos</option></select></label>
       {loading ? (
         <p>Cargando tickets...</p>
       ) : tickets.length === 0 ? (
         <p style={{ color: 'var(--text-secondary)' }}>No tienes tickets aún.</p>
       ) : (
         <ul className="tickets-list">
-          {ticketRenderItems.map(({ ticket, notification, isPlanningTicket, resolvedEquipment, ticketClientLabel, ticketPhoneLabel, locationLabel, staticFalconSla }) => {
+          {ticketRenderItems.filter(({ ticket }) => caseFilter === 'todos' || (caseFilter === 'cerrados' ? ticket.estado === 'cerrado' : ticket.estado !== 'cerrado')).map(({ ticket, notification, isPlanningTicket, resolvedEquipment, ticketClientLabel, ticketPhoneLabel, locationLabel, staticFalconSla }) => {
               const displayFalconSla = isPlanningTicket ? null : staticFalconSla;
               const ticketSlaTone = displayFalconSla ? getFalconSlaTone(displayFalconSla.severity) : null;
 
