@@ -454,8 +454,8 @@ export default function Dashboard({ session, initialTab }: DashboardProps) {
 
       <div className={`card dashboard-card ${activeTab === 'trazabilidad' ? 'dashboard-card--traceability' : ''}`}>
         <Suspense fallback={<DashboardPanelFallback />}>
-          {activeTab === 'tickets' && canAccessTab('tickets') && <Tickets subPermissions={getModuleSubPermissions(userAccess, 'tickets')} />}
-          {activeTab === 'servicios' && canAccessTab('servicios') && <Services subPermissions={getModuleSubPermissions(userAccess, 'servicios')} />}
+          {activeTab === 'tickets' && canAccessTab('tickets') && <Tickets key={session?.user?.id} subPermissions={getModuleSubPermissions(userAccess, 'tickets')} />}
+          {activeTab === 'servicios' && canAccessTab('servicios') && <Services key={session?.user?.id} subPermissions={getModuleSubPermissions(userAccess, 'servicios')} />}
           {activeTab === 'asesoria' && canAccessTab('asesoria') && (
             <EscalatedAdvisory
               onNotificationCountChange={setAdvisoryUnreadCount}

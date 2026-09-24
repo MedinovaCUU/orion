@@ -15,10 +15,10 @@ export default function useTicketServiceEvents(refreshKey: unknown, ticketId?: s
       try {
         const all: TicketServiceEvent[] = [];
         for (let offset = 0; ; offset += 1000) {
-          let query = supabase.from('ticket_service_events').select('*, profiles(nombre_completo)')
-            .order('occurred_at').order('id').range(offset, offset + 999);
-          if (ticketId) query = query.eq('ticket_id', ticketId);
-          const result = await query;
+          const result = ticketId
+            ? await supabase.from('ticket_service_events').select('*, profiles(nombre_completo)')
+                .eq('ticket_id', ticketId).order('occurred_at').order('id').range(offset, offset + 999)
+            : await supabase.rpc('get_ticket_control_events', { p_offset: offset, p_limit: 1000 });
           if (result.error) throw result.error;
           all.push(...result.data as TicketServiceEvent[]);
           if (!active) return;

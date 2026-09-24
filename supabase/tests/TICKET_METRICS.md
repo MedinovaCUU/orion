@@ -50,3 +50,25 @@ respuestas posteriores se agregan como seguimiento sin reiniciar el tiempo.
 El estado y la visibilidad solo se aplican a avances; las notas, aprobaciones y
 revisiones son internas. Los permisos y la validación de estados se comprueban
 en la base de datos, además de controlar los campos visibles en la interfaz.
+
+## Acceso administrativo y alarmas por asignación
+
+La migración `20260924030000_ticket_control_admin_and_assignments.sql` exige rol
+`admin` para consultar los datos globales del centro de control y asignar casos.
+La vista operativa y el seguimiento individual conservan sus permisos existentes.
+La autorización del centro se valida tanto al abrir la pantalla como en su RPC.
+
+`ticket_assignments` es la fuente de asignación; no se deduce del creador del
+caso ni del técnico que instaló el equipo. Los administradores asignan casos
+abiertos desde el expediente del centro de control. Cada cambio deja bitácora.
+Los técnicos solo pueden leer sus propias asignaciones mediante RLS.
+
+Las alertas de Falcon de Tickets y Planeación pasan por la misma verificación:
+solo se muestran/reproducen para casos asignados al usuario autenticado. Se
+reconsulta cada 30 segundos y al recuperar foco o cambiar de cuenta. Los casos
+sin asignación no generan alarmas personales. Los umbrales recordados en el
+navegador se separan por usuario.
+
+Pruebas adicionales: `frontend/tests/ticket-alert-access.test.mjs` y
+`frontend/tests/ticket-alerts-browser.test.mjs` (Vite, puerto 5198). La segunda
+simula a Francisco y otro responsable, sin usar sesiones o tickets reales.

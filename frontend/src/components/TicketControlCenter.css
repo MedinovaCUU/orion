@@ -118,3 +118,6 @@
 .tc-movement .tc-visibility { display:flex; align-items:center; gap:8px; font-size:11px; }
 .tc-movement .tc-visibility input { width:auto; min-height:0; }
 .tc-center .tc-movement .tc-visibility { flex-direction:row; }
+.tc-assignment { display:flex; flex-wrap:wrap; align-items:end; gap:12px; padding:16px; margin-bottom:16px; background:white; border:1px solid #dbe5eb; border-radius:10px; }
+.tc-assignment>label { min-width:220px; flex:1; }
+.tc-assignment>small { flex-basis:100%; color:#617c8b; font-size:11px; }

@@ -1,3 +1,4 @@
+import { canOpenTicketControl } from './ticketAlertAccess';
 import TicketControlCenter from './TicketControlCenter';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
@@ -342,6 +343,8 @@ export default function Tickets({ subPermissions = ['crear', 'seguimiento', 'dia
   const [loading, setLoading] = useState(true);
   const [caseFilter, setCaseFilter] = useState('abiertos');
   const [controlView, setControlView] = useState(true);
+  const [viewerRole, setViewerRole] = useState<string | null>(null);
+  const canViewControl = canOpenTicketControl(viewerRole);
   const [asunto, setAsunto] = useState('');
   const [descripcion, setDescripcion] = useState('');
   const [submitting, setSubmitting] = useState(false);
@@ -404,6 +407,7 @@ export default function Tickets({ subPermissions = ['crear', 'seguimiento', 'dia
         .eq('id', user.id)
         .maybeSingle();
 
+      setViewerRole(profile?.rol || null);
       const isSupportStaff = profile?.rol === 'admin' || profile?.rol === 'tecnico';
 
       const currentProfileName = normalizeComparableText(
@@ -440,6 +444,7 @@ export default function Tickets({ subPermissions = ['crear', 'seguimiento', 'dia
         setTickets(visibleTickets);
       }
     } else {
+      setViewerRole(null);
       setTickets([]);
     }
     setLoading(false);
@@ -842,13 +847,13 @@ export default function Tickets({ subPermissions = ['crear', 'seguimiento', 'dia
         </form>
       </div></details> : null}
 
-      {canViewTickets && <div className="tickets-view-switch"><button type="button" className="button-primary" aria-pressed={controlView} onClick={() => setControlView(true)}>Centro de control</button><button type="button" className="button-primary inactive" aria-pressed={!controlView} onClick={() => setControlView(false)}>Vista operativa</button></div>}
-      {canViewTickets && controlView && <TicketControlCenter entries={ticketRenderItems} loading={loading} canWrite={canDiagnoseTickets} onChanged={fetchTickets} onDiagnose={ticket => {
+      {canViewTickets && canViewControl && <div className="tickets-view-switch"><button type="button" className="button-primary" aria-pressed={controlView} onClick={() => setControlView(true)}>Centro de control</button><button type="button" className="button-primary inactive" aria-pressed={!controlView} onClick={() => setControlView(false)}>Vista operativa</button></div>}
+      {canViewTickets && canViewControl && controlView && <TicketControlCenter entries={ticketRenderItems} loading={loading} canWrite={canDiagnoseTickets} onChanged={fetchTickets} onDiagnose={ticket => {
         setSelectedTicket(ticket);
         setCerrarData({ no_serie: ticket.numero_serie_equipo || '', cda: '', cds: '', comentarios: '', refaccionesUsadas: [] });
         setCerrarModalOpen(true);
       }} />}
-      {canViewTickets && !controlView ? <div className="card" style={{ background: 'var(--bg-secondary)', border: 'none' }}>
+      {canViewTickets && (!canViewControl || !controlView) ? <div className="card" style={{ background: 'var(--bg-secondary)', border: 'none' }}>
         <h3 style={{ marginBottom: '1rem' }}>Bandeja de Casos de Soporte</h3>
       <label>Mostrar casos <select className="input-field" value={caseFilter} onChange={event => setCaseFilter(event.target.value)}><option value="abiertos">Abiertos</option><option value="cerrados">Cerrados</option><option value="todos">Todos</option></select></label>
       {loading ? (

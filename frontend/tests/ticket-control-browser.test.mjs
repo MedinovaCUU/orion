@@ -18,11 +18,16 @@ for(let id=1;id<=22;id++){
  if(id<=20&&id!==6)events.push(event(id,'cierre',id===2||id===3?72:20,{closure_reason:id===4?'visita_programada':id===5?null:'solucionado'}));
 }
 events.push(event(3,'justificacion',74));
-let reviewWrites=0; let movementWrites=0; let allowApproval=true; let failEvents=false;
+let reviewWrites=0; let movementWrites=0; let allowApproval=true; let failEvents=false; let allowControl=true; let bulkReads=0; let assignmentWrites=0; const assignments=new Map();
 await context.route('**/rest/v1/**',async route=>{
  const url=new URL(route.request().url());
  let data=[];
- if(url.pathname.endsWith('/ticket_service_events') && failEvents) { await route.fulfill({status:503,contentType:'application/json',body:JSON.stringify({message:'Servicio temporalmente no disponible'})}); return; }
+ if(url.pathname.endsWith('/rpc/is_admin')) data=allowControl;
+ if(url.pathname.endsWith('/rpc/get_ticket_control_events')) {data=events; bulkReads++;}
+ if(url.pathname.endsWith('/ticket_assignments')) { const id=url.searchParams.get('ticket_id')?.replace('eq.',''); data=assignments.has(id)?{assigned_to:assignments.get(id)}:null; }
+ if(url.pathname.endsWith('/profiles')) data=[{id:'ana',nombre_completo:'Ana Martínez'},{id:'diego',nombre_completo:'Diego Navarro'}];
+ if(url.pathname.endsWith('/rpc/assign_support_ticket')) { const payload=route.request().postDataJSON(); assignments.set(payload.p_ticket_id,payload.p_assigned_to); assignmentWrites++; data=null; }
+ if((url.pathname.endsWith('/ticket_service_events') || url.pathname.endsWith('/rpc/get_ticket_control_events')) && failEvents) { await route.fulfill({status:503,contentType:'application/json',body:JSON.stringify({message:'Servicio temporalmente no disponible'})}); return; }
  if(url.pathname.endsWith('/ticket_service_events')) { const id=url.searchParams.get('ticket_id')?.replace('eq.',''); data=id?events.filter(e=>e.ticket_id===id):events; }
  if(url.pathname.endsWith('/rpc/can_approve_ticket_delay')) data=allowApproval;
  if(url.pathname.endsWith('/rpc/register_ticket_movement')) {
@@ -97,6 +102,11 @@ try {
  await page.waitForFunction(()=>document.querySelector('textarea')?.value==='');
  assert.equal(events.filter(e=>e.ticket_id==='case-22'&&e.kind==='respuesta').length,1);
  assert.equal(movementWrites,3);
+ await page.getByLabel('Responsable del caso',{exact:true}).selectOption('ana');
+ await page.getByRole('button',{name:'Guardar asignación',exact:true}).click();
+ await page.waitForFunction(()=>document.querySelector('select[aria-label="Responsable del caso"]')?.value==='ana');
+ assert.equal(assignmentWrites,1);
+ assert.equal(assignments.get('case-22'),'ana');
  await page.screenshot({path:fileURLToPath(new URL('captura-unificada.png',output)),fullPage:true});
  allowApproval=false;
  await page.reload();
@@ -110,6 +120,12 @@ try {
  await page.getByRole('alert').waitFor();
  assert.equal(await page.getByRole('button',{name:'Exportar Excel'}).isDisabled(),true);
  assert.equal(await page.getByRole('button',{name:'Ver expediente',exact:true}).count(),0);
+ failEvents=false; allowControl=false;
+ const readsBefore = bulkReads;
+ await page.reload();
+ await page.getByText('El centro de control es exclusivo para administradores.',{exact:true}).waitFor();
+ assert.equal(await page.getByRole('button',{name:'Exportar Excel'}).count(),0);
+ assert.equal(bulkReads,readsBefore,'Non-admin never requests global control data');
  assert.deepEqual(errors,[]);
  console.log('PASS: dashboard, pagination, search, audited review, SLA preservation, outcome/date filters, full Excel and print exports, mobile layout');
 } finally {await browser.close();}

@@ -1,3 +1,5 @@
+import { supabase } from '../supabaseClient';
+import TicketAssignmentControl from './TicketAssignmentControl';
 import { Fragment, useEffect, useMemo, useState } from 'react';
 import TicketCaseDetail, { type CaseTicketRecord } from './TicketCaseDetail';
 import type { EquipmentSummary } from './servicesPlanning';
@@ -19,9 +21,22 @@ const localDay = (value?: string) => {
 };
 const PAGE_SIZE = 15;
 
-export default function TicketControlCenter({ entries, canWrite, loading, onChanged, onDiagnose }: {
+interface TicketControlCenterProps {
   entries: ControlEntry[]; canWrite: boolean; loading: boolean; onChanged: () => void; onDiagnose: (ticket: CaseTicketRecord) => void;
-}) {
+}
+export default function TicketControlCenter(props: TicketControlCenterProps) {
+  const [authorized, setAuthorized] = useState<boolean | null>(null);
+  useEffect(() => {
+    let active = true;
+    void supabase.rpc('is_admin').then(({ data, error }) => {
+      if (active) setAuthorized(!error && data === true);
+    });
+    return () => { active = false; };
+  }, []);
+  if (authorized !== true) return <p role="status">{authorized === null ? 'Verificando acceso al centro de control…' : 'El centro de control es exclusivo para administradores.'}</p>;
+  return <AdminTicketControlCenter {...props} />;
+}
+function AdminTicketControlCenter({ entries, canWrite, loading, onChanged, onDiagnose }: TicketControlCenterProps) {
   const { events, error, loaded } = useTicketServiceEvents(entries);
   const [now, setNow] = useState(Date.now());
   useEffect(() => { const timer = window.setInterval(() => setNow(Date.now()), 60000); return () => window.clearInterval(timer); }, []);
@@ -177,7 +192,7 @@ export default function TicketControlCenter({ entries, canWrite, loading, onChan
           <td><span className={`tc-badge tc-badge--${row.sla}`}>{slaLabels[row.sla]}</span>{row.hours !== null && <small>{row.hours > 48 ? `${formatDuration(row.hours - 48)} sobre el plazo` : `${formatDuration(48 - row.hours)} de margen`}</small>}</td>
           <td><span className={`tc-review ${row.review ? 'is-reviewed' : ''}`}>{row.closed ? row.review ? '✓ Revisado' : '○ Por revisar' : 'En atención'}</span>{row.review && <small>{eventAuthor(row.review)}</small>}</td>
           <td><button type="button" className="tc-open" aria-expanded={expanded === row.ticket.id} onClick={() => setExpanded(expanded === row.ticket.id ? null : row.ticket.id)}>{expanded === row.ticket.id ? 'Cerrar vista' : 'Ver expediente'}</button></td>
-        </tr>{expanded === row.ticket.id && <tr className="tc-expanded"><td colSpan={8}><div className="tc-expanded-heading"><div><span className="tc-eyebrow">EXPEDIENTE DEL CASO</span><h3>{row.ticket.asunto}</h3></div>{canWrite && !row.closed && <button type="button" onClick={() => onDiagnose(row.ticket)}>Diagnóstico y refacciones</button>}</div><TicketCaseDetail ticket={row.ticket} equipment={row.resolvedEquipment} canWrite={canWrite && !row.closed} onChanged={onChanged} /></td></tr>}</Fragment>)}
+        </tr>{expanded === row.ticket.id && <tr className="tc-expanded"><td colSpan={8}><div className="tc-expanded-heading"><div><span className="tc-eyebrow">EXPEDIENTE DEL CASO</span><h3>{row.ticket.asunto}</h3></div>{canWrite && !row.closed && <button type="button" onClick={() => onDiagnose(row.ticket)}>Diagnóstico y refacciones</button>}</div><TicketAssignmentControl ticket={row.ticket} onChanged={onChanged} /><TicketCaseDetail ticket={row.ticket} equipment={row.resolvedEquipment} canWrite={canWrite && !row.closed} onChanged={onChanged} /></td></tr>}</Fragment>)}
       </tbody></table></div>
       <div className="tc-pagination"><span>Mostrando {(currentPage - 1) * PAGE_SIZE + 1}–{Math.min(currentPage * PAGE_SIZE, filtered.length)} de {filtered.length} · Las exportaciones incluyen todos los resultados</span><div><button type="button" disabled={currentPage === 1} onClick={() => setPage(currentPage - 1)}>Anterior</button><span>{currentPage} / {pages}</span><button type="button" disabled={currentPage === pages} onClick={() => setPage(currentPage + 1)}>Siguiente</button></div></div>
     </>}
