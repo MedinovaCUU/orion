@@ -37,7 +37,7 @@ export type SubPermissionKey = (typeof MODULE_SUBPERMISSIONS)[ModuleWithSubpermi
 
 export const SUBPERMISSION_LABELS: Record<ModuleWithSubpermissions, Record<string, string>> = {
   tickets: {
-    aprobar_demoras: 'Aprobar demoras de servicio (gerencia)',
+    aprobar_demoras: 'Aprobar demoras y revisar cierres (gerencia)',
     crear: 'Crear tickets',
     seguimiento: 'Consultar tickets',
     diagnostico: 'Diagnosticar y cerrar',

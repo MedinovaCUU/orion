@@ -1,4 +1,4 @@
-import TicketServiceMetrics from './TicketServiceMetrics';
+import TicketControlCenter from './TicketControlCenter';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { supabase } from '../supabaseClient';
@@ -341,6 +341,7 @@ export default function Tickets({ subPermissions = ['crear', 'seguimiento', 'dia
   const [tickets, setTickets] = useState<TicketRecord[]>([]);
   const [loading, setLoading] = useState(true);
   const [caseFilter, setCaseFilter] = useState('abiertos');
+  const [controlView, setControlView] = useState(true);
   const [asunto, setAsunto] = useState('');
   const [descripcion, setDescripcion] = useState('');
   const [submitting, setSubmitting] = useState(false);
@@ -718,7 +719,8 @@ export default function Tickets({ subPermissions = ['crear', 'seguimiento', 'dia
 
   return (
     <div className="tickets-shell">
-      {canCreateTickets ? <div className="card" style={{ background: 'var(--bg-secondary)', border: 'none', marginBottom: '1rem' }}>
+      {ticketFeedback?.tone === 'error' && <p className="tc-error" role="alert">{ticketFeedback.message}</p>}
+      {canCreateTickets ? <details className="tickets-create-panel"><summary>＋ Abrir un nuevo ticket</summary><div className="card" style={{ background: 'var(--bg-secondary)', border: 'none', marginBottom: '1rem' }}>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '0.28rem', marginBottom: '0.35rem' }}>
           <h3 style={{ margin: 0 }}>Abrir un Nuevo Ticket</h3>
           {ocrBusy ? (
@@ -838,11 +840,16 @@ export default function Tickets({ subPermissions = ['crear', 'seguimiento', 'dia
             </button>
           </div>
         </form>
-      </div> : null}
+      </div></details> : null}
 
-      {canViewTickets ? <div className="card" style={{ background: 'var(--bg-secondary)', border: 'none' }}>
+      {canViewTickets && <div className="tickets-view-switch"><button type="button" className="button-primary" aria-pressed={controlView} onClick={() => setControlView(true)}>Centro de control</button><button type="button" className="button-primary inactive" aria-pressed={!controlView} onClick={() => setControlView(false)}>Vista operativa</button></div>}
+      {canViewTickets && controlView && <TicketControlCenter entries={ticketRenderItems} loading={loading} canWrite={canDiagnoseTickets} onChanged={fetchTickets} onDiagnose={ticket => {
+        setSelectedTicket(ticket);
+        setCerrarData({ no_serie: ticket.numero_serie_equipo || '', cda: '', cds: '', comentarios: '', refaccionesUsadas: [] });
+        setCerrarModalOpen(true);
+      }} />}
+      {canViewTickets && !controlView ? <div className="card" style={{ background: 'var(--bg-secondary)', border: 'none' }}>
         <h3 style={{ marginBottom: '1rem' }}>Bandeja de Casos de Soporte</h3>
-      {(canDiagnoseTickets || subPermissions.includes('aprobar_demoras')) && <TicketServiceMetrics tickets={tickets} />}
       <label>Mostrar casos <select className="input-field" value={caseFilter} onChange={event => setCaseFilter(event.target.value)}><option value="abiertos">Abiertos</option><option value="cerrados">Cerrados</option><option value="todos">Todos</option></select></label>
       {loading ? (
         <p>Cargando tickets...</p>

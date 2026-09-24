@@ -126,12 +126,7 @@ export default function TicketCaseDetail({ ticket, equipment, canWrite, onChange
   const [services, setServices] = useState<ServiceHistoryRow[]>([]);
   const [sapReports, setSapReports] = useState<SapServiceReportRow[]>([]);
   const [loading, setLoading] = useState(true);
-  const [saving, setSaving] = useState(false);
   const [feedback, setFeedback] = useState('');
-  const [activityType, setActivityType] = useState('avance');
-  const [detail, setDetail] = useState('');
-  const [nextStatus, setNextStatus] = useState(ticket.estado);
-  const [visibleToClient, setVisibleToClient] = useState(true);
 
   const serial = ticket.numero_serie_equipo?.trim() || '';
 
@@ -300,38 +295,6 @@ export default function TicketCaseDetail({ ticket, equipment, canWrite, onChange
     return String(value);
   };
 
-  const saveActivity = async () => {
-    const trimmedDetail = detail.trim();
-    if (trimmedDetail.length < 2) {
-      setFeedback('Escribe brevemente qué se hizo o en qué quedó el caso.');
-      return;
-    }
-    setSaving(true);
-    setFeedback('');
-    const { data: { user } } = await supabase.auth.getUser();
-    const { error } = await supabase.from('ticket_bitacora').insert({
-      ticket_id: ticket.id,
-      numero_serie_equipo: serial || null,
-      tipo: activityType,
-      detalle: trimmedDetail,
-      estado_resultante: nextStatus,
-      visible_cliente: visibleToClient,
-      creado_por: user?.id,
-    });
-
-    if (error) {
-      setFeedback(error.message.includes('ticket_bitacora')
-        ? 'Falta aplicar la actualización de base de datos del nuevo módulo de casos.'
-        : `No se pudo registrar: ${error.message}`);
-    } else {
-      setDetail('');
-      setFeedback('Avance guardado en la bitácora del caso y del equipo.');
-      await loadCase();
-      onChanged();
-    }
-    setSaving(false);
-  };
-
   return (
     <section className="ticket-case">
       <div className="ticket-case__summary">
@@ -350,27 +313,7 @@ export default function TicketCaseDetail({ ticket, equipment, canWrite, onChange
 
       <TicketServiceMetrics ticket={ticket} canWrite={canWrite} onChanged={() => { void loadCase(); onChanged(); }} />
 
-      {canWrite ? (
-        <div className="ticket-case__quick-log">
-          <div className="ticket-case__quick-log-heading">
-            <div><span>Registro rápido</span><strong>¿Qué hiciste y en qué quedó?</strong></div>
-            <label><input type="checkbox" checked={visibleToClient} onChange={(event) => setVisibleToClient(event.target.checked)} /> Visible para cliente</label>
-          </div>
-          <div className="ticket-case__quick-grid">
-            <select className="input-field" value={activityType} onChange={(event) => setActivityType(event.target.value)}>
-              {Object.entries(activityLabels).map(([value, label]) => <option key={value} value={value}>{label}</option>)}
-            </select>
-            <select className="input-field" value={nextStatus} onChange={(event) => setNextStatus(event.target.value)}>
-              {Object.entries(statusLabels).filter(([value]) => value !== 'cerrado').map(([value, label]) => <option key={value} value={value}>{label}</option>)}
-            </select>
-          </div>
-          <textarea className="input-field" rows={3} value={detail} onChange={(event) => setDetail(event.target.value)} placeholder="Ej. Se revisó presión, se ajustó la bomba y quedó operando; validar nuevamente mañana a las 10:00." />
-          <div className="ticket-case__quick-actions">
-            {feedback ? <span>{feedback}</span> : <span>El avance se suma al historial global del equipo.</span>}
-            <button type="button" className="button-primary" disabled={saving} onClick={() => void saveActivity()}>{saving ? 'Guardando…' : 'Guardar avance'}</button>
-          </div>
-        </div>
-      ) : null}
+      {feedback && <p role="status">{feedback}</p>}
 
       <div className="ticket-case__timeline-heading">
         <div><span>Bitácora unificada</span><strong>Tickets, avances y servicios del equipo</strong></div>
