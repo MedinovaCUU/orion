@@ -408,12 +408,6 @@ export default function Tickets({ subPermissions = ['crear', 'seguimiento', 'dia
         .maybeSingle();
 
       setViewerRole(profile?.rol || null);
-      const isSupportStaff = profile?.rol === 'admin' || profile?.rol === 'tecnico';
-
-      const currentProfileName = normalizeComparableText(
-        (profile?.nombre_completo as string | null | undefined) || user.user_metadata?.nombre_completo || user.email,
-      );
-
       const data: TicketRecord[] = [];
       let error: { message: string } | null = null;
       for (let offset = 0; ; offset += 1000) {
@@ -423,25 +417,12 @@ export default function Tickets({ subPermissions = ['crear', 'seguimiento', 'dia
         data.push(...(page.data || []) as TicketRecord[]);
         if ((page.data?.length || 0) < 1000) break;
       }
+      if (error) setTickets([]);
       if (error) setTicketFeedback({ tone: 'error', message: `No se pudieron cargar los casos: ${error.message}` });
       
       if (!error && data) {
-        const visibleTickets = (data as TicketRecord[]).filter((ticket) => {
-          const meta = extractPlaneacionMeta(ticket.descripcion);
-          const assignedEngineerName = normalizeComparableText(meta?.ingeniero_csv);
-          const belongsByUserId = ticket.user_id === user.id;
-          const belongsByEngineerName = !!currentProfileName && assignedEngineerName === currentProfileName;
+        setTickets(data); // Supabase enforces assignment access for every query.
 
-          if (meta) {
-            return belongsByEngineerName || belongsByUserId;
-          }
-
-          // La bandeja de soporte debe incluir altas externas (user_id null) y
-          // casos creados por otros tecnicos para que realmente puedan escalarse.
-          return isSupportStaff || belongsByUserId;
-        });
-
-        setTickets(visibleTickets);
       }
     } else {
       setViewerRole(null);
@@ -473,6 +454,11 @@ export default function Tickets({ subPermissions = ['crear', 'seguimiento', 'dia
   useEffect(() => {
     fetchTickets();
     fetchCatalogs();
+    const refresh = () => { void fetchTickets(); };
+    const timer = window.setInterval(refresh, 30000);
+    window.addEventListener('focus', refresh);
+    window.addEventListener('ticket-assignment-changed', refresh);
+    return () => { window.clearInterval(timer); window.removeEventListener('focus', refresh); window.removeEventListener('ticket-assignment-changed', refresh); };
   }, []);
 
   const resetTicketForm = () => {

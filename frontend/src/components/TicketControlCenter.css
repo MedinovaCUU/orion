@@ -121,3 +121,12 @@
 .tc-assignment { display:flex; flex-wrap:wrap; align-items:end; gap:12px; padding:16px; margin-bottom:16px; background:white; border:1px solid #dbe5eb; border-radius:10px; }
 .tc-assignment>label { min-width:220px; flex:1; }
 .tc-assignment>small { flex-basis:100%; color:#617c8b; font-size:11px; }
+.tc-routing { padding: 18px 22px; border: 1px solid #dae3eb; border-radius: 18px; background: #f8fafc; margin-bottom: 16px; }
+.tc-routing summary { cursor: pointer; font-weight: 700; }
+.tc-routing p, .tc-routing li { color: #536477; font-size: .88rem; line-height: 1.6; }
+.tc-routing button { padding: 8px 12px; border-radius: 10px; border: 1px solid #d7e0e8; background: white; cursor: pointer; }
+.tc-routing button:disabled { opacity: .5; cursor: default; }
+.tc-center .tc-unassigned { display: flex; align-items: center; gap: 8px; padding: 0 28px 16px; font-size: .85rem; }
+.tc-center .tc-unassigned input { width: 17px; height: 17px; min-height: 0; margin: 0; padding: 0; flex: 0 0 17px; }
+.tc-center .tc-routing { margin: 16px 28px; }
+@media (max-width: 640px) { .tc-center .tc-routing { margin: 12px; } .tc-center .tc-unassigned { padding: 0 12px 12px; } }

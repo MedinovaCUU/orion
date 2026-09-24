@@ -135,6 +135,11 @@ export default function Services({ subPermissions = ['planeacion', 'viajes', 're
 
   useEffect(() => {
     void fetchContext();
+    const refresh = () => { void fetchContext(); };
+    const timer = window.setInterval(refresh, 30000);
+    window.addEventListener('focus', refresh);
+    window.addEventListener('ticket-assignment-changed', refresh);
+    return () => { window.clearInterval(timer); window.removeEventListener('focus', refresh); window.removeEventListener('ticket-assignment-changed', refresh); };
   }, []);
 
   const plannedTickets = useMemo(

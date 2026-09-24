@@ -1,4 +1,5 @@
 import { supabase } from '../supabaseClient';
+import TicketRoutingRules from './TicketRoutingRules';
 import TicketAssignmentControl from './TicketAssignmentControl';
 import { Fragment, useEffect, useMemo, useState } from 'react';
 import TicketCaseDetail, { type CaseTicketRecord } from './TicketCaseDetail';
@@ -40,6 +41,9 @@ function AdminTicketControlCenter({ entries, canWrite, loading, onChanged, onDia
   const { events, error, loaded } = useTicketServiceEvents(entries);
   const [now, setNow] = useState(Date.now());
   useEffect(() => { const timer = window.setInterval(() => setNow(Date.now()), 60000); return () => window.clearInterval(timer); }, []);
+  const [assignedIds, setAssignedIds] = useState<Set<string>>(new Set());
+  const [onlyUnassigned, setOnlyUnassigned] = useState(false);
+  useEffect(() => { let active = true; void (async () => { const ids = new Set<string>(); for (let offset = 0; ; offset += 1000) { const result = await supabase.from('ticket_assignments').select('ticket_id,assigned_to').order('ticket_id').range(offset, offset + 999); if (result.error) return; for (const row of result.data || []) if (row.assigned_to) ids.add(row.ticket_id); if ((result.data?.length || 0) < 1000) break; } if (active) setAssignedIds(ids); })(); return () => { active = false; }; }, [entries]);
   const [view, setView] = useState('cerrados');
   const [search, setSearch] = useState('');
   const [owner, setOwner] = useState('todos');
@@ -66,6 +70,7 @@ function AdminTicketControlCenter({ entries, canWrite, loading, onChanged, onDia
   const filtered = useMemo(() => rows.filter(row => {
     const day = localDay(dateField === 'cierre' ? row.closure?.occurred_at : row.ticket.creado_en);
     return !invalidDates
+      && (!onlyUnassigned || (!row.closed && !assignedIds.has(row.ticket.id)))
       && (view === 'todos' || (view === 'cerrados' ? row.closed : !row.closed))
       && (scope === 'todos' || (scope === 'planeacion' ? row.isPlanningTicket : !row.isPlanningTicket))
       && (owner === 'todos' || row.ownerId === owner)
@@ -82,13 +87,13 @@ function AdminTicketControlCenter({ entries, canWrite, loading, onChanged, onDia
       return priority[a.sla] - priority[b.sla] || (b.hours ?? -1) - (a.hours ?? -1);
     }
     return Date.parse(b.closure?.occurred_at || b.ticket.creado_en) - Date.parse(a.closure?.occurred_at || a.ticket.creado_en);
-  }), [rows, view, scope, owner, sla, review, outcome, dateField, from, to, search, sort, invalidDates]);
+  }), [rows, view, scope, owner, sla, review, outcome, dateField, from, to, search, sort, invalidDates, onlyUnassigned, assignedIds]);
   const summary = summarizeControl(filtered);
   const pages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
   const currentPage = Math.min(page, pages);
   const visible = filtered.slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE);
   const filterChange = (setter: (value: string) => void, value: string) => { setter(value); setPage(1); };
-  const reset = () => { setSearch(''); setOwner('todos'); setSla('todos'); setReview('todos'); setOutcome('todos'); setScope('soporte'); setFrom(''); setTo(''); setDateField('apertura'); setSort('reciente'); setPage(1); };
+  const reset = () => { setOnlyUnassigned(false); setSearch(''); setOwner('todos'); setSla('todos'); setReview('todos'); setOutcome('todos'); setScope('soporte'); setFrom(''); setTo(''); setDateField('apertura'); setSort('reciente'); setPage(1); };
   const staff = [...new Map(filtered.map(row => [row.ownerId, row.owner])).entries()].map(([id, name]) => {
     const cases = filtered.filter(row => row.ownerId === id);
     return { id, name, summary: summarizeControl(cases) };
@@ -160,6 +165,9 @@ function AdminTicketControlCenter({ entries, canWrite, loading, onChanged, onDia
 
   return <section className="tc-center" aria-label="Centro de control de tickets">
     <header className="tc-header"><div><span className="tc-eyebrow">ORION / SERVICIO</span><h2>Control de tickets</h2><p>Cada cierre, su evidencia. Cada demora, su contexto.</p></div><div className="tc-header-actions"><span className="tc-live">{dataReady ? 'Trazabilidad disponible' : 'Consultando registros'}</span><button type="button" onClick={onChanged} disabled={loading}>Actualizar</button></div></header>
+    <TicketRoutingRules onChanged={onChanged} />
+    <label className="tc-unassigned"><input type="checkbox" checked={onlyUnassigned} onChange={event => { setOnlyUnassigned(event.target.checked); setView('todos'); setPage(1); }} /> Solo casos abiertos sin responsable</label>
+
     <div className="tc-tabs" role="group" aria-label="Estado de los casos">{[['abiertos', 'En atención'], ['cerrados', 'Cerrados'], ['todos', 'Todos los casos']].map(([value, label]) => <button type="button" key={value} aria-pressed={view === value} onClick={() => filterChange(setView, value)}>{label}<span>{rows.filter(row => (scope === 'todos' || (scope === 'soporte' ? !row.isPlanningTicket : row.isPlanningTicket)) && (value === 'todos' || (value === 'cerrados' ? row.closed : !row.closed))).length}</span></button>)}</div>
     <div className="tc-kpis" aria-label="Indicadores del filtro actual">
       <article><small>Casos en esta vista</small><strong>{dataReady ? summary.total : '—'}</strong><span>{summary.closed} cerrados · {summary.solved} solucionados</span></article>

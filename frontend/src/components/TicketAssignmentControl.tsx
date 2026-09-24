@@ -14,13 +14,15 @@ export default function TicketAssignmentControl({ ticket, onChanged }: { ticket:
     let active = true;
     void (async () => {
       try {
-        const [assignment, profiles] = await Promise.all([
+        const [assignment, profiles, permissions] = await Promise.all([
           supabase.from('ticket_assignments').select('assigned_to').eq('ticket_id', ticket.id).maybeSingle(),
           supabase.from('profiles').select('id,nombre_completo').in('rol', ['admin', 'tecnico']).order('nombre_completo'),
+          supabase.from('user_module_permissions').select('user_id,modules,can_receive_tickets'),
         ]);
-        if (assignment.error || profiles.error) throw assignment.error || profiles.error;
+        if (assignment.error || profiles.error || permissions.error) throw assignment.error || profiles.error || permissions.error;
         if (!active) return;
-        setStaff(profiles.data || []); setAssigned(assignment.data?.assigned_to || ''); setSelected(assignment.data?.assigned_to || ''); setReady(true);
+        const eligible = new Set((permissions.data || []).filter(row => row.can_receive_tickets && row.modules?.includes('tickets')).map(row => row.user_id));
+        setStaff((profiles.data || []).filter(row => eligible.has(row.id) || row.id === assignment.data?.assigned_to)); setAssigned(assignment.data?.assigned_to || ''); setSelected(assignment.data?.assigned_to || ''); setReady(true);
       } catch (cause) { if (active) setError((cause as Error).message); }
     })();
     return () => { active = false; };

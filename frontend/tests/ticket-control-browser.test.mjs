@@ -18,13 +18,16 @@ for(let id=1;id<=22;id++){
  if(id<=20&&id!==6)events.push(event(id,'cierre',id===2||id===3?72:20,{closure_reason:id===4?'visita_programada':id===5?null:'solucionado'}));
 }
 events.push(event(3,'justificacion',74));
-let reviewWrites=0; let movementWrites=0; let allowApproval=true; let failEvents=false; let allowControl=true; let bulkReads=0; let assignmentWrites=0; const assignments=new Map();
+let reviewWrites=0; let movementWrites=0; let allowApproval=true; let failEvents=false; let allowControl=true; let bulkReads=0; let assignmentWrites=0; const assignments=new Map(); const routingWrites=[];
 await context.route('**/rest/v1/**',async route=>{
  const url=new URL(route.request().url());
  let data=[];
+ if(['/ticket_staff_coverage','/ticket_equipment_owners'].some(path=>url.pathname.endsWith(path)) && route.request().method()==='POST') {routingWrites.push(route.request().postDataJSON()); data=null;}
+ if(url.pathname.endsWith('/rpc/route_pending_support_tickets')) data=2;
  if(url.pathname.endsWith('/rpc/is_admin')) data=allowControl;
  if(url.pathname.endsWith('/rpc/get_ticket_control_events')) {data=events; bulkReads++;}
- if(url.pathname.endsWith('/ticket_assignments')) { const id=url.searchParams.get('ticket_id')?.replace('eq.',''); data=assignments.has(id)?{assigned_to:assignments.get(id)}:null; }
+ if(url.pathname.endsWith('/ticket_assignments')) { const id=url.searchParams.get('ticket_id')?.replace('eq.',''); data=id?(assignments.has(id)?{assigned_to:assignments.get(id)}:null):[...assignments].map(([ticket_id,assigned_to])=>({ticket_id,assigned_to})); }
+ if(url.pathname.endsWith('/user_module_permissions')) data=['ana','diego'].map(user_id=>({user_id,modules:['tickets'],can_receive_tickets:true}));
  if(url.pathname.endsWith('/profiles')) data=[{id:'ana',nombre_completo:'Ana Martínez'},{id:'diego',nombre_completo:'Diego Navarro'}];
  if(url.pathname.endsWith('/rpc/assign_support_ticket')) { const payload=route.request().postDataJSON(); assignments.set(payload.p_ticket_id,payload.p_assigned_to); assignmentWrites++; data=null; }
  if((url.pathname.endsWith('/ticket_service_events') || url.pathname.endsWith('/rpc/get_ticket_control_events')) && failEvents) { await route.fulfill({status:503,contentType:'application/json',body:JSON.stringify({message:'Servicio temporalmente no disponible'})}); return; }
@@ -43,6 +46,21 @@ try {
  await page.goto(process.env.TICKET_CONTROL_URL||'http://127.0.0.1:5198/orion/tests/fixtures/ticket-control.html');
  await page.getByText('20 casos encontrados',{exact:false}).waitFor();
  assert.equal(await page.getByRole('button',{name:'Ver expediente',exact:true}).count(),15);
+ await page.getByText('Reglas de asignación y cobertura territorial',{exact:true}).click();
+ await page.getByLabel('Responsable',{exact:true}).selectOption('ana');
+ await page.getByLabel('Estado de cobertura').fill('Chihuahua');
+ await page.getByRole('button',{name:'Agregar cobertura',exact:true}).click();
+ await page.getByText('Configuración guardada.',{exact:true}).waitFor();
+ assert.equal(routingWrites[0].territory,'chihuahua');
+ assert.equal(routingWrites[0].area,'ingenieria');
+ await page.getByLabel('Serie del equipo',{exact:true}).fill('SERIAL-1');
+ await page.getByRole('button',{name:'Guardar responsable habitual',exact:true}).click();
+ await page.getByRole('button',{name:'Guardar responsable habitual',exact:true}).waitFor();
+ await page.getByText('Configuración guardada.',{exact:true}).waitFor();
+ assert.equal(routingWrites[1].assigned_to,'ana');
+ await page.getByRole('button',{name:'Distribuir casos sin asignación',exact:true}).click();
+ await page.getByText('2 casos pendientes asignados.',{exact:false}).waitFor();
+ await page.getByText('Reglas de asignación y cobertura territorial',{exact:true}).click();
  await page.screenshot({path:fileURLToPath(new URL('desktop.png',output)),fullPage:true});
  await page.getByRole('button',{name:'Siguiente',exact:true}).click();
  assert.equal(await page.getByRole('button',{name:'Ver expediente',exact:true}).count(),5);

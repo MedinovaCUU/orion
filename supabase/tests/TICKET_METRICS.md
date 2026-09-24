@@ -72,3 +72,13 @@ navegador se separan por usuario.
 Pruebas adicionales: `frontend/tests/ticket-alert-access.test.mjs` y
 `frontend/tests/ticket-alerts-browser.test.mjs` (Vite, puerto 5198). La segunda
 simula a Francisco y otro responsable, sin usar sesiones o tickets reales.
+
+## Asignación y aislamiento (20260924040000)
+
+- Los técnicos solo consultan y modifican tickets con asignación explícita a su usuario. Ser creador no concede acceso. La restricción aplica en RLS a tickets, bitácora y métricas y dentro de los RPC de movimientos, cierres y revisiones.
+- El administrador configura responsables habituales por serie y especialidad en el centro de control. En ausencia de un habitual habilitado, se sortea entre las coberturas del estado del equipo y la especialidad solicitada.
+- La cobertura es explícita en `ticket_staff_coverage`; el valor histórico “Ubicaciones” de perfiles y el instalador del equipo no se usan como responsables. Un administrador puede habilitar varias coberturas y especialidades para una persona.
+- Solo participa personal admin/técnico con módulo tickets y `can_receive_tickets`. Serie desconocida, equipos activos duplicados, especialidad desconocida o territorio sin candidatos quedan pendientes; nunca se sortean fuera del territorio.
+- El reparto ocurre al crear el caso. “Distribuir casos sin asignación” permite procesar casos previos tras configurar reglas. No altera asignaciones existentes, cierres ni retiros manuales. La reasignación manual registra responsable, administrador, hora y bitácora.
+- No se inventan asignaciones para casos históricos ni de planeación a partir del creador. Administración puede asignarlos explícitamente; el reparto automático procesa solo solicitudes de soporte con especialidad identificada.
+- Pruebas PGlite cubren prioridad habitual, territorio, especialidad, falta de configuración, aislamiento del creador, RPC heredado, movimiento permitido y revocación tras reasignar. Pruebas de navegador cubren configuración, reparto de pendientes, control y alarmas entre usuarios.
