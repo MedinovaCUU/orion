@@ -29,7 +29,10 @@ import {
 import type { ClientServiceUnitSummary, ServiceReportMode } from './serviceReports';
 import type { TravelFormData } from './travelPlanner';
 
-export default function Services() {
+export default function Services({ subPermissions = ['planeacion', 'viajes', 'reportes'] }: { subPermissions?: string[] }) {
+  const canViewPlanning = subPermissions.includes('planeacion');
+  const canManageTravel = subPermissions.includes('viajes');
+  const canManageReports = subPermissions.includes('reportes');
   const [loading, setLoading] = useState(true);
   const [currentUserId, setCurrentUserId] = useState<string | null>(null);
   const [currentUserName, setCurrentUserName] = useState('');
@@ -52,7 +55,7 @@ export default function Services() {
   const [travelRefreshKey, setTravelRefreshKey] = useState(0);
 
   const fetchContext = async () => {
-    setLoading(true);
+    // Keep mounted views and unsaved drafts during background refreshes.
 
     const {
       data: { user },
@@ -132,6 +135,11 @@ export default function Services() {
 
   useEffect(() => {
     void fetchContext();
+    const refresh = () => { void fetchContext(); };
+    const timer = window.setInterval(refresh, 30000);
+    window.addEventListener('focus', refresh);
+    window.addEventListener('ticket-assignment-changed', refresh);
+    return () => { window.clearInterval(timer); window.removeEventListener('focus', refresh); window.removeEventListener('ticket-assignment-changed', refresh); };
   }, []);
 
   const plannedTickets = useMemo(
@@ -252,11 +260,14 @@ export default function Services() {
         reactiveTickets={reactiveTickets}
         historicalRecords={historicalRecords}
         travelAdminPanel={<TravelAdminPanel refreshKey={travelRefreshKey} />}
+        canViewPlanning={canViewPlanning}
+        canManageTravel={canManageTravel}
+        canManageReports={canManageReports}
         canSyncPlanning={canSyncPlanning}
         onSyncPlanning={handleSyncPlanning}
       />
 
-      {travelPlannerOpen ? (
+      {canManageTravel && travelPlannerOpen ? (
         <TravelPlannerModal
           isOpen={travelPlannerOpen}
           onClose={closeTravelPlanner}
@@ -271,7 +282,7 @@ export default function Services() {
         />
       ) : null}
 
-      {serviceReportOpen ? (
+      {canManageReports && serviceReportOpen ? (
         <ServiceReportModal
           isOpen={serviceReportOpen}
           mode={serviceReportMode}

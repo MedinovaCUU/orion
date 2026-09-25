@@ -1,0 +1,21 @@
+{
+  "archivo": "BA400_web.glb",
+  "bytes": 81573284,
+  "componentes": 309,
+  "animacion": "Explosion",
+  "duracion": 2,
+  "canales": 309,
+  "gltf_errores": 0,
+  "gltf_avisos": 0,
+  "three_version": "0.186.0",
+  "checks": [
+    "Carga con GLTFLoader",
+    "IDs únicos",
+    "Explosión 0, 50 y 100% con compensación de jerarquía",
+    "AnimationMixer: clip completo",
+    "Retorno exacto al montaje",
+    "Aislar PMMA, filtros, LED, PCB y fotodiodo",
+    "Aislar varios componentes",
+    "Resaltado sin alterar materiales vecinos"
+  ]
+}

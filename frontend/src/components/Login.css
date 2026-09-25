@@ -278,6 +278,48 @@
   line-height: 1.7;
 }
 
+.public-ticket-case-number {
+  display: grid;
+  gap: 0.3rem;
+  padding: 1rem;
+  border: 1px solid rgba(var(--clinical-rgb), 0.2);
+  border-radius: 18px;
+  background: rgba(var(--clinical-rgb), 0.07);
+  text-align: center;
+}
+
+.public-ticket-case-number span,
+.public-ticket-case-number small { color: var(--text-secondary); }
+.public-ticket-case-number strong { color: var(--primary-color); font-size: 1.7rem; letter-spacing: 0.08em; }
+
+.public-ticket-tracking-toggle {
+  width: 100%; margin: 0 0 1rem; padding: 0.85rem 1rem;
+  border: 1px solid rgba(var(--clinical-rgb), 0.18); border-radius: 16px;
+  background: rgba(var(--clinical-rgb), 0.06); color: var(--text-primary);
+  display: flex; justify-content: space-between; align-items: center; gap: 1rem;
+  text-align: left; cursor: pointer;
+}
+
+.public-ticket-tracking-toggle > span:first-child { display: flex; flex-direction: column; gap: 0.15rem; }
+.public-ticket-tracking-toggle small { color: var(--text-secondary); }
+.public-ticket-tracking-toggle > span:last-child { color: var(--primary-color); font-size: 1.35rem; }
+
+.public-ticket-tracking {
+  display: flex; flex-direction: column; gap: 0.8rem;
+  margin-bottom: 1.4rem; padding: 1rem; border: 1px solid var(--surface-outline);
+  border-radius: 18px; background: rgba(255, 255, 255, 0.52);
+}
+
+.public-ticket-tracking-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; }
+.public-ticket-tracking-result { padding: 1rem; border-radius: 16px; background: rgba(var(--success-rgb), 0.07); }
+.public-ticket-tracking-result > div { display: flex; justify-content: space-between; gap: 1rem; color: var(--primary-color); }
+.public-ticket-tracking-result h3 { margin: 0.6rem 0 0.25rem; }
+.public-ticket-tracking-result p { color: var(--text-secondary); font-size: 0.85rem; }
+.public-ticket-tracking-result ol { list-style: none; padding: 0; margin: 0.8rem 0 0; }
+.public-ticket-tracking-result li { display: flex; flex-direction: column; gap: 0.2rem; padding: 0.65rem 0; border-top: 1px solid var(--surface-outline); }
+.public-ticket-tracking-result time,
+.public-ticket-tracking-result small { color: var(--text-tertiary); font-size: 0.72rem; }
+
 @media (max-width: 720px) {
   .login-container {
     padding: 1rem;
@@ -310,6 +352,8 @@
   .public-ticket-footer {
     align-items: stretch;
   }
+
+  .public-ticket-tracking-grid { grid-template-columns: 1fr; }
 
   .public-ticket-footnote {
     max-width: none;

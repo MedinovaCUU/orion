@@ -86,6 +86,8 @@ body {
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   background:
+    linear-gradient(120deg, rgba(255, 255, 255, 0.2), transparent 28%),
+    linear-gradient(0deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.015)),
     radial-gradient(circle at 11% 15%, rgba(var(--clinical-rgb), 0.12), transparent 26%),
     radial-gradient(circle at 84% 13%, rgba(var(--veterinary-rgb), 0.1), transparent 24%),
     radial-gradient(circle at 82% 82%, rgba(var(--food-rgb), 0.08), transparent 25%),
@@ -93,17 +95,6 @@ body {
     linear-gradient(180deg, #f7fafc 0%, #edf3f8 46%, #e5edf3 100%);
   background-attachment: fixed;
   overflow-x: hidden;
-}
-
-body::before {
-  content: '';
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  opacity: 0.48;
-  background:
-    linear-gradient(120deg, rgba(255, 255, 255, 0.42), transparent 28%),
-    linear-gradient(0deg, rgba(255, 255, 255, 0.24), rgba(255, 255, 255, 0.03));
 }
 
 #root {
@@ -261,6 +252,7 @@ canvas {
   padding: 2.25rem;
   border: 1px solid var(--surface-outline);
   background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.34), rgba(255, 255, 255, 0.08) 12%, transparent 24%),
     radial-gradient(circle at top right, rgba(var(--brand-red-rgb), 0.08), transparent 30%),
     radial-gradient(circle at 0% 100%, rgba(var(--environmental-blue-rgb), 0.06), transparent 24%),
     linear-gradient(155deg, var(--surface-glass-strong), rgba(243, 246, 249, 0.66)),
@@ -268,16 +260,6 @@ canvas {
   box-shadow: var(--surface-shadow-strong);
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
-}
-
-.card::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  pointer-events: none;
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.34), rgba(255, 255, 255, 0.08) 12%, transparent 24%);
 }
 
 .card-scroll-shell {

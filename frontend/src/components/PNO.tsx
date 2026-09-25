@@ -169,7 +169,9 @@ const seedProceduresPayload = PNO_STARTER_PROCEDURES.map((procedure) => ({
 
 const emptyFeedback = (): FeedbackState | null => null;
 
-export default function PNO() {
+export default function PNO({ subPermissions = ['consulta', 'edicion'] }: { subPermissions?: string[] }) {
+  const canConsultProcedures = subPermissions.includes('consulta');
+  const canEditProcedures = subPermissions.includes('edicion');
   const [documents, setDocuments] = useState<PnoProcedure[]>([]);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -538,6 +540,10 @@ export default function PNO() {
 
   const noResults = !loading && filteredDocuments.length === 0;
 
+  if (!canConsultProcedures && !canEditProcedures) {
+    return <div className="pno-empty-state"><strong>Sin secciones habilitadas</strong><p>Solicita acceso a consulta o edición de PNO.</p></div>;
+  }
+
   return (
     <div className="pno-shell">
       <section className="pno-hero">
@@ -550,10 +556,10 @@ export default function PNO() {
           </p>
         </div>
         <div className="pno-hero__actions">
-          <button type="button" className={`button-primary ${staff ? '' : 'inactive'}`} disabled={!staff} onClick={openCreateEditor}>
+          <button type="button" className={`button-primary ${staff && canEditProcedures ? '' : 'inactive'}`} disabled={!staff || !canEditProcedures} onClick={openCreateEditor}>
             Nuevo PNO
           </button>
-          {staff && catalogMode !== 'missing_table' ? (
+          {staff && canEditProcedures && catalogMode !== 'missing_table' ? (
             <button type="button" className="button-primary inactive" onClick={handleSeedTemplates} disabled={saving}>
               Sembrar base técnica
             </button>
@@ -709,10 +715,10 @@ export default function PNO() {
                 </div>
 
                 <div className="pno-detail__actions">
-                  <button type="button" className={`button-primary ${staff ? '' : 'inactive'}`} disabled={!staff} onClick={openEditEditor}>
+                  <button type="button" className={`button-primary ${staff && canEditProcedures ? '' : 'inactive'}`} disabled={!staff || !canEditProcedures} onClick={openEditEditor}>
                     Editar
                   </button>
-                  {staff && !selectedProcedure.isStarter ? (
+                  {staff && canEditProcedures && !selectedProcedure.isStarter ? (
                     <button type="button" className="button-primary inactive" onClick={handleDelete} disabled={saving}>
                       Eliminar
                     </button>
@@ -820,7 +826,7 @@ export default function PNO() {
         </section>
       </section>
 
-      {staff && editorMode ? (
+      {staff && canEditProcedures && editorMode ? (
         <section className="pno-panel pno-panel--editor">
           <div className="pno-panel__header pno-panel__header--detail">
             <div>

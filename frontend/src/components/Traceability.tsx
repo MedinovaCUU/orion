@@ -1576,7 +1576,15 @@ const enrichTraceabilityRecordsForPresentation = (baseRecords: TraceabilityRecor
   };
 };
 
-export default function Traceability() {
+interface TraceabilityProps {
+  subPermissions?: string[];
+}
+
+export default function Traceability({ subPermissions }: TraceabilityProps) {
+  const enabledSubPermissions = subPermissions ?? ['tracking', 'eventos_refacciones', 'analitica'];
+  const canViewTracking = enabledSubPermissions.includes('tracking');
+  const canViewSparePartEvents = enabledSubPermissions.includes('eventos_refacciones');
+  const canViewAnalytics = enabledSubPermissions.includes('analitica');
   const solarPanelRef = useRef<HTMLDivElement | null>(null);
   const [records, setRecords] = useState<TraceabilityRecord[]>([]);
   const [loading, setLoading] = useState(true);
@@ -2558,8 +2566,8 @@ export default function Traceability() {
   if (loading) {
     return (
       <section className="traceability-shell">
-        <TrackingSection />
-        <div className="traceability-loading">Construyendo capa de trazabilidad operativa…</div>
+        {canViewTracking ? <TrackingSection /> : null}
+        {canViewSparePartEvents || canViewAnalytics ? <div className="traceability-loading">Construyendo capa de trazabilidad operativa…</div> : null}
       </section>
     );
   }
@@ -2567,8 +2575,8 @@ export default function Traceability() {
   if (error) {
     return (
       <section className="traceability-shell">
-        <TrackingSection />
-        <div className="traceability-error">No fue posible cargar trazabilidad analítica: {error}</div>
+        {canViewTracking ? <TrackingSection /> : null}
+        {canViewSparePartEvents || canViewAnalytics ? <div className="traceability-error">No fue posible cargar trazabilidad analítica: {error}</div> : null}
       </section>
     );
   }
@@ -2576,20 +2584,20 @@ export default function Traceability() {
   if (scopedRecords.length === 0) {
     return (
       <section className="traceability-shell">
-        <TrackingSection />
-        <div className="traceability-loading">
+        {canViewTracking ? <TrackingSection /> : null}
+        {canViewSparePartEvents || canViewAnalytics ? <div className="traceability-loading">
           Todavía no hay lecturas de refacciones o consumibles técnicos para construir trazabilidad. En cuanto se
           registren piezas desde reportes de servicio, este tablero empezará a mostrar uso, lotes, vigencias y
           patrones de uso por unidad médica.
-        </div>
+        </div> : null}
       </section>
     );
   }
 
   return (
     <section className="traceability-shell">
-      <TrackingSection />
-      <section className="traceability-source-strip">
+      {canViewTracking ? <TrackingSection /> : null}
+      {canViewSparePartEvents ? <section className="traceability-source-strip">
         <div className="traceability-source-card">
           <span className={`traceability-source-badge ${source}`}>
             {source === 'structured' ? 'Canal estructurado' : source === 'payload' ? 'Reconstrucción payload' : 'Vista demo'}
@@ -2615,14 +2623,15 @@ export default function Traceability() {
             </div>
           </div>
         </div>
-      </section>
+      </section> : null}
 
-      {notice ? (
+      {notice && canViewSparePartEvents ? (
         <div className={`traceability-notice ${source === 'demo' ? 'demo' : ''}`}>
           {notice}
         </div>
       ) : null}
 
+      {canViewAnalytics ? <>
       <section className="traceability-control-console">
         <div className="traceability-query-grid">
           <label className="traceability-query-module">
@@ -3346,8 +3355,9 @@ export default function Traceability() {
           </div>
         </article>
       </section>
+      </> : null}
 
-      <div className="traceability-filters">
+      {canViewAnalytics ? <div className="traceability-filters">
         <div className="traceability-filter-block">
           <label>Horizonte</label>
           <div className="traceability-chip-group">
@@ -3391,9 +3401,9 @@ export default function Traceability() {
             ))}
           </select>
         </div>
-      </div>
+      </div> : null}
 
-      <div className="traceability-metric-grid">
+      {canViewSparePartEvents ? <div className="traceability-metric-grid">
         <article className="traceability-metric-card">
           <span>Flujo trazado</span>
           <strong>{compactFormatter.format(totals.totalQuantity)}</strong>
@@ -3424,9 +3434,9 @@ export default function Traceability() {
           <strong>{totals.expired}</strong>
           <small>piezas que ya ameritan revisión inmediata</small>
         </article>
-      </div>
+      </div> : null}
 
-      <div className="traceability-grid traceability-grid--top">
+      {canViewAnalytics ? <div className="traceability-grid traceability-grid--top">
         <article className={`traceability-panel traceability-panel--wide traceability-view-block ${activeView === 'pulse' ? 'is-active' : ''}`}>
           <div className="traceability-panel__header">
             <div>
@@ -3565,9 +3575,9 @@ export default function Traceability() {
             )}
           </div>
         </article>
-      </div>
+      </div> : null}
 
-      <div className="traceability-grid">
+      {canViewAnalytics ? <div className="traceability-grid">
         <article className={`traceability-panel traceability-view-block ${activeView === 'matrix' ? 'is-active' : ''}`}>
           <div className="traceability-panel__header">
             <div>
@@ -3682,7 +3692,7 @@ export default function Traceability() {
             )}
           </div>
         </article>
-      </div>
+      </div> : null}
     </section>
   );
 }

@@ -1,3 +1,5 @@
+import { canOpenTicketControl } from './ticketAlertAccess';
+import TicketControlCenter from './TicketControlCenter';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { supabase } from '../supabaseClient';
@@ -16,6 +18,8 @@ import {
   type TicketIntakeDraft,
 } from './ticketIntake';
 import useSecondTicker from './useSecondTicker';
+import TicketCaseDetail from './TicketCaseDetail';
+import { formatCaseNumber } from './ticketCaseUtils';
 import {
   extractPlaneacionMeta,
   stripPlaneacionMeta,
@@ -33,6 +37,8 @@ interface TicketRecord {
   descripcion: string | null;
   estado: string;
   creado_en: string;
+  actualizado_en?: string | null;
+  numero_caso?: string | null;
   numero_serie_equipo?: string | null;
   nombre_cliente_guest?: string | null;
   telefono_cliente_guest?: string | null;
@@ -329,9 +335,16 @@ const TicketFalconAlertsBridge = React.memo(function TicketFalconAlertsBridge({
   return <FalconSlaAlerts contextLabel={contextLabel} entries={alertEntries} />;
 });
 
-export default function Tickets() {
+export default function Tickets({ subPermissions = ['crear', 'seguimiento', 'diagnostico'] }: { subPermissions?: string[] }) {
+  const canCreateTickets = subPermissions.includes('crear');
+  const canViewTickets = subPermissions.includes('seguimiento');
+  const canDiagnoseTickets = subPermissions.includes('diagnostico');
   const [tickets, setTickets] = useState<TicketRecord[]>([]);
   const [loading, setLoading] = useState(true);
+  const [caseFilter, setCaseFilter] = useState('abiertos');
+  const [controlView, setControlView] = useState(true);
+  const [viewerRole, setViewerRole] = useState<string | null>(null);
+  const canViewControl = canOpenTicketControl(viewerRole);
   const [asunto, setAsunto] = useState('');
   const [descripcion, setDescripcion] = useState('');
   const [submitting, setSubmitting] = useState(false);
@@ -364,6 +377,7 @@ export default function Tickets() {
   const [travelPlannerOpen, setTravelPlannerOpen] = useState(false);
   const [travelPlannerRequestId, setTravelPlannerRequestId] = useState<string | null>(null);
   const [travelPlannerTicketId, setTravelPlannerTicketId] = useState<string | null>(null);
+  const [expandedCaseId, setExpandedCaseId] = useState<string | null>(null);
   const ticketImageInputRef = useRef<HTMLInputElement | null>(null);
 
   useEffect(() => {
@@ -384,42 +398,34 @@ export default function Tickets() {
   }, [cerrarModalOpen]);
 
   const fetchTickets = async () => {
-    setLoading(true);
+    // Keep mounted views and unsaved drafts during background refreshes.
     const { data: { user } } = await supabase.auth.getUser();
     if (user) {
       const { data: profile } = await supabase
         .from('profiles')
-        .select('nombre_completo')
+        .select('nombre_completo, rol, recibe_tickets')
         .eq('id', user.id)
         .maybeSingle();
 
-      const currentProfileName = normalizeComparableText(
-        (profile?.nombre_completo as string | null | undefined) || user.user_metadata?.nombre_completo || user.email,
-      );
-
-      const { data, error } = await supabase
-        .from('tickets')
-        .select('*')
-        .neq('estado', 'cerrado')
-        .order('creado_en', { ascending: false });
+      setViewerRole(profile?.rol || null);
+      const data: TicketRecord[] = [];
+      let error: { message: string } | null = null;
+      for (let offset = 0; ; offset += 1000) {
+        const page = await supabase.from('tickets').select('*')
+          .order('creado_en', { ascending: false }).order('id').range(offset, offset + 999);
+        if (page.error) { error = page.error; break; }
+        data.push(...(page.data || []) as TicketRecord[]);
+        if ((page.data?.length || 0) < 1000) break;
+      }
+      if (error) setTickets([]);
+      if (error) setTicketFeedback({ tone: 'error', message: `No se pudieron cargar los casos: ${error.message}` });
       
       if (!error && data) {
-        const visibleTickets = (data as TicketRecord[]).filter((ticket) => {
-          const meta = extractPlaneacionMeta(ticket.descripcion);
-          const assignedEngineerName = normalizeComparableText(meta?.ingeniero_csv);
-          const belongsByUserId = ticket.user_id === user.id;
-          const belongsByEngineerName = !!currentProfileName && assignedEngineerName === currentProfileName;
+        setTickets(data); // Supabase enforces assignment access for every query.
 
-          if (meta) {
-            return belongsByEngineerName || belongsByUserId;
-          }
-
-          return belongsByUserId;
-        });
-
-        setTickets(visibleTickets);
       }
     } else {
+      setViewerRole(null);
       setTickets([]);
     }
     setLoading(false);
@@ -448,6 +454,11 @@ export default function Tickets() {
   useEffect(() => {
     fetchTickets();
     fetchCatalogs();
+    const refresh = () => { void fetchTickets(); };
+    const timer = window.setInterval(refresh, 30000);
+    window.addEventListener('focus', refresh);
+    window.addEventListener('ticket-assignment-changed', refresh);
+    return () => { window.clearInterval(timer); window.removeEventListener('focus', refresh); window.removeEventListener('ticket-assignment-changed', refresh); };
   }, []);
 
   const resetTicketForm = () => {
@@ -587,7 +598,20 @@ export default function Tickets() {
       const parsedCds = cerrarData.cds ? cerrarData.cds.split(' - ')[0].trim() : null;
       
       // 1. Cerrar o Actualizar Ticket
-      await supabase.from('tickets').update({ estado: estadoAAsignar }).eq('id', selectedTicket.id);
+      const solution = [cerrarData.cds, cerrarData.comentarios].filter(Boolean).join(' · ').trim();
+      if (estadoAAsignar === 'cerrado' && solution.length < 2) {
+          window.alert('Registra la solución aplicada o describe la solución en comentarios.');
+          setSubmitting(false);
+          return;
+      }
+      const { error: closeError } = estadoAAsignar === 'cerrado'
+        ? await supabase.rpc('register_ticket_service_event', { p_ticket_id: selectedTicket.id, p_kind: 'cierre', p_detail: solution })
+        : await supabase.from('tickets').update({ estado: estadoAAsignar }).eq('id', selectedTicket.id);
+      if (closeError) {
+          window.alert(`No se pudo guardar: ${closeError.message}`);
+          setSubmitting(false);
+          return;
+      }
 
       // 2. Crear Servicio Historial
       const { data: servData, error: servErr } = await supabase.from('servicios_historial').insert({
@@ -599,6 +623,7 @@ export default function Tickets() {
           tecnico_id: user?.id
       }).select('id').single();
 
+      if (servErr) window.alert(`El estado se guardó, pero el historial de servicio falló: ${servErr.message}`);
       if (!servErr && servData && cerrarData.refaccionesUsadas.length > 0) {
           // 3. Registrar refacciones usadas en puente
           const refPayload = cerrarData.refaccionesUsadas.filter(r => r.codigo.trim() !== '').map(r => ({
@@ -685,7 +710,8 @@ export default function Tickets() {
 
   return (
     <div className="tickets-shell">
-      <div className="card" style={{ background: 'var(--bg-secondary)', border: 'none', marginBottom: '1rem' }}>
+      {ticketFeedback?.tone === 'error' && <p className="tc-error" role="alert">{ticketFeedback.message}</p>}
+      {canCreateTickets ? <details className="tickets-create-panel"><summary>＋ Abrir un nuevo ticket</summary><div className="card" style={{ background: 'var(--bg-secondary)', border: 'none', marginBottom: '1rem' }}>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '0.28rem', marginBottom: '0.35rem' }}>
           <h3 style={{ margin: 0 }}>Abrir un Nuevo Ticket</h3>
           {ocrBusy ? (
@@ -805,17 +831,24 @@ export default function Tickets() {
             </button>
           </div>
         </form>
-      </div>
+      </div></details> : null}
 
-      <div className="card" style={{ background: 'var(--bg-secondary)', border: 'none' }}>
-        <h3 style={{ marginBottom: '1rem' }}>Mis Tickets de Soporte</h3>
+      {canViewTickets && canViewControl && <div className="tickets-view-switch"><button type="button" className="button-primary" aria-pressed={controlView} onClick={() => setControlView(true)}>Centro de control</button><button type="button" className="button-primary inactive" aria-pressed={!controlView} onClick={() => setControlView(false)}>Vista operativa</button></div>}
+      {canViewTickets && canViewControl && controlView && <TicketControlCenter entries={ticketRenderItems} loading={loading} canWrite={canDiagnoseTickets} onChanged={fetchTickets} onDiagnose={ticket => {
+        setSelectedTicket(ticket);
+        setCerrarData({ no_serie: ticket.numero_serie_equipo || '', cda: '', cds: '', comentarios: '', refaccionesUsadas: [] });
+        setCerrarModalOpen(true);
+      }} />}
+      {canViewTickets && (!canViewControl || !controlView) ? <div className="card" style={{ background: 'var(--bg-secondary)', border: 'none' }}>
+        <h3 style={{ marginBottom: '1rem' }}>Bandeja de Casos de Soporte</h3>
+      <label>Mostrar casos <select className="input-field" value={caseFilter} onChange={event => setCaseFilter(event.target.value)}><option value="abiertos">Abiertos</option><option value="cerrados">Cerrados</option><option value="todos">Todos</option></select></label>
       {loading ? (
         <p>Cargando tickets...</p>
       ) : tickets.length === 0 ? (
         <p style={{ color: 'var(--text-secondary)' }}>No tienes tickets aún.</p>
       ) : (
         <ul className="tickets-list">
-          {ticketRenderItems.map(({ ticket, notification, isPlanningTicket, resolvedEquipment, ticketClientLabel, ticketPhoneLabel, locationLabel, staticFalconSla }) => {
+          {ticketRenderItems.filter(({ ticket }) => caseFilter === 'todos' || (caseFilter === 'cerrados' ? ticket.estado === 'cerrado' : ticket.estado !== 'cerrado')).map(({ ticket, notification, isPlanningTicket, resolvedEquipment, ticketClientLabel, ticketPhoneLabel, locationLabel, staticFalconSla }) => {
               const displayFalconSla = isPlanningTicket ? null : staticFalconSla;
               const ticketSlaTone = displayFalconSla ? getFalconSlaTone(displayFalconSla.severity) : null;
 
@@ -823,6 +856,10 @@ export default function Tickets() {
                 <li key={ticket.id} className={`tickets-list-card${isPlanningTicket ? ' tickets-list-card--planning' : ''}`}>
                   <div className="tickets-list-card__header">
                     <div className="tickets-list-card__copy">
+                      <div className="tickets-list-card__case-line">
+                        <span className="tickets-list-card__case-number">{formatCaseNumber(ticket)}</span>
+                        <span>Actualizado {new Date(ticket.actualizado_en || ticket.creado_en).toLocaleDateString('es-MX')}</span>
+                      </div>
                       <strong className="tickets-list-card__title">{ticket.asunto}</strong>
                       <div className="tickets-list-card__chips">
                         {ticket.numero_serie_equipo && (
@@ -856,7 +893,7 @@ export default function Tickets() {
                       </div>
                     </div>
                     <span
-                      className={`tickets-list-card__status ${ticket.estado === 'abierto' ? 'tickets-list-card__status--open' : 'tickets-list-card__status--closed'}`}
+                      className={`tickets-list-card__status tickets-list-card__status--${ticket.estado}`}
                     >
                       {formatSupportStatus(ticket.estado)}
                     </span>
@@ -905,8 +942,30 @@ export default function Tickets() {
                       <div className="tickets-list-card__ops-cta">Clic para abrir la solicitud de viaje ligada a esta planeación.</div>
                     </button>
                   )}
+
+                  <button
+                    type="button"
+                    className="tickets-list-card__case-toggle"
+                    aria-expanded={expandedCaseId === ticket.id}
+                    onClick={() => setExpandedCaseId((current) => current === ticket.id ? null : ticket.id)}
+                  >
+                    <span>
+                      <strong>{expandedCaseId === ticket.id ? 'Cerrar expediente' : 'Abrir expediente completo'}</strong>
+                      <small>Historial global del equipo y registro rápido de avances</small>
+                    </span>
+                    <span aria-hidden="true">{expandedCaseId === ticket.id ? '−' : '+'}</span>
+                  </button>
+
+                  {expandedCaseId === ticket.id ? (
+                    <TicketCaseDetail
+                      ticket={ticket}
+                      equipment={resolvedEquipment}
+                      canWrite={canDiagnoseTickets && ticket.estado !== 'cerrado'}
+                      onChanged={fetchTickets}
+                    />
+                  ) : null}
               
-                  {ticket.estado !== 'cerrado' && (
+                  {canDiagnoseTickets && ticket.estado !== 'cerrado' && (
                       <div className="tickets-list-card__footer">
                           <button 
                              className="button-primary" 
@@ -928,7 +987,7 @@ export default function Tickets() {
           })}
         </ul>
       )}
-      </div>
+      </div> : null}
 
       {travelPlannerOpen && (
         <TravelPlannerModal
@@ -943,9 +1002,9 @@ export default function Tickets() {
         />
       )}
 
-      <TicketFalconAlertsBridge contextLabel="Mis Tickets" entries={trackedFalconTickets} />
+      <TicketFalconAlertsBridge contextLabel="Casos de soporte" entries={trackedFalconTickets} />
 
-      {cerrarModalOpen && selectedTicket && createPortal(
+      {canDiagnoseTickets && cerrarModalOpen && selectedTicket && createPortal(
         <div 
             style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(0,0,0,0.8)', display: 'flex', justifyContent: 'center', alignItems: 'center', zIndex: 1000, padding: '1rem', backdropFilter: 'blur(5px)' }}
             onClick={() => setCerrarModalOpen(false)}

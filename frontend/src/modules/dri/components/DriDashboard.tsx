@@ -1,10 +1,11 @@
 import { startTransition, useDeferredValue, useEffect, useMemo, useState } from 'react';
-import DriGraph3D from './DriGraph3D';
+import DriGraph3D, { DRI_GRAPH_CONFIG } from './DriGraph3D';
 import DriEvidencePanel from './DriEvidencePanel';
 import DriHypothesisCard from './DriHypothesisCard';
 import DriInputPanel from './DriInputPanel';
+import Ba400DiagnosticViewer from '../model3d/Ba400DiagnosticViewer';
 import DriRelationMatrix from './DriRelationMatrix';
-import { loadDriCatalog, loadDriHistory, persistDriCase, uploadDriEvidenceAsset } from '../driData';
+import { getLocalDriCatalog, loadDriCatalog, loadDriHistory, persistDriCase, uploadDriEvidenceAsset } from '../driData';
 import { runDriEngine, runDriValidationFixtures } from '../driEngine';
 import {
   buildReagentSearchText,
@@ -13,11 +14,19 @@ import {
   getReagentDisplayName,
 } from '../knowledge/reagentIdentity';
 import { buildReagentProfiles } from '../knowledge/reagentRelations';
-import { buildBa400HierarchyGraph } from '../knowledge/ba400SubsystemHierarchy';
+import {
+  buildBa400HierarchyGraph,
+  DRI_REAGENT_STATE_COLORS,
+  getBa400SystemNodeIdsForSignal,
+  getDriDifferentialVisualStrength,
+  getDriSignalCategoryColor,
+} from '../knowledge/ba400SubsystemHierarchy';
 import { buildObservationBlockFromEvidence, runDriEvidenceOcr } from '../utils/driEvidenceOcr';
 import { createDriLogger } from '../utils/driLogging';
 import { assessQcReference, findQcReferenceById, getMatchingQcReferences } from '../utils/qcReferenceUtils';
+import { classifySatQcResults } from '../utils/satQcClassifier';
 import { getValidatedSession } from '../../../supabaseClient';
+import type { SatReportSummary } from '../../sat-report/satReportTypes';
 import type {
   DriCaseFormState,
   DriCatalog,
@@ -163,21 +172,6 @@ interface DriEvidenceTaskState {
   error: string | null;
 }
 
-const signalColor = (signal: DriRelationSignal) => {
-  if (signal.category === 'wavelength') return '#efbf69';
-  if (signal.category === 'reaction') return '#4fd0d7';
-  if (signal.category === 'technique') return '#38c5d3';
-  if (signal.category === 'trend') return '#5fd4ea';
-  if (signal.category === 'scheme' || signal.category === 'r2') return '#76bee8';
-  if (signal.category === 'temperature') return '#ff9b68';
-  if (signal.category === 'storage') return '#f6a67c';
-  if (signal.category === 'water') return '#79d9c1';
-  if (signal.category === 'contamination') return '#6fd2b3';
-  if (signal.category === 'blank') return '#d9aa78';
-  if (signal.category === 'service') return '#ff676f';
-  return '#9cb1c9';
-};
-
 const DEMO_ACCOUNT_EMAIL = 'rmontanez@biosystems.com.mx';
 const ANCHOR_EVENT_TYPES = new Set<DriCaseFormState['eventType']>([
   'dilution_error',
@@ -320,8 +314,17 @@ const selectGraphSignals = (signals: DriRelationSignal[], selectedCount: number)
     }
   });
 
+  // Todas las pruebas de servicio deben llegar al cálculo visual de sus sistemas,
+  // aunque después no se representen como factores independientes en la esfera.
+  (perCategory.get('service') || []).forEach((signal) => {
+    if (!used.has(signal.id)) {
+      used.add(signal.id);
+      picked.push(signal);
+    }
+  });
+
   Object.entries(GRAPH_SIGNAL_QUOTAS).forEach(([category, quota]) => {
-    if (category === 'wavelength') {
+    if (category === 'wavelength' || category === 'service') {
       return;
     }
     const bucket = perCategory.get(category as DriRelationSignal['category']) || [];
@@ -547,7 +550,18 @@ const buildFullRandomDemoFormState = (
   };
 };
 
-export default function DriDashboard() {
+export default function DriDashboard({
+  subPermissions = ['captura', 'grafo', 'diagnostico'],
+  satContext = null,
+  previewMode = false,
+}: {
+  subPermissions?: string[];
+  satContext?: SatReportSummary | null;
+  previewMode?: boolean;
+}) {
+  const canCapture = subPermissions.includes('captura');
+  const canViewGraph = subPermissions.includes('grafo');
+  const canViewDiagnosis = subPermissions.includes('diagnostico');
   const [catalog, setCatalog] = useState<DriCatalog | null>(null);
   const [catalogSource, setCatalogSource] = useState('Cargando');
   const [catalogWarning, setCatalogWarning] = useState<string | null>(null);
@@ -560,15 +574,12 @@ export default function DriDashboard() {
   const [selectedNodeId, setSelectedNodeId] = useState<string | null>(null);
   const [selectedNodeIds, setSelectedNodeIds] = useState<string[]>([]);
   const [selectedHypothesisKey, setSelectedHypothesisKey] = useState<string | null>(null);
+  const [spatialSelectionVersion, setSpatialSelectionVersion] = useState(0);
+  const [demoActive, setDemoActive] = useState(false);
   const [focusedSystemKey, setFocusedSystemKey] = useState<string | null>(null);
+  const [showRelationGraph, setShowRelationGraph] = useState(false);
   const [graphMultiSelect, setGraphMultiSelect] = useState(false);
-  const [graphShellControls, setGraphShellControls] = useState({
-    systemCoreRadius: 0.98,
-    systemStep: 0.98,
-    factorBaseRadius: 4.18,
-    factorStep: 1.18,
-    reagentRadius: 8.88,
-  });
+  const [graphShellControls, setGraphShellControls] = useState(() => ({ ...DRI_GRAPH_CONFIG.layout.defaultRadii }));
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [persistWarning, setPersistWarning] = useState<string | null>(null);
@@ -577,9 +588,77 @@ export default function DriDashboard() {
   const deferredSearch = useDeferredValue(search);
 
   useEffect(() => {
+    if (!satContext) return;
+    setAnalysis(null); setActiveCase(null); setSelectedHypothesisKey(null);
+    const latestLot = (kind: 'reagent' | 'control' | 'calibrator') =>
+      [...satContext.lots]
+        .filter((lot) => lot.kind === kind)
+        .sort((left, right) => (right.lastSeenAt || '').localeCompare(left.lastSeenAt || ''))[0];
+    const latestReagentLot = latestLot('reagent')?.lot || '';
+    const latestControlLot = latestLot('control')?.lot || '';
+    const latestCalibrator = latestLot('calibrator');
+    const eventExcerpt = satContext.events
+      .filter((event) => event.category === 'error' || event.category === 'warning')
+      .slice(-8)
+      .map((event) => `[${event.category.toUpperCase()}${event.code ? ` ${event.code}` : ''}] ${event.message}`)
+      .join('\n');
+    const contextBlock = [
+      `[SAT:${satContext.sha256.slice(0, 12)}] ${satContext.fileName}`,
+      `Cobertura: ${satContext.coverage.processedFiles}/${satContext.coverage.totalFiles} archivos; ${satContext.findings.distinctTests} pruebas; ${satContext.findings.distinctLots} lotes.`,
+      eventExcerpt,
+    ].filter(Boolean).join('\n');
+
+    setForm((current) => ({
+      ...current,
+      equipmentModel: satContext.equipmentModel,
+      serialNumber: satContext.serialNumber,
+      eventDate: (satContext.reportGeneratedAt || new Date().toISOString()).slice(0, 10),
+      reagentLot: latestReagentLot || current.reagentLot,
+      controlLot: latestControlLot || current.controlLot,
+      calibratorLot: latestCalibrator?.lot || current.calibratorLot,
+      calibratorName: latestCalibrator?.name || current.calibratorName,
+      observations: [current.observations.replace(/\[SAT:[\s\S]*$/m, '').trim(), contextBlock].filter(Boolean).join('\n\n'),
+    }));
+    setPersistWarning(
+      satContext.coverage.hasDatabaseBackup
+        ? 'Contexto SAT aplicado. La evidencia legible está disponible; el respaldo .bak permanece pendiente de extracción profunda.'
+        : 'Contexto SAT aplicado al diagnóstico.',
+    );
+  }, [satContext]);
+
+  useEffect(() => {
+    if (!satContext?.qcResults?.length || !catalog) return;
+    const projection = classifySatQcResults(catalog, satContext.qcResults);
+    setForm((current) => ({
+      ...current,
+      failedReagentIds: projection.failedReagentIds,
+      correctReagentIds: projection.correctReagentIds,
+      reagentMeasurements: {
+        ...current.reagentMeasurements,
+        ...projection.reagentMeasurements,
+      },
+    }));
+    setPersistWarning(
+      `${projection.matchedCount} controles recientes evaluados con referencias EInfo; ` +
+        `${projection.failedReagentIds.length} reactivos fallidos, ${projection.correctReagentIds.length} correctos` +
+        (projection.pendingCount ? ` y ${projection.pendingCount} resultados pendientes por lote, nivel o unidad.` : '.'),
+    );
+  }, [catalog, satContext]);
+
+  useEffect(() => {
     let mounted = true;
     async function hydrate() {
       setLoading(true);
+      if (previewMode) {
+        const localCatalog = getLocalDriCatalog();
+        const demoForm = buildDemoFormState(localCatalog);
+        const result = runDriEngine(demoForm, localCatalog);
+        setCatalog(localCatalog); setCatalogSource('Catálogo documental local'); setHistory([]);
+        setForm(demoForm); setAnalysis(result); setDemoActive(true);
+        setSelectedHypothesisKey(result.hypotheses.find(h => h.matchedRuleIds.includes('ba400_optical_photometry'))?.key || result.hypotheses[0]?.key || null);
+        setLoading(false);
+        return;
+      }
       const [catalogResult, historyResult, session] = await Promise.all([loadDriCatalog(), loadDriHistory(), getValidatedSession()]);
       if (!mounted) return;
       setCatalog(catalogResult.catalog);
@@ -593,7 +672,7 @@ export default function DriDashboard() {
     return () => {
       mounted = false;
     };
-  }, []);
+  }, [previewMode]);
 
   const profiles = useMemo(() => (catalog ? buildReagentProfiles(catalog) : []), [catalog]);
   const supportedProfiles = useMemo(() => {
@@ -778,7 +857,7 @@ export default function DriDashboard() {
         subtitle: getReagentDisplayName(reagent),
         type: 'failed_reagent',
         clusterKey: 'failed',
-        color: '#cf6d73',
+        color: DRI_REAGENT_STATE_COLORS.failed,
         emphasis: 1.08,
         associationCount: 1,
         associationStrength: 0.72,
@@ -795,7 +874,7 @@ export default function DriDashboard() {
         subtitle: getReagentDisplayName(reagent),
         type: 'correct_reagent',
         clusterKey: 'correct',
-        color: '#4fc3b0',
+        color: DRI_REAGENT_STATE_COLORS.correct,
         emphasis: 0.98,
         associationCount: 1,
         associationStrength: 0.68,
@@ -803,18 +882,22 @@ export default function DriDashboard() {
         tier: 3,
       });
     });
-    const maxSignalScore = Math.max(...topGraphSignals.map((signal) => signal.suspicionScore), 1);
     topGraphSignals.forEach((signal, index) => {
+      if (signal.category === 'service') return;
+      const associationCount = signal.relatedReagentIds.length + signal.contrastReagentIds.length;
+      const differentialBalance = signal.failedCoverage - signal.correctCoverage;
+      const differentialStrength = getDriDifferentialVisualStrength(signal.failedCoverage, signal.correctCoverage);
+      const signedBalance = `${differentialBalance >= 0 ? '+' : ''}${Math.round(differentialBalance * 100)}%`;
       nodes.push({
         id: signalNodeId(signal.id),
         label: signal.label,
-        subtitle: `${signal.category} · score ${Math.round(signal.suspicionScore)}`,
+        subtitle: `${signal.category} · +${signal.relatedReagentIds.length} fallidas · −${signal.contrastReagentIds.length} correctas · balance ${signedBalance}`,
         type: 'factor',
         clusterKey: signal.category,
-        color: signalColor(signal),
-        emphasis: 0.82 + signal.suspicionScore / 44,
-        associationCount: signal.relatedReagentIds.length + signal.contrastReagentIds.length,
-        associationStrength: signal.suspicionScore / maxSignalScore,
+        color: getDriSignalCategoryColor(signal.category),
+        emphasis: 0.55 + differentialStrength * 2.35,
+        associationCount,
+        associationStrength: differentialStrength,
         orbit: 'diagnostic',
         tier: inferGraphFactorTier(signal, index),
       });
@@ -825,13 +908,14 @@ export default function DriDashboard() {
   const graphEdges = useMemo<DriGraphEdge[]>(() => {
     if (!analysis) return [];
     const edges = topGraphSignals.flatMap((signal) => {
+      if (signal.category === 'service') return [];
       const edges: DriGraphEdge[] = [];
       signal.relatedReagentIds.forEach((id) => {
         edges.push({
           id: `${id}-${signal.id}-failed`,
           sourceId: reagentNodeId(id, 'failed'),
           targetId: signalNodeId(signal.id),
-          color: signalColor(signal),
+          color: getDriSignalCategoryColor(signal.category),
           weight: Math.max(1, signal.suspicionScore / 34),
           relationType: signal.category,
           opacity: 0.88,
@@ -857,7 +941,7 @@ export default function DriDashboard() {
       ...edges,
       ...hierarchyGraph.edges,
     ];
-  }, [analysis, form.correctReagentIds.length, form.failedReagentIds.length, hierarchyGraph.edges, topGraphSignals]);
+  }, [analysis, hierarchyGraph.edges, topGraphSignals]);
 
   const selectedSignal = useMemo(
     () =>
@@ -908,6 +992,10 @@ export default function DriDashboard() {
 
   const handleFormChange = <K extends keyof DriCaseFormState>(field: K, value: DriCaseFormState[K]) => {
     setForm((current) => ({ ...current, [field]: value }));
+    if (field === 'equipmentModel' || field === 'serialNumber') {
+      // Keep demo provenance until a full form reset; editing a serial is not real evidence.
+      setAnalysis(null); setActiveCase(null); setSelectedHypothesisKey(null);
+    }
   };
 
   const handleToggleSignal = (field: keyof DriCaseFormState['signals']) => {
@@ -1006,6 +1094,11 @@ export default function DriDashboard() {
       setSelectedNodeIds([]);
       setSelectedHypothesisKey(result.hypotheses[0]?.key || null);
     });
+    if (previewMode || demoActive) {
+      setPersistWarning('Prueba local: el diagnóstico no se guarda en producción.');
+      setSaving(false);
+      return;
+    }
     const persisted = await persistDriCase(form, result);
     setActiveCase(persisted.caseRecord);
     setPersistWarning(persisted.persistWarning);
@@ -1014,6 +1107,7 @@ export default function DriDashboard() {
   };
 
   const handleLoadDemo = () => {
+    setDemoActive(true); setSpatialSelectionVersion(0);
     if (!catalog) {
       return;
     }
@@ -1058,6 +1152,7 @@ export default function DriDashboard() {
   };
 
   const handleLoadFullDemo = () => {
+    setDemoActive(true); setSpatialSelectionVersion(0);
     if (!catalog) {
       return;
     }
@@ -1335,13 +1430,11 @@ export default function DriDashboard() {
         <div className="dri-hero__identity">
           <div>
             <div className="dri-hero__eyebrow">DRI · Diagnóstico por Relaciones Inteligentes</div>
-            <h2>Radar diferencial para BA400 y futuras especializaciones</h2>
-            <p>
-              Cruza fallidas, correctas, factores compartidos, utilidades del programa de servicio y evidencia del ingeniero para priorizar hipótesis sin caer en prueba y error.
-            </p>
+            <h2>Inteligencia diagnóstica. Precisión espacial.</h2>
           </div>
         </div>
         <div className="dri-hero__status">
+          {previewMode || sessionEmail === DEMO_ACCOUNT_EMAIL ? <button type="button" className="dri-pill-button" onClick={handleLoadDemo}>Demo BA400</button> : null}
           <span className="dri-badge dri-badge--teal">{catalogSource}</span>
           <span className="dri-badge dri-badge--neutral">{supportedProfiles.length} reactivos visibles</span>
           {analysis ? <span className="dri-badge dri-badge--amber">{analysis.hypotheses.length} hipótesis</span> : null}
@@ -1351,8 +1444,19 @@ export default function DriDashboard() {
       {catalogWarning ? <div className="dri-alert dri-alert--warning">{catalogWarning}</div> : null}
       {persistWarning ? <div className="dri-alert dri-alert--warning">{persistWarning}</div> : null}
 
+      {canViewDiagnosis ? <Ba400DiagnosticViewer
+        equipment={form.equipmentModel}
+        serialNumber={form.serialNumber}
+        analysis={analysis?.platform === form.equipmentModel ? analysis : null}
+        selectedFinding={analysis?.platform === form.equipmentModel ? selectedHypothesis : null}
+        selectionVersion={spatialSelectionVersion}
+        onSelectFinding={(key) => { setSelectedHypothesisKey(key); setSpatialSelectionVersion(v => v + 1); }}
+        onEquipmentChange={canCapture ? model => handleFormChange('equipmentModel', model) : undefined}
+        fixtureLabel={demoActive ? 'Demostración del motor DRI' : null}
+      /> : null}
+
       <div className="dri-stack">
-        <DriInputPanel
+        {canCapture ? <DriInputPanel
           form={form}
           filteredReagents={filteredReagents}
           qcReferenceOptions={qcReferenceOptions}
@@ -1371,7 +1475,7 @@ export default function DriDashboard() {
           onAnalyze={handleAnalyze}
           onLoadDemo={handleLoadDemo}
           onLoadFullDemo={handleLoadFullDemo}
-          showDemoButton={sessionEmail === DEMO_ACCOUNT_EMAIL}
+          showDemoButton={previewMode || sessionEmail === DEMO_ACCOUNT_EMAIL}
           canAnalyze={Boolean(form.serialNumber.trim() && form.failedReagentIds.length)}
           saving={saving}
           onAddServiceTest={addServiceTest}
@@ -1386,14 +1490,16 @@ export default function DriDashboard() {
           selectedReagentProfile={selectedReagentProfile}
           onReset={() => {
             setEvidenceTasks({});
+            setAnalysis(null); setActiveCase(null); setSelectedHypothesisKey(null); setDemoActive(false);
             setSelectedReagentId(null);
             setSelectedNodeId(null);
             setSelectedNodeIds([]);
             setForm(createInitialFormState());
           }}
-        />
+        /> : null}
 
-        <section className="dri-panel dri-panel--graph">
+        {canViewGraph ? <button type="button" className="dri-pill-button" aria-expanded={showRelationGraph} onClick={() => setShowRelationGraph(current => !current)}>{showRelationGraph ? 'Ocultar mapa de relaciones' : 'Abrir mapa de relaciones DRI'}</button> : null}
+        {canViewGraph && showRelationGraph ? <section className="dri-panel dri-panel--graph">
           <div className="dri-panel__head">
             <div>
               <span className="dri-panel__eyebrow">Grafo de reactivos y factores</span>
@@ -1445,8 +1551,8 @@ export default function DriDashboard() {
                 <strong>{graphShellControls.systemCoreRadius.toFixed(2)}</strong>
                 <input
                   type="range"
-                  min="0.6"
-                  max="1.8"
+                  min="0"
+                  max="2"
                   step="0.02"
                   value={graphShellControls.systemCoreRadius}
                   onChange={(event) => handleGraphShellControlInput('systemCoreRadius', event.currentTarget.value)}
@@ -1458,8 +1564,8 @@ export default function DriDashboard() {
                 <strong>{graphShellControls.systemStep.toFixed(2)}</strong>
                 <input
                   type="range"
-                  min="0.7"
-                  max="1.5"
+                  min="0"
+                  max="1.4"
                   step="0.02"
                   value={graphShellControls.systemStep}
                   onChange={(event) => handleGraphShellControlInput('systemStep', event.currentTarget.value)}
@@ -1471,9 +1577,9 @@ export default function DriDashboard() {
                 <strong>{graphShellControls.factorBaseRadius.toFixed(2)}</strong>
                 <input
                   type="range"
-                  min="3.2"
-                  max="5.6"
-                  step="0.02"
+                  min="3"
+                  max="8"
+                  step="0.05"
                   value={graphShellControls.factorBaseRadius}
                   onChange={(event) => handleGraphShellControlInput('factorBaseRadius', event.currentTarget.value)}
                   onInput={(event) => handleGraphShellControlInput('factorBaseRadius', event.currentTarget.value)}
@@ -1486,7 +1592,7 @@ export default function DriDashboard() {
                   type="range"
                   min="0.75"
                   max="1.6"
-                  step="0.02"
+                  step="0.01"
                   value={graphShellControls.factorStep}
                   onChange={(event) => handleGraphShellControlInput('factorStep', event.currentTarget.value)}
                   onInput={(event) => handleGraphShellControlInput('factorStep', event.currentTarget.value)}
@@ -1497,9 +1603,9 @@ export default function DriDashboard() {
                 <strong>{graphShellControls.reagentRadius.toFixed(2)}</strong>
                 <input
                   type="range"
-                  min="7.2"
-                  max="11.4"
-                  step="0.02"
+                  min="5"
+                  max="15"
+                  step="0.01"
                   value={graphShellControls.reagentRadius}
                   onChange={(event) => handleGraphShellControlInput('reagentRadius', event.currentTarget.value)}
                   onInput={(event) => handleGraphShellControlInput('reagentRadius', event.currentTarget.value)}
@@ -1525,8 +1631,14 @@ export default function DriDashboard() {
               </div>
               <DriRelationMatrix
                 signals={analysis.relationSignals}
-                onSelectSignal={(signalId) => {
-                  const nodeId = signalNodeId(signalId);
+                onSelectSignal={(signal) => {
+                  if (signal.category === 'service' && form.equipmentModel === 'BA400') {
+                    const systemNodeIds = getBa400SystemNodeIdsForSignal(signal);
+                    setSelectedNodeId(systemNodeIds[0] || null);
+                    setSelectedNodeIds(systemNodeIds);
+                    return;
+                  }
+                  const nodeId = signalNodeId(signal.id);
                   setSelectedNodeId(nodeId);
                   setSelectedNodeIds([nodeId]);
                 }}
@@ -1535,9 +1647,9 @@ export default function DriDashboard() {
           ) : (
             <div className="dri-empty-state">Selecciona fallidas y correctas, luego genera el diagnóstico diferencial.</div>
           )}
-        </section>
+        </section> : null}
 
-        <section className="dri-panel dri-panel--side">
+        {canViewDiagnosis ? <section className="dri-panel dri-panel--side">
           <div className="dri-panel__head">
             <div>
               <span className="dri-panel__eyebrow">Lectura guiada del caso</span>
@@ -1561,7 +1673,10 @@ export default function DriDashboard() {
                   key={hypothesis.key}
                   hypothesis={hypothesis}
                   selected={selectedHypothesis?.key === hypothesis.key}
-                  onSelect={() => setSelectedHypothesisKey(hypothesis.key)}
+                  onSelect={() => {
+                    setSelectedHypothesisKey(hypothesis.key); setSpatialSelectionVersion(v => v + 1);
+                    document.getElementById('dri-equipment-3d')?.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth', block: 'start' });
+                  }}
                 />
               ))}
             </div>
@@ -1574,9 +1689,9 @@ export default function DriDashboard() {
             <strong>{fixtureResults.filter((result) => result.passed).length} / {fixtureResults.length} escenarios</strong>
             <p>Los fixtures cubren 340 nm, R2, dilución, temperatura, control, linealidad, interferencias y pruebas de servicio.</p>
           </div>
-        </section>
+        </section> : null}
 
-        {analysis ? (
+        {canViewDiagnosis && analysis ? (
           <DriEvidencePanel evidenceRows={analysis.evidenceRows} logs={analysis.logs} history={history} />
         ) : null}
       </div>
