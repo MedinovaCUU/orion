@@ -1,4 +1,5 @@
 import { createClient } from 'npm:@supabase/supabase-js@2.57.4';
+import { normalizeDhlDetails } from '../_shared/dhl-pieces.ts';
 
 type JsonRecord = Record<string, unknown>;
 
@@ -228,6 +229,7 @@ const buildSnapshot = (shipment: JsonRecord, currentPayload: JsonRecord, receive
     destination: localityFrom(shipment.destination),
     serviceType: compact(shipment.service || asRecord(asRecord(shipment.details).product).productName),
     deliveryProofName: deliveryProofName(shipment),
+    shipmentDetails: normalizeDhlDetails(shipment, currentPayload.shipmentDetails),
     timeline: mergeTimeline(currentPayload.timeline, event),
     rawEvidenceText: rawSummary,
     lookupError: '',

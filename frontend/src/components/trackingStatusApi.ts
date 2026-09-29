@@ -83,6 +83,7 @@ const appendHostedLookupContext = (message: string, relayError?: string) => {
 export type TrackingLookupMode = 'live' | 'manual_only';
 
 export interface TrackingLookupResponse {
+  shipmentDetails?: import('../../../supabase/functions/_shared/dhl-pieces').DhlShipmentDetails;
   ok?: boolean;
   lookupMode?: TrackingLookupMode;
   carrier?: TrackingCarrier;

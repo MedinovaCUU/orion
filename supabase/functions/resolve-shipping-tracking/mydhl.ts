@@ -14,7 +14,7 @@ const area = (value: unknown) => {
 export function normalizeMyDhlShipment(payload: unknown, trackingNumber: string): RecordValue | null {
   const shipment = list(object(payload).shipments).find(item => text(item.shipmentTrackingNumber) === trackingNumber);
   if (!shipment || text(shipment.status).toLowerCase() !== 'success') return null;
-  const events = list(shipment.events).map(event => {
+  const normalizeEvents = (source: unknown) => list(source).map(event => {
     const offset = text(event.GMTOffset);
     const timestamp = `${text(event.date)}T${text(event.time)}${offset}`;
     return {
@@ -23,12 +23,14 @@ export function normalizeMyDhlShipment(payload: unknown, trackingNumber: string)
       location: { address: { addressLocality: area(event) } },
       typeCode: text(event.typeCode),
       signedBy: text(event.signedBy),
+      remark: text(event.remark),
     };
   }).filter(event => event.timestamp).sort((left, right) => {
     const a = Date.parse(left.timestamp);
     const b = Date.parse(right.timestamp);
     return Number.isFinite(a) && Number.isFinite(b) ? b - a : right.timestamp.localeCompare(left.timestamp);
   });
+  const events = normalizeEvents(shipment.events);
   const latest = events[0];
   if (!latest) return null;
   const code = latest.typeCode;
@@ -42,15 +44,31 @@ export function normalizeMyDhlShipment(payload: unknown, trackingNumber: string)
     origin: { address: { addressLocality: area(shipment.shipperDetails) } },
     destination: { address: { addressLocality: area(shipment.receiverDetails) } },
     details: {
+      totalNumberOfPieces: shipment.numberOfPieces,
+      weight: { value: shipment.totalWeight, unitText: shipment.unitOfMeasurements === 'imperial' ? 'lb' : shipment.unitOfMeasurements === 'metric' ? 'kg' : '' },
+      description: text(shipment.description),
+      references: list(shipment.shipperReferences).map(ref => ({ type: ref.typeCode, value: ref.value })),
       consignee: { name: text(object(shipment.receiverDetails).name) },
       proofOfDelivery: { signatory: latest.signedBy },
     },
+    pieces: list(shipment.pieces).map(piece => {
+      const dimensions = object(piece.dimensions);
+      const unit = piece.unitOfMeasurements === 'metric' ? 'kg' : piece.unitOfMeasurements === 'imperial' ? 'lb' : '';
+      const sizeUnit = piece.unitOfMeasurements === 'metric' ? 'cm' : piece.unitOfMeasurements === 'imperial' ? 'in' : '';
+      return {
+        trackingNumber: text(piece.trackingNumber), number: piece.number,
+        weightText: typeof piece.weight === 'number' ? `${piece.weight} ${unit}`.trim() : '',
+        dimensionsText: [dimensions.length, dimensions.width, dimensions.height].every(value => typeof value === 'number')
+          ? `${dimensions.length} × ${dimensions.width} × ${dimensions.height} ${sizeUnit}`.trim() : '',
+        events: normalizeEvents(piece.events),
+      };
+    }),
     events,
   };
 }
 
 export async function fetchMyDhlTracking(number: string, username: string, password: string) {
-  const params = new URLSearchParams({ trackingView: 'all-checkpoints', levelOfDetail: 'shipment', requestGMTOffsetPerEvent: 'true' });
+  const params = new URLSearchParams({ trackingView: 'all-checkpoints-with-remarks', levelOfDetail: 'all', requestGMTOffsetPerEvent: 'true' });
   const response = await fetch(`https://express.api.dhl.com/mydhlapi/shipments/${encodeURIComponent(number)}/tracking?${params}`, {
     headers: { Authorization: `Basic ${btoa(`${username}:${password}`)}`, Accept: 'application/json', 'Accept-Language': 'spa' },
     signal: AbortSignal.timeout(20000),

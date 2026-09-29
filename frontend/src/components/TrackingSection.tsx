@@ -525,6 +525,7 @@ export default function TrackingSection() {
       serviceType: response.serviceType || entry.serviceType,
       deliveryProofName: response.deliveryProofName || entry.deliveryProofName,
       timeline: response.timeline || [],
+      shipmentDetails: response.shipmentDetails,
       rawSummary: response.rawSummary || entry.rawEvidenceText,
       lookupError: '',
       lookedUpAt,

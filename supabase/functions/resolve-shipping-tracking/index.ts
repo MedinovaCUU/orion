@@ -1,4 +1,5 @@
 import { fetchMyDhlTracking } from './mydhl.ts';
+import { normalizeDhlDetails, readDhlShipmentDetails, type DhlShipmentDetails } from '../_shared/dhl-pieces.ts';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -31,6 +32,7 @@ interface TrackingTimelineEvent {
 }
 
 interface TrackingLookupResponse {
+  shipmentDetails?: DhlShipmentDetails;
   ok: boolean;
   lookupMode: 'live' | 'manual_only';
   carrier: TrackingCarrier;
@@ -663,6 +665,7 @@ const buildDhlResponse = (trackingNumber: string, shipment: Record<string, unkno
     ),
     serviceType: compactSpaces(String(product.productName || shipment.service || '')),
     deliveryProofName: compactSpaces(String(proofOfDelivery.signatory || '')),
+    shipmentDetails: normalizeDhlDetails(shipment),
     timeline,
     rawSummary,
     note: [remark, nextSteps].filter(Boolean).join(' · '),
@@ -729,6 +732,7 @@ const requestDhlTracking = async (trackingNumber: string, includeServiceHint = t
       destination: String(snapshot.destination || ''),
       serviceType: 'DHL Unified Push',
       deliveryProofName: String(snapshot.deliveryProofName || ''),
+      shipmentDetails: readDhlShipmentDetails(snapshot.shipmentDetails),
       timeline: snapshot.timeline as TrackingTimelineEvent[],
       rawSummary: String(snapshot.rawEvidenceText || ''),
       note: `Fuente: DHL Unified Push. Notificación recibida: ${row.received_at}.`,

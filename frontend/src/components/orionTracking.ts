@@ -1,3 +1,4 @@
+import { readDhlShipmentDetails, type DhlShipmentDetails } from '../../../supabase/functions/_shared/dhl-pieces';
 export type TrackingCarrier = 'dhl' | 'estafeta' | 'tresguerras' | 'chilexpress' | 'chibra';
 export type TrackingCarrierChoice = TrackingCarrier | 'auto';
 export type TrackingCaptureSource = 'manual' | 'ocr' | 'camera' | 'dhl_push';
@@ -19,6 +20,7 @@ export interface TrackingTimelineEvent {
 }
 
 export interface TrackingEntry {
+  shipmentDetails?: DhlShipmentDetails;
   id: string;
   orderReference: string;
   carrier: TrackingCarrier | null;
@@ -798,6 +800,7 @@ export const coerceTrackingEntry = (value: unknown): TrackingEntry | null => {
     portalStatusText: typeof candidate.portalStatusText === 'string' ? candidate.portalStatusText : '',
     serviceType: typeof candidate.serviceType === 'string' ? candidate.serviceType : '',
     deliveryProofName: typeof candidate.deliveryProofName === 'string' ? candidate.deliveryProofName : '',
+    shipmentDetails: readDhlShipmentDetails(candidate.shipmentDetails),
     lookupError: typeof candidate.lookupError === 'string' ? candidate.lookupError : '',
     lastLookupAt: typeof candidate.lastLookupAt === 'string' ? candidate.lastLookupAt : '',
     timeline: Array.isArray(candidate.timeline)
@@ -887,6 +890,7 @@ export const mergeTrackingEntries = (current: TrackingEntry, incoming: TrackingE
     portalStatusText: incoming.portalStatusText || current.portalStatusText,
     serviceType: incoming.serviceType || current.serviceType,
     deliveryProofName: incoming.deliveryProofName || current.deliveryProofName,
+    shipmentDetails: incoming.shipmentDetails || current.shipmentDetails,
     lookupError: incoming.lookupError || current.lookupError,
     lastLookupAt: incoming.lastLookupAt || current.lastLookupAt,
     timeline: incoming.timeline.length > 0 ? incoming.timeline : current.timeline,
@@ -898,6 +902,7 @@ export const mergeTrackingEntries = (current: TrackingEntry, incoming: TrackingE
 };
 
 export interface TrackingPortalSnapshot {
+  shipmentDetails?: DhlShipmentDetails;
   status: TrackingStatus;
   fulfillmentState: FulfillmentState;
   portalStatusText: string;
@@ -935,6 +940,7 @@ export const applyTrackingPortalSnapshot = (entry: TrackingEntry, snapshot: Trac
     portalStatusText: snapshot.portalStatusText || entry.portalStatusText,
     serviceType: snapshot.serviceType || entry.serviceType,
     deliveryProofName: snapshot.deliveryProofName || entry.deliveryProofName,
+    shipmentDetails: snapshot.shipmentDetails || entry.shipmentDetails,
     lookupError: snapshot.lookupError,
     lastLookupAt: snapshot.lookedUpAt,
     timeline: snapshot.timeline.length > 0 ? snapshot.timeline : entry.timeline,

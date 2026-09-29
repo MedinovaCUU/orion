@@ -1,6 +1,7 @@
 import { TRACKING_CARRIER_META, TRACKING_STATUS_LABELS, formatTrackingDate, formatTrackingDateTime, type TrackingEntry } from './orionTracking';
 import './TrackingMission.css';
 import { TrackingAssignment } from './TrackingAssignment';
+import { TrackingPieces } from './TrackingPieces';
 
 interface Props {
   entries: TrackingEntry[];
@@ -12,7 +13,7 @@ interface Props {
 
 export function TrackingMission({ entries, selectedId, onSelect, search, onSearch }: Props) {
   const selected = entries.find(entry => entry.id === selectedId) || entries[0];
-  const visible = entries.filter(entry => [entry.trackingNumber, entry.destination, entry.recipient, entry.orderReference, entry.carrier, TRACKING_STATUS_LABELS[entry.status]].join(' ').toLowerCase().includes(search.toLowerCase().trim()));
+  const visible = entries.filter(entry => [entry.trackingNumber, ...(entry.shipmentDetails?.pieces.map(piece => piece.id) || []), entry.destination, entry.recipient, entry.orderReference, entry.carrier, TRACKING_STATUS_LABELS[entry.status]].join(' ').toLowerCase().includes(search.toLowerCase().trim()));
   const events = [...(selected?.timeline || [])].sort((a, b) => (Date.parse(b.timestamp || '') || 0) - (Date.parse(a.timestamp || '') || 0));
   const stage = !selected ? 0 : selected.status === 'entregado' ? 3 : selected.status === 'en_reparto' ? 2 : selected.status === 'en_transito' ? 1 : 0;
   return (
@@ -46,7 +47,8 @@ export function TrackingMission({ entries, selectedId, onSelect, search, onSearc
         <ol className="mission-progress" aria-label="Etapas del envío">{['Registrado', 'En tránsito', 'Última milla', 'Entregado'].map((label, index) => <li key={label} className={index <= stage ? 'is-reached' : ''}><span>{String(index + 1).padStart(2, '0')}</span>{label}</li>)}</ol>
         {selected.status === 'incidencia' && <p className="mission-warning">Incidencia: revisa el último movimiento antes de estimar la llegada.</p>}
         <div className="mission-facts"><div><small>{selected.status === 'entregado' ? 'ÚLTIMO EVENTO' : 'LLEGADA ESTIMADA'}</small><strong>{selected.status === 'entregado' ? (selected.lastEventAt ? formatTrackingDateTime(selected.lastEventAt) : 'Entrega confirmada') : selected.estimatedDelivery ? formatTrackingDate(selected.estimatedDelivery) : 'Sin fecha confirmada'}</strong></div><div><small>ÚLTIMA CONSULTA</small><strong>{selected.lastLookupAt ? formatTrackingDateTime(selected.lastLookupAt) : 'Pendiente de consultar'}</strong></div></div>
-        <h5>Bitácora de movimientos <span>{events.length}</span></h5>
+        {selected.carrier === 'dhl' && <TrackingPieces entry={selected} />}
+        <h5>Bitácora de la guía <span>{events.length}</span></h5>
         <div className="mission-events">{events.map((event, index) => <article key={`${event.timestamp}-${index}`}><span className="mission-event-dot" /><div><strong>{event.label}</strong><p>{event.location || 'Ubicación no informada'}</p><time>{event.timestamp ? formatTrackingDateTime(event.timestamp) : 'Sin fecha informada'}</time></div></article>)}{!events.length && <p>El historial aparecerá cuando la mensajería proporcione movimientos.</p>}</div>
       </section>}
     </div>
