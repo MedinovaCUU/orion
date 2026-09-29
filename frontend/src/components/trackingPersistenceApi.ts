@@ -20,6 +20,7 @@ interface ShippingTrackingRow {
 }
 
 export interface CloudTrackingSnapshot {
+  dismissedNumbers: string[];
   entries: TrackingEntry[];
   userId: string;
   queuedEntryIds: string[];
@@ -67,6 +68,14 @@ export const loadCloudTrackingEntries = async (): Promise<CloudTrackingSnapshot>
     throw new Error('No hay una sesión válida para recuperar los trackings guardados.');
   }
 
+  const dismissedNumbers: string[] = [];
+  for (let offset = 0; ; offset += 500) {
+    const { data: dismissed, error: dismissedError } = await supabase.from('shipping_tracking_dismissals')
+      .select('tracking_number').eq('user_id', user.id).order('tracking_number').range(offset, offset + 499);
+    if (dismissedError) throw new Error(`No fue posible verificar las guías eliminadas: ${dismissedError.message}`);
+    dismissedNumbers.push(...(dismissed || []).map(row => String(row.tracking_number)));
+    if ((dismissed || []).length < 500) break;
+  }
   const { data, error } = await supabase
     .from(TRACKING_TABLE)
     .select(
@@ -80,10 +89,11 @@ export const loadCloudTrackingEntries = async (): Promise<CloudTrackingSnapshot>
   }
 
   return {
+    dismissedNumbers,
     userId: user.id,
     entries: (data || [])
       .map((row) => fromShippingTrackingRow(row as ShippingTrackingRow))
-      .filter((entry): entry is TrackingEntry => Boolean(entry)),
+      .filter((entry): entry is TrackingEntry => Boolean(entry) && !dismissedNumbers.includes(entry!.trackingNumber)),
     queuedEntryIds: (data || [])
       .filter((row) => Boolean((row as ShippingTrackingRow).refresh_requested_at))
       .map((row) => String((row as ShippingTrackingRow).id)),
@@ -142,33 +152,14 @@ export const replaceCloudTrackingEntries = async (userId: string, entries: Track
     }
   }
 
-  const { data: persistedRows, error: selectError } = await supabase
-    .from(TRACKING_TABLE)
-    .select('id, tracking_number')
-    .eq('user_id', userId)
-    .eq('dhl_auto_imported', false);
+  // Deletions are explicit RPCs; an old browser list must not delete newer cloud rows.
+};
 
-  if (selectError) {
-    throw new Error(`No fue posible verificar los trackings guardados: ${selectError.message}`);
-  }
-
-  const activeTrackingNumbers = new Set(entries.map((entry) => entry.trackingNumber));
-  const staleIds = (persistedRows || [])
-    .filter((row) => !activeTrackingNumbers.has(String(row.tracking_number || '')))
-    .map((row) => String(row.id));
-
-  if (staleIds.length === 0) {
-    return;
-  }
-
-  const { error: deleteError } = await supabase
-    .from(TRACKING_TABLE)
-    .delete()
-    .eq('user_id', userId)
-    .eq('dhl_auto_imported', false)
-    .in('id', staleIds);
-
-  if (deleteError) {
-    throw new Error(`No fue posible retirar trackings eliminados de Supabase: ${deleteError.message}`);
-  }
+export const dismissCloudTrackings = async (numbers: string[]) => {
+  const { error } = await supabase.rpc('dismiss_shipping_trackings', { tracking_numbers: numbers });
+  if (error) throw new Error(`No se pudo eliminar: ${error.message}`);
+};
+export const restoreCloudTrackings = async (numbers: string[]) => {
+  const { error } = await supabase.rpc('restore_shipping_trackings', { tracking_numbers: numbers });
+  if (error) throw new Error(`No se pudo reactivar: ${error.message}`);
 };

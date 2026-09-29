@@ -23,6 +23,8 @@ import {
 } from './orionTracking';
 import {
   loadCloudTrackingEntries,
+  dismissCloudTrackings,
+  restoreCloudTrackings,
   loadTrackingAgentHealth,
   replaceCloudTrackingEntries,
   requestCloudTrackingRefresh,
@@ -84,10 +86,13 @@ const AUTO_REFRESH_OPTIONS: Array<{ value: AutoRefreshIntervalMs; label: string 
   { value: 120000, label: '2 min' },
 ];
 
-const todayIso = () => new Date().toISOString().slice(0, 10);
+const todayIso = () => {
+  const date = new Date();
+  return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+};
 
-const isPastEstimatedDelivery = (entry: TrackingEntry) =>
-  Boolean(entry.estimatedDelivery) && entry.fulfillmentState !== 'entregado' && entry.estimatedDelivery < todayIso();
+const isPastEstimatedDelivery = (entry: TrackingEntry, today = todayIso()) =>
+  Boolean(entry.estimatedDelivery) && entry.fulfillmentState !== 'entregado' && entry.estimatedDelivery.slice(0, 10) < today;
 
 const pctFormatter = new Intl.NumberFormat('es-MX', {
   style: 'percent',
@@ -122,6 +127,8 @@ const resolveLiveBoardStatus = (entry: TrackingEntry): { label: string; tone: Li
   if (entry.fulfillmentState === 'entregado') {
     return { label: 'Entregado', tone: 'delivered' };
   }
+
+  if (entry.lookupError) return { label: 'Error de consulta', tone: 'alert' };
 
   if (entry.status === 'en_reparto') {
     return { label: 'En reparto', tone: 'moving' };
@@ -200,6 +207,11 @@ export default function TrackingSection() {
   const [captureOpen, setCaptureOpen] = useState(false);
   const [overviewOpen, setOverviewOpen] = useState(false);
   const [liveBoardOpen, setLiveBoardOpen] = useState(false);
+  const [boardFilter, setBoardFilter] = useState('all');
+  const [boardToday, setBoardToday] = useState(todayIso);
+  const [trackingActionBusy, setTrackingActionBusy] = useState(false);
+  const dismissedNumbersRef = useRef(new Set<string>());
+  const trackingMutationRef = useRef(0);
   const [liveBoardFullscreen, setLiveBoardFullscreen] = useState(false);
   const [cloudUserId, setCloudUserId] = useState('');
   const [trackingStorageReady, setTrackingStorageReady] = useState(false);
@@ -210,6 +222,11 @@ export default function TrackingSection() {
   const [agentQueuedEntryIds, setAgentQueuedEntryIds] = useState<Set<string>>(() => new Set());
   const [trackingAgentHealth, setTrackingAgentHealth] = useState<TrackingAgentHealth | null>(null);
   const [trackingAgentOnline, setTrackingAgentOnline] = useState(false);
+
+  useEffect(() => {
+    const timer = window.setInterval(() => setBoardToday(todayIso()), 60000);
+    return () => window.clearInterval(timer);
+  }, []);
 
   useEffect(() => {
     let cancelled = false;
@@ -223,7 +240,8 @@ export default function TrackingSection() {
         setCloudUserId(snapshot.userId);
         setCloudReadMessage(`${snapshot.entries.length} envíos recuperados de Supabase · ${formatTrackingDateTime(new Date().toISOString())}`);
         const localEntries = loadTrackingEntries(snapshot.userId);
-        setEntries(reconcileTrackingEntries(localEntries, snapshot.entries));
+        dismissedNumbersRef.current = new Set(snapshot.dismissedNumbers);
+        setEntries(reconcileTrackingEntries(localEntries, snapshot.entries).filter(entry => !dismissedNumbersRef.current.has(entry.trackingNumber)));
         setAgentQueuedEntryIds(new Set(snapshot.queuedEntryIds));
         setTrackingAgentHealth(agentHealth);
         setTrackingAgentOnline(
@@ -262,6 +280,7 @@ export default function TrackingSection() {
 
     let cancelled = false;
     const refreshCloudState = async () => {
+      const version = trackingMutationRef.current;
       if (document.visibilityState === 'hidden') {
         return;
       }
@@ -271,10 +290,11 @@ export default function TrackingSection() {
           loadCloudTrackingEntries(),
           loadTrackingAgentHealth().catch(() => null),
         ]);
-        if (cancelled || snapshot.userId !== cloudUserId) {
+        if (cancelled || snapshot.userId !== cloudUserId || version !== trackingMutationRef.current || trackingActionBusy) {
           return;
         }
 
+        dismissedNumbersRef.current = new Set(snapshot.dismissedNumbers);
         setEntries((current) =>
           JSON.stringify(current) === JSON.stringify(snapshot.entries) ? current : snapshot.entries,
         );
@@ -307,7 +327,7 @@ export default function TrackingSection() {
       window.clearInterval(timer);
       document.removeEventListener('visibilitychange', handleVisibilityChange);
     };
-  }, [cloudUserId, trackingStorageReady, cloudRefreshVersion]);
+  }, [cloudUserId, trackingStorageReady, cloudRefreshVersion, trackingActionBusy]);
 
   useEffect(() => {
     if (!trackingStorageReady) {
@@ -477,7 +497,12 @@ export default function TrackingSection() {
 
   const liveBoardEntries = useMemo(
     () =>
-      [...sortedEntries].sort((left, right) => {
+      sortedEntries.filter(entry => boardFilter === 'all' ||
+        (boardFilter === 'risk' ? resolveLiveBoardStatus(entry).tone === 'alert' || isPastEstimatedDelivery(entry, boardToday) :
+          boardFilter === 'late' ? isPastEstimatedDelivery(entry, boardToday) :
+            boardFilter === 'lookup_error' ? Boolean(entry.lookupError) :
+              boardFilter === 'pending' ? ['capturado', 'pendiente_consulta', 'etiqueta_generada'].includes(entry.status) : entry.status === boardFilter)
+      ).sort((left, right) => {
         const priorityDelta = resolveLiveBoardPriority(left) - resolveLiveBoardPriority(right);
         if (priorityDelta !== 0) {
           return priorityDelta;
@@ -485,7 +510,7 @@ export default function TrackingSection() {
 
         return Date.parse(right.updatedAt) - Date.parse(left.updatedAt);
       }),
-    [sortedEntries],
+    [sortedEntries, boardFilter, boardToday],
   );
 
   const clearManualComposer = () => {
@@ -769,7 +794,7 @@ export default function TrackingSection() {
   const queueLookupForEntries = (incoming: TrackingEntry[], mode: 'manual' | 'auto' = 'auto') => {
     void refreshTrackingTargets(
       incoming
-        .filter((entry) => !usesCloudTrackingAgentLookup(entry.carrier))
+        .filter((entry) => !usesCloudTrackingAgentLookup(entry.carrier) && !dismissedNumbersRef.current.has(entry.trackingNumber))
         .map((entry) => ({
           carrier: entry.carrier,
           trackingNumber: entry.trackingNumber,
@@ -778,7 +803,8 @@ export default function TrackingSection() {
     );
   };
 
-  const handleManualAdd = () => {
+  const handleManualAdd = async () => {
+    if (trackingActionBusy) return;
     const incoming = buildTrackingEntriesFromText(manualPayload, {
       preferredCarrier,
       source: 'manual',
@@ -797,6 +823,21 @@ export default function TrackingSection() {
       return;
     }
 
+    if (cloudUserId) {
+      setTrackingActionBusy(true);
+      trackingMutationRef.current++;
+      try {
+        await restoreCloudTrackings(incoming.map(entry => entry.trackingNumber));
+        await replaceCloudTrackingEntries(cloudUserId, incoming);
+        incoming.forEach(entry => dismissedNumbersRef.current.delete(entry.trackingNumber));
+      } catch (error) {
+        pushNotice('error', error instanceof Error ? error.message : 'No se pudo guardar la guía.');
+        return;
+      } finally {
+        trackingMutationRef.current++;
+        setTrackingActionBusy(false);
+      }
+    }
     setEntries((current) => upsertTrackingEntries(current, incoming));
     clearManualComposer();
     pushNotice('success', `Se agregaron o actualizaron ${incoming.length} tracking(s) al tablero fulfillment.`);
@@ -880,7 +921,7 @@ export default function TrackingSection() {
           continue;
         }
 
-        importedEntries.push(...nextEntries);
+        importedEntries.push(...nextEntries.filter(entry => !dismissedNumbersRef.current.has(entry.trackingNumber)));
       }
 
       if (rowTargetId) {
@@ -960,14 +1001,25 @@ export default function TrackingSection() {
     window.open(TRACKING_CARRIER_META[entry.carrier].portalUrl, '_blank', 'noopener,noreferrer');
   };
 
-  const handleClearBoard = () => {
-    if (!window.confirm('Esto eliminará todos tus trackings guardados en Orion y Supabase.')) {
-      return;
+  const handleDismissEntries = async (targets: TrackingEntry[]) => {
+    if (trackingActionBusy || !targets.length) return;
+    if (!cloudUserId) { pushNotice('error', 'Conecta con Supabase para eliminar de forma permanente.'); return; }
+    if (!window.confirm(`¿Eliminar ${targets.length === 1 ? targets[0].trackingNumber : `${targets.length} guías`} de tu perfil? No volverán automáticamente. Para recuperarlas deberás ingresarlas manualmente.`)) return;
+    setTrackingActionBusy(true);
+    trackingMutationRef.current++;
+    try {
+      await dismissCloudTrackings(targets.map(entry => entry.trackingNumber));
+      targets.forEach(entry => dismissedNumbersRef.current.add(entry.trackingNumber));
+      setEntries(current => current.filter(entry => !dismissedNumbersRef.current.has(entry.trackingNumber)));
+      pushNotice('success', 'Guías eliminadas de tu perfil y bloqueadas para reinserción automática.');
+    } catch (error) {
+      pushNotice('error', error instanceof Error ? error.message : 'No se pudo eliminar.');
+    } finally {
+      trackingMutationRef.current++;
+      setTrackingActionBusy(false);
     }
-
-    setEntries([]);
-    pushNotice('success', 'El tablero de tracking quedó limpio. La eliminación se está sincronizando con Supabase.');
   };
+  const handleClearBoard = () => void handleDismissEntries(entries);
 
   const handleRequestAgentRefresh = async (entry: TrackingEntry, silent = false) => {
     const lookupKey = buildLookupKey(entry.carrier, entry.trackingNumber);
@@ -1641,8 +1693,8 @@ export default function TrackingSection() {
                       <button
                         type="button"
                         className="button-primary inactive tracking-record__delete"
-                        onClick={() => setEntries((current) => current.filter((candidate) => candidate.id !== entry.id))}
-                        disabled={ocrBusy}
+                        onClick={() => void handleDismissEntries([entry])}
+                        disabled={ocrBusy || trackingActionBusy}
                       >
                         Eliminar
                       </button>
@@ -1680,7 +1732,7 @@ export default function TrackingSection() {
           <div className="tracking-live-board__header">
             <div>
               <span className="tracking-live-board__eyebrow">Board logístico en vivo</span>
-              <h4>Tracking operativo tipo aeropuerto</h4>
+              <h4>Panel de envíos</h4>
               <p>
                 Portales directos: {autoRefreshIntervalMs === 0 ? 'actualización manual' : describeAutoRefresh(autoRefreshIntervalMs)}.
                 {' '}
@@ -1703,6 +1755,17 @@ export default function TrackingSection() {
             </div>
           </div>
 
+          <div className="tracking-live-board__filters">
+            <label>Mostrar <select aria-label="Filtrar envíos por estado" value={boardFilter} onChange={event => setBoardFilter(event.target.value)}>
+              <option value="all">Todos</option><option value="risk">Con problemas</option><option value="late">Atrasados</option>
+              <option value="incidencia">Incidencia</option><option value="lookup_error">Error de consulta</option>
+              <option value="pending">Por salir / por consultar</option><option value="en_transito">En tránsito</option>
+              <option value="en_reparto">En reparto</option><option value="entregado">Entregados</option>
+            </select></label>
+            <span>{liveBoardEntries.length} de {sortedEntries.length} envíos</span>
+            <button type="button" className="button-primary inactive" disabled={trackingActionBusy || !liveBoardEntries.length} onClick={() => void handleDismissEntries(liveBoardEntries)}>Eliminar visibles</button>
+          </div>
+          {notice && <p role="status" className={`tracking-notice tracking-notice--${notice.tone}`}>{notice.message}</p>}
           <div className="tracking-live-board__stats">
             <article>
               <span>Activos</span>
@@ -1718,7 +1781,7 @@ export default function TrackingSection() {
             </article>
             <article>
               <span>Riesgo</span>
-              <strong>{compactFormatter.format(metrics.incidents + metrics.overdue)}</strong>
+              <strong>{compactFormatter.format(sortedEntries.filter(entry => resolveLiveBoardStatus(entry).tone === 'alert').length)}</strong>
             </article>
           </div>
 
@@ -1731,11 +1794,12 @@ export default function TrackingSection() {
               <span>Último evento</span>
               <span>Estado</span>
               <span>ETA / control</span>
+              <span>Acciones</span>
             </div>
 
             <div className="tracking-live-board__table-body">
               {liveBoardEntries.length === 0 ? (
-                <div className="tracking-live-board__empty">No hay paquetes cargados para monitoreo.</div>
+                <div className="tracking-live-board__empty">{sortedEntries.length ? 'No hay envíos con este filtro.' : 'No hay paquetes cargados para monitoreo.'}</div>
               ) : (
                 liveBoardEntries.map((entry) => {
                   const boardStatus = resolveLiveBoardStatus(entry);
@@ -1749,7 +1813,7 @@ export default function TrackingSection() {
                     >
                       <div className="tracking-live-board__cell tracking-live-board__cell--guide">
                         <strong>{entry.trackingNumber}</strong>
-                        <span>{entry.orderReference || 'Sin pedido'}</span>
+                        <span>{entry.carrier ? TRACKING_CARRIER_META[entry.carrier].label : 'Sin mensajería'}{entry.orderReference ? ` · ${entry.orderReference}` : ''}</span>
                       </div>
 
                       <div className="tracking-live-board__cell">
@@ -1780,7 +1844,8 @@ export default function TrackingSection() {
                       </div>
 
                       <div className="tracking-live-board__cell tracking-live-board__cell--status">
-                        <span className={`tracking-live-board__status tracking-live-board__status--${boardStatus.tone}`}>
+                        <span className={`tracking-live-board__status tracking-live-board__status--${boardStatus.tone}`} title={entry.lookupError || entry.portalStatusText || entry.lastEventLabel}>
+                          {boardStatus.tone === 'alert' && <i className="tracking-alert-pulse" aria-hidden="true" />}
                           {boardStatus.label}
                         </span>
                         <span>{lookupBusy ? 'Sincronizando portal...' : TRACKING_STATUS_LABELS[entry.status]}</span>
@@ -1799,6 +1864,10 @@ export default function TrackingSection() {
                                 ? `Portal ${formatTrackingDateTime(entry.lastLookupAt)}`
                                 : 'Sin consulta viva'}
                         </span>
+                      </div>
+                      <div className="tracking-live-board__cell tracking-live-board__row-actions">
+                        <button type="button" onClick={() => { setSelectedGuideId(entry.id); void handleCloseLiveBoard(); }}>Ver detalle</button>
+                        <button type="button" disabled={trackingActionBusy} aria-label={`Eliminar guía ${entry.trackingNumber}`} onClick={() => void handleDismissEntries([entry])}>Eliminar</button>
                       </div>
                     </article>
                   );
