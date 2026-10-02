@@ -9,6 +9,9 @@ try {
  const alfredo=page.locator('article').filter({has:page.getByRole('heading',{name:'Alfredo Acevedo',exact:true})});
  await alfredo.getByText('PRÓXIMO SERVICIO',{exact:true}).waitFor();
  assert.equal(await page.getByRole('button',{name:/Ver agenda/}).count(),0);
+ assert.equal(await page.getByText('Laboratorio del Norte',{exact:true}).count(),0);
+ assert.equal(await page.getByText('Semana terminada',{exact:true}).count(),0);
+ assert.equal(await alfredo.getByText('Agenda 1 / 1',{exact:true}).count(),1);
  await page.getByLabel('Área del equipo').selectOption('Química / Aplicaciones');
  const ivonne=page.locator('article').filter({has:page.getByRole('heading',{name:'Ivonne Jaramillo',exact:true})});
  const seen=new Set();

@@ -12,7 +12,8 @@ try {
  await page.getByLabel('Área del equipo').selectOption('Química / Aplicaciones');
  await page.getByText('Hospital Central',{exact:true}).waitFor();
  await page.clock.fastForward(7100);
- await page.getByText('Laboratorio del Norte',{exact:true}).waitFor();
+ assert.equal(await page.getByText('Laboratorio del Norte',{exact:true}).count(),0);
+ await page.getByText('Hospital Central',{exact:true}).waitFor();
  await page.getByRole('button',{name:'Pantalla completa',exact:true}).click();
  assert.equal(await page.locator('.engineer-wall--screen').count(),1);
  assert.equal(await page.locator('table').count(),0);
