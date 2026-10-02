@@ -29,6 +29,7 @@ try {
     await page.getByRole('button',{name:'Tablero en vivo',exact:true}).click();
     await page.locator('.tracking-live-board--open').waitFor();
     if(await page.evaluate(()=>!!document.fullscreenElement))await page.evaluate(()=>document.exitFullscreen());
+    await page.waitForFunction(()=>getComputedStyle(document.querySelector('.tracking-live-board')).opacity==='1');
   };
   await page.goto('http://127.0.0.1:5198/orion/board-check');
   await open();

@@ -1197,3 +1197,76 @@
 @keyframes tracking-risk-pulse{0%{box-shadow:0 0 0 0 #ff5367a0}100%{box-shadow:0 0 0 9px #ff536700}}
 @media(prefers-reduced-motion:reduce){.tracking-alert-pulse{animation:none}}
 @media(max-width:850px){.tracking-live-board__table-head{display:none}.tracking-live-board__row{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}.tracking-live-board__row-actions{grid-column:1/-1;flex-direction:row}.tracking-live-board__cell>span{white-space:normal}.tracking-live-board__cell strong{overflow-wrap:anywhere;white-space:normal}}
+
+/* Use Orion's shared identity rather than a separate dark dashboard theme. */
+.tracking-live-board {
+  color-scheme: light;
+  font-family: var(--font-body);
+  background:
+    radial-gradient(ellipse at top left, var(--surface-brand-tint), transparent 45%),
+    radial-gradient(ellipse at bottom right, var(--surface-environmental-tint), transparent 50%),
+    var(--bg-color);
+}
+.tracking-live-board__shell {
+  color: var(--text-primary);
+  border-color: var(--surface-outline);
+  background: linear-gradient(130deg, var(--surface-glass-strong), var(--surface-glass-soft));
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  box-shadow: inset 0 1px 0 var(--surface-highlight), var(--surface-shadow);
+}
+.tracking-live-board__header {
+  padding-bottom: .8rem;
+  border-bottom: 1px solid var(--border-color);
+}
+.tracking-live-board__header h4 {
+  font-family: var(--font-heading);
+  letter-spacing: -.035em;
+  text-transform: none;
+  line-height: 1.25;
+}
+.tracking-live-board__eyebrow { color: var(--brand-red-ink); }
+.tracking-live-board__eyebrow::before { height: 3px; border-radius: 3px; box-shadow: none; }
+.tracking-live-board__header p,
+.tracking-live-board__stats span,
+.tracking-live-board__cell span,
+.tracking-live-board__cell small,
+.tracking-live-board__filters,
+.tracking-live-board__table-head { color: var(--text-secondary); }
+.tracking-live-board__actions { display: flex; }
+.tracking-live-board__actions .button-primary.inactive {
+  color: var(--pill-neutral-text);
+  border-color: var(--pill-neutral-border);
+  background: var(--pill-neutral-bg);
+}
+.tracking-live-board__filters select {
+  color: var(--text-primary);
+  background: var(--bg-card-strong);
+  border-color: var(--border-strong);
+}
+.tracking-live-board__stats article,
+.tracking-live-board__row {
+  border-color: var(--surface-outline);
+  background: linear-gradient(115deg, var(--bg-card-strong), var(--bg-card-soft));
+  box-shadow: inset 0 1px 0 var(--surface-highlight);
+}
+.tracking-live-board__stats strong { color: var(--text-primary); margin-top: 0; }
+.tracking-live-board__row--alert {
+  border-color: var(--pill-brand-border);
+  background: linear-gradient(110deg, var(--bg-card-strong) 40%, var(--surface-brand-tint));
+  box-shadow: inset 3px 0 0 var(--brand-red);
+}
+.tracking-live-board__row--moving { border-color: rgba(var(--environmental-rgb), .4); }
+.tracking-live-board__row--delivered { border-color: rgba(var(--food-rgb), .35); }
+.tracking-live-board__status--pending { color: #3f5c76 !important; background: var(--surface-environmental-blue-tint); border-color: rgba(var(--environmental-blue-rgb), .28); }
+.tracking-live-board__status--moving { color: #226b70 !important; background: var(--surface-environmental-tint); border-color: rgba(var(--environmental-rgb), .35); }
+.tracking-live-board__status--delivered { color: #236447 !important; background: var(--surface-food-tint); border-color: rgba(var(--food-rgb), .35); }
+.tracking-live-board__status--alert { color: var(--brand-red-ink) !important; background: var(--pill-brand-bg); border-color: var(--pill-brand-border); }
+.tracking-live-board__row-actions { display: flex; flex-wrap: wrap; gap: .3rem; }
+.tracking-live-board__row-actions button { color: var(--text-secondary); background: var(--pill-neutral-bg); border-color: var(--border-color); }
+.tracking-live-board__row-actions button:last-child { color: var(--brand-red-ink); }
+.tracking-live-board__row-actions button:hover { background: var(--pill-brand-bg); border-color: var(--pill-brand-border); }
+.tracking-live-board button:focus-visible,
+.tracking-live-board select:focus-visible { outline: 2px solid var(--brand-red-ink); outline-offset: 3px; }
+.tracking-live-board__empty { color: var(--text-secondary); border-color: var(--border-strong); background: var(--bg-card); }
+.tracking-live-board__table-body { scrollbar-width: thin; scrollbar-color: var(--border-strong) transparent; }
