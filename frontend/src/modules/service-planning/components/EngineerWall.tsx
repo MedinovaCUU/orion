@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, type CSSProperties } from 'react';
 import type { ProfileSummary } from '../../../components/servicesPlanning';
 import type { PlannedService } from '../types/servicePlanning.types';
 
@@ -26,7 +26,23 @@ export default function EngineerWall({ services, roster, today, onEdit, profiles
   const areaOf = (name: string) => { const p = profiles.find(p => p.nombre_completo === name); const role = `${p?.rol || ''} ${p?.employee_type || ''}`.normalize('NFD').replace(/[\u0300-\u036f]/g, ''); return /quimic|chemist|aplicativ/i.test(role) ? 'Química / Aplicaciones' : /ingenier|engineer/i.test(role) ? 'Ingeniería' : 'Equipo técnico'; };
   const visibleRoster = roster.filter(name => area === 'all' || areaOf(name) === area);
   const [selected, setSelected] = useState<string | null>(null);
-  const pageSize = 8;
+  const grid = useRef<HTMLDivElement>(null);
+  const [layout, setLayout] = useState({ columns: 4, rows: 2 });
+  useEffect(() => {
+    const element = grid.current;
+    if (!element) return;
+    const measure = () => {
+      const { width, height } = element.getBoundingClientRect();
+      const columns = Math.max(1, Math.min(4, Math.floor((width + 12) / 272)));
+      const rows = Math.max(1, Math.min(2, Math.floor((height + 12) / 342)));
+      setLayout(current => current.columns === columns && current.rows === rows ? current : { columns, rows });
+    };
+    const observer = new ResizeObserver(measure);
+    observer.observe(element);
+    measure();
+    return () => observer.disconnect();
+  }, []);
+  const pageSize = layout.columns * layout.rows;
   const pages = Math.max(1, Math.ceil(visibleRoster.length / pageSize));
   const activePage = Math.min(page, pages - 1);
   useEffect(() => { const timer = window.setInterval(() => setClock(new Date()), 1000); return () => clearInterval(timer); }, []);
@@ -47,7 +63,7 @@ export default function EngineerWall({ services, roster, today, onEdit, profiles
   return <section ref={root} className={`engineer-wall ${screen ? 'engineer-wall--screen' : ''}`} aria-label="Monitor de ingenieros y químicos">
     <header className="engineer-wall__header"><div><span className="engineer-wall__eyebrow">ORION / OPERACIONES</span><h2>Ingenieros y químicos</h2><p>Agenda registrada · Hoy, {dateLabel(today)} · Se consulta cada 30 segundos</p></div><div className="engineer-wall__controls"><time>{clock.toLocaleTimeString('es-MX',{ timeZone:'America/Mexico_City',hour:'2-digit',minute:'2-digit',second:'2-digit' })}</time><button onClick={onEdit}>Editar planeación</button><button onClick={() => void fullscreen()}>{screen ? 'Salir de pantalla completa' : 'Pantalla completa'}</button></div></header>
     <div className="engineer-wall__metrics"><select aria-label="Área del equipo" value={area} onChange={e => { setArea(e.target.value); setPage(0); }}><option value="all">Todo el equipo</option><option>Ingeniería</option><option>Química / Aplicaciones</option><option>Equipo técnico</option></select><span><b>{visibleRoster.length}</b> integrantes</span><span><b>{all.filter(a => a.current.length).length}</b> con agenda hoy</span><span><b>{all.reduce((n,a) => n + (a.pending.length ? 1 : 0),0)}</b> con pendientes</span><span className={unassigned.length ? 'warning' : ''}><b>{unassigned.length}</b> servicios sin asignar</span></div>
-    <div className="engineer-wall__grid">{all.slice(activePage * pageSize, (activePage + 1) * pageSize).map(a => {
+    <div ref={grid} className="engineer-wall__grid" style={{ '--wall-columns': layout.columns, '--wall-rows': layout.rows } as CSSProperties}>{all.slice(activePage * pageSize, (activePage + 1) * pageSize).map(a => {
       const tone = a.pending.length ? 'warning' : a.current.length ? 'active' : 'idle';
       const status = a.pending.length ? 'Requiere atención' : a.current.some(s => s.scheduledDate === today) ? 'Programado hoy' : a.current.length ? 'Esta semana · confirmar día' : 'Sin agenda hoy';
       return <article key={a.name} className={`engineer-wall__card engineer-wall__card--${tone}`}><div className="engineer-wall__person"><span className="engineer-wall__avatar">{a.name.split(' ').slice(0,2).map(n=>n[0]).join('')}</span><div><small className="engineer-wall__area">{areaOf(a.name)}</small><h3>{a.name}</h3><span className="engineer-wall__status">● {status}</span></div></div><Activity label={`HOY${a.current.length > 1 ? ` · ${a.current.length} actividades` : ''}`} service={a.current[0]} /><Activity label={`LO QUE SIGUE${a.next.length > 1 ? ` · ${a.next.length} programados` : ''}`} service={a.next[0]} /><div className="engineer-wall__pending"><span className="engineer-wall__label">PENDIENTES · {a.pending.length}</span>{a.pending.length ? <><strong>{a.pending[0].locality}</strong><small>{a.overdue.includes(a.pending[0]) ? 'Fecha pasada · confirmar cierre' : a.pending[0].flags.requiresPayment ? 'Requiere pago' : a.pending[0].flags.isBlocked ? 'Servicio bloqueado' : 'Requiere seguimiento'}{a.pending.length > 1 ? ` · +${a.pending.length - 1} más` : ''}</small></> : <small>Sin pendientes de seguimiento</small>}</div><button className="engineer-wall__detail-button" onClick={() => setSelected(a.name)}>Ver agenda · {a.assigned.length} servicios</button></article>;

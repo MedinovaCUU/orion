@@ -17,7 +17,7 @@ try {
  await page.getByRole('button',{name:'Salir de pantalla completa'}).click();
  await page.getByLabel('Área del equipo').selectOption('all');
  await page.getByRole('button',{name:'Siguiente',exact:true}).click();
- await page.getByText('Panel 2 / 2',{exact:true}).waitFor();
+ await page.getByText(/^Panel 2 \/ /).waitFor();
  await page.getByRole('button',{name:'Editar planeación'}).click();
  await page.getByRole('heading',{name:'Equipo en vivo'}).waitFor();
  assert.equal(await page.getByRole('button',{name:/Erick/}).count(),0);
