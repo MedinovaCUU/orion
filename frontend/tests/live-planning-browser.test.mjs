@@ -11,6 +11,7 @@ try {
  assert.equal(await page.getByText('12',{exact:true}).count(),1);
  await page.getByLabel('Área del equipo').selectOption('Química / Aplicaciones');
  await page.getByText('Hospital Central',{exact:true}).waitFor();
+ await page.clock.fastForward(7100);
  await page.getByText('Laboratorio del Norte',{exact:true}).waitFor();
  await page.getByRole('button',{name:'Pantalla completa',exact:true}).click();
  assert.equal(await page.locator('.engineer-wall--screen').count(),1);
