@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState, type CSSProperties } from 'react';
-import type { ProfileSummary } from '../../../components/servicesPlanning';
-import type { PlannedService } from '../types/servicePlanning.types';
+import type { PlannedService, GuardRosterMember } from '../types/servicePlanning.types';
 
 const dateLabel = (date: string) => new Date(`${date}T12:00:00`).toLocaleDateString('es-MX', { day: 'numeric', month: 'short' });
 const serviceDate = (s: PlannedService) => s.scheduledDate || s.weekStart || '9999';
@@ -16,14 +15,14 @@ export function engineerAgenda(services: PlannedService[], name: string, today: 
 function Activity({ service, label }: { service?: PlannedService; label: string }) {
   return <div className="engineer-wall__activity"><span className="engineer-wall__label">{label}</span>{service ? <><strong>{service.locality}</strong><p>{service.serviceType.replaceAll('_', ' ')} · {service.platform || 'Sin plataforma'}</p><small>{service.scheduledDate ? dateLabel(service.scheduledDate) : `${service.weekLabel} · Día por confirmar`}</small>{service.companions.length > 0 && <small>Con {service.companions.join(', ')}</small>}</> : <strong className="engineer-wall__empty">Sin actividad programada</strong>}</div>;
 }
-export default function EngineerWall({ services, roster, today, onEdit, profiles }: { profiles: ProfileSummary[]; services: PlannedService[]; roster: string[]; today: string; onEdit: () => void }) {
+export default function EngineerWall({ services, roster, today, onEdit, members }: { members: GuardRosterMember[]; services: PlannedService[]; roster: string[]; today: string; onEdit: () => void }) {
   const root = useRef<HTMLElement>(null);
   const [screen, setScreen] = useState(false);
   const [page, setPage] = useState(0);
   const [auto, setAuto] = useState(true);
   const [clock, setClock] = useState(new Date());
   const [area, setArea] = useState('all');
-  const areaOf = (name: string) => { const p = profiles.find(p => p.nombre_completo === name); const role = `${p?.rol || ''} ${p?.employee_type || ''}`.normalize('NFD').replace(/[\u0300-\u036f]/g, ''); return /quimic|chemist|aplicativ/i.test(role) ? 'Química / Aplicaciones' : /ingenier|engineer/i.test(role) ? 'Ingeniería' : 'Equipo técnico'; };
+  const areaOf = (name: string) => members.find(member => member.fullName === name)?.area === 'aplicativo' ? 'Química / Aplicaciones' : 'Ingeniería';
   const visibleRoster = roster.filter(name => area === 'all' || areaOf(name) === area);
   const [selected, setSelected] = useState<string | null>(null);
   const grid = useRef<HTMLDivElement>(null);
@@ -62,7 +61,7 @@ export default function EngineerWall({ services, roster, today, onEdit, profiles
   const detail = selected ? all.find(a => a.name === selected) : null;
   return <section ref={root} className={`engineer-wall ${screen ? 'engineer-wall--screen' : ''}`} aria-label="Monitor de ingenieros y químicos">
     <header className="engineer-wall__header"><div><span className="engineer-wall__eyebrow">ORION / OPERACIONES</span><h2>Ingenieros y químicos</h2><p>Agenda registrada · Hoy, {dateLabel(today)} · Se consulta cada 30 segundos</p></div><div className="engineer-wall__controls"><time>{clock.toLocaleTimeString('es-MX',{ timeZone:'America/Mexico_City',hour:'2-digit',minute:'2-digit',second:'2-digit' })}</time><button onClick={onEdit}>Editar planeación</button><button onClick={() => void fullscreen()}>{screen ? 'Salir de pantalla completa' : 'Pantalla completa'}</button></div></header>
-    <div className="engineer-wall__metrics"><select aria-label="Área del equipo" value={area} onChange={e => { setArea(e.target.value); setPage(0); }}><option value="all">Todo el equipo</option><option>Ingeniería</option><option>Química / Aplicaciones</option><option>Equipo técnico</option></select><span><b>{visibleRoster.length}</b> integrantes</span><span><b>{all.filter(a => a.current.length).length}</b> con agenda hoy</span><span><b>{all.reduce((n,a) => n + (a.pending.length ? 1 : 0),0)}</b> con pendientes</span><span className={unassigned.length ? 'warning' : ''}><b>{unassigned.length}</b> servicios sin asignar</span></div>
+    <div className="engineer-wall__metrics"><select aria-label="Área del equipo" value={area} onChange={e => { setArea(e.target.value); setPage(0); }}><option value="all">Todo el equipo</option><option>Ingeniería</option><option>Química / Aplicaciones</option></select><span><b>{visibleRoster.length}</b> integrantes</span><span><b>{all.filter(a => a.current.length).length}</b> con agenda hoy</span><span><b>{all.reduce((n,a) => n + (a.pending.length ? 1 : 0),0)}</b> con pendientes</span><span className={unassigned.length ? 'warning' : ''}><b>{unassigned.length}</b> servicios sin asignar</span></div>
     <div ref={grid} className="engineer-wall__grid" style={{ '--wall-columns': layout.columns, '--wall-rows': layout.rows } as CSSProperties}>{all.slice(activePage * pageSize, (activePage + 1) * pageSize).map(a => {
       const tone = a.pending.length ? 'warning' : a.current.length ? 'active' : 'idle';
       const status = a.pending.length ? 'Requiere atención' : a.current.some(s => s.scheduledDate === today) ? 'Programado hoy' : a.current.length ? 'Esta semana · confirmar día' : 'Sin agenda hoy';

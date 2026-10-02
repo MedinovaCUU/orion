@@ -7,6 +7,8 @@ try {
  await page.clock.install({time:new Date('2026-10-02T18:00:00Z')});
  await page.goto('http://127.0.0.1:5200/orion/tests/fixtures/live-planning.html');
  await page.getByRole('heading',{name:'Ingenieros y químicos'}).waitFor();
+ assert.equal(await page.getByText('Ana López',{exact:true}).count(),0);
+ assert.equal(await page.getByText('12',{exact:true}).count(),1);
  await page.getByLabel('Área del equipo').selectOption('Química / Aplicaciones');
  await page.getByText('Hospital Central',{exact:true}).waitFor();
  await page.getByText('Laboratorio del Norte',{exact:true}).waitFor();

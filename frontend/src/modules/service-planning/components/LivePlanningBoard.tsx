@@ -4,6 +4,7 @@ import type { ProfileSummary } from '../../../components/servicesPlanning';
 import october from '../../../../public/service-planning-sync/datasets/october-2026.json';
 import './livePlanningBoard.css';
 import EngineerWall from './EngineerWall';
+import { buildRotationRoster } from '../helpers/weekendGuards';
 
 type Props = { services: PlannedService[]; profiles: ProfileSummary[]; month: string; canEdit: boolean; onCreate: (draft: QuickCreateDraft) => Promise<void>; onUpdate: (service: PlannedService, update: ServiceDetailUpdate) => Promise<void> };
 const retired = (name: string) => /\berick\b/i.test(name);
@@ -38,7 +39,12 @@ export default function LivePlanningBoard({ services, profiles, month, canEdit, 
   const blank = (): QuickCreateDraft => ({ weekLabel: '', scheduledDate: `${month}-01`, scheduledDay: '', serviceType: 'preventivo', platform: '', locality: '', serialNumber: '', observations: '', responsibleEngineers: '', companions: '', priority: 'media', source: 'orion' });
   const [draft, setDraft] = useState(blank);
   useEffect(() => { const timer = window.setInterval(() => setToday(new Date().toLocaleDateString('en-CA', { timeZone: 'America/Mexico_City' })), 30000); return () => clearInterval(timer); }, []);
-  const roster = useMemo(() => Array.from(new Set([...profiles.filter(p => p.recibe_tickets || /ingenier|engineer|aplicativ|quimic|chemist/i.test(`${p.rol} ${p.employee_type}`.normalize('NFD').replace(/[\u0300-\u036f]/g, ''))).map(p => p.nombre_completo || ''), ...services.flatMap(s => s.responsibleEngineers)])).filter(n => n && !retired(n)).sort((a, b) => a.localeCompare(b, 'es')), [profiles, services]);
+  const guardMembers = useMemo(() => {
+    const guards = buildRotationRoster(profiles);
+    return [...guards.ingenieria, ...guards.aplicativo].filter(member => member.active && !retired(member.fullName));
+  }, [profiles]);
+  const roster = guardMembers.map(member => member.fullName);
+
   const rows = services.filter(s => s.month === month && (!engineer || s.responsibleEngineers.includes(engineer)) && `${s.locality} ${s.platform} ${s.serialNumber} ${s.responsibleEngineers.join(' ')}`.toLowerCase().includes(search.toLowerCase()));
   const create = async () => {
     setBusy(true); setError('');
@@ -48,7 +54,7 @@ export default function LivePlanningBoard({ services, profiles, month, canEdit, 
       await onCreate(draft); setAdding(false); setDraft(blank());
     } catch (e) { setError(e instanceof Error ? e.message : 'No se pudo crear'); } finally { setBusy(false); }
   };
-  if (!editing) return <EngineerWall profiles={profiles} services={services} roster={roster} today={today} onEdit={() => setEditing(true)} />;
+  if (!editing) return <EngineerWall members={guardMembers} services={services} roster={roster} today={today} onEdit={() => setEditing(true)} />;
   return <section className="live-planning">
     <button onClick={() => setEditing(false)}>Volver al monitor del equipo</button>
     <header><div><span className="planning-eyebrow">CENTRO DE OPERACIONES</span><h2>Equipo en vivo</h2><p>Agenda de hoy · {today} · Actualización cada 30 s</p></div><details><summary aria-label="Recuerdo de Erick">🚀</summary><p>Erick ha salido de órbita. ¡Éxito en tu próxima misión!</p></details></header>

@@ -14,13 +14,13 @@ try {
   assert.ok(dimensions.footer<=height,`${width}x${height} footer outside viewport`);
   for(const card of dimensions.cards) assert.ok(card.scrollHeight<=card.height+1,`${width}x${height} clipped card: ${JSON.stringify(card)}`);
   const seen=new Set();
-  for(let i=0;i<10;i++){
+  for(let i=0;i<12;i++){
    for(const name of await page.locator('.engineer-wall__card h3').allTextContents()) seen.add(name);
    const next=page.getByRole('button',{name:'Siguiente',exact:true});
    if(await next.isDisabled()) break;
    await next.click();
   }
-  assert.equal(seen.size,9,`${width}x${height}: all engineers and chemists reachable`);
+  assert.equal(seen.size,12,`${width}x${height}: all engineers and chemists reachable`);
   if(width===1366) await page.screenshot({path:'/tmp/planning-wall-fit-1366.png'});
   console.log(`PASS ${width}x${height}: no scrolling or clipped cards; entire roster reachable`);
   await page.close();

@@ -250,7 +250,7 @@ const formatWeekendLabel = (weekendStart: string) => {
   return `${start.getDate()} y ${end.getDate()} ${monthName}`;
 };
 
-const buildRotationRoster = (profiles: ProfileSummary[]) => {
+export const buildRotationRoster = (profiles: ProfileSummary[]) => {
   const profileByName = new Map(
     profiles
       .filter((profile) => Boolean(profile.nombre_completo))
