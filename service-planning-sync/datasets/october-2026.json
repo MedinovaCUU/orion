@@ -1,0 +1,461 @@
+{
+  "name": "october-2026",
+  "year": 2026,
+  "sourceFileName": "Captura planeación octubre 2026",
+  "replaceWeeks": [
+    "05 AL 09 OCTUBRE",
+    "12 AL 16 OCTUBRE",
+    "19 AL 23 OCTUBRE",
+    "26 AL 30 OCTUBRE"
+  ],
+  "availabilityNotes": [
+    {
+      "week": "05 AL 09 OCTUBRE",
+      "dateLabel": "08 y 09",
+      "type": "TXT",
+      "person": "Diego Garcia Garcia"
+    },
+    {
+      "week": "12 AL 16 OCTUBRE",
+      "dateLabel": "14 al 16",
+      "type": "Vacaciones",
+      "person": "Guillermo Martinez"
+    },
+    {
+      "week": "19 AL 23 OCTUBRE",
+      "dateLabel": "Semana del 19",
+      "type": "Apartar para DB",
+      "person": "Miguel Chitala"
+    },
+    {
+      "week": "19 AL 23 OCTUBRE",
+      "dateLabel": "22 y 23",
+      "type": "TXT",
+      "person": "Diego Garcia Garcia"
+    },
+    {
+      "week": "26 AL 30 OCTUBRE",
+      "dateLabel": "29 y 30",
+      "type": "TXT",
+      "person": "Martha Carbajal"
+    }
+  ],
+  "rows": [
+    {
+      "week": "05 AL 09 OCTUBRE",
+      "serviceType": "preventivo",
+      "platform": "BA200",
+      "locality": "H.G Atoyac",
+      "serial": "832000706",
+      "observations": "COMODATO AXMILAB GUERRERO",
+      "engineers": [
+        "ALFREDO"
+      ],
+      "companions": [],
+      "scheduledDate": ""
+    },
+    {
+      "week": "05 AL 09 OCTUBRE",
+      "serviceType": "preventivo",
+      "platform": "BA200",
+      "locality": "H.G Zihuatanejo",
+      "serial": "832001682",
+      "observations": "COMODATO AXMILAB GUERRERO",
+      "engineers": [
+        "ALFREDO"
+      ],
+      "companions": [],
+      "scheduledDate": ""
+    },
+    {
+      "week": "05 AL 09 OCTUBRE",
+      "serviceType": "ingenieria_soporte",
+      "platform": "MINDRAY",
+      "locality": "MONTAR PRUEBAS COYOACAN",
+      "serial": "",
+      "observations": "PRUEBAS",
+      "engineers": [
+        "VILCHIS"
+      ],
+      "companions": [
+        "Mariana Lozano"
+      ],
+      "scheduledDate": "2026-10-05"
+    },
+    {
+      "week": "05 AL 09 OCTUBRE",
+      "serviceType": "capacitacion",
+      "platform": "NA",
+      "locality": "NUEVO INGRESO COMERCIAL",
+      "serial": "",
+      "observations": "APLICATIVO",
+      "engineers": [],
+      "companions": [],
+      "scheduledDate": ""
+    },
+    {
+      "week": "05 AL 09 OCTUBRE",
+      "serviceType": "capacitacion",
+      "platform": "BA200",
+      "locality": "ISSSTE APIZAC",
+      "serial": "",
+      "observations": "INSTALACION Y CAPACITACION",
+      "engineers": [
+        "VILCHIS",
+        "GUILLERMO"
+      ],
+      "companions": [],
+      "scheduledDate": ""
+    },
+    {
+      "week": "12 AL 16 OCTUBRE",
+      "serviceType": "capacitacion",
+      "platform": "",
+      "locality": "GUADALAJARA DISTRIBUIDORES",
+      "serial": "",
+      "observations": "APLICATIVO/INGENIERIA",
+      "engineers": [
+        "MARTHA"
+      ],
+      "companions": [],
+      "scheduledDate": ""
+    },
+    {
+      "week": "12 AL 16 OCTUBRE",
+      "serviceType": "preventivo",
+      "platform": "A25",
+      "locality": "VILLANUEVA, ZAC",
+      "serial": "831015637",
+      "observations": "GARANTIA 1 UNICA · Pendiente de reasignación por salida de Erick",
+      "engineers": [],
+      "companions": [],
+      "scheduledDate": ""
+    },
+    {
+      "week": "12 AL 16 OCTUBRE",
+      "serviceType": "preventivo",
+      "platform": "BA400",
+      "locality": "HOSPITAL GRAL CHILAPA",
+      "serial": "834000259",
+      "observations": "AXMILAB",
+      "engineers": [
+        "ALFREDO"
+      ],
+      "companions": [],
+      "scheduledDate": ""
+    },
+    {
+      "week": "12 AL 16 OCTUBRE",
+      "serviceType": "preventivo",
+      "platform": "A25",
+      "locality": "HOSPITAL QUECHULTENANGO",
+      "serial": "831057878",
+      "observations": "AXMILAB",
+      "engineers": [
+        "ALFREDO"
+      ],
+      "companions": [],
+      "scheduledDate": ""
+    },
+    {
+      "week": "12 AL 16 OCTUBRE",
+      "serviceType": "preventivo",
+      "platform": "A25",
+      "locality": "HOSPITAL COMUNITARIO TIXTLA",
+      "serial": "831015659",
+      "observations": "AXMILAB",
+      "engineers": [
+        "ALFREDO"
+      ],
+      "companions": [],
+      "scheduledDate": ""
+    },
+    {
+      "week": "12 AL 16 OCTUBRE",
+      "serviceType": "capacitacion",
+      "platform": "BA200",
+      "locality": "UMF ISSSTE CASA BLANCA",
+      "serial": "832002529",
+      "observations": "INSTALACION Y CAPACITACION",
+      "engineers": [
+        "VILCHIS",
+        "DIEGO GARCIA"
+      ],
+      "companions": [],
+      "scheduledDate": ""
+    },
+    {
+      "week": "12 AL 16 OCTUBRE",
+      "serviceType": "preventivo",
+      "platform": "A25",
+      "locality": "APATZINGAN FEMED",
+      "serial": "831016004",
+      "observations": "COMODATOS · PAGADO (anotado en acompañante en la fuente)",
+      "engineers": [
+        "FRANCISCO"
+      ],
+      "companions": [],
+      "scheduledDate": ""
+    },
+    {
+      "week": "12 AL 16 OCTUBRE",
+      "serviceType": "capacitacion",
+      "platform": "NA",
+      "locality": "NUEVO INGRESO COMERCIAL",
+      "serial": "",
+      "observations": "APLICATIVO",
+      "engineers": [
+        "CHITALA"
+      ],
+      "companions": [],
+      "scheduledDate": ""
+    },
+    {
+      "week": "12 AL 16 OCTUBRE",
+      "serviceType": "capacitacion",
+      "platform": "A15",
+      "locality": "ZACATECAS",
+      "serial": "",
+      "observations": "INSTALACION Y CAPACITACION",
+      "engineers": [
+        "MARTHA"
+      ],
+      "companions": [],
+      "scheduledDate": ""
+    },
+    {
+      "week": "12 AL 16 OCTUBRE",
+      "serviceType": "capacitacion",
+      "platform": "BA200",
+      "locality": "BIOLAB GUADALAJARA",
+      "serial": "832001367",
+      "observations": "INSTALACION Y CAPACITACION",
+      "engineers": [
+        "CHITALA"
+      ],
+      "companions": [],
+      "scheduledDate": ""
+    },
+    {
+      "week": "19 AL 23 OCTUBRE",
+      "serviceType": "preventivo",
+      "platform": "A15",
+      "locality": "SAMCOR",
+      "serial": "831055229",
+      "observations": "COMODATOS",
+      "engineers": [
+        "FRANCISCO"
+      ],
+      "companions": [],
+      "scheduledDate": ""
+    },
+    {
+      "week": "19 AL 23 OCTUBRE",
+      "serviceType": "preventivo",
+      "platform": "A25",
+      "locality": "SAMCOR",
+      "serial": "831013046",
+      "observations": "COMODATOS",
+      "engineers": [
+        "FRANCISCO"
+      ],
+      "companions": [],
+      "scheduledDate": ""
+    },
+    {
+      "week": "19 AL 23 OCTUBRE",
+      "serviceType": "preventivo",
+      "platform": "BA400",
+      "locality": "SAMCOR",
+      "serial": "834000435",
+      "observations": "COMODATOS",
+      "engineers": [
+        "FRANCISCO"
+      ],
+      "companions": [],
+      "scheduledDate": ""
+    },
+    {
+      "week": "19 AL 23 OCTUBRE",
+      "serviceType": "preventivo",
+      "platform": "BA200",
+      "locality": "BIOKEM",
+      "serial": "832001778",
+      "observations": "COMODATOS",
+      "engineers": [
+        "FRANCISCO"
+      ],
+      "companions": [],
+      "scheduledDate": ""
+    },
+    {
+      "week": "19 AL 23 OCTUBRE",
+      "serviceType": "capacitacion",
+      "platform": "BAX00",
+      "locality": "GUADALAJARA DISTRIBUIDORES",
+      "serial": "",
+      "observations": "INGENIERIA",
+      "engineers": [
+        "HECTOR"
+      ],
+      "companions": [],
+      "scheduledDate": ""
+    },
+    {
+      "week": "19 AL 23 OCTUBRE",
+      "serviceType": "preventivo",
+      "platform": "IPRO",
+      "locality": "CERTUS, TIJUANA",
+      "serial": "841011151",
+      "observations": "COMODATO",
+      "engineers": [
+        "GUILLERMO"
+      ],
+      "companions": [],
+      "scheduledDate": ""
+    },
+    {
+      "week": "19 AL 23 OCTUBRE",
+      "serviceType": "preventivo",
+      "platform": "IPRO2",
+      "locality": "LABORATORIOS NUÑEZ, LA PAZ",
+      "serial": "841011167",
+      "observations": "COMODATO",
+      "engineers": [
+        "GUILLERMO"
+      ],
+      "companions": [],
+      "scheduledDate": ""
+    },
+    {
+      "week": "19 AL 23 OCTUBRE",
+      "serviceType": "capacitacion",
+      "platform": "A15",
+      "locality": "DURANGO",
+      "serial": "",
+      "observations": "INSTALACION Y CAPACITACION",
+      "engineers": [
+        "MARTHA"
+      ],
+      "companions": [],
+      "scheduledDate": ""
+    },
+    {
+      "week": "26 AL 30 OCTUBRE",
+      "serviceType": "preventivo",
+      "platform": "A25",
+      "locality": "Clínica Sta Rosa",
+      "serial": "831011765",
+      "observations": "COMODATOS",
+      "engineers": [
+        "FRANCISCO"
+      ],
+      "companions": [],
+      "scheduledDate": ""
+    },
+    {
+      "week": "26 AL 30 OCTUBRE",
+      "serviceType": "preventivo",
+      "platform": "A15",
+      "locality": "Humalab",
+      "serial": "831057235",
+      "observations": "COMODATOS",
+      "engineers": [
+        "FRANCISCO"
+      ],
+      "companions": [],
+      "scheduledDate": ""
+    },
+    {
+      "week": "26 AL 30 OCTUBRE",
+      "serviceType": "preventivo",
+      "platform": "A15",
+      "locality": "Sn Martín",
+      "serial": "831051277",
+      "observations": "COMODATOS",
+      "engineers": [
+        "FRANCISCO"
+      ],
+      "companions": [],
+      "scheduledDate": ""
+    },
+    {
+      "week": "26 AL 30 OCTUBRE",
+      "serviceType": "preventivo",
+      "platform": "A25",
+      "locality": "Pedro Loza",
+      "serial": "831016000",
+      "observations": "COMODATOS",
+      "engineers": [
+        "FRANCISCO"
+      ],
+      "companions": [],
+      "scheduledDate": ""
+    },
+    {
+      "week": "26 AL 30 OCTUBRE",
+      "serviceType": "preventivo",
+      "platform": "BA400",
+      "locality": "H. GRAL IGUALA",
+      "serial": "834002882",
+      "observations": "AXMILAB",
+      "engineers": [
+        "DIEGO GARCIA"
+      ],
+      "companions": [],
+      "scheduledDate": ""
+    },
+    {
+      "week": "26 AL 30 OCTUBRE",
+      "serviceType": "preventivo",
+      "platform": "BA400",
+      "locality": "H. GRAL ADOLFO PRIETO",
+      "serial": "834002777",
+      "observations": "AXMILAB",
+      "engineers": [
+        "DIEGO GARCIA"
+      ],
+      "companions": [],
+      "scheduledDate": ""
+    },
+    {
+      "week": "26 AL 30 OCTUBRE",
+      "serviceType": "preventivo",
+      "platform": "BA200",
+      "locality": "HUITZUCO",
+      "serial": "832000808",
+      "observations": "AXMILAB",
+      "engineers": [
+        "DIEGO GARCIA"
+      ],
+      "companions": [],
+      "scheduledDate": ""
+    },
+    {
+      "week": "26 AL 30 OCTUBRE",
+      "serviceType": "capacitacion",
+      "platform": "A15",
+      "locality": "GUADALAJARA DISTRIBUIDORES",
+      "serial": "",
+      "observations": "INGENIERIA",
+      "engineers": [
+        "HECTOR"
+      ],
+      "companions": [],
+      "scheduledDate": ""
+    },
+    {
+      "week": "26 AL 30 OCTUBRE",
+      "serviceType": "preventivo",
+      "platform": "A15",
+      "locality": "SALINAS CRUZ",
+      "serial": "831050788",
+      "observations": "PREVENTIVO",
+      "engineers": [
+        "LALO"
+      ],
+      "companions": [],
+      "scheduledDate": ""
+    }
+  ]
+}
