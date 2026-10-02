@@ -874,7 +874,7 @@ export const buildPlannedServiceUpdate = (
   currentUserName: string,
 ) => {
   const nextType = updates.serviceType || service.serviceType;
-  const nextPlatform = cleanText(updates.platform || service.platform);
+  const nextPlatform = cleanText(updates.platform ?? service.platform);
   const nextLocality = cleanText(updates.locality || service.locality);
   const nextObservations = cleanText(updates.observations ?? service.observations ?? service.rawObservations ?? '');
   const rawNextResponsibleEngineers = (updates.responsibleEngineers || service.responsibleEngineers).map((engineer) =>
@@ -887,8 +887,8 @@ export const buildPlannedServiceUpdate = (
       ...rawNextResponsibleEngineers.filter((engineer) => isExternalProviderName(engineer)),
     ]),
   );
-  const nextScheduledDate = cleanText(updates.scheduledDate || service.scheduledDate || '');
-  const nextScheduledDay = cleanText(updates.scheduledDay || service.scheduledDay || '');
+  const nextScheduledDate = cleanText(updates.scheduledDate ?? service.scheduledDate ?? '');
+  const nextScheduledDay = cleanText(updates.scheduledDay ?? service.scheduledDay ?? '');
   const nextPriority = updates.priority || service.priority;
   const nextSource = updates.source || service.source;
   const nextLeadEngineer = nextResponsibleEngineers[0] || '';
@@ -898,6 +898,9 @@ export const buildPlannedServiceUpdate = (
 
   const metadata = {
     fecha_tentativa: service.weekLabel,
+    week_start: service.weekStart,
+    week_end: service.weekEnd,
+    planning_month_key: service.month,
     fecha_acordada: nextScheduledDate || nextScheduledDay || null,
     scheduled_date: nextScheduledDate || null,
     scheduled_day: nextScheduledDay || null,
@@ -928,7 +931,7 @@ export const buildPlannedServiceUpdate = (
 
   return {
     user_id: matchedLead?.id || null,
-    numero_serie_equipo: cleanText(updates.serialNumber || service.serialNumber || '') || null,
+    numero_serie_equipo: cleanText(updates.serialNumber ?? service.serialNumber ?? '') || null,
     asunto: buildPlanningSubject(nextType, nextPlatform, nextLocality),
     descripcion: serializePlanningDescription(nextLocality, nextObservations, metadata),
   };

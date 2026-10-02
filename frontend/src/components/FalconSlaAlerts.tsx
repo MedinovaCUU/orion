@@ -1,3 +1,5 @@
+import useAssignedTicketAlerts from './useAssignedTicketAlerts';
+import { assignedAlertEntries } from './ticketAlertAccess';
 import { createPortal } from 'react-dom';
 import { useEffect, useEffectEvent, useMemo, useRef, useState } from 'react';
 import { getFalconSlaTone, type FalconTicketSla } from './ticketIntake';
@@ -114,13 +116,13 @@ const ALERT_PRIORITY: Record<FalconAlertThresholdKey, number> = {
   '8h': 5,
 };
 
-const loadStoredThresholds = (): Record<string, FalconAlertThresholdKey> => {
+const loadStoredThresholds = (userId: string): Record<string, FalconAlertThresholdKey> => {
   if (typeof window === 'undefined') {
     return {};
   }
 
   try {
-    const raw = window.sessionStorage.getItem(STORAGE_KEY);
+    const raw = window.sessionStorage.getItem(`${STORAGE_KEY}:${userId}`);
     if (!raw) {
       return {};
     }
@@ -184,9 +186,15 @@ const isLikelySafariWebKit = () => {
   return isAppleVendor && isSafariShell && !hasOtherBrowserToken;
 };
 
-export default function FalconSlaAlerts({ contextLabel, entries }: FalconSlaAlertsProps) {
+export default function FalconSlaAlerts(props: FalconSlaAlertsProps) {
+  const { userId, ticketIds } = useAssignedTicketAlerts();
+  const entries = useMemo(() => assignedAlertEntries(props.entries, ticketIds, userId), [props.entries, ticketIds, userId]);
+  return userId && entries.length > 0 ? <AssignedFalconSlaAlerts key={userId} {...props} entries={entries} userId={userId} /> : null;
+}
+
+function AssignedFalconSlaAlerts({ contextLabel, entries, userId }: FalconSlaAlertsProps & { userId: string }) {
   const [queue, setQueue] = useState<FalconAlertNotification[]>([]);
-  const storedThresholdsRef = useRef<Record<string, FalconAlertThresholdKey>>(loadStoredThresholds());
+  const storedThresholdsRef = useRef<Record<string, FalconAlertThresholdKey>>(loadStoredThresholds(userId));
   const audioUnlockedRef = useRef(false);
   const pendingSoundsRef = useRef<string[]>([]);
   const pendingThresholdRef = useRef<FalconAlertThresholdKey | null>(null);
@@ -229,7 +237,7 @@ export default function FalconSlaAlerts({ contextLabel, entries }: FalconSlaAler
     [entryById, queue],
   );
 
-  const activeNotification = orderedQueue[0] || null;
+  const activeNotification = orderedQueue.find(item => entryById.has(item.ticketId)) || null;
   const activeEntry = activeNotification ? entryById.get(activeNotification.ticketId) || null : null;
   const activeTone = activeEntry ? getFalconSlaTone(activeEntry.sla.severity) : null;
   const activeThreshold = activeNotification?.thresholdKey || null;
@@ -239,7 +247,7 @@ export default function FalconSlaAlerts({ contextLabel, entries }: FalconSlaAler
       return;
     }
 
-    window.sessionStorage.setItem(STORAGE_KEY, JSON.stringify(storedThresholdsRef.current));
+    window.sessionStorage.setItem(`${STORAGE_KEY}:${userId}`, JSON.stringify(storedThresholdsRef.current));
   });
 
   const dismissActive = useEffectEvent(() => {
@@ -541,7 +549,10 @@ export default function FalconSlaAlerts({ contextLabel, entries }: FalconSlaAler
       persistThresholds();
     }
 
-    setQueue((current) => current.filter((item) => openIds.has(item.ticketId)));
+    setQueue((current) => {
+      const remaining = current.filter((item) => openIds.has(item.ticketId));
+      return remaining.length === current.length ? current : remaining;
+    });
   }, [openEntries, persistThresholds]);
 
   useEffect(() => {

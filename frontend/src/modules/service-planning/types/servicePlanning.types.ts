@@ -25,6 +25,7 @@ export type ServiceSource = 'manual' | 'excel_import' | 'ticket' | 'orion';
 export type ServicePlanningRole = 'admin' | 'coordinador' | 'ingeniero' | 'visor';
 
 export type ServicePlanningSection =
+  | 'tablero'
   | 'resumen'
   | 'calendario'
   | 'tabla'

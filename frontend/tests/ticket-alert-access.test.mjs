@@ -1,0 +1,10 @@
+import assert from 'node:assert/strict';
+import { canOpenTicketControl, assignedAlertEntries } from '../src/components/ticketAlertAccess.ts';
+for(const role of ['tecnico','cliente',null,undefined,'gerente']) assert.equal(canOpenTicketControl(role),false);
+assert.equal(canOpenTicketControl('admin'),true);
+const tickets=[{id:'falcon-alfredo'},{id:'falcon-francisco'},{id:'sin-asignar'}];
+assert.deepEqual(assignedAlertEntries(tickets,new Set(['falcon-francisco']),'francisco'),[{id:'falcon-francisco'}]);
+assert.deepEqual(assignedAlertEntries(tickets,new Set(),'francisco'),[]);
+assert.deepEqual(assignedAlertEntries(tickets,new Set(['falcon-alfredo']),null),[]);
+assert.deepEqual(assignedAlertEntries(tickets,new Set(['falcon-alfredo']),'admin'),[{id:'falcon-alfredo'}]);
+console.log('PASS: only admins access control, alerts require explicit assignment, unknown session receives none');

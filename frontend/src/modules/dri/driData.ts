@@ -107,6 +107,10 @@ const fallbackCatalog: DriCatalog = {
   })),
 };
 
+/** Offline catalog for local, non-persistent demonstrations. */
+export const getLocalDriCatalog = (): DriCatalog =>
+  enrichCatalogWithReagentIdentity(fallbackCatalog, { catalogRows: [], aliasRows: [] });
+
 const mapCaseRows = (
   caseRows: any[],
   itemRows: any[],

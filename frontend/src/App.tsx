@@ -6,6 +6,7 @@ import BrandLockup from './components/BrandLockup';
 const Login = lazy(() => import('./components/Login'));
 const Dashboard = lazy(() => import('./components/Dashboard'));
 const PublicTicketForm = lazy(() => import('./components/PublicTicketForm'));
+const DriPreviewPage = lazy(() => import('./modules/dri/DriPreviewPage'));
 
 const routerBasename = (() => {
   const baseUrl = import.meta.env.BASE_URL || '/';
@@ -109,6 +110,10 @@ function App() {
           <Route
             path="/dri"
             element={session ? <Dashboard session={session} initialTab="dri" /> : <Navigate to="/login" replace />}
+          />
+          <Route
+            path="/dri-preview"
+            element={import.meta.env.DEV ? <DriPreviewPage /> : <Navigate to="/" replace />}
           />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>

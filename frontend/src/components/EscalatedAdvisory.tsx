@@ -161,6 +161,7 @@ interface AdvisoryTimelineDay {
 interface EscalatedAdvisoryProps {
   onNotificationCountChange?: (count: number) => void;
   requestedAdvisoryId?: string | null;
+  subPermissions?: string[];
 }
 
 const STAFF_ROLES = new Set(['admin', 'tecnico']);
@@ -624,7 +625,11 @@ function AdvisoryEvidenceAction({
 export default function EscalatedAdvisory({
   onNotificationCountChange,
   requestedAdvisoryId = null,
+  subPermissions = ['crear', 'bandeja', 'metricas'],
 }: EscalatedAdvisoryProps) {
+  const canCreateAdvisory = subPermissions.includes('crear');
+  const canViewAdvisoryInbox = subPermissions.includes('bandeja');
+  const canViewAdvisoryMetrics = subPermissions.includes('metricas');
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [feedback, setFeedback] = useState<AdvisoryFeedback | null>(null);
@@ -2391,7 +2396,7 @@ export default function EscalatedAdvisory({
         </button>
       </div>
 
-      <div className="advisory-overview-grid">
+      {canViewAdvisoryInbox ? <div className="advisory-overview-grid">
         <div className="card advisory-overview-card">
           <div className="advisory-overview-card__eyebrow">
             Notificaciones para mí
@@ -2425,9 +2430,9 @@ export default function EscalatedAdvisory({
             </p>
           </div>
         </div>
-      </div>
+      </div> : null}
 
-      <div className="card advisory-module-shell">
+      {canCreateAdvisory ? <div className="card advisory-module-shell">
         <div style={{ display: 'flex', justifyContent: 'space-between', gap: '1rem', flexWrap: 'wrap', marginBottom: '1rem' }}>
           <div>
             <h3 style={{ marginBottom: '0.35rem' }}>Escalar asesoría de {activeAreaLabel.toLowerCase()}</h3>
@@ -2911,9 +2916,9 @@ export default function EscalatedAdvisory({
             </button>
           </div>
         </form>
-      </div>
+      </div> : null}
 
-      <div className="card advisory-module-shell advisory-module-shell--list">
+      {canViewAdvisoryInbox ? <div className="card advisory-module-shell advisory-module-shell--list">
           <div style={{ display: 'flex', justifyContent: 'space-between', gap: '1rem', flexWrap: 'wrap', marginBottom: '1rem' }}>
             <div>
               <h3 style={{ marginBottom: '0.35rem' }}>Bandeja de asesorías</h3>
@@ -3411,9 +3416,9 @@ export default function EscalatedAdvisory({
             })}
           </div>
         )}
-      </div>
+      </div> : null}
 
-      {canViewMetrics ? (
+      {canViewAdvisoryMetrics && canViewMetrics ? (
         <div className="card advisory-metrics-shell" style={{ padding: '1.65rem' }}>
           <div className="advisory-metrics-header">
             <div className="advisory-metrics-header__topline">

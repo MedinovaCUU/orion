@@ -1,0 +1,377 @@
+[
+  {
+    "productCode": "21520",
+    "label": "GGT",
+    "title": "gamma-GLUTAMYLTRANSFERASE (gamma-GT)",
+    "latestLot": "0005204",
+    "sourceUrl": "https://einfo.bio/0005204/21520/es",
+    "documents": [
+      {
+        "type": "IFU",
+        "file": "output/pdf/einfo_sat_ba400/21520_GGT_IFU.pdf",
+        "bytes": 415822
+      },
+      {
+        "type": "SDS",
+        "file": "output/pdf/einfo_sat_ba400/21520_GGT_SDS.pdf",
+        "bytes": 62968
+      },
+      {
+        "type": "CoA",
+        "file": "output/pdf/einfo_sat_ba400/21520_GGT_CoA.pdf",
+        "bytes": 80538
+      }
+    ]
+  },
+  {
+    "productCode": "21580",
+    "label": "LDH",
+    "title": "LACTATE DEHYDROGENASE (LDH)",
+    "latestLot": "0005719",
+    "sourceUrl": "https://einfo.bio/0005719/21580/es",
+    "documents": [
+      {
+        "type": "IFU",
+        "file": "output/pdf/einfo_sat_ba400/21580_LDH_IFU.pdf",
+        "bytes": 374005
+      },
+      {
+        "type": "SDS",
+        "file": "output/pdf/einfo_sat_ba400/21580_LDH_SDS.pdf",
+        "bytes": 158786
+      },
+      {
+        "type": "CoA",
+        "file": "output/pdf/einfo_sat_ba400/21580_LDH_CoA.pdf",
+        "bytes": 80134
+      }
+    ]
+  },
+  {
+    "productCode": "21760",
+    "label": "LIPASA_DGGR",
+    "title": "LIPASE",
+    "latestLot": "0006256",
+    "sourceUrl": "https://einfo.bio/0006256/21760/es",
+    "documents": [
+      {
+        "type": "IFU",
+        "file": "output/pdf/einfo_sat_ba400/21760_LIPASA_DGGR_IFU.pdf",
+        "bytes": 372969
+      },
+      {
+        "type": "SDS",
+        "file": "output/pdf/einfo_sat_ba400/21760_LIPASA_DGGR_SDS.pdf",
+        "bytes": 1465785
+      },
+      {
+        "type": "CoA",
+        "file": "output/pdf/einfo_sat_ba400/21760_LIPASA_DGGR_CoA.pdf",
+        "bytes": 80099
+      }
+    ]
+  },
+  {
+    "productCode": "21513",
+    "label": "PROTEINA_TOTAL_BIREACTIVA",
+    "title": "PROTEIN (TOTAL)",
+    "latestLot": "0006110",
+    "sourceUrl": "https://einfo.bio/0006110/21513/es",
+    "documents": [
+      {
+        "type": "IFU",
+        "file": "output/pdf/einfo_sat_ba400/21513_PROTEINA_TOTAL_BIREACTIVA_IFU.pdf",
+        "bytes": 411647
+      },
+      {
+        "type": "SDS",
+        "file": "output/pdf/einfo_sat_ba400/21513_PROTEINA_TOTAL_BIREACTIVA_SDS.pdf",
+        "bytes": 63754
+      },
+      {
+        "type": "CoA",
+        "file": "output/pdf/einfo_sat_ba400/21513_PROTEINA_TOTAL_BIREACTIVA_CoA.pdf",
+        "bytes": 103421
+      }
+    ]
+  },
+  {
+    "productCode": "21528",
+    "label": "TRIGLICERIDOS",
+    "title": "TRIGLYCERIDES",
+    "latestLot": "0006138",
+    "sourceUrl": "https://einfo.bio/0006138/21528/es",
+    "documents": [
+      {
+        "type": "IFU",
+        "file": "output/pdf/einfo_sat_ba400/21528_TRIGLICERIDOS_IFU.pdf",
+        "bytes": 400847
+      },
+      {
+        "type": "SDS",
+        "file": "output/pdf/einfo_sat_ba400/21528_TRIGLICERIDOS_SDS.pdf",
+        "bytes": 37453
+      },
+      {
+        "type": "CoA",
+        "file": "output/pdf/einfo_sat_ba400/21528_TRIGLICERIDOS_CoA.pdf",
+        "bytes": 80111
+      }
+    ]
+  },
+  {
+    "productCode": "21594",
+    "label": "HDL_DIRECTO_TOOS",
+    "title": "CHOLESTEROL HDL DIRECT",
+    "latestLot": "0006213",
+    "sourceUrl": "https://einfo.bio/0006213/21594/es",
+    "documents": [
+      {
+        "type": "IFU",
+        "file": "output/pdf/einfo_sat_ba400/21594_HDL_DIRECTO_TOOS_IFU.pdf",
+        "bytes": 394070
+      },
+      {
+        "type": "SDS",
+        "file": "output/pdf/einfo_sat_ba400/21594_HDL_DIRECTO_TOOS_SDS.pdf",
+        "bytes": 67681
+      },
+      {
+        "type": "CoA",
+        "file": "output/pdf/einfo_sat_ba400/21594_HDL_DIRECTO_TOOS_CoA.pdf",
+        "bytes": 80133
+      }
+    ]
+  },
+  {
+    "productCode": "21792",
+    "label": "CK_MB",
+    "title": "CREATINE KINASE-MB (CK-MB)",
+    "latestLot": "0005655",
+    "sourceUrl": "https://einfo.bio/0005655/21792/es",
+    "documents": [
+      {
+        "type": "IFU",
+        "file": "output/pdf/einfo_sat_ba400/21792_CK_MB_IFU.pdf",
+        "bytes": 413641
+      },
+      {
+        "type": "SDS",
+        "file": "output/pdf/einfo_sat_ba400/21792_CK_MB_SDS.pdf",
+        "bytes": 60455
+      },
+      {
+        "type": "CoA",
+        "file": "output/pdf/einfo_sat_ba400/21792_CK_MB_CoA.pdf",
+        "bytes": 103407
+      }
+    ]
+  },
+  {
+    "productCode": "22147",
+    "label": "HBA1C_DIRECTA",
+    "title": "HEMOGLOBIN A1C-DIRECT (HbA1C-DIR)",
+    "latestLot": "0006265",
+    "sourceUrl": "https://einfo.bio/0006265/22147/es",
+    "documents": [
+      {
+        "type": "IFU",
+        "file": "output/pdf/einfo_sat_ba400/22147_HBA1C_DIRECTA_IFU.pdf",
+        "bytes": 378853
+      },
+      {
+        "type": "SDS",
+        "file": "output/pdf/einfo_sat_ba400/22147_HBA1C_DIRECTA_SDS.pdf",
+        "bytes": 51630
+      },
+      {
+        "type": "CoA",
+        "file": "output/pdf/einfo_sat_ba400/22147_HBA1C_DIRECTA_CoA.pdf",
+        "bytes": 83067
+      }
+    ]
+  },
+  {
+    "productCode": "18009",
+    "label": "SUERO_CONTROL_NIVEL_1",
+    "title": "BIOCHEMISTRY CONTROL SERUM I",
+    "latestLot": "0005482",
+    "sourceUrl": "https://einfo.bio/0005482/18009/es",
+    "documents": [
+      {
+        "type": "IFU",
+        "file": "output/pdf/einfo_sat_ba400/18009_SUERO_CONTROL_NIVEL_1_IFU.pdf",
+        "bytes": 400978
+      },
+      {
+        "type": "Value Sheet",
+        "file": "output/pdf/einfo_sat_ba400/18009_SUERO_CONTROL_NIVEL_1_Value_Sheet.pdf",
+        "bytes": 392099
+      },
+      {
+        "type": "SDS",
+        "file": "output/pdf/einfo_sat_ba400/18009_SUERO_CONTROL_NIVEL_1_SDS.pdf",
+        "bytes": 37508
+      },
+      {
+        "type": "CoA",
+        "file": "output/pdf/einfo_sat_ba400/18009_SUERO_CONTROL_NIVEL_1_CoA.pdf",
+        "bytes": 80270
+      }
+    ]
+  },
+  {
+    "productCode": "18010",
+    "label": "SUERO_CONTROL_NIVEL_2",
+    "title": "BIOCHEMISTRY CONTROL SERUM II",
+    "latestLot": "0005597",
+    "sourceUrl": "https://einfo.bio/0005597/18010/es",
+    "documents": [
+      {
+        "type": "IFU",
+        "file": "output/pdf/einfo_sat_ba400/18010_SUERO_CONTROL_NIVEL_2_IFU.pdf",
+        "bytes": 400978
+      },
+      {
+        "type": "Value Sheet",
+        "file": "output/pdf/einfo_sat_ba400/18010_SUERO_CONTROL_NIVEL_2_Value_Sheet.pdf",
+        "bytes": 363327
+      },
+      {
+        "type": "SDS",
+        "file": "output/pdf/einfo_sat_ba400/18010_SUERO_CONTROL_NIVEL_2_SDS.pdf",
+        "bytes": 37512
+      },
+      {
+        "type": "CoA",
+        "file": "output/pdf/einfo_sat_ba400/18010_SUERO_CONTROL_NIVEL_2_CoA.pdf",
+        "bytes": 90283
+      }
+    ]
+  },
+  {
+    "productCode": "18001",
+    "label": "CONTROL_HBA1C_NORMAL",
+    "title": "HEMOGLOBIN A1C CONTROL (NORMAL)",
+    "latestLot": "0006183",
+    "sourceUrl": "https://einfo.bio/0006183/18001/es",
+    "documents": [
+      {
+        "type": "IFU",
+        "file": "output/pdf/einfo_sat_ba400/18001_CONTROL_HBA1C_NORMAL_IFU.pdf",
+        "bytes": 376847
+      },
+      {
+        "type": "SDS",
+        "file": "output/pdf/einfo_sat_ba400/18001_CONTROL_HBA1C_NORMAL_SDS.pdf",
+        "bytes": 37658
+      },
+      {
+        "type": "CoA",
+        "file": "output/pdf/einfo_sat_ba400/18001_CONTROL_HBA1C_NORMAL_CoA.pdf",
+        "bytes": 153589
+      }
+    ]
+  },
+  {
+    "productCode": "18002",
+    "label": "CONTROL_HBA1C_ELEVADO",
+    "title": "HEMOGLOBIN A1C CONTROL (ELEVATED)",
+    "latestLot": "0006182",
+    "sourceUrl": "https://einfo.bio/0006182/18002/es",
+    "documents": [
+      {
+        "type": "IFU",
+        "file": "output/pdf/einfo_sat_ba400/18002_CONTROL_HBA1C_ELEVADO_IFU.pdf",
+        "bytes": 376847
+      },
+      {
+        "type": "SDS",
+        "file": "output/pdf/einfo_sat_ba400/18002_CONTROL_HBA1C_ELEVADO_SDS.pdf",
+        "bytes": 37666
+      },
+      {
+        "type": "CoA",
+        "file": "output/pdf/einfo_sat_ba400/18002_CONTROL_HBA1C_ELEVADO_CoA.pdf",
+        "bytes": 156535
+      }
+    ]
+  },
+  {
+    "productCode": "18024",
+    "label": "CONTROL_CK_CKMB",
+    "title": "CK-MB CONTROL SERUM",
+    "latestLot": "0005985",
+    "sourceUrl": "https://einfo.bio/0005985/18024/es",
+    "documents": [
+      {
+        "type": "SDS",
+        "file": "output/pdf/einfo_sat_ba400/18024_CONTROL_CK_CKMB_SDS.pdf",
+        "bytes": 92598
+      },
+      {
+        "type": "CoA",
+        "file": "output/pdf/einfo_sat_ba400/18024_CONTROL_CK_CKMB_CoA.pdf",
+        "bytes": 97793
+      }
+    ]
+  },
+  {
+    "productCode": "18040",
+    "label": "CONTROL_LIPIDOS_NIVEL_1",
+    "title": "LIPID CONTROL SERUM I",
+    "latestLot": "0006163",
+    "sourceUrl": "https://einfo.bio/0006163/18040/es",
+    "documents": [
+      {
+        "type": "IFU",
+        "file": "output/pdf/einfo_sat_ba400/18040_CONTROL_LIPIDOS_NIVEL_1_IFU.pdf",
+        "bytes": 374871
+      },
+      {
+        "type": "Value Sheet",
+        "file": "output/pdf/einfo_sat_ba400/18040_CONTROL_LIPIDOS_NIVEL_1_Value_Sheet.pdf",
+        "bytes": 124925
+      },
+      {
+        "type": "SDS",
+        "file": "output/pdf/einfo_sat_ba400/18040_CONTROL_LIPIDOS_NIVEL_1_SDS.pdf",
+        "bytes": 37649
+      },
+      {
+        "type": "CoA",
+        "file": "output/pdf/einfo_sat_ba400/18040_CONTROL_LIPIDOS_NIVEL_1_CoA.pdf",
+        "bytes": 80037
+      }
+    ]
+  },
+  {
+    "productCode": "18041",
+    "label": "CONTROL_LIPIDOS_NIVEL_2",
+    "title": "LIPID CONTROL SERUM II",
+    "latestLot": "0006162",
+    "sourceUrl": "https://einfo.bio/0006162/18041/es",
+    "documents": [
+      {
+        "type": "IFU",
+        "file": "output/pdf/einfo_sat_ba400/18041_CONTROL_LIPIDOS_NIVEL_2_IFU.pdf",
+        "bytes": 374871
+      },
+      {
+        "type": "Value Sheet",
+        "file": "output/pdf/einfo_sat_ba400/18041_CONTROL_LIPIDOS_NIVEL_2_Value_Sheet.pdf",
+        "bytes": 124976
+      },
+      {
+        "type": "SDS",
+        "file": "output/pdf/einfo_sat_ba400/18041_CONTROL_LIPIDOS_NIVEL_2_SDS.pdf",
+        "bytes": 37652
+      },
+      {
+        "type": "CoA",
+        "file": "output/pdf/einfo_sat_ba400/18041_CONTROL_LIPIDOS_NIVEL_2_CoA.pdf",
+        "bytes": 80036
+      }
+    ]
+  }
+]

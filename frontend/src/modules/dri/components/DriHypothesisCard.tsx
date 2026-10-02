@@ -1,4 +1,5 @@
 import DriChecklist from './DriChecklist';
+import { DRI_FINDING_STATUS } from '../model3d/ba400Mapping';
 import type { KeyboardEvent } from 'react';
 import type { DriHypothesisResult } from '../types/dri.types';
 
@@ -37,6 +38,7 @@ export default function DriHypothesisCard({
       <div className="dri-hypothesis-card__summary-grid">
         <div className="dri-hypothesis-card__overview">
           <div className="dri-inline-badges">
+            <span className={`dri-badge dri-badge--${hypothesis.status === 'confirmed' ? 'red' : 'amber'}`}>{DRI_FINDING_STATUS[hypothesis.status]}</span>
             <span className={`dri-badge dri-badge--${severityTone[hypothesis.severity]}`}>{hypothesis.severity}</span>
             <span className="dri-badge dri-badge--neutral">{hypothesis.suspectedSubsystem}</span>
             <span className="dri-badge dri-badge--neutral">{hypothesis.invasivenessLevel}</span>

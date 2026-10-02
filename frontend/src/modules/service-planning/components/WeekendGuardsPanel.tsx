@@ -5,11 +5,11 @@ import type {
   GuardArea,
   GuardRosterMember,
   WeekendGuardAssignment,
-  WeekendGuardOverride,
   WeekendGuardOverrideMap,
   WeekendGuardScheduleData,
 } from '../types/servicePlanning.types';
 import EmptyState from './EmptyState';
+import { applyGuardSwap, assignedName, guardSwapCandidates, type SwapArea } from '../helpers/guardSwap';
 
 interface WeekendGuardsPanelProps {
   schedule: WeekendGuardScheduleData;
@@ -42,26 +42,6 @@ const buildDraft = (assignment: WeekendGuardAssignment): GuardEditorDraft => ({
   ingenieria: assignment.ingenieriaAssigned,
   note: assignment.note || '',
 });
-
-const buildOverridePayload = (
-  assignment: WeekendGuardAssignment,
-  draft: GuardEditorDraft,
-  currentUserName: string,
-): WeekendGuardOverride | null => {
-  const applicativo = draft.applicativo.trim();
-  const ingenieria = draft.ingenieria.trim();
-  const note = draft.note.trim();
-  const payload: WeekendGuardOverride = {
-    weekendStart: assignment.weekendStart,
-    ...(applicativo && applicativo !== assignment.applicativoOriginal ? { applicativo } : {}),
-    ...(ingenieria && ingenieria !== assignment.ingenieriaOriginal ? { ingenieria } : {}),
-    ...(note ? { note } : {}),
-    updatedAt: new Date().toISOString(),
-    updatedBy: currentUserName,
-  };
-
-  return payload.applicativo || payload.ingenieria || payload.note ? payload : null;
-};
 
 function GuardSlot({
   area,
@@ -103,6 +83,8 @@ export default function WeekendGuardsPanel({
   onSaveOverrides,
 }: WeekendGuardsPanelProps) {
   const [editingWeekend, setEditingWeekend] = useState<string | null>(null);
+  const [targets, setTargets] = useState<Partial<Record<SwapArea, string>>>({});
+  const [saveError, setSaveError] = useState('');
   const [draft, setDraft] = useState<GuardEditorDraft>(EMPTY_DRAFT);
 
   const filteredAssignments = useMemo(
@@ -119,6 +101,8 @@ export default function WeekendGuardsPanel({
   );
 
   useEffect(() => {
+    setTargets({});
+    setSaveError('');
     if (!editingWeekend) {
       setDraft(EMPTY_DRAFT);
       return;
@@ -211,7 +195,7 @@ export default function WeekendGuardsPanel({
                               <select
                                 className="input-field"
                                 value={draft.applicativo}
-                                onChange={(event) => setDraft((current) => ({ ...current, applicativo: event.target.value }))}
+                                onChange={(event) => { setDraft((current) => ({ ...current, applicativo: event.target.value })); setTargets(current => ({ ...current, applicativo: undefined })); }}
                               >
                                 {schedule.roster.aplicativo
                                   .filter((member) => member.active)
@@ -227,7 +211,7 @@ export default function WeekendGuardsPanel({
                               <select
                                 className="input-field"
                                 value={draft.ingenieria}
-                                onChange={(event) => setDraft((current) => ({ ...current, ingenieria: event.target.value }))}
+                                onChange={(event) => { setDraft((current) => ({ ...current, ingenieria: event.target.value })); setTargets(current => ({ ...current, ingenieria: undefined })); }}
                               >
                                 {schedule.roster.ingenieria
                                   .filter((member) => member.active)
@@ -238,6 +222,20 @@ export default function WeekendGuardsPanel({
                                   ))}
                               </select>
                             </label>
+                            {(['applicativo', 'ingenieria'] as const).map(area => {
+                              if (draft[area] === assignedName(assignment, area)) return null;
+                              const candidates = guardSwapCandidates(schedule.assignments, assignment, area, draft[area]);
+                              const targetDate = targets[area] || candidates[0]?.weekendStart || '';
+                              const target = candidates.find(a => a.weekendStart === targetDate);
+                              return <label key={area} className="planning-guards__editor-span-2">
+                                <span>Guardia a intercambiar · {area === 'applicativo' ? 'Aplicativo' : 'Ingeniería'}</span>
+                                <select className="input-field" value={targetDate} onChange={event => setTargets(current => ({ ...current, [area]: event.target.value }))}>
+                                  {!candidates.length && <option value="">Sin guardias vigentes para intercambiar</option>}
+                                  {candidates.map(candidate => <option key={candidate.weekendStart} value={candidate.weekendStart}>{candidate.label} · {draft[area]}</option>)}
+                                </select>
+                                <small>{target ? `${draft[area]} cubre ${assignment.label}; ${assignedName(assignment, area)} cubre ${target.label}. Ambas guardias se guardarán juntas.` : 'Esta persona no tiene una guardia vigente en el calendario para permutar.'}</small>
+                              </label>;
+                            })}
                             <label className="planning-guards__editor-span-2">
                               <span>Nota / permuta</span>
                               <textarea
@@ -249,23 +247,26 @@ export default function WeekendGuardsPanel({
                             </label>
                           </div>
 
+                          {saveError && <p role="alert">{saveError}</p>}
                           <div className="planning-guards__editor-actions">
                             <button
                               type="button"
                               className="button-primary"
                               onClick={() => {
-                                const payload = buildOverridePayload(assignment, draft, currentUserName);
-                                const next = { ...overrides };
-                                if (payload) {
-                                  next[assignment.weekendStart] = payload;
-                                } else {
-                                  delete next[assignment.weekendStart];
+                                try {
+                                  const resolvedTargets = { ...targets };
+                                  for (const area of ['applicativo', 'ingenieria'] as const) {
+                                    resolvedTargets[area] ||= guardSwapCandidates(schedule.assignments, assignment, area, draft[area])[0]?.weekendStart;
+                                  }
+                                  onSaveOverrides(applyGuardSwap(schedule.assignments, overrides, assignment.weekendStart, draft, resolvedTargets, currentUserName));
+                                  setEditingWeekend(null);
+                                  setSaveError('');
+                                } catch (error) {
+                                  setSaveError(error instanceof Error ? error.message : 'No se pudo guardar la permuta.');
                                 }
-                                onSaveOverrides(next);
-                                setEditingWeekend(null);
                               }}
                             >
-                              Guardar cambio
+                              Guardar permuta
                             </button>
                             <button
                               type="button"
@@ -282,13 +283,12 @@ export default function WeekendGuardsPanel({
                               className="button-primary inactive"
                               disabled={!assignment.hasOverride}
                               onClick={() => {
-                                const next = { ...overrides };
-                                delete next[assignment.weekendStart];
-                                onSaveOverrides(next);
-                                setEditingWeekend(null);
+                                setDraft({ applicativo: assignment.applicativoOriginal, ingenieria: assignment.ingenieriaOriginal, note: '' });
+                                setTargets({});
+                                setSaveError('');
                               }}
                             >
-                              Restablecer rotacion
+                              Preparar regreso a rotación
                             </button>
                           </div>
                         </div>

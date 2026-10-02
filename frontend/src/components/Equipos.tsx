@@ -7,6 +7,10 @@ import { createSupremoLaunchSession } from './supremoApi';
 import { getSupremoShowroomPreset, normalizeSerialLookup } from './supremoPresets';
 import { getPublicAssetUrl } from './publicAssetUrl';
 import {
+  importEquipmentDraftFromDocument,
+  type EquipmentDocumentDraft,
+} from './equipmentDocumentImport';
+import {
   getEquipmentTrainingExamDefinition,
   type EquipmentTrainingExamDefinition,
 } from './equipmentTrainingExams';
@@ -57,12 +61,44 @@ interface SupremoModalState {
   details: string[];
 }
 
+interface EquipmentClientRecord {
+  id: number;
+  razon_social: string | null;
+  persona_contacto: string | null;
+  telefono: string | null;
+}
+
 const SUPREMO_LAUNCH_TIMEOUT_MS = 1800;
 const SUPREMO_ICON_URL = getPublicAssetUrl('supremo_icon.png');
 const DOCUMENTOS_BUCKET = 'documentos';
+const EMPTY_EQUIPMENT_CREATE_FORM: EquipmentDocumentDraft = {
+  numeroSerie: '',
+  modelo: '',
+  clientName: '',
+  contactName: '',
+  phone: '',
+  direccion: '',
+  colonia: '',
+  ciudad: '',
+  municipio: '',
+  estado: '',
+  codigoPostal: '',
+  pais: 'México',
+  fechaInicio: '',
+  terminoGarantia: '',
+  software: '',
+  firmware: '',
+};
 
 const sanitizeSupremoId = (value: string) => value.replace(/[^\d]/g, '').trim();
 const sanitizeFileName = (value: string) => value.replace(/[^a-zA-Z0-9._-]+/g, '-');
+const normalizeText = (value: string) =>
+  value
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/\s+/g, ' ')
+    .trim()
+    .toLowerCase();
 const buildPublicDocumentUrl = (path: string) =>
   `${import.meta.env.VITE_SUPABASE_URL}/storage/v1/object/public/${DOCUMENTOS_BUCKET}/${path}`;
 
@@ -149,12 +185,23 @@ export default function Equipos() {
   const [equipos, setEquipos] = useState<any[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [loading, setLoading] = useState(true);
+  const [listFeedback, setListFeedback] = useState<InlineFeedback | null>(null);
 
   // Modal State
   const [terminarModalOpen, setTerminarModalOpen] = useState(false);
   const [selectedEquipo, setSelectedEquipo] = useState<any>(null);
   const [pdfFile, setPdfFile] = useState<File | null>(null);
   const [uploading, setUploading] = useState(false);
+  const [createEquipmentModalOpen, setCreateEquipmentModalOpen] = useState(false);
+  const [createEquipmentForm, setCreateEquipmentForm] = useState<EquipmentDocumentDraft>(EMPTY_EQUIPMENT_CREATE_FORM);
+  const [createEquipmentFeedback, setCreateEquipmentFeedback] = useState<InlineFeedback | null>(null);
+  const [creatingEquipment, setCreatingEquipment] = useState(false);
+  const [importingEquipmentDocument, setImportingEquipmentDocument] = useState(false);
+  const [equipmentImportProgress, setEquipmentImportProgress] = useState(0);
+  const [equipmentImportStatus, setEquipmentImportStatus] = useState('');
+  const [equipmentImportSummary, setEquipmentImportSummary] = useState<string[]>([]);
+  const [equipmentImportSourceFile, setEquipmentImportSourceFile] = useState<File | null>(null);
+  const [storeImportedDocumentAsInstallation, setStoreImportedDocumentAsInstallation] = useState(true);
 
   // Detalles Modal State
   const [detallesModalOpen, setDetallesModalOpen] = useState(false);
@@ -185,6 +232,7 @@ export default function Equipos() {
   const trainingExamRequestIdRef = useRef(0);
   const instalacionInputRef = useRef<HTMLInputElement | null>(null);
   const capacitacionInputRef = useRef<HTMLInputElement | null>(null);
+  const createEquipmentDocumentInputRef = useRef<HTMLInputElement | null>(null);
 
   useEffect(() => {
     fetchEquipos();
@@ -203,7 +251,7 @@ export default function Equipos() {
   }, []);
 
   useEffect(() => {
-    if (!detallesModalOpen && !terminarModalOpen && !supremoModal && !trainingExamModal) {
+    if (!detallesModalOpen && !terminarModalOpen && !supremoModal && !trainingExamModal && !createEquipmentModalOpen) {
       return;
     }
 
@@ -217,7 +265,7 @@ export default function Equipos() {
       document.body.style.overflow = previousBodyOverflow;
       document.documentElement.style.overflow = previousHtmlOverflow;
     };
-  }, [detallesModalOpen, terminarModalOpen, supremoModal, trainingExamModal]);
+  }, [createEquipmentModalOpen, detallesModalOpen, terminarModalOpen, supremoModal, trainingExamModal]);
 
   const resetServiciosState = () => {
     serviciosRequestIdRef.current += 1;
@@ -257,6 +305,32 @@ export default function Equipos() {
     setTrainingExamModal(null);
     setDetallesModalOpen(true);
     void fetchTrainingExamAttempts(equipo.id);
+  };
+
+  const closeCreateEquipmentModal = () => {
+    setCreateEquipmentModalOpen(false);
+    setCreateEquipmentForm(EMPTY_EQUIPMENT_CREATE_FORM);
+    setCreateEquipmentFeedback(null);
+    setCreatingEquipment(false);
+    setImportingEquipmentDocument(false);
+    setEquipmentImportProgress(0);
+    setEquipmentImportStatus('');
+    setEquipmentImportSummary([]);
+    setEquipmentImportSourceFile(null);
+    setStoreImportedDocumentAsInstallation(true);
+  };
+
+  const mergeImportedDraftIntoForm = (draft: EquipmentDocumentDraft) => {
+    setCreateEquipmentForm((current) => {
+      const next = { ...current };
+      (Object.keys(draft) as Array<keyof EquipmentDocumentDraft>).forEach((key) => {
+        const candidate = draft[key]?.trim();
+        if (candidate) {
+          next[key] = candidate;
+        }
+      });
+      return next;
+    });
   };
 
   const fetchEquipoServicios = async (numero_serie: string) => {
@@ -304,6 +378,7 @@ export default function Equipos() {
       setEquipos(data);
     }
     setLoading(false);
+    return data || [];
   }
 
   const syncEquipoInState = (equipoId: string, nextFields: Record<string, unknown>) => {
@@ -338,6 +413,243 @@ export default function Equipos() {
 
     setTrainingExamAttempts((data as EquipmentTrainingAttemptRecord[] | null) || []);
     setLoadingTrainingExamAttempts(false);
+  };
+
+  const resolveClientRecord = async (draft: EquipmentDocumentDraft) => {
+    const normalizedClientName = draft.clientName.trim();
+    if (!normalizedClientName) {
+      return null;
+    }
+
+    const { data: existingClients, error: existingClientsError } = await supabase
+      .from('clientes')
+      .select('id, razon_social, persona_contacto, telefono')
+      .ilike('razon_social', normalizedClientName)
+      .limit(10);
+
+    if (existingClientsError) {
+      throw new Error(`No fue posible revisar clientes existentes: ${existingClientsError.message}`);
+    }
+
+    const targetClient =
+      ((existingClients as EquipmentClientRecord[] | null) || []).find(
+        (client) => normalizeText(client.razon_social || '') === normalizeText(normalizedClientName),
+      ) || ((existingClients as EquipmentClientRecord[] | null) || [])[0] || null;
+
+    if (targetClient) {
+      const updatePayload: Partial<EquipmentClientRecord> = {};
+      if (!targetClient.persona_contacto && draft.contactName.trim()) {
+        updatePayload.persona_contacto = draft.contactName.trim();
+      }
+      if (!targetClient.telefono && draft.phone.trim()) {
+        updatePayload.telefono = draft.phone.trim();
+      }
+
+      if (Object.keys(updatePayload).length === 0) {
+        return targetClient;
+      }
+
+      const { data: updatedClient, error: updatedClientError } = await supabase
+        .from('clientes')
+        .update(updatePayload)
+        .eq('id', targetClient.id)
+        .select('id, razon_social, persona_contacto, telefono')
+        .single();
+
+      if (updatedClientError) {
+        throw new Error(`Encontramos el cliente, pero no pudimos enriquecer sus datos: ${updatedClientError.message}`);
+      }
+
+      return updatedClient as EquipmentClientRecord;
+    }
+
+    const { data: insertedClient, error: insertedClientError } = await supabase
+      .from('clientes')
+      .insert({
+        razon_social: normalizedClientName,
+        persona_contacto: draft.contactName.trim() || null,
+        telefono: draft.phone.trim() || null,
+      })
+      .select('id, razon_social, persona_contacto, telefono')
+      .single();
+
+    if (insertedClientError) {
+      throw new Error(`No fue posible crear el cliente del nuevo equipo: ${insertedClientError.message}`);
+    }
+
+    return insertedClient as EquipmentClientRecord;
+  };
+
+  const uploadInstallationDocumentForEquipment = async (equipoId: string, numeroSerie: string, file: File) => {
+    const { data: currentUserResp } = await supabase.auth.getUser();
+    const uid = currentUserResp.user?.id || null;
+    const safeSerial = sanitizeFileName(normalizeSerialLookup(numeroSerie || 'equipo'));
+    const safeName = sanitizeFileName(file.name);
+    const path = `equipos/${safeSerial}/instalacion/${Date.now()}-${safeName}`;
+
+    const { error: uploadError } = await supabase.storage.from(DOCUMENTOS_BUCKET).upload(path, file, {
+      upsert: true,
+      contentType: file.type || 'application/pdf',
+    });
+
+    if (uploadError) {
+      throw new Error(`El equipo quedó registrado, pero no pudimos subir el acta: ${uploadError.message}`);
+    }
+
+    const payload = {
+      doc_instalacion: true,
+      doc_instalacion_path: path,
+      doc_instalacion_filename: file.name,
+      doc_instalacion_uploaded_at: new Date().toISOString(),
+      doc_instalacion_uploaded_by: uid,
+    };
+
+    const { error: updateError } = await supabase.from('equipos').update(payload).eq('id', equipoId);
+    if (updateError) {
+      throw new Error(`El PDF subió, pero no pudimos asociarlo al equipo: ${updateError.message}`);
+    }
+
+    return payload;
+  };
+
+  const handleCreateEquipmentDocumentImport = async (file: File | null) => {
+    if (!file) {
+      return;
+    }
+
+    setImportingEquipmentDocument(true);
+    setCreateEquipmentFeedback(null);
+    setEquipmentImportProgress(0);
+    setEquipmentImportStatus('Leyendo documento');
+
+    try {
+      const importResult = await importEquipmentDraftFromDocument(file, (progress, status) => {
+        setEquipmentImportProgress(progress);
+        setEquipmentImportStatus(status);
+      });
+
+      mergeImportedDraftIntoForm(importResult.draft);
+      setEquipmentImportSummary(importResult.summary);
+      setEquipmentImportSourceFile(file);
+      setStoreImportedDocumentAsInstallation(true);
+      setCreateEquipmentFeedback({
+        tone: 'success',
+        message:
+          importResult.summary.length > 0
+            ? `Documento leído. Encontré ${importResult.summary.length} dato(s) útiles para prellenar el alta.`
+            : 'Documento leído. Revisa y completa manualmente los campos faltantes antes de guardar.',
+      });
+    } catch (error) {
+      setCreateEquipmentFeedback({
+        tone: 'error',
+        message: error instanceof Error ? error.message : 'No fue posible interpretar el documento seleccionado.',
+      });
+      setEquipmentImportSourceFile(null);
+      setEquipmentImportSummary([]);
+    } finally {
+      setImportingEquipmentDocument(false);
+    }
+  };
+
+  const handleCreateEquipment = async () => {
+    const numeroSerie = createEquipmentForm.numeroSerie.trim().toUpperCase();
+    const clientName = createEquipmentForm.clientName.trim();
+
+    if (!numeroSerie) {
+      setCreateEquipmentFeedback({
+        tone: 'error',
+        message: 'Captura el número de serie antes de guardar el equipo.',
+      });
+      return;
+    }
+
+    if (!clientName) {
+      setCreateEquipmentFeedback({
+        tone: 'error',
+        message: 'Captura la razón social o cliente del equipo antes de guardarlo.',
+      });
+      return;
+    }
+
+    setCreatingEquipment(true);
+    setCreateEquipmentFeedback(null);
+
+    try {
+      const { data: duplicateEquipment, error: duplicateEquipmentError } = await supabase
+        .from('equipos')
+        .select('id, numero_serie')
+        .eq('numero_serie', numeroSerie)
+        .maybeSingle();
+
+      if (duplicateEquipmentError) {
+        throw new Error(`No fue posible validar la serie en equipos: ${duplicateEquipmentError.message}`);
+      }
+
+      if (duplicateEquipment?.id) {
+        throw new Error(`Ya existe un equipo con la serie ${numeroSerie}. Abre ese registro y edítalo en lugar de duplicarlo.`);
+      }
+
+      const clientRecord = await resolveClientRecord(createEquipmentForm);
+      const payload = {
+        numero_serie: numeroSerie,
+        modelo: createEquipmentForm.modelo.trim() || null,
+        cliente_id: clientRecord?.id ?? null,
+        fecha_inicio: createEquipmentForm.fechaInicio.trim() || null,
+        termino_garantia: createEquipmentForm.terminoGarantia.trim() || null,
+        software: createEquipmentForm.software.trim() || null,
+        firmware: createEquipmentForm.firmware.trim() || null,
+        pais: createEquipmentForm.pais.trim() || null,
+        estado: createEquipmentForm.estado.trim() || null,
+        ciudad: createEquipmentForm.ciudad.trim() || null,
+        municipio: createEquipmentForm.municipio.trim() || null,
+        colonia: createEquipmentForm.colonia.trim() || null,
+        direccion: createEquipmentForm.direccion.trim() || null,
+        codigo_postal: createEquipmentForm.codigoPostal.trim() || null,
+      };
+
+      const { data: insertedEquipment, error: insertedEquipmentError } = await supabase
+        .from('equipos')
+        .insert(payload)
+        .select('id')
+        .single();
+
+      if (insertedEquipmentError || !insertedEquipment?.id) {
+        throw new Error(insertedEquipmentError?.message || 'No fue posible crear el equipo.');
+      }
+
+      let documentWarning = '';
+      if (equipmentImportSourceFile && storeImportedDocumentAsInstallation) {
+        try {
+          await uploadInstallationDocumentForEquipment(insertedEquipment.id, numeroSerie, equipmentImportSourceFile);
+        } catch (error) {
+          documentWarning = error instanceof Error ? error.message : 'El equipo se creó, pero el PDF no se pudo asociar.';
+        }
+      }
+
+      const refreshedEquipos = await fetchEquipos();
+      const createdEquipment = (refreshedEquipos as any[]).find((item) => item.id === insertedEquipment.id) || null;
+      const successMessage = documentWarning
+        ? `${documentWarning}`
+        : `Equipo ${numeroSerie} dado de alta correctamente.`;
+
+      closeCreateEquipmentModal();
+      setSearchQuery(numeroSerie);
+      setListFeedback({
+        tone: documentWarning ? 'error' : 'success',
+        message: successMessage,
+      });
+
+      if (createdEquipment) {
+        openDetallesModal(createdEquipment);
+      }
+    } catch (error) {
+      setCreateEquipmentFeedback({
+        tone: 'error',
+        message: error instanceof Error ? error.message : 'No fue posible dar de alta el equipo.',
+      });
+    } finally {
+      setCreatingEquipment(false);
+    }
   };
 
   const uploadEquipmentDocument = async (kind: 'instalacion' | 'capacitacion', providedFile?: File | null) => {
@@ -654,6 +966,16 @@ export default function Equipos() {
     <div>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
         <h3>Buscador de Equipos (Administración)</h3>
+        <button
+          type="button"
+          className="button-primary"
+          onClick={() => {
+            setListFeedback(null);
+            setCreateEquipmentModalOpen(true);
+          }}
+        >
+          Dar de alta equipo
+        </button>
       </div>
 
       <div style={{ marginBottom: '2rem' }}>
@@ -666,6 +988,25 @@ export default function Equipos() {
           style={{ width: '100%', maxWidth: '600px' }}
         />
       </div>
+
+      {listFeedback ? (
+        <div
+          style={{
+            marginBottom: '1.25rem',
+            padding: '0.85rem 1rem',
+            borderRadius: '12px',
+            border: `1px solid ${listFeedback.tone === 'error' ? 'rgba(243, 39, 53, 0.22)' : 'rgba(76, 207, 147, 0.24)'}`,
+            background:
+              listFeedback.tone === 'error'
+                ? 'linear-gradient(180deg, rgba(255, 245, 246, 0.96), rgba(255, 238, 240, 0.92))'
+                : 'linear-gradient(180deg, rgba(245, 255, 250, 0.96), rgba(238, 252, 244, 0.92))',
+            color: listFeedback.tone === 'error' ? 'var(--brand-red-ink)' : '#1f7f63',
+            fontSize: '0.92rem',
+          }}
+        >
+          {listFeedback.message}
+        </div>
+      ) : null}
 
       {loading ? (
         <p>Cargando lista de asignaciones y clientes...</p>
@@ -1152,6 +1493,410 @@ export default function Equipos() {
                 )}
               </div>
             )}
+            </div>
+          </div>
+        </div>,
+        document.body
+      )}
+
+      {createEquipmentModalOpen && createPortal(
+        <div
+          style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            background: 'rgba(8, 12, 19, 0.74)',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            zIndex: 1125,
+            padding: '1rem',
+            backdropFilter: 'blur(10px)',
+          }}
+          onClick={closeCreateEquipmentModal}
+        >
+          <div
+            className="card card-scroll-shell"
+            style={{
+              maxWidth: '980px',
+              width: 'min(980px, calc(100vw - 2.5rem))',
+              maxHeight: '92vh',
+              padding: 0,
+              overflow: 'hidden',
+              border: '1px solid var(--surface-outline)',
+            }}
+            onClick={(event) => event.stopPropagation()}
+          >
+            <div className="card-scroll-body">
+              <div style={{ display: 'flex', justifyContent: 'space-between', gap: '1rem', alignItems: 'flex-start', marginBottom: '1rem' }}>
+                <div>
+                  <div
+                    style={{
+                      display: 'inline-flex',
+                      padding: '0.24rem 0.7rem',
+                      borderRadius: '999px',
+                      background: 'linear-gradient(135deg, rgba(var(--food-rgb), 0.18), rgba(var(--environmental-rgb), 0.12))',
+                      border: '1px solid rgba(var(--food-rgb), 0.24)',
+                      color: '#8b5d17',
+                      fontSize: '0.78rem',
+                      fontWeight: 700,
+                    }}
+                  >
+                    Alta de equipo
+                  </div>
+                  <h3 style={{ margin: '0.8rem 0 0.35rem 0', color: 'var(--primary-color)' }}>Registrar otro equipo</h3>
+                  <p style={{ margin: 0, color: 'var(--text-secondary)', lineHeight: 1.65 }}>
+                    Captura el equipo manualmente o importa un acta/PDF para prellenar los datos del alta antes de guardar.
+                  </p>
+                </div>
+                <button
+                  style={{ background: 'none', border: 'none', color: 'var(--text-secondary)', cursor: 'pointer', fontSize: '1.5rem', lineHeight: 1 }}
+                  onClick={closeCreateEquipmentModal}
+                >
+                  &times;
+                </button>
+              </div>
+
+              <input
+                ref={createEquipmentDocumentInputRef}
+                type="file"
+                accept="application/pdf,image/*"
+                className="equipment-doc-hidden-input"
+                onChange={(event) => {
+                  const nextFile = event.target.files?.[0] || null;
+                  void handleCreateEquipmentDocumentImport(nextFile);
+                  event.target.value = '';
+                }}
+              />
+
+              <div
+                style={{
+                  marginBottom: '1rem',
+                  padding: '1rem 1.1rem',
+                  borderRadius: '16px',
+                  border: '1px solid rgba(var(--environmental-rgb), 0.18)',
+                  background: 'linear-gradient(180deg, rgba(247, 253, 250, 0.98), rgba(241, 249, 245, 0.94))',
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  gap: '1rem',
+                  flexWrap: 'wrap',
+                  alignItems: 'center',
+                }}
+              >
+                <div>
+                  <strong style={{ display: 'block', marginBottom: '0.25rem', color: 'var(--primary-color)' }}>
+                    Importar desde acta o reporte PDF
+                  </strong>
+                  <span style={{ color: 'var(--text-secondary)', fontSize: '0.9rem' }}>
+                    Primero intenta leer texto embebido y, si hace falta, aplica OCR al documento.
+                  </span>
+                </div>
+                <button
+                  type="button"
+                  className={`button-primary ${importingEquipmentDocument ? 'inactive' : ''}`}
+                  disabled={importingEquipmentDocument}
+                  onClick={() => createEquipmentDocumentInputRef.current?.click()}
+                >
+                  {importingEquipmentDocument ? 'Importando documento...' : 'Cargar acta/PDF'}
+                </button>
+              </div>
+
+              {createEquipmentFeedback ? (
+                <div
+                  style={{
+                    marginBottom: '1rem',
+                    padding: '0.85rem 1rem',
+                    borderRadius: '12px',
+                    border: `1px solid ${createEquipmentFeedback.tone === 'error' ? 'rgba(243, 39, 53, 0.22)' : 'rgba(76, 207, 147, 0.24)'}`,
+                    background:
+                      createEquipmentFeedback.tone === 'error'
+                        ? 'linear-gradient(180deg, rgba(255, 245, 246, 0.96), rgba(255, 238, 240, 0.92))'
+                        : 'linear-gradient(180deg, rgba(245, 255, 250, 0.96), rgba(238, 252, 244, 0.92))',
+                    color: createEquipmentFeedback.tone === 'error' ? 'var(--brand-red-ink)' : '#1f7f63',
+                    fontSize: '0.9rem',
+                  }}
+                >
+                  {createEquipmentFeedback.message}
+                </div>
+              ) : null}
+
+              {importingEquipmentDocument ? (
+                <div
+                  style={{
+                    marginBottom: '1rem',
+                    padding: '0.95rem 1rem',
+                    borderRadius: '14px',
+                    border: '1px solid rgba(var(--environmental-blue-rgb), 0.18)',
+                    background: 'rgba(255, 255, 255, 0.88)',
+                  }}
+                >
+                  <div style={{ display: 'flex', justifyContent: 'space-between', gap: '0.75rem', marginBottom: '0.5rem', color: 'var(--text-secondary)', fontSize: '0.88rem' }}>
+                    <span>{equipmentImportStatus || 'Procesando documento'}</span>
+                    <span>{Math.round(equipmentImportProgress * 100)}%</span>
+                  </div>
+                  <div style={{ height: '8px', borderRadius: '999px', background: 'rgba(var(--environmental-blue-rgb), 0.12)', overflow: 'hidden' }}>
+                    <div
+                      style={{
+                        width: `${Math.min(100, Math.max(0, equipmentImportProgress * 100))}%`,
+                        height: '100%',
+                        background: 'linear-gradient(90deg, rgba(var(--environmental-rgb), 0.92), rgba(var(--environmental-blue-rgb), 0.88))',
+                      }}
+                    />
+                  </div>
+                </div>
+              ) : null}
+
+              {equipmentImportSourceFile ? (
+                <div
+                  style={{
+                    marginBottom: '1rem',
+                    padding: '0.95rem 1rem',
+                    borderRadius: '14px',
+                    border: '1px solid rgba(124, 136, 149, 0.16)',
+                    background: 'rgba(255, 255, 255, 0.88)',
+                  }}
+                >
+                  <strong style={{ display: 'block', color: 'var(--primary-color)' }}>{equipmentImportSourceFile.name}</strong>
+                  {equipmentImportSummary.length > 0 ? (
+                    <div style={{ display: 'flex', gap: '0.55rem', flexWrap: 'wrap', marginTop: '0.75rem' }}>
+                      {equipmentImportSummary.map((item) => (
+                        <span
+                          key={item}
+                          style={{
+                            display: 'inline-flex',
+                            padding: '0.32rem 0.68rem',
+                            borderRadius: '999px',
+                            background: 'rgba(var(--environmental-rgb), 0.12)',
+                            border: '1px solid rgba(var(--environmental-rgb), 0.18)',
+                            color: '#1f7f63',
+                            fontSize: '0.8rem',
+                            fontWeight: 600,
+                          }}
+                        >
+                          {item}
+                        </span>
+                      ))}
+                    </div>
+                  ) : null}
+                  <label style={{ display: 'flex', alignItems: 'center', gap: '0.7rem', marginTop: '0.9rem', color: 'var(--text-secondary)' }}>
+                    <input
+                      type="checkbox"
+                      checked={storeImportedDocumentAsInstallation}
+                      onChange={(event) => setStoreImportedDocumentAsInstallation(event.target.checked)}
+                    />
+                    Guardar este mismo archivo como documento de instalación del equipo al finalizar el alta
+                  </label>
+                </div>
+              ) : null}
+
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '1rem' }}>
+                <div>
+                  <label style={{ display: 'block', marginBottom: '0.35rem', fontSize: '0.82rem', color: 'var(--text-secondary)', textTransform: 'uppercase' }}>
+                    Número de serie
+                  </label>
+                  <input
+                    type="text"
+                    className="input-field"
+                    value={createEquipmentForm.numeroSerie}
+                    onChange={(event) => setCreateEquipmentForm((current) => ({ ...current, numeroSerie: event.target.value }))}
+                    placeholder="Ej. 834002763"
+                  />
+                </div>
+                <div>
+                  <label style={{ display: 'block', marginBottom: '0.35rem', fontSize: '0.82rem', color: 'var(--text-secondary)', textTransform: 'uppercase' }}>
+                    Modelo
+                  </label>
+                  <input
+                    type="text"
+                    className="input-field"
+                    value={createEquipmentForm.modelo}
+                    onChange={(event) => setCreateEquipmentForm((current) => ({ ...current, modelo: event.target.value }))}
+                    placeholder="Ej. BA400"
+                  />
+                </div>
+                <div>
+                  <label style={{ display: 'block', marginBottom: '0.35rem', fontSize: '0.82rem', color: 'var(--text-secondary)', textTransform: 'uppercase' }}>
+                    Cliente / razón social
+                  </label>
+                  <input
+                    type="text"
+                    className="input-field"
+                    value={createEquipmentForm.clientName}
+                    onChange={(event) => setCreateEquipmentForm((current) => ({ ...current, clientName: event.target.value }))}
+                    placeholder="Nombre del cliente"
+                  />
+                </div>
+                <div>
+                  <label style={{ display: 'block', marginBottom: '0.35rem', fontSize: '0.82rem', color: 'var(--text-secondary)', textTransform: 'uppercase' }}>
+                    Contacto
+                  </label>
+                  <input
+                    type="text"
+                    className="input-field"
+                    value={createEquipmentForm.contactName}
+                    onChange={(event) => setCreateEquipmentForm((current) => ({ ...current, contactName: event.target.value }))}
+                    placeholder="Responsable del equipo"
+                  />
+                </div>
+                <div>
+                  <label style={{ display: 'block', marginBottom: '0.35rem', fontSize: '0.82rem', color: 'var(--text-secondary)', textTransform: 'uppercase' }}>
+                    Teléfono
+                  </label>
+                  <input
+                    type="text"
+                    className="input-field"
+                    value={createEquipmentForm.phone}
+                    onChange={(event) => setCreateEquipmentForm((current) => ({ ...current, phone: event.target.value }))}
+                    placeholder="10 dígitos o con lada"
+                  />
+                </div>
+                <div>
+                  <label style={{ display: 'block', marginBottom: '0.35rem', fontSize: '0.82rem', color: 'var(--text-secondary)', textTransform: 'uppercase' }}>
+                    Fecha de instalación
+                  </label>
+                  <input
+                    type="date"
+                    className="input-field"
+                    value={createEquipmentForm.fechaInicio}
+                    onChange={(event) => setCreateEquipmentForm((current) => ({ ...current, fechaInicio: event.target.value }))}
+                  />
+                </div>
+                <div>
+                  <label style={{ display: 'block', marginBottom: '0.35rem', fontSize: '0.82rem', color: 'var(--text-secondary)', textTransform: 'uppercase' }}>
+                    Término de garantía
+                  </label>
+                  <input
+                    type="date"
+                    className="input-field"
+                    value={createEquipmentForm.terminoGarantia}
+                    onChange={(event) => setCreateEquipmentForm((current) => ({ ...current, terminoGarantia: event.target.value }))}
+                  />
+                </div>
+                <div>
+                  <label style={{ display: 'block', marginBottom: '0.35rem', fontSize: '0.82rem', color: 'var(--text-secondary)', textTransform: 'uppercase' }}>
+                    Software
+                  </label>
+                  <input
+                    type="text"
+                    className="input-field"
+                    value={createEquipmentForm.software}
+                    onChange={(event) => setCreateEquipmentForm((current) => ({ ...current, software: event.target.value }))}
+                    placeholder="Versión de software"
+                  />
+                </div>
+                <div>
+                  <label style={{ display: 'block', marginBottom: '0.35rem', fontSize: '0.82rem', color: 'var(--text-secondary)', textTransform: 'uppercase' }}>
+                    Firmware
+                  </label>
+                  <input
+                    type="text"
+                    className="input-field"
+                    value={createEquipmentForm.firmware}
+                    onChange={(event) => setCreateEquipmentForm((current) => ({ ...current, firmware: event.target.value }))}
+                    placeholder="Versión de firmware"
+                  />
+                </div>
+                <div>
+                  <label style={{ display: 'block', marginBottom: '0.35rem', fontSize: '0.82rem', color: 'var(--text-secondary)', textTransform: 'uppercase' }}>
+                    País
+                  </label>
+                  <input
+                    type="text"
+                    className="input-field"
+                    value={createEquipmentForm.pais}
+                    onChange={(event) => setCreateEquipmentForm((current) => ({ ...current, pais: event.target.value }))}
+                    placeholder="México"
+                  />
+                </div>
+                <div>
+                  <label style={{ display: 'block', marginBottom: '0.35rem', fontSize: '0.82rem', color: 'var(--text-secondary)', textTransform: 'uppercase' }}>
+                    Estado
+                  </label>
+                  <input
+                    type="text"
+                    className="input-field"
+                    value={createEquipmentForm.estado}
+                    onChange={(event) => setCreateEquipmentForm((current) => ({ ...current, estado: event.target.value }))}
+                    placeholder="Estado"
+                  />
+                </div>
+                <div>
+                  <label style={{ display: 'block', marginBottom: '0.35rem', fontSize: '0.82rem', color: 'var(--text-secondary)', textTransform: 'uppercase' }}>
+                    Ciudad
+                  </label>
+                  <input
+                    type="text"
+                    className="input-field"
+                    value={createEquipmentForm.ciudad}
+                    onChange={(event) => setCreateEquipmentForm((current) => ({ ...current, ciudad: event.target.value }))}
+                    placeholder="Ciudad"
+                  />
+                </div>
+                <div>
+                  <label style={{ display: 'block', marginBottom: '0.35rem', fontSize: '0.82rem', color: 'var(--text-secondary)', textTransform: 'uppercase' }}>
+                    Municipio
+                  </label>
+                  <input
+                    type="text"
+                    className="input-field"
+                    value={createEquipmentForm.municipio}
+                    onChange={(event) => setCreateEquipmentForm((current) => ({ ...current, municipio: event.target.value }))}
+                    placeholder="Municipio"
+                  />
+                </div>
+                <div>
+                  <label style={{ display: 'block', marginBottom: '0.35rem', fontSize: '0.82rem', color: 'var(--text-secondary)', textTransform: 'uppercase' }}>
+                    Colonia
+                  </label>
+                  <input
+                    type="text"
+                    className="input-field"
+                    value={createEquipmentForm.colonia}
+                    onChange={(event) => setCreateEquipmentForm((current) => ({ ...current, colonia: event.target.value }))}
+                    placeholder="Colonia"
+                  />
+                </div>
+                <div>
+                  <label style={{ display: 'block', marginBottom: '0.35rem', fontSize: '0.82rem', color: 'var(--text-secondary)', textTransform: 'uppercase' }}>
+                    Código postal
+                  </label>
+                  <input
+                    type="text"
+                    className="input-field"
+                    value={createEquipmentForm.codigoPostal}
+                    onChange={(event) => setCreateEquipmentForm((current) => ({ ...current, codigoPostal: event.target.value }))}
+                    placeholder="C.P."
+                  />
+                </div>
+                <div style={{ gridColumn: '1 / -1' }}>
+                  <label style={{ display: 'block', marginBottom: '0.35rem', fontSize: '0.82rem', color: 'var(--text-secondary)', textTransform: 'uppercase' }}>
+                    Dirección completa
+                  </label>
+                  <textarea
+                    className="input-field"
+                    value={createEquipmentForm.direccion}
+                    onChange={(event) => setCreateEquipmentForm((current) => ({ ...current, direccion: event.target.value }))}
+                    placeholder="Calle, número, referencias..."
+                    rows={3}
+                    style={{ resize: 'vertical', minHeight: '110px' }}
+                  />
+                </div>
+              </div>
+
+              <div style={{ marginTop: '1.25rem', display: 'flex', justifyContent: 'space-between', gap: '0.85rem', flexWrap: 'wrap' }}>
+                <button className="button-primary inactive" onClick={closeCreateEquipmentModal}>
+                  Cancelar
+                </button>
+                <button
+                  className="button-primary"
+                  disabled={creatingEquipment || importingEquipmentDocument}
+                  onClick={() => void handleCreateEquipment()}
+                >
+                  {creatingEquipment ? 'Guardando equipo...' : 'Guardar equipo'}
+                </button>
+              </div>
             </div>
           </div>
         </div>,
