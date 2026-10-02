@@ -10,6 +10,7 @@ import FalconSlaAlerts, { type FalconSlaAlertEntry } from '../../components/Falc
 import AlertsPanel from './components/AlertsPanel';
 import EmptyState from './components/EmptyState';
 import EngineerLoadPanel from './components/EngineerLoadPanel';
+import LivePlanningBoard from './components/LivePlanningBoard';
 import ImportPreviewPanel from './components/ImportPreviewPanel';
 import KpiStrip from './components/KpiStrip';
 import MasterServiceTable from './components/MasterServiceTable';
@@ -203,7 +204,7 @@ export default function ServicePlanningPage({
   );
   const monthOptions = useMemo(() => buildMonthOptions(services, weekendGuards.months), [services, weekendGuards.months]);
   const initialMonth = monthOptions.find((option) => option.value === currentMonthKey)?.value || monthOptions[0]?.value || currentMonthKey;
-  const [section, setSection] = useState<ServicePlanningSection>('calendario');
+  const [section, setSection] = useState<ServicePlanningSection>('tablero');
   const [filters, setFilters] = useState(() => createDefaultFilters(initialMonth));
   const [selectedService, setSelectedService] = useState<PlannedService | null>(null);
   const [showComposer, setShowComposer] = useState(false);
@@ -455,11 +456,13 @@ export default function ServicePlanningPage({
       return <EmptyState title="Cargando planeacion" description="Estamos recuperando tickets, modales relacionados y la capa de viajes." />;
     }
 
-    if (filteredServices.length === 0 && section !== 'reportes' && section !== 'configuracion' && section !== 'guardias') {
+    if (filteredServices.length === 0 && section !== 'reportes' && section !== 'configuracion' && section !== 'guardias' && section !== 'tablero') {
       return <EmptyState title="Sin servicios para esta combinacion" description="Prueba otro mes, semana o limpia filtros para ampliar la ventana." />;
     }
 
     switch (section) {
+      case 'tablero':
+        return <LivePlanningBoard services={services} profiles={staffProfiles} month={filters.month} canEdit={permissions.canEditAll} onCreate={onCreateService} onUpdate={onUpdateService} />;
       case 'resumen':
       case 'calendario':
         return renderSummary();
@@ -548,7 +551,7 @@ export default function ServicePlanningPage({
           </div>
         ) : null}
 
-        {section !== 'guardias' ? <KpiStrip kpis={kpis} /> : null}
+        {section !== 'guardias' && section !== 'tablero' ? <KpiStrip kpis={kpis} /> : null}
 
         {showFilters && section !== 'guardias' ? (
           <PlanningFilters

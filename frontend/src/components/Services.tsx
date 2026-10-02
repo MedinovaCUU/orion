@@ -165,7 +165,8 @@ export default function Services({ subPermissions = ['planeacion', 'viajes', 're
       currentUserId,
       currentUserName || 'Operacion ORION',
     );
-    await supabase.from('tickets').insert(payload);
+    const { error } = await supabase.from('tickets').insert(payload);
+    if (error) throw new Error(error.message);
     await fetchContext();
   };
 
@@ -176,7 +177,8 @@ export default function Services({ subPermissions = ['planeacion', 'viajes', 're
       engineerProfiles,
       currentUserName || 'Operacion ORION',
     );
-    await supabase.from('tickets').update(payload).eq('id', service.id);
+    const { error } = await supabase.from('tickets').update(payload).eq('id', service.id);
+    if (error) throw new Error(error.message);
     await fetchContext();
   };
 
@@ -191,7 +193,7 @@ export default function Services({ subPermissions = ['planeacion', 'viajes', 're
 
   const handleSyncPlanning = async () => {
     const summary = await syncServicePlanningDataset({
-      datasetName: 'june-july-2026',
+      datasetName: 'october-2026',
       actorName: currentUserName || 'Operacion ORION',
       profiles: engineerProfiles,
     });

@@ -14,6 +14,7 @@ interface PlanningSidebarProps {
 }
 
 const ITEMS: Array<{ key: ServicePlanningSection; label: string; icon: ComponentProps<typeof PlanningIcon>['name'] }> = [
+  { key: 'tablero', label: 'Tablero en vivo', icon: 'users' },
   { key: 'resumen', label: 'Resumen', icon: 'chart' },
   { key: 'calendario', label: 'Calendario', icon: 'calendar' },
   { key: 'tabla', label: 'Tabla maestra', icon: 'table' },

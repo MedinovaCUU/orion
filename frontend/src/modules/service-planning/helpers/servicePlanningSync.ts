@@ -364,7 +364,7 @@ export const syncServicePlanningDataset = async ({
 
   const { data: existingRows, error: existingError } = await supabase
     .from('tickets')
-    .select('id, descripcion, estado')
+    .select('id, descripcion, estado, asunto, numero_serie_equipo')
     .neq('estado', 'cerrado')
     .like('descripcion', '%[METADATA_PLANEACION]%');
 
@@ -376,6 +376,7 @@ export const syncServicePlanningDataset = async ({
   const deleteIds = (existingRows || [])
     .filter((row) => {
       const meta = extractPlaneacionMeta(row.descripcion);
+      if (datasetName === 'october-2026') return false;
       return meta?.fecha_tentativa ? replaceWeekSet.has(cleanText(meta.fecha_tentativa).toUpperCase()) : false;
     })
     .map((row) => row.id);
@@ -387,7 +388,11 @@ export const syncServicePlanningDataset = async ({
     }
   }
 
-  const payloads = normalizedRows.map((entry) => entry.payload);
+  const payloads = normalizedRows.filter(entry => datasetName !== 'october-2026' || !(existingRows || []).some(row => {
+    const meta = extractPlaneacionMeta(row.descripcion);
+    return meta?.planning_month_key === '2026-10' && meta.fecha_tentativa === entry.weekLabel
+      && row.asunto === entry.payload.asunto && row.numero_serie_equipo === entry.payload.numero_serie_equipo;
+  })).map((entry) => entry.payload);
   for (let index = 0; index < payloads.length; index += CHUNK_SIZE) {
     const chunk = payloads.slice(index, index + CHUNK_SIZE);
     const { error: insertError } = await supabase.from('tickets').insert(chunk);
@@ -402,7 +407,7 @@ export const syncServicePlanningDataset = async ({
     weeksWithRows: summarizeRowsByWeek(normalizedRows),
     availabilityNotes: Array.isArray(dataset.availabilityNotes) ? dataset.availabilityNotes.length : 0,
     deleteCount: deleteIds.length,
-    insertCount: normalizedRows.length,
+    insertCount: payloads.length,
     mode: 'apply',
   };
 };
