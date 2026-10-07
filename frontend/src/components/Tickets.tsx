@@ -1,3 +1,4 @@
+import { ticketCreationMessage } from './ticketCreationReceipt';
 import { canOpenTicketControl } from './ticketAlertAccess';
 import TicketControlCenter from './TicketControlCenter';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
@@ -493,7 +494,9 @@ export default function Tickets({ subPermissions = ['crear', 'seguimiento', 'dia
   const createTicketRow = async (draft: TicketIntakeDraft, userId: string) => {
     const supportType = tipoSoporte || draft.tipoSoporte;
     const subject = supportType ? `[Soporte ${supportType}] ${draft.asunto}` : draft.asunto;
+    const ticketId = crypto.randomUUID();
     const payload = {
+      id: ticketId,
       user_id: userId,
       asunto: subject,
       descripcion: draft.descripcion,
@@ -507,6 +510,11 @@ export default function Tickets({ subPermissions = ['crear', 'seguimiento', 'dia
     if (error) {
       throw error;
     }
+    // Creation already succeeded: a receipt lookup must never invite a duplicate retry.
+    try {
+      const receipt = await supabase.rpc('get_ticket_creation_receipt', { p_ticket_id: ticketId });
+      return !receipt.error && receipt.data?.length ? receipt.data[0] as { numero_caso: string | null; responsable: string | null } : null;
+    } catch { return null; }
   };
 
   const openTravelPlannerForTicket = (ticket: TicketRecord, meta: PlanningMetadata) => {
@@ -529,7 +537,7 @@ export default function Tickets({ subPermissions = ['crear', 'seguimiento', 'dia
 
     if (user) {
       try {
-        await createTicketRow(
+        const receipt = await createTicketRow(
           {
             asunto,
             descripcion,
@@ -543,7 +551,7 @@ export default function Tickets({ subPermissions = ['crear', 'seguimiento', 'dia
           user.id,
         );
         resetTicketForm();
-        setTicketFeedback({ tone: 'success', message: 'Ticket levantado correctamente.' });
+        setTicketFeedback({ tone: 'success', message: ticketCreationMessage(receipt) });
         fetchTickets();
       } catch (error) {
         const message =
@@ -722,31 +730,7 @@ export default function Tickets({ subPermissions = ['crear', 'seguimiento', 'dia
         </div>
         <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem', marginTop: '1.5rem' }}>
           {ticketFeedback ? (
-            <div
-              style={{
-                padding: '0.9rem 1rem',
-                borderRadius: '12px',
-                border:
-                  ticketFeedback.tone === 'error'
-                    ? '1px solid rgba(244, 63, 94, 0.38)'
-                    : ticketFeedback.tone === 'success'
-                      ? '1px solid rgba(74, 222, 128, 0.3)'
-                      : '1px solid rgba(56, 189, 248, 0.28)',
-                background:
-                  ticketFeedback.tone === 'error'
-                    ? 'rgba(127, 29, 29, 0.24)'
-                    : ticketFeedback.tone === 'success'
-                      ? 'rgba(20, 83, 45, 0.2)'
-                      : 'rgba(8, 47, 73, 0.24)',
-                color:
-                  ticketFeedback.tone === 'error'
-                    ? '#ffd5dc'
-                    : ticketFeedback.tone === 'success'
-                      ? '#d8ffe7'
-                      : '#d7f3ff',
-                fontSize: '0.9rem',
-              }}
-            >
+            <div className={`ticket-feedback ticket-feedback--${ticketFeedback.tone}`} role={ticketFeedback.tone === 'error' ? 'alert' : 'status'}>
               {ticketFeedback.message}
             </div>
           ) : null}

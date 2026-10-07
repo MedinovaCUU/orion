@@ -347,3 +347,8 @@
   .ticket-case__sap-grid { grid-template-columns: 1fr; }
   .ticket-case__sap-grid > div.is-wide { grid-column: auto; }
 }
+
+.ticket-feedback{padding:.9rem 1rem;border-radius:12px;border:1px solid var(--border-color);background:var(--bg-card-soft);color:var(--text-primary);font-size:.9rem;line-height:1.6}
+.ticket-feedback--success{background:color-mix(in srgb,var(--brand-red) 8%,white);border-color:var(--pill-brand-border);color:var(--brand-red-ink)}
+.ticket-feedback--error{background:#fff0f2;border-color:#e6b6be;color:#8f2539}
+.ticket-feedback--info{background:var(--bg-card-soft);border-color:var(--border-strong);color:var(--text-primary)}
