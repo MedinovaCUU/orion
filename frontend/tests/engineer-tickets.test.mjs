@@ -1,0 +1,14 @@
+import assert from 'node:assert/strict';
+import {summarizeEngineerTickets} from '../src/modules/service-planning/helpers/engineerTickets.ts';
+const now=Date.parse('2026-10-07T18:00:00Z');
+const ticket=(id,owner,state='abierto',age=2,events=[])=>({id,assignedTo:owner,estado:state,creado_en:new Date(now-age*3600000).toISOString(),asunto:id,descripcion:'',events});
+const response={ticket_id:'replied',kind:'respuesta',detail:'Diagnóstico en curso',actor_id:'a',occurred_at:'2026-10-07T17:00:00Z'};
+const tickets=[ticket('old','a','abierto',100),ticket('closed','a','cerrado',100),ticket('other','b'),ticket('replied','a','abierto',3,[response]),ticket('new','a')];
+const result=summarizeEngineerTickets(tickets,'a',now);
+assert.deepEqual(result.rows.map(r=>r.ticket.id),['old','new','replied']);
+assert.equal(result.unanswered,2);
+assert.equal(result.late,1);
+assert.equal(result.rows.at(-1).latest.detail,'Diagnóstico en curso');
+assert.equal(result.rows.at(-1).facts.response.kind,'respuesta');
+assert.equal(summarizeEngineerTickets(tickets,undefined,now).rows.length,0);
+console.log('PASS: actual assignee, overdue tickets retained, closed tickets excluded, response stages and urgency order.');

@@ -29,7 +29,7 @@ function EditableRow({ service, canEdit, onUpdate }: { service: PlannedService; 
   return <tr><td>{service.weekLabel}<small>{service.status.join(' · ')}</small></td>{fields.map((key, index) => <td key={key}>{key === 'serviceType' ? <select aria-label={`${labels[index]} ${service.locality}`} disabled={!canEdit || busy} value={value(key)} onChange={e => setDraft(d => ({ ...d, [key]: e.target.value }))}>{types.map(t => <option key={t}>{t}</option>)}</select> : <input aria-label={`${labels[index]} ${service.locality}`} type={key === 'scheduledDate' ? 'date' : 'text'} disabled={!canEdit || busy} value={value(key)} onChange={e => setDraft(d => ({ ...d, [key]: e.target.value }))} onKeyDown={e => { if (e.key === 'Enter' && Object.keys(draft).length) void save(); if (e.key === 'Escape') setDraft({}); }} />}</td>)}<td>{Object.keys(draft).length > 0 && <><button disabled={busy} onClick={() => void save()}>{busy ? 'Guardando…' : 'Guardar'}</button><button disabled={busy} onClick={() => setDraft({})}>Deshacer</button></>}{error && <span role="alert">{error}</span>}</td></tr>;
 }
 export default function LivePlanningBoard({ services, profiles, month, canEdit, onCreate, onUpdate }: Props) {
-  const [today, setToday] = useState(() => new Date().toLocaleDateString('en-CA', { timeZone: 'America/Mexico_City' }));
+  const [today, setToday] = useState(() => new Date().toLocaleDateString('en-CA', { timeZone: 'America/Ciudad_Juarez' }));
   const [editing, setEditing] = useState(false);
   const [search, setSearch] = useState('');
   const [engineer, setEngineer] = useState('');
@@ -38,7 +38,7 @@ export default function LivePlanningBoard({ services, profiles, month, canEdit, 
   const [error, setError] = useState('');
   const blank = (): QuickCreateDraft => ({ weekLabel: '', scheduledDate: `${month}-01`, scheduledDay: '', serviceType: 'preventivo', platform: '', locality: '', serialNumber: '', observations: '', responsibleEngineers: '', companions: '', priority: 'media', source: 'orion' });
   const [draft, setDraft] = useState(blank);
-  useEffect(() => { const timer = window.setInterval(() => setToday(new Date().toLocaleDateString('en-CA', { timeZone: 'America/Mexico_City' })), 30000); return () => clearInterval(timer); }, []);
+  useEffect(() => { const timer = window.setInterval(() => setToday(new Date().toLocaleDateString('en-CA', { timeZone: 'America/Ciudad_Juarez' })), 30000); return () => clearInterval(timer); }, []);
   const guardMembers = useMemo(() => {
     const guards = buildRotationRoster(profiles);
     return [...guards.ingenieria, ...guards.aplicativo].filter(member => member.active && !retired(member.fullName));
@@ -54,7 +54,7 @@ export default function LivePlanningBoard({ services, profiles, month, canEdit, 
       await onCreate(draft); setAdding(false); setDraft(blank());
     } catch (e) { setError(e instanceof Error ? e.message : 'No se pudo crear'); } finally { setBusy(false); }
   };
-  if (!editing) return <EngineerWall members={guardMembers} services={services} roster={roster} today={today} onEdit={() => setEditing(true)} />;
+  if (!editing) return <EngineerWall territories={Object.fromEntries(profiles.filter(p=>p.territorio && p.nombre_completo).map(p=>[p.nombre_completo!,p.territorio!]))} members={guardMembers} services={services} roster={roster} today={today} onEdit={() => setEditing(true)} />;
   return <section className="live-planning">
     <button onClick={() => setEditing(false)}>Volver al monitor del equipo</button>
     <header><div><span className="planning-eyebrow">CENTRO DE OPERACIONES</span><h2>Equipo en vivo</h2><p>Agenda de hoy · {today} · Actualización cada 30 s</p></div><details><summary aria-label="Recuerdo de Erick">🚀</summary><p>Erick ha salido de órbita. ¡Éxito en tu próxima misión!</p></details></header>
