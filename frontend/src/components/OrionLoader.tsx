@@ -7,8 +7,10 @@ const ORION_LOADER_ASSETS = {
   motionWebm: `${BASE}orion-brand/orion-loader-motion.webm`,
   motionWebp: `${BASE}orion-brand/orion-loader-motion.webp`,
   still: `${BASE}orion-brand/orion-loader-still.webp`,
-  introWebm: `${BASE}orion-brand/orion-intro.webm`,
-  introWebp: `${BASE}orion-brand/orion-intro.webp`,
+  motionWebpSmall: `${BASE}orion-brand/orion-loader-motion-s.webp`,
+  motionMp4: `${BASE}orion-brand/orion-loader-motion.mp4`,
+  stillWhite: `${BASE}orion-brand/orion-loader-still-white.webp`,
+  introMp4: `${BASE}orion-brand/orion-intro.mp4`,
   wordmark: `${BASE}orion-brand/orion-wordmark.webp`,
   biosystems: `${BASE}bios-brand/BioS_Logo_300dpi.png`,
 };
@@ -26,64 +28,108 @@ const supportsAlphaWebm = () => {
 
 /** Duración de la animación completa de bienvenida (240 cuadros a 30 fps). */
 export const ORION_INTRO_MS = 8000;
+/** Si la bienvenida no está lista para reproducirse en este tiempo, se omite (y no se marca como vista). */
+const INTRO_READY_TIMEOUT_MS = 9000;
+
+type LoaderMode = 'still' | 'video' | 'webp';
 
 /**
  * Logo Orion animado (loop renderizado en Blender: el ojo busca al usuario, los aros giran, los satélites orbitan).
  * `size` fija el ancho en px; si se omite, se dimensiona por CSS. Con "reducir movimiento" se muestra el cuadro fijo.
- * Con `intro` reproduce primero la animación completa de bienvenida (una vez) y al terminar continúa con el loop;
- * `onIntroEnd` avisa cuando acaba. Los aros terminan la bienvenida en la misma pose con la que arranca el loop.
+ *
+ * `opaque`: usa MP4 H.264 sobre blanco (ligero y con decodificación por hardware en todos los navegadores, Safari
+ * incluido); pensado para el splash, cuyo fondo es blanco detrás del logo. Sin `opaque` se usa WebM con alfa o WebP
+ * animado (transparente), para loaders inline sobre cualquier fondo.
+ *
+ * `intro`: reproduce primero la animación completa de bienvenida (una vez) y al terminar continúa con el loop. Arranca
+ * solo cuando el vídeo está listo para reproducirse de corrido; `onIntroEnd(completed)` avisa al terminar o al omitirla.
  */
-export function OrionLoader({ size, className = '', intro = false, onIntroEnd }: { size?: number; className?: string; intro?: boolean; onIntroEnd?: () => void }) {
-  const mode = useMemo<'still' | 'video' | 'webp'>(() => {
+export function OrionLoader({ size, className = '', opaque = false, intro = false, onIntroEnd }: {
+  size?: number;
+  className?: string;
+  opaque?: boolean;
+  intro?: boolean;
+  onIntroEnd?: (completed: boolean) => void;
+}) {
+  const mode = useMemo<LoaderMode>(() => {
     if (prefersReducedMotion()) return 'still';
+    if (opaque) return 'video';
     return supportsAlphaWebm() ? 'video' : 'webp';
-  }, []);
+  }, [opaque]);
   const [videoFailed, setVideoFailed] = useState(false);
   const [webpFailed, setWebpFailed] = useState(false);
   const [motionReady, setMotionReady] = useState(false);
-  const [introPlaying, setIntroPlaying] = useState(intro && mode !== 'still');
-  let resolved: 'still' | 'video' | 'webp' = mode;
-  if (resolved === 'video' && videoFailed) resolved = 'webp';
+  const [introPlaying, setIntroPlaying] = useState(intro && opaque && mode === 'video');
+  const [introStarted, setIntroStarted] = useState(false);
+  let resolved: LoaderMode = mode;
+  if (resolved === 'video' && videoFailed) resolved = opaque ? 'still' : 'webp';
   if (resolved === 'webp' && webpFailed) resolved = 'still';
-  const finishIntro = () => {
+  const finishIntro = (completed: boolean) => {
     setIntroPlaying(false);
-    onIntroEnd?.();
+    onIntroEnd?.(completed);
   };
-  // Sin animación (movimiento reducido) la bienvenida termina de inmediato; el WebP animado no avisa cuando acaba, así que se cronometra.
+  // Sin animación la bienvenida se omite; con WebP (sin evento de fin) se cronometra desde que la imagen cargó;
+  // y si el recurso tarda demasiado en estar listo, se omite sin marcarla como vista.
   useEffect(() => {
-    if (!intro) return;
+    if (!intro || !introPlaying) return;
     if (resolved === 'still') {
-      onIntroEnd?.();
+      finishIntro(false);
       return;
     }
-    if (resolved === 'webp' && introPlaying) {
-      const t = window.setTimeout(finishIntro, ORION_INTRO_MS);
+    if (!introStarted) {
+      const t = window.setTimeout(() => finishIntro(false), INTRO_READY_TIMEOUT_MS);
+      return () => window.clearTimeout(t);
+    }
+    if (resolved === 'webp') {
+      const t = window.setTimeout(() => finishIntro(true), ORION_INTRO_MS);
       return () => window.clearTimeout(t);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [intro, resolved, introPlaying]);
-  const videoSrc = introPlaying ? ORION_LOADER_ASSETS.introWebm : ORION_LOADER_ASSETS.motionWebm;
-  const webpSrc = introPlaying ? ORION_LOADER_ASSETS.introWebp : ORION_LOADER_ASSETS.motionWebp;
+  }, [intro, resolved, introPlaying, introStarted]);
+
+  const small = size !== undefined && size <= 120;
+  // La bienvenida (intro) solo existe en MP4: se usa con `opaque` (splash). Sin `opaque`, intro cae al loop con alfa.
+  const videoSrc = opaque
+    ? (introPlaying ? ORION_LOADER_ASSETS.introMp4 : ORION_LOADER_ASSETS.motionMp4)
+    : ORION_LOADER_ASSETS.motionWebm;
+  const webpSrc = small ? ORION_LOADER_ASSETS.motionWebpSmall : ORION_LOADER_ASSETS.motionWebp;
+  const stillSrc = opaque ? ORION_LOADER_ASSETS.stillWhite : ORION_LOADER_ASSETS.still;
 
   return (
-    <span aria-hidden className={`orion-loader ${className}`.trim()} style={size ? { width: size } : undefined}>
+    <span aria-hidden className={`orion-loader${opaque ? ' orion-loader--opaque' : ''} ${className}`.trim()} style={size ? { width: size } : undefined}>
       {/* El cuadro fijo cubre la espera de descarga y se retira al llegar el primer cuadro animado (si no, se vería detrás). */}
-      {(resolved === 'still' || !motionReady) && <img src={ORION_LOADER_ASSETS.still} alt="" draggable={false} />}
+      {(resolved === 'still' || !motionReady) && <img src={stillSrc} alt="" draggable={false} />}
       {resolved === 'webp' && (
-        <img key={webpSrc} src={webpSrc} alt="" draggable={false} onLoad={() => setMotionReady(true)} onError={() => setWebpFailed(true)} />
+        <img
+          key={webpSrc}
+          src={webpSrc}
+          alt=""
+          draggable={false}
+          onLoad={() => {
+            setMotionReady(true);
+            if (introPlaying) setIntroStarted(true);
+          }}
+          onError={() => (introPlaying ? finishIntro(false) : setWebpFailed(true))}
+        />
       )}
       {resolved === 'video' && (
         <video
           key={videoSrc}
           src={videoSrc}
-          autoPlay
+          preload="auto"
+          autoPlay={!introPlaying}
           muted
           loop={!introPlaying}
           playsInline
           disablePictureInPicture
+          onCanPlayThrough={(event) => {
+            if (!introPlaying || introStarted) return;
+            setIntroStarted(true);
+            void event.currentTarget.play().catch(() => finishIntro(false));
+          }}
           onPlaying={() => setMotionReady(true)}
-          onEnded={introPlaying ? finishIntro : undefined}
-          onError={() => (introPlaying ? finishIntro() : setVideoFailed(true))}
+          onEnded={introPlaying ? () => finishIntro(true) : undefined}
+          onError={() => (introPlaying ? finishIntro(false) : setVideoFailed(true))}
         />
       )}
     </span>

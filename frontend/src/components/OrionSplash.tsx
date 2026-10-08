@@ -14,12 +14,12 @@ const ASSETS = {
  * Pantalla completa de carga: logo animado, wordmark 3D, BioSystems y línea de progreso.
  * Con `intro` el logo reproduce la animación completa de bienvenida y el wordmark espera a que el ojo encuentre al usuario.
  */
-export function OrionSplashScreen({ status, leaving = false, intro = false, onIntroDone }: { status?: string; leaving?: boolean; intro?: boolean; onIntroDone?: () => void }) {
+export function OrionSplashScreen({ status, leaving = false, intro = false, onIntroDone }: { status?: string; leaving?: boolean; intro?: boolean; onIntroDone?: (completed: boolean) => void }) {
   const late = intro ? ORION_INTRO_MS * 0.55 : 0; // el ojo fija la mirada hacia el segundo 4
   const delayed = (base: number) => (late ? { animationDelay: `${(late + base) / 1000}s` } : undefined);
   return (
     <div className={`orion-splash${leaving ? ' orion-splash--leaving' : ''}`} role="status" aria-live="polite">
-      <OrionLoader className="orion-splash__logo" intro={intro} onIntroEnd={onIntroDone} />
+      <OrionLoader className="orion-splash__logo" opaque intro={intro} onIntroEnd={onIntroDone} />
       <img className="orion-splash__wordmark" style={delayed(0)} src={ASSETS.wordmark} alt="Orion by Medinova" draggable={false} />
       <div className="orion-splash__brand" style={delayed(150)}>
         <img className="orion-splash__biosystems" src={ASSETS.biosystems} alt="BioSystems" draggable={false} />
@@ -44,9 +44,10 @@ export function OrionSplashGate({ ready, status, minMs = 1400, children }: { rea
     const t = window.setTimeout(() => setElapsed(true), prefersReducedMotion() ? 0 : minMs);
     return () => window.clearTimeout(t);
   }, [minMs]);
-  const onIntroDone = useCallback(() => {
-    markIntroSeen();
-    window.setTimeout(() => setIntroDone(true), 700); // deja respirar el logo ya asentado
+  // Solo cuenta como vista si la animación se reprodujo completa; si se omitió (recurso lento), se intentará la próxima vez.
+  const onIntroDone = useCallback((completed: boolean) => {
+    if (completed) markIntroSeen();
+    window.setTimeout(() => setIntroDone(true), completed ? 700 : 0); // deja respirar el logo ya asentado
   }, []);
   const done = ready && elapsed && introDone;
   useEffect(() => {
