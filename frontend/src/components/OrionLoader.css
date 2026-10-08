@@ -51,6 +51,22 @@
   filter: drop-shadow(0 14px 26px rgba(23, 32, 43, 0.14));
 }
 
+.orion-panel-loader--brand .orion-loader {
+  width: clamp(130px, 22vw, 200px);
+}
+
+.orion-panel-loader__wordmark {
+  width: clamp(150px, 24vw, 220px);
+  margin-top: 0.2rem;
+  user-select: none;
+}
+
+.orion-panel-loader__biosystems {
+  width: 104px;
+  margin-top: 0.4rem;
+  user-select: none;
+}
+
 .orion-panel-loader__eyebrow {
   font-size: 0.66rem;
   font-weight: 700;

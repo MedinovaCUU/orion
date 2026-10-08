@@ -5,12 +5,12 @@ import App from './App.tsx'
 const applyRuntimeFavicon = async () => {
   const baseUrl = import.meta.env.BASE_URL || '/'
   const normalizedBase = baseUrl.endsWith('/') ? baseUrl : `${baseUrl}/`
-  const version = 'orion-runtime-3'
+  const version = 'orion-runtime-4'
   const nonce = `${Date.now()}`
   const iconDefinitions = [
-    { rel: 'icon', type: 'image/x-icon', href: `${normalizedBase}favicon.ico?v=${version}&t=${nonce}` },
-    { rel: 'icon', type: 'image/png', href: `${normalizedBase}favicon.png?v=${version}&t=${nonce}` },
-    { rel: 'shortcut icon', type: 'image/x-icon', href: `${normalizedBase}favicon.ico?v=${version}&t=${nonce}` },
+    { rel: 'icon', type: 'image/x-icon', href: `${normalizedBase}orion-brand/favicon.ico?v=${version}&t=${nonce}` },
+    { rel: 'icon', type: 'image/png', href: `${normalizedBase}orion-brand/favicon.png?v=${version}&t=${nonce}` },
+    { rel: 'shortcut icon', type: 'image/x-icon', href: `${normalizedBase}orion-brand/favicon.ico?v=${version}&t=${nonce}` },
     { rel: 'apple-touch-icon', href: `${normalizedBase}apple-touch-icon.png?v=${version}&t=${nonce}` },
   ]
 
@@ -19,7 +19,7 @@ const applyRuntimeFavicon = async () => {
   })
 
   try {
-    const response = await fetch(`${normalizedBase}favicon.png?v=${version}&t=${nonce}`, { cache: 'no-store' })
+    const response = await fetch(`${normalizedBase}orion-brand/favicon.png?v=${version}&t=${nonce}`, { cache: 'no-store' })
     if (response.ok) {
       const blobUrl = URL.createObjectURL(await response.blob())
       iconDefinitions.unshift({ rel: 'icon', type: 'image/png', href: blobUrl })

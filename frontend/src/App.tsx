@@ -2,6 +2,7 @@ import { Suspense, lazy, useEffect, useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { getValidatedSession, supabase } from './supabaseClient';
 import OrionSplashScreen from './components/OrionSplash';
+import BrandLockup from './components/BrandLockup';
 
 const SurveyPage = lazy(() => import('./components/satisfaction/SurveyPage'));
 const Login = lazy(() => import('./components/Login'));
@@ -20,14 +21,22 @@ const routerBasename = (() => {
 
 const AppLoadingFallback = () => <OrionSplashScreen status="Cargando módulos, perfil y contexto de servicio." />;
 
-// `?splash` deja la pantalla de carga fija para revisarla (diseño/QA), igual que `?intro` en Andrómeda.
-const splashPreview = (() => {
+// `?splash` deja la pantalla de carga fija y `?loader` muestra el cargador de módulos, para revisarlos (diseño/QA).
+const previewParam = (() => {
   try {
-    return new URLSearchParams(window.location.search).has('splash');
+    const params = new URLSearchParams(window.location.search);
+    return params.has('splash') ? 'splash' : params.has('loader') ? 'loader' : null;
   } catch {
-    return false;
+    return null;
   }
 })();
+const splashPreview = previewParam === 'splash';
+
+const ModuleLoaderPreview = () => (
+  <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '1.5rem' }}>
+    <BrandLockup variant="loading" eyebrow="BioSystems" title="Abriendo panel" subtitle="Cargando el módulo seleccionado." />
+  </div>
+);
 
 function AuthenticatedApp() {
   const [session, setSession] = useState<any>(null);
@@ -79,6 +88,10 @@ function AuthenticatedApp() {
       subscription.unsubscribe();
     };
   }, []);
+
+  if (previewParam === 'loader') {
+    return <ModuleLoaderPreview />;
+  }
 
   if (loading || splashPreview) {
     return <AppLoadingFallback />;

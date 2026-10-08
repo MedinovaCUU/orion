@@ -1,7 +1,7 @@
 import imagotipoSrc from '../assets/orion-imagotipo.png';
 import iconoSrc from '../assets/orion-icono.png';
 import './BrandLockup.css';
-import { OrionLoader } from './OrionLoader';
+import { PanelLoader } from './OrionLoader';
 
 type BrandVariant = 'auth' | 'header' | 'sidebar' | 'loading' | 'public';
 
@@ -26,13 +26,13 @@ export default function BrandLockup({
   const imageSrc = resolvedLogo === 'icono' ? iconoSrc : imagotipoSrc;
   const imageAlt = resolvedLogo === 'icono' ? 'Orion icono' : 'Orion imagotipo';
 
+  if (variant === 'loading') {
+    return <PanelLoader brand eyebrow={eyebrow} title={title} subtitle={subtitle} className={className} />;
+  }
+
   return (
     <div className={`brand-lockup brand-lockup--${variant} ${className}`.trim()}>
-      {variant === 'loading' ? (
-        <OrionLoader className="brand-lockup__logo brand-lockup__logo--loader" />
-      ) : (
-        <img className={`brand-lockup__logo brand-lockup__logo--${resolvedLogo}`} src={imageSrc} alt={imageAlt} />
-      )}
+      <img className={`brand-lockup__logo brand-lockup__logo--${resolvedLogo}`} src={imageSrc} alt={imageAlt} />
       {(eyebrow || title || subtitle) && (
         <div className="brand-lockup__copy">
           {eyebrow && <span className="brand-lockup__eyebrow">{eyebrow}</span>}

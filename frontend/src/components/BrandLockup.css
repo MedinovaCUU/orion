@@ -75,11 +75,6 @@
   width: min(100%, 240px);
 }
 
-.brand-lockup--loading .brand-lockup__logo--loader {
-  width: clamp(120px, 20vw, 180px);
-  filter: drop-shadow(0 14px 26px rgba(23, 32, 43, 0.14));
-}
-
 .brand-lockup--loading .brand-lockup__copy {
   align-items: center;
 }

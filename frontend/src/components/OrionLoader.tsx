@@ -7,6 +7,8 @@ const ORION_LOADER_ASSETS = {
   motionWebm: `${BASE}orion-brand/orion-loader-motion.webm`,
   motionWebp: `${BASE}orion-brand/orion-loader-motion.webp`,
   still: `${BASE}orion-brand/orion-loader-still.webp`,
+  wordmark: `${BASE}orion-brand/orion-wordmark.webp`,
+  biosystems: `${BASE}bios-brand/BioS_Logo_300dpi.png`,
 };
 
 
@@ -69,11 +71,16 @@ export function Loader({ label, size = 40, block = false, className = '' }: { la
   );
 }
 
-/** Bloque centrado para la carga de un módulo o vista completa. */
-export function PanelLoader({ title, subtitle, eyebrow, className = '' }: { title?: ReactNode; subtitle?: ReactNode; eyebrow?: ReactNode; className?: string }) {
+/**
+ * Bloque centrado para la carga de un módulo o vista completa. Con `brand` añade el wordmark 3D y BioSystems,
+ * de modo que la carga de un módulo se vea como la pantalla de inicio, solo que dentro del panel.
+ */
+export function PanelLoader({ title, subtitle, eyebrow, brand = false, className = '' }: { title?: ReactNode; subtitle?: ReactNode; eyebrow?: ReactNode; brand?: boolean; className?: string }) {
   return (
-    <div className={`orion-panel-loader ${className}`.trim()} role="status" aria-live="polite">
+    <div className={`orion-panel-loader${brand ? ' orion-panel-loader--brand' : ''} ${className}`.trim()} role="status" aria-live="polite">
       <OrionLoader />
+      {brand && <img className="orion-panel-loader__wordmark" src={ORION_LOADER_ASSETS.wordmark} alt="Orion by Medinova" draggable={false} />}
+      {brand && <img className="orion-panel-loader__biosystems" src={ORION_LOADER_ASSETS.biosystems} alt="BioSystems" draggable={false} />}
       {eyebrow && <span className="orion-panel-loader__eyebrow">{eyebrow}</span>}
       {title && <strong className="orion-panel-loader__title">{title}</strong>}
       {subtitle && <span className="orion-panel-loader__subtitle">{subtitle}</span>}
