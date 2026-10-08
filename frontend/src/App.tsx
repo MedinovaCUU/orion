@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import { getValidatedSession, supabase } from './supabaseClient';
 import BrandLockup from './components/BrandLockup';
 
+const SurveyPage = lazy(() => import('./components/satisfaction/SurveyPage'));
 const Login = lazy(() => import('./components/Login'));
 const Dashboard = lazy(() => import('./components/Dashboard'));
 const PublicTicketForm = lazy(() => import('./components/PublicTicketForm'));
@@ -36,7 +37,7 @@ const AppLoadingFallback = () => (
   </div>
 );
 
-function App() {
+function AuthenticatedApp() {
   const [session, setSession] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
@@ -95,6 +96,7 @@ function App() {
     <Router basename={routerBasename}>
       <Suspense fallback={<AppLoadingFallback />}>
         <Routes>
+          <Route path="/encuesta" element={<SurveyPage />} />
           <Route 
             path="/" 
             element={<PublicTicketForm />} 
@@ -122,4 +124,11 @@ function App() {
   );
 }
 
-export default App;
+export default function App() {
+  // Public survey entry must not wait for an expired or unavailable account session.
+  const surveyPath = `${routerBasename === '/' ? '' : routerBasename}/encuesta`;
+  if (window.location.pathname.replace(/\/$/, '') === surveyPath) {
+    return <Suspense fallback={<AppLoadingFallback />}><SurveyPage /></Suspense>;
+  }
+  return <AuthenticatedApp />;
+}

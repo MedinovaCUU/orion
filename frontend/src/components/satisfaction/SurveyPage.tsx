@@ -1,0 +1,21 @@
+import {useEffect,useState} from 'react';
+import {publicSurveyClient as supabase} from './publicSurveyClient';
+import {improvements} from './model';
+import './satisfaction.css';
+export default function SurveyPage(){
+ const [info,setInfo]=useState<{case_number:string;specialist_name:string|null;answered:boolean;is_test?:boolean}|null>(null);
+ const [loading,setLoading]=useState(true),[error,setError]=useState(''),[busy,setBusy]=useState(false),[done,setDone]=useState(false);
+ const token=window.location.hash.slice(1);
+ const validToken=/^[a-f0-9]{64}$/.test(token);
+ useEffect(()=>{if(!validToken){setError('Este enlace no es válido o ya venció.');setLoading(false);return;}let active=true;void supabase.rpc('get_ticket_satisfaction',{p_token:token}).then(({data,error})=>{if(active){setInfo(data);setError(error?'No pudimos cargar la encuesta. Intenta de nuevo.':!data?'Este enlace no es válido o ya venció.':'');setLoading(false);}});return()=>{active=false;};},[token,validToken]);
+ async function submit(event:React.FormEvent<HTMLFormElement>){event.preventDefault();if(busy)return;setBusy(true);setError('');const f=new FormData(event.currentTarget);
+ try {const {error}=await supabase.rpc('submit_ticket_satisfaction',{p_token:token,p_satisfaction:Number(f.get('satisfaction')),p_speed:Number(f.get('speed')),p_resolution:f.get('resolution'),p_clarity:f.get('clarity')==='na'?null:Number(f.get('clarity')),p_improvement:f.get('improvement'),p_comment:f.get('comment')});if(error)throw error;setDone(true);}catch(e){setError((e as Error).message||'No se pudo confirmar. Recarga para comprobar si se guardó.');}finally{setBusy(false);}}
+ const rating=(name:string,title:string,low:string,high:string,na=false)=><fieldset><legend>{title}</legend><div className="sv-rating">{[1,2,3,4,5].map(n=><label key={n}><input type="radio" required name={name} value={n}/><span>{n}</span></label>)}</div><div className="sv-scale"><span>1 · {low}</span><span>5 · {high}</span></div>{na&&<label className="sv-option"><input type="radio" name={name} value="na"/>No aplica</label>}</fieldset>;
+ return <main className="sv-page"><div className="sv-form"><small className="sv-eyebrow">ORION / EXPERIENCIA DE SERVICIO</small><h1>Tu experiencia nos ayuda a mejorar.</h1><p>Cinco preguntas · aproximadamente un minuto · No necesitas una cuenta</p>{loading?<p role="status">Cargando encuesta…</p>:done||info?.answered?<div className="sv-thanks" role="status"><h2>Gracias por tu evaluación</h2><p>Tu respuesta quedó registrada. Nos ayudará a mejorar la atención.</p></div>:info&&<>{info.is_test&&<p className="sv-context"><strong>Encuesta de prueba · no afecta las métricas del personal.</strong></p>}<p className="sv-context">Servicio {info.case_number}{info.specialist_name&&<> · {info.specialist_name}</>}</p><form onSubmit={e=>void submit(e)}><fieldset disabled={busy} className="sv-all">
+ {rating('satisfaction','1. ¿Qué tan satisfecho quedó con el servicio recibido?','Muy insatisfecho','Muy satisfecho')}
+ {rating('speed','2. ¿Qué tan adecuada fue la rapidez de nuestra atención para la urgencia de su solicitud?','Muy inadecuada','Muy adecuada')}
+ <fieldset><legend>3. ¿En qué medida quedó resuelta su solicitud?</legend>{[['total','Totalmente'],['partial','Parcialmente'],['unresolved','No resuelta']].map(([v,l])=><label className="sv-option" key={v}><input required type="radio" name="resolution" value={v}/>{l}</label>)}</fieldset>
+ {rating('clarity','4. ¿Qué tan claras fueron las explicaciones e indicaciones del especialista?','Nada claras','Muy claras',true)}
+ <fieldset><legend>5. ¿Qué es lo principal que deberíamos mejorar en nuestro servicio?</legend>{Object.entries(improvements).map(([v,l])=><label className="sv-option" key={v}><input type="radio" required name="improvement" value={v}/>{l}</label>)}</fieldset>
+ <label>Comentario opcional<textarea name="comment" maxLength={1000} rows={3} placeholder="Cuéntanos qué podemos mejorar. No incluyas datos de pacientes."/></label><p>Tu evaluación se vincula a este servicio y será revisada por administración. No es un canal de atención urgente.</p><button className="sv-button" disabled={busy}>{busy?'Guardando…':'Enviar evaluación'}</button></fieldset></form></>}{error&&<p role="alert" className="sv-error">{error}</p>}</div></main>;
+}
