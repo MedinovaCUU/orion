@@ -22,6 +22,7 @@ export interface LegacyTutorial {
   advertencias_criticas?: string[];
   criterios_aceptacion?: string[];
   importancia?: TutorialImportance;
+  animacion?: 'a15-lamp';
 }
 
 export interface StructuredTutorial {
@@ -88,6 +89,7 @@ const a15TutorialLegacy: LegacyTutorial = {
     'Al recolocarlo y confirmar, el analizador volverá a medir la intensidad y comparará ambas para guardar la posición de mejor rendimiento óptico.',
   ],
   has_troubleshooting: true,
+  animacion: 'a15-lamp',
 };
 
 const ba400StructuredTutorials: StructuredTutorial[] = [

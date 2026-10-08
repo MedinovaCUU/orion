@@ -1,4 +1,5 @@
 import { ticketCreationMessage } from './ticketCreationReceipt';
+import SatisfactionDashboard from './satisfaction/SatisfactionDashboard';
 import { canOpenTicketControl } from './ticketAlertAccess';
 import TicketControlCenter from './TicketControlCenter';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
@@ -343,7 +344,7 @@ export default function Tickets({ subPermissions = ['crear', 'seguimiento', 'dia
   const [tickets, setTickets] = useState<TicketRecord[]>([]);
   const [loading, setLoading] = useState(true);
   const [caseFilter, setCaseFilter] = useState('abiertos');
-  const [controlView, setControlView] = useState(true);
+  const [controlView, setControlView] = useState(false);
   const [viewerRole, setViewerRole] = useState<string | null>(null);
   const canViewControl = canOpenTicketControl(viewerRole);
   const [asunto, setAsunto] = useState('');
@@ -761,7 +762,7 @@ export default function Tickets({ subPermissions = ['crear', 'seguimiento', 'dia
               </div>
               <div>
                 <label style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', display: 'block', marginBottom: '0.5rem' }}>Teléfono a Contactar</label>
-                <input type="text" className="input-field" value={telefonoContacto} onChange={(e) => setTelefonoContacto(e.target.value)} placeholder="(Opcional)" />
+                <input type="text" className="input-field" value={telefonoContacto} onChange={(e) => setTelefonoContacto(e.target.value)} placeholder="Con o sin código de país (opcional)" />
               </div>
           </div>
 
@@ -817,7 +818,7 @@ export default function Tickets({ subPermissions = ['crear', 'seguimiento', 'dia
         </form>
       </div></details> : null}
 
-      {canViewTickets && canViewControl && <div className="tickets-view-switch"><button type="button" className="button-primary" aria-pressed={controlView} onClick={() => setControlView(true)}>Centro de control</button><button type="button" className="button-primary inactive" aria-pressed={!controlView} onClick={() => setControlView(false)}>Vista operativa</button></div>}
+      {canViewTickets && canViewControl && <div className="tickets-view-switch"><button type="button" className={`button-primary${controlView ? '' : ' inactive'}`} aria-pressed={controlView} onClick={() => setControlView(true)}>Centro de control</button><button type="button" className={`button-primary${controlView ? ' inactive' : ''}`} aria-pressed={!controlView} onClick={() => setControlView(false)}>Vista operativa</button></div>}
       {canViewTickets && canViewControl && controlView && <TicketControlCenter entries={ticketRenderItems} loading={loading} canWrite={canDiagnoseTickets} onChanged={fetchTickets} onDiagnose={ticket => {
         setSelectedTicket(ticket);
         setCerrarData({ no_serie: ticket.numero_serie_equipo || '', cda: '', cds: '', comentarios: '', refaccionesUsadas: [] });
@@ -972,6 +973,8 @@ export default function Tickets({ subPermissions = ['crear', 'seguimiento', 'dia
         </ul>
       )}
       </div> : null}
+
+      {canViewControl && <SatisfactionDashboard />}
 
       {travelPlannerOpen && (
         <TravelPlannerModal

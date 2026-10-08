@@ -39,7 +39,7 @@ export default function TicketServiceMetrics({ ticket, canWrite = false, onChang
   const selectedAction = options.some(option => option.value === action) ? action : '';
   const ordinary = selectedAction in activities;
   const hints: Record<string, string> = {
-    respuesta: facts.response ? 'Se agregará el contacto a la bitácora. Se conserva la fecha de la primera respuesta.' : 'Se registrará la primera respuesta y su tiempo desde la apertura. El contacto debe haberse realizado; no se enviará un mensaje desde aquí.',
+    respuesta: facts.response ? 'Se agregará el contacto a la bitácora. Se conserva la fecha de la primera respuesta.' : 'Se registrará la primera respuesta y su tiempo desde la apertura. El contacto debe haberse realizado. Se encolará su notificación de WhatsApp si el ticket tiene teléfono.',
     cierre: reason === 'solucionado' ? 'La solución, la hora de cierre y su duración se registrarán al guardar.' : 'Se registrará un cierre administrativo; no contará como resolución técnica.',
     justificacion: 'Se guardarán tu aprobación y el motivo de la demora, conservando el tiempo real de atención.',
     revision_cierre: 'El cierre quedará revisado por ti. Esto no aprueba ni justifica su demora.',

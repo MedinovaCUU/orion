@@ -543,3 +543,27 @@
     grid-template-columns: 1fr;
   }
 }
+
+.tutorial-modal-instructions li.is-animated-step {
+  cursor: pointer;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease, opacity 0.25s ease, transform 0.25s ease;
+}
+
+.tutorial-modal-instructions li.is-animated-step.is-done {
+  opacity: 0.62;
+}
+
+.tutorial-modal-instructions li.is-animated-step.is-active {
+  border-color: rgba(10, 166, 200, 0.45);
+  box-shadow: 0 10px 26px rgba(10, 166, 200, 0.12), inset 3px 0 0 #0aa6c8;
+  transform: translateX(2px);
+}
+
+.tutorial-modal-instructions li.is-animated-step.is-active .step-number {
+  background: #0aa6c8;
+  color: #ffffff;
+}
+
+.tutorial-modal-instructions li.is-animated-step.is-active .step-text {
+  color: var(--text-primary);
+}

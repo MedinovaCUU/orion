@@ -82,3 +82,6 @@ frontend/update_users.cjs
 # Python runtime artifacts
 __pycache__/
 *.py[cod]
+
+# Credenciales locales de WhatsApp
+/Token API Whatsapp.rtf

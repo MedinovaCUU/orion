@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { supabase } from '../supabaseClient';
 import {
@@ -7,6 +7,8 @@ import {
   type StructuredTutorial,
   type TutorialDefinition,
 } from '../data/tutorialCatalog';
+import A15LampAnimation from './A15LampAnimation';
+import { A15_LAMP_SCENES } from '../data/a15LampScenes';
 import orionIcono from '../assets/orion-icono.png';
 import './TutorialModal.css';
 
@@ -24,6 +26,10 @@ export default function TutorialModal({ isOpen, onClose, tutorial }: TutorialMod
   const [hasOldLamp, setHasOldLamp] = useState<boolean | null>(null);
   const [serial, setSerial] = useState<string>('83105');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [animStep, setAnimStep] = useState(0);
+  const [animPlaying, setAnimPlaying] = useState(true);
+  const [animFinished, setAnimFinished] = useState(false);
+  const stepListRef = useRef<HTMLUListElement>(null);
 
   useEffect(() => {
     if (isOpen) {
@@ -36,14 +42,38 @@ export default function TutorialModal({ isOpen, onClose, tutorial }: TutorialMod
       setHasOldLamp(null);
       setSerial('83105');
       setIsSubmitting(false);
+      setAnimStep(0);
+      setAnimPlaying(true);
+      setAnimFinished(false);
     }
   }, [isOpen, tutorial]);
+
+  useEffect(() => {
+    // En móvil el panel es una sola columna: desplazar alejaría la animación de la vista.
+    if (!window.matchMedia('(min-width: 981px)').matches) return;
+    const item = stepListRef.current?.children[animStep] as HTMLElement | undefined;
+    item?.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+  }, [animStep]);
 
   if (!isOpen || !tutorial) return null;
 
   const structuredTutorial: StructuredTutorial | null = isStructuredTutorial(tutorial) ? tutorial : null;
   const legacyTutorial: LegacyTutorial | null = structuredTutorial ? null : (tutorial as LegacyTutorial);
   const structured = Boolean(structuredTutorial);
+  const hasA15Animation = legacyTutorial?.animacion === 'a15-lamp' && !tutorial.url_video;
+
+  const goToAnimStep = (next: number) => {
+    setAnimFinished(false);
+    setAnimStep(Math.max(0, Math.min(A15_LAMP_SCENES.length - 1, next)));
+  };
+
+  const toggleAnimPlay = () => {
+    if (!animPlaying && animFinished) {
+      setAnimFinished(false);
+      setAnimStep(0);
+    }
+    setAnimPlaying((playing) => !playing);
+  };
   const logicaTecnica =
     legacyTutorial?.logica_tecnica
       ? Array.isArray(legacyTutorial.logica_tecnica)
@@ -172,9 +202,13 @@ export default function TutorialModal({ isOpen, onClose, tutorial }: TutorialMod
     <>
       <div className="tutorial-modal-instructions">
         <h3>Secuencia Operativa</h3>
-        <ul>
+        <ul ref={stepListRef}>
           {data.instrucciones.map((step: string, idx: number) => (
-            <li key={idx}>
+            <li
+              key={idx}
+              className={hasA15Animation ? `is-animated-step ${idx === animStep ? 'is-active' : ''} ${idx < animStep ? 'is-done' : ''}` : undefined}
+              onClick={hasA15Animation ? () => goToAnimStep(idx) : undefined}
+            >
               <span className="step-number">{idx + 1}</span>
               <span className="step-text">{step}</span>
             </li>
@@ -415,7 +449,18 @@ export default function TutorialModal({ isOpen, onClose, tutorial }: TutorialMod
 
         <div className="tutorial-modal-content">
           <div className="tutorial-modal-left">
-            {tutorial.url_video ? (
+            {hasA15Animation ? (
+              <A15LampAnimation
+                step={animStep}
+                playing={animPlaying}
+                onStepChange={goToAnimStep}
+                onTogglePlay={toggleAnimPlay}
+                onFinish={() => {
+                  setAnimPlaying(false);
+                  setAnimFinished(true);
+                }}
+              />
+            ) : tutorial.url_video ? (
               <video controls autoPlay className="tutorial-modal-video" src={tutorial.url_video}>
                 Tu navegador no soporta reproductor de video.
               </video>

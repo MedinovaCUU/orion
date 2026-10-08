@@ -1,5 +1,6 @@
 import { createClient } from 'npm:@supabase/supabase-js@2.57.4';
 import { normalizeDhlDetails } from '../_shared/dhl-pieces.ts';
+import { normalizeDhlPushStatus as normalizeStatus } from '../_shared/dhl-status.ts';
 
 type JsonRecord = Record<string, unknown>;
 
@@ -97,67 +98,6 @@ const subscriptionStatus = (scope: string) => {
   if (scope === 'subscription.ready' || scope === 'subscription.push') return 'active';
   if (scope === 'subscription.delete' || scope === 'subscription.deleted') return 'deleted';
   return 'unknown';
-};
-
-const normalizeStatus = (status: JsonRecord) => {
-  const text = normalized(
-    [
-      status.simplifiedStatus,
-      status.divisionalStatus,
-      status.statusCode,
-      status.status,
-      status.description,
-      status.remark,
-      status.nextSteps,
-    ].join(' '),
-  );
-
-  if (text.includes('delivered') || text.includes('entregado') || text.includes('signed')) return 'entregado';
-  if (
-    text.includes('out for delivery') ||
-    text.includes('with delivery courier') ||
-    text.includes('en reparto') ||
-    text.includes('disponible para recolectar') ||
-    text.includes('ready for collection')
-  ) {
-    return 'en_reparto';
-  }
-  if (
-    text.includes('failure') ||
-    text.includes('exception') ||
-    text.includes('failed') ||
-    text.includes('incidencia') ||
-    text.includes('incidente inesperado') ||
-    text.includes('afectado por un incidente') ||
-    text.includes('contacte a dhl') ||
-    text.includes('demora') ||
-    text.includes('retenido')
-  ) {
-    return 'incidencia';
-  }
-  if (
-    text.includes('pre-transit') ||
-    text.includes('pre transit') ||
-    text.includes('label created') ||
-    text.includes('information received') ||
-    text.includes('informacion recibida') ||
-    text.includes('numero de guia ha sido creado') ||
-    text.includes('guia ha sido creada') ||
-    text.includes('aun no ha sido recolectado por dhl')
-  ) {
-    return 'etiqueta_generada';
-  }
-  if (
-    text.includes('transit') ||
-    text.includes('processed') ||
-    text.includes('departed') ||
-    text.includes('arrived') ||
-    text.includes('picked up') ||
-    text.includes('transito')
-  ) {
-    return 'en_transito';
-  }
-  return 'pendiente_consulta';
 };
 
 const locationFrom = (status: JsonRecord) => {

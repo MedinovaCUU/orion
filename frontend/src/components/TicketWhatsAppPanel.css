@@ -1,0 +1,25 @@
+.tickets-wa { margin: 0 0 1rem; border: 1px solid var(--border-color, #cbd5e1); border-radius: 16px; background: var(--bg-secondary); color: var(--text-primary); }
+.tickets-wa__toggle { width: 100%; padding: 1rem 1.2rem; cursor: pointer; font-weight: 700; text-align: left; border: 0; border-radius: 16px; background: transparent; color: inherit; font: inherit; font-weight: 700; }
+.tickets-wa__toggle::before { content: '▸ '; }
+.tickets-wa__toggle[aria-expanded="true"]::before { content: '▾ '; }
+.tickets-wa__content { padding: 0 1.2rem 1.2rem; }
+.tickets-wa__heading, .tickets-wa__actions { display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+.tickets-wa h3, .tickets-wa h4 { margin: .5rem 0; }
+.tickets-wa p { line-height: 1.5; }
+.tickets-wa fieldset { border: 0; padding: 0; margin: 1rem 0; min-width: 0; }
+.tickets-wa__grid { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 1.5rem; }
+.tickets-wa__fields { display: grid; gap: .8rem; min-width: 0; }
+.tickets-wa label { display: grid; gap: .4rem; }
+.tickets-wa .input-field { width: 100%; box-sizing: border-box; }
+.tickets-wa .tickets-wa__check { display: flex; align-items: flex-start; gap: .65rem; line-height: 1.45; }
+.tickets-wa__check input { margin-top: .3rem; flex: 0 0 auto; }
+.tickets-wa__template, .tickets-wa__muted, .tickets-wa small { color: var(--text-secondary); font-size: .85rem; }
+.tickets-wa__preview { background: var(--bg-primary); border: 1px solid var(--border-color, #cbd5e1); border-radius: 16px; padding: 1rem; align-self: start; overflow-wrap: anywhere; }
+.tickets-wa__preview p, .tickets-wa__history p { white-space: pre-wrap; overflow-wrap: anywhere; }
+.tickets-wa__actions { justify-content: flex-start; }
+.tickets-wa__results { padding-left: 1.2rem; }
+.tickets-wa__history { display: grid; gap: .6rem; max-height: 380px; overflow-y: auto; }
+.tickets-wa__history article { border-top: 1px solid var(--border-color, #cbd5e1); padding: .8rem 0; }
+.tickets-wa__history article > div { display: flex; gap: .5rem; justify-content: space-between; flex-wrap: wrap; }
+.tickets-wa__history article p { margin: .4rem 0; font-size: .85rem; }
+@media (max-width: 760px) { .tickets-wa__grid { grid-template-columns: 1fr; } .tickets-wa__content { padding: 0 .85rem .85rem; } }

@@ -1,4 +1,5 @@
 import { fetchMyDhlTracking } from './mydhl.ts';
+import { normalizeDhlPushStatus } from '../_shared/dhl-status.ts';
 import { normalizeDhlDetails, readDhlShipmentDetails, type DhlShipmentDetails } from '../_shared/dhl-pieces.ts';
 
 const corsHeaders = {
@@ -626,7 +627,8 @@ const buildDhlResponse = (trackingNumber: string, shipment: Record<string, unkno
   const description = compactSpaces(String(status.description || ''));
   const remark = compactSpaces(String(status.remark || ''));
   const nextSteps = compactSpaces(String(status.nextSteps || ''));
-  const normalizedStatus = normalizeDhlStatus(`${description} ${remark} ${nextSteps}`, String(status.statusCode || ''));
+  const preciseStatus = normalizeDhlPushStatus({ ...status, status: status.typeCode || status.status });
+  const normalizedStatus = preciseStatus !== 'pendiente_consulta' ? preciseStatus : normalizeDhlStatus(`${description} ${remark}`, String(status.statusCode || ''));
   const events = Array.isArray(shipment.events) ? shipment.events : [];
   const timeline = buildDhlTimeline(events);
   const rawSummary = JSON.stringify(
@@ -709,7 +711,7 @@ const requestDhlTracking = async (trackingNumber: string, includeServiceHint = t
   if (Deno.env.get('DHL_LOOKUP_PROVIDER') === 'push') {
     const url = new URL('/rest/v1/dhl_push_shipments', Deno.env.get('SUPABASE_URL'));
     url.searchParams.set('tracking_number', `eq.${trackingNumber}`);
-    url.searchParams.set('select', 'payload,received_at');
+    url.searchParams.set('select', 'payload,received_at,updated_at,reconciliation_checked_at,reconciliation_error');
     const key = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') || '';
     const response = await fetch(url, {
       headers: { apikey: key, Authorization: `Bearer ${key}` },
@@ -719,7 +721,55 @@ const requestDhlTracking = async (trackingNumber: string, includeServiceHint = t
     const rows = await response.json();
     const row = rows[0];
     if (!row) return buildErrorResponse('dhl', trackingNumber, 'DHL Unified Push todavía no ha enviado una notificación para esta guía. Actualizar revisa las notificaciones recibidas; no solicita un rastreo nuevo a DHL.');
-    const snapshot = row.payload as Record<string, unknown>;
+    let snapshot = row.payload as Record<string, unknown>;
+    // Keep Push for discovery/customer details, but reconcile quiet shipments with MyDHL.
+    // Claim one attempt per guide/15 minutes across browsers; never relabel a cached read as live.
+    const cutoff = Date.now() - 15 * 60 * 1000;
+    const username = Deno.env.get('DHL_MYDHL_USERNAME')?.trim();
+    const password = Deno.env.get('DHL_MYDHL_PASSWORD');
+    if (snapshot.status !== 'entregado' && Date.parse(row.received_at) < cutoff && username && password) {
+      const claimUrl = new URL(url);
+      claimUrl.searchParams.set('or', `(reconciliation_checked_at.is.null,reconciliation_checked_at.lt.${new Date(cutoff).toISOString()})`);
+      const checkedAt = new Date().toISOString();
+      const headers = { apikey: key, Authorization: `Bearer ${key}`, 'Content-Type': 'application/json', Prefer: 'return=representation' };
+      const claim = await fetch(claimUrl, { method: 'PATCH', headers, body: JSON.stringify({ reconciliation_checked_at: checkedAt }), signal: AbortSignal.timeout(10000) });
+      if (!claim.ok) return buildErrorResponse('dhl', trackingNumber, 'No se pudo reservar la verificación de DHL. Se conserva el último estado conocido.');
+      const claimed = await claim.json();
+      if (claimed.length) {
+        try {
+          const shipment = await fetchMyDhlTracking(trackingNumber, username, password);
+          if (!shipment) throw new Error('MyDHL no devolvió eventos verificables para esta guía.');
+          const live = buildDhlResponse(trackingNumber, shipment);
+          const patchUrl = new URL(url);
+          patchUrl.searchParams.set('updated_at', `eq.${claimed[0].updated_at}`);
+          const old = claimed[0].payload;
+          const newer = Date.parse(live.lastEventAt || '') >= Date.parse(String(old.lastEventAt || ''));
+          const payload = newer ? {
+            ...old, ...live, recipient: live.recipient || old.recipient,
+            origin: live.origin || old.origin, destination: live.destination || old.destination,
+            shipmentDetails: normalizeDhlDetails(shipment, old.shipmentDetails),
+            rawEvidenceText: live.rawSummary, lastLookupAt: checkedAt, updatedAt: checkedAt,
+          } : old;
+          const saved = await fetch(patchUrl, { method: 'PATCH', headers, body: JSON.stringify({
+            payload, status: payload.status, fulfillment_state: payload.fulfillmentState,
+            last_event_at: payload.lastEventAt, updated_at: checkedAt, reconciliation_error: null,
+          }), signal: AbortSignal.timeout(10000) });
+          if (!saved.ok) throw new Error('No fue posible guardar la verificación MyDHL.');
+          const savedRows = await saved.json();
+          if (!savedRows.length) return buildErrorResponse('dhl', trackingNumber, 'Llegó una actualización simultánea de DHL. Vuelve a consultar.');
+          snapshot = payload;
+          row.reconciliation_error = null;
+        } catch (error) {
+          const message = error instanceof Error ? error.message : 'Falló la verificación MyDHL.';
+          const errorUrl = new URL(url);
+          errorUrl.searchParams.set('reconciliation_checked_at', `eq.${checkedAt}`);
+          await fetch(errorUrl, { method: 'PATCH', headers, body: JSON.stringify({ reconciliation_error: message }), signal: AbortSignal.timeout(10000) });
+          return buildErrorResponse('dhl', trackingNumber, `Estado Push sin confirmar: ${message}`);
+        }
+      } else if (row.reconciliation_error) {
+        return buildErrorResponse('dhl', trackingNumber, `Estado Push sin confirmar: ${row.reconciliation_error}`);
+      }
+    }
     return buildSuccessResponse('dhl', trackingNumber, {
       status: snapshot.status as TrackingStatus,
       fulfillmentState: snapshot.fulfillmentState as FulfillmentState,

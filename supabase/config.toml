@@ -4,6 +4,10 @@
 # working directory name when running `supabase init`.
 project_id = "Biosystems_Project"
 
+# The handler validates the bearer token with auth.getUser and enforces admin role.
+[functions.ticket-whatsapp]
+verify_jwt = false
+
 [api]
 enabled = true
 # Port to use for the API URL.
@@ -400,3 +404,9 @@ s3_secret_key = "env(S3_SECRET_KEY)"
 # declarative_schema_path = "./declarative"
 # JSON string passed through to pg-delta SQL formatting.
 # format_options = "{\"keywordCase\":\"upper\",\"indent\":2,\"maxWidth\":80,\"commaStyle\":\"trailing\"}"
+
+[functions.ticket-survey-send]
+verify_jwt = false
+
+[functions.ticket-whatsapp-dispatch]
+verify_jwt = false

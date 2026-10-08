@@ -1,0 +1,11 @@
+import {useEffect,useState} from 'react';
+import {supabase} from '../supabaseClient';
+import './TicketWhatsAppPanel.css';
+type Notification={id:string;ticket_id:string;event:string;recipient:string|null;status:string;error_message:string|null;created_at:string};
+const events:Record<string,string>={received:'Recepción de ticket',response:'Primera respuesta',closed:'Cierre de ticket',survey:'Encuesta de satisfacción'};
+const states:Record<string,string>={queued:'En cola',processing:'Enviando',waiting:'Esperando plantilla',accepted:'Aceptado por Meta',failed:'Rechazado',unknown:'Sin confirmación · no repetir',skipped:'Omitido',needs_phone:'Revisar teléfono'};
+export default function TicketWhatsAppAutomation(){const[rows,setRows]=useState<Notification[]>([]),[error,setError]=useState(''),[busy,setBusy]=useState(false);
+ async function refresh(){setBusy(true);const{data,error}=await supabase.from('ticket_whatsapp_outbox').select('id,ticket_id,event,recipient,status,error_message,created_at').order('created_at',{ascending:false}).limit(25);setError(error?'No se pudo consultar el registro automático.':'');if(!error)setRows(data||[]);setBusy(false);}
+ useEffect(()=>{void refresh();const timer=setInterval(()=>void refresh(),60000);return()=>clearInterval(timer);},[]);
+ return <details className="tickets-wa"><summary>WhatsApp · Notificaciones automáticas</summary><div className="tickets-wa__content"><p>Al crear un ticket de soporte se envía el acuse. Al registrar la primera respuesta se notifica el inicio de atención. Al cerrar se envían el aviso y la encuesta. El proceso revisa la cola cada minuto. Requiere teléfono de contacto y plantilla aprobada; las importaciones de Planeación no generan estos avisos.</p><button type="button" disabled={busy} onClick={()=>void refresh()}>{busy?'Consultando…':'Actualizar notificaciones'}</button>{error&&<p role="alert">{error}</p>}<p>“Aceptado por Meta” no confirma la entrega al teléfono.</p><div className="tickets-wa__history">{rows.map(row=><article key={row.id}><strong>{events[row.event]}</strong><p>{row.recipient||'Sin teléfono'} · {states[row.status]||row.status}</p><small>{new Date(row.created_at).toLocaleString('es-MX')}</small>{row.error_message&&<p>{row.error_message}</p>}</article>)}{!rows.length&&!error&&<p>Aún no hay notificaciones automáticas registradas.</p>}</div></div></details>;
+}

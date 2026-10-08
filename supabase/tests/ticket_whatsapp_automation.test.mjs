@@ -1,0 +1,21 @@
+import assert from 'node:assert/strict';import{readFile}from'node:fs/promises';
+const{PGlite}=await import('../_local_archive/whatsapp-tests/node_modules/@electric-sql/pglite/dist/index.js');const db=new PGlite();
+await db.exec(`create role anon;create role authenticated;create role service_role bypassrls;create table tickets(id uuid primary key,asunto text,estado text,numero_caso text,numero_serie_equipo text,telefono_cliente_guest text);create table ticket_service_events(ticket_id uuid,kind text);create table ticket_satisfaction(id uuid primary key,ticket_id uuid,is_test boolean,token text);create function is_admin() returns boolean language sql as $$select false$$;grant usage on schema public to anon,authenticated,service_role;insert into tickets(id,asunto)values('10000000-0000-4000-8000-000000000099','historical');`);
+await db.exec(await readFile('supabase/migrations/20261003010000_ticket_whatsapp_automation.sql','utf8'));
+assert.equal((await db.query('select * from ticket_whatsapp_outbox')).rows.length,0);
+await db.exec(`create table equipos(numero_serie text,pais text);create function normalize_equipment_serial(value text) returns text language sql immutable as $$select nullif(upper(replace(trim(value),' ','')),'')$$;insert into equipos values('SERIE','México');`);
+await db.exec(await readFile('supabase/migrations/20261003020000_ticket_whatsapp_equipment_country.sql','utf8'));
+
+const id='10000000-0000-4000-8000-000000000001';
+await db.exec(`insert into tickets values('${id}','[Soporte Ingeniero] Prueba','abierto','OR-1','SERIE','6141772897');insert into ticket_service_events values('${id}','respuesta');update tickets set estado='cerrado' where id='${id}';insert into ticket_satisfaction values('${id}','${id}',false,'abc');update tickets set estado='cerrado' where id='${id}';`);
+let rows=(await db.query('select * from ticket_whatsapp_outbox')).rows;assert.equal(rows.length,4);assert.ok(rows.every(x=>x.equipment_country==='México'));assert.deepEqual(rows.find(x=>x.event==='closed').parameters,['OR-1','SERIE']);
+await db.exec(`insert into tickets values('10000000-0000-4000-8000-000000000002','[PLAN] Import','abierto','PLAN-1','SERIE','6141772897');insert into tickets values('10000000-0000-4000-8000-000000000003','Sin telefono','abierto','OR-2','SERIE',null);`);
+assert.equal((await db.query("select * from ticket_whatsapp_outbox where status='needs_phone'")).rows.length,1);
+await db.exec(`begin;insert into equipos values('OTRO','Colombia');insert into tickets values('10000000-0000-4000-8000-000000000004','País por serie','abierto','OR-3',' otro ','3001234567');`);
+assert.equal((await db.query("select equipment_country from ticket_whatsapp_outbox where ticket_id='10000000-0000-4000-8000-000000000004'")).rows[0].equipment_country,'Colombia');
+await db.exec('rollback');
+await db.exec('set role authenticated');assert.equal((await db.query('select * from ticket_whatsapp_outbox')).rows.length,0);
+await assert.rejects(db.exec('select * from claim_ticket_whatsapp()'),/permission denied/);await db.exec('reset role;set role service_role');
+assert.equal((await db.query('select * from claim_ticket_whatsapp()')).rows.length,4);assert.equal((await db.query('select * from claim_ticket_whatsapp()')).rows.length,0);
+await db.exec("update ticket_whatsapp_outbox set updated_at=now()-interval '4 minutes' where status='processing'");await db.query('select * from claim_ticket_whatsapp()');assert.equal((await db.query("select * from ticket_whatsapp_outbox where status='unknown'")).rows.length,4);
+await db.close();console.log('PASS: create/response/close/survey triggers, no historical backfill, no duplicate events, planning exclusion, missing phone, access control and non-retry of abandoned sends');
