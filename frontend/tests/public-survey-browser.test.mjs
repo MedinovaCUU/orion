@@ -10,7 +10,11 @@ try{
   const body=route.request().postDataJSON();assert.equal(body.p_token,token);
   const authorization=route.request().headers().authorization||'';
   const jwt=authorization.replace(/^Bearer /,'');
-  assert.equal(JSON.parse(Buffer.from(jwt.split('.')[1],'base64url').toString()).role,'anon');
+  const apiKey=route.request().headers().apikey;
+  assert.ok(apiKey);
+  if(jwt) assert.equal(jwt,apiKey,'Must not use a saved user session');
+  if(apiKey.includes('.')) assert.equal(JSON.parse(Buffer.from(apiKey.split('.')[1],'base64url').toString()).role,'anon');
+  else assert.ok(apiKey.startsWith('sb_publishable_'));
   if(name==='get_ticket_satisfaction')await route.fulfill({status:200,contentType:'application/json',body:JSON.stringify({case_number:'OR-TEST',specialist_name:'Especialista de prueba',answered,is_test:true})});
   else {assert.equal(name,'submit_ticket_satisfaction');submits++;answered=true;await route.fulfill({status:200,contentType:'application/json',body:'null'});}
  });
@@ -20,7 +24,7 @@ try{
  await page.getByRole('button',{name:'Enviar evaluación'}).click();await page.getByRole('heading',{name:'Gracias por tu evaluación'}).waitFor();
  await page.reload();await page.getByRole('heading',{name:'Gracias por tu evaluación'}).waitFor();
  assert.equal(submits,1);assert.equal(authRequests,0);
- await page.goto('http://127.0.0.1:5200/orion/encuesta#invalid');await page.getByRole('alert').filter({hasText:'no es válido'}).waitFor();
+ await page.goto('http://127.0.0.1:5200/orion/encuesta#invalid');await page.reload();await page.getByRole('alert').filter({hasText:'no es válido'}).waitFor();
  assert.equal(await page.getByRole('button',{name:'Enviar evaluación'}).count(),0);
  console.log('PASS: clean browser without account, anonymous read/submit, answered reload, invalid links and zero login requests.');
 }finally{await browser.close();}
