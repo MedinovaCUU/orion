@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState, type ReactNode } from 'react';
+import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 import { prefersReducedMotion } from './orionMotion';
 import './OrionLoader.css';
 
@@ -87,6 +87,20 @@ export function OrionLoader({ size, className = '', opaque = false, intro = fals
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [intro, resolved, introPlaying, introStarted]);
 
+  // Safari no dispara `canplaythrough` de forma fiable hasta que se intenta reproducir: pedimos play() en cuanto el vídeo
+  // monta (silenciado e inline, permitido por las políticas de autoplay) y damos por iniciada la bienvenida con `playing`.
+  const videoRef = useRef<HTMLVideoElement | null>(null);
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+    const attempt = () => video.play().catch(() => undefined);
+    attempt();
+    const retry = window.setInterval(() => {
+      if (video.paused && !video.ended) attempt();
+    }, 1000);
+    return () => window.clearInterval(retry);
+  }, [resolved, introPlaying]);
+
   const small = size !== undefined && size <= 120;
   // La bienvenida (intro) solo existe en MP4: se usa con `opaque` (splash). Sin `opaque`, intro cae al loop con alfa.
   const videoSrc = opaque
@@ -115,19 +129,18 @@ export function OrionLoader({ size, className = '', opaque = false, intro = fals
       {resolved === 'video' && (
         <video
           key={videoSrc}
+          ref={videoRef}
           src={videoSrc}
           preload="auto"
-          autoPlay={!introPlaying}
+          autoPlay
           muted
           loop={!introPlaying}
           playsInline
           disablePictureInPicture
-          onCanPlayThrough={(event) => {
-            if (!introPlaying || introStarted) return;
-            setIntroStarted(true);
-            void event.currentTarget.play().catch(() => finishIntro(false));
+          onPlaying={() => {
+            setMotionReady(true);
+            if (introPlaying) setIntroStarted(true);
           }}
-          onPlaying={() => setMotionReady(true)}
           onEnded={introPlaying ? () => finishIntro(true) : undefined}
           onError={() => (introPlaying ? finishIntro(false) : setVideoFailed(true))}
         />

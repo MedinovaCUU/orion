@@ -21,4 +21,5 @@ sc.view_settings.view_transform = 'Standard'
 sc.render.image_settings.media_type = 'VIDEO'; sc.render.image_settings.file_format = 'FFMPEG'
 ff = sc.render.ffmpeg; ff.audio_codec = 'NONE'; ff.format = 'MPEG4'; ff.codec = 'H264'; ff.constant_rate_factor = 'MEDIUM'; ff.gopsize = 15
 sc.render.image_settings.color_mode = 'RGB'; sc.render.filepath = out
-bpy.ops.render.render(animation=True, scene=sc.name); print('ENCODED', out)
+bpy.ops.render.render(animation=True, scene=sc.name); print("ENCODED", out)
+import subprocess, sys as _s; subprocess.run([_s.executable if False else "python3", os.path.join(os.path.dirname(os.path.abspath(__file__)), "mp4_faststart.py"), out], check=False)
