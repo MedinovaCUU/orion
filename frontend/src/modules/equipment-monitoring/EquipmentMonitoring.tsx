@@ -15,6 +15,7 @@ import {
   type EquipmentLocationInput,
 } from './mexicoGeo';
 import './equipmentMonitoring.css';
+import { Loader } from '../../components/OrionLoader';
 
 
 type EquipmentHealthStatus = 'ok' | 'warning' | 'fatal';
@@ -2389,7 +2390,7 @@ export default function EquipmentMonitoring({ subPermissions = ['mapa', 'alertas
                   )}
 
                   {loadingReagentRows ? (
-                    <div className="equipment-monitor__empty-state">Cargando detalle de pruebas...</div>
+                    <div className="equipment-monitor__empty-state"><Loader label="Cargando detalle de pruebas…" /></div>
                   ) : reagentLoadError ? (
                     <div className="equipment-monitor__empty-state">{reagentLoadError}</div>
                   ) : selectedReagentRowsSorted.length && !isReagentDetailCollapsed ? (

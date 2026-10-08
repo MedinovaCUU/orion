@@ -14,6 +14,7 @@ import {
   getEquipmentTrainingExamDefinition,
   type EquipmentTrainingExamDefinition,
 } from './equipmentTrainingExams';
+import { Loader } from './OrionLoader';
 
 interface SupremoDraftState {
   enabled: boolean;
@@ -1009,7 +1010,7 @@ export default function Equipos() {
       ) : null}
 
       {loading ? (
-        <p>Cargando lista de asignaciones y clientes...</p>
+        <Loader block label="Cargando lista de asignaciones y clientes…" />
       ) : (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
           {filteredEquipos.map(eq => {
@@ -1428,7 +1429,7 @@ export default function Equipos() {
               <div style={{ marginTop: '1.5rem', borderTop: '1px solid var(--border-color)', paddingTop: '1.5rem' }}>
                 <h4 style={{ color: 'var(--primary-color)', marginBottom: '1rem' }}>Desglose de Servicios Realizados</h4>
                 {loadingServicios ? (
-                  <p>Cargando historial maestro...</p>
+                  <Loader block label="Cargando historial maestro…" />
                 ) : equipoServicios.length === 0 ? (
                   <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem' }}>Este equipo no tiene actas ni historial de servicio registrado.</p>
                 ) : (
@@ -1633,7 +1634,7 @@ export default function Equipos() {
                   }}
                 >
                   <div style={{ display: 'flex', justifyContent: 'space-between', gap: '0.75rem', marginBottom: '0.5rem', color: 'var(--text-secondary)', fontSize: '0.88rem' }}>
-                    <span>{equipmentImportStatus || 'Procesando documento'}</span>
+                    <Loader size={22} label={equipmentImportStatus || 'Procesando documento'} />
                     <span>{Math.round(equipmentImportProgress * 100)}%</span>
                   </div>
                   <div style={{ height: '8px', borderRadius: '999px', background: 'rgba(var(--environmental-blue-rgb), 0.12)', overflow: 'hidden' }}>

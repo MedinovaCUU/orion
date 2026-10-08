@@ -43,6 +43,7 @@ import type {
   DriReagentProfile,
   DriServiceTestInput,
 } from '../types/dri.types';
+import { PanelLoader } from '../../../components/OrionLoader';
 
 const createEmptyReagentMeasurement = (reagentId: string): DriReagentMeasurementInput => ({
   reagentId,
@@ -1419,7 +1420,7 @@ export default function DriDashboard({
   if (loading || !catalog) {
     return (
       <div className="dri-shell">
-        <div className="dri-loading card">Preparando DRI, conocimiento BA400 y trazabilidad diagnóstica.</div>
+        <div className="dri-loading card"><PanelLoader title="Preparando DRI" subtitle="Conocimiento BA400 y trazabilidad diagnóstica." /></div>
       </div>
     );
   }

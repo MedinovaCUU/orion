@@ -31,6 +31,7 @@ import {
   type ProfileSummary,
 } from './servicesPlanning';
 import './Tickets.css';
+import { Loader } from './OrionLoader';
 
 interface TicketRecord {
   id: string;
@@ -828,7 +829,7 @@ export default function Tickets({ subPermissions = ['crear', 'seguimiento', 'dia
         <h3 style={{ marginBottom: '1rem' }}>Bandeja de Casos de Soporte</h3>
       <label>Mostrar casos <select className="input-field" value={caseFilter} onChange={event => setCaseFilter(event.target.value)}><option value="abiertos">Abiertos</option><option value="cerrados">Cerrados</option><option value="todos">Todos</option></select></label>
       {loading ? (
-        <p>Cargando tickets...</p>
+        <Loader block label="Cargando tickets…" />
       ) : tickets.length === 0 ? (
         <p style={{ color: 'var(--text-secondary)' }}>No tienes tickets aún.</p>
       ) : (

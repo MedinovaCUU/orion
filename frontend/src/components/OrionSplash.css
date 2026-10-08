@@ -111,23 +111,6 @@
   text-align: center;
 }
 
-.orion-loader {
-  position: relative;
-  display: inline-block;
-  aspect-ratio: 1 / 1;
-  flex-shrink: 0;
-  user-select: none;
-}
-
-.orion-loader > img,
-.orion-loader > video {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-}
-
 @keyframes orion-splash-in { from { opacity: 0; } to { opacity: 1; } }
 @keyframes orion-splash-out { to { opacity: 0; transform: scale(1.02); filter: blur(6px); } }
 @keyframes orion-splash-rise { from { opacity: 0; transform: translateY(10px) scale(0.97); } to { opacity: 1; transform: none; } }

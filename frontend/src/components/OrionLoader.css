@@ -1,0 +1,73 @@
+/* Loader Orion: el logo animado (loop renderizado en Blender) para cargas de módulos y documentos. */
+.orion-loader {
+  position: relative;
+  display: inline-block;
+  aspect-ratio: 1 / 1;
+  flex-shrink: 0;
+  user-select: none;
+  vertical-align: middle;
+}
+
+.orion-loader > img,
+.orion-loader > video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  -webkit-user-drag: none;
+}
+
+/* Inline: logo pequeño + texto, válido dentro de párrafos y botones. */
+.orion-inline-loader {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  color: var(--text-secondary, #5d6674);
+  font-size: 0.92rem;
+  line-height: 1.3;
+}
+
+.orion-inline-loader--block {
+  display: flex;
+  padding: 0.75rem 0;
+}
+
+/* Bloque centrado para la carga de un módulo completo. */
+.orion-panel-loader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.9rem;
+  min-height: 14rem;
+  padding: 2rem 1.5rem;
+  text-align: center;
+  color: var(--text-primary, #17202b);
+}
+
+.orion-panel-loader .orion-loader {
+  width: clamp(104px, 18vw, 150px);
+  filter: drop-shadow(0 14px 26px rgba(23, 32, 43, 0.14));
+}
+
+.orion-panel-loader__eyebrow {
+  font-size: 0.66rem;
+  font-weight: 700;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: rgba(var(--brand-red-rgb, 243, 39, 53), 0.72);
+}
+
+.orion-panel-loader__title {
+  font-family: var(--font-heading, inherit);
+  font-size: 1.1rem;
+  line-height: 1.2;
+}
+
+.orion-panel-loader__subtitle {
+  max-width: 34rem;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: var(--text-secondary, #5d6674);
+}

@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { supabase } from '../supabaseClient';
 import './TravelPlannerModal.css';
 import { getPriorityBadge, getStatusLabel, type TravelWorkflowStatus } from './travelPlanner';
+import { Loader } from './OrionLoader';
 
 interface TravelAdminPanelProps {
   refreshKey: number;
@@ -193,7 +194,7 @@ export default function TravelAdminPanel({ refreshKey }: TravelAdminPanelProps) 
       </div>
 
       {loading ? (
-        <p style={{ color: 'var(--text-secondary)' }}>Cargando solicitudes de viaje...</p>
+        <Loader block label="Cargando solicitudes de viaje…" />
       ) : filteredRequests.length === 0 ? (
         <div className="travel-banner">No hay solicitudes de viaje que coincidan con los filtros actuales.</div>
       ) : (

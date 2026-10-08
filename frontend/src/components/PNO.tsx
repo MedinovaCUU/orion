@@ -14,6 +14,7 @@ import {
   type PnoProcedureKind,
   type PnoProcedureStatus,
 } from './pnoCatalog';
+import { PanelLoader } from './OrionLoader';
 
 type UserRole = 'admin' | 'tecnico' | 'cliente' | string | null;
 type CatalogMode = 'database' | 'starter' | 'missing_table';
@@ -660,10 +661,7 @@ export default function PNO({ subPermissions = ['consulta', 'edicion'] }: { subP
           </div>
 
           {loading ? (
-            <div className="pno-empty-state">
-              <strong>Cargando procedimientos...</strong>
-              <p>Consultando biblioteca técnica y contexto de usuario.</p>
-            </div>
+            <PanelLoader title="Cargando procedimientos" subtitle="Consultando biblioteca técnica y contexto de usuario." />
           ) : noResults ? (
             <div className="pno-empty-state">
               <strong>Sin coincidencias</strong>

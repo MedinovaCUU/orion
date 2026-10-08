@@ -56,6 +56,7 @@ import type {
 } from '../../components/servicesPlanning';
 import useSecondTicker from '../../components/useSecondTicker';
 import './servicePlanning.css';
+import { PanelLoader } from '../../components/OrionLoader';
 
 interface ServicePlanningPageProps {
   services: PlannedService[];
@@ -453,7 +454,7 @@ export default function ServicePlanningPage({
 
   const renderSection = () => {
     if (loading) {
-      return <EmptyState title="Cargando planeacion" description="Estamos recuperando tickets, modales relacionados y la capa de viajes." />;
+      return <PanelLoader title="Cargando planeación" subtitle="Estamos recuperando tickets, modales relacionados y la capa de viajes." />;
     }
 
     if (filteredServices.length === 0 && section !== 'reportes' && section !== 'configuracion' && section !== 'guardias' && section !== 'tablero') {

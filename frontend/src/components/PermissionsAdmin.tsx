@@ -12,6 +12,7 @@ import {
 } from '../accessControl';
 import { supabase } from '../supabaseClient';
 import './PermissionsAdmin.css';
+import { Loader } from './OrionLoader';
 
 interface ProfileRow {
   id: string;
@@ -243,7 +244,7 @@ export default function PermissionsAdmin() {
         <input className="input-field" value={search} onChange={(event) => setSearch(event.target.value)} placeholder="Buscar usuario o rol…" />
       </div>
       {notice ? <div className="permissions-admin__notice">{notice}</div> : null}
-      {loading ? <p>Cargando permisos…</p> : (
+      {loading ? <Loader block label="Cargando permisos…" /> : (
         <div className="permissions-admin__list">
           {filteredProfiles.map((profile) => {
             const access = getAccess(profile.id);

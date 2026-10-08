@@ -7,6 +7,7 @@ import {
   type EquipmentSummary,
 } from './servicesPlanning';
 import { formatCaseNumber } from './ticketCaseUtils';
+import { Loader } from './OrionLoader';
 
 export interface CaseTicketRecord {
   id: string;
@@ -319,7 +320,7 @@ export default function TicketCaseDetail({ ticket, equipment, canWrite, onChange
         <div><span>Bitácora unificada</span><strong>Tickets, avances y servicios del equipo</strong></div>
         <span>{timeline.length} registros</span>
       </div>
-      {loading ? <p className="ticket-case__empty">Cargando expediente completo…</p> : timeline.length === 0 ? <p className="ticket-case__empty">Aún no hay antecedentes para este equipo.</p> : (
+      {loading ? <Loader block label="Cargando expediente completo…" /> : timeline.length === 0 ? <p className="ticket-case__empty">Aún no hay antecedentes para este equipo.</p> : (
         <ol className="ticket-case__timeline">
           {timeline.map((entry) => (
             <li key={entry.id} className={`ticket-case__timeline-item ticket-case__timeline-item--${entry.tone}`}>
