@@ -1,1 +1,0 @@
-var e=`/orion/assets/orion-icono-C4uLPKkE.png`;export{e as t};
