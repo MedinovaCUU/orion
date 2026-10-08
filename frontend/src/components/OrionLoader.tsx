@@ -1,4 +1,4 @@
-import { useMemo, useState, type ReactNode } from 'react';
+import { useEffect, useMemo, useState, type ReactNode } from 'react';
 import { prefersReducedMotion } from './orionMotion';
 import './OrionLoader.css';
 
@@ -7,6 +7,8 @@ const ORION_LOADER_ASSETS = {
   motionWebm: `${BASE}orion-brand/orion-loader-motion.webm`,
   motionWebp: `${BASE}orion-brand/orion-loader-motion.webp`,
   still: `${BASE}orion-brand/orion-loader-still.webp`,
+  introWebm: `${BASE}orion-brand/orion-intro.webm`,
+  introWebp: `${BASE}orion-brand/orion-intro.webp`,
   wordmark: `${BASE}orion-brand/orion-wordmark.webp`,
   biosystems: `${BASE}bios-brand/BioS_Logo_300dpi.png`,
 };
@@ -22,11 +24,16 @@ const supportsAlphaWebm = () => {
   return video.canPlayType('video/webm; codecs="vp9"') !== '';
 };
 
+/** Duración de la animación completa de bienvenida (240 cuadros a 30 fps). */
+export const ORION_INTRO_MS = 8000;
+
 /**
  * Logo Orion animado (loop renderizado en Blender: el ojo busca al usuario, los aros giran, los satélites orbitan).
  * `size` fija el ancho en px; si se omite, se dimensiona por CSS. Con "reducir movimiento" se muestra el cuadro fijo.
+ * Con `intro` reproduce primero la animación completa de bienvenida (una vez) y al terminar continúa con el loop;
+ * `onIntroEnd` avisa cuando acaba. Los aros terminan la bienvenida en la misma pose con la que arranca el loop.
  */
-export function OrionLoader({ size, className = '' }: { size?: number; className?: string }) {
+export function OrionLoader({ size, className = '', intro = false, onIntroEnd }: { size?: number; className?: string; intro?: boolean; onIntroEnd?: () => void }) {
   const mode = useMemo<'still' | 'video' | 'webp'>(() => {
     if (prefersReducedMotion()) return 'still';
     return supportsAlphaWebm() ? 'video' : 'webp';
@@ -34,27 +41,49 @@ export function OrionLoader({ size, className = '' }: { size?: number; className
   const [videoFailed, setVideoFailed] = useState(false);
   const [webpFailed, setWebpFailed] = useState(false);
   const [motionReady, setMotionReady] = useState(false);
+  const [introPlaying, setIntroPlaying] = useState(intro && mode !== 'still');
   let resolved: 'still' | 'video' | 'webp' = mode;
   if (resolved === 'video' && videoFailed) resolved = 'webp';
   if (resolved === 'webp' && webpFailed) resolved = 'still';
+  const finishIntro = () => {
+    setIntroPlaying(false);
+    onIntroEnd?.();
+  };
+  // Sin animación (movimiento reducido) la bienvenida termina de inmediato; el WebP animado no avisa cuando acaba, así que se cronometra.
+  useEffect(() => {
+    if (!intro) return;
+    if (resolved === 'still') {
+      onIntroEnd?.();
+      return;
+    }
+    if (resolved === 'webp' && introPlaying) {
+      const t = window.setTimeout(finishIntro, ORION_INTRO_MS);
+      return () => window.clearTimeout(t);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [intro, resolved, introPlaying]);
+  const videoSrc = introPlaying ? ORION_LOADER_ASSETS.introWebm : ORION_LOADER_ASSETS.motionWebm;
+  const webpSrc = introPlaying ? ORION_LOADER_ASSETS.introWebp : ORION_LOADER_ASSETS.motionWebp;
 
   return (
     <span aria-hidden className={`orion-loader ${className}`.trim()} style={size ? { width: size } : undefined}>
       {/* El cuadro fijo cubre la espera de descarga y se retira al llegar el primer cuadro animado (si no, se vería detrás). */}
       {(resolved === 'still' || !motionReady) && <img src={ORION_LOADER_ASSETS.still} alt="" draggable={false} />}
       {resolved === 'webp' && (
-        <img src={ORION_LOADER_ASSETS.motionWebp} alt="" draggable={false} onLoad={() => setMotionReady(true)} onError={() => setWebpFailed(true)} />
+        <img key={webpSrc} src={webpSrc} alt="" draggable={false} onLoad={() => setMotionReady(true)} onError={() => setWebpFailed(true)} />
       )}
       {resolved === 'video' && (
         <video
-          src={ORION_LOADER_ASSETS.motionWebm}
+          key={videoSrc}
+          src={videoSrc}
           autoPlay
           muted
-          loop
+          loop={!introPlaying}
           playsInline
           disablePictureInPicture
           onPlaying={() => setMotionReady(true)}
-          onError={() => setVideoFailed(true)}
+          onEnded={introPlaying ? finishIntro : undefined}
+          onError={() => (introPlaying ? finishIntro() : setVideoFailed(true))}
         />
       )}
     </span>

@@ -1,7 +1,8 @@
 import { Suspense, lazy, useEffect, useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { getValidatedSession, supabase } from './supabaseClient';
-import OrionSplashScreen from './components/OrionSplash';
+import OrionSplashScreen, { OrionSplashGate } from './components/OrionSplash';
+import { useSplashVisible } from './components/splashVisibleContext';
 import BrandLockup from './components/BrandLockup';
 
 const SurveyPage = lazy(() => import('./components/satisfaction/SurveyPage'));
@@ -19,7 +20,11 @@ const routerBasename = (() => {
   return baseUrl.replace(/\/+$/, '');
 })();
 
-const AppLoadingFallback = () => <OrionSplashScreen status="Cargando módulos, perfil y contexto de servicio." />;
+const AppLoadingFallback = () => {
+  // Mientras el splash de la app (bienvenida) sigue en pantalla no montamos otro debajo.
+  const splashVisible = useSplashVisible();
+  return splashVisible ? null : <OrionSplashScreen status="Cargando módulos, perfil y contexto de servicio." />;
+};
 
 // `?splash` deja la pantalla de carga fija y `?loader` muestra el cargador de módulos, para revisarlos (diseño/QA).
 const previewParam = (() => {
@@ -93,39 +98,41 @@ function AuthenticatedApp() {
     return <ModuleLoaderPreview />;
   }
 
-  if (loading || splashPreview) {
+  if (splashPreview) {
     return <AppLoadingFallback />;
   }
 
   return (
-    <Router basename={routerBasename}>
-      <Suspense fallback={<AppLoadingFallback />}>
-        <Routes>
-          <Route path="/encuesta" element={<SurveyPage />} />
-          <Route 
-            path="/" 
-            element={<PublicTicketForm />} 
-          />
-          <Route 
-            path="/login" 
-            element={!session ? <Login /> : <Navigate to="/dashboard" replace />} 
-          />
-          <Route 
-            path="/dashboard" 
-            element={session ? <Dashboard session={session} /> : <Navigate to="/login" replace />} 
-          />
-          <Route
-            path="/dri"
-            element={session ? <Dashboard session={session} initialTab="dri" /> : <Navigate to="/login" replace />}
-          />
-          <Route
-            path="/dri-preview"
-            element={import.meta.env.DEV ? <DriPreviewPage /> : <Navigate to="/" replace />}
-          />
-          <Route path="*" element={<Navigate to="/" replace />} />
-        </Routes>
-      </Suspense>
-    </Router>
+    <OrionSplashGate ready={!loading} status="Cargando módulos, perfil y contexto de servicio.">
+      <Router basename={routerBasename}>
+        <Suspense fallback={<AppLoadingFallback />}>
+          <Routes>
+            <Route path="/encuesta" element={<SurveyPage />} />
+            <Route 
+              path="/" 
+              element={<PublicTicketForm />} 
+            />
+            <Route 
+              path="/login" 
+              element={!session ? <Login /> : <Navigate to="/dashboard" replace />} 
+            />
+            <Route 
+              path="/dashboard" 
+              element={session ? <Dashboard session={session} /> : <Navigate to="/login" replace />} 
+            />
+            <Route
+              path="/dri"
+              element={session ? <Dashboard session={session} initialTab="dri" /> : <Navigate to="/login" replace />}
+            />
+            <Route
+              path="/dri-preview"
+              element={import.meta.env.DEV ? <DriPreviewPage /> : <Navigate to="/" replace />}
+            />
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Routes>
+        </Suspense>
+      </Router>
+    </OrionSplashGate>
   );
 }
 
