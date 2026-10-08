@@ -5,7 +5,7 @@ import App from './App.tsx'
 const applyRuntimeFavicon = async () => {
   const baseUrl = import.meta.env.BASE_URL || '/'
   const normalizedBase = baseUrl.endsWith('/') ? baseUrl : `${baseUrl}/`
-  const version = 'orion-runtime-2'
+  const version = 'orion-runtime-3'
   const nonce = `${Date.now()}`
   const iconDefinitions = [
     { rel: 'icon', type: 'image/x-icon', href: `${normalizedBase}favicon.ico?v=${version}&t=${nonce}` },

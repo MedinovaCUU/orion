@@ -1,7 +1,7 @@
 import { Suspense, lazy, useEffect, useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { getValidatedSession, supabase } from './supabaseClient';
-import BrandLockup from './components/BrandLockup';
+import OrionSplashScreen from './components/OrionSplash';
 
 const SurveyPage = lazy(() => import('./components/satisfaction/SurveyPage'));
 const Login = lazy(() => import('./components/Login'));
@@ -18,24 +18,16 @@ const routerBasename = (() => {
   return baseUrl.replace(/\/+$/, '');
 })();
 
-const AppLoadingFallback = () => (
-  <div
-    style={{
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-      height: '100vh',
-      padding: '1.5rem',
-    }}
-  >
-    <BrandLockup
-      variant="loading"
-      eyebrow="BioSystems"
-      title="Orion operativo"
-      subtitle="Cargando modulos, perfil y contexto de servicio."
-    />
-  </div>
-);
+const AppLoadingFallback = () => <OrionSplashScreen status="Cargando módulos, perfil y contexto de servicio." />;
+
+// `?splash` deja la pantalla de carga fija para revisarla (diseño/QA), igual que `?intro` en Andrómeda.
+const splashPreview = (() => {
+  try {
+    return new URLSearchParams(window.location.search).has('splash');
+  } catch {
+    return false;
+  }
+})();
 
 function AuthenticatedApp() {
   const [session, setSession] = useState<any>(null);
@@ -88,7 +80,7 @@ function AuthenticatedApp() {
     };
   }, []);
 
-  if (loading) {
+  if (loading || splashPreview) {
     return <AppLoadingFallback />;
   }
 

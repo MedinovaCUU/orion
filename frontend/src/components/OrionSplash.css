@@ -1,0 +1,144 @@
+/* Pantalla de carga de Orion: logo animado (render Blender), wordmark 3D y BioSystems sobre el fondo claro de la app. */
+.orion-splash {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: safe center;
+  overflow: auto;
+  padding: 1.5rem;
+  background:
+    radial-gradient(60% 55% at 50% 42%, #ffffff 0%, rgba(255, 255, 255, 0) 70%),
+    linear-gradient(180deg, #f4f8fb 0%, var(--bg-color, #eaf1f6) 100%);
+  color: var(--text-primary, #17202b);
+  animation: orion-splash-in 0.5s ease-out both;
+}
+
+.orion-splash::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(28% 24% at 50% 46%, rgba(var(--brand-red-rgb, 243, 39, 53), 0.08) 0%, rgba(255, 255, 255, 0) 100%);
+}
+
+.orion-splash--leaving {
+  animation: orion-splash-out 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.orion-splash__logo {
+  position: relative;
+  width: min(68vw, 300px, 42vh);
+  aspect-ratio: 1 / 1;
+  display: block;
+  filter: drop-shadow(0 18px 34px rgba(23, 32, 43, 0.16));
+  animation: orion-splash-rise 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.orion-splash__logo > img,
+.orion-splash__logo > video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.orion-splash__wordmark {
+  width: min(64vw, 280px, 40vh);
+  margin-top: 1.4rem;
+  display: block;
+  user-select: none;
+  animation: orion-splash-rise 0.7s 0.2s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.orion-splash__brand {
+  margin-top: 1.8rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.55rem;
+  animation: orion-splash-rise 0.7s 0.35s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.orion-splash__biosystems {
+  width: 132px;
+  display: block;
+  user-select: none;
+}
+
+.orion-splash__eyebrow {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.42em;
+  text-transform: uppercase;
+  color: var(--text-secondary, #5d6674);
+}
+
+.orion-splash__progress {
+  position: relative;
+  margin-top: 2rem;
+  width: 12rem;
+  height: 2px;
+  border-radius: 999px;
+  overflow: hidden;
+  background: rgba(23, 32, 43, 0.08);
+}
+
+.orion-splash__progress::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 33%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, rgba(var(--brand-red-rgb, 243, 39, 53), 0.15), var(--brand-red, #f32735));
+  box-shadow: 0 0 10px rgba(var(--brand-red-rgb, 243, 39, 53), 0.55);
+  animation: orion-splash-sweep 1.5s ease-in-out infinite;
+}
+
+.orion-splash__status {
+  margin-top: 0.9rem;
+  min-height: 1.2rem;
+  font-size: 0.8rem;
+  color: var(--text-tertiary, #818b98);
+  text-align: center;
+}
+
+.orion-loader {
+  position: relative;
+  display: inline-block;
+  aspect-ratio: 1 / 1;
+  flex-shrink: 0;
+  user-select: none;
+}
+
+.orion-loader > img,
+.orion-loader > video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+@keyframes orion-splash-in { from { opacity: 0; } to { opacity: 1; } }
+@keyframes orion-splash-out { to { opacity: 0; transform: scale(1.02); filter: blur(6px); } }
+@keyframes orion-splash-rise { from { opacity: 0; transform: translateY(10px) scale(0.97); } to { opacity: 1; transform: none; } }
+@keyframes orion-splash-sweep { from { transform: translateX(-100%); } to { transform: translateX(400%); } }
+
+@media (prefers-reduced-motion: reduce) {
+  .orion-splash,
+  .orion-splash__logo,
+  .orion-splash__wordmark,
+  .orion-splash__brand,
+  .orion-splash__progress::after {
+    animation: none;
+  }
+}
