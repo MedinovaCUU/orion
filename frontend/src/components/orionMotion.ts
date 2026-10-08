@@ -4,12 +4,15 @@ export const prefersReducedMotion = () =>
 
 const INTRO_SEEN_KEY = 'orion.intro.seen';
 
-/** La bienvenida completa se reproduce la primera vez que se abre (o instala) la app; `?intro` la vuelve a mostrar. */
+/**
+ * La bienvenida completa se reproduce una vez cada vez que se abre la página (nueva pestaña o ventana): se recuerda en
+ * sessionStorage, así que navegar dentro de la app no la repite y abrirla de nuevo sí. `?intro` la fuerza siempre.
+ */
 export function wantsIntro() {
   if (prefersReducedMotion()) return false;
   try {
     if (new URLSearchParams(window.location.search).has('intro')) return true;
-    return window.localStorage.getItem(INTRO_SEEN_KEY) !== '1';
+    return window.sessionStorage.getItem(INTRO_SEEN_KEY) !== '1';
   } catch {
     return false;
   }
@@ -17,7 +20,7 @@ export function wantsIntro() {
 
 export function markIntroSeen() {
   try {
-    window.localStorage.setItem(INTRO_SEEN_KEY, '1');
+    window.sessionStorage.setItem(INTRO_SEEN_KEY, '1');
   } catch {
     /* sin almacenamiento: la bienvenida simplemente se repetirá */
   }
