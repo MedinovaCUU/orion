@@ -69,6 +69,7 @@ export function OrionLoader({ size, className = '', intro = false, onIntroEnd }:
   if (resolved === 'opaque' && opaqueFailed) resolved = 'still';
   const finishIntro = (completed: boolean) => {
     setIntroPlaying(false);
+    setMotionReady(false); // el cuadro fijo cubre el cambio de clip hasta que el loop pinta su primer cuadro
     onIntroEnd?.(completed);
   };
   // Sin animación la bienvenida se omite; si no ha empezado a reproducirse a tiempo, se omite sin marcarla como vista.
