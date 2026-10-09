@@ -5,7 +5,7 @@ import './OrionLoader.css';
 const BASE = `${import.meta.env.BASE_URL || '/'}`.replace(/\/?$/, '/');
 const BRAND = `${BASE}orion-brand/`;
 /** Súbelo cada vez que cambie el contenido de un archivo de `orion-brand/` que conserve su nombre: evita copias en caché. */
-const ASSET_VERSION = 'v6';
+const ASSET_VERSION = 'v7';
 const asset = (file: string) => `${BRAND}${file}?${ASSET_VERSION}`;
 const ORION_LOADER_ASSETS = {
   loop: { hevc: asset('orion-loader-motion-hevc.mov'), webm: asset('orion-loader-motion.webm'), mp4: asset('orion-loader-motion.mp4') },
@@ -43,7 +43,7 @@ type LoaderMode = 'still' | 'alpha' | 'opaque';
  * Logo Orion animado (loop renderizado en Blender: el ojo busca al usuario, los aros giran, los satélites orbitan).
  * `size` fija el ancho en px; si se omite, se dimensiona por CSS. Con "reducir movimiento" se muestra el cuadro fijo.
  *
- * Los vídeos llevan aire alrededor del logo (ocupa el 72 % del encuadre) para que el halo nunca se recorte; el CSS
+ * Los vídeos llevan aire alrededor del logo (ocupa el 61 % del encuadre, con el halo desvanecido antes del borde); el CSS
  * escala el medio para que el logo llene la caja y el halo desborde. Con transparencia (HEVC alfa en Safari, WebM VP9
  * en el resto) se integra sobre cualquier fondo; si no hay formato con alfa se usa MP4 opaco sobre blanco con un
  * desvanecido radial en los bordes.
