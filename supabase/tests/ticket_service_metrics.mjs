@@ -177,4 +177,86 @@ await db.exec('set role authenticated');
 assert.equal((await db.query('select * from servicios')).rows.length,0);
 assert.equal((await db.query('select * from servicios_historial')).rows.length,1,'Linked history follows assignment; general equipment history remains available');
 console.log('PASS: habitual precedence, territory and specialty routing, exceptions, creator isolation, protected RPCs and reassignment revocation');
+// Visibility by association (20261009010000): assignment, own user or planning naming the person.
+await db.exec(`reset role;
+alter table tickets add column descripcion text;
+update profiles set nombre_completo='Alfredo Acevedo' where id='00000000-0000-0000-0000-000000000001';
+update profiles set nombre_completo='Francisco Vilchis' where id='00000000-0000-0000-0000-000000000004';
+update profiles set nombre_completo='Laboratorio Norte' where id='00000000-0000-0000-0000-000000000003';
+create function try_parse_planning_metadata(p_description text) returns jsonb language plpgsql immutable as $$
+declare v_marker constant text := '[METADATA_PLANEACION]'; v_position integer;
+begin v_position := position(v_marker in coalesce(p_description, '')); if v_position = 0 then return '{}'::jsonb; end if;
+ return substring(p_description from v_position + char_length(v_marker))::jsonb;
+exception when others then return '{}'::jsonb; end; $$;
+insert into tickets(id,user_id,asunto,descripcion) values
+ ('30000000-0000-0000-0000-000000000001','00000000-0000-0000-0000-000000000004','[PLAN] PREVENTIVO - A15 - ACAPULCO','Cliente: Hospital\n[METADATA_PLANEACION]{"ingeniero_csv":"Francisco Vilchis / Alfredo Acevedo","week_start":"2026-10-05","week_end":"2026-10-09"}'),
+ ('30000000-0000-0000-0000-000000000002',null,'[PLAN] CAPACITACION - BA400 - OAXACA','[METADATA_PLANEACION]{"ingeniero_csv":"Otro Ingeniero","companions_csv":["alfredo  ACEVEDO"]}'),
+ ('30000000-0000-0000-0000-000000000003',null,'[PLAN] INSTALACION - A15 - EDOMEX','[METADATA_PLANEACION]{"ingeniero_csv":"Otro Ingeniero"}'),
+ ('30000000-0000-0000-0000-000000000004','00000000-0000-0000-0000-000000000003','[Soporte Ingeniero] Falla reportada por cliente','Sin lectura');
+`);
+await db.exec(await readFile(new URL('../migrations/20261009010000_ticket_visibility_boundary.sql', import.meta.url), 'utf8'));
+const names = async (desc, name) => (await db.query('select ticket_names_person($1,$2) as ok', [desc, name])).rows[0].ok;
+assert.equal(await names('[METADATA_PLANEACION]{"ingeniero_csv":"Diego García García y Ricardo Vilchis"}', 'diego garcia garcia'), true);
+assert.equal(await names('[METADATA_PLANEACION]{"ingeniero_csv":"R. Vilchis; Otro","companions_csv":"Ana López, Luis"}', 'r vilchis'), true);
+assert.equal(await names('[METADATA_PLANEACION]{"ingeniero_csv":"R. Vilchis","companions_csv":"Ana López, Luis"}', 'ANA LOPEZ'), true);
+assert.equal(await names('[METADATA_PLANEACION]{"ingeniero_csv":"Alfredo"}', 'Alfredo Acevedo'), false, 'first name alone is not the profile');
+assert.equal(await names('[METADATA_PLANEACION]{broken', 'Alfredo Acevedo'), false);
+assert.equal(await names('Sin planeación', 'Alfredo Acevedo'), false);
+assert.equal(await names('[METADATA_PLANEACION]{"ingeniero_csv":"Alfredo Acevedo"}', null), false);
+const visibleIds = async () => (await db.query('select id from tickets order by id')).rows.map(r => r.id.slice(-2));
+await db.exec(`alter table tickets disable row level security; create table servicios_extra(id int);`);
+await db.exec(await readFile(new URL('../migrations/20261009010000_ticket_visibility_boundary.sql', import.meta.url), 'utf8'));
+assert.equal((await db.query("select relrowsecurity from pg_class where relname='tickets'")).rows[0].relrowsecurity, true, 'migration re-enables RLS on tickets');
+await db.exec("grant insert,delete on tickets to authenticated; drop policy broad_tickets on tickets; create policy own_insert on tickets for insert to authenticated with check(user_id=auth.uid()); create policy staff_select on tickets for select to authenticated using(true); create policy staff_update on tickets for update to authenticated using(true) with check(true);");
+await user(2); await db.exec('set role authenticated');
+await db.exec("insert into tickets(id,user_id,asunto,descripcion) values ('30000000-0000-0000-0000-000000000005','00000000-0000-0000-0000-000000000004','[PLAN] ADMIN A NOMBRE DE OTRO','[METADATA_PLANEACION]{}')");
+await db.exec("delete from tickets where id='30000000-0000-0000-0000-000000000005'");
+await db.exec('reset role'); await user(1); await db.exec('set role authenticated');
+await assert.rejects(db.exec("insert into tickets(id,user_id,asunto) values ('30000000-0000-0000-0000-000000000006','00000000-0000-0000-0000-000000000004','ajeno')"), /row-level security/, 'technician cannot register on behalf of another');
+await db.exec("delete from tickets where id='30000000-0000-0000-0000-000000000001'");
+await db.exec('reset role');
+assert.equal((await db.query("select count(*)::int as n from tickets where id in ('30000000-0000-0000-0000-000000000001','30000000-0000-0000-0000-000000000005')")).rows[0].n, 1, 'admin delete works, technician delete is blocked');
+const total = (await db.query('select count(*)::int as n from tickets')).rows[0].n;
+await user(1); await db.exec('set role authenticated');
+assert.deepEqual(await visibleIds(), ['01','02','03'], 'technician sees every planning, not unassigned or foreign support cases');
+await db.exec('reset role'); await user(4); await db.exec('set role authenticated');
+assert.deepEqual(await visibleIds(), ['08','01','02','03','04','01','02','03'], 'assignee/creator sees own support cases plus planning');
+await db.exec('reset role'); await user(3); await db.exec('set role authenticated');
+assert.deepEqual(await visibleIds(), ['04'], 'client sees only own case, never planning');
+await db.exec('reset role'); await user(2); await db.exec('set role authenticated');
+assert.equal((await visibleIds()).length, total, 'admin sees everything');
+await db.exec('reset role');
+const work = async (n, id) => { await user(n); return (await db.query('select can_work_ticket($1) as ok', [`30000000-0000-0000-0000-00000000000${id}`])).rows[0].ok; };
+assert.equal(await work(1,1), true, 'named engineer works the planning');
+assert.equal(await work(1,2), true, 'companion works the planning');
+assert.equal(await work(1,3), false, 'planning naming nobody known is read-only for the technician');
+assert.equal(await work(4,1), true, 'lead (user_id) works the planning');
+assert.equal(await work(4,3), false);
+assert.equal(await work(3,4), false, 'clients never work cases');
+assert.equal(await work(2,3), true);
+await user(1);
+await db.query("select register_ticket_movement('30000000-0000-0000-0000-000000000001','avance','Visita confirmada','en_progreso',true)");
+await assert.rejects(db.query("select register_ticket_movement('30000000-0000-0000-0000-000000000003','avance','Intento ajeno','en_progreso',true)"), /no está asignado/);
+await db.exec(`insert into ticket_bitacora(ticket_id,tipo,detalle,visible_cliente,creado_por) values
+ ('30000000-0000-0000-0000-000000000004','nota','Nota interna',false,'00000000-0000-0000-0000-000000000002'),
+ ('30000000-0000-0000-0000-000000000004','avance','Respuesta visible',true,'00000000-0000-0000-0000-000000000002')`);
+const logs = async (n, id) => { await db.exec('reset role'); await user(n); await db.exec('set role authenticated'); const rows = (await db.query('select detalle from ticket_bitacora where ticket_id=$1', [`30000000-0000-0000-0000-00000000000${id}`])).rows; await db.exec('reset role'); return rows.map(r => r.detalle); };
+assert.deepEqual(await logs(4,1), ['Visita confirmada'], 'lead reads the planning log');
+assert.deepEqual(await logs(1,1), ['Visita confirmada'], 'named engineer reads the planning log');
+assert.deepEqual(await logs(3,1), [], 'client never reads planning logs');
+assert.deepEqual(await logs(3,4), ['Respuesta visible'], 'client reads only visible entries of own case');
+assert.deepEqual(await logs(1,4), [], 'technician cannot read a foreign client case log');
+await user(1); await db.exec('set role authenticated');
+await db.exec("update tickets set estado='en_observacion' where id='30000000-0000-0000-0000-000000000003'");
+await db.exec("update tickets set estado='en_observacion' where id='30000000-0000-0000-0000-000000000002'");
+assert.equal((await db.query("select * from ticket_service_events where ticket_id='20000000-0000-0000-0000-000000000001'")).rows.length,0,'metrics stay bound to the viewer');
+assert.equal((await db.query('select * from servicios')).rows.length,0);
+await db.exec('reset role');
+assert.equal((await db.query("select estado from tickets where id='30000000-0000-0000-0000-000000000003'")).rows[0].estado,'abierto','update boundary blocks a planning the technician is not named on');
+assert.equal((await db.query("select estado from tickets where id='30000000-0000-0000-0000-000000000002'")).rows[0].estado,'en_observacion','companion may update the planning');
+await user(4); await db.exec('set role authenticated');
+assert.equal((await db.query("select * from ticket_service_events where ticket_id='20000000-0000-0000-0000-000000000001'")).rows.length,1,'assignee reads own metrics');
+assert.equal((await db.query('select * from servicios')).rows.length,1,'linked services follow the viewer');
+await db.exec('reset role');
+console.log('PASS: visibility by assignment, own user and planning names; planning shared with staff; clients limited to visible entries; update boundary');
 await db.close();

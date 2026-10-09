@@ -95,3 +95,32 @@ Pruebas: `node frontend/tests/ticket-visibility.test.mjs` y
 `node frontend/tests/tickets-inbox-browser.test.mjs` (Vite en frontend, puerto 5200).
 La segunda simula a Alfredo, Diego y un administrador interceptando las peticiones;
 no usa sesiones ni tickets reales.
+
+## Visibilidad por asociación y RLS reactivado (20261009010000)
+
+En producción `public.tickets` tenía row level security desactivado (`relrowsecurity = false`),
+por lo que las políticas de `20260924040000` existían pero no aplicaban: cualquier técnico veía
+y modificaba todos los casos. La migración vuelve a activar RLS en tickets, bitácora, métricas y
+servicios vinculados, y redefine el acceso:
+
+- `can_view_ticket`: administradores todo; personal técnico sus asignaciones, sus propios
+  casos (`user_id`) y toda la planeación (el tablero semanal es compartido); clientes sus casos.
+- `can_work_ticket` (movimientos, cierres, updates): administradores, el asignado, quien registró
+  el caso y el personal nombrado en `ingeniero_csv` / `companions_csv` de la planeación
+  (`ticket_names_person`, sin acentos, puntos ni mayúsculas).
+- Con RLS activo los administradores necesitan registrar planeación a nombre del ingeniero líder
+  y borrar semanas reimportadas: se agregan políticas permisivas de insert y delete para `admin`.
+- Los casos de soporte sin asignación solo los ve administración; se reparten con las reglas de
+  cobertura o con “Distribuir casos sin asignación”.
+
+La bandeja de Tickets sigue filtrando la planeación por persona en el navegador. La prueba
+PGlite de este archivo cubre asignación, creador, nombres en planeación, clientes, bitácora
+visible, límite de update y la reactivación de RLS.
+
+## Cierre administrativo de planeación antigua
+
+`supabase/snippets/2026-10-09_cerrar_planeacion_anterior_13_octubre.sql` cierra la planeación
+con fecha planeada anterior al 13/10/2026 reproduciendo el cierre de la ingesta SAP: bitácora con
+estado resultante `cerrado` (los triggers cierran el ticket y registran el evento) clasificado como
+`administrativo`. La fecha sale de `week_end` / `scheduled_date` / `week_start` o de la etiqueta
+`fecha_tentativa` con el año de creación. Incluye una vista previa de solo lectura.
