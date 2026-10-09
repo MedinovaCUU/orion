@@ -1,7 +1,7 @@
 import useAssignedTicketAlerts from './useAssignedTicketAlerts';
 import { assignedAlertEntries } from './ticketAlertAccess';
 import { createPortal } from 'react-dom';
-import { useEffect, useEffectEvent, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { getFalconSlaTone, type FalconTicketSla } from './ticketIntake';
 import { getPublicAssetUrl } from './publicAssetUrl';
 import './FalconSlaAlerts.css';
@@ -21,18 +21,6 @@ interface FalconSlaAlertsProps {
 }
 
 type FalconAlertThresholdKey = '8h' | '4h' | '1h' | '30m' | '10m' | 'breached';
-
-interface SafeBeepStep {
-  delayMs: number;
-  durationMs: number;
-  frequency: number;
-  gain: number;
-}
-
-interface ActiveOscillator {
-  oscillator: OscillatorNode;
-  gainNode: GainNode;
-}
 
 interface FalconAlertNotification {
   ticketId: string;
@@ -56,6 +44,10 @@ const AUDIO_BY_THRESHOLD: Partial<Record<FalconAlertThresholdKey, string>> = {
   '10m': getPublicAssetUrl('sla-alerts/10min.mp3'),
 };
 
+// Every clip the component can play. Safari unlocks audio per element, so each
+// one has to be started inside a user gesture before it can play on its own.
+const AUDIO_SOURCES = Array.from(new Set([ALERT_SOUND, ...Object.values(AUDIO_BY_THRESHOLD)]));
+
 const THRESHOLD_LABELS: Record<FalconAlertThresholdKey, string> = {
   '8h': 'Quedan 8 horas',
   '4h': 'Quedan 4 horas',
@@ -72,39 +64,6 @@ const THRESHOLD_ACTIONS: Record<FalconAlertThresholdKey, string> = {
   '30m': 'Última ventana operativa antes del incumplimiento.',
   '10m': 'Cierre inminente. Atiende y escala en este momento.',
   breached: 'Incumplimiento activo. Escala de inmediato.',
-};
-
-const SAFE_BEEP_PATTERNS: Record<FalconAlertThresholdKey, SafeBeepStep[]> = {
-  '8h': [{ delayMs: 0, durationMs: 180, frequency: 698, gain: 0.05 }],
-  '4h': [
-    { delayMs: 0, durationMs: 180, frequency: 740, gain: 0.055 },
-    { delayMs: 260, durationMs: 180, frequency: 740, gain: 0.055 },
-  ],
-  '1h': [
-    { delayMs: 0, durationMs: 170, frequency: 784, gain: 0.06 },
-    { delayMs: 220, durationMs: 170, frequency: 784, gain: 0.06 },
-    { delayMs: 440, durationMs: 220, frequency: 831, gain: 0.065 },
-  ],
-  '30m': [
-    { delayMs: 0, durationMs: 150, frequency: 880, gain: 0.07 },
-    { delayMs: 190, durationMs: 150, frequency: 880, gain: 0.07 },
-    { delayMs: 380, durationMs: 150, frequency: 932, gain: 0.075 },
-    { delayMs: 570, durationMs: 240, frequency: 932, gain: 0.075 },
-  ],
-  '10m': [
-    { delayMs: 0, durationMs: 140, frequency: 988, gain: 0.08 },
-    { delayMs: 170, durationMs: 140, frequency: 988, gain: 0.08 },
-    { delayMs: 340, durationMs: 140, frequency: 1047, gain: 0.082 },
-    { delayMs: 510, durationMs: 140, frequency: 1047, gain: 0.082 },
-    { delayMs: 680, durationMs: 300, frequency: 1175, gain: 0.085 },
-  ],
-  breached: [
-    { delayMs: 0, durationMs: 180, frequency: 1175, gain: 0.09 },
-    { delayMs: 220, durationMs: 180, frequency: 1319, gain: 0.09 },
-    { delayMs: 440, durationMs: 180, frequency: 1175, gain: 0.09 },
-    { delayMs: 660, durationMs: 180, frequency: 1319, gain: 0.09 },
-    { delayMs: 880, durationMs: 340, frequency: 1397, gain: 0.095 },
-  ],
 };
 
 const ALERT_PRIORITY: Record<FalconAlertThresholdKey, number> = {
@@ -173,19 +132,6 @@ const formatDueLabel = (dueAtMs: number) =>
     timeStyle: 'medium',
   });
 
-const isLikelySafariWebKit = () => {
-  if (typeof navigator === 'undefined') {
-    return false;
-  }
-
-  const userAgent = navigator.userAgent || '';
-  const vendor = navigator.vendor || '';
-  const isAppleVendor = /Apple/i.test(vendor);
-  const isSafariShell = /Safari/i.test(userAgent);
-  const hasOtherBrowserToken = /Chrome|Chromium|CriOS|FxiOS|Firefox|Edg|EdgiOS|OPR/i.test(userAgent);
-  return isAppleVendor && isSafariShell && !hasOtherBrowserToken;
-};
-
 export default function FalconSlaAlerts(props: FalconSlaAlertsProps) {
   const { userId, ticketIds } = useAssignedTicketAlerts();
   const entries = useMemo(() => assignedAlertEntries(props.entries, ticketIds, userId), [props.entries, ticketIds, userId]);
@@ -195,16 +141,13 @@ export default function FalconSlaAlerts(props: FalconSlaAlertsProps) {
 function AssignedFalconSlaAlerts({ contextLabel, entries, userId }: FalconSlaAlertsProps & { userId: string }) {
   const [queue, setQueue] = useState<FalconAlertNotification[]>([]);
   const storedThresholdsRef = useRef<Record<string, FalconAlertThresholdKey>>(loadStoredThresholds(userId));
+  // Audio state lives in refs: the parent re-renders every second for the countdown and
+  // none of this may restart playback. Every callback below has stable identity.
   const audioUnlockedRef = useRef(false);
   const pendingSoundsRef = useRef<string[]>([]);
-  const pendingThresholdRef = useRef<FalconAlertThresholdKey | null>(null);
   const audioElementsRef = useRef<Partial<Record<string, HTMLAudioElement>>>({});
   const currentAudioRef = useRef<HTMLAudioElement | null>(null);
-  const audioContextRef = useRef<AudioContext | null>(null);
-  const oscillatorTimersRef = useRef<number[]>([]);
-  const activeOscillatorsRef = useRef<ActiveOscillator[]>([]);
   const playbackSequenceRef = useRef(0);
-  const safeSafariAudioMode = useMemo(() => isLikelySafariWebKit(), []);
 
   const openEntries = useMemo(
     () =>
@@ -237,31 +180,31 @@ function AssignedFalconSlaAlerts({ contextLabel, entries, userId }: FalconSlaAle
     [entryById, queue],
   );
 
+  // `find` returns the queued object itself, so the active notification keeps its
+  // identity across countdown ticks and the playback effect below only runs on real changes.
   const activeNotification = orderedQueue.find(item => entryById.has(item.ticketId)) || null;
   const activeEntry = activeNotification ? entryById.get(activeNotification.ticketId) || null : null;
   const activeTone = activeEntry ? getFalconSlaTone(activeEntry.sla.severity) : null;
   const activeThreshold = activeNotification?.thresholdKey || null;
   const isFullscreen = activeThreshold ? isFullscreenThreshold(activeThreshold) : false;
-  const persistThresholds = useEffectEvent(() => {
+
+  const persistThresholds = useCallback(() => {
     if (typeof window === 'undefined') {
       return;
     }
 
     window.sessionStorage.setItem(`${STORAGE_KEY}:${userId}`, JSON.stringify(storedThresholdsRef.current));
-  });
+  }, [userId]);
 
-  const dismissActive = useEffectEvent(() => {
+  const removeNotification = useCallback((notification: FalconAlertNotification) => {
     setQueue((current) =>
-      activeNotification
-        ? current.filter(
-            (item) =>
-              item.ticketId !== activeNotification.ticketId || item.thresholdKey !== activeNotification.thresholdKey,
-          )
-        : current,
+      current.filter(
+        (item) => item.ticketId !== notification.ticketId || item.thresholdKey !== notification.thresholdKey,
+      ),
     );
-  });
+  }, []);
 
-  const getAudioElement = useEffectEvent((src: string) => {
+  const getAudioElement = useCallback((src: string) => {
     const cached = audioElementsRef.current[src];
     if (cached) {
       return cached;
@@ -269,270 +212,134 @@ function AssignedFalconSlaAlerts({ contextLabel, entries, userId }: FalconSlaAle
 
     const audio = new Audio(src);
     audio.preload = 'auto';
-    audio.volume = 1;
     audioElementsRef.current[src] = audio;
     return audio;
-  });
+  }, []);
 
-  const getAudioContext = useEffectEvent(() => {
-    if (!safeSafariAudioMode || typeof window === 'undefined') {
-      return null;
-    }
-
-    if (audioContextRef.current) {
-      return audioContextRef.current;
-    }
-
-    const AudioContextClass =
-      window.AudioContext ||
-      (window as typeof window & { webkitAudioContext?: typeof AudioContext }).webkitAudioContext;
-
-    if (!AudioContextClass) {
-      return null;
-    }
-
-    audioContextRef.current = new AudioContextClass();
-    return audioContextRef.current;
-  });
-
-  const primeAudioPlayback = useEffectEvent(async () => {
-    if (audioUnlockedRef.current) {
-      return true;
-    }
-
-    if (safeSafariAudioMode) {
-      try {
-        const audioContext = getAudioContext();
-        if (!audioContext) {
-          audioUnlockedRef.current = false;
-          return false;
-        }
-
-        if (audioContext.state === 'suspended') {
-          await audioContext.resume();
-        }
-
-        audioUnlockedRef.current = audioContext.state === 'running';
-        return audioUnlockedRef.current;
-      } catch {
-        audioUnlockedRef.current = false;
-        return false;
-      }
-    }
-
-    try {
-      const audio = getAudioElement(ALERT_SOUND);
-      const previousMuted = audio.muted;
-      const previousVolume = audio.volume;
-      audio.currentTime = 0;
-      audio.muted = true;
-      audio.volume = 0;
-      await audio.play();
-      audio.pause();
-      audio.currentTime = 0;
-      audio.muted = previousMuted;
-      audio.volume = previousVolume;
-      audioUnlockedRef.current = true;
-      return true;
-    } catch {
-      audioUnlockedRef.current = false;
-      return false;
-    }
-  });
-
-  const stopAudioPlayback = useEffectEvent(() => {
+  const stopAudioPlayback = useCallback(() => {
     playbackSequenceRef.current += 1;
-    oscillatorTimersRef.current.forEach((timerId) => window.clearTimeout(timerId));
-    oscillatorTimersRef.current = [];
-    activeOscillatorsRef.current.forEach(({ oscillator, gainNode }) => {
-      try {
-        oscillator.onended = null;
-        oscillator.stop();
-      } catch {
-        // Ignore oscillators that already finished.
-      }
-
-      try {
-        oscillator.disconnect();
-      } catch {
-        // Ignore disconnected oscillators.
-      }
-
-      try {
-        gainNode.disconnect();
-      } catch {
-        // Ignore disconnected gain nodes.
-      }
-    });
-    activeOscillatorsRef.current = [];
-
+    currentAudioRef.current = null;
     Object.values(audioElementsRef.current).forEach((audio) => {
       if (!audio) {
         return;
       }
 
-      audio.pause();
-      audio.currentTime = 0;
       audio.onended = null;
       audio.onerror = null;
-    });
-    currentAudioRef.current = null;
-  });
-
-  const playSafeBeepPattern = useEffectEvent(async (thresholdKey: FalconAlertThresholdKey) => {
-    const audioContext = getAudioContext();
-    if (!audioContext) {
-      audioUnlockedRef.current = false;
-      pendingThresholdRef.current = thresholdKey;
-      return;
-    }
-
-    if (audioContext.state === 'suspended') {
-      try {
-        await audioContext.resume();
-      } catch {
-        audioUnlockedRef.current = false;
-        pendingThresholdRef.current = thresholdKey;
-        return;
-      }
-    }
-
-    if (audioContext.state !== 'running') {
-      audioUnlockedRef.current = false;
-      pendingThresholdRef.current = thresholdKey;
-      return;
-    }
-
-    audioUnlockedRef.current = true;
-    pendingThresholdRef.current = thresholdKey;
-    stopAudioPlayback();
-
-    const sequenceId = playbackSequenceRef.current + 1;
-    playbackSequenceRef.current = sequenceId;
-    const pattern = SAFE_BEEP_PATTERNS[thresholdKey];
-    const finalStep = pattern[pattern.length - 1];
-    const clearPendingTimer = window.setTimeout(() => {
-      if (playbackSequenceRef.current === sequenceId) {
-        pendingThresholdRef.current = null;
-      }
-    }, finalStep.delayMs + finalStep.durationMs + 120);
-    oscillatorTimersRef.current.push(clearPendingTimer);
-
-    pattern.forEach((step) => {
-      const timerId = window.setTimeout(() => {
-        if (playbackSequenceRef.current !== sequenceId) {
-          return;
-        }
-
-        const oscillator = audioContext.createOscillator();
-        const gainNode = audioContext.createGain();
-        const startedAt = audioContext.currentTime;
-        const attack = Math.min(step.durationMs / 1000 / 3, 0.02);
-        const releaseStart = startedAt + step.durationMs / 1000 - attack;
-        oscillator.type = thresholdKey === 'breached' || thresholdKey === '10m' ? 'square' : 'triangle';
-        oscillator.frequency.setValueAtTime(step.frequency, startedAt);
-        gainNode.gain.setValueAtTime(0.0001, startedAt);
-        gainNode.gain.linearRampToValueAtTime(step.gain, startedAt + attack);
-        gainNode.gain.setValueAtTime(step.gain, Math.max(startedAt + attack, releaseStart));
-        gainNode.gain.linearRampToValueAtTime(0.0001, startedAt + step.durationMs / 1000);
-        oscillator.connect(gainNode);
-        gainNode.connect(audioContext.destination);
-        activeOscillatorsRef.current.push({ oscillator, gainNode });
-        oscillator.onended = () => {
-          activeOscillatorsRef.current = activeOscillatorsRef.current.filter((node) => node.oscillator !== oscillator);
-          try {
-            oscillator.disconnect();
-          } catch {
-            // Ignore disconnected oscillators.
-          }
-          try {
-            gainNode.disconnect();
-          } catch {
-            // Ignore disconnected gain nodes.
-          }
-        };
-        oscillator.start(startedAt);
-        oscillator.stop(startedAt + step.durationMs / 1000);
-      }, step.delayMs);
-
-      oscillatorTimersRef.current.push(timerId);
-    });
-  });
-
-  const playSoundSequence = useEffectEvent((sources: string[]) => {
-    if (sources.length === 0) {
-      return;
-    }
-
-    pendingSoundsRef.current = [...sources];
-    stopAudioPlayback();
-    const sequenceId = playbackSequenceRef.current + 1;
-    playbackSequenceRef.current = sequenceId;
-
-    const playIndex = (index: number) => {
-      if (playbackSequenceRef.current !== sequenceId) {
-        return;
-      }
-
-      if (index >= sources.length) {
-        pendingSoundsRef.current = [];
-        audioUnlockedRef.current = true;
-        currentAudioRef.current = null;
-        return;
-      }
-
-      const audio = getAudioElement(sources[index]);
-      currentAudioRef.current = audio;
+      audio.pause();
       audio.currentTime = 0;
-      audio.onended = () => {
-        audio.onended = null;
-        audio.onerror = null;
-        playIndex(index + 1);
-      };
-      audio.onerror = () => {
-        if (playbackSequenceRef.current !== sequenceId) {
-          return;
-        }
+    });
+  }, []);
 
-        audioUnlockedRef.current = false;
-        pendingSoundsRef.current = sources.slice(index);
-        currentAudioRef.current = null;
-      };
-
-      void audio.play().then(() => {
-        audioUnlockedRef.current = true;
-      }).catch(() => {
-        if (playbackSequenceRef.current !== sequenceId) {
-          return;
-        }
-
-        audioUnlockedRef.current = false;
-        pendingSoundsRef.current = sources.slice(index);
-        currentAudioRef.current = null;
-      });
-    };
-
-    playIndex(0);
-  });
-
-  const enableAudioAndPlayPending = useEffectEvent(() => {
-    if (safeSafariAudioMode) {
-      const pendingThreshold = pendingThresholdRef.current;
-      if (!pendingThreshold) {
+  const playSoundSequence = useCallback(
+    (sources: string[]) => {
+      if (sources.length === 0) {
         return;
       }
 
-      void playSafeBeepPattern(pendingThreshold);
+      stopAudioPlayback();
+      pendingSoundsRef.current = [];
+      const sequenceId = playbackSequenceRef.current;
+
+      const playIndex = (index: number) => {
+        if (playbackSequenceRef.current !== sequenceId) {
+          return;
+        }
+
+        if (index >= sources.length) {
+          currentAudioRef.current = null;
+          return;
+        }
+
+        const audio = getAudioElement(sources[index]);
+        let settled = false;
+        const advance = () => {
+          if (settled || playbackSequenceRef.current !== sequenceId) {
+            return;
+          }
+
+          settled = true;
+          audio.onended = null;
+          audio.onerror = null;
+          playIndex(index + 1);
+        };
+
+        currentAudioRef.current = audio;
+        audio.muted = false;
+        audio.volume = 1;
+        audio.currentTime = 0;
+        audio.onended = advance;
+        audio.onerror = () => {
+          console.warn('[FalconSlaAlerts] No se pudo cargar el audio', sources[index]);
+          advance();
+        };
+
+        audio
+          .play()
+          .then(() => {
+            if (playbackSequenceRef.current === sequenceId) {
+              audioUnlockedRef.current = true;
+            }
+          })
+          .catch((error: unknown) => {
+            if (playbackSequenceRef.current !== sequenceId) {
+              return; // Interrupted by our own stop; nothing to recover.
+            }
+
+            if (error instanceof DOMException && error.name === 'NotAllowedError') {
+              // No user gesture yet: keep the clips and replay them on the next gesture.
+              audioUnlockedRef.current = false;
+              pendingSoundsRef.current = sources.slice(index);
+              currentAudioRef.current = null;
+              return;
+            }
+
+            console.warn('[FalconSlaAlerts] No se pudo reproducir el audio', sources[index], error);
+            advance();
+          });
+      };
+
+      playIndex(0);
+    },
+    [getAudioElement, stopAudioPlayback],
+  );
+
+  // Runs synchronously inside a pointer/key event. The pending clip is started here,
+  // inside the gesture, and every other clip is started muted so Safari lifts its
+  // per-element restriction and later alerts can play without another gesture.
+  const unlockAudioOnGesture = useCallback(() => {
+    if (audioUnlockedRef.current) {
       return;
     }
 
-    const currentSounds = pendingSoundsRef.current.length > 0 ? [...pendingSoundsRef.current] : [];
-    if (currentSounds.length === 0) {
-      return;
+    if (pendingSoundsRef.current.length > 0) {
+      playSoundSequence(pendingSoundsRef.current);
     }
 
-    playSoundSequence(currentSounds);
-  });
+    AUDIO_SOURCES.forEach((src) => {
+      const audio = getAudioElement(src);
+      if (audio === currentAudioRef.current || !audio.paused) {
+        return;
+      }
+
+      audio.muted = true;
+      const settle = () => {
+        if (audio !== currentAudioRef.current) {
+          audio.pause();
+          audio.currentTime = 0;
+          audio.muted = false;
+        }
+      };
+
+      audio
+        .play()
+        .then(() => {
+          audioUnlockedRef.current = true;
+          settle();
+        })
+        .catch(settle);
+    });
+  }, [getAudioElement, playSoundSequence]);
 
   useEffect(() => {
     const openIds = new Set(openEntries.map((entry) => entry.id));
@@ -556,22 +363,20 @@ function AssignedFalconSlaAlerts({ contextLabel, entries, userId }: FalconSlaAle
   }, [openEntries, persistThresholds]);
 
   useEffect(() => {
-    const handleInteraction = () => {
-      void primeAudioPlayback().then((primed) => {
-        if (primed && pendingSoundsRef.current.length > 0) {
-          enableAudioAndPlayPending();
-        }
-      });
-    };
-
-    window.addEventListener('pointerdown', handleInteraction, { passive: true });
-    window.addEventListener('keydown', handleInteraction);
+    AUDIO_SOURCES.forEach(getAudioElement); // start buffering before the first alert
+    const options: AddEventListenerOptions = { passive: true };
+    window.addEventListener('pointerdown', unlockAudioOnGesture, options);
+    window.addEventListener('touchend', unlockAudioOnGesture, options);
+    window.addEventListener('click', unlockAudioOnGesture, options);
+    window.addEventListener('keydown', unlockAudioOnGesture);
 
     return () => {
-      window.removeEventListener('pointerdown', handleInteraction);
-      window.removeEventListener('keydown', handleInteraction);
+      window.removeEventListener('pointerdown', unlockAudioOnGesture);
+      window.removeEventListener('touchend', unlockAudioOnGesture);
+      window.removeEventListener('click', unlockAudioOnGesture);
+      window.removeEventListener('keydown', unlockAudioOnGesture);
     };
-  }, [enableAudioAndPlayPending, primeAudioPlayback]);
+  }, [getAudioElement, unlockAudioOnGesture]);
 
   useEffect(() => {
     const nextAlerts: FalconAlertNotification[] = [];
@@ -609,39 +414,26 @@ function AssignedFalconSlaAlerts({ contextLabel, entries, userId }: FalconSlaAle
   useEffect(() => {
     if (!activeNotification) {
       pendingSoundsRef.current = [];
-      pendingThresholdRef.current = null;
       stopAudioPlayback();
       return;
     }
 
-    if (safeSafariAudioMode) {
-      pendingThresholdRef.current = activeNotification.thresholdKey;
-      void playSafeBeepPattern(activeNotification.thresholdKey);
-
-      return () => {
-        pendingThresholdRef.current = null;
-        stopAudioPlayback();
-      };
-    }
-
-    const audioToPlay = AUDIO_BY_THRESHOLD[activeNotification.thresholdKey] || ALERT_SOUND;
-    pendingSoundsRef.current = [audioToPlay];
-    playSoundSequence([audioToPlay]);
+    playSoundSequence([AUDIO_BY_THRESHOLD[activeNotification.thresholdKey] || ALERT_SOUND]);
 
     return () => {
       pendingSoundsRef.current = [];
       stopAudioPlayback();
     };
-  }, [activeNotification, playSafeBeepPattern, playSoundSequence, safeSafariAudioMode, stopAudioPlayback]);
+  }, [activeNotification, playSoundSequence, stopAudioPlayback]);
 
   useEffect(() => {
     if (!activeNotification || isFullscreen) {
       return;
     }
 
-    const timer = window.setTimeout(() => dismissActive(), 9500);
+    const timer = window.setTimeout(() => removeNotification(activeNotification), 9500);
     return () => window.clearTimeout(timer);
-  }, [activeNotification, dismissActive, isFullscreen]);
+  }, [activeNotification, isFullscreen, removeNotification]);
 
   if (!activeNotification || !activeEntry || !activeTone || !activeThreshold) {
     return null;
@@ -682,7 +474,7 @@ function AssignedFalconSlaAlerts({ contextLabel, entries, userId }: FalconSlaAle
             <button
               type="button"
               className="falcon-sla-overlay__button"
-              onClick={dismissActive}
+              onClick={() => removeNotification(activeNotification)}
               style={{
                 background: activeTone.buttonBackground,
                 borderColor: activeTone.buttonBorder,
@@ -718,7 +510,7 @@ function AssignedFalconSlaAlerts({ contextLabel, entries, userId }: FalconSlaAle
           <button
             type="button"
             className="falcon-sla-toast__button"
-            onClick={dismissActive}
+            onClick={() => removeNotification(activeNotification)}
             style={{
               background: activeTone.buttonBackground,
               borderColor: activeTone.buttonBorder,

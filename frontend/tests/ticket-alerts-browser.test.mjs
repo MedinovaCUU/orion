@@ -1,22 +1,26 @@
 import assert from 'node:assert/strict';
 import { chromium } from 'playwright-core';
+const FIXTURE_URL = process.env.TICKET_ALERTS_URL || 'http://127.0.0.1:5198/orion/tests/fixtures/ticket-alerts.html';
+const SAFARI_UA = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.5 Safari/605.1.15';
 const browser=await chromium.launch({channel:'chrome',headless:true});
 const page=await browser.newPage();
 const errors=[];page.on('pageerror',e=>errors.push(e.message));
 page.on('console', message => { if (message.type()==='error' && /Maximum update depth/.test(message.text())) errors.push(message.text()); });
 let assigned=true;let reads=0;
-await page.addInitScript(()=>{
- window.__played=0;
- HTMLMediaElement.prototype.play=function(){if(!this.muted&&this.volume>0)window.__played++;return Promise.resolve();};
+const countPlays=()=>{
+ window.__played=0;window.__sources=[];
+ HTMLMediaElement.prototype.play=function(){if(!this.muted&&this.volume>0){window.__played++;window.__sources.push(this.src.split('/').pop());}return Promise.resolve();};
  HTMLMediaElement.prototype.pause=function(){};
-});
-await page.route('**/rest/v1/ticket_assignments*',async route=>{
+};
+const fulfillAssignments=async route=>{
  reads++;
  const own = new URL(route.request().url()).searchParams.get('assigned_to')==='eq.alfredo';
  await route.fulfill({status:200,contentType:'application/json',body:JSON.stringify(own&&assigned?[{ticket_id:'alfredo-ticket'}]:[])});
-});
+};
+await page.addInitScript(countPlays);
+await page.route('**/rest/v1/ticket_assignments*',fulfillAssignments);
 try{
- await page.goto('http://127.0.0.1:5198/orion/tests/fixtures/ticket-alerts.html');
+ await page.goto(FIXTURE_URL);
  await page.waitForResponse(r=>r.url().includes('/ticket_assignments'));
  assert.equal(await page.getByRole('alertdialog').count(),0);
  assert.equal(await page.evaluate(()=>window.__played),0,'Francisco gets no alarm for another owner');
@@ -24,6 +28,9 @@ try{
  await page.getByRole('alertdialog').waitFor();
  assert.match(await page.getByRole('alertdialog').innerText(),/alfredo-ticket/);
  assert.doesNotMatch(await page.getByRole('alertdialog').innerText(),/unassigned-ticket/);
+ // The countdown re-renders the parent every second; the clip must not be restarted on each tick.
+ await page.waitForTimeout(2600);
+ assert.deepEqual(await page.evaluate(()=>window.__sources),['alarm.mp3'],'alarm clip plays once while the countdown ticks');
  // Use DOM click to simulate a session change while the critical overlay is open.
  await page.getByRole('button',{name:'Sesión Francisco'}).evaluate(button=>button.click());
  await page.getByRole('alertdialog').waitFor({state:'detached'});
@@ -38,6 +45,20 @@ try{
  await page.waitForResponse(r=>r.url().includes('/ticket_assignments'));
  assert.equal(await page.getByRole('alertdialog').count(),0);
  assert.ok(reads>=4);
+ // Safari gets the same recorded MP3 clips, not a separate synthetic-beep path.
+ assigned=true;
+ const safari=await browser.newContext({userAgent:SAFARI_UA});
+ const safariPage=await safari.newPage();
+ safariPage.on('pageerror',e=>errors.push(e.message));
+ await safariPage.addInitScript(()=>{Object.defineProperty(navigator,'vendor',{get:()=>'Apple Computer, Inc.'});});
+ await safariPage.addInitScript(countPlays);
+ await safariPage.route('**/rest/v1/ticket_assignments*',fulfillAssignments);
+ await safariPage.goto(FIXTURE_URL);
+ await safariPage.getByRole('button',{name:'Sesión Alfredo'}).click();
+ await safariPage.getByRole('alertdialog').waitFor();
+ await safariPage.waitForTimeout(2600);
+ assert.deepEqual(await safariPage.evaluate(()=>window.__sources),['alarm.mp3'],'Safari plays the MP3 clip once');
+ await safari.close();
  assert.deepEqual(errors,[]);
- console.log('PASS: unassigned Francisco receives no alarm, assignee receives own alarm, session switch clears overlay/audio, thresholds isolated per user, revoked assignment silent');
+ console.log('PASS: unassigned Francisco receives no alarm, assignee receives own alarm once despite countdown ticks, session switch clears overlay/audio, thresholds isolated per user, revoked assignment silent, Safari plays MP3');
 }finally{await browser.close();}
