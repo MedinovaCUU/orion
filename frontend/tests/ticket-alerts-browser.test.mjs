@@ -31,6 +31,12 @@ try{
  // The countdown re-renders the parent every second; the clip must not be restarted on each tick.
  await page.waitForTimeout(2600);
  assert.deepEqual(await page.evaluate(()=>window.__sources),['alarm.mp3'],'alarm clip plays once while the countdown ticks');
+ // Supabase re-emits SIGNED_IN / TOKEN_REFRESHED for the same user; the open alarm must survive it.
+ await page.getByRole('button',{name:'Refrescar sesión'}).evaluate(button=>button.click());
+ await page.waitForResponse(r=>r.url().includes('/ticket_assignments'));
+ await page.waitForTimeout(500);
+ assert.equal(await page.getByRole('alertdialog').count(),1,'same-user auth event keeps the overlay');
+ assert.deepEqual(await page.evaluate(()=>window.__sources),['alarm.mp3'],'same-user auth event does not replay the clip');
  // Use DOM click to simulate a session change while the critical overlay is open.
  await page.getByRole('button',{name:'Sesión Francisco'}).evaluate(button=>button.click());
  await page.getByRole('alertdialog').waitFor({state:'detached'});
@@ -60,5 +66,5 @@ try{
  assert.deepEqual(await safariPage.evaluate(()=>window.__sources),['alarm.mp3'],'Safari plays the MP3 clip once');
  await safari.close();
  assert.deepEqual(errors,[]);
- console.log('PASS: unassigned Francisco receives no alarm, assignee receives own alarm once despite countdown ticks, session switch clears overlay/audio, thresholds isolated per user, revoked assignment silent, Safari plays MP3');
+ console.log('PASS: unassigned Francisco receives no alarm, assignee receives own alarm once despite countdown ticks and same-user auth events, session switch clears overlay/audio, thresholds isolated per user, revoked assignment silent, Safari plays MP3');
 }finally{await browser.close();}

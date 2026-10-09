@@ -24,25 +24,25 @@ export default function useAssignedTicketAlerts() {
         if (active && request === generation) setAccess({ userId: null, ticketIds: new Set() });
       }
     };
-    const clearAndRefresh = () => {
+    const refreshKeepingAccess = () => void refresh();
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       ++generation;
-      setAccess({ userId: null, ticketIds: new Set() });
-      void refresh();
-    };
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(() => {
-      ++generation;
-      setAccess({ userId: null, ticketIds: new Set() });
+      // Supabase also emits INITIAL_SESSION / SIGNED_IN / TOKEN_REFRESHED for the user who is
+      // already signed in. Clearing access there unmounts the alert overlay and, because the
+      // threshold is already persisted, it never comes back. Only clear when the user changes.
+      const nextUserId = session?.user?.id ?? null;
+      setAccess(current => (nextUserId && current.userId === nextUserId ? current : { userId: null, ticketIds: new Set() }));
       // Auth requests run outside the Supabase auth callback's lock.
       window.setTimeout(() => { if (active) void refresh(); }, 0);
     });
     void refresh();
-    const timer = window.setInterval(() => void refresh(), 30000);
-    window.addEventListener('focus', clearAndRefresh);
-    window.addEventListener('ticket-assignment-changed', clearAndRefresh);
+    const timer = window.setInterval(refreshKeepingAccess, 30000);
+    window.addEventListener('focus', refreshKeepingAccess);
+    window.addEventListener('ticket-assignment-changed', refreshKeepingAccess);
     return () => {
       active = false; ++generation; subscription.unsubscribe(); window.clearInterval(timer);
-      window.removeEventListener('focus', clearAndRefresh);
-      window.removeEventListener('ticket-assignment-changed', clearAndRefresh);
+      window.removeEventListener('focus', refreshKeepingAccess);
+      window.removeEventListener('ticket-assignment-changed', refreshKeepingAccess);
     };
   }, []);
   return access;
