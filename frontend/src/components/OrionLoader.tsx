@@ -4,12 +4,15 @@ import './OrionLoader.css';
 
 const BASE = `${import.meta.env.BASE_URL || '/'}`.replace(/\/?$/, '/');
 const BRAND = `${BASE}orion-brand/`;
+/** Súbelo cada vez que cambie el contenido de un archivo de `orion-brand/` que conserve su nombre: evita copias en caché. */
+const ASSET_VERSION = 'v6';
+const asset = (file: string) => `${BRAND}${file}?${ASSET_VERSION}`;
 const ORION_LOADER_ASSETS = {
-  loop: { hevc: `${BRAND}orion-loader-motion-hevc.mov`, webm: `${BRAND}orion-loader-motion.webm`, mp4: `${BRAND}orion-loader-motion.mp4` },
-  intro: { hevc: `${BRAND}orion-intro-hevc.mov`, webm: `${BRAND}orion-intro.webm`, mp4: `${BRAND}orion-intro.mp4` },
-  still: `${BRAND}orion-loader-still.webp`,
-  stillWhite: `${BRAND}orion-loader-still-white.webp`,
-  wordmark: `${BRAND}orion-wordmark.webp`,
+  loop: { hevc: asset('orion-loader-motion-hevc.mov'), webm: asset('orion-loader-motion.webm'), mp4: asset('orion-loader-motion.mp4') },
+  intro: { hevc: asset('orion-intro-hevc.mov'), webm: asset('orion-intro.webm'), mp4: asset('orion-intro.mp4') },
+  still: asset('orion-loader-still.webp'),
+  stillWhite: asset('orion-loader-still-white.webp'),
+  wordmark: asset('orion-wordmark.webp'),
   biosystems: `${BASE}bios-brand/BioS_Logo_300dpi.png`,
 };
 
@@ -28,7 +31,8 @@ const detectAlphaFormat = (): AlphaFormat => {
   const video = document.createElement('video');
   const ua = navigator.userAgent;
   const isSafari = /Safari/i.test(ua) && !/Chrom(e|ium)|Edg\/|OPR\//i.test(ua);
-  if (isSafari && video.canPlayType('video/mp4; codecs="hvc1"') !== '') return 'hevc';
+  const hevcOk = ['video/mp4; codecs="hvc1"', 'video/mp4; codecs="hev1"', 'video/quicktime'].some((t) => video.canPlayType(t) !== '');
+  if (isSafari && hevcOk) return 'hevc';
   if (video.canPlayType('video/webm; codecs="vp9"') !== '') return 'webm';
   return null;
 };
@@ -97,7 +101,6 @@ export function OrionLoader({ size, className = '', intro = false, onIntroEnd }:
 
   const clip = introPlaying ? ORION_LOADER_ASSETS.intro : ORION_LOADER_ASSETS.loop;
   const videoSrc = resolved === 'alpha' ? (alphaFormat === 'hevc' ? clip.hevc : clip.webm) : clip.mp4;
-  const videoType = resolved === 'alpha' ? (alphaFormat === 'hevc' ? 'video/quicktime' : 'video/webm') : 'video/mp4';
   const stillSrc = resolved === 'opaque' ? ORION_LOADER_ASSETS.stillWhite : ORION_LOADER_ASSETS.still;
 
   return (
@@ -108,6 +111,7 @@ export function OrionLoader({ size, className = '', intro = false, onIntroEnd }:
         <video
           key={videoSrc}
           ref={videoRef}
+          src={videoSrc}
           preload="auto"
           autoPlay
           muted
@@ -125,9 +129,7 @@ export function OrionLoader({ size, className = '', intro = false, onIntroEnd }:
             else setOpaqueFailed(true);
             setMotionReady(false);
           }}
-        >
-          <source src={videoSrc} type={videoType} />
-        </video>
+        />
       )}
     </span>
   );

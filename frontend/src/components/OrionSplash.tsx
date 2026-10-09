@@ -6,7 +6,7 @@ import './OrionSplash.css';
 
 const BASE = `${import.meta.env.BASE_URL || '/'}`.replace(/\/?$/, '/');
 const ASSETS = {
-  wordmark: `${BASE}orion-brand/orion-wordmark.webp`,
+  wordmark: `${BASE}orion-brand/orion-wordmark.webp?v6`,
   biosystems: `${BASE}bios-brand/BioS_Logo_300dpi.png`,
 };
 
