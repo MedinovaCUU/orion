@@ -1,6 +1,7 @@
 import { ticketCreationMessage } from './ticketCreationReceipt';
 import SatisfactionDashboard from './satisfaction/SatisfactionDashboard';
 import { canOpenTicketControl } from './ticketAlertAccess';
+import { EMPTY_TICKET_VIEWER, filterTicketsForViewer, viewerSeesAllTickets, type TicketViewer } from './ticketVisibility';
 import TicketControlCenter from './TicketControlCenter';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
@@ -342,12 +343,14 @@ export default function Tickets({ subPermissions = ['crear', 'seguimiento', 'dia
   const canCreateTickets = subPermissions.includes('crear');
   const canViewTickets = subPermissions.includes('seguimiento');
   const canDiagnoseTickets = subPermissions.includes('diagnostico');
-  const [tickets, setTickets] = useState<TicketRecord[]>([]);
+  const [loadedTickets, setLoadedTickets] = useState<TicketRecord[]>([]);
+  const [viewer, setViewer] = useState<TicketViewer>(EMPTY_TICKET_VIEWER);
+  // The inbox only keeps the viewer's own cases; administrators keep the full list.
+  const tickets = useMemo(() => filterTicketsForViewer(loadedTickets, viewer), [loadedTickets, viewer]);
   const [loading, setLoading] = useState(true);
   const [caseFilter, setCaseFilter] = useState('abiertos');
   const [controlView, setControlView] = useState(false);
-  const [viewerRole, setViewerRole] = useState<string | null>(null);
-  const canViewControl = canOpenTicketControl(viewerRole);
+  const canViewControl = canOpenTicketControl(viewer.role);
   const [asunto, setAsunto] = useState('');
   const [descripcion, setDescripcion] = useState('');
   const [submitting, setSubmitting] = useState(false);
@@ -410,7 +413,19 @@ export default function Tickets({ subPermissions = ['crear', 'seguimiento', 'dia
         .eq('id', user.id)
         .maybeSingle();
 
-      setViewerRole(profile?.rol || null);
+      const role = profile?.rol || null;
+      const assignedTicketIds = new Set<string>();
+      if (!viewerSeesAllTickets(role)) {
+        // Assignees can read their own rows of ticket_assignments under RLS.
+        for (let offset = 0; ; offset += 1000) {
+          const page = await supabase.from('ticket_assignments').select('ticket_id')
+            .eq('assigned_to', user.id).order('ticket_id').range(offset, offset + 999);
+          if (page.error) break;
+          (page.data || []).forEach((row) => assignedTicketIds.add(row.ticket_id));
+          if ((page.data?.length || 0) < 1000) break;
+        }
+      }
+      setViewer({ userId: user.id, role, fullName: profile?.nombre_completo || null, assignedTicketIds });
       const data: TicketRecord[] = [];
       let error: { message: string } | null = null;
       for (let offset = 0; ; offset += 1000) {
@@ -420,16 +435,16 @@ export default function Tickets({ subPermissions = ['crear', 'seguimiento', 'dia
         data.push(...(page.data || []) as TicketRecord[]);
         if ((page.data?.length || 0) < 1000) break;
       }
-      if (error) setTickets([]);
+      if (error) setLoadedTickets([]);
       if (error) setTicketFeedback({ tone: 'error', message: `No se pudieron cargar los casos: ${error.message}` });
       
       if (!error && data) {
-        setTickets(data); // Supabase enforces assignment access for every query.
+        setLoadedTickets(data); // RLS bounds the rows; the viewer filter keeps the inbox personal.
 
       }
     } else {
-      setViewerRole(null);
-      setTickets([]);
+      setViewer(EMPTY_TICKET_VIEWER);
+      setLoadedTickets([]);
     }
     setLoading(false);
   };
@@ -827,11 +842,12 @@ export default function Tickets({ subPermissions = ['crear', 'seguimiento', 'dia
       }} />}
       {canViewTickets && (!canViewControl || !controlView) ? <div className="card" style={{ background: 'var(--bg-secondary)', border: 'none' }}>
         <h3 style={{ marginBottom: '1rem' }}>Bandeja de Casos de Soporte</h3>
+        {!canViewControl && <p className="tickets-scope-note" style={{ color: 'var(--text-secondary)', fontSize: '0.85rem', margin: '-0.5rem 0 1rem' }}>Solo se muestran los casos asignados a ti o en los que apareces como responsable en la planeación.</p>}
       <label>Mostrar casos <select className="input-field" value={caseFilter} onChange={event => setCaseFilter(event.target.value)}><option value="abiertos">Abiertos</option><option value="cerrados">Cerrados</option><option value="todos">Todos</option></select></label>
       {loading ? (
         <Loader block label="Cargando tickets…" />
       ) : tickets.length === 0 ? (
-        <p style={{ color: 'var(--text-secondary)' }}>No tienes tickets aún.</p>
+        <p style={{ color: 'var(--text-secondary)' }}>{canViewControl ? 'No hay tickets aún.' : 'No tienes casos asignados por ahora.'}</p>
       ) : (
         <ul className="tickets-list">
           {ticketRenderItems.filter(({ ticket }) => caseFilter === 'todos' || (caseFilter === 'cerrados' ? ticket.estado === 'cerrado' : ticket.estado !== 'cerrado')).map(({ ticket, notification, isPlanningTicket, resolvedEquipment, ticketClientLabel, ticketPhoneLabel, locationLabel, staticFalconSla }) => {

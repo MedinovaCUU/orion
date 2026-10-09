@@ -82,3 +82,16 @@ simula a Francisco y otro responsable, sin usar sesiones o tickets reales.
 - El reparto ocurre al crear el caso. “Distribuir casos sin asignación” permite procesar casos previos tras configurar reglas. No altera asignaciones existentes, cierres ni retiros manuales. La reasignación manual registra responsable, administrador, hora y bitácora.
 - No se inventan asignaciones para casos históricos ni de planeación a partir del creador. Administración puede asignarlos explícitamente; el reparto automático procesa solo solicitudes de soporte con especialidad identificada.
 - Pruebas PGlite cubren prioridad habitual, territorio, especialidad, falta de configuración, aislamiento del creador, RPC heredado, movimiento permitido y revocación tras reasignar. Pruebas de navegador cubren configuración, reparto de pendientes, control y alarmas entre usuarios.
+
+## Bandeja operativa por responsable (frontend)
+
+La bandeja de Tickets filtra en el navegador los casos que ve un perfil no
+administrador: asignación explícita en `ticket_assignments`, `user_id` propio
+(altas propias y planeación donde es ingeniero líder) o su nombre de perfil en
+`ingeniero_csv` / `companions_csv` de la planeación. Los administradores ven todo.
+El filtro complementa el RLS de `20260924040000`; no lo sustituye ni lo relaja.
+
+Pruebas: `node frontend/tests/ticket-visibility.test.mjs` y
+`node frontend/tests/tickets-inbox-browser.test.mjs` (Vite en frontend, puerto 5200).
+La segunda simula a Alfredo, Diego y un administrador interceptando las peticiones;
+no usa sesiones ni tickets reales.
