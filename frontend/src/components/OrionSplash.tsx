@@ -19,7 +19,7 @@ export function OrionSplashScreen({ status, leaving = false, intro = false, onIn
   const delayed = (base: number) => (late ? { animationDelay: `${(late + base) / 1000}s` } : undefined);
   return (
     <div className={`orion-splash${leaving ? ' orion-splash--leaving' : ''}`} role="status" aria-live="polite">
-      <OrionLoader className="orion-splash__logo" opaque intro={intro} onIntroEnd={onIntroDone} />
+      <OrionLoader className="orion-splash__logo" intro={intro} onIntroEnd={onIntroDone} />
       <img className="orion-splash__wordmark" style={delayed(0)} src={ASSETS.wordmark} alt="Orion by Medinova" draggable={false} />
       <div className="orion-splash__brand" style={delayed(150)}>
         <img className="orion-splash__biosystems" src={ASSETS.biosystems} alt="BioSystems" draggable={false} />

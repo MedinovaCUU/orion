@@ -8,6 +8,7 @@
   vertical-align: middle;
 }
 
+/* Los medios llevan aire alrededor del logo (72 % del encuadre); se escalan para que el logo llene la caja y el halo desborde. */
 .orion-loader > img,
 .orion-loader > video {
   position: absolute;
@@ -15,7 +16,17 @@
   width: 100%;
   height: 100%;
   object-fit: contain;
+  transform: scale(1.389);
+  transform-origin: center;
+  pointer-events: none;
   -webkit-user-drag: none;
+}
+
+/* Sin formato con transparencia: vídeo opaco sobre blanco, con los bordes desvanecidos para que no se vea el recuadro. */
+.orion-loader--opaque > img,
+.orion-loader--opaque > video {
+  -webkit-mask-image: radial-gradient(circle at center, #000 0 52%, transparent 70%);
+  mask-image: radial-gradient(circle at center, #000 0 52%, transparent 70%);
 }
 
 /* Inline: logo pequeño + texto, válido dentro de párrafos y botones. */

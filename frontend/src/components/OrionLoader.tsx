@@ -3,73 +3,71 @@ import { prefersReducedMotion } from './orionMotion';
 import './OrionLoader.css';
 
 const BASE = `${import.meta.env.BASE_URL || '/'}`.replace(/\/?$/, '/');
+const BRAND = `${BASE}orion-brand/`;
 const ORION_LOADER_ASSETS = {
-  motionWebm: `${BASE}orion-brand/orion-loader-motion.webm`,
-  motionWebp: `${BASE}orion-brand/orion-loader-motion.webp`,
-  still: `${BASE}orion-brand/orion-loader-still.webp`,
-  motionWebpSmall: `${BASE}orion-brand/orion-loader-motion-s.webp`,
-  motionMp4: `${BASE}orion-brand/orion-loader-motion.mp4`,
-  stillWhite: `${BASE}orion-brand/orion-loader-still-white.webp`,
-  introMp4: `${BASE}orion-brand/orion-intro.mp4`,
-  wordmark: `${BASE}orion-brand/orion-wordmark.webp`,
+  loop: { hevc: `${BRAND}orion-loader-motion-hevc.mov`, webm: `${BRAND}orion-loader-motion.webm`, mp4: `${BRAND}orion-loader-motion.mp4` },
+  intro: { hevc: `${BRAND}orion-intro-hevc.mov`, webm: `${BRAND}orion-intro.webm`, mp4: `${BRAND}orion-intro.mp4` },
+  still: `${BRAND}orion-loader-still.webp`,
+  stillWhite: `${BRAND}orion-loader-still-white.webp`,
+  wordmark: `${BRAND}orion-wordmark.webp`,
   biosystems: `${BASE}bios-brand/BioS_Logo_300dpi.png`,
-};
-
-
-/** WebM con alfa (VP9) es más ligero; Safari no lo reproduce con transparencia, ahí usamos el WebP animado. */
-const supportsAlphaWebm = () => {
-  if (typeof document === 'undefined') return false;
-  const ua = navigator.userAgent;
-  const isSafari = /Safari/i.test(ua) && !/Chrom(e|ium)|Edg\//i.test(ua);
-  if (isSafari) return false;
-  const video = document.createElement('video');
-  return video.canPlayType('video/webm; codecs="vp9"') !== '';
 };
 
 /** Duración de la animación completa de bienvenida (240 cuadros a 30 fps). */
 export const ORION_INTRO_MS = 8000;
-/** Si la bienvenida no está lista para reproducirse en este tiempo, se omite (y no se marca como vista). */
+/** Si la bienvenida no ha empezado a reproducirse en este tiempo, se omite (y no se marca como vista). */
 const INTRO_READY_TIMEOUT_MS = 9000;
 
-type LoaderMode = 'still' | 'video' | 'webp';
+/**
+ * Formato con transparencia que el navegador reproduce: HEVC con alfa en Safari (nativo, decodificación por hardware),
+ * WebM VP9 con alfa en Chromium y Firefox. `null` si no hay ninguno (se usará el MP4 opaco sobre blanco).
+ */
+type AlphaFormat = 'hevc' | 'webm' | null;
+const detectAlphaFormat = (): AlphaFormat => {
+  if (typeof document === 'undefined') return null;
+  const video = document.createElement('video');
+  const ua = navigator.userAgent;
+  const isSafari = /Safari/i.test(ua) && !/Chrom(e|ium)|Edg\/|OPR\//i.test(ua);
+  if (isSafari && video.canPlayType('video/mp4; codecs="hvc1"') !== '') return 'hevc';
+  if (video.canPlayType('video/webm; codecs="vp9"') !== '') return 'webm';
+  return null;
+};
+
+type LoaderMode = 'still' | 'alpha' | 'opaque';
 
 /**
  * Logo Orion animado (loop renderizado en Blender: el ojo busca al usuario, los aros giran, los satélites orbitan).
  * `size` fija el ancho en px; si se omite, se dimensiona por CSS. Con "reducir movimiento" se muestra el cuadro fijo.
  *
- * `opaque`: usa MP4 H.264 sobre blanco (ligero y con decodificación por hardware en todos los navegadores, Safari
- * incluido); pensado para el splash, cuyo fondo es blanco detrás del logo. Sin `opaque` se usa WebM con alfa o WebP
- * animado (transparente), para loaders inline sobre cualquier fondo.
+ * Los vídeos llevan aire alrededor del logo (ocupa el 72 % del encuadre) para que el halo nunca se recorte; el CSS
+ * escala el medio para que el logo llene la caja y el halo desborde. Con transparencia (HEVC alfa en Safari, WebM VP9
+ * en el resto) se integra sobre cualquier fondo; si no hay formato con alfa se usa MP4 opaco sobre blanco con un
+ * desvanecido radial en los bordes.
  *
- * `intro`: reproduce primero la animación completa de bienvenida (una vez) y al terminar continúa con el loop. Arranca
- * solo cuando el vídeo está listo para reproducirse de corrido; `onIntroEnd(completed)` avisa al terminar o al omitirla.
+ * `intro`: reproduce primero la animación completa de bienvenida (una vez) y al terminar continúa con el loop.
+ * `onIntroEnd(completed)` avisa al terminar o al omitirla (recurso no listo a tiempo).
  */
-export function OrionLoader({ size, className = '', opaque = false, intro = false, onIntroEnd }: {
+export function OrionLoader({ size, className = '', intro = false, onIntroEnd }: {
   size?: number;
   className?: string;
-  opaque?: boolean;
   intro?: boolean;
   onIntroEnd?: (completed: boolean) => void;
 }) {
-  const mode = useMemo<LoaderMode>(() => {
-    if (prefersReducedMotion()) return 'still';
-    if (opaque) return 'video';
-    return supportsAlphaWebm() ? 'video' : 'webp';
-  }, [opaque]);
-  const [videoFailed, setVideoFailed] = useState(false);
-  const [webpFailed, setWebpFailed] = useState(false);
+  const alphaFormat = useMemo(detectAlphaFormat, []);
+  const mode = useMemo<LoaderMode>(() => (prefersReducedMotion() ? 'still' : alphaFormat ? 'alpha' : 'opaque'), [alphaFormat]);
+  const [alphaFailed, setAlphaFailed] = useState(false);
+  const [opaqueFailed, setOpaqueFailed] = useState(false);
   const [motionReady, setMotionReady] = useState(false);
-  const [introPlaying, setIntroPlaying] = useState(intro && opaque && mode === 'video');
+  const [introPlaying, setIntroPlaying] = useState(intro && mode !== 'still');
   const [introStarted, setIntroStarted] = useState(false);
   let resolved: LoaderMode = mode;
-  if (resolved === 'video' && videoFailed) resolved = opaque ? 'still' : 'webp';
-  if (resolved === 'webp' && webpFailed) resolved = 'still';
+  if (resolved === 'alpha' && alphaFailed) resolved = 'opaque';
+  if (resolved === 'opaque' && opaqueFailed) resolved = 'still';
   const finishIntro = (completed: boolean) => {
     setIntroPlaying(false);
     onIntroEnd?.(completed);
   };
-  // Sin animación la bienvenida se omite; con WebP (sin evento de fin) se cronometra desde que la imagen cargó;
-  // y si el recurso tarda demasiado en estar listo, se omite sin marcarla como vista.
+  // Sin animación la bienvenida se omite; si no ha empezado a reproducirse a tiempo, se omite sin marcarla como vista.
   useEffect(() => {
     if (!intro || !introPlaying) return;
     if (resolved === 'still') {
@@ -78,10 +76,6 @@ export function OrionLoader({ size, className = '', opaque = false, intro = fals
     }
     if (!introStarted) {
       const t = window.setTimeout(() => finishIntro(false), INTRO_READY_TIMEOUT_MS);
-      return () => window.clearTimeout(t);
-    }
-    if (resolved === 'webp') {
-      const t = window.setTimeout(() => finishIntro(true), ORION_INTRO_MS);
       return () => window.clearTimeout(t);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -101,36 +95,19 @@ export function OrionLoader({ size, className = '', opaque = false, intro = fals
     return () => window.clearInterval(retry);
   }, [resolved, introPlaying]);
 
-  const small = size !== undefined && size <= 120;
-  // La bienvenida (intro) solo existe en MP4: se usa con `opaque` (splash). Sin `opaque`, intro cae al loop con alfa.
-  const videoSrc = opaque
-    ? (introPlaying ? ORION_LOADER_ASSETS.introMp4 : ORION_LOADER_ASSETS.motionMp4)
-    : ORION_LOADER_ASSETS.motionWebm;
-  const webpSrc = small ? ORION_LOADER_ASSETS.motionWebpSmall : ORION_LOADER_ASSETS.motionWebp;
-  const stillSrc = opaque ? ORION_LOADER_ASSETS.stillWhite : ORION_LOADER_ASSETS.still;
+  const clip = introPlaying ? ORION_LOADER_ASSETS.intro : ORION_LOADER_ASSETS.loop;
+  const videoSrc = resolved === 'alpha' ? (alphaFormat === 'hevc' ? clip.hevc : clip.webm) : clip.mp4;
+  const videoType = resolved === 'alpha' ? (alphaFormat === 'hevc' ? 'video/quicktime' : 'video/webm') : 'video/mp4';
+  const stillSrc = resolved === 'opaque' ? ORION_LOADER_ASSETS.stillWhite : ORION_LOADER_ASSETS.still;
 
   return (
-    <span aria-hidden className={`orion-loader${opaque ? ' orion-loader--opaque' : ''} ${className}`.trim()} style={size ? { width: size } : undefined}>
+    <span aria-hidden className={`orion-loader${resolved === 'opaque' ? ' orion-loader--opaque' : ''} ${className}`.trim()} style={size ? { width: size } : undefined}>
       {/* El cuadro fijo cubre la espera de descarga y se retira al llegar el primer cuadro animado (si no, se vería detrás). */}
       {(resolved === 'still' || !motionReady) && <img src={stillSrc} alt="" draggable={false} />}
-      {resolved === 'webp' && (
-        <img
-          key={webpSrc}
-          src={webpSrc}
-          alt=""
-          draggable={false}
-          onLoad={() => {
-            setMotionReady(true);
-            if (introPlaying) setIntroStarted(true);
-          }}
-          onError={() => (introPlaying ? finishIntro(false) : setWebpFailed(true))}
-        />
-      )}
-      {resolved === 'video' && (
+      {resolved !== 'still' && (
         <video
           key={videoSrc}
           ref={videoRef}
-          src={videoSrc}
           preload="auto"
           autoPlay
           muted
@@ -142,8 +119,15 @@ export function OrionLoader({ size, className = '', opaque = false, intro = fals
             if (introPlaying) setIntroStarted(true);
           }}
           onEnded={introPlaying ? () => finishIntro(true) : undefined}
-          onError={() => (introPlaying ? finishIntro(false) : setVideoFailed(true))}
-        />
+          onError={() => {
+            if (resolved === 'alpha') setAlphaFailed(true);
+            else if (introPlaying) finishIntro(false);
+            else setOpaqueFailed(true);
+            setMotionReady(false);
+          }}
+        >
+          <source src={videoSrc} type={videoType} />
+        </video>
       )}
     </span>
   );
