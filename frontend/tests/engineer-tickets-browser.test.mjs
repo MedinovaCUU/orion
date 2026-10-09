@@ -14,9 +14,20 @@ try {
   if(path.endsWith('/ticket_service_events')) data=[{id:'event-1',ticket_id:'case-a',kind:'respuesta',detail:'Diagnóstico registrado; esperando refacción.',actor_id:'a',occurred_at:'2026-10-06T18:00:00Z'}];
   await route.fulfill({status:200,contentType:'application/json',body:JSON.stringify(data)});
  });
+ await page.addInitScript(()=>{window.__played=0;HTMLMediaElement.prototype.play=function(){window.__played++;return Promise.resolve();};});
  await page.goto('http://127.0.0.1:5200/orion/tests/fixtures/live-planning.html');
  await page.getByRole('button',{name:'Pantalla completa',exact:true}).click();
  const card=page.locator('article').filter({has:page.getByRole('heading',{name:'Alfredo Acevedo',exact:true})});
+ // Silent Falcon time alerts on the shared wall: visual strip, assignee from the feed, no audio.
+ const strip=page.getByRole('status',{name:'Alertas de tiempo Falcon'});
+ await strip.getByText('Quedan 10 minutos',{exact:true}).waitFor();
+ await strip.getByText('SLA vencido',{exact:true}).waitFor();
+ await strip.getByText('Alfredo Acevedo',{exact:true}).waitFor();
+ await strip.getByText('Sin asignar',{exact:true}).waitFor();
+ assert.match(await strip.innerText(),/00:09:[0-5]\d/,'live countdown');
+ assert.ok(await card.evaluate(el=>el.classList.contains('engineer-wall__card--critical')),'assignee card highlighted');
+ assert.match(await card.innerText(),/Quedan 10 minutos/);
+ assert.equal(await page.evaluate(()=>window.__played),0,'wall alerts never play audio');
  await card.getByText('Falla de lectura BA200',{exact:true}).waitFor();
  await card.getByLabel('Asignado, respuesta registrada, cierre pendiente').waitFor();
  await card.getByText('Diagnóstico registrado; esperando refacción.',{exact:true}).waitFor();
@@ -33,5 +44,5 @@ try {
  await card.waitFor();
  // Stored ticket data remains available during a failed refresh.
  assert.ok(await page.locator('.engineer-wall__workload').getByText('1 tickets',{exact:true}).count());
- console.log('PASS: assignment by profile ID, recorded progress, automatic ticket/visit alternation, refresh failure preserves last data.');
+ console.log('PASS: assignment by profile ID, recorded progress, automatic ticket/visit alternation, refresh failure preserves last data, silent Falcon time alerts on the wall.');
 } finally {await browser.close();}

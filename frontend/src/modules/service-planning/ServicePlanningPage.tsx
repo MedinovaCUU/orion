@@ -463,7 +463,7 @@ export default function ServicePlanningPage({
 
     switch (section) {
       case 'tablero':
-        return <LivePlanningBoard services={services} profiles={staffProfiles} month={filters.month} canEdit={permissions.canEditAll} onCreate={onCreateService} onUpdate={onUpdateService} />;
+        return <LivePlanningBoard services={services} profiles={staffProfiles} month={filters.month} canEdit={permissions.canEditAll} onCreate={onCreateService} onUpdate={onUpdateService} falconTickets={falconTrackedReactiveTickets} />;
       case 'resumen':
       case 'calendario':
         return renderSummary();

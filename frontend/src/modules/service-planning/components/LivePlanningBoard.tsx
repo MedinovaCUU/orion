@@ -4,9 +4,13 @@ import type { ProfileSummary } from '../../../components/servicesPlanning';
 import october from '../../../../public/service-planning-sync/datasets/october-2026.json';
 import './livePlanningBoard.css';
 import EngineerWall from './EngineerWall';
+import FalconSlaWallAlerts from './FalconSlaWallAlerts';
+import { buildFalconWallAlerts, type FalconTrackedTicket } from '../helpers/falconWallAlerts';
+import useSecondTicker from '../../../components/useSecondTicker';
 import { buildRotationRoster } from '../helpers/weekendGuards';
 
-type Props = { services: PlannedService[]; profiles: ProfileSummary[]; month: string; canEdit: boolean; onCreate: (draft: QuickCreateDraft) => Promise<void>; onUpdate: (service: PlannedService, update: ServiceDetailUpdate) => Promise<void> };
+type Props = { services: PlannedService[]; profiles: ProfileSummary[]; month: string; canEdit: boolean; onCreate: (draft: QuickCreateDraft) => Promise<void>; onUpdate: (service: PlannedService, update: ServiceDetailUpdate) => Promise<void>; falconTickets?: FalconTrackedTicket[] };
+const NO_FALCON_TICKETS: FalconTrackedTicket[] = [];
 const retired = (name: string) => /\berick\b/i.test(name);
 const fields = ['scheduledDate', 'serviceType', 'platform', 'locality', 'serialNumber', 'observations', 'responsibleEngineers', 'companions'] as const;
 const labels = ['Fecha', 'Tipo', 'Plataforma', 'Localidad', 'NS', 'Observaciones', 'Ingenieros', 'Acompañantes'];
@@ -28,7 +32,7 @@ function EditableRow({ service, canEdit, onUpdate }: { service: PlannedService; 
   };
   return <tr><td>{service.weekLabel}<small>{service.status.join(' · ')}</small></td>{fields.map((key, index) => <td key={key}>{key === 'serviceType' ? <select aria-label={`${labels[index]} ${service.locality}`} disabled={!canEdit || busy} value={value(key)} onChange={e => setDraft(d => ({ ...d, [key]: e.target.value }))}>{types.map(t => <option key={t}>{t}</option>)}</select> : <input aria-label={`${labels[index]} ${service.locality}`} type={key === 'scheduledDate' ? 'date' : 'text'} disabled={!canEdit || busy} value={value(key)} onChange={e => setDraft(d => ({ ...d, [key]: e.target.value }))} onKeyDown={e => { if (e.key === 'Enter' && Object.keys(draft).length) void save(); if (e.key === 'Escape') setDraft({}); }} />}</td>)}<td>{Object.keys(draft).length > 0 && <><button disabled={busy} onClick={() => void save()}>{busy ? 'Guardando…' : 'Guardar'}</button><button disabled={busy} onClick={() => setDraft({})}>Deshacer</button></>}{error && <span role="alert">{error}</span>}</td></tr>;
 }
-export default function LivePlanningBoard({ services, profiles, month, canEdit, onCreate, onUpdate }: Props) {
+export default function LivePlanningBoard({ services, profiles, month, canEdit, onCreate, onUpdate, falconTickets = NO_FALCON_TICKETS }: Props) {
   const [today, setToday] = useState(() => new Date().toLocaleDateString('en-CA', { timeZone: 'America/Ciudad_Juarez' }));
   const [editing, setEditing] = useState(false);
   const [search, setSearch] = useState('');
@@ -44,6 +48,9 @@ export default function LivePlanningBoard({ services, profiles, month, canEdit, 
     return [...guards.ingenieria, ...guards.aplicativo].filter(member => member.active && !retired(member.fullName));
   }, [profiles]);
   const roster = guardMembers.map(member => member.fullName);
+  // The editable view has no ticket feed, so the strip shows the alerts without assignee names.
+  const nowMs = useSecondTicker(falconTickets.length > 0);
+  const falconAlerts = useMemo(() => buildFalconWallAlerts(falconTickets, {}, nowMs), [falconTickets, nowMs]);
 
   const rows = services.filter(s => s.month === month && (!engineer || s.responsibleEngineers.includes(engineer)) && `${s.locality} ${s.platform} ${s.serialNumber} ${s.responsibleEngineers.join(' ')}`.toLowerCase().includes(search.toLowerCase()));
   const create = async () => {
@@ -54,9 +61,10 @@ export default function LivePlanningBoard({ services, profiles, month, canEdit, 
       await onCreate(draft); setAdding(false); setDraft(blank());
     } catch (e) { setError(e instanceof Error ? e.message : 'No se pudo crear'); } finally { setBusy(false); }
   };
-  if (!editing) return <EngineerWall territories={Object.fromEntries(profiles.filter(p=>p.territorio && p.nombre_completo).map(p=>[p.nombre_completo!,p.territorio!]))} members={guardMembers} services={services} roster={roster} today={today} onEdit={() => setEditing(true)} />;
+  if (!editing) return <EngineerWall territories={Object.fromEntries(profiles.filter(p=>p.territorio && p.nombre_completo).map(p=>[p.nombre_completo!,p.territorio!]))} members={guardMembers} services={services} roster={roster} today={today} onEdit={() => setEditing(true)} falconTickets={falconTickets} />;
   return <section className="live-planning">
     <button onClick={() => setEditing(false)}>Volver al monitor del equipo</button>
+    <FalconSlaWallAlerts rows={falconAlerts} />
     <header><div><span className="planning-eyebrow">CENTRO DE OPERACIONES</span><h2>Equipo en vivo</h2><p>Agenda de hoy · {today} · Actualización cada 30 s</p></div><details><summary aria-label="Recuerdo de Erick">🚀</summary><p>Erick ha salido de órbita. ¡Éxito en tu próxima misión!</p></details></header>
     <div className="live-planning__roster">{roster.map(name => {
       const assigned = services.filter(s => s.responsibleEngineers.includes(name) && !s.flags.isCompleted);

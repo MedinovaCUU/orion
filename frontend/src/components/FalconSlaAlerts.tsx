@@ -4,6 +4,14 @@ import { createPortal } from 'react-dom';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { getFalconSlaTone, type FalconTicketSla } from './ticketIntake';
 import { getPublicAssetUrl } from './publicAssetUrl';
+import {
+  FALCON_THRESHOLD_ACTIONS,
+  FALCON_THRESHOLD_LABELS,
+  FALCON_THRESHOLD_PRIORITY,
+  getFalconThresholdKey,
+  isFullscreenFalconThreshold,
+  type FalconAlertThresholdKey,
+} from './falconSlaThresholds';
 import './FalconSlaAlerts.css';
 
 export interface FalconSlaAlertEntry {
@@ -20,8 +28,6 @@ interface FalconSlaAlertsProps {
   entries: FalconSlaAlertEntry[];
 }
 
-type FalconAlertThresholdKey = '8h' | '4h' | '1h' | '30m' | '10m' | 'breached';
-
 interface FalconAlertNotification {
   ticketId: string;
   thresholdKey: FalconAlertThresholdKey;
@@ -30,11 +36,6 @@ interface FalconAlertNotification {
 
 const STORAGE_KEY = 'orion-falcon-sla-thresholds-v1';
 const ALERT_SOUND = getPublicAssetUrl('sla-alerts/alarm.mp3');
-const THIRTY_MINUTES_MS = 30 * 60 * 1000;
-const TEN_MINUTES_MS = 10 * 60 * 1000;
-const ONE_HOUR_MS = 60 * 60 * 1000;
-const FOUR_HOURS_MS = 4 * 60 * 60 * 1000;
-const EIGHT_HOURS_MS = 8 * 60 * 60 * 1000;
 
 const AUDIO_BY_THRESHOLD: Partial<Record<FalconAlertThresholdKey, string>> = {
   '8h': getPublicAssetUrl('sla-alerts/8horas.mp3'),
@@ -47,33 +48,6 @@ const AUDIO_BY_THRESHOLD: Partial<Record<FalconAlertThresholdKey, string>> = {
 // Every clip the component can play. Safari unlocks audio per element, so each
 // one has to be started inside a user gesture before it can play on its own.
 const AUDIO_SOURCES = Array.from(new Set([ALERT_SOUND, ...Object.values(AUDIO_BY_THRESHOLD)]));
-
-const THRESHOLD_LABELS: Record<FalconAlertThresholdKey, string> = {
-  '8h': 'Quedan 8 horas',
-  '4h': 'Quedan 4 horas',
-  '1h': 'Queda 1 hora',
-  '30m': 'Quedan 30 minutos',
-  '10m': 'Quedan 10 minutos',
-  breached: 'SLA vencido',
-};
-
-const THRESHOLD_ACTIONS: Record<FalconAlertThresholdKey, string> = {
-  '8h': 'Prepara seguimiento y confirma la ruta de atención.',
-  '4h': 'Escala el seguimiento y valida que el cierre no se desvíe.',
-  '1h': 'Prioriza este ticket y confirma disponibilidad inmediata.',
-  '30m': 'Última ventana operativa antes del incumplimiento.',
-  '10m': 'Cierre inminente. Atiende y escala en este momento.',
-  breached: 'Incumplimiento activo. Escala de inmediato.',
-};
-
-const ALERT_PRIORITY: Record<FalconAlertThresholdKey, number> = {
-  breached: 0,
-  '10m': 1,
-  '30m': 2,
-  '1h': 3,
-  '4h': 4,
-  '8h': 5,
-};
 
 const loadStoredThresholds = (userId: string): Record<string, FalconAlertThresholdKey> => {
   if (typeof window === 'undefined') {
@@ -93,38 +67,7 @@ const loadStoredThresholds = (userId: string): Record<string, FalconAlertThresho
   }
 };
 
-const getAlertThreshold = (remainingMs: number): FalconAlertThresholdKey | null => {
-  if (remainingMs <= 0) {
-    return 'breached';
-  }
-
-  if (remainingMs <= TEN_MINUTES_MS) {
-    return '10m';
-  }
-
-  if (remainingMs <= THIRTY_MINUTES_MS) {
-    return '30m';
-  }
-
-  if (remainingMs <= ONE_HOUR_MS) {
-    return '1h';
-  }
-
-  if (remainingMs <= FOUR_HOURS_MS) {
-    return '4h';
-  }
-
-  if (remainingMs <= EIGHT_HOURS_MS) {
-    return '8h';
-  }
-
-  return null;
-};
-
 const isClosedStatus = (status: string | null | undefined) => (status || '').trim().toLowerCase() === 'cerrado';
-
-const isFullscreenThreshold = (thresholdKey: FalconAlertThresholdKey) =>
-  thresholdKey === '30m' || thresholdKey === '10m' || thresholdKey === 'breached';
 
 const formatDueLabel = (dueAtMs: number) =>
   new Date(dueAtMs).toLocaleString('es-MX', {
@@ -168,7 +111,7 @@ function AssignedFalconSlaAlerts({ contextLabel, entries, userId }: FalconSlaAle
   const orderedQueue = useMemo(
     () =>
       [...queue].sort((left, right) => {
-        const priorityDelta = ALERT_PRIORITY[left.thresholdKey] - ALERT_PRIORITY[right.thresholdKey];
+        const priorityDelta = FALCON_THRESHOLD_PRIORITY[left.thresholdKey] - FALCON_THRESHOLD_PRIORITY[right.thresholdKey];
         if (priorityDelta !== 0) {
           return priorityDelta;
         }
@@ -186,7 +129,7 @@ function AssignedFalconSlaAlerts({ contextLabel, entries, userId }: FalconSlaAle
   const activeEntry = activeNotification ? entryById.get(activeNotification.ticketId) || null : null;
   const activeTone = activeEntry ? getFalconSlaTone(activeEntry.sla.severity) : null;
   const activeThreshold = activeNotification?.thresholdKey || null;
-  const isFullscreen = activeThreshold ? isFullscreenThreshold(activeThreshold) : false;
+  const isFullscreen = activeThreshold ? isFullscreenFalconThreshold(activeThreshold) : false;
 
   const persistThresholds = useCallback(() => {
     if (typeof window === 'undefined') {
@@ -382,7 +325,7 @@ function AssignedFalconSlaAlerts({ contextLabel, entries, userId }: FalconSlaAle
     const nextAlerts: FalconAlertNotification[] = [];
 
     openEntries.forEach((entry) => {
-      const thresholdKey = getAlertThreshold(entry.sla.remainingMs);
+      const thresholdKey = getFalconThresholdKey(entry.sla.remainingMs);
       if (!thresholdKey) {
         return;
       }
@@ -439,8 +382,8 @@ function AssignedFalconSlaAlerts({ contextLabel, entries, userId }: FalconSlaAle
     return null;
   }
 
-  const thresholdLabel = THRESHOLD_LABELS[activeThreshold];
-  const actionLabel = THRESHOLD_ACTIONS[activeThreshold];
+  const thresholdLabel = FALCON_THRESHOLD_LABELS[activeThreshold];
+  const actionLabel = FALCON_THRESHOLD_ACTIONS[activeThreshold];
   const dueLabel = formatDueLabel(activeEntry.sla.dueAtMs);
   const serialLabel = activeEntry.numeroSerie || 'Sin serie';
   const locationLabel = activeEntry.locationLabel || 'Ubicación no identificada';
