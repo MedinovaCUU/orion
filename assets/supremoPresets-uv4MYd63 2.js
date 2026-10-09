@@ -1,0 +1,1 @@
+var e=[{alias:`A15 Showroom`,model:`A15`,serial:`831055847`,supremoId:`958113330`},{alias:`BA200 Showroom`,model:`BA200`,serial:`832001973`,supremoId:`909548874`},{alias:`BA400 Showroom`,model:`BA400`,serial:`834001902`,supremoId:`792529172`}],t=e=>String(e??``).replace(/\0/g,``).trim(),n=n=>{let r=t(n);return e.find(e=>e.serial===r)||null};export{t as n,n as t};
