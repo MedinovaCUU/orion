@@ -136,10 +136,12 @@ export default function Services({ subPermissions = ['planeacion', 'viajes', 're
   useEffect(() => {
     void fetchContext();
     const refresh = () => { void fetchContext(); };
-    const timer = window.setInterval(refresh, 30000);
-    window.addEventListener('focus', refresh);
+    // No periodic or focus refresh: it re-renders the page while someone is working on it.
+    // The live monitor asks for a silent refresh only in fullscreen, as it changes panel,
+    // so the update coincides with the transition and is not noticeable.
+    window.addEventListener('planning-wall-refresh', refresh);
     window.addEventListener('ticket-assignment-changed', refresh);
-    return () => { window.clearInterval(timer); window.removeEventListener('focus', refresh); window.removeEventListener('ticket-assignment-changed', refresh); };
+    return () => { window.removeEventListener('planning-wall-refresh', refresh); window.removeEventListener('ticket-assignment-changed', refresh); };
   }, []);
 
   const plannedTickets = useMemo(

@@ -14,8 +14,9 @@ try {
   if(path.endsWith('/ticket_service_events')) data=[{id:'event-1',ticket_id:'case-a',kind:'respuesta',detail:'Diagnóstico registrado; esperando refacción.',actor_id:'a',occurred_at:'2026-10-06T18:00:00Z'}];
   await route.fulfill({status:200,contentType:'application/json',body:JSON.stringify(data)});
  });
- await page.addInitScript(()=>{window.__played=0;HTMLMediaElement.prototype.play=function(){window.__played++;return Promise.resolve();};});
+ await page.addInitScript(()=>{window.__played=0;HTMLMediaElement.prototype.play=function(){window.__played++;return Promise.resolve();};window.__refresh=0;window.addEventListener('planning-wall-refresh',()=>window.__refresh++);});
  await page.goto('http://127.0.0.1:5200/orion/tests/fixtures/live-planning.html');
+ assert.equal(await page.evaluate(()=>window.__refresh),0,'no silent refresh before fullscreen');
  await page.getByRole('button',{name:'Pantalla completa',exact:true}).click();
  const card=page.locator('article').filter({has:page.getByRole('heading',{name:'Alfredo Acevedo',exact:true})});
  // Silent Falcon time alerts on the shared wall: visual strip, assignee from the feed, no audio.
@@ -44,5 +45,11 @@ try {
  await card.waitFor();
  // Stored ticket data remains available during a failed refresh.
  assert.ok(await page.locator('.engineer-wall__workload').getByText('1 tickets',{exact:true}).count());
- console.log('PASS: assignment by profile ID, recorded progress, automatic ticket/visit alternation, refresh failure preserves last data, silent Falcon time alerts on the wall.');
+ // Silent planning refresh: on entering fullscreen and at each panel change, never outside fullscreen.
+ const inScreen=await page.evaluate(()=>window.__refresh);
+ assert.ok(inScreen>=3,`fullscreen refresh on enter and at each 15 s rotation (${inScreen})`);
+ await page.getByRole('button',{name:'Salir de pantalla completa'}).click();
+ await page.clock.runFor(15100);
+ assert.equal(await page.evaluate(()=>window.__refresh),inScreen,'no silent refresh outside fullscreen');
+ console.log('PASS: assignment by profile ID, recorded progress, automatic ticket/visit alternation, refresh failure preserves last data, silent Falcon time alerts on the wall, planning refresh only in fullscreen at panel changes.');
 } finally {await browser.close();}

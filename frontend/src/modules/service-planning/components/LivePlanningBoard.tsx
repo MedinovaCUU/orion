@@ -65,7 +65,7 @@ export default function LivePlanningBoard({ services, profiles, month, canEdit, 
   return <section className="live-planning">
     <button onClick={() => setEditing(false)}>Volver al monitor del equipo</button>
     <FalconSlaWallAlerts rows={falconAlerts} />
-    <header><div><span className="planning-eyebrow">CENTRO DE OPERACIONES</span><h2>Equipo en vivo</h2><p>Agenda de hoy · {today} · Actualización cada 30 s</p></div><details><summary aria-label="Recuerdo de Erick">🚀</summary><p>Erick ha salido de órbita. ¡Éxito en tu próxima misión!</p></details></header>
+    <header><div><span className="planning-eyebrow">CENTRO DE OPERACIONES</span><h2>Equipo en vivo</h2><p>Agenda de hoy · {today}</p></div><details><summary aria-label="Recuerdo de Erick">🚀</summary><p>Erick ha salido de órbita. ¡Éxito en tu próxima misión!</p></details></header>
     <div className="live-planning__roster">{roster.map(name => {
       const assigned = services.filter(s => s.responsibleEngineers.includes(name) && !s.flags.isCompleted);
       const exact = assigned.filter(s => s.scheduledDate === today);
