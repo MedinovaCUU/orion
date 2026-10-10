@@ -1,0 +1,791 @@
+/*
+ * Escenario instrumental. El globo ocupa todo el escenario (superficie profunda); el riel de prioridad
+ * flota a la izquierda en cristal oscuro y el explorador 3D aparece SOBRE el globo, que queda en pausa
+ * y difuminado por un filtro estático (barato: el lienzo no cambia mientras está pausado).
+ * Las capas se superponen por rejilla (mismas líneas de fila/columna), no por position:absolute.
+ */
+.equipment-monitor__map-panel {
+  display: grid;
+  min-width: 0;
+}
+
+/* ---------- Escenario: rejilla superpuesta ---------- */
+.equipment-monitor__spatial-workspace {
+  --stage-h: clamp(36rem, calc(100vh - 8rem), 80rem);
+  --stage-h: clamp(36rem, calc(100svh - 8rem), 80rem);
+  --stage-gap: 16px;
+  --rail-w: 288px;
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  grid-template-columns: var(--rail-w) minmax(0, 1fr);
+  grid-template-rows: minmax(var(--stage-h), auto) auto;
+  min-width: 0;
+  border-radius: var(--mon-radius-xl);
+  border: 1px solid var(--stage-outline);
+  background: var(--mon-canvas);
+  box-shadow: var(--mon-shadow);
+  overflow: clip;
+}
+
+/* Barra inferior del escenario: leyenda de estados y pantalla completa, fuera del lienzo del globo. */
+.equipment-monitor__stage-bar {
+  grid-column: 1 / -1;
+  grid-row: 2;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 44px;
+  padding: 6px 16px;
+  border-top: 1px solid var(--stage-outline);
+  background: var(--stage-glass-strong);
+  color: var(--stage-ink);
+  min-width: 0;
+}
+
+.equipment-monitor__legend {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  min-width: 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+  white-space: nowrap;
+  font: 600 11px/1 var(--mon-font-body);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--stage-ink-2);
+}
+
+.equipment-monitor__legend::-webkit-scrollbar {
+  display: none;
+}
+
+.equipment-monitor__legend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.equipment-monitor__legend-dot {
+  position: relative;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: rgb(var(--tone-rgb));
+  box-shadow: 0 0 8px rgba(var(--tone-rgb), 0.55);
+}
+
+.equipment-monitor__legend-dot--supremo {
+  background: transparent;
+  box-shadow: inset 0 0 0 2px rgb(var(--tone-rgb)), 0 0 8px rgba(var(--tone-rgb), 0.4);
+}
+
+/* El pulso remoto se expresa como halo del punto OK, no como ítem aparte. */
+.equipment-monitor__legend-dot--ok::after {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  border: 1.5px solid rgb(var(--tone-rgb));
+  animation: mon-beat 1.8s ease-out infinite;
+}
+
+/* Pantalla completa: solo un icono pequeño; el nombre accesible va en aria-label/title. */
+.equipment-monitor__fullscreen {
+  appearance: none;
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border-radius: 9px;
+  border: 1px solid var(--stage-outline);
+  background: rgba(var(--mon-cyan-rgb), 0.1);
+  color: rgb(var(--mon-cyan-rgb));
+  cursor: pointer;
+  transition: background var(--mon-ease), border-color var(--mon-ease);
+}
+
+.equipment-monitor__fullscreen svg {
+  display: block;
+}
+
+.equipment-monitor__fullscreen:hover,
+.equipment-monitor__fullscreen[aria-pressed='true'] {
+  background: rgba(var(--mon-cyan-rgb), 0.2);
+  border-color: var(--stage-outline-strong);
+}
+
+.equipment-monitor__fullscreen:focus-visible {
+  outline: 0;
+  box-shadow: 0 0 0 3px rgba(var(--mon-cyan-rgb), 0.35);
+}
+
+/* El globo cubre todo el escenario, debajo del riel y del explorador. */
+.equipment-monitor__spatial-workspace > .equipment-globe {
+  grid-column: 1 / -1;
+  grid-row: 1;
+  z-index: 1;
+  height: auto;
+  min-height: var(--stage-h);
+  border-radius: 0;
+  transition: filter 0.42s ease;
+}
+
+/* Riel flotante en cristal oscuro. */
+.equipment-monitor__spatial-workspace > .equipment-priority {
+  grid-column: 1;
+  grid-row: 1;
+  z-index: 2;
+  align-self: start;
+  margin: var(--stage-gap) 0 var(--stage-gap) var(--stage-gap);
+  min-height: 0;
+  height: calc(var(--stage-h) - var(--stage-gap) * 2);
+}
+
+/* Al inspeccionar el riel se estira a toda la altura del explorador: la columna izquierda no deja huecos
+   y su pie muestra el equipo en exploración. La fila la dicta SOLO el explorador: con height:0 el riel no
+   aporta su contenido (cientos de tarjetas) al alto de la fila y min-height en % lo estira después. */
+.equipment-monitor__spatial-workspace.is-inspecting > .equipment-priority {
+  align-self: start;
+  height: 0;
+  min-height: calc(100% - var(--stage-gap) * 2);
+  max-height: none;
+}
+
+/* Explorador 3D sobre el globo, con entrada animada; el globo queda en pausa y difuminado. */
+.equipment-monitor__spatial-workspace.is-inspecting > .equipment-globe {
+  filter: blur(var(--stage-blur)) brightness(0.72) saturate(0.85);
+  pointer-events: none;
+}
+
+/* La superficie difuminada debe ser estática: sin animaciones vivas bajo el filtro mientras el globo está en pausa. */
+.equipment-globe[data-paused='true'] .equipment-globe__ring-orbit,
+.equipment-globe[data-paused='true'] .mon-beat::after {
+  animation-play-state: paused;
+}
+
+.equipment-monitor__spatial-workspace.is-inspecting > .alarm-spatial {
+  grid-column: 2;
+  grid-row: 1;
+  z-index: 3;
+  align-self: start;
+  justify-self: stretch;
+  width: auto;
+  margin: var(--stage-gap);
+  min-width: 0;
+  animation: mon-overlay-in 0.38s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+@keyframes mon-overlay-in {
+  from {
+    opacity: 0;
+    transform: translateY(14px) scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Pantalla completa del escenario (solo al inspeccionar). */
+.equipment-monitor__spatial-workspace:fullscreen {
+  border-radius: 0;
+  border: 0;
+  /* El globo deja sitio a la barra inferior (44 px) para que leyenda y salida queden a la vista. */
+  --stage-h: calc(100vh - 44px);
+  --rail-w: 300px;
+  /* El explorador suele ser más alto que la pantalla: el escenario se desplaza dentro de la pantalla completa. */
+  overflow: auto;
+  overscroll-behavior: contain;
+}
+
+/* La barra con "Salir de pantalla completa" se queda pegada al borde inferior aunque el contenido se desplace. */
+.equipment-monitor__spatial-workspace:fullscreen > .equipment-monitor__stage-bar {
+  position: sticky;
+  bottom: 0;
+  z-index: 4;
+}
+
+@media (max-width: 1259px) {
+  .equipment-monitor__spatial-workspace:fullscreen {
+    --stage-h: calc(100vh - 14rem);
+  }
+}
+
+.equipment-monitor__spatial-workspace:fullscreen > .alarm-spatial .alarm-spatial__stage {
+  --alarm-stage-h: calc(100vh - 20rem);
+}
+
+/* ---------- Riel de prioridad: cristal oscuro sobre el globo ---------- */
+.equipment-priority {
+  position: relative;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  gap: 10px;
+  min-height: 0;
+  min-width: 0;
+  padding: 12px;
+  border-radius: var(--mon-radius-md);
+  border: 1px solid var(--stage-outline);
+  background: var(--stage-glass);
+  box-shadow: var(--stage-shadow), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  color: var(--stage-ink);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .equipment-priority {
+    backdrop-filter: blur(var(--stage-blur));
+    -webkit-backdrop-filter: blur(var(--stage-blur));
+  }
+}
+
+.equipment-priority > header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.equipment-priority > header strong {
+  font: 600 13px/1.2 var(--mon-font-heading);
+  color: var(--stage-ink);
+  white-space: nowrap;
+}
+
+.equipment-priority__count {
+  display: inline-flex;
+  align-items: center;
+  height: 20px;
+  padding: 0 7px;
+  border-radius: var(--mon-pill);
+  background: rgba(var(--mon-cyan-rgb), 0.18);
+  color: rgb(var(--mon-cyan-rgb));
+  font: 700 11px/1 var(--mon-font-body);
+  font-variant-numeric: tabular-nums;
+}
+
+.equipment-priority > header small {
+  margin-left: auto;
+  font: 600 11px/1 var(--mon-font-body);
+  color: var(--stage-ink-2);
+  text-transform: capitalize;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Pie del riel mientras el explorador está abierto: contexto del equipo en exploración. */
+.equipment-priority__inspecting {
+  display: grid;
+  gap: 6px;
+  padding: 12px 12px 10px;
+  border-radius: var(--mon-radius-sm);
+  border: 1px solid var(--stage-outline-strong);
+  background: linear-gradient(180deg, rgba(var(--mon-cyan-rgb), 0.12), rgba(var(--mon-cyan-rgb), 0.04));
+  color: var(--stage-ink);
+  min-width: 0;
+}
+
+.equipment-priority__inspecting-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font: 700 11px/1 var(--mon-font-body);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgb(var(--mon-cyan-rgb));
+}
+
+.equipment-priority__inspecting-eyebrow::before {
+  content: '';
+  width: 7px;
+  height: 7px;
+  rotate: 45deg;
+  background: rgb(var(--mon-cyan-rgb));
+  box-shadow: 0 0 10px rgba(var(--mon-cyan-rgb), 0.7);
+}
+
+.equipment-priority__inspecting > strong {
+  font: 600 13px/1.25 var(--mon-font-heading);
+  color: var(--stage-ink);
+  overflow-wrap: anywhere;
+}
+
+.equipment-priority__inspecting-line {
+  font: 600 12px/1.2 var(--mon-font-body);
+  font-variant-numeric: tabular-nums;
+  color: var(--stage-ink-2);
+}
+
+.equipment-priority__inspecting-facts {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 10px;
+  font: 600 11px/1.2 var(--mon-font-body);
+  font-variant-numeric: tabular-nums;
+  color: var(--stage-ink-2);
+}
+
+.equipment-priority__inspecting-facts .mon-chip {
+  min-height: 24px;
+  padding: 0 8px;
+  color: rgb(var(--tone-rgb));
+  border-color: rgba(var(--tone-rgb), 0.45);
+  background: rgba(var(--tone-rgb), 0.14);
+}
+
+.equipment-priority__inspecting-bpl {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: rgb(var(--tone-rgb));
+}
+
+.equipment-priority__inspecting-bpl::before {
+  content: '';
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: rgb(var(--tone-rgb));
+  box-shadow: 0 0 8px rgba(var(--tone-rgb), 0.6);
+}
+
+.equipment-priority__inspecting > small {
+  font: 500 11px/1.2 var(--mon-font-body);
+  font-variant-numeric: tabular-nums;
+  color: var(--stage-ink-2);
+}
+
+.equipment-priority__inspecting-actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 6px;
+  margin-top: 4px;
+}
+
+.equipment-priority__inspecting-actions > button,
+.equipment-priority__inspecting-actions > a {
+  appearance: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 34px;
+  padding: 0 10px;
+  border-radius: 9px;
+  border: 1px solid var(--stage-outline);
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--stage-ink);
+  font: 600 12px/1 var(--mon-font-body);
+  text-decoration: none;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background var(--mon-ease), border-color var(--mon-ease);
+}
+
+.equipment-priority__inspecting-actions > button:hover,
+.equipment-priority__inspecting-actions > a:hover {
+  background: rgba(var(--mon-cyan-rgb), 0.16);
+  border-color: var(--stage-outline-strong);
+}
+
+.equipment-priority__inspecting-actions > button:focus-visible,
+.equipment-priority__inspecting-actions > a:focus-visible {
+  outline: 0;
+  box-shadow: 0 0 0 3px rgba(var(--mon-cyan-rgb), 0.35);
+}
+
+.equipment-priority__list {
+  display: grid;
+  gap: 8px;
+  align-content: start;
+  min-height: 0;
+  overflow: auto;
+  overscroll-behavior: contain;
+  /* Canal fijo para la barra de desplazamiento: nunca se dibuja sobre las tarjetas. */
+  scrollbar-gutter: stable;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(var(--mon-cyan-rgb), 0.35) transparent;
+  padding-right: 10px;
+}
+
+.equipment-priority__list::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.equipment-priority__list::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.equipment-priority__list::-webkit-scrollbar-thumb {
+  border-radius: 6px;
+  background: rgba(var(--mon-cyan-rgb), 0.35);
+}
+
+.equipment-priority__list::-webkit-scrollbar-thumb:hover {
+  background: rgba(var(--mon-cyan-rgb), 0.55);
+}
+
+.equipment-priority__list > button {
+  position: relative;
+  display: grid;
+  gap: 3px;
+  width: 100%;
+  min-width: 0;
+  padding: 10px 12px 10px 16px;
+  border-radius: var(--mon-radius-sm);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: var(--stage-glass-soft);
+  color: var(--stage-ink-2);
+  font: 500 11.5px/1.35 var(--mon-font-body);
+  text-align: left;
+  cursor: pointer;
+  transition: translate var(--mon-ease), border-color var(--mon-ease), box-shadow var(--mon-ease), background var(--mon-ease);
+}
+
+.equipment-priority__list > button::before {
+  content: '';
+  position: absolute;
+  left: 6px;
+  top: 10px;
+  bottom: 10px;
+  width: 3px;
+  border-radius: 3px;
+  background: rgb(var(--tone-rgb));
+  box-shadow: 0 0 10px rgba(var(--tone-rgb), 0.55);
+}
+
+.equipment-priority__list > button:hover {
+  translate: 0 -1px;
+  border-color: rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.equipment-priority__list > button:focus-visible {
+  outline: 0;
+  box-shadow: 0 0 0 3px rgba(var(--mon-cyan-rgb), 0.35);
+}
+
+.equipment-priority__list > button[aria-pressed='true'] {
+  background: rgba(var(--mon-cyan-rgb), 0.12);
+  border-color: var(--stage-outline-strong);
+  box-shadow: 0 0 0 1px rgba(var(--mon-cyan-rgb), 0.35), 0 12px 28px rgba(3, 14, 24, 0.35);
+}
+
+.equipment-priority__row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 8px;
+  min-width: 0;
+}
+
+/* Series largas (12 dígitos en la DEMO): la serie puede partirse y los chips bajan de línea antes que recortarse. */
+.equipment-priority__row strong {
+  min-width: 0;
+  font: 600 13px/1.2 var(--mon-font-heading);
+  font-variant-numeric: tabular-nums;
+  color: var(--stage-ink);
+  overflow-wrap: anywhere;
+}
+
+.equipment-priority__row b {
+  margin-left: auto;
+  padding: 4px 7px;
+  border-radius: 6px;
+  background: rgba(var(--tone-rgb), 0.18);
+  color: rgb(var(--tone-rgb));
+  font: 700 11px/1 var(--mon-font-body);
+  letter-spacing: 0.08em;
+  white-space: nowrap;
+}
+
+.equipment-priority__list [data-tone='muted'] .equipment-priority__row b,
+.equipment-priority__list [data-tone='ok'] .equipment-priority__row b {
+  color: var(--stage-ink-2);
+}
+
+.equipment-priority__line {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.equipment-priority__line--data {
+  font-variant-numeric: tabular-nums;
+}
+
+.equipment-priority__bpl {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+  font: 700 11px/1.2 var(--mon-font-body);
+  color: rgb(var(--tone-rgb));
+}
+
+.equipment-priority__bpl::before {
+  content: '';
+  flex: 0 0 auto;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: rgb(var(--tone-rgb));
+  box-shadow: 0 0 8px rgba(var(--tone-rgb), 0.6);
+}
+
+.equipment-priority__list small {
+  font: 500 11px/1.2 var(--mon-font-body);
+  font-variant-numeric: tabular-nums;
+  color: var(--stage-ink-2);
+}
+
+.equipment-priority__more {
+  appearance: none;
+  height: 36px;
+  border-radius: 10px;
+  border: 1px dashed var(--stage-outline);
+  background: transparent;
+  color: var(--stage-ink-2);
+  font: 600 12px/1 var(--mon-font-body);
+  cursor: pointer;
+}
+
+.equipment-priority__more:hover {
+  background: rgba(var(--mon-cyan-rgb), 0.12);
+  color: rgb(var(--mon-cyan-rgb));
+}
+
+.equipment-priority__empty {
+  display: grid;
+  gap: 10px;
+  justify-items: center;
+  padding: 28px 16px;
+  text-align: center;
+}
+
+.equipment-priority__empty p {
+  margin: 0;
+  font: 600 12.5px/1.4 var(--mon-font-body);
+  color: var(--stage-ink-2);
+}
+
+.equipment-priority__empty .mon-chip {
+  appearance: none;
+  cursor: pointer;
+  /* Tinta para cristal oscuro: el --tone-ink del mapa está pensado para superficies perla. */
+  color: rgb(var(--tone-rgb));
+  border-color: rgba(var(--tone-rgb), 0.45);
+  background: rgba(var(--tone-rgb), 0.14);
+}
+
+@media (pointer: coarse) {
+  .equipment-priority {
+    background: var(--stage-glass-strong);
+  }
+}
+
+/* 1260 → tablet horizontal / laptop estrecha: riel como tira bajo el globo, dentro del escenario. */
+@media (max-width: 1259px) {
+  .equipment-monitor__spatial-workspace {
+    --stage-h: clamp(28rem, calc(100vh - 12rem), 60rem);
+    --stage-h: clamp(28rem, calc(100svh - 12rem), 60rem);
+    --stage-gap: 12px;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: minmax(var(--stage-h), auto) auto auto;
+  }
+
+  .equipment-monitor__spatial-workspace > .equipment-globe {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .equipment-monitor__spatial-workspace > .equipment-priority {
+    grid-column: 1;
+    grid-row: 3;
+    align-self: auto;
+    margin: 0;
+    height: auto;
+    min-height: 0;
+    max-height: none;
+    border-radius: 0;
+    border-width: 1px 0 0;
+    box-shadow: none;
+    grid-template-rows: auto auto;
+  }
+
+  .equipment-monitor__spatial-workspace.is-inspecting > .alarm-spatial {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .equipment-monitor__spatial-workspace.is-inspecting > .equipment-priority {
+    align-self: auto;
+    height: auto;
+    min-height: 0;
+    max-height: none;
+  }
+
+  .equipment-priority__inspecting {
+    display: none;
+  }
+
+  .equipment-priority__list {
+    grid-auto-flow: column;
+    grid-auto-columns: 264px;
+    gap: 12px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+    scrollbar-gutter: auto;
+    padding: 0 0 12px;
+  }
+
+  .equipment-priority__list > button {
+    scroll-snap-align: start;
+    min-height: 104px;
+  }
+
+  .equipment-priority__more {
+    align-self: center;
+    min-width: 160px;
+  }
+
+  .equipment-priority__empty {
+    grid-column: 1 / -1;
+    width: 100%;
+  }
+}
+
+@media (max-width: 959px) {
+  .equipment-monitor__stage-bar {
+    padding: 6px 12px;
+    gap: 10px;
+  }
+
+  .equipment-monitor__spatial-workspace {
+    --stage-h: clamp(24rem, 70vh, 48rem);
+    --stage-h: clamp(24rem, 70svh, 48rem);
+  }
+
+  .equipment-priority__list {
+    grid-auto-columns: 248px;
+  }
+}
+
+@media (max-width: 560px) {
+  .equipment-monitor__spatial-workspace {
+    border-radius: var(--mon-radius-lg);
+    --stage-h: clamp(20rem, 62vh, 36rem);
+    --stage-h: clamp(20rem, 62svh, 36rem);
+    --stage-gap: 10px;
+  }
+
+  .equipment-monitor__spatial-workspace > .equipment-globe,
+  .equipment-monitor__spatial-workspace > .equipment-priority {
+    --stage-blur: 10px;
+  }
+
+  .equipment-priority {
+    padding: 10px;
+  }
+
+  .equipment-priority__list {
+    grid-auto-columns: 232px;
+  }
+
+  .equipment-priority__list > button {
+    scroll-snap-align: center;
+  }
+
+  .equipment-monitor__stage-bar {
+    padding: 6px 10px;
+  }
+
+}
+
+/* Móvil horizontal: riel vertical a la izquierda sobre el globo; explorador sobre la columna derecha. */
+@media (orientation: landscape) and (max-height: 520px) {
+  .equipment-monitor__spatial-workspace {
+    --stage-h: min(calc(100vh - 6rem), 24rem);
+    --stage-h: min(calc(100dvh - 6rem), 24rem);
+    --stage-gap: 10px;
+    --rail-w: 232px;
+    grid-template-columns: var(--rail-w) minmax(0, 1fr);
+    grid-template-rows: minmax(var(--stage-h), auto) auto;
+  }
+
+  .equipment-monitor__stage-bar {
+    min-height: 36px;
+    padding: 4px 12px;
+  }
+
+  .equipment-monitor__spatial-workspace > .equipment-globe {
+    grid-column: 1 / -1;
+    grid-row: 1;
+  }
+
+  .equipment-monitor__spatial-workspace > .equipment-priority {
+    grid-column: 1;
+    grid-row: 1;
+    align-self: start;
+    margin: var(--stage-gap) 0 var(--stage-gap) var(--stage-gap);
+    height: calc(var(--stage-h) - var(--stage-gap) * 2);
+    max-height: none;
+    border-radius: var(--mon-radius-md);
+    border-width: 1px;
+    grid-template-rows: auto minmax(0, 1fr);
+  }
+
+  .equipment-monitor__spatial-workspace.is-inspecting > .alarm-spatial {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  .equipment-monitor__spatial-workspace.is-inspecting > .equipment-priority {
+    align-self: start;
+    height: 0;
+    min-height: calc(100% - var(--stage-gap) * 2);
+    max-height: none;
+  }
+
+  .equipment-priority__inspecting {
+    display: grid;
+  }
+
+  .equipment-priority__inspecting-actions {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .equipment-priority__list {
+    grid-auto-flow: row;
+    grid-auto-columns: auto;
+    overflow: auto;
+    scroll-snap-type: none;
+    scrollbar-gutter: stable;
+    padding: 0 10px 0 0;
+  }
+
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .equipment-monitor__legend-dot--ok::after {
+    animation: none;
+  }
+
+  .equipment-priority__list > button,
+  .equipment-monitor__spatial-workspace > .equipment-globe {
+    transition: none;
+  }
+
+  .equipment-monitor__spatial-workspace.is-inspecting > .alarm-spatial {
+    animation: none;
+  }
+}

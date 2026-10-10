@@ -178,6 +178,87 @@ export interface DriCaseSignals {
   waterSensitivePattern: boolean;
 }
 
+export interface DriBplStageEvidence {
+  accepted: number;
+  rejected: number;
+  pending: number;
+  observed: number;
+  effectiveStatus: string | null;
+  lastAt: string | null;
+  rejectedTests: string[];
+  pendingTests: string[];
+  acceptedTests: string[];
+}
+
+export interface DriBplQcFinding {
+  testName: string;
+  reagentId: string | null;
+  status: string;
+  resultValue: number | null;
+  unit: string | null;
+  targetMean: number | null;
+  targetSd: number | null;
+  minLimit: number | null;
+  maxLimit: number | null;
+  zScore: number | null;
+  direction: 'high' | 'low' | null;
+  westgardRules: string[];
+  controlName: string | null;
+  controlLot: string | null;
+  controlLevel: string | null;
+  observedAt: string | null;
+}
+
+export interface DriBplCalibrationQuality {
+  testName: string;
+  reagentId: string | null;
+  status: string;
+  correlation: number | null;
+  relativeError: number | null;
+  slope: number | null;
+  offset: number | null;
+  curveType: string | null;
+  pointCount: number;
+  calibratorName: string | null;
+  calibratorLot: string | null;
+  observedAt: string | null;
+}
+
+export interface DriBplBlankReading {
+  testName: string;
+  reagentId: string | null;
+  status: string;
+  stage: 'reagent_blank' | 'instrument_photometry_blank';
+  absorbance: number | null;
+  limit: number | null;
+  observedAt: string | null;
+}
+
+/** Evidencia del monitor BPL (`ba400_bpl_events`) ya resumida para el motor y la trazabilidad del caso. */
+export interface DriBplEvidenceSummary {
+  serial: string;
+  sourceReference: string;
+  capturedAt: string;
+  windowStart: string | null;
+  windowEnd: string | null;
+  eventCount: number;
+  stages: {
+    photometryBlank: DriBplStageEvidence;
+    reagentBlank: DriBplStageEvidence;
+    calibration: DriBplStageEvidence;
+    qualityControl: DriBplStageEvidence;
+  };
+  qcFindings: DriBplQcFinding[];
+  calibrations: DriBplCalibrationQuality[];
+  blanks: DriBplBlankReading[];
+  westgardRules: string[];
+  qcRejectedWithAcceptedChain: string[];
+  fullyAcceptedTests: string[];
+  intermittentTests: string[];
+  missingData: string[];
+  unmatchedTests: string[];
+}
+
 export interface DriReagentMeasurementInput {
   reagentId: string;
   obtainedValue: string;
@@ -322,6 +403,8 @@ export interface DriCaseFormState {
   serviceTests: DriServiceTestInput[];
   evidenceItems: DriEvidenceArtifact[];
   signals: DriCaseSignals;
+  /** Evidencia automática del monitor BPL; opcional para no romper fixtures ni casos antiguos. */
+  bplEvidence?: DriBplEvidenceSummary | null;
 }
 
 export interface DriReagentProfile {

@@ -11,6 +11,8 @@ import { assessProcedureLimitations } from '../utils/procedureLimitations';
 import { assessQcReference, findQcReferenceById } from '../utils/qcReferenceUtils';
 import { normalizeText } from '../utils/relationUtils';
 import type {
+  DriBplEvidenceSummary,
+  DriBplStageEvidence,
   DriCaseFormState,
   DriCatalog,
   DriEngineResult,
@@ -136,6 +138,70 @@ const buildRuleServiceEvidence = (
     confirmedPrimaryAbnormal,
     evaluatedUtilities: strongestByUtility.size,
   };
+};
+
+// Reglas Westgard que señalan sesgo sistemático (calibrador/control) frente a error aleatorio (pipeteo).
+const SYSTEMATIC_WESTGARD = /(^|[^0-9])(2[\s_-]?2s|4[\s_-]?1s|10[\s_-]?x|7[\s_-]?t|8[\s_-]?x|9[\s_-]?x|12[\s_-]?x)/i;
+const RANDOM_WESTGARD = /(^|[^0-9])(1[\s_-]?3s|r[\s_-]?4s)/i;
+
+/** Banderas derivadas de la evidencia BPL del monitor; todas quedan en cero cuando no hay evidencia. */
+const summarizeBplEvidenceForEngine = (bpl: DriBplEvidenceSummary | null) => ({
+  present: Boolean(bpl),
+  photometryRejected: bpl?.stages.photometryBlank.effectiveStatus === 'rejected',
+  photometryAccepted: bpl?.stages.photometryBlank.effectiveStatus === 'accepted',
+  photometryObserved: Boolean(bpl?.stages.photometryBlank.lastAt),
+  reagentBlankRejectedCount: bpl?.stages.reagentBlank.rejectedTests.length || 0,
+  calibrationRejectedCount: bpl?.stages.calibration.rejectedTests.length || 0,
+  qcRejectedCount: bpl?.stages.qualityControl.rejectedTests.length || 0,
+  qcChainTests: bpl?.qcRejectedWithAcceptedChain || [],
+  systematicWestgardRules: (bpl?.westgardRules || []).filter((rule) => SYSTEMATIC_WESTGARD.test(rule)),
+  randomWestgardRules: (bpl?.westgardRules || []).filter((rule) => RANDOM_WESTGARD.test(rule)),
+  poorCorrelationCount: (bpl?.calibrations || []).filter((item) => item.correlation !== null && Math.abs(item.correlation) < 0.99).length,
+  intermittentTests: bpl?.intermittentTests || [],
+});
+
+const buildBplEvidenceRows = (bpl: DriBplEvidenceSummary | null): DriEvidenceRow[] => {
+  if (!bpl) return [];
+  const rows: DriEvidenceRow[] = [];
+  const pushStage = (id: string, title: string, stage: DriBplStageEvidence, category: string) => {
+    if (!stage.lastAt) return;
+    const rejected = stage.rejectedTests.length;
+    const pending = stage.pendingTests.length;
+    const accepted = stage.acceptedTests.length;
+    rows.push({
+      id: `bpl:${id}`,
+      title,
+      category,
+      failedCoverage: rejected ? 1 : 0,
+      correctCoverage: accepted ? 1 : 0,
+      score: rejected ? 88 : pending ? 40 : 12,
+      evidenceFor: rejected
+        ? `Rechazadas en el equipo: ${stage.rejectedTests.join(', ')}.`
+        : pending
+          ? `Pendientes de aceptación: ${stage.pendingTests.join(', ')}.`
+          : 'Sin rechazos vigentes en el monitor BPL.',
+      evidenceAgainst: accepted ? `Aceptadas: ${stage.acceptedTests.slice(0, 8).join(', ')}.` : 'Sin aceptaciones vigentes registradas.',
+      source: 'Monitor BPL',
+    });
+  };
+  pushStage('photometry', 'Blanco fotométrico instrumental', bpl.stages.photometryBlank, 'blank');
+  pushStage('reagent-blank', 'Blancos de reactivo', bpl.stages.reagentBlank, 'blank');
+  pushStage('calibration', 'Curvas de calibración', bpl.stages.calibration, 'calibration');
+  pushStage('qc', 'Controles de calidad', bpl.stages.qualityControl, 'control');
+  if (bpl.westgardRules.length) {
+    rows.push({
+      id: 'bpl:westgard',
+      title: `Westgard ${bpl.westgardRules.join(', ')}`,
+      category: 'control',
+      failedCoverage: 1,
+      correctCoverage: 0,
+      score: 60,
+      evidenceFor: 'El analizador registró reglas Westgard violadas en los controles recientes.',
+      evidenceAgainst: 'Las reglas no identifican por sí solas el subsistema; se cruzan con blancos y calibraciones.',
+      source: 'Monitor BPL',
+    });
+  }
+  return rows;
 };
 
 const buildEvidenceRows = (signals: DriRelationSignal[]): DriEvidenceRow[] =>
@@ -269,8 +335,11 @@ export function runDifferentialDiagnosisEngine(form: DriCaseFormState, catalog: 
     failedProfiles,
     matchedQcReference,
   });
+  const bplEvidence = form.bplEvidence || null;
+  const bplSignals = summarizeBplEvidenceForEngine(bplEvidence);
   const evidenceRows = [
     ...(matchedQcReference && qcAssessment ? [buildQcEvidenceRow(matchedQcReference, qcAssessment)] : []),
+    ...buildBplEvidenceRows(bplEvidence),
     ...procedureAssessment.findings.map((finding) => buildProcedureEvidenceRow(finding)),
     ...buildEvidenceRows(relationSignals),
   ];
@@ -317,6 +386,20 @@ export function runDifferentialDiagnosisEngine(form: DriCaseFormState, catalog: 
     });
   }
 
+  if (bplEvidence) {
+    logger.info('EVIDENCE', 'bpl-evidence', 'Evidencia BPL del monitor incorporada al caso.', {
+      serial: bplEvidence.serial,
+      eventCount: bplEvidence.eventCount,
+      photometryBlank: bplEvidence.stages.photometryBlank.effectiveStatus,
+      reagentBlankRejected: bplSignals.reagentBlankRejectedCount,
+      calibrationRejected: bplSignals.calibrationRejectedCount,
+      qcRejected: bplSignals.qcRejectedCount,
+      qcRejectedWithAcceptedChain: bplSignals.qcChainTests,
+      westgardRules: bplEvidence.westgardRules,
+      unmatchedTests: bplEvidence.unmatchedTests,
+    });
+  }
+
   if (platformKnowledge.supportStatus !== 'ready') {
     logger.warn('ENGINE', 'platform-fallback', 'La plataforma está en especialización; se usará conocimiento base orientado a BA400.', {
       requestedPlatform: form.equipmentModel,
@@ -343,11 +426,22 @@ export function runDifferentialDiagnosisEngine(form: DriCaseFormState, catalog: 
     if (form.eventType === 'absorbance_error' || form.eventType === 'failed_blank') {
       positive.push({ label: 'El tipo de problema es compatible con fotometría/absorbancia.', points: 14 });
     }
+    if (bplSignals.photometryRejected) {
+      positive.push({ label: 'El blanco fotométrico instrumental está rechazado en el monitor BPL.', points: 24 });
+    } else if (bplSignals.photometryAccepted) {
+      negative.push({ label: 'El blanco fotométrico instrumental está aceptado en el monitor BPL.', points: 10 });
+    }
+    if (bplSignals.reagentBlankRejectedCount >= 2) {
+      positive.push({ label: `${bplSignals.reagentBlankRejectedCount} blancos de reactivo rechazados en el monitor BPL comparten la ruta óptica.`, points: 10 });
+    }
     if (strongestProcedureFinding) {
       negative.push({ label: `Existe una explicación analítica más directa: ${strongestProcedureFinding.explanation}`, points: 18 });
     }
     if (!hasRecordedServiceTest(form, 'photometry') && !hasRecordedServiceTest(form, 'baseline_darkness_current')) {
       missingEvidence.push('Resultado de Photometry / baseline');
+    }
+    if (bplSignals.present && !bplSignals.photometryObserved) {
+      missingEvidence.push('Blanco fotométrico instrumental reciente en el monitor BPL');
     }
     if (positive.length) {
       hypotheses.push(
@@ -380,6 +474,9 @@ export function runDifferentialDiagnosisEngine(form: DriCaseFormState, catalog: 
     }
     if ((monoreactiveSignal?.correctCoverage || 0) >= 0.25) {
       positive.push({ label: 'Las monoreactivas comparables se mantienen correctas.', points: 18 });
+    }
+    if (bplSignals.calibrationRejectedCount > 0 && (bireactiveSignal?.failedCoverage || 0) >= 0.55) {
+      positive.push({ label: 'Las calibraciones rechazadas en el monitor BPL se concentran en técnicas bireactivas.', points: 8 });
     }
     if ((monoreactiveSignal?.correctCoverage || 0) === 0) {
       missingEvidence.push('Comparativo monoreactivo equivalente');
@@ -422,6 +519,9 @@ export function runDifferentialDiagnosisEngine(form: DriCaseFormState, catalog: 
     if (Number(form.ambientTemperatureC) >= 28) {
       positive.push({ label: `La temperatura ambiente reportada (${form.ambientTemperatureC} °C) es elevada.`, points: 8 });
     }
+    if (bplSignals.calibrationRejectedCount > 0 && (temperatureSignal?.failedCoverage || 0) >= 0.45) {
+      positive.push({ label: 'El monitor BPL registra calibraciones rechazadas en técnicas sensibles a temperatura.', points: 8 });
+    }
     if ((topSignal(relationSignals, 'reaction', (signal) => signal.id === 'reaction:endpoint')?.correctCoverage || 0) > 0.25) {
       positive.push({ label: 'Las técnicas endpoint correctas contrastan contra cinéticas sensibles.', points: 12 });
     }
@@ -462,6 +562,12 @@ export function runDifferentialDiagnosisEngine(form: DriCaseFormState, catalog: 
     }
     if (form.eventType === 'poor_repeatability' || form.eventType === 'dilution_error') {
       positive.push({ label: 'El tipo de problema coincide con pipeteo o dilución.', points: 14 });
+    }
+    if (bplSignals.randomWestgardRules.length) {
+      positive.push({ label: `Reglas Westgard de error aleatorio (${bplSignals.randomWestgardRules.join(', ')}) en el monitor BPL.`, points: 8 });
+    }
+    if (bplSignals.poorCorrelationCount >= 2) {
+      positive.push({ label: `${bplSignals.poorCorrelationCount} curvas de calibración con correlación baja en el monitor BPL.`, points: 10 });
     }
     if (dilutionAssessment.exactHalfPattern) {
       negative.push({ label: 'La dilución exacta a la mitad sugiere más bien factor no aplicado por software.', points: 18 });
@@ -548,6 +654,15 @@ export function runDifferentialDiagnosisEngine(form: DriCaseFormState, catalog: 
     if ((washSignal?.failedCoverage || 0) >= 0.2) {
       positive.push({ label: 'Hay reactivos sensibles a agua/lavado entre las fallidas.', points: 12 });
     }
+    if (bplSignals.reagentBlankRejectedCount > 0) {
+      positive.push({ label: `${bplSignals.reagentBlankRejectedCount} blanco(s) de reactivo rechazado(s) en el monitor BPL.`, points: 18 });
+      if (bplSignals.photometryAccepted) {
+        positive.push({ label: 'El blanco fotométrico instrumental está aceptado: el rechazo apunta a reactivo, cubeta o lavado y no a la óptica.', points: 6 });
+      }
+    }
+    if (bplSignals.intermittentTests.length) {
+      positive.push({ label: `Patrón intermitente aceptado/rechazado en ${bplSignals.intermittentTests.slice(0, 4).join(', ')} según el monitor BPL.`, points: 6 });
+    }
     if (procedureFindings.length) {
       negative.push({ label: 'La interferencia documentada por IFU compite con una causa de carryover puro.', points: 14 });
     }
@@ -588,6 +703,21 @@ export function runDifferentialDiagnosisEngine(form: DriCaseFormState, catalog: 
     }
     if (['qc_out_of_range', 'control_low', 'control_high', 'failed_calibration'].includes(form.eventType)) {
       positive.push({ label: 'El tipo de evento es compatible con control/calibrador/preanalítico.', points: 16 });
+    }
+    if (bplSignals.qcChainTests.length) {
+      positive.push({ label: `QC rechazado con blanco y calibración aceptados en ${bplSignals.qcChainTests.slice(0, 5).join(', ')}: la desviación apunta a control, lote o preanalítica.`, points: 22 });
+    }
+    if (bplSignals.calibrationRejectedCount > 0 && bplSignals.reagentBlankRejectedCount === 0) {
+      positive.push({ label: 'Calibraciones rechazadas con blancos aceptados en el monitor BPL: revisar calibrador y lote antes del hardware.', points: 12 });
+    }
+    if (bplSignals.systematicWestgardRules.length) {
+      positive.push({ label: `Reglas Westgard sistemáticas (${bplSignals.systematicWestgardRules.join(', ')}) sugieren sesgo de calibrador o control.`, points: 10 });
+    }
+    if (bplSignals.photometryRejected) {
+      negative.push({ label: 'El blanco fotométrico instrumental rechazado compite con una causa preanalítica.', points: 12 });
+    }
+    if (!bplSignals.present && form.equipmentModel === 'BA400') {
+      missingEvidence.push('Evidencia BPL del monitor (blancos, calibraciones y QC del equipo)');
     }
     if (qcAssessment?.band === 'out_of_reject') {
       positive.push({ label: 'El valuesheet confirma que el control cayó fuera del límite de rechazo.', points: 16 });

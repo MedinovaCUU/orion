@@ -15,7 +15,13 @@
     "planning:sync:dry": "node ./scripts/service-planning-sync/sync.mjs --dry-run",
     "test:ba400:model": "node tests/ba400-model.test.mjs",
     "test:ba400:browser": "node tests/ba400-browser.test.mjs",
-    "ba400:catalog": "node tools/prepare-ba400-catalog.mjs"
+    "test:ba400:antecedents": "node tests/ba400-antecedents-browser.test.mjs",
+    "test:monitor:browser": "node tests/ba400-monitor-browser.test.mjs",
+    "test:monitor:shots": "node tests/tools/monitor-screenshots.mjs --strict",
+    "test:monitor:derivations": "node tests/monitoring-derivations.test.mjs",
+    "ba400:catalog": "node tools/prepare-ba400-catalog.mjs",
+    "test:bpl": "node tests/bpl-events.test.mjs",
+    "test:bpl:curves": "node tests/bpl-reaction-curves.test.mjs"
   },
   "dependencies": {
     "@react-three/drei": "^10.7.7",

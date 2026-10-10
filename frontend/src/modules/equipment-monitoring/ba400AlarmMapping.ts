@@ -1,3 +1,4 @@
+import catalog from './ba400AlarmCatalog.json';
 import { BA400_PART_BY_ID } from '../dri/model3d/ba400Mapping';
 
 export interface MonitoringAlarm {
@@ -12,48 +13,71 @@ export interface MonitoringAlarm {
 
 export const isBa400Serial = (serial: string) => /^83400\d+$/.test(serial.replace(/\s/g, ''));
 
-/**
- * Referencias de conjunto, no diagnósticos de refacción averiada.
- * Fuente de códigos: tools/ba400-log-monitor/error-catalog.json (catálogo BAX00).
- * Fuente geométrica: catálogo BA400 usado por DRI. Solo códigos explícitos;
- * no se infieren piezas buscando palabras en descripciones ni por rangos numéricos.
- * Los errores de placa, software o causas ambiguas quedan sin ubicación 3D.
- */
-export const BA400_ALARM_LOCATIONS = [
-  { codes: ['70'], partId: 'tapa_sup', label: 'Tapa principal' },
-  { codes: ['100', '101', '102', '103', '200', '201', '202', '203'], partId: 'brazo_r1', label: 'Brazo / dispensación R1' },
-  { codes: ['110', '111', '112', '113', '210', '211', '212', '213'], partId: 'brazo_r2', label: 'Brazo / dispensación R2' },
-  { codes: ['120', '121', '122', '123', '220', '223'], partId: 'brazo_s', label: 'Brazo / dispensación de muestra' },
-  { codes: ['130', '131', '132', '133'], partId: 'brazo_a1', label: 'Agitación A1' },
-  { codes: ['140', '141', '142', '143'], partId: 'brazo_a2', label: 'Agitación A2' },
-  { codes: ['300'], partId: 'rotor_rea', label: 'Rotor de reactivos' },
-  { codes: ['301', '302', '303'], partId: 'frio_rea', label: 'Refrigeración de reactivos' },
-  { codes: ['305'], partId: 'tapa_rea', label: 'Tapa de reactivos' },
-  { codes: ['310', '311'], partId: 'lector_rea', label: 'Lector de reactivos' },
-  { codes: ['350'], partId: 'rotor_mue', label: 'Rotor de muestras' },
-  { codes: ['355'], partId: 'tapa_mue', label: 'Tapa de muestras' },
-  { codes: ['360', '361'], partId: 'lector_mue', label: 'Lector de muestras' },
-  { codes: ['500', '501', '553'], partId: 'rotor_rxn', label: 'Conjunto del rotor de reacciones' },
-  { codes: ['502', '504', '520'], partId: 'cabezal_lav', label: 'Estación de lavado' },
-  { codes: ['510', '511', '512'], partId: 'cuba_rxn', label: 'Conjunto térmico de reacciones' },
-  { codes: ['541', '550', '551', '552'], partId: 'rotor_pm', label: 'Rotor de metacrilato' },
-];
+/** Complete v2.20 classification. Geometry is BA400 only; never infer a part from prose. */
+export const BA400_ALARM_CATALOG = catalog;
+export const BA400_ALARM_LOCATIONS = Object.values(catalog)
+  .filter(entry => entry.partId !== null)
+  .map(entry => ({ codes: [entry.code], partId: entry.partId!, partIds: entry.partIds, label: entry.target }));
+
+export function normalizeBa400AlarmCode(value: string | null | undefined) {
+  const raw = String(value ?? '').trim();
+  const match = /^(?:E\s*:?\s*)?(?:\((\d+)\)|(\d+))$/i.exec(raw);
+  return match ? String(Number(match[1] || match[2])) : null;
+}
+
+export function classifyBa400Alarm(alarm: MonitoringAlarm) {
+  const code = normalizeBa400AlarmCode(alarm.codigo_error);
+  return code ? (catalog as Record<string, (typeof catalog)[keyof typeof catalog]>)[code] ?? null : null;
+}
 
 export function resolveBa400Alarm(alarm: MonitoringAlarm) {
-  const raw = String(alarm.codigo_error ?? '').trim();
-  const match = /^(?:E:?)?(\d+)$/i.exec(raw);
-  const code = match ? String(Number(match[1])) : null;
-  const location = code ? BA400_ALARM_LOCATIONS.find(item => item.codes.includes(code)) : undefined;
-  // Si cambia el catálogo, no se debe colocar un marcador sobre una pieza inexistente.
-  return location && BA400_PART_BY_ID.has(location.partId) ? location : null;
+  const entry = classifyBa400Alarm(alarm);
+  return entry?.partId && entry.partIds.length > 0 && entry.partIds.every(id => BA400_PART_BY_ID.has(id))
+    ? { codes: [entry.code], partId: entry.partId, partIds: entry.partIds, label: entry.target } : null;
+}
+
+export function ba400AlarmLocationLabel(alarm: MonitoringAlarm) {
+  const entry = classifyBa400Alarm(alarm);
+  if (!entry) return 'Sin ubicación 3D definida · Código no catalogado';
+  if (entry.scope === 'consequence') return 'Analizador completo · Evento derivado · Sin pieza asociada';
+  if (entry.scope === 'equipment' || entry.scope === 'status') return 'Analizador completo · Sin pieza asociada';
+  return resolveBa400Alarm(alarm) ? `${entry.target} · Ubicación 3D definida`
+    : `${entry.target} · Sin ubicación 3D definida`;
 }
 
 export function alarmTone(alarm: MonitoringAlarm): 'fatal' | 'warning' | 'unknown' {
-  const tone = alarm.tipo_mensaje?.toLowerCase();
+  const reported = alarm.tipo_mensaje?.toLowerCase();
+  const tone = reported === 'fatal' || reported === 'warning' ? reported : classifyBa400Alarm(alarm)?.severity;
   return tone === 'fatal' || tone === 'warning' ? tone : 'unknown';
 }
 
 export function alarmKey(alarm: MonitoringAlarm) {
   // El ID de las filas de estado es sintético y puede cambiar entre refrescos.
   return `${alarm.codigo_error ?? 'sin-codigo'}|${alarm.seccion_error ?? ''}|${alarm.descripcion_error ?? ''}`;
+}
+
+/** Antecedentes temporales del mismo equipo, no causalidad inferida.
+ * Acepta únicamente filas con fecha y nunca cruza un registro de recuperación.
+ * El llamador debe proporcionar el historial de un solo equipo.
+ */
+export function ba400AlarmAntecedents(alarm: MonitoringAlarm, history: MonitoringAlarm[]) {
+  if (classifyBa400Alarm(alarm)?.scope !== 'consequence') return [];
+  const time = (row: MonitoringAlarm) => Date.parse(row.detected_at || row.created_at || '');
+  const end = time(alarm);
+  if (!Number.isFinite(end)) return [];
+  const preceding = history.filter(row => Number.isFinite(time(row)) && time(row) <= end);
+  const clearAt = Math.max(-Infinity, ...preceding.filter(row =>
+    normalizeBa400AlarmCode(row.codigo_error) === '0' || row.tipo_mensaje?.toLowerCase() === 'ok').map(time));
+  const candidates = preceding.filter(row => {
+    const code = normalizeBa400AlarmCode(row.codigo_error);
+    return time(row) > clearAt && code !== '20' && code !== '21' && code !== '99' && code !== '0'
+      && (code !== null || !!row.descripcion_error);
+  });
+  const latest = Math.max(-Infinity, ...candidates.map(time));
+  const seen = new Set<string>();
+  return candidates.filter(row => {
+    const key = alarmKey(row);
+    if (time(row) !== latest || seen.has(key)) return false;
+    seen.add(key); return true;
+  });
 }

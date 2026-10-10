@@ -1,0 +1,1726 @@
+{
+  "0": {
+    "code": "0",
+    "description": "Without Errors",
+    "scope": "status",
+    "target": "Analizador",
+    "partId": null,
+    "note": "Sin errores.",
+    "partIds": [],
+    "severity": "ok"
+  },
+  "1": {
+    "code": "1",
+    "description": "CPU Firmware Mismatch. Update from repository must be done",
+    "scope": "equipment",
+    "target": "Analizador completo",
+    "partId": null,
+    "note": "Evento de control, comunicación o estado general; no se asigna a una pieza física.",
+    "partIds": [],
+    "severity": "fatal"
+  },
+  "2": {
+    "code": "2",
+    "description": "Distributed Firmware Mismatch. Update from repository must be done",
+    "scope": "equipment",
+    "target": "Analizador completo",
+    "partId": null,
+    "note": "Evento de control, comunicación o estado general; no se asigna a una pieza física.",
+    "partIds": [],
+    "severity": "warning"
+  },
+  "3": {
+    "code": "3",
+    "description": "FW Repository Error",
+    "scope": "equipment",
+    "target": "Analizador completo",
+    "partId": null,
+    "note": "Evento de control, comunicación o estado general; no se asigna a una pieza física.",
+    "partIds": [],
+    "severity": "warning"
+  },
+  "4": {
+    "code": "4",
+    "description": "A400 FW Error (Checksums)",
+    "scope": "equipment",
+    "target": "Analizador completo",
+    "partId": null,
+    "note": "Evento de control, comunicación o estado general; no se asigna a una pieza física.",
+    "partIds": [],
+    "severity": "fatal"
+  },
+  "5": {
+    "code": "5",
+    "description": "A400 FW Execution Error",
+    "scope": "equipment",
+    "target": "Analizador completo",
+    "partId": null,
+    "note": "Evento de control, comunicación o estado general; no se asigna a una pieza física.",
+    "partIds": [],
+    "severity": "fatal"
+  },
+  "6": {
+    "code": "6",
+    "description": "Maneuvers/Adjustments Mismatch. Update from repository must be done",
+    "scope": "equipment",
+    "target": "Analizador completo",
+    "partId": null,
+    "note": "Evento de control, comunicación o estado general; no se asigna a una pieza física.",
+    "partIds": [],
+    "severity": "fatal"
+  },
+  "10": {
+    "code": "10",
+    "description": "CAN Bus Error",
+    "scope": "equipment",
+    "target": "Analizador completo",
+    "partId": null,
+    "note": "Evento de control, comunicación o estado general; no se asigna a una pieza física.",
+    "partIds": [],
+    "severity": "fatal"
+  },
+  "20": {
+    "code": "20",
+    "description": "Instruction Rejected by a previous Error (Permanent or Self-recover like covers) (Stand by-Running)",
+    "scope": "consequence",
+    "target": "Analizador completo",
+    "partId": null,
+    "note": "Evento derivado de otro error. No identifica una pieza ni confirma por sí solo cuál fue la causa.",
+    "partIds": [],
+    "severity": "fatal"
+  },
+  "21": {
+    "code": "21",
+    "description": "Instruction Aborted by an Error (Stand by-Running)",
+    "scope": "consequence",
+    "target": "Analizador completo",
+    "partId": null,
+    "note": "Evento derivado de otro error. No identifica una pieza ni confirma por sí solo cuál fue la causa.",
+    "partIds": [],
+    "severity": "fatal"
+  },
+  "22": {
+    "code": "22",
+    "description": "Recover Failed.",
+    "scope": "equipment",
+    "target": "Analizador completo",
+    "partId": null,
+    "note": "Evento de control, comunicación o estado general; no se asigna a una pieza física.",
+    "partIds": [],
+    "severity": "fatal"
+  },
+  "28": {
+    "code": "28",
+    "description": "Impossible to perform TEST/PTEST/WRUN; Wait to next Cycle",
+    "scope": "equipment",
+    "target": "Analizador completo",
+    "partId": null,
+    "note": "Evento de control, comunicación o estado general; no se asigna a una pieza física.",
+    "partIds": [],
+    "severity": "warning"
+  },
+  "34": {
+    "code": "34",
+    "description": "Impossible to perform TEST/PTEST/WRUN; Already received one in the same cycle",
+    "scope": "equipment",
+    "target": "Analizador completo",
+    "partId": null,
+    "note": "Evento de control, comunicación o estado general; no se asigna a una pieza física.",
+    "partIds": [],
+    "severity": "warning"
+  },
+  "35": {
+    "code": "35",
+    "description": "Error in Scheduller Table",
+    "scope": "equipment",
+    "target": "Analizador completo",
+    "partId": null,
+    "note": "Evento de control, comunicación o estado general; no se asigna a una pieza física.",
+    "partIds": [],
+    "severity": "fatal"
+  },
+  "40": {
+    "code": "40",
+    "description": "Instruction unknown or with wrong parameter",
+    "scope": "equipment",
+    "target": "Analizador completo",
+    "partId": null,
+    "note": "Evento de control, comunicación o estado general; no se asigna a una pieza física.",
+    "partIds": [],
+    "severity": "warning"
+  },
+  "41": {
+    "code": "41",
+    "description": "Instruction Not Allowed on This State",
+    "scope": "equipment",
+    "target": "Analizador completo",
+    "partId": null,
+    "note": "Evento de control, comunicación o estado general; no se asigna a una pieza física.",
+    "partIds": [],
+    "severity": "fatal"
+  },
+  "42": {
+    "code": "42",
+    "description": "Instruction Not Allowed on This Instruction",
+    "scope": "equipment",
+    "target": "Analizador completo",
+    "partId": null,
+    "note": "Evento de control, comunicación o estado general; no se asigna a una pieza física.",
+    "partIds": [],
+    "severity": "fatal"
+  },
+  "43": {
+    "code": "43",
+    "description": "COMMAND script wrong",
+    "scope": "equipment",
+    "target": "Analizador completo",
+    "partId": null,
+    "note": "Evento de control, comunicación o estado general; no se asigna a una pieza física.",
+    "partIds": [],
+    "severity": "warning"
+  },
+  "45": {
+    "code": "45",
+    "description": "LOADADJ Wrong",
+    "scope": "equipment",
+    "target": "Analizador completo",
+    "partId": null,
+    "note": "Evento de control, comunicación o estado general; no se asigna a una pieza física.",
+    "partIds": [],
+    "severity": "warning"
+  },
+  "61": {
+    "code": "61",
+    "description": "ISE Time Out",
+    "scope": "component",
+    "target": "Módulo ISE",
+    "partId": "ise_01",
+    "note": "El timeout corresponde al módulo ISE; no identifica una pieza averiada.",
+    "partIds": [
+      "ise_01",
+      "ise_02",
+      "ise_03"
+    ],
+    "severity": "fatal"
+  },
+  "70": {
+    "code": "70",
+    "description": "Main Cover opened while instrument working",
+    "scope": "component",
+    "target": "Tapa superior",
+    "partId": "tapa_sup",
+    "note": "Referencia del conjunto; no confirma una pieza averiada.",
+    "partIds": [
+      "tapa_sup"
+    ],
+    "severity": "fatal"
+  },
+  "99": {
+    "code": "99",
+    "description": "Multiple Errors",
+    "scope": "equipment",
+    "target": "Analizador completo",
+    "partId": null,
+    "note": "Evento de control, comunicación o estado general; no se asigna a una pieza física.",
+    "partIds": [],
+    "severity": "fatal"
+  },
+  "100": {
+    "code": "100",
+    "description": "BR1 Vertical Home Error",
+    "scope": "component",
+    "target": "Brazo R1",
+    "partId": "brazo_r1",
+    "note": "Referencia del conjunto; no confirma una pieza averiada.",
+    "partIds": [
+      "brazo_r1"
+    ],
+    "severity": "fatal"
+  },
+  "101": {
+    "code": "101",
+    "description": "BR1 Horizontal Home Error",
+    "scope": "component",
+    "target": "Brazo R1",
+    "partId": "brazo_r1",
+    "note": "Referencia del conjunto; no confirma una pieza averiada.",
+    "partIds": [
+      "brazo_r1"
+    ],
+    "severity": "fatal"
+  },
+  "102": {
+    "code": "102",
+    "description": "BR1 Vertical step loss detected",
+    "scope": "component",
+    "target": "Brazo R1",
+    "partId": "brazo_r1",
+    "note": "Referencia del conjunto; no confirma una pieza averiada.",
+    "partIds": [
+      "brazo_r1"
+    ],
+    "severity": "fatal"
+  },
+  "103": {
+    "code": "103",
+    "description": "BR1 Error de HOME al intentar recuperarse",
+    "scope": "component",
+    "target": "Brazo R1",
+    "partId": "brazo_r1",
+    "note": "Referencia del conjunto; no confirma una pieza averiada.",
+    "partIds": [
+      "brazo_r1"
+    ],
+    "severity": "fatal"
+  },
+  "108": {
+    "code": "108",
+    "description": "BR1 Board doesn't answer",
+    "scope": "component",
+    "target": "Tarjeta brazo R1",
+    "partId": "pcb_r1",
+    "note": "Referencia del conjunto; no confirma una pieza averiada.",
+    "partIds": [
+      "pcb_r1"
+    ],
+    "severity": "fatal"
+  },
+  "109": {
+    "code": "109",
+    "description": "BR1 Reset",
+    "scope": "component",
+    "target": "Tarjeta brazo R1",
+    "partId": "pcb_r1",
+    "note": "Referencia del conjunto; no confirma una pieza averiada.",
+    "partIds": [
+      "pcb_r1"
+    ],
+    "severity": "fatal"
+  },
+  "110": {
+    "code": "110",
+    "description": "BR2 Vertical Home Error",
+    "scope": "component",
+    "target": "Brazo R2",
+    "partId": "brazo_r2",
+    "note": "Referencia del conjunto; no confirma una pieza averiada.",
+    "partIds": [
+      "brazo_r2"
+    ],
+    "severity": "fatal"
+  },
+  "111": {
+    "code": "111",
+    "description": "BR2 Horizontal Home Error",
+    "scope": "component",
+    "target": "Brazo R2",
+    "partId": "brazo_r2",
+    "note": "Referencia del conjunto; no confirma una pieza averiada.",
+    "partIds": [
+      "brazo_r2"
+    ],
+    "severity": "fatal"
+  },
+  "112": {
+    "code": "112",
+    "description": "BR2 Vertical step loss detected",
+    "scope": "component",
+    "target": "Brazo R2",
+    "partId": "brazo_r2",
+    "note": "Referencia del conjunto; no confirma una pieza averiada.",
+    "partIds": [
+      "brazo_r2"
+    ],
+    "severity": "fatal"
+  },
+  "113": {
+    "code": "113",
+    "description": "BR2 Error de HOME al intentar recuperarse",
+    "scope": "component",
+    "target": "Brazo R2",
+    "partId": "brazo_r2",
+    "note": "Referencia del conjunto; no confirma una pieza averiada.",
+    "partIds": [
+      "brazo_r2"
+    ],
+    "severity": "fatal"
+  },
+  "118": {
+    "code": "118",
+    "description": "BR2 Board doesn't answer",
+    "scope": "component",
+    "target": "Tarjeta brazo R2",
+    "partId": "pcb_r2",
+    "note": "Referencia del conjunto; no confirma una pieza averiada.",
+    "partIds": [
+      "pcb_r2"
+    ],
+    "severity": "fatal"
+  },
+  "119": {
+    "code": "119",
+    "description": "BR2 Reset",
+    "scope": "component",
+    "target": "Tarjeta brazo R2",
+    "partId": "pcb_r2",
+    "note": "Referencia del conjunto; no confirma una pieza averiada.",
+    "partIds": [
+      "pcb_r2"
+    ],
+    "severity": "fatal"
+  },
+  "120": {
+    "code": "120",
+    "description": "BM1 Vertical Home Error",
+    "scope": "component",
+    "target": "Brazo S",
+    "partId": "brazo_s",
+    "note": "Referencia del conjunto; no confirma una pieza averiada.",
+    "partIds": [
+      "brazo_s"
+    ],
+    "severity": "fatal"
+  },
+  "121": {
+    "code": "121",
+    "description": "BM1 Horizontal Home Error",
+    "scope": "component",
+    "target": "Brazo S",
+    "partId": "brazo_s",
+    "note": "Referencia del conjunto; no confirma una pieza averiada.",
+    "partIds": [
+      "brazo_s"
+    ],
+    "severity": "fatal"
+  },
+  "122": {
+    "code": "122",
+    "description": "BM1 Vertical step loss detected",
+    "scope": "component",
+    "target": "Brazo S",
+    "partId": "brazo_s",
+    "note": "Referencia del conjunto; no confirma una pieza averiada.",
+    "partIds": [
+      "brazo_s"
+    ],
+    "severity": "fatal"
+  },
+  "123": {
+    "code": "123",
+    "description": "BM1 Error de HOME al intentar recuperarse",
+    "scope": "component",
+    "target": "Brazo S",
+    "partId": "brazo_s",
+    "note": "Referencia del conjunto; no confirma una pieza averiada.",
+    "partIds": [
+      "brazo_s"
+    ],
+    "severity": "fatal"
+  },
+  "128": {
+    "code": "128",
+    "description": "BM1 Board doesn't answer",
+    "scope": "component",
+    "target": "Tarjeta brazo S",
+    "partId": "pcb_s",
+    "note": "Referencia del conjunto; no confirma una pieza averiada.",
+    "partIds": [
+      "pcb_s"
+    ],
+    "severity": "fatal"
+  },
+  "129": {
+    "code": "129",
+    "description": "BM1 Reset",
+    "scope": "component",
+    "target": "Tarjeta brazo S",
+    "partId": "pcb_s",
+    "note": "Referencia del conjunto; no confirma una pieza averiada.",
+    "partIds": [
+      "pcb_s"
+    ],
+    "severity": "fatal"
+  },
+  "130": {
+    "code": "130",
+    "description": "AG1 Vertical Home Error",
+    "scope": "component",
+    "target": "Brazo A1",
+    "partId": "brazo_a1",
+    "note": "Referencia del conjunto; no confirma una pieza averiada.",
+    "partIds": [
+      "brazo_a1"
+    ],
+    "severity": "fatal"
+  },
+  "131": {
+    "code": "131",
+    "description": "AG1 Horizontal Home Error",
+    "scope": "component",
+    "target": "Brazo A1",
+    "partId": "brazo_a1",
+    "note": "Referencia del conjunto; no confirma una pieza averiada.",
+    "partIds": [
+      "brazo_a1"
+    ],
+    "severity": "fatal"
+  },
+  "132": {
+    "code": "132",
+    "description": "AG1 Vertical step loss detected",
+    "scope": "component",
+    "target": "Brazo A1",
+    "partId": "brazo_a1",
+    "note": "Referencia del conjunto; no confirma una pieza averiada.",
+    "partIds": [
+      "brazo_a1"
+    ],
+    "severity": "fatal"
+  },
+  "133": {
+    "code": "133",
+    "description": "AG1 Error de HOME al intentar recuperarse",
+    "scope": "component",
+    "target": "Brazo A1",
+    "partId": "brazo_a1",
+    "note": "Referencia del conjunto; no confirma una pieza averiada.",
+    "partIds": [
+      "brazo_a1"
+    ],
+    "severity": "fatal"
+  },
+  "138": {
+    "code": "138",
+    "description": "AG1 Board doesn't answer",
+    "scope": "component",
+    "target": "Tarjeta brazo A1",
+    "partId": "pcb_a1",
+    "note": "Referencia del conjunto; no confirma una pieza averiada.",
+    "partIds": [
+      "pcb_a1"
+    ],
+    "severity": "fatal"
+  },
+  "139": {
+    "code": "139",
+    "description": "AG1 Reset",
+    "scope": "component",
+    "target": "Tarjeta brazo A1",
+    "partId": "pcb_a1",
+    "note": "Referencia del conjunto; no confirma una pieza averiada.",
+    "partIds": [
+      "pcb_a1"
+    ],
+    "severity": "fatal"
+  },
+  "140": {
+    "code": "140",
+    "description": "AG2 Vertical Home Error",
+    "scope": "component",
+    "target": "Brazo A2",
+    "partId": "brazo_a2",
+    "note": "Referencia del conjunto; no confirma una pieza averiada.",
+    "partIds": [
+      "brazo_a2"
+    ],
+    "severity": "fatal"
+  },
+  "141": {
+    "code": "141",
+    "description": "AG2 Horizontal Home Error",
+    "scope": "component",
+    "target": "Brazo A2",
+    "partId": "brazo_a2",
+    "note": "Referencia del conjunto; no confirma una pieza averiada.",
+    "partIds": [
+      "brazo_a2"
+    ],
+    "severity": "fatal"
+  },
+  "142": {
+    "code": "142",
+    "description": "AG2 Vertical step loss detected",
+    "scope": "component",
+    "target": "Brazo A2",
+    "partId": "brazo_a2",
+    "note": "Referencia del conjunto; no confirma una pieza averiada.",
+    "partIds": [
+      "brazo_a2"
+    ],
+    "severity": "fatal"
+  },
+  "143": {
+    "code": "143",
+    "description": "AG2 Error de HOME al intentar recuperarse",
+    "scope": "component",
+    "target": "Brazo A2",
+    "partId": "brazo_a2",
+    "note": "Referencia del conjunto; no confirma una pieza averiada.",
+    "partIds": [
+      "brazo_a2"
+    ],
+    "severity": "fatal"
+  },
+  "148": {
+    "code": "148",
+    "description": "AG2 Board doesn't answer",
+    "scope": "component",
+    "target": "Tarjeta brazo A2",
+    "partId": "pcb_a2",
+    "note": "Referencia del conjunto; no confirma una pieza averiada.",
+    "partIds": [
+      "pcb_a2"
+    ],
+    "severity": "fatal"
+  },
+  "149": {
+    "code": "149",
+    "description": "AG2 Reset",
+    "scope": "component",
+    "target": "Tarjeta brazo A2",
+    "partId": "pcb_a2",
+    "note": "Referencia del conjunto; no confirma una pieza averiada.",
+    "partIds": [
+      "pcb_a2"
+    ],
+    "severity": "fatal"
+  },
+  "200": {
+    "code": "200",
+    "description": "DR1 Freq Detection system Error (Frequency Wrong)",
+    "scope": "component",
+    "target": "Brazo R1",
+    "partId": "brazo_r1",
+    "note": "Referencia del conjunto; no confirma una pieza averiada.",
+    "partIds": [
+      "brazo_r1"
+    ],
+    "severity": "fatal"
+  },
+  "201": {
+    "code": "201",
+    "description": "DR1 Probe Thermistor Error",
+    "scope": "component",
+    "target": "Brazo R1",
+    "partId": "brazo_r1",
+    "note": "Referencia del conjunto; no confirma una pieza averiada.",
+    "partIds": [
+      "brazo_r1"
+    ],
+    "severity": "fatal"
+  },
+  "202": {
+    "code": "202",
+    "description": "DR1 Probe Heater Error",
+    "scope": "component",
+    "target": "Brazo R1",
+    "partId": "brazo_r1",
+    "note": "Referencia del conjunto; no confirma una pieza averiada.",
+    "partIds": [
+      "brazo_r1"
+    ],
+    "severity": "fatal"
+  },
+  "203": {
+    "code": "203",
+    "description": "DR1 Collision Detected",
+    "scope": "component",
+    "target": "Brazo R1",
+    "partId": "brazo_r1",
+    "note": "Referencia del conjunto; no confirma una pieza averiada.",
+    "partIds": [
+      "brazo_r1"
+    ],
+    "severity": "fatal"
+  },
+  "208": {
+    "code": "208",
+    "description": "DR1 Board doesn't answer",
+    "scope": "component",
+    "target": "Placa de detección DR1 · interior del brazo R1",
+    "partId": "brazo_r1",
+    "note": "Correspondencia indicada por el usuario. Referencia del conjunto; no confirma una pieza averiada.",
+    "partIds": [
+      "brazo_r1"
+    ],
+    "severity": "fatal"
+  },
+  "209": {
+    "code": "209",
+    "description": "DR1 Reset",
+    "scope": "component",
+    "target": "Placa de detección DR1 · interior del brazo R1",
+    "partId": "brazo_r1",
+    "note": "Correspondencia indicada por el usuario. Referencia del conjunto; no confirma una pieza averiada.",
+    "partIds": [
+      "brazo_r1"
+    ],
+    "severity": "fatal"
+  },
+  "210": {
+    "code": "210",
+    "description": "DR2 Freq Detection system Error (Frequency Wrong)",
+    "scope": "component",
+    "target": "Brazo R2",
+    "partId": "brazo_r2",
+    "note": "Referencia del conjunto; no confirma una pieza averiada.",
+    "partIds": [
+      "brazo_r2"
+    ],
+    "severity": "fatal"
+  },
+  "211": {
+    "code": "211",
+    "description": "DR2 Probe Thermistor Error",
+    "scope": "component",
+    "target": "Brazo R2",
+    "partId": "brazo_r2",
+    "note": "Referencia del conjunto; no confirma una pieza averiada.",
+    "partIds": [
+      "brazo_r2"
+    ],
+    "severity": "fatal"
+  },
+  "212": {
+    "code": "212",
+    "description": "DR2 Probe Heater Error",
+    "scope": "component",
+    "target": "Brazo R2",
+    "partId": "brazo_r2",
+    "note": "Referencia del conjunto; no confirma una pieza averiada.",
+    "partIds": [
+      "brazo_r2"
+    ],
+    "severity": "fatal"
+  },
+  "213": {
+    "code": "213",
+    "description": "DR2 Collision Detected",
+    "scope": "component",
+    "target": "Brazo R2",
+    "partId": "brazo_r2",
+    "note": "Referencia del conjunto; no confirma una pieza averiada.",
+    "partIds": [
+      "brazo_r2"
+    ],
+    "severity": "fatal"
+  },
+  "218": {
+    "code": "218",
+    "description": "DR2 Board doesn't answer",
+    "scope": "component",
+    "target": "Placa de detección DR2 · interior del brazo R2",
+    "partId": "brazo_r2",
+    "note": "Correspondencia indicada por el usuario. Referencia del conjunto; no confirma una pieza averiada.",
+    "partIds": [
+      "brazo_r2"
+    ],
+    "severity": "fatal"
+  },
+  "219": {
+    "code": "219",
+    "description": "DR2 Reset",
+    "scope": "component",
+    "target": "Placa de detección DR2 · interior del brazo R2",
+    "partId": "brazo_r2",
+    "note": "Correspondencia indicada por el usuario. Referencia del conjunto; no confirma una pieza averiada.",
+    "partIds": [
+      "brazo_r2"
+    ],
+    "severity": "fatal"
+  },
+  "220": {
+    "code": "220",
+    "description": "DM1 Freq Detection system Error (Frequency Wrong)",
+    "scope": "component",
+    "target": "Brazo S",
+    "partId": "brazo_s",
+    "note": "Referencia del conjunto; no confirma una pieza averiada.",
+    "partIds": [
+      "brazo_s"
+    ],
+    "severity": "fatal"
+  },
+  "223": {
+    "code": "223",
+    "description": "DM1 Collision Detected",
+    "scope": "component",
+    "target": "Brazo S",
+    "partId": "brazo_s",
+    "note": "Referencia del conjunto; no confirma una pieza averiada.",
+    "partIds": [
+      "brazo_s"
+    ],
+    "severity": "fatal"
+  },
+  "228": {
+    "code": "228",
+    "description": "DM1 Board doesn't answer",
+    "scope": "component",
+    "target": "Placa de detección DM1 · interior del brazo S",
+    "partId": "brazo_s",
+    "note": "Correspondencia indicada por el usuario. Referencia del conjunto; no confirma una pieza averiada.",
+    "partIds": [
+      "brazo_s"
+    ],
+    "severity": "fatal"
+  },
+  "229": {
+    "code": "229",
+    "description": "DM1 Reset",
+    "scope": "component",
+    "target": "Placa de detección DM1 · interior del brazo S",
+    "partId": "brazo_s",
+    "note": "Correspondencia indicada por el usuario. Referencia del conjunto; no confirma una pieza averiada.",
+    "partIds": [
+      "brazo_s"
+    ],
+    "severity": "fatal"
+  },
+  "300": {
+    "code": "300",
+    "description": "RR1 Home Error",
+    "scope": "component",
+    "target": "Rotor de reactivos",
+    "partId": "rotor_rea",
+    "note": "Referencia del conjunto; no confirma una pieza averiada.",
+    "partIds": [
+      "rotor_rea"
+    ],
+    "severity": "fatal"
+  },
+  "301": {
+    "code": "301",
+    "description": "RR1 Fridge Temperature Alarm",
+    "scope": "component",
+    "target": "Refrigeración rotor rea",
+    "partId": "frio_rea",
+    "note": "Referencia del conjunto; no confirma una pieza averiada.",
+    "partIds": [
+      "frio_rea"
+    ],
+    "severity": "warning"
+  },
+  "302": {
+    "code": "302",
+    "description": "RR1 Fridge Peltiers Error",
+    "scope": "component",
+    "target": "Refrigeración rotor rea",
+    "partId": "frio_rea",
+    "note": "Referencia del conjunto; no confirma una pieza averiada.",
+    "partIds": [
+      "frio_rea"
+    ],
+    "severity": "warning"
+  },
+  "303": {
+    "code": "303",
+    "description": "RR1 Fridge Fans Error",
+    "scope": "component",
+    "target": "Refrigeración rotor rea",
+    "partId": "frio_rea",
+    "note": "Referencia del conjunto; no confirma una pieza averiada.",
+    "partIds": [
+      "frio_rea"
+    ],
+    "severity": "warning"
+  },
+  "305": {
+    "code": "305",
+    "description": "RR1 Cover Opened",
+    "scope": "component",
+    "target": "Tapa de reactivos",
+    "partId": "tapa_rea",
+    "note": "Referencia del conjunto; no confirma una pieza averiada.",
+    "partIds": [
+      "tapa_rea"
+    ],
+    "severity": "fatal"
+  },
+  "310": {
+    "code": "310",
+    "description": "RR1 Code Bar Reader Error",
+    "scope": "component",
+    "target": "Lector códigos rea",
+    "partId": "lector_rea",
+    "note": "Referencia del conjunto; no confirma una pieza averiada.",
+    "partIds": [
+      "lector_rea"
+    ],
+    "severity": "warning"
+  },
+  "311": {
+    "code": "311",
+    "description": "RR1 Code Bar Reader Time Out Error",
+    "scope": "component",
+    "target": "Lector códigos rea",
+    "partId": "lector_rea",
+    "note": "Referencia del conjunto; no confirma una pieza averiada.",
+    "partIds": [
+      "lector_rea"
+    ],
+    "severity": "warning"
+  },
+  "348": {
+    "code": "348",
+    "description": "RR1 Board doesn't answer",
+    "scope": "component",
+    "target": "Tarjeta rea",
+    "partId": "pcb_rea",
+    "note": "Referencia del conjunto; no confirma una pieza averiada.",
+    "partIds": [
+      "pcb_rea"
+    ],
+    "severity": "fatal"
+  },
+  "349": {
+    "code": "349",
+    "description": "RR1 Reset",
+    "scope": "component",
+    "target": "Tarjeta rea",
+    "partId": "pcb_rea",
+    "note": "Referencia del conjunto; no confirma una pieza averiada.",
+    "partIds": [
+      "pcb_rea"
+    ],
+    "severity": "fatal"
+  },
+  "350": {
+    "code": "350",
+    "description": "RM1 Home Error",
+    "scope": "component",
+    "target": "Rotor de muestras",
+    "partId": "rotor_mue",
+    "note": "Referencia del conjunto; no confirma una pieza averiada.",
+    "partIds": [
+      "rotor_mue"
+    ],
+    "severity": "fatal"
+  },
+  "355": {
+    "code": "355",
+    "description": "RM1 Cover Opened",
+    "scope": "component",
+    "target": "Tapa de muestras",
+    "partId": "tapa_mue",
+    "note": "Referencia del conjunto; no confirma una pieza averiada.",
+    "partIds": [
+      "tapa_mue"
+    ],
+    "severity": "fatal"
+  },
+  "360": {
+    "code": "360",
+    "description": "RM1 Code Bar Reader Error",
+    "scope": "component",
+    "target": "Lector códigos mue",
+    "partId": "lector_mue",
+    "note": "Referencia del conjunto; no confirma una pieza averiada.",
+    "partIds": [
+      "lector_mue"
+    ],
+    "severity": "warning"
+  },
+  "361": {
+    "code": "361",
+    "description": "RM1 Code Bar Reader Time Out Error",
+    "scope": "component",
+    "target": "Lector códigos mue",
+    "partId": "lector_mue",
+    "note": "Referencia del conjunto; no confirma una pieza averiada.",
+    "partIds": [
+      "lector_mue"
+    ],
+    "severity": "warning"
+  },
+  "398": {
+    "code": "398",
+    "description": "RM1 Board doesn't answer",
+    "scope": "component",
+    "target": "Tarjeta mue",
+    "partId": "pcb_mue",
+    "note": "Referencia del conjunto; no confirma una pieza averiada.",
+    "partIds": [
+      "pcb_mue"
+    ],
+    "severity": "fatal"
+  },
+  "399": {
+    "code": "399",
+    "description": "RM1 Reset",
+    "scope": "component",
+    "target": "Tarjeta mue",
+    "partId": "pcb_mue",
+    "note": "Referencia del conjunto; no confirma una pieza averiada.",
+    "partIds": [
+      "pcb_mue"
+    ],
+    "severity": "fatal"
+  },
+  "500": {
+    "code": "500",
+    "description": "Rotor Home Error",
+    "scope": "component",
+    "target": "Centrador y eje del rotor",
+    "partId": "rotor_rxn",
+    "note": "Referencia del conjunto; no confirma una pieza averiada.",
+    "partIds": [
+      "rotor_rxn"
+    ],
+    "severity": "fatal"
+  },
+  "501": {
+    "code": "501",
+    "description": "Rotor Encoder Error",
+    "scope": "component",
+    "target": "Centrador y eje del rotor",
+    "partId": "rotor_rxn",
+    "note": "Referencia del conjunto; no confirma una pieza averiada.",
+    "partIds": [
+      "rotor_rxn"
+    ],
+    "severity": "fatal"
+  },
+  "502": {
+    "code": "502",
+    "description": "Rotor Safety Stop: Washing Station Down",
+    "scope": "component",
+    "target": "Cabezal de lavado",
+    "partId": "cabezal_lav",
+    "note": "Referencia del conjunto; no confirma una pieza averiada.",
+    "partIds": [
+      "cabezal_lav"
+    ],
+    "severity": "fatal"
+  },
+  "503": {
+    "code": "503",
+    "description": "Photometrics Cover Opened",
+    "scope": "component",
+    "target": "Tapa del rotor de reacciones",
+    "partId": "tapa_rxn",
+    "note": "Referencia del conjunto; no confirma una pieza averiada.",
+    "partIds": [
+      "tapa_rxn"
+    ],
+    "severity": "fatal"
+  },
+  "504": {
+    "code": "504",
+    "description": "Washing Station Collision",
+    "scope": "component",
+    "target": "Cabezal de lavado",
+    "partId": "cabezal_lav",
+    "note": "Referencia del conjunto; no confirma una pieza averiada.",
+    "partIds": [
+      "cabezal_lav"
+    ],
+    "severity": "fatal"
+  },
+  "510": {
+    "code": "510",
+    "description": "Photometrics Temperature Alarm",
+    "scope": "component",
+    "target": "Canal térmico de reacciones · 37 °C",
+    "partId": "cuba_rxn",
+    "note": "Referencia del conjunto; no confirma una pieza averiada.",
+    "partIds": [
+      "cuba_rxn"
+    ],
+    "severity": "warning"
+  },
+  "511": {
+    "code": "511",
+    "description": "Photometrics Peltiers Error",
+    "scope": "component",
+    "target": "Canal térmico de reacciones · 37 °C",
+    "partId": "cuba_rxn",
+    "note": "Referencia del conjunto; no confirma una pieza averiada.",
+    "partIds": [
+      "cuba_rxn"
+    ],
+    "severity": "warning"
+  },
+  "512": {
+    "code": "512",
+    "description": "Photometrics Fans Error",
+    "scope": "component",
+    "target": "Canal térmico de reacciones · 37 °C",
+    "partId": "cuba_rxn",
+    "note": "Referencia del conjunto; no confirma una pieza averiada.",
+    "partIds": [
+      "cuba_rxn"
+    ],
+    "severity": "warning"
+  },
+  "520": {
+    "code": "520",
+    "description": "Washing Station Home Error",
+    "scope": "component",
+    "target": "Cabezal de lavado",
+    "partId": "cabezal_lav",
+    "note": "Referencia del conjunto; no confirma una pieza averiada.",
+    "partIds": [
+      "cabezal_lav"
+    ],
+    "severity": "fatal"
+  },
+  "530": {
+    "code": "530",
+    "description": "Photometric Board not detected",
+    "scope": "component",
+    "target": "Tarjeta de fotometría",
+    "partId": "pcb_foto",
+    "note": "Referencia del conjunto; no confirma una pieza averiada.",
+    "partIds": [
+      "pcb_foto"
+    ],
+    "severity": "fatal"
+  },
+  "540": {
+    "code": "540",
+    "description": "Photometric Overflow Board not Detected",
+    "scope": "unlocated",
+    "target": "Placa de detección de desbordamiento",
+    "partId": null,
+    "note": "Sin correspondencia geométrica inequívoca en el GLB actual.",
+    "partIds": [],
+    "severity": "warning"
+  },
+  "541": {
+    "code": "541",
+    "description": "Photometric Rotor Overflow Detected",
+    "scope": "component",
+    "target": "Cabezal de lavado · referencia de desbordamiento",
+    "partId": "cabezal_lav",
+    "note": "Referencia orientativa propuesta por el usuario; no confirma la causa ni una pieza averiada.",
+    "partIds": [
+      "cabezal_lav"
+    ],
+    "severity": "warning"
+  },
+  "550": {
+    "code": "550",
+    "description": "Metacrilate Rotor Missing",
+    "scope": "component",
+    "target": "Rotor desechable de metacrilato · 120 pocillos",
+    "partId": "rotor_pm",
+    "note": "Referencia del conjunto; no confirma una pieza averiada.",
+    "partIds": [
+      "rotor_pm"
+    ],
+    "severity": "warning"
+  },
+  "551": {
+    "code": "551",
+    "description": "Metacrilate Rotor Full after FLIGHT",
+    "scope": "component",
+    "target": "Rotor desechable de metacrilato · 120 pocillos",
+    "partId": "rotor_pm",
+    "note": "Referencia del conjunto; no confirma una pieza averiada.",
+    "partIds": [
+      "rotor_pm"
+    ],
+    "severity": "warning"
+  },
+  "552": {
+    "code": "552",
+    "description": "Metacrilate Rotor Full after RUNNING",
+    "scope": "component",
+    "target": "Rotor desechable de metacrilato · 120 pocillos",
+    "partId": "rotor_pm",
+    "note": "Referencia del conjunto; no confirma una pieza averiada.",
+    "partIds": [
+      "rotor_pm"
+    ],
+    "severity": "warning"
+  },
+  "553": {
+    "code": "553",
+    "description": "Photometic Self-centered error",
+    "scope": "component",
+    "target": "Centrador y eje del rotor",
+    "partId": "rotor_rxn",
+    "note": "Referencia del conjunto; no confirma una pieza averiada.",
+    "partIds": [
+      "rotor_rxn"
+    ],
+    "severity": "warning"
+  },
+  "560": {
+    "code": "560",
+    "description": "Error TimeOut During FLIGHT",
+    "scope": "component",
+    "target": "Banco óptico sin filtros",
+    "partId": "banco_opt",
+    "note": "Referencia del conjunto; no confirma una pieza averiada.",
+    "partIds": [
+      "banco_opt"
+    ],
+    "severity": "warning"
+  },
+  "598": {
+    "code": "598",
+    "description": "GLF Board doesn't answer",
+    "scope": "component",
+    "target": "Tarjeta control del rotor",
+    "partId": "pcb_rxn",
+    "note": "Referencia del conjunto; no confirma una pieza averiada.",
+    "partIds": [
+      "pcb_rxn"
+    ],
+    "severity": "fatal"
+  },
+  "599": {
+    "code": "599",
+    "description": "Reset Placa",
+    "scope": "component",
+    "target": "Tarjeta control del rotor",
+    "partId": "pcb_rxn",
+    "note": "Referencia del conjunto; no confirma una pieza averiada.",
+    "partIds": [
+      "pcb_rxn"
+    ],
+    "severity": "fatal"
+  },
+  "600": {
+    "code": "600",
+    "description": "Washing Station Pump Home Error",
+    "scope": "component",
+    "target": "Bomba de lavado V2",
+    "partId": "bomba_lav",
+    "note": "Referencia del conjunto; no confirma una pieza averiada.",
+    "partIds": [
+      "bomba_lav"
+    ],
+    "severity": "fatal"
+  },
+  "610": {
+    "code": "610",
+    "description": "Washing Station Heater Temperature Alarm",
+    "scope": "component",
+    "target": "Calentador de lavado",
+    "partId": "calentador",
+    "note": "Referencia del conjunto; no confirma una pieza averiada.",
+    "partIds": [
+      "calentador"
+    ],
+    "severity": "warning"
+  },
+  "611": {
+    "code": "611",
+    "description": "Washing Station Heater Error",
+    "scope": "component",
+    "target": "Calentador de lavado",
+    "partId": "calentador",
+    "note": "Referencia del conjunto; no confirma una pieza averiada.",
+    "partIds": [
+      "calentador"
+    ],
+    "severity": "warning"
+  },
+  "612": {
+    "code": "612",
+    "description": "Error del driver de motor",
+    "scope": "unlocated",
+    "target": "Driver de motor SFX",
+    "partId": null,
+    "note": "Sin correspondencia geométrica inequívoca en el GLB actual.",
+    "partIds": [],
+    "severity": "warning"
+  },
+  "613": {
+    "code": "613",
+    "description": "Error del Ventilador (error de diagnóstico 3er hilo)",
+    "scope": "unlocated",
+    "target": "Ventilador SFX",
+    "partId": null,
+    "note": "Sin correspondencia geométrica inequívoca en el GLB actual.",
+    "partIds": [],
+    "severity": "warning"
+  },
+  "620": {
+    "code": "620",
+    "description": "Waste Tank Sensor Impossible Value",
+    "scope": "component",
+    "target": "Sensor de nivel res",
+    "partId": "nivel_res",
+    "note": "Referencia del conjunto; no confirma una pieza averiada.",
+    "partIds": [
+      "nivel_res"
+    ],
+    "severity": "warning"
+  },
+  "621": {
+    "code": "621",
+    "description": "Too much time to empty Waste Tank",
+    "scope": "component",
+    "target": "Depósito trasero residuos baja contaminación",
+    "partId": "dep_res",
+    "note": "Referencia del conjunto; no confirma una pieza averiada.",
+    "partIds": [
+      "dep_res"
+    ],
+    "severity": "warning"
+  },
+  "622": {
+    "code": "622",
+    "description": "Waste Tank Sensor not detected",
+    "scope": "component",
+    "target": "Sensor de nivel res",
+    "partId": "nivel_res",
+    "note": "Referencia del conjunto; no confirma una pieza averiada.",
+    "partIds": [
+      "nivel_res"
+    ],
+    "severity": "warning"
+  },
+  "630": {
+    "code": "630",
+    "description": "Water Tank Sensor Impossible Value",
+    "scope": "component",
+    "target": "Sensor de nivel agua",
+    "partId": "nivel_agua",
+    "note": "Referencia del conjunto; no confirma una pieza averiada.",
+    "partIds": [
+      "nivel_agua"
+    ],
+    "severity": "warning"
+  },
+  "631": {
+    "code": "631",
+    "description": "Too much time to fill Water Tank",
+    "scope": "component",
+    "target": "Depósito trasero agua destilada",
+    "partId": "dep_agua",
+    "note": "Referencia del conjunto; no confirma una pieza averiada.",
+    "partIds": [
+      "dep_agua"
+    ],
+    "severity": "warning"
+  },
+  "632": {
+    "code": "632",
+    "description": "Water Tank Sensor not detected",
+    "scope": "component",
+    "target": "Sensor de nivel agua",
+    "partId": "nivel_agua",
+    "note": "Referencia del conjunto; no confirma una pieza averiada.",
+    "partIds": [
+      "nivel_agua"
+    ],
+    "severity": "warning"
+  },
+  "640": {
+    "code": "640",
+    "description": "High Contamination Waste Gauge electronics error",
+    "scope": "component",
+    "target": "Báscula 2 · residuos de alta contaminación",
+    "partId": "bascula_2",
+    "note": "Referencia orientativa propuesta por el usuario; no confirma la causa ni una pieza averiada.",
+    "partIds": [
+      "bascula_2"
+    ],
+    "severity": "warning"
+  },
+  "650": {
+    "code": "650",
+    "description": "Washing Solution Gauge electronics error",
+    "scope": "component",
+    "target": "Báscula 1 · solución de lavado",
+    "partId": "bascula_1",
+    "note": "Referencia orientativa propuesta por el usuario; no confirma la causa ni una pieza averiada.",
+    "partIds": [
+      "bascula_1"
+    ],
+    "severity": "warning"
+  },
+  "660": {
+    "code": "660",
+    "description": "Error detected in B1",
+    "scope": "component",
+    "target": "Bomba SF1-B1",
+    "partId": "SF1-B1",
+    "note": "Referencia del conjunto; no confirma una pieza averiada.",
+    "partIds": [
+      "SF1-B1"
+    ],
+    "severity": "warning"
+  },
+  "661": {
+    "code": "661",
+    "description": "Error detected in B2",
+    "scope": "component",
+    "target": "Bomba SF1-B2",
+    "partId": "SF1-B2",
+    "note": "Referencia del conjunto; no confirma una pieza averiada.",
+    "partIds": [
+      "SF1-B2"
+    ],
+    "severity": "warning"
+  },
+  "662": {
+    "code": "662",
+    "description": "Error detected in B3",
+    "scope": "component",
+    "target": "Bomba SF1-B3",
+    "partId": "SF1-B3",
+    "note": "Referencia del conjunto; no confirma una pieza averiada.",
+    "partIds": [
+      "SF1-B3"
+    ],
+    "severity": "warning"
+  },
+  "663": {
+    "code": "663",
+    "description": "Error detected in B4",
+    "scope": "component",
+    "target": "Bomba SF1-B4",
+    "partId": "SF1-B4",
+    "note": "Referencia del conjunto; no confirma una pieza averiada.",
+    "partIds": [
+      "SF1-B4"
+    ],
+    "severity": "warning"
+  },
+  "664": {
+    "code": "664",
+    "description": "Error detected in B5",
+    "scope": "component",
+    "target": "Bomba SF1-B5",
+    "partId": "SF1-B5",
+    "note": "Referencia del conjunto; no confirma una pieza averiada.",
+    "partIds": [
+      "SF1-B5"
+    ],
+    "severity": "warning"
+  },
+  "665": {
+    "code": "665",
+    "description": "Error detected in B6",
+    "scope": "component",
+    "target": "Bomba SF1-B6",
+    "partId": "SF1-B6",
+    "note": "Referencia del conjunto; no confirma una pieza averiada.",
+    "partIds": [
+      "SF1-B6"
+    ],
+    "severity": "warning"
+  },
+  "666": {
+    "code": "666",
+    "description": "Error detected in B7",
+    "scope": "component",
+    "target": "Bomba SF1-B7",
+    "partId": "SF1-B7",
+    "note": "Referencia del conjunto; no confirma una pieza averiada.",
+    "partIds": [
+      "SF1-B7"
+    ],
+    "severity": "warning"
+  },
+  "667": {
+    "code": "667",
+    "description": "Error detected in B8",
+    "scope": "component",
+    "target": "Bomba SF1-B8",
+    "partId": "SF1-B8",
+    "note": "Referencia del conjunto; no confirma una pieza averiada.",
+    "partIds": [
+      "SF1-B8"
+    ],
+    "severity": "warning"
+  },
+  "668": {
+    "code": "668",
+    "description": "Error detected in B9",
+    "scope": "component",
+    "target": "Bomba SF1-B9",
+    "partId": "SF1-B9",
+    "note": "Referencia del conjunto; no confirma una pieza averiada.",
+    "partIds": [
+      "SF1-B9"
+    ],
+    "severity": "warning"
+  },
+  "669": {
+    "code": "669",
+    "description": "Error detected in B10",
+    "scope": "component",
+    "target": "Bomba SF1-B10",
+    "partId": "SF1-B10",
+    "note": "Referencia del conjunto; no confirma una pieza averiada.",
+    "partIds": [
+      "SF1-B10"
+    ],
+    "severity": "warning"
+  },
+  "670": {
+    "code": "670",
+    "description": "Error detected in GE1",
+    "scope": "unlocated",
+    "target": "GE1 de SF1",
+    "partId": null,
+    "note": "Sin correspondencia geométrica inequívoca en el GLB actual.",
+    "partIds": [],
+    "severity": "warning"
+  },
+  "671": {
+    "code": "671",
+    "description": "Error detected in EV1",
+    "scope": "component",
+    "target": "Electroválvula SF1-EV1",
+    "partId": "SF1-EV1",
+    "note": "Referencia del conjunto; no confirma una pieza averiada.",
+    "partIds": [
+      "SF1-EV1"
+    ],
+    "severity": "warning"
+  },
+  "672": {
+    "code": "672",
+    "description": "Error detected in EV2",
+    "scope": "component",
+    "target": "Electroválvula SF1-EV2",
+    "partId": "SF1-EV2",
+    "note": "Referencia del conjunto; no confirma una pieza averiada.",
+    "partIds": [
+      "SF1-EV2"
+    ],
+    "severity": "warning"
+  },
+  "673": {
+    "code": "673",
+    "description": "Error detected in EV3",
+    "scope": "unlocated",
+    "target": "SF1-EV3",
+    "partId": null,
+    "note": "Sin correspondencia geométrica inequívoca en el GLB actual.",
+    "partIds": [],
+    "severity": "warning"
+  },
+  "698": {
+    "code": "698",
+    "description": "SF1 Board doesn't answer",
+    "scope": "component",
+    "target": "Tarjeta de fluidos SF1",
+    "partId": "pcb_sf1",
+    "note": "Referencia del conjunto; no confirma una pieza averiada.",
+    "partIds": [
+      "pcb_sf1"
+    ],
+    "severity": "fatal"
+  },
+  "699": {
+    "code": "699",
+    "description": "Reset Placa",
+    "scope": "component",
+    "target": "Tarjeta de fluidos SF1",
+    "partId": "pcb_sf1",
+    "note": "Referencia del conjunto; no confirma una pieza averiada.",
+    "partIds": [
+      "pcb_sf1"
+    ],
+    "severity": "fatal"
+  },
+  "700": {
+    "code": "700",
+    "description": "Sample Pump Home Error",
+    "scope": "component",
+    "target": "Bomba cerámica S",
+    "partId": "jeringa_s",
+    "note": "Referencia del conjunto; no confirma una pieza averiada.",
+    "partIds": [
+      "jeringa_s"
+    ],
+    "severity": "fatal"
+  },
+  "701": {
+    "code": "701",
+    "description": "Reagent 1 Pump Home Error",
+    "scope": "component",
+    "target": "Bomba cerámica R1",
+    "partId": "jeringa_r1",
+    "note": "Referencia del conjunto; no confirma una pieza averiada.",
+    "partIds": [
+      "jeringa_r1"
+    ],
+    "severity": "fatal"
+  },
+  "702": {
+    "code": "702",
+    "description": "Reagent 2 Pump Home Error",
+    "scope": "component",
+    "target": "Bomba cerámica R2",
+    "partId": "jeringa_r2",
+    "note": "Referencia del conjunto; no confirma una pieza averiada.",
+    "partIds": [
+      "jeringa_r2"
+    ],
+    "severity": "fatal"
+  },
+  "710": {
+    "code": "710",
+    "description": "Clot Detector Hardware Error",
+    "scope": "unlocated",
+    "target": "Detector de coágulos",
+    "partId": null,
+    "note": "Sin correspondencia geométrica inequívoca en el GLB actual.",
+    "partIds": [],
+    "severity": "warning"
+  },
+  "711": {
+    "code": "711",
+    "description": "Sample Fluidics Obstructed",
+    "scope": "unlocated",
+    "target": "Circuito de fluidos de muestra",
+    "partId": null,
+    "note": "Sin correspondencia geométrica inequívoca en el GLB actual.",
+    "partIds": [],
+    "severity": "warning"
+  },
+  "720": {
+    "code": "720",
+    "description": "Error detected in B1",
+    "scope": "unlocated",
+    "target": "JE1-B1",
+    "partId": null,
+    "note": "Sin correspondencia geométrica inequívoca en el GLB actual.",
+    "partIds": [],
+    "severity": "warning"
+  },
+  "721": {
+    "code": "721",
+    "description": "Error detected in B2",
+    "scope": "unlocated",
+    "target": "JE1-B2",
+    "partId": null,
+    "note": "Sin correspondencia geométrica inequívoca en el GLB actual.",
+    "partIds": [],
+    "severity": "warning"
+  },
+  "722": {
+    "code": "722",
+    "description": "Error detected in B3",
+    "scope": "unlocated",
+    "target": "JE1-B3",
+    "partId": null,
+    "note": "Sin correspondencia geométrica inequívoca en el GLB actual.",
+    "partIds": [],
+    "severity": "warning"
+  },
+  "723": {
+    "code": "723",
+    "description": "Error detected in B4",
+    "scope": "unlocated",
+    "target": "JE1-B4",
+    "partId": null,
+    "note": "Sin correspondencia geométrica inequívoca en el GLB actual.",
+    "partIds": [],
+    "severity": "warning"
+  },
+  "724": {
+    "code": "724",
+    "description": "Error detected in EV1",
+    "scope": "unlocated",
+    "target": "JE1-EV1",
+    "partId": null,
+    "note": "Sin correspondencia geométrica inequívoca en el GLB actual.",
+    "partIds": [],
+    "severity": "warning"
+  },
+  "725": {
+    "code": "725",
+    "description": "Error detected in EV2",
+    "scope": "unlocated",
+    "target": "JE1-EV2",
+    "partId": null,
+    "note": "Sin correspondencia geométrica inequívoca en el GLB actual.",
+    "partIds": [],
+    "severity": "warning"
+  },
+  "726": {
+    "code": "726",
+    "description": "Error detected in EV3",
+    "scope": "unlocated",
+    "target": "JE1-EV3",
+    "partId": null,
+    "note": "Sin correspondencia geométrica inequívoca en el GLB actual.",
+    "partIds": [],
+    "severity": "warning"
+  },
+  "727": {
+    "code": "727",
+    "description": "Error detected in EV4",
+    "scope": "unlocated",
+    "target": "JE1-EV4",
+    "partId": null,
+    "note": "Sin correspondencia geométrica inequívoca en el GLB actual.",
+    "partIds": [],
+    "severity": "warning"
+  },
+  "728": {
+    "code": "728",
+    "description": "Error detected in EV5",
+    "scope": "unlocated",
+    "target": "JE1-EV5",
+    "partId": null,
+    "note": "Sin correspondencia geométrica inequívoca en el GLB actual.",
+    "partIds": [],
+    "severity": "warning"
+  },
+  "729": {
+    "code": "729",
+    "description": "Error detected in EV6",
+    "scope": "unlocated",
+    "target": "JE1-EV6",
+    "partId": null,
+    "note": "Sin correspondencia geométrica inequívoca en el GLB actual.",
+    "partIds": [],
+    "severity": "warning"
+  },
+  "730": {
+    "code": "730",
+    "description": "Error detected in EV7",
+    "scope": "unlocated",
+    "target": "JE1-EV7",
+    "partId": null,
+    "note": "Sin correspondencia geométrica inequívoca en el GLB actual.",
+    "partIds": [],
+    "severity": "warning"
+  },
+  "731": {
+    "code": "731",
+    "description": "Error detected in EV8",
+    "scope": "unlocated",
+    "target": "JE1-EV8",
+    "partId": null,
+    "note": "Sin correspondencia geométrica inequívoca en el GLB actual.",
+    "partIds": [],
+    "severity": "warning"
+  },
+  "798": {
+    "code": "798",
+    "description": "JE1 Board doesn't answer",
+    "scope": "component",
+    "target": "Tarjeta de jeringas JE1",
+    "partId": "pcb_je1",
+    "note": "Referencia del conjunto; no confirma una pieza averiada.",
+    "partIds": [
+      "pcb_je1"
+    ],
+    "severity": "fatal"
+  },
+  "799": {
+    "code": "799",
+    "description": "Reset Placa",
+    "scope": "component",
+    "target": "Tarjeta de jeringas JE1",
+    "partId": "pcb_je1",
+    "note": "Referencia del conjunto; no confirma una pieza averiada.",
+    "partIds": [
+      "pcb_je1"
+    ],
+    "severity": "fatal"
+  }
+}

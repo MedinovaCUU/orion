@@ -25,6 +25,8 @@ import { buildObservationBlockFromEvidence, runDriEvidenceOcr } from '../utils/d
 import { createDriLogger } from '../utils/driLogging';
 import { assessQcReference, findQcReferenceById, getMatchingQcReferences } from '../utils/qcReferenceUtils';
 import { classifySatQcResults } from '../utils/satQcClassifier';
+import { applyBplProjectionToForm, buildDriBplProjection, describeBplProjection } from '../utils/bplEvidence';
+import type { BplSerialSummary } from '../../equipment-monitoring/bplEvents';
 import { getValidatedSession } from '../../../supabaseClient';
 import type { SatReportSummary } from '../../sat-report/satReportTypes';
 import type {
@@ -86,6 +88,7 @@ const createInitialFormState = (): DriCaseFormState => ({
     opticalRejectObserved: false,
     waterSensitivePattern: false,
   },
+  bplEvidence: null,
 });
 
 const reagentNodeId = (reagentId: string, kind: 'failed' | 'correct') => `reagent:${reagentId}:${kind}`;
@@ -554,10 +557,13 @@ const buildFullRandomDemoFormState = (
 export default function DriDashboard({
   subPermissions = ['captura', 'grafo', 'diagnostico'],
   satContext = null,
+  bplContext = null,
   previewMode = false,
 }: {
   subPermissions?: string[];
   satContext?: SatReportSummary | null;
+  /** Evidencia viva del monitor BPL; cada `token` nuevo vuelve a proyectarla sobre el formulario. */
+  bplContext?: { summary: BplSerialSummary; token: number } | null;
   previewMode?: boolean;
 }) {
   const canCapture = subPermissions.includes('captura');
@@ -645,6 +651,14 @@ export default function DriDashboard({
         (projection.pendingCount ? ` y ${projection.pendingCount} resultados pendientes por lote, nivel o unidad.` : '.'),
     );
   }, [catalog, satContext]);
+
+  useEffect(() => {
+    if (!bplContext || !catalog) return;
+    const projection = buildDriBplProjection(bplContext.summary, catalog);
+    setAnalysis(null); setActiveCase(null); setSelectedHypothesisKey(null); setDemoActive(false);
+    setForm((current) => applyBplProjectionToForm(current, projection));
+    setPersistWarning(describeBplProjection(projection));
+  }, [bplContext, catalog]);
 
   useEffect(() => {
     let mounted = true;
@@ -1439,6 +1453,7 @@ export default function DriDashboard({
           <span className="dri-badge dri-badge--teal">{catalogSource}</span>
           <span className="dri-badge dri-badge--neutral">{supportedProfiles.length} reactivos visibles</span>
           {analysis ? <span className="dri-badge dri-badge--amber">{analysis.hypotheses.length} hipótesis</span> : null}
+          {form.bplEvidence ? <span className="dri-badge dri-badge--teal" title={form.bplEvidence.sourceReference}>Evidencia BPL · {form.bplEvidence.eventCount} eventos</span> : null}
         </div>
       </section>
 

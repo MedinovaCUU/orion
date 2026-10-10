@@ -1,13 +1,24 @@
 import { Billboard, Html, Line, OrbitControls } from '@react-three/drei';
 import { Canvas, type ThreeEvent, useFrame, useThree } from '@react-three/fiber';
 import type { Feature, FeatureCollection, MultiPolygon, Polygon, Position } from 'geojson';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import {
+  memo,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  useSyncExternalStore,
+  type CSSProperties,
+  type PointerEvent as ReactPointerEvent,
+} from 'react';
 import * as THREE from 'three';
 import type { OrbitControls as OrbitControlsImpl } from 'three-stdlib';
 import { feature, mesh } from 'topojson-client';
 import type { GeometryCollection, Topology } from 'topojson-specification';
 import worldAtlasRaw from 'world-atlas/countries-110m.json?raw';
 import { getPublicAssetUrl } from '../../components/publicAssetUrl';
+import './globalEquipmentGlobe.css';
 
 /**
  * Visualización geográfica 3D del monitoreo con React Three Fiber y Three.js.
@@ -15,6 +26,10 @@ import { getPublicAssetUrl } from '../../components/publicAssetUrl';
  * tablas de Supabase ni se leen logs. Agrupa ubicaciones, dibuja marcadores y
  * comunica la selección al componente padre. También incluye cobertura simulada
  * identificada como tal, que no debe interpretarse como telemetría de la flota.
+ *
+ * El globo llena todo el escenario (el padre fija su altura) y el HUD flota encima en cristal
+ * oscuro. Con `paused` (explorador 3D abierto sobre el globo) el bucle de render pasa a demanda,
+ * el lienzo sigue montado y visible —el padre lo difumina— y ningún clic en el vacío deselecciona.
  */
 export type GlobeNodeTone = 'ok' | 'warning' | 'fatal' | 'muted' | 'supremo';
 
@@ -35,13 +50,19 @@ export interface GlobeEquipmentNode {
   longitude: number;
 }
 
-/** equipments es la lista filtrada; countryEquipments conserva el contexto general para encuadre y demos. */
+/**
+ * equipments es la lista filtrada; countryEquipments conserva el contexto general para encuadre y demos.
+ * `paused` lo activa el escenario mientras el explorador 3D va sobre el globo (render bajo demanda,
+ * sin deselección por clic en el vacío); `showSimulatedCoverage` controla la cobertura de demostración
+ * (la gobierna el padre desde el menú Acciones). La antigua banda de contexto (`inspecting`) ya no existe.
+ */
 interface GlobalEquipmentGlobeProps {
   equipments: GlobeEquipmentNode[];
   countryEquipments: GlobeEquipmentNode[];
   selectedEquipmentId: string | null;
   onSelectEquipment: (equipmentId: string | null) => void;
   paused?: boolean;
+  showSimulatedCoverage?: boolean;
 }
 
 /** Agrupación visual de localidad, con centro promedio, estados presentes y equipos seleccionables. */
@@ -77,6 +98,21 @@ interface CountryView {
   label: string;
   cameraPosition: [number, number, number];
 }
+
+/** Margen seguro del HUD (px) leído de las custom properties --hud-safe-* del contenedor. */
+interface HudSafeFrame {
+  top: number;
+  right: number;
+  bottom: number;
+  left: number;
+}
+
+/** Función de posicionamiento de una etiqueta HTML de drei: proyecta el objeto y devuelve [x, y] en píxeles. */
+type HtmlPositioner = (
+  object: THREE.Object3D,
+  camera: THREE.Camera,
+  size: { width: number; height: number },
+) => [number, number];
 
 // Radios en unidades de escena: pequeñas diferencias separan capas y evitan solapamiento de superficies.
 const GLOBE_RADIUS = 2;
@@ -114,14 +150,32 @@ const CITY_NODE_RADIUS_PIXELS = {
 // Prioridad del estado representativo de una ciudad; los estados mixtos también alternan colores.
 const STATUS_TONE_ORDER: GlobeNodeTone[] = ['fatal', 'warning', 'ok', 'supremo', 'muted'];
 
+// Tonos del lienzo profundo a plena saturación: los mismos valores que --mon-cyan/--mon-warn/--mon-risk/--mon-graphite.
+// Supremo comparte el cian y se dibuja como anillo hueco; el rojo solo aparece en riesgo (fatal).
 const TONE_COLORS: Record<GlobeNodeTone, string> = {
-  fatal: '#ff667c',
-  warning: '#ffca68',
-  ok: '#38d8bd',
-  supremo: '#63a9ff',
-  muted: '#9eb4c4',
+  fatal: '#f32735',
+  warning: '#ffc45e',
+  ok: '#69dde0',
+  supremo: '#69dde0',
+  muted: '#7c8895',
 };
 
+// Entorno de entrada y preferencias: se leen una vez y se observan sin re-renderizar el lienzo.
+const COARSE_POINTER_QUERY = '(pointer: coarse)';
+const LANDSCAPE_COMPACT_QUERY = '(orientation: landscape) and (max-height: 520px)';
+// Umbral horizontal (px) para decidir que un gesto táctil gira el globo en lugar de desplazar la página.
+const TOUCH_ROTATE_THRESHOLD_PX = 8;
+const DPR_FINE_POINTER: [number, number] = [1, 1.75];
+const DPR_COARSE_POINTER: [number, number] = [1, 1.5];
+// El envoltorio de React Three Fiber se coloca por estilo (no por !important) dentro del lienzo aislado.
+const CANVAS_WRAPPER_STYLE: CSSProperties = { position: 'absolute', inset: 0, zIndex: 1 };
+// Espejo de los valores de escritorio de globalEquipmentGlobe.css (riel flotante de 288 px + márgenes de 16 px).
+const DEFAULT_HUD_SAFE_FRAME: HudSafeFrame = { top: 68, right: 176, bottom: 88, left: 320 };
+// Mitades aproximadas (px) de la ficha y del tooltip para que su caja completa quede dentro del margen seguro.
+const BILLBOARD_HALF_SIZE = { width: 116, height: 86 };
+const TOOLTIP_HALF_SIZE = { width: 88, height: 34 };
+// Separación (px) entre el nodo seleccionado y la esquina más cercana de su ficha.
+const BILLBOARD_NODE_OFFSET = { x: 18, y: 12 };
 // Reloj compartido por las animaciones: el pulso es visual, no un paquete recibido ni una consulta de red.
 const HEARTBEAT_TIME_UNIFORM = { value: 0 };
 const HEARTBEAT_HIGHLIGHT_COLOR = new THREE.Color('#d9fff8');
@@ -159,7 +213,7 @@ const HEARTBEAT_RING_FRAGMENT_SHADER = `
     float secondarySpark = pow(0.5 + 0.5 * cos(orbit + 2.35), 42.0) * 0.56;
     float shimmer = 0.82 + 0.18 * sin(angle * 11.0 - uTime * 5.2);
     float energy = clamp(primarySpark + secondarySpark + uBeat * 0.24, 0.0, 1.0);
-    vec3 turquoise = vec3(0.18, 0.91, 0.79);
+    vec3 turquoise = vec3(0.41, 0.87, 0.88);
     vec3 hotLight = vec3(0.86, 1.0, 0.97);
     vec3 color = mix(turquoise, hotLight, energy);
     float alpha = uOpacity * softEdge * (0.7 + energy * 0.52) * shimmer;
@@ -175,6 +229,10 @@ const TONE_LABELS: Record<GlobeNodeTone, string> = {
   supremo: 'Supremo disponible',
   muted: 'Sin señal',
 };
+
+/** Ubicación legible de la ficha: localidad y estado; sin ellos, el país o un guion. */
+const formatEquipmentPlace = (equipment: GlobeEquipmentNode) =>
+  [equipment.municipality || equipment.city, equipment.state].filter(Boolean).join(', ') || equipment.country || '—';
 
 // Cobertura mundial ficticia para demostrar la navegación. Se excluyen países con equipos reales.
 const SIMULATED_CITIES: SimulatedCity[] = [
@@ -293,25 +351,113 @@ const getWorldUnitsPerPixel = (camera: THREE.Camera, position: THREE.Vector3, vi
   return visibleHeight / Math.max(viewportHeight, 1);
 };
 
-/** Coloca la etiqueta HTML junto al nodo seleccionado y la limita al área visible del lienzo. */
-const calculateSelectedBillboardPosition = (
+/** Proyecta un objeto 3D a píxeles del lienzo (origen arriba-izquierda). */
+const projectToPixels = (
   object: THREE.Object3D,
   camera: THREE.Camera,
   size: { width: number; height: number },
-): [number, number] => {
+) => {
   const projected = SELECTED_BILLBOARD_PROJECTED.setFromMatrixPosition(object.matrixWorld).project(camera);
-  const nodeX = projected.x * (size.width / 2) + size.width / 2;
-  const nodeY = -projected.y * (size.height / 2) + size.height / 2;
-  const placeLeft = nodeX > size.width * 0.68;
-  const placeBelow = nodeY < size.height * 0.18;
-  const billboardX = nodeX + (placeLeft ? -118 : 118);
-  const billboardY = nodeY + (placeBelow ? 58 : -58);
+  return {
+    x: projected.x * (size.width / 2) + size.width / 2,
+    y: -projected.y * (size.height / 2) + size.height / 2,
+  };
+};
 
+/** Limita un centro de etiqueta al margen seguro del HUD, descontando la mitad de su caja. */
+const clampToSafeFrame = (
+  x: number,
+  y: number,
+  size: { width: number; height: number },
+  frame: HudSafeFrame,
+  half: { width: number; height: number },
+): [number, number] => {
+  const minX = frame.left + half.width;
+  const minY = frame.top + half.height;
   return [
-    THREE.MathUtils.clamp(billboardX, 104, Math.max(size.width - 104, 104)),
-    THREE.MathUtils.clamp(billboardY, 44, Math.max(size.height - 44, 44)),
+    THREE.MathUtils.clamp(x, minX, Math.max(size.width - frame.right - half.width, minX)),
+    THREE.MathUtils.clamp(y, minY, Math.max(size.height - frame.bottom - half.height, minY)),
   ];
 };
+
+/**
+ * Coloca la ficha del nodo seleccionado junto a él y la limita al margen seguro (custom properties
+ * --hud-safe-* del contenedor) para que nunca quede bajo el HUD, la bandeja ni fuera del lienzo.
+ */
+const createBillboardPositioner =
+  (frame: HudSafeFrame): HtmlPositioner =>
+  (object, camera, size) => {
+    const node = projectToPixels(object, camera, size);
+    // La ficha va en diagonal (arriba-derecha por defecto); cambia de lado cerca del borde derecho o superior.
+    const placeLeft = node.x > size.width - frame.right - BILLBOARD_HALF_SIZE.width * 2 - BILLBOARD_NODE_OFFSET.x;
+    const placeBelow = node.y < frame.top + BILLBOARD_HALF_SIZE.height * 2 + BILLBOARD_NODE_OFFSET.y;
+    const offsetX = BILLBOARD_HALF_SIZE.width + BILLBOARD_NODE_OFFSET.x;
+    const offsetY = BILLBOARD_HALF_SIZE.height + BILLBOARD_NODE_OFFSET.y;
+    return clampToSafeFrame(
+      node.x + (placeLeft ? -offsetX : offsetX),
+      node.y + (placeBelow ? offsetY : -offsetY),
+      size,
+      frame,
+      BILLBOARD_HALF_SIZE,
+    );
+  };
+
+/** Ancla el tooltip de ciudad encima del marcador y lo mantiene dentro del rect del lienzo. */
+const createTooltipPositioner =
+  (frame: HudSafeFrame): HtmlPositioner =>
+  (object, camera, size) => {
+    const node = projectToPixels(object, camera, size);
+    const placeBelow = node.y < frame.top + TOOLTIP_HALF_SIZE.height * 2 + 18;
+    return clampToSafeFrame(node.x + 24, node.y + (placeBelow ? 46 : -46), size, frame, TOOLTIP_HALF_SIZE);
+  };
+
+/** Lee el margen seguro del HUD desde las custom properties del contenedor; sin valor válido usa el predeterminado. */
+const readHudSafeFrame = (element: HTMLElement): HudSafeFrame => {
+  const style = getComputedStyle(element);
+  const read = (name: keyof HudSafeFrame) => {
+    const value = Number.parseFloat(style.getPropertyValue(`--hud-safe-${name}`));
+    return Number.isFinite(value) ? value : DEFAULT_HUD_SAFE_FRAME[name];
+  };
+  return { top: read('top'), right: read('right'), bottom: read('bottom'), left: read('left') };
+};
+
+/** Desplazamiento horizontal del encuadre (px, positivo = contenido a la derecha) leído de --globe-view-shift. */
+const readViewShift = (element: HTMLElement) => {
+  const value = Number.parseFloat(getComputedStyle(element).getPropertyValue('--globe-view-shift'));
+  return Number.isFinite(value) ? value : 0;
+};
+
+const isSameSafeFrame = (left: HudSafeFrame, right: HudSafeFrame) =>
+  left.top === right.top && left.right === right.right && left.bottom === right.bottom && left.left === right.left;
+
+/** Único punto que toca el cursor del documento: así siempre se restaura al salir, desmontar o pausar. */
+const setBodyCursor = (cursor: 'pointer' | '') => {
+  if (typeof document !== 'undefined' && document.body.style.cursor !== cursor) {
+    document.body.style.cursor = cursor;
+  }
+};
+const restoreBodyCursor = () => setBodyCursor('');
+
+/** Observa una media query sin re-renderizar más que al cambiar su resultado. */
+function useMediaQuery(query: string) {
+  const subscribe = useCallback(
+    (notify: () => void) => {
+      if (typeof window === 'undefined' || typeof window.matchMedia !== 'function') {
+        return () => {};
+      }
+      const media = window.matchMedia(query);
+      media.addEventListener('change', notify);
+      return () => media.removeEventListener('change', notify);
+    },
+    [query],
+  );
+  return useSyncExternalStore(
+    subscribe,
+    () => (typeof window !== 'undefined' && typeof window.matchMedia === 'function' ? window.matchMedia(query).matches : false),
+    () => false,
+  );
+}
+
 
 /** Prueba de punto dentro de un contorno contando cruces de un rayo con sus segmentos. */
 const pointInRing = (longitude: number, latitude: number, ring: Position[]) => {
@@ -961,7 +1107,7 @@ function Atmosphere() {
           void main() {
             float rim = pow(1.0 - max(dot(vNormal, vView), 0.0), 2.1);
             float pulse = 0.82 + sin(uTime * 0.7) * 0.08;
-            gl_FragColor = vec4(0.12, 0.78, 0.73, rim * 0.42 * pulse);
+            gl_FragColor = vec4(0.41, 0.87, 0.88, rim * 0.4 * pulse);
           }
         `}
       />
@@ -1066,18 +1212,20 @@ function getHeartbeatWave(time: number, phaseOffset = 0) {
 }
 
 /** Nodo individual: área invisible de clic, color de estado, pulso opcional y etiqueta de selección. */
-function EquipmentPulseNode({
+const EquipmentPulseNode = memo(function EquipmentPulseNode({
   equipment,
   position,
   selected,
+  billboardPosition,
   onHoverChange,
   onSelect,
 }: {
   equipment: GlobeEquipmentNode | null;
   position: THREE.Vector3;
   selected: boolean;
+  billboardPosition: HtmlPositioner;
   onHoverChange: (hovered: boolean) => void;
-  onSelect: () => void;
+  onSelect: (equipmentId: string, selected: boolean) => void;
 }) {
   const visualRef = useRef<THREE.Group | null>(null);
   const hitTargetRef = useRef<THREE.Mesh | null>(null);
@@ -1085,23 +1233,28 @@ function EquipmentPulseNode({
   const coreMaterialRef = useRef<THREE.MeshBasicMaterial | null>(null);
   const tone = equipment?.tone || 'muted';
   const disconnected = tone === 'muted';
+  // Supremo se dibuja como anillo cian hueco orientado a la cámara; el resto como esfera sólida.
+  const hollow = tone === 'supremo';
   const toneColor = useMemo(() => new THREE.Color(TONE_COLORS[tone]), [tone]);
 
   const handlePointerOver = (event: ThreeEvent<PointerEvent>) => {
     event.stopPropagation();
-    document.body.style.cursor = equipment ? 'pointer' : '';
+    setBodyCursor(equipment ? 'pointer' : '');
     onHoverChange(true);
   };
 
   const handlePointerOut = (event: ThreeEvent<PointerEvent>) => {
     event.stopPropagation();
-    document.body.style.cursor = '';
+    restoreBodyCursor();
     onHoverChange(false);
   };
 
-  const handleClick = (event: ThreeEvent<MouseEvent>) => {
+  // Lo comparten el área de clic 3D y el botón × de la ficha: ambos alternan la selección del equipo.
+  const handleClick = (event: { stopPropagation: () => void }) => {
     event.stopPropagation();
-    onSelect();
+    if (equipment) {
+      onSelect(equipment.id, selected);
+    }
   };
 
   useFrame(({ camera, size }) => {
@@ -1153,47 +1306,92 @@ function EquipmentPulseNode({
         <meshBasicMaterial transparent opacity={0} depthWrite={false} colorWrite={false} />
       </mesh>
       <group ref={visualRef} renderOrder={disconnected ? 8 : 16}>
-        <mesh ref={coreRef} scale={selected ? 1.18 : 1} renderOrder={disconnected ? 8 : 16}>
-          <sphereGeometry args={[1, 16, 16]} />
-          <meshBasicMaterial
-            ref={coreMaterialRef}
-            color={TONE_COLORS[tone]}
-            transparent={disconnected}
-            opacity={disconnected ? 0.5 : 1}
-            depthWrite={!disconnected}
-            toneMapped={false}
-          />
-        </mesh>
+        {hollow ? (
+          <Billboard follow>
+            <mesh ref={coreRef} scale={selected ? 1.18 : 1} renderOrder={16}>
+              <ringGeometry args={[0.62, 1, 32]} />
+              <meshBasicMaterial
+                ref={coreMaterialRef}
+                color={TONE_COLORS[tone]}
+                side={THREE.DoubleSide}
+                depthWrite={false}
+                toneMapped={false}
+              />
+            </mesh>
+          </Billboard>
+        ) : (
+          <mesh ref={coreRef} scale={selected ? 1.18 : 1} renderOrder={disconnected ? 8 : 16}>
+            <sphereGeometry args={[1, 16, 16]} />
+            <meshBasicMaterial
+              ref={coreMaterialRef}
+              color={TONE_COLORS[tone]}
+              transparent={disconnected}
+              opacity={disconnected ? 0.5 : 1}
+              depthWrite={!disconnected}
+              toneMapped={false}
+            />
+          </mesh>
+        )}
         {equipment?.heartbeat ? <HeartbeatBeacon radius={1} intensity="equipment" /> : null}
       </group>
       {selected && equipment ? (
         <Html
           center
           zIndexRange={[48, 0]}
-          pointerEvents="none"
-          calculatePosition={calculateSelectedBillboardPosition}
+          pointerEvents="auto"
+          calculatePosition={billboardPosition}
         >
-          <div className="equipment-globe__selected-billboard">
-            <span data-tone={equipment.tone}>{TONE_LABELS[equipment.tone]}</span>
+          {/* Ficha del equipo seleccionado: cristal oscuro con eyebrow, serie grande, estado y filas de contexto. */}
+          <div className="equipment-globe__selected-billboard" data-tone={equipment.tone}>
+            <div className="equipment-globe__selected-billboard-head">
+              <span className="equipment-globe__eyebrow">Equipo seleccionado</span>
+              <button
+                type="button"
+                className="equipment-globe__selected-billboard-close"
+                aria-label={`Deseleccionar ${equipment.serial}`}
+                onClick={handleClick}
+              >
+                ×
+              </button>
+            </div>
             <strong>{equipment.serial}</strong>
-            <small>{equipment.model} · {equipment.clientName}</small>
+            <span className="equipment-globe__selected-billboard-status">
+              <i aria-hidden="true" />
+              {TONE_LABELS[equipment.tone]}
+            </span>
+            <dl>
+              <div>
+                <dt>Modelo</dt>
+                <dd>{equipment.model}</dd>
+              </div>
+              <div>
+                <dt>Cliente</dt>
+                <dd title={equipment.clientName}>{equipment.clientName}</dd>
+              </div>
+              <div>
+                <dt>Ubicación</dt>
+                <dd title={formatEquipmentPlace(equipment)}>{formatEquipmentPlace(equipment)}</dd>
+              </div>
+            </dl>
           </div>
         </Html>
       ) : null}
     </group>
   );
-}
+});
 
 /**
  * Cambia entre un marcador de localidad y sus equipos según foco, zoom o puntero.
  * La vista previa muestra hasta siete nodos y la vista detallada hasta 72;
  * la bandeja del componente principal permite consultar el resto de la agrupación.
  */
-function CityCluster({
+const CityCluster = memo(function CityCluster({
   cluster,
   expansionMode,
   selectedEquipmentId,
   municipalityFeatures,
+  billboardPosition,
+  tooltipPosition,
   onHover,
   onFocus,
   onSelectEquipment,
@@ -1202,6 +1400,8 @@ function CityCluster({
   expansionMode: 'none' | 'preview' | 'automatic' | 'focused';
   selectedEquipmentId: string | null;
   municipalityFeatures: AdministrativeFeatures | null;
+  billboardPosition: HtmlPositioner;
+  tooltipPosition: HtmlPositioner;
   onHover: (clusterId: string | null) => void;
   onFocus: (clusterId: string) => void;
   onSelectEquipment: (equipmentId: string | null) => void;
@@ -1375,16 +1575,16 @@ function CityCluster({
     : equipmentLayout.map(() => null as GlobeEquipmentNode | null)
   ).slice(0, expansionCount);
 
-  const keepHover = () => {
+  const keepHover = useCallback(() => {
     if (hoverLeaveTimeoutRef.current !== null) {
       window.clearTimeout(hoverLeaveTimeoutRef.current);
       hoverLeaveTimeoutRef.current = null;
     }
     onHover(cluster.id);
-  };
+  }, [cluster.id, onHover]);
 
   // Una espera breve evita cerrar la vista previa al cruzar entre marcadores de la misma ciudad.
-  const releaseHover = () => {
+  const releaseHover = useCallback(() => {
     if (hoverLeaveTimeoutRef.current !== null) {
       window.clearTimeout(hoverLeaveTimeoutRef.current);
     }
@@ -1392,7 +1592,23 @@ function CityCluster({
       onHover(null);
       hoverLeaveTimeoutRef.current = null;
     }, 140);
-  };
+  }, [onHover]);
+
+  const handleNodeHover = useCallback(
+    (hovered: boolean) => {
+      if (hovered) {
+        keepHover();
+      } else {
+        releaseHover();
+      }
+    },
+    [keepHover, releaseHover],
+  );
+
+  const handleNodeSelect = useCallback(
+    (equipmentId: string, isSelected: boolean) => onSelectEquipment(isSelected ? null : equipmentId),
+    [onSelectEquipment],
+  );
 
   useEffect(
     () => () => {
@@ -1412,12 +1628,12 @@ function CityCluster({
               ref={nodeHitTargetRef}
               onPointerOver={(event: ThreeEvent<PointerEvent>) => {
                 event.stopPropagation();
-                document.body.style.cursor = 'pointer';
+                setBodyCursor('pointer');
                 keepHover();
               }}
               onPointerOut={(event: ThreeEvent<PointerEvent>) => {
                 event.stopPropagation();
-                document.body.style.cursor = '';
+                restoreBodyCursor();
                 releaseHover();
               }}
               onClick={(event: ThreeEvent<MouseEvent>) => {
@@ -1433,7 +1649,7 @@ function CityCluster({
               }}
             >
               <sphereGeometry args={[nodeSize * 1.65, 22, 22]} />
-              <meshBasicMaterial transparent opacity={0} depthWrite={false} />
+              <meshBasicMaterial transparent opacity={0} depthWrite={false} colorWrite={false} />
             </mesh>
             <group ref={nodeVisualRef}>
               <mesh ref={nodeCoreRef} renderOrder={disconnectedCluster ? 8 : 16}>
@@ -1464,7 +1680,13 @@ function CityCluster({
           </>
         ) : null}
         {expansionMode === 'preview' && !selected ? (
-          <Html center className="equipment-globe__city-tooltip" zIndexRange={[20, 0]}>
+          <Html
+            center
+            className="equipment-globe__city-tooltip"
+            zIndexRange={[20, 0]}
+            pointerEvents="none"
+            calculatePosition={tooltipPosition}
+          >
             <strong>{cluster.city}</strong>
             <span>{cluster.country} · {cluster.count} equipos</span>
             <small>
@@ -1498,24 +1720,15 @@ function CityCluster({
               equipment={equipment}
               position={equipmentLayout[index].position}
               selected={Boolean(equipment && equipment.id === selectedEquipmentId)}
-              onHoverChange={(hovered) => {
-                if (hovered) {
-                  keepHover();
-                } else {
-                  releaseHover();
-                }
-              }}
-              onSelect={() => {
-                if (equipment) {
-                  onSelectEquipment(equipment.id === selectedEquipmentId ? null : equipment.id);
-                }
-              }}
+              billboardPosition={billboardPosition}
+              onHoverChange={handleNodeHover}
+              onSelect={handleNodeSelect}
             />
           ))
         : null}
     </group>
   );
-}
+});
 
 /** Arcos decorativos hacia ciudades simuladas: no representan conexiones ni tráfico real de red. */
 function NetworkArcs({ clusters }: { clusters: CityClusterData[] }) {
@@ -1552,10 +1765,10 @@ function NetworkArcs({ clusters }: { clusters: CityClusterData[] }) {
         <Line
           key={arc.id}
           points={arc.points}
-          color={index % 3 === 0 ? '#47dec4' : '#5f9fe5'}
+          color={index % 3 === 0 ? '#69dde0' : '#9bdfe1'}
           lineWidth={0.55}
           transparent
-          opacity={0.2}
+          opacity={index % 3 === 0 ? 0.24 : 0.16}
           depthWrite={false}
         />
       ))}
@@ -1573,12 +1786,16 @@ function GlobeScene({
   cameraDistance,
   resetVersion,
   zoomRequest,
+  paused,
+  viewShift,
+  showNetworkArcs,
+  billboardPosition,
+  tooltipPosition,
   onHoverCluster,
   onFocusCluster,
   onSelectEquipment,
   onDistanceChange,
   onCollapseFocus,
-  inspectionMode = false,
 }: {
   clusters: CityClusterData[];
   initialView: CountryView;
@@ -1588,23 +1805,37 @@ function GlobeScene({
   cameraDistance: number;
   resetVersion: number;
   zoomRequest: { version: number; direction: 1 | -1 };
+  paused: boolean;
+  /** Desplazamiento horizontal del encuadre en px (positivo = país a la derecha). */
+  viewShift: number;
+  showNetworkArcs: boolean;
+  billboardPosition: HtmlPositioner;
+  tooltipPosition: HtmlPositioner;
   onHoverCluster: (clusterId: string | null) => void;
   onFocusCluster: (clusterId: string) => void;
   onSelectEquipment: (equipmentId: string | null) => void;
   onDistanceChange: (distance: number) => void;
   onCollapseFocus: () => void;
-  inspectionMode?: boolean;
 }) {
-  const { camera, size, invalidate } = useThree();
-  // Desplaza la proyección, no la ubicación geográfica: deja México a la izquierda del cristal.
-  useEffect(() => {
-    if (!(camera instanceof THREE.PerspectiveCamera)) return;
-    if (inspectionMode && size.width > 720) camera.setViewOffset(size.width, size.height, size.width * .27, 0, size.width, size.height);
-    else camera.clearViewOffset();
-    invalidate();
-    return () => { camera.clearViewOffset(); };
-  }, [camera, size.width, size.height, inspectionMode, invalidate]);
+  const { camera } = useThree();
+  const size = useThree((state) => state.size);
+  const invalidate = useThree((state) => state.invalidate);
   const controlsRef = useRef<OrbitControlsImpl | null>(null);
+  // Encuadre desplazado: el frustum se corre a la izquierda y el país aparece centrado en la zona visible
+  // (el riel cubre la franja izquierda). Se vuelve a aplicar al redimensionar porque usa el tamaño completo.
+  useEffect(() => {
+    const perspective = camera as THREE.PerspectiveCamera;
+    if (viewShift) perspective.setViewOffset(size.width, size.height, -viewShift, 0, size.width, size.height);
+    else perspective.clearViewOffset();
+    perspective.updateProjectionMatrix();
+    invalidate();
+  }, [camera, invalidate, size.height, size.width, viewShift]);
+  // En pausa (explorador sobre el globo) los efectos de cámara no se ejecutan: el lienzo rinde bajo demanda.
+  const pausedRef = useRef(paused);
+  const cameraInitializedRef = useRef(false);
+  useEffect(() => {
+    pausedRef.current = paused;
+  }, [paused]);
   const [municipalityFeatures, setMunicipalityFeatures] = useState<AdministrativeFeatures | null>(null);
   const focusedCluster = useMemo(
     () => clusters.find((cluster) => cluster.id === focusedClusterId) || null,
@@ -1626,6 +1857,10 @@ function GlobeScene({
   });
 
   useEffect(() => {
+    if (pausedRef.current && cameraInitializedRef.current) {
+      return;
+    }
+    cameraInitializedRef.current = true;
     camera.position.set(initialCameraX, initialCameraY, initialCameraZ);
     controlsRef.current?.target.set(0, 0, 0);
     controlsRef.current?.update();
@@ -1633,7 +1868,7 @@ function GlobeScene({
   }, [camera, initialCameraX, initialCameraY, initialCameraZ, initialView.key, onDistanceChange, resetVersion]);
 
   useEffect(() => {
-    if (!zoomRequest.version) {
+    if (!zoomRequest.version || pausedRef.current) {
       return;
     }
 
@@ -1647,11 +1882,7 @@ function GlobeScene({
   }, [camera, onDistanceChange, zoomRequest]);
 
   useEffect(() => {
-    if (!focusedClusterId) {
-      return;
-    }
-
-    if (!focusedCluster) {
+    if (!focusedClusterId || !focusedCluster || pausedRef.current) {
       return;
     }
 
@@ -1685,7 +1916,7 @@ function GlobeScene({
         onMunicipalityFeaturesChange={setMunicipalityFeatures}
       />
       <Atmosphere />
-      {focusedCluster ? null : <NetworkArcs clusters={clusters} />}
+      {showNetworkArcs && !focusedCluster ? <NetworkArcs clusters={clusters} /> : null}
       {clusters.filter((cluster) => !focusedClusterId || cluster.id === focusedClusterId).map((cluster) => (
         <CityCluster
           key={cluster.id}
@@ -1701,6 +1932,8 @@ function GlobeScene({
           }
           selectedEquipmentId={selectedEquipmentId}
           municipalityFeatures={focusedClusterId === cluster.id ? municipalityFeatures : null}
+          billboardPosition={billboardPosition}
+          tooltipPosition={tooltipPosition}
           onHover={onHoverCluster}
           onFocus={onFocusCluster}
           onSelectEquipment={onSelectEquipment}
@@ -1727,19 +1960,101 @@ function GlobeScene({
   );
 }
 
+/** Combina grupos reales y de demostración; se memoiza por clave estructural para que un corte igual no reconstruya nada. */
+const buildClusters = (
+  equipments: GlobeEquipmentNode[],
+  countryEquipments: GlobeEquipmentNode[],
+  simulatedCoverage: boolean,
+) => [...buildCityClusters(equipments), ...(simulatedCoverage ? buildSimulatedClusters(countryEquipments) : [])];
+
+const clustersStructuralKey = (
+  equipments: GlobeEquipmentNode[],
+  countryEquipments: GlobeEquipmentNode[],
+  simulatedCoverage: boolean,
+) =>
+  `${equipments.map((equipment) => `${equipment.id}|${equipment.tone}|${equipment.heartbeat ? 1 : 0}`).join(',')}#${
+    countryEquipments.length
+  }#${simulatedCoverage ? 1 : 0}`;
+
+const pluralize = (count: number, singular: string, plural: string) => `${count} ${count === 1 ? singular : plural}`;
+
 /** Contenedor público: combina grupos reales/demostración y coordina lienzo, controles y ficha HTML. */
-export default function GlobalEquipmentGlobe({
+function GlobalEquipmentGlobe({
   equipments,
   countryEquipments,
   selectedEquipmentId,
   onSelectEquipment,
   paused = false,
+  showSimulatedCoverage = true,
 }: GlobalEquipmentGlobeProps) {
+  const coarsePointer = useMediaQuery(COARSE_POINTER_QUERY);
+  const landscapeCompact = useMediaQuery(LANDSCAPE_COMPACT_QUERY);
   const defaultCountryView = useMemo(() => getCountryView(countryEquipments), [countryEquipments]);
   const [resetVersion, setResetVersion] = useState(0);
   const [cameraDistance, setCameraDistance] = useState(() =>
     new THREE.Vector3(...defaultCountryView.cameraPosition).length(),
   );
+  // La distancia de cámara cambia en cada frame de órbita; solo se publica al cruzar un umbral útil
+  // (niveles geográficos, expansión automática) o un salto apreciable, no por cada píxel.
+  const lastPublishedDistanceRef = useRef(cameraDistance);
+  const publishCameraDistance = useCallback((distance: number) => {
+    const previous = lastPublishedDistanceRef.current;
+    const crossed = [MUNICIPAL_VIEW_DISTANCE, STATE_VIEW_DISTANCE, AUTOMATIC_EQUIPMENT_DISTANCE, FOCUS_COLLAPSE_DISTANCE]
+      .some((threshold) => (previous <= threshold) !== (distance <= threshold));
+    if (!crossed && Math.abs(distance - previous) < 0.035) return;
+    lastPublishedDistanceRef.current = distance;
+    setCameraDistance(distance);
+  }, []);
+  // Fuera de pantalla o con la pestaña oculta el lienzo pasa a renderizar bajo demanda.
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const [inViewport, setInViewport] = useState(true);
+  const [documentVisible, setDocumentVisible] = useState(() => (typeof document === 'undefined' ? true : !document.hidden));
+  useEffect(() => {
+    const element = containerRef.current;
+    if (!element || typeof IntersectionObserver === 'undefined') return;
+    const observer = new IntersectionObserver((entries) => setInViewport(entries[0]?.isIntersecting ?? true), { threshold: 0.05 });
+    observer.observe(element);
+    const onVisibility = () => setDocumentVisible(!document.hidden);
+    document.addEventListener('visibilitychange', onVisibility);
+    return () => {
+      observer.disconnect();
+      document.removeEventListener('visibilitychange', onVisibility);
+    };
+  }, []);
+  const liveFrameloop = !paused && inViewport && documentVisible;
+
+  // Margen seguro del HUD: se lee de las custom properties del contenedor y se actualiza con su tamaño.
+  // El contenedor no fija su altura (la da el escenario padre): el envoltorio del lienzo es absolute/inset 0
+  // y React Three Fiber observa ese envoltorio, así que el globo sigue cualquier cambio de alto sin saltos.
+  const [hudSafeFrame, setHudSafeFrame] = useState<HudSafeFrame>(DEFAULT_HUD_SAFE_FRAME);
+  const [viewShift, setViewShift] = useState(0);
+  const refreshHudSafeFrame = useCallback(() => {
+    const element = containerRef.current;
+    if (!element) return;
+    const next = readHudSafeFrame(element);
+    setHudSafeFrame((previous) => (isSameSafeFrame(previous, next) ? previous : next));
+    setViewShift(readViewShift(element));
+  }, []);
+  useEffect(() => {
+    const element = containerRef.current;
+    if (!element || typeof ResizeObserver === 'undefined') return;
+    const observer = new ResizeObserver((entries) => {
+      // Los anillos de alcance se dibujan en píxeles sobre el lado menor del lienzo (sin viewBox escalado).
+      const box = entries[0]?.contentRect;
+      if (box) {
+        element.style.setProperty('--globe-ring-size', `${Math.round(Math.min(box.width, box.height))}px`);
+      }
+      refreshHudSafeFrame();
+    });
+    observer.observe(element);
+    return () => observer.disconnect();
+  }, [refreshHudSafeFrame]);
+  const billboardPosition = useMemo(() => createBillboardPositioner(hudSafeFrame), [hudSafeFrame]);
+  const tooltipPosition = useMemo(() => createTooltipPositioner(hudSafeFrame), [hudSafeFrame]);
+
+  // Cobertura simulada: la decide el padre (menú Acciones) y se persiste allí.
+  const simulatedCoverage = showSimulatedCoverage;
+
   const [hoveredClusterId, setHoveredClusterId] = useState<string | null>(null);
   const [focusedClusterId, setFocusedClusterId] = useState<string | null>(null);
   const [selectedSimulatedEquipmentId, setSelectedSimulatedEquipmentId] = useState<string | null>(null);
@@ -1747,23 +2062,53 @@ export default function GlobalEquipmentGlobe({
     version: 0,
     direction: 1,
   });
-  const clusters = useMemo(
-    () => [...buildCityClusters(equipments), ...buildSimulatedClusters(countryEquipments)],
-    [countryEquipments, equipments],
-  );
+  // Clusters memoizados por clave estructural (ids + tono + latido + contexto): un corte con los mismos
+  // valores conserva la identidad y no vuelve a construir las 33 ciudades simuladas ni sus nodos.
+  const clustersKey = clustersStructuralKey(equipments, countryEquipments, simulatedCoverage);
+  const [clusterCache, setClusterCache] = useState(() => ({
+    key: clustersKey,
+    clusters: buildClusters(equipments, countryEquipments, simulatedCoverage),
+  }));
+  if (clusterCache.key !== clustersKey) {
+    setClusterCache({ key: clustersKey, clusters: buildClusters(equipments, countryEquipments, simulatedCoverage) });
+  }
+  const clusters = clusterCache.clusters;
+
   // Los indicadores de equipos y ubicaciones reales no suman la cobertura de demostración.
-  const realLocationCount = clusters.filter((cluster) => !cluster.simulated).length;
+  // La fila de ciudades (camino accesible a los marcadores) ordena por gravedad y luego por tamaño.
+  const realClusters = useMemo(
+    () =>
+      clusters
+        .filter((cluster) => !cluster.simulated)
+        .sort(
+          (left, right) =>
+            STATUS_TONE_ORDER.indexOf(left.tone) - STATUS_TONE_ORDER.indexOf(right.tone) || right.count - left.count,
+        ),
+    [clusters],
+  );
+  const realLocationCount = realClusters.length;
   const effectiveSelectedEquipmentId = selectedSimulatedEquipmentId || selectedEquipmentId;
-  const selectedEquipment = effectiveSelectedEquipmentId
-    ? clusters
-        .flatMap((cluster) => cluster.equipments)
-        .find((equipment) => equipment.id === effectiveSelectedEquipmentId) || null
-    : null;
+  const selectedEquipment = useMemo(
+    () =>
+      effectiveSelectedEquipmentId
+        ? clusters
+            .flatMap((cluster) => cluster.equipments)
+            .find((equipment) => equipment.id === effectiveSelectedEquipmentId) || null
+        : null,
+    [clusters, effectiveSelectedEquipmentId],
+  );
   const focusedCluster = focusedClusterId
     ? clusters.find((cluster) => cluster.id === focusedClusterId) || null
     : null;
   const focusedSelectedEquipment =
     focusedCluster?.equipments.find((equipment) => equipment.id === effectiveSelectedEquipmentId) || null;
+  // La bandeja cambia el margen seguro (clase --has-dock) sin redimensionar el contenedor: se vuelve a leer aquí.
+  const hasDock = Boolean(focusedCluster);
+  useEffect(() => {
+    refreshHudSafeFrame();
+  }, [hasDock, refreshHudSafeFrame]);
+  // En pausa no hay vista previa de ciudad: el padre bloquea el puntero sobre el globo.
+  const effectiveHoveredClusterId = paused ? null : hoveredClusterId;
   const geographyLevel =
     defaultCountryView.key === String(MEXICO_FEATURE?.id) &&
     cameraDistance <= MUNICIPAL_VIEW_DISTANCE
@@ -1773,63 +2118,178 @@ export default function GlobalEquipmentGlobe({
         : 'División por países';
 
   // La selección simulada permanece aquí; solo los IDs reales se propagan a la ficha del padre.
-  const handleSelectEquipment = (equipmentId: string | null) => {
-    if (equipmentId?.startsWith('simulated-equipment-')) {
-      setSelectedSimulatedEquipmentId(equipmentId);
-      return;
-    }
+  const handleSelectEquipment = useCallback(
+    (equipmentId: string | null) => {
+      if (equipmentId?.startsWith('simulated-equipment-')) {
+        setSelectedSimulatedEquipmentId(equipmentId);
+        return;
+      }
 
-    setSelectedSimulatedEquipmentId(null);
-    onSelectEquipment(equipmentId);
+      setSelectedSimulatedEquipmentId(null);
+      onSelectEquipment(equipmentId);
+    },
+    [onSelectEquipment],
+  );
+
+  const handleCollapseFocus = useCallback(() => {
+    setFocusedClusterId(null);
+    setHoveredClusterId(null);
+    handleSelectEquipment(null);
+  }, [handleSelectEquipment]);
+
+  // Fila de ciudades: fija la ciudad (misma acción que el marcador) o, si ya estaba fijada, reencuadra el país.
+  // Gestos táctiles: el lienzo deja pasar el desplazamiento vertical (pan-y); un arrastre claramente
+  // horizontal (umbral de 8 px) o el chip "Girar libremente" bloquean el desplazamiento para girar.
+  const touchGestureRef = useRef<{ pointerId: number; x: number; y: number } | null>(null);
+  const [gestureRotate, setGestureRotate] = useState(false);
+  const [freeRotate, setFreeRotate] = useState(false);
+  const handlePointerDown = (event: ReactPointerEvent<HTMLDivElement>) => {
+    if (event.pointerType !== 'touch') return;
+    touchGestureRef.current = { pointerId: event.pointerId, x: event.clientX, y: event.clientY };
   };
+  const handlePointerMove = (event: ReactPointerEvent<HTMLDivElement>) => {
+    const gesture = touchGestureRef.current;
+    if (!gesture || gesture.pointerId !== event.pointerId) return;
+    const deltaX = Math.abs(event.clientX - gesture.x);
+    const deltaY = Math.abs(event.clientY - gesture.y);
+    if (deltaX >= TOUCH_ROTATE_THRESHOLD_PX && deltaX > deltaY * 1.5) {
+      touchGestureRef.current = null;
+      setGestureRotate(true);
+    }
+  };
+  const handlePointerEnd = (event: ReactPointerEvent<HTMLDivElement>) => {
+    if (event.pointerType !== 'touch') return;
+    touchGestureRef.current = null;
+    setGestureRotate(false);
+  };
+  useEffect(() => {
+    if (!freeRotate) return;
+    // Tocar fuera del globo devuelve el desplazamiento normal de la página.
+    const onDocumentPointerDown = (event: PointerEvent) => {
+      const element = containerRef.current;
+      if (element && event.target instanceof Node && !element.contains(event.target)) {
+        setFreeRotate(false);
+      }
+    };
+    document.addEventListener('pointerdown', onDocumentPointerDown, true);
+    return () => document.removeEventListener('pointerdown', onDocumentPointerDown, true);
+  }, [freeRotate]);
+  const touchAction: 'pan-y' | 'none' = freeRotate || gestureRotate ? 'none' : 'pan-y';
+  // OrbitControls escribe touch-action:none en línea sobre el lienzo al conectarse; aquí se impone pan-y
+  // (o none bajo demanda del gesto/chip) y se vigila el atributo por si el control vuelve a escribirlo.
+  useEffect(() => {
+    const canvas = containerRef.current?.querySelector('canvas');
+    if (!canvas) return;
+    const apply = () => {
+      if (canvas.style.touchAction !== touchAction) {
+        canvas.style.touchAction = touchAction;
+      }
+    };
+    apply();
+    if (typeof MutationObserver === 'undefined') return;
+    const observer = new MutationObserver(apply);
+    observer.observe(canvas, { attributes: true, attributeFilter: ['style'] });
+    return () => observer.disconnect();
+  }, [touchAction]);
+
+  // El cursor del documento se restaura al pausar y al desmontar, no solo al salir de un nodo.
+  useEffect(() => {
+    if (paused) restoreBodyCursor();
+  }, [paused]);
+  useEffect(() => () => restoreBodyCursor(), []);
+
+  const countryLabel = defaultCountryView.label;
+  // Pista corta para horizontal compacto (el escenario oculta ahí el pie del mapa): cabe en una línea del HUD.
+  const hintText = focusedCluster
+    ? 'Las líneas vuelven a la coordenada real · elige en el mapa o en la bandeja'
+    : 'Arrastra para girar · acerca para ver equipos en su ubicación';
+  const className = [
+    'equipment-globe',
+    selectedEquipment ? 'equipment-globe--has-selection' : '',
+    focusedCluster ? 'equipment-globe--has-dock' : '',
+  ]
+    .filter(Boolean)
+    .join(' ');
 
   return (
-    <div className={`equipment-globe${selectedEquipment ? ' equipment-globe--has-selection' : ''}`}>
+    <div
+      ref={containerRef}
+      className={className}
+      data-paused={paused ? 'true' : undefined}
+      // Bajo el explorador el globo queda difuminado y sin puntero; inert lo saca también del teclado y del lector.
+      inert={paused ? true : undefined}
+      data-free-rotate={freeRotate ? 'true' : undefined}
+      data-gesture={gestureRotate ? 'rotate' : undefined}
+      onPointerDown={handlePointerDown}
+      onPointerMove={handlePointerMove}
+      onPointerUp={handlePointerEnd}
+      onPointerCancel={handlePointerEnd}
+    >
       {/* Lienzo WebGL: limita la densidad de píxeles para equilibrar nitidez y carga de renderizado. */}
       <Canvas
-        // En modo combinado el mapa sigue respondiendo a los controles sin animarse continuamente.
-        frameloop={paused ? 'demand' : 'always'}
-        dpr={[1, 1.75]}
+        className="equipment-globe__canvas"
+        style={CANVAS_WRAPPER_STYLE}
+        // En pausa, fuera de pantalla o con la pestaña oculta el mapa solo responde a los controles.
+        frameloop={liveFrameloop ? 'always' : 'demand'}
+        dpr={coarsePointer ? DPR_COARSE_POINTER : DPR_FINE_POINTER}
         camera={{ position: MEXICO_CAMERA_POSITION, fov: 44, near: 0.001, far: 100 }}
         gl={{ antialias: true, alpha: true, powerPreference: 'high-performance' }}
         onPointerMissed={() => {
-          document.body.style.cursor = '';
+          restoreBodyCursor();
           setHoveredClusterId(null);
-          handleSelectEquipment(null);
+          // Mientras el explorador va sobre el globo (pausa), un clic en el vacío no pierde la selección.
+          if (!paused) handleSelectEquipment(null);
         }}
       >
         <GlobeScene
-          inspectionMode={paused}
           clusters={clusters}
           initialView={defaultCountryView}
           selectedEquipmentId={effectiveSelectedEquipmentId}
-          hoveredClusterId={hoveredClusterId}
+          hoveredClusterId={effectiveHoveredClusterId}
           focusedClusterId={focusedClusterId}
           cameraDistance={cameraDistance}
           resetVersion={resetVersion}
           zoomRequest={zoomRequest}
+          paused={paused}
+          viewShift={viewShift}
+          showNetworkArcs={simulatedCoverage}
+          billboardPosition={billboardPosition}
+          tooltipPosition={tooltipPosition}
           onHoverCluster={setHoveredClusterId}
           onFocusCluster={setFocusedClusterId}
           onSelectEquipment={handleSelectEquipment}
-          onDistanceChange={setCameraDistance}
-          onCollapseFocus={() => {
-            setFocusedClusterId(null);
-            setHoveredClusterId(null);
-            handleSelectEquipment(null);
-          }}
+          onDistanceChange={publishCameraDistance}
+          onCollapseFocus={handleCollapseFocus}
         />
       </Canvas>
 
+      {/* Marco instrumental: brackets de esquina y anillos de alcance, sin interacción. */}
+      <div className="equipment-globe__frame mon-brackets" aria-hidden="true">
+        <i className="mon-brackets__i" />
+      </div>
+      <svg className="equipment-globe__ring" aria-hidden="true" focusable="false">
+        {/* Gira solo el grupo interior: la caja del svg nunca sale del lienzo. Radios por CSS (--globe-ring-size). */}
+        <g className="equipment-globe__ring-orbit">
+          <circle cx="50%" cy="50%" r="120" />
+          <circle cx="50%" cy="50%" r="100" />
+        </g>
+      </svg>
+
+
       <div className="equipment-globe__hud equipment-globe__hud--left">
-        <span className="equipment-globe__scope-dot" />
+        <span className="equipment-globe__scope-dot mon-beat" />
         <div>
-          <strong>{defaultCountryView.label} en vivo</strong>
-          <span>{realLocationCount} ubicaciones · {equipments.length} equipos</span>
+          <strong>{countryLabel} en vivo</strong>
+          <span>
+            {pluralize(realLocationCount, 'ubicación', 'ubicaciones')} ·{' '}
+            {pluralize(equipments.length, 'equipo', 'equipos')}
+          </span>
           <small className="equipment-globe__geo-level">{geographyLevel}</small>
+          {landscapeCompact ? <small className="equipment-globe__hint">{hintText}</small> : null}
         </div>
       </div>
 
-      <div className="equipment-globe__hud equipment-globe__hud--right">
+      <div className="equipment-globe__hud equipment-globe__hud--right" role="group" aria-label="Controles del globo">
         <span>
           Vista {focusedCluster || cameraDistance <= AUTOMATIC_EQUIPMENT_DISTANCE ? 'por equipo' : 'por ciudad'}
         </span>
@@ -1838,10 +2298,11 @@ export default function GlobalEquipmentGlobe({
           aria-label="Alejar globo"
           onClick={() => setZoomRequest((current) => ({ version: current.version + 1, direction: 1 }))}
         >
-          -
+          −
         </button>
         <button
           type="button"
+          aria-label={`Reencuadrar ${countryLabel}`}
           onClick={() => {
             setFocusedClusterId(null);
             setHoveredClusterId(null);
@@ -1850,7 +2311,7 @@ export default function GlobalEquipmentGlobe({
             setResetVersion((current) => current + 1);
           }}
         >
-          {defaultCountryView.label}
+          {countryLabel}
         </button>
         {selectedEquipment ? (
           <button type="button" aria-label="Deseleccionar equipo" onClick={() => handleSelectEquipment(null)}>
@@ -1868,7 +2329,7 @@ export default function GlobalEquipmentGlobe({
 
       {/* Bandeja de todos los equipos de la ciudad fijada, incluso los no dibujados por el límite visual. */}
       {focusedCluster ? (
-        <div className="equipment-globe__equipment-dock">
+        <section className="equipment-globe__equipment-dock" aria-label={`Equipos en ${focusedCluster.city}`}>
           <div className="equipment-globe__equipment-dock-header">
             <div>
               <strong>{focusedCluster.city}</strong>
@@ -1883,36 +2344,49 @@ export default function GlobalEquipmentGlobe({
               </span>
               {focusedSelectedEquipment ? <small>{focusedSelectedEquipment.clientName}</small> : null}
             </div>
-            <small>{focusedCluster.count} equipos</small>
+            <small>{pluralize(focusedCluster.count, 'equipo', 'equipos')}</small>
           </div>
-          <div className="equipment-globe__equipment-dock-list" role="list" aria-label={`Equipos en ${focusedCluster.city}`}>
-            {focusedCluster.equipments.map((equipment) => (
-              <button
-                key={equipment.id}
-                type="button"
-                role="listitem"
-                className={equipment.id === effectiveSelectedEquipmentId ? 'is-selected' : ''}
-                onClick={() => handleSelectEquipment(equipment.id === effectiveSelectedEquipmentId ? null : equipment.id)}
-              >
-                <i
-                  data-tone={equipment.tone}
-                  data-heartbeat={equipment.heartbeat ? 'true' : 'false'}
-                  title={TONE_LABELS[equipment.tone]}
-                />
-                <strong>{equipment.serial}</strong>
-                <span>{equipment.model}</span>
-              </button>
-            ))}
-          </div>
-        </div>
+          <ul className="equipment-globe__equipment-dock-list">
+            {focusedCluster.equipments.map((equipment) => {
+              const isSelected = equipment.id === effectiveSelectedEquipmentId;
+              return (
+                <li key={equipment.id}>
+                  <button
+                    type="button"
+                    className={isSelected ? 'is-selected' : undefined}
+                    aria-pressed={isSelected}
+                    onClick={() => handleSelectEquipment(isSelected ? null : equipment.id)}
+                  >
+                    <i
+                      data-tone={equipment.tone}
+                      data-heartbeat={equipment.heartbeat ? 'true' : 'false'}
+                      title={TONE_LABELS[equipment.tone]}
+                    />
+                    <strong>{equipment.serial}</strong>
+                    <span>{equipment.model}</span>
+                  </button>
+                </li>
+              );
+            })}
+          </ul>
+        </section>
       ) : null}
 
-      <div className="equipment-globe__hint">
-        {focusedCluster
-          ? 'Cada línea vuelve a la coordenada real · selecciona en el mapa o en la bandeja'
-          : 'Arrastra para recorrer el mundo · acerca para ver equipos en su ubicación real'}
-      </div>
-      <div className="equipment-globe__demo-label">Cobertura mundial simulada</div>
+      {coarsePointer ? (
+        <div className="equipment-globe__chips">
+          <button
+            type="button"
+            className="equipment-globe__gesture-toggle mon-chip"
+            data-tone={freeRotate ? 'ok' : 'muted'}
+            aria-pressed={freeRotate}
+            onClick={() => setFreeRotate((current) => !current)}
+          >
+            Girar libremente
+          </button>
+        </div>
+      ) : null}
     </div>
   );
 }
+
+export default memo(GlobalEquipmentGlobe);

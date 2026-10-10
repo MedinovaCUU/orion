@@ -1,0 +1,1182 @@
+/*
+ * Sección BPL, miniaturas y visor de curvas de reacción. Importado por BplStatusSection.tsx.
+ * Todo sobre los tokens de monitor.tokens.css: --mon-* y el mapa data-tone → --tone-rgb/--tone-ink.
+ * Una sola caja con borde (el shell del explorador); dentro, divisores de 1 px y rieles de tono.
+ * Escalera: 1260 / 1180 (cuerpo del visor) / 960 / 560 + landscape ≤520 de alto. Piso tipográfico 11 px.
+ */
+
+/* ---------- Sección ---------- */
+.equipment-monitor__focus-section--bpl.equipment-monitor__focus-section[data-tone] {
+  gap: 14px;
+  min-width: 0;
+}
+
+.equipment-monitor__bpl-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.equipment-monitor__bpl-head h4 {
+  margin: 0;
+}
+
+/* Lecturas de la serie: la frase se parte solo en los separadores " · ". */
+.equipment-monitor__bpl-meta {
+  margin: 0;
+  color: var(--mon-ink-2);
+  font: 600 11.5px/1.7 var(--mon-font-body);
+  letter-spacing: 0.02em;
+  font-variant-numeric: tabular-nums;
+}
+
+.equipment-monitor__bpl-meta > span {
+  white-space: nowrap;
+}
+
+/* Aviso inline: ámbar con riel de 3 px (.mon-rail + data-tone=pending). */
+.equipment-monitor__bpl-error {
+  margin: 0;
+  padding: 8px 12px 8px 16px;
+  border-radius: var(--mon-radius-sm);
+  background: rgba(var(--tone-rgb), 0.14);
+  color: var(--tone-ink);
+  font: 600 12.5px/1.45 var(--mon-font-body);
+  overflow-wrap: anywhere;
+}
+
+.equipment-monitor__bpl-pending {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin: 0;
+  color: var(--tone-ink);
+  font: 600 12.5px/1.45 var(--mon-font-body);
+  overflow-wrap: anywhere;
+}
+
+.equipment-monitor__bpl-pending::before {
+  content: '';
+  flex: 0 0 auto;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: rgb(var(--tone-rgb));
+  box-shadow: 0 0 0 2px rgba(var(--tone-rgb), 0.18);
+}
+
+/* ---------- Etapas: barra segmentada de 4 celdas con riel superior de tono ---------- */
+.equipment-monitor__bpl-stages {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  border: 1px solid var(--mon-outline);
+  border-radius: var(--mon-radius-md);
+  background: var(--mon-surface-2);
+  overflow: hidden;
+  min-width: 0;
+}
+
+.equipment-monitor__bpl-stage {
+  position: relative;
+  display: grid;
+  align-content: start;
+  gap: 4px;
+  min-width: 0;
+  padding: 13px 14px 11px;
+  /* Divisores entre celdas; los del borde exterior los recorta el overflow del contenedor. */
+  box-shadow: -1px 0 0 var(--mon-outline), 0 -1px 0 var(--mon-outline);
+}
+
+.equipment-monitor__bpl-stage::before {
+  content: '';
+  position: absolute;
+  left: 12px;
+  right: 12px;
+  top: 0;
+  height: 3px;
+  border-radius: 0 0 3px 3px;
+  background: rgb(var(--tone-rgb));
+}
+
+.equipment-monitor__bpl-stage-label {
+  color: var(--mon-ink-3);
+  font: 600 11px/1.2 var(--mon-font-body);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.equipment-monitor__bpl-stage strong {
+  color: var(--tone-ink);
+  font: 600 15px/1.2 var(--mon-font-heading);
+  letter-spacing: -0.01em;
+  font-variant-numeric: tabular-nums;
+}
+
+.equipment-monitor__bpl-stage-counts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.equipment-monitor__bpl-stage-counts span {
+  padding: 2px 7px;
+  border-radius: var(--mon-pill);
+  background: rgba(var(--tone-rgb), 0.1);
+  color: var(--tone-ink);
+  font: 700 11px/1.3 var(--mon-font-body);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Un conteo en cero no es riesgo ni pendiente: se apaga a grafito. */
+.equipment-monitor__bpl-stage-counts span[data-empty] {
+  background: rgba(var(--mon-graphite-rgb), 0.08);
+  color: var(--mon-ink-3);
+}
+
+.equipment-monitor__bpl-stage small {
+  color: var(--mon-ink-3);
+  font-size: 11px;
+  line-height: 1.3;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------- Matriz por prueba ---------- */
+.equipment-monitor__bpl-tests {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 10px;
+  min-width: 0;
+}
+
+.equipment-monitor__bpl-test {
+  position: relative;
+  display: grid;
+  align-content: start;
+  gap: 6px;
+  min-width: 0;
+  padding: 12px 14px 12px 18px;
+  border-radius: var(--mon-radius-md);
+  border: 1px solid var(--mon-outline);
+  background: var(--mon-surface-2);
+  overflow-wrap: anywhere;
+}
+
+.equipment-monitor__bpl-test::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 12px;
+  bottom: 12px;
+  width: 3px;
+  border-radius: 3px;
+  background: rgb(var(--tone-rgb));
+}
+
+.equipment-monitor__bpl-test[data-tone='rejected'] {
+  border-color: rgba(var(--mon-risk-rgb), 0.28);
+}
+
+.equipment-monitor__bpl-test[data-tone='pending'] {
+  border-color: rgba(var(--mon-warn-rgb), 0.42);
+}
+
+.equipment-monitor__bpl-test .equipment-monitor__event-head {
+  flex-direction: row;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.equipment-monitor__bpl-test .equipment-monitor__event-head strong {
+  color: var(--mon-ink);
+  font: 600 13px/1.25 var(--mon-font-heading);
+  letter-spacing: -0.01em;
+}
+
+.equipment-monitor__bpl-test .equipment-monitor__event-head span {
+  color: var(--mon-ink-3);
+  font-size: 11px;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+.equipment-monitor__bpl-test p {
+  margin: 0;
+  color: var(--mon-ink-2);
+  font-size: 12.5px;
+  line-height: 1.45;
+}
+
+.equipment-monitor__bpl-test small {
+  color: var(--mon-ink-3);
+  font-size: 11.5px;
+  line-height: 1.4;
+}
+
+.equipment-monitor__bpl-test .equipment-monitor__bpl-missing {
+  color: var(--mon-warn-ink);
+  font-weight: 600;
+}
+
+.equipment-monitor__bpl-dots {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px;
+}
+
+.equipment-monitor__bpl-dot {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 32px;
+  height: 22px;
+  padding: 0 7px;
+  border-radius: var(--mon-pill);
+  border: 1px solid rgba(var(--tone-rgb), 0.32);
+  background: rgba(var(--tone-rgb), 0.1);
+  color: var(--tone-ink);
+  font: 800 11px/1 var(--mon-font-body);
+  letter-spacing: 0.06em;
+}
+
+.equipment-monitor__bpl-dot[data-tone='rejected'] {
+  background: rgba(var(--tone-rgb), 0.14);
+}
+
+/* Evidencia nueva sin evaluar: punto ámbar sobre la esquina. */
+.equipment-monitor__bpl-dot i {
+  position: absolute;
+  top: -3px;
+  right: -3px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgb(var(--mon-warn-rgb));
+  border: 1px solid #fff;
+}
+
+.equipment-monitor__bpl-chain {
+  color: var(--mon-cyan-ink);
+  font: 700 11px/1 var(--mon-font-body);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+/* ---------- Cronología ---------- */
+.equipment-monitor__bpl-timeline {
+  padding-top: 10px;
+  border-top: 1px solid var(--mon-outline);
+  min-width: 0;
+}
+
+.equipment-monitor__bpl-timeline summary {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 32px;
+  cursor: pointer;
+  list-style: none;
+  color: var(--mon-ink-2);
+  font: 700 12px/1.2 var(--mon-font-body);
+  letter-spacing: 0.02em;
+}
+
+.equipment-monitor__bpl-timeline summary::-webkit-details-marker {
+  display: none;
+}
+
+.equipment-monitor__bpl-timeline summary::before {
+  content: '';
+  width: 0;
+  height: 0;
+  border: 4px solid transparent;
+  border-left: 6px solid var(--mon-cyan-ink);
+  transition: transform var(--mon-ease);
+}
+
+.equipment-monitor__bpl-timeline[open] summary::before {
+  transform: rotate(90deg);
+}
+
+.equipment-monitor__bpl-timeline ul {
+  list-style: none;
+  margin: 6px 0 0;
+  padding: 0;
+  display: grid;
+  max-height: 18rem;
+  overflow: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+}
+
+.equipment-monitor__bpl-timeline li {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  gap: 10px;
+  align-items: center;
+  padding: 7px 6px;
+  border-top: 1px solid var(--mon-outline);
+}
+
+.equipment-monitor__bpl-timeline li:first-child {
+  border-top: 0;
+}
+
+.equipment-monitor__bpl-timeline li > div {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+
+.equipment-monitor__bpl-timeline li strong {
+  color: var(--mon-ink);
+  font: 600 12.5px/1.3 var(--mon-font-body);
+}
+
+.equipment-monitor__bpl-timeline li small {
+  color: var(--mon-ink-3);
+  font-size: 11.5px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.equipment-monitor__bpl-timeline li time {
+  color: var(--mon-ink-3);
+  font: 600 11px/1.2 var(--mon-font-heading);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+/* ---------- Miniatura de curva en tarjetas ---------- */
+.reaction-sparkline {
+  display: grid;
+  gap: 4px;
+  width: 100%;
+  min-width: 0;
+  margin-top: 4px;
+  padding: 8px 10px 7px;
+  border-radius: var(--mon-radius-sm);
+  border: 1px solid var(--mon-outline);
+  background: var(--mon-surface-3);
+  text-align: left;
+}
+
+.reaction-sparkline--button {
+  cursor: pointer;
+  font: inherit;
+  color: inherit;
+  transition: border-color var(--mon-ease), box-shadow var(--mon-ease);
+}
+
+.reaction-sparkline--button:hover {
+  border-color: var(--mon-outline-strong);
+}
+
+.reaction-sparkline--button:focus-visible {
+  outline: none;
+  border-color: rgba(var(--mon-cyan-rgb), 0.6);
+  box-shadow: 0 0 0 3px rgba(var(--mon-cyan-rgb), 0.18);
+}
+
+.reaction-sparkline__svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 220 / 48;
+}
+
+.reaction-sparkline__pending {
+  display: grid;
+  place-items: center;
+  aspect-ratio: 220 / 48;
+  color: var(--mon-ink-3);
+  font-size: 11.5px;
+}
+
+.reaction-sparkline__caption {
+  color: var(--mon-ink-3);
+  font-size: 11px;
+  line-height: 1.4;
+  letter-spacing: 0.02em;
+  font-variant-numeric: tabular-nums;
+}
+
+.reaction-sparkline__caption b {
+  color: var(--mon-cyan-ink);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* ---------- Explorador: el shell es la única caja con borde ---------- */
+.reaction-explorer__shell {
+  display: grid;
+  gap: 12px;
+  min-width: 0;
+  padding: 14px 16px 16px;
+  border-radius: var(--mon-radius-lg);
+  border: 1px solid var(--mon-outline);
+  background: var(--mon-surface-2);
+}
+
+.reaction-explorer {
+  display: grid;
+  gap: 12px;
+  min-width: 0;
+}
+
+.reaction-explorer__toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px 12px;
+  min-width: 0;
+}
+
+.reaction-explorer__filters-sheet {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+/* Resúmenes de las hojas plegables: chip grafito con flecha cian; ocultos cuando la hoja va siempre abierta. */
+.reaction-explorer__filters-sheet > summary,
+.reaction-explorer__table-sheet > summary {
+  display: none;
+  align-items: center;
+  gap: 8px;
+  width: fit-content;
+  min-height: 36px;
+  padding: 0 14px 0 12px;
+  border-radius: var(--mon-pill);
+  border: 1px solid var(--mon-outline);
+  background: var(--mon-surface-2);
+  color: var(--mon-ink-2);
+  cursor: pointer;
+  list-style: none;
+  font: 700 12px/1 var(--mon-font-body);
+  letter-spacing: 0.02em;
+}
+
+.reaction-explorer__filters-sheet > summary::-webkit-details-marker,
+.reaction-explorer__table-sheet > summary::-webkit-details-marker {
+  display: none;
+}
+
+.reaction-explorer__filters-sheet > summary::before,
+.reaction-explorer__table-sheet > summary::before {
+  content: '';
+  width: 0;
+  height: 0;
+  border: 4px solid transparent;
+  border-left: 6px solid var(--mon-cyan-ink);
+  transition: transform var(--mon-ease);
+}
+
+.reaction-explorer__filters-sheet[open] > summary::before,
+.reaction-explorer__table-sheet[open] > summary::before {
+  transform: rotate(90deg);
+}
+
+.reaction-explorer__filters-sheet > summary:focus-visible,
+.reaction-explorer__table-sheet > summary:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(var(--mon-cyan-rgb), 0.18);
+}
+
+.reaction-explorer__filters-sheet > summary i {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: rgb(var(--mon-cyan-rgb));
+  box-shadow: 0 0 0 2px rgba(var(--mon-cyan-rgb), 0.2);
+}
+
+.reaction-explorer__table-sheet > summary span {
+  color: var(--mon-ink-3);
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+}
+
+.reaction-explorer__filters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 8px 10px;
+  min-width: 0;
+}
+
+.reaction-explorer__filters label {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+  color: var(--mon-ink-3);
+  font: 700 11px/1.2 var(--mon-font-body);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.reaction-explorer__filters .input-field {
+  width: auto;
+  min-width: 9rem;
+  min-height: 36px;
+  padding: 6px 10px;
+  border-radius: var(--mon-radius-sm);
+  font-size: 12.5px;
+  font-weight: 500;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.reaction-explorer__filters .input-field:focus {
+  border-color: rgba(var(--mon-cyan-rgb), 0.6);
+  box-shadow: 0 0 0 3px rgba(var(--mon-cyan-rgb), 0.18);
+}
+
+.reaction-explorer__filters .button-primary.chip {
+  min-height: 36px;
+  padding: 0 14px;
+  font-size: 12.5px;
+}
+
+.reaction-explorer__count {
+  align-self: center;
+  margin-left: auto;
+  color: var(--mon-ink-2);
+  font: 600 12px/1.2 var(--mon-font-heading);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+/* Fichas de reacción: tira con scroll horizontal; riel de tono a la izquierda. */
+.reaction-explorer__groups {
+  display: flex;
+  gap: 8px;
+  min-width: 0;
+  padding: 2px 2px 6px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x proximity;
+  scrollbar-width: thin;
+}
+
+.reaction-explorer__group {
+  position: relative;
+  flex: 0 0 auto;
+  display: grid;
+  gap: 2px;
+  min-width: 11.5rem;
+  max-width: 16rem;
+  padding: 8px 12px 8px 16px;
+  border-radius: var(--mon-radius-sm);
+  border: 1px solid var(--mon-outline);
+  background: var(--mon-surface-2);
+  color: inherit;
+  text-align: left;
+  font: inherit;
+  cursor: pointer;
+  scroll-snap-align: start;
+  transition: border-color var(--mon-ease), transform var(--mon-ease), box-shadow var(--mon-ease);
+}
+
+.reaction-explorer__group::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 10px;
+  bottom: 10px;
+  width: 3px;
+  border-radius: 3px;
+  background: rgb(var(--tone-rgb));
+}
+
+.reaction-explorer__group strong {
+  color: var(--mon-ink);
+  font: 600 12.5px/1.25 var(--mon-font-heading);
+}
+
+.reaction-explorer__group span {
+  color: var(--mon-ink-2);
+  font-size: 11.5px;
+}
+
+.reaction-explorer__group small {
+  color: var(--mon-ink-3);
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+}
+
+.reaction-explorer__group:hover {
+  border-color: var(--mon-outline-strong);
+  transform: translateY(-1px);
+}
+
+.reaction-explorer__group[aria-pressed='true'] {
+  border-color: rgba(var(--mon-cyan-rgb), 0.7);
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: 0 0 0 1px rgba(var(--mon-cyan-rgb), 0.4);
+}
+
+.reaction-explorer__group:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(var(--mon-cyan-rgb), 0.18);
+}
+
+.reaction-explorer__more-groups {
+  align-self: center;
+  color: var(--mon-ink-3);
+  font-size: 11.5px;
+  white-space: nowrap;
+}
+
+/* ---------- Visor: sin borde ni fondo propio, solo un divisor superior ---------- */
+.reaction-explorer__viewer {
+  display: grid;
+  gap: 12px;
+  min-width: 0;
+  padding-top: 12px;
+  border-top: 1px solid var(--mon-outline);
+}
+
+.reaction-explorer__viewer-head {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 8px 12px;
+}
+
+.reaction-explorer__viewer-head > div:first-child {
+  display: grid;
+  gap: 3px;
+  min-width: 0;
+}
+
+.reaction-explorer__viewer-head strong {
+  color: var(--mon-ink);
+  font: 600 15px/1.25 var(--mon-font-heading);
+  letter-spacing: -0.01em;
+}
+
+.reaction-explorer__viewer-head small {
+  color: var(--mon-ink-3);
+  font-size: 11.5px;
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+}
+
+.reaction-explorer__viewer-tools {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.reaction-explorer__metrics {
+  display: inline-flex;
+  gap: 2px;
+  padding: 3px;
+  border-radius: var(--mon-pill);
+  border: 1px solid var(--mon-outline);
+  background: var(--mon-surface-3);
+}
+
+.reaction-explorer__metric {
+  display: inline-flex;
+  align-items: center;
+  min-height: 28px;
+  padding: 0 12px;
+  border-radius: var(--mon-pill);
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--mon-ink-2);
+  font: 700 11.5px/1 var(--mon-font-body);
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  transition: background var(--mon-ease), color var(--mon-ease);
+}
+
+.reaction-explorer__metric.is-active {
+  color: #fff;
+  background: var(--mon-cyan-ink);
+}
+
+.reaction-explorer__metric.is-static {
+  cursor: default;
+}
+
+.reaction-explorer__metric:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(var(--mon-cyan-rgb), 0.18);
+}
+
+/* Lecturas rápidas: tira de etiqueta → valor con divisores, sin cajas. */
+.reaction-explorer__stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(7.5rem, 1fr));
+  min-width: 0;
+  overflow: hidden;
+}
+
+.reaction-explorer__stats > div {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+  padding: 6px 12px;
+  box-shadow: -1px 0 0 var(--mon-outline);
+}
+
+.reaction-explorer__stats span {
+  color: var(--mon-ink-3);
+  font: 600 11px/1.2 var(--mon-font-body);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.reaction-explorer__stats strong {
+  color: var(--mon-ink);
+  font: 600 13px/1.25 var(--mon-font-heading);
+  font-variant-numeric: tabular-nums;
+  overflow-wrap: anywhere;
+}
+
+/* ---------- Cuerpo: gráfica en un tercio, tabla de puntos en dos tercios ---------- */
+.reaction-explorer__body {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+  gap: 12px 16px;
+  align-items: start;
+  min-width: 0;
+}
+
+.reaction-explorer__chart-pane {
+  position: relative;
+  min-width: 0;
+}
+
+.reaction-explorer__table-sheet {
+  min-width: 0;
+}
+
+.reaction-explorer__table-pane {
+  min-width: 0;
+}
+
+.reaction-explorer__table-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  padding: 0 0 6px;
+  color: var(--mon-ink-2);
+  font: 600 12px/1.2 var(--mon-font-body);
+}
+
+.reaction-explorer__table-head span {
+  color: var(--mon-ink-3);
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Scroll vertical con altura fija; el horizontal solo aparece si las columnas no caben. */
+.reaction-explorer__table-scroll {
+  max-height: 24rem;
+  overflow: auto;
+  overscroll-behavior: contain;
+  border-top: 1px solid var(--mon-outline);
+  border-bottom: 1px solid var(--mon-outline);
+  scrollbar-width: thin;
+}
+
+.reaction-explorer__table-pane table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 11.5px;
+  font-variant-numeric: tabular-nums;
+}
+
+.reaction-explorer__table-pane th,
+.reaction-explorer__table-pane td {
+  padding: 5px 7px;
+  text-align: right;
+  white-space: nowrap;
+  border-bottom: 1px solid var(--mon-outline);
+}
+
+.reaction-explorer__table-pane td {
+  color: var(--mon-ink-2);
+}
+
+/* Los encabezados pueden partirse en dos líneas para que la tabla quepa sin desplazamiento. */
+.reaction-explorer__table-pane th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background: var(--mon-pearl);
+  color: var(--mon-ink-3);
+  white-space: normal;
+  vertical-align: bottom;
+  font: 700 11px/1.15 var(--mon-font-body);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.reaction-explorer__table-pane th:first-child,
+.reaction-explorer__table-pane td:first-child {
+  position: sticky;
+  left: 0;
+  text-align: left;
+  background: var(--mon-pearl);
+}
+
+.reaction-explorer__table-pane th:first-child {
+  z-index: 2;
+}
+
+.reaction-explorer__table-pane td.is-active {
+  color: var(--mon-ink);
+  font-weight: 700;
+}
+
+.reaction-explorer__table-pane tr.is-hidden td {
+  opacity: 0.45;
+}
+
+.reaction-explorer__more {
+  margin-left: 4px;
+  padding: 1px 5px;
+  border-radius: var(--mon-pill);
+  background: rgba(var(--mon-graphite-rgb), 0.12);
+  color: var(--mon-ink-3);
+  font-size: 11px;
+}
+
+/* ---------- Gráfica HUD ---------- */
+.reaction-chart {
+  position: relative;
+  width: 100%;
+  min-width: 0;
+}
+
+.reaction-chart__svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: var(--mon-radius-sm);
+  outline: none;
+}
+
+.reaction-chart__svg:focus-visible {
+  box-shadow: 0 0 0 2px rgba(var(--mon-cyan-rgb), 0.6);
+}
+
+.reaction-chart__grid {
+  stroke: rgba(var(--mon-graphite-rgb), 0.16);
+  stroke-width: 1;
+}
+
+.reaction-chart__axis {
+  stroke: rgba(var(--mon-graphite-rgb), 0.42);
+  stroke-width: 1;
+}
+
+.reaction-chart__corner {
+  fill: none;
+  stroke: var(--mon-cyan-ink);
+  stroke-opacity: 0.55;
+  stroke-width: 1.2;
+}
+
+.reaction-chart__crosshair-line {
+  stroke: var(--mon-cyan-ink);
+  stroke-opacity: 0.55;
+  stroke-width: 1;
+}
+
+.reaction-chart__tick,
+.reaction-chart__axis-title,
+.reaction-chart__end-label {
+  fill: var(--mon-ink-3);
+  font-family: var(--mon-font-body);
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+}
+
+.reaction-chart__axis-title {
+  fill: var(--mon-cyan-ink);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.reaction-chart__end-label {
+  fill: var(--mon-ink-2);
+  font-weight: 700;
+}
+
+.reaction-chart__hit {
+  cursor: crosshair;
+  touch-action: pan-y;
+}
+
+/* Lectura del ciclo: anclada a --x y acotada al panel de la gráfica (nunca sale de él). */
+.reaction-chart__tooltip {
+  --tip-w: min(15rem, calc(100% - 16px));
+  position: absolute;
+  top: 12px;
+  left: clamp(8px, calc(var(--x, 0px) + 14px), calc(100% - 8px - var(--tip-w)));
+  z-index: 3;
+  width: var(--tip-w);
+  max-width: calc(100% - 16px);
+  padding: 8px 10px 9px;
+  border-radius: var(--mon-radius-sm);
+  border: 1px solid rgba(var(--mon-cyan-rgb), 0.45);
+  background: rgba(255, 255, 255, 0.97);
+  box-shadow: 0 12px 28px -18px rgba(16, 42, 56, 0.5);
+  pointer-events: none;
+}
+
+.reaction-chart__tooltip.is-left {
+  left: clamp(8px, calc(var(--x, 0px) - 14px - var(--tip-w)), calc(100% - 8px - var(--tip-w)));
+}
+
+.reaction-chart__tooltip-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 5px;
+  color: var(--mon-ink);
+  font: 600 12px/1.2 var(--mon-font-heading);
+}
+
+.reaction-chart__tooltip-head span {
+  color: var(--mon-ink-3);
+  font-family: var(--mon-font-body);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.reaction-chart__tooltip table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+  font-size: 11.5px;
+  font-variant-numeric: tabular-nums;
+}
+
+.reaction-chart__tooltip th {
+  padding: 0 4px 3px;
+  color: var(--mon-ink-3);
+  text-align: right;
+  font: 700 11px/1.2 var(--mon-font-body);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.reaction-chart__tooltip th:first-child,
+.reaction-chart__tooltip td:first-child {
+  text-align: left;
+}
+
+.reaction-chart__tooltip td {
+  padding: 2px 4px;
+  text-align: right;
+  color: var(--mon-ink-2);
+}
+
+.reaction-chart__tooltip td.is-active {
+  color: var(--mon-ink);
+  font-weight: 700;
+}
+
+.reaction-chart__tooltip tr.is-hidden td {
+  opacity: 0.45;
+}
+
+.reaction-chart__tooltip td i,
+.reaction-chart__legend-item i,
+.reaction-explorer__key {
+  display: inline-block;
+  width: 14px;
+  height: 2px;
+  margin-right: 5px;
+  border-radius: var(--mon-pill);
+  vertical-align: middle;
+}
+
+.reaction-chart__legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+.reaction-chart__legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 28px;
+  padding: 0 10px;
+  border-radius: var(--mon-pill);
+  border: 1px solid var(--mon-outline);
+  background: var(--mon-surface-2);
+  color: var(--mon-ink-2);
+  cursor: pointer;
+  font: 600 11.5px/1 var(--mon-font-body);
+}
+
+.reaction-chart__legend-item strong {
+  color: var(--mon-ink);
+  font-family: var(--mon-font-heading);
+  font-variant-numeric: tabular-nums;
+}
+
+.reaction-chart__legend-item.is-hidden {
+  opacity: 0.5;
+  text-decoration: line-through;
+}
+
+.reaction-chart__legend-item:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(var(--mon-cyan-rgb), 0.18);
+}
+
+.reaction-chart__empty {
+  display: grid;
+  place-items: center;
+  min-height: 160px;
+  padding: 12px;
+  color: var(--mon-ink-3);
+  text-align: center;
+  font-size: 12.5px;
+}
+
+/* ---------- Escalera única ---------- */
+@media (min-width: 1260px) {
+  .equipment-monitor__bpl-tests {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+/* <1180: gráfica y tabla apiladas; la tabla queda detrás de "Ver puntos crudos". */
+@media (max-width: 1179px) {
+  .reaction-explorer__body {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .reaction-explorer__table-sheet > summary {
+    display: inline-flex;
+  }
+
+  .reaction-explorer__table-sheet[open] > summary {
+    margin-bottom: 10px;
+  }
+}
+
+/* <960: filtros en hoja plegable (siempre montados); etapas 2×2. */
+@media (max-width: 959px) {
+  .reaction-explorer__filters-sheet > summary {
+    display: inline-flex;
+  }
+
+  .reaction-explorer__filters-sheet[open] > .reaction-explorer__filters {
+    padding-top: 10px;
+  }
+
+  .equipment-monitor__bpl-stages {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* ≤560: etapas en tira con scroll, pruebas en una columna, lectura de la gráfica como franja. */
+@media (max-width: 560px) {
+  .equipment-monitor__bpl-stages {
+    grid-template-columns: none;
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(168px, 1fr);
+    overflow-x: auto;
+    overflow-y: hidden;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x proximity;
+    scrollbar-width: thin;
+  }
+
+  .equipment-monitor__bpl-stage {
+    scroll-snap-align: start;
+  }
+
+  .equipment-monitor__bpl-tests {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .equipment-monitor__bpl-timeline li {
+    grid-template-columns: auto minmax(0, 1fr);
+  }
+
+  .equipment-monitor__bpl-timeline li time {
+    grid-column: 2;
+  }
+
+  .reaction-explorer__shell {
+    padding: 12px 12px 14px;
+  }
+
+  .reaction-explorer__filters label {
+    flex: 1 1 calc(50% - 10px);
+  }
+
+  .reaction-explorer__filters .input-field {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .reaction-explorer__count {
+    margin-left: 0;
+  }
+
+  .reaction-explorer__stats > div {
+    padding: 6px 10px;
+  }
+
+  .reaction-chart__tooltip {
+    position: static;
+    width: auto;
+    max-width: none;
+    margin-top: 8px;
+  }
+}
+
+/* Móvil horizontal: las etapas vuelven a ser una tira para no apilar cuatro filas. */
+@media (orientation: landscape) and (max-height: 520px) {
+  .equipment-monitor__bpl-stages {
+    grid-template-columns: none;
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(168px, 1fr);
+    overflow-x: auto;
+    overflow-y: hidden;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x proximity;
+    scrollbar-width: thin;
+  }
+
+  .equipment-monitor__bpl-stage {
+    scroll-snap-align: start;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reaction-explorer__group,
+  .reaction-sparkline--button,
+  .reaction-explorer__metric,
+  .reaction-explorer__filters-sheet > summary::before,
+  .reaction-explorer__table-sheet > summary::before,
+  .equipment-monitor__bpl-timeline summary::before {
+    transition: none;
+  }
+}

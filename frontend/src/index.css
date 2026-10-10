@@ -94,12 +94,13 @@ body {
     radial-gradient(circle at 18% 88%, rgba(var(--environmental-blue-rgb), 0.11), transparent 28%),
     linear-gradient(180deg, #f7fafc 0%, #edf3f8 46%, #e5edf3 100%);
   background-attachment: fixed;
-  overflow-x: hidden;
+  /* clip en lugar de hidden: recorta igual pero no crea contenedor de scroll, así position: sticky funciona. */
+  overflow-x: clip;
 }
 
 #root {
   min-height: 100vh;
-  overflow-x: hidden;
+  overflow-x: clip;
 }
 
 button,

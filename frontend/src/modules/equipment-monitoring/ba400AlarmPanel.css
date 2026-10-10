@@ -1,78 +1,775 @@
-/* Una sola consola: mapa continuo detrás del cristal, no dos paneles separados. */
-.equipment-monitor__spatial-workspace { display:grid; min-width:0; position:relative; isolation:isolate; }
-.equipment-monitor__spatial-workspace.is-inspecting { min-height:1040px; padding:24px 16px 24px 27%; align-items:start; background:#020e18; border:1px solid #50dbff55; border-radius:24px; overflow:hidden; }
-.equipment-monitor__spatial-workspace.is-inspecting > .equipment-globe { position:absolute; inset:0; height:100%; min-height:100%; border:0; border-radius:inherit; box-shadow:none; }
-.equipment-monitor__spatial-workspace.is-inspecting .equipment-globe__selected-panel { left:18px; width:calc(25% - 30px); max-width:300px; top:38%; padding:16px; }
-.equipment-monitor__spatial-workspace.is-inspecting .equipment-globe__hud--right,.equipment-monitor__spatial-workspace.is-inspecting .equipment-globe__hint,.equipment-monitor__spatial-workspace.is-inspecting .equipment-globe__demo-label,.equipment-monitor__spatial-workspace.is-inspecting .equipment-globe__selected-billboard { display:none; }
-.equipment-monitor__map-panel:has(.is-inspecting) { background:#03111b; color:#b3eafa; border-color:#46d9ff44; box-shadow:0 0 70px #0a8bb522; }
-.equipment-monitor__map-panel:has(.is-inspecting) .equipment-monitor__map-header p { color:#80b4c7; }
-.alarm-spatial { --alarm-cyan:#64deff; --alarm-ink:#d5f6ff; --alarm-muted:#78aac0; --alarm-line:#55d9ff40; --alarm-fatal:#ff6669; --alarm-warning:#ffc476; position:relative; z-index:3; width:100%; min-width:0; box-sizing:border-box; border:1px solid #80e7ffb3; border-radius:28px 18px 26px 18px; color:var(--alarm-ink); background:linear-gradient(125deg,#082332c9,#00101bd9 65%); box-shadow:inset 3px 0 #8eeaff55,inset 0 2px #a4f4ff70,0 0 25px #20b8e528,0 24px 80px #0009; backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px); font-family:'Avenir Next','Trebuchet MS',sans-serif; animation:spatial-reveal .35s ease-out; }
-.alarm-spatial::before,.alarm-spatial::after { content:''; position:absolute; pointer-events:none; border:1px solid #72dfff5c; inset:6px; border-radius:22px 14px; }
-.alarm-spatial::after { inset:-4px 12px; border-width:0 1px; opacity:.5; }
-.alarm-spatial * { box-sizing:border-box; }.alarm-spatial button,.alarm-spatial input { font:inherit; }.alarm-spatial button { cursor:pointer; }.alarm-spatial button:disabled { opacity:.35; cursor:not-allowed; }.alarm-spatial :focus-visible { outline:2px solid #b1faff; outline-offset:4px; }
-.alarm-spatial__shell { display:flex; flex-direction:column; padding:22px; min-width:0; }
-.alarm-spatial__header { display:flex; justify-content:space-between; align-items:start; gap:14px; padding:0 2px 18px; }
-.alarm-spatial__eyebrow { font-size:9px; color:var(--alarm-cyan); letter-spacing:.18em; font-weight:600; }
-.alarm-spatial h2 { margin:8px 0 6px; color:#8cddfa; font-size:25px; font-weight:600; letter-spacing:.03em; }.alarm-spatial h2 span { font-size:12px; color:#8fc0d4; font-weight:400; letter-spacing:.05em; }
-.alarm-spatial__header p { font-size:11px; margin:0; color:#a7dcec; line-height:1.6; }.alarm-spatial__header p span { color:#76b5cb; }
-.alarm-spatial__header-actions { display:flex; gap:14px; align-items:center; }
-.alarm-spatial__header-actions button,.alarm-spatial__controls button,.alarm-spatial__pagination button,.alarm-spatial .ba400-loading button { color:#93e8ff; border:1px solid #3aaaca55; background:#082432a3; border-radius:7px; padding:9px 11px; font-size:11px; }
-.alarm-spatial__header-actions button span { margin-left:7px; font-size:18px; }
-.alarm-spatial__signal { font-size:10px; color:#95bdca; white-space:nowrap; }.alarm-spatial__signal::before { content:''; width:6px; height:6px; display:inline-block; border-radius:50%; background:#728b9c; margin-right:7px; }.alarm-spatial__signal[data-recent=true] { color:#6effdb; }.alarm-spatial__signal[data-recent=true]::before { background:#0cf4c7; box-shadow:0 0 14px #03ffcf; }
-.alarm-spatial__tabs { display:flex; align-items:center; gap:6px; border:1px solid #3aa4c433; border-radius:11px; margin-bottom:12px; background:#01141c6b; }
-.alarm-spatial__tabs button { border:0; border-bottom:2px solid transparent; background:none; color:#78b8ce; padding:12px 20px; font-size:11px; }.alarm-spatial__tabs button[aria-pressed=true] { color:#b6faff; border-bottom-color:#5deaff; background:linear-gradient(0deg,#0bb6d831,transparent); box-shadow:0 5px 10px -6px #55ebff; }.alarm-spatial__tabs button span { margin-left:8px; color:#ff8a85; }.alarm-spatial__tabs > span { margin-left:auto; padding:0 12px; font-size:8px; color:#548ca3; letter-spacing:.1em; }
-.alarm-spatial__metrics { order:4; display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:10px; margin:14px 0; }.alarm-spatial__metrics > div { display:grid; gap:8px; padding:13px; border:1px solid #45bbdf40; border-radius:9px; background:linear-gradient(120deg,#07334480,#00111bb3); }.alarm-spatial__metrics span { font-size:8px; color:#7bc6df; letter-spacing:.08em; }.alarm-spatial__metrics strong { font-size:20px; font-weight:500; color:#b7eaff; }.alarm-spatial__metrics small { font-size:9px; color:#669eb3; }.alarm-spatial__metrics .alarm-spatial__date { font-size:12px; }
-.alarm-spatial [data-tone=fatal] { --event-color:var(--alarm-fatal); }.alarm-spatial [data-tone=warning] { --event-color:var(--alarm-warning); }.alarm-spatial [data-tone=unknown] { --event-color:#83b6c7; }.alarm-spatial__metrics [data-tone=fatal],.alarm-spatial__metrics [data-tone=warning] { color:var(--event-color); }
-.alarm-spatial__notice { margin:0 0 10px; padding:7px 10px; color:#c8b697; background:#694e160d; border-left:2px solid #bb955755; font-size:10px; line-height:1.5; }
-.alarm-spatial__body,.alarm-spatial__visual { min-width:0; }
-.alarm-spatial__stage { overflow:clip; }
-.alarm-spatial__card-frame { position:absolute; inset:0; width:100%; height:100%; color:var(--event-color); fill:none; stroke:currentColor; stroke-width:1; pointer-events:none; filter:drop-shadow(0 0 4px currentColor); }
-.alarm-spatial__card-frame path:nth-child(2) { opacity:.45; }.alarm-spatial__card-frame path:last-child { stroke-width:3; }
-.alarm-spatial__context-card { color:#56ddff; background:linear-gradient(125deg,#063044a1,#001522c9); border:1px solid #62e6ffb0; border-radius:13px 5px 13px 5px; box-shadow:inset 0 0 0 4px #04131d, inset 0 0 0 5px #4cb8d666,0 0 14px #46d2ff33; padding:16px; display:grid; gap:8px; min-width:0; }
-.alarm-spatial__context-card > span { font-size:10px; letter-spacing:.05em; }.alarm-spatial__context-card > strong { font-size:11px; font-weight:500; padding:4px; background:linear-gradient(90deg,#13cde32b,transparent); }
-.alarm-spatial__context-card p { display:flex; justify-content:space-between; gap:5px; margin:0; font-size:9px; color:#4d99b8; }.alarm-spatial__context-card b { font-weight:400; color:#91ccdf; }
-.alarm-spatial__stage { position:relative; height:clamp(560px,48vw,720px); min-height:560px; isolation:isolate; background:radial-gradient(ellipse at 50% 55%,#15749324,transparent 58%); }
-.alarm-spatial__stage::before { content:''; position:absolute; inset:30% 5% -5%; pointer-events:none; background:repeating-linear-gradient(0deg,transparent 0 36px,#3fbce50a 37px),repeating-linear-gradient(90deg,transparent 0 36px,#3fbce50a 37px); transform:perspective(550px) rotateX(50deg); mask-image:radial-gradient(ellipse,#000,transparent 70%); }
-.alarm-spatial .ba400-canvas { position:absolute; inset:0; width:100%; height:100%; }.alarm-spatial .ba400-canvas canvas { display:block; width:100%; height:100%; }
-.alarm-spatial__hud,.alarm-spatial__stage-caption { position:absolute; left:12px; right:12px; display:flex; justify-content:space-between; gap:8px; z-index:4; pointer-events:none; font-size:8px; letter-spacing:.07em; color:#528fa5; }.alarm-spatial__hud { top:8px; }.alarm-spatial__stage-caption { bottom:8px; }
-.alarm-spatial__events { position:absolute; inset:35px 0 65px; z-index:3; pointer-events:none; }
-.alarm-spatial__event-list { display:grid; grid-template-columns:minmax(165px,26%) minmax(0,1fr) minmax(165px,26%); grid-template-rows:repeat(3,minmax(0,1fr)); gap:16px 0; height:100%; align-items:center; }
-.alarm-spatial__event { --event-color:#86bed2; pointer-events:auto; display:grid; gap:7px; min-width:0; width:100%; padding:12px; position:relative; text-align:left; color:#b9eaff; border:1px solid color-mix(in srgb,var(--event-color) 70%,transparent); border-radius:13px 5px 13px 5px; background:linear-gradient(125deg,#071a25eb,#00111dcc); box-shadow:inset 0 0 18px color-mix(in srgb,var(--event-color) 9%,transparent),0 0 11px color-mix(in srgb,var(--event-color) 16%,transparent); backdrop-filter:blur(5px); transition:box-shadow .2s,border-color .2s; }
-.alarm-spatial__event::before { content:''; position:absolute; inset:4px; border:1px solid color-mix(in srgb,var(--event-color) 45%,transparent); border-radius:9px 2px 9px 2px; pointer-events:none; }.alarm-spatial__event::after { content:''; position:absolute; top:-3px; left:18px; width:42px; height:3px; background:var(--event-color); box-shadow:0 0 9px var(--event-color); }
-.alarm-spatial__event:hover,.alarm-spatial__event[aria-pressed=true] { border-color:var(--event-color); box-shadow:0 0 18px color-mix(in srgb,var(--event-color) 35%,transparent),inset 0 0 20px color-mix(in srgb,var(--event-color) 12%,transparent); }
-.alarm-spatial__event-top { display:flex; align-items:start; justify-content:space-between; gap:5px; color:#79ddff; text-transform:uppercase; }.alarm-spatial__event-top b { font-size:10px; font-weight:500; letter-spacing:.035em; line-height:1.4; }.alarm-spatial__event-top > span { font-size:22px; color:var(--event-color); line-height:1; text-shadow:0 0 8px currentColor; }
-.alarm-spatial__event-content { display:grid; grid-template-columns:42px minmax(0,1fr); gap:8px; align-items:center; }.alarm-spatial__glyph { width:42px; height:58px; color:var(--event-color); filter:drop-shadow(0 0 4px color-mix(in srgb,var(--event-color) 50%,transparent)); }.alarm-spatial__event-content > span { display:grid; gap:6px; }
-.alarm-spatial__event-severity { padding:3px 5px; font-size:10px; color:var(--event-color); letter-spacing:.04em; background:linear-gradient(90deg,color-mix(in srgb,var(--event-color) 20%,transparent),transparent); border-left:2px solid var(--event-color); }.alarm-spatial__event-content strong { font-size:10px; font-weight:400; line-height:1.45; overflow-wrap:anywhere; }
-.alarm-spatial__event-section { display:flex; justify-content:space-between; gap:5px; color:#458fac; font-size:8px; }.alarm-spatial__event-section > span { color:#9ecbdb; text-align:right; }
-.alarm-spatial__event-code { display:flex; align-items:end; justify-content:space-between; gap:5px; color:var(--event-color); font:9px Consolas,monospace; border-top:1px solid color-mix(in srgb,var(--event-color) 20%,transparent); padding-top:6px; }.alarm-spatial__event-code time { font:8px 'Avenir Next',sans-serif; color:#6799ac; text-align:right; }
-.alarm-spatial__connectors { position:absolute; inset:0; width:100%; height:100%; pointer-events:none; z-index:2; overflow:visible; }.alarm-spatial__connectors path { fill:none; stroke:var(--event-color,#61dbfa); stroke-width:1; opacity:.8; filter:drop-shadow(0 0 3px var(--event-color,#61dbfa)); }
-.alarm-spatial .monitor-alarm-anchor { position:absolute; z-index:2; transform:translate(-50%,-50%); border:1px solid var(--event-color); width:15px; height:15px; padding:0; border-radius:50%; color:transparent; font-size:0; background:var(--event-color); box-shadow:0 0 0 5px color-mix(in srgb,var(--event-color) 15%,transparent),0 0 19px var(--event-color); }.monitor-alarm-anchor[hidden] { display:none; }.alarm-spatial .monitor-alarm-anchor::after { content:''; position:absolute; inset:3px; border:1px solid #fff9; border-radius:50%; }
-.alarm-spatial__controls { position:absolute; z-index:6; bottom:32px; left:50%; transform:translateX(-50%); max-width:calc(100% - 20px); width:max-content; display:flex; flex-wrap:wrap; justify-content:center; gap:7px; padding:9px; border:1px solid #45c3e661; border-radius:10px; background:#031725e8; backdrop-filter:blur(18px); opacity:0; pointer-events:none; transition:opacity .2s; }.alarm-spatial__stage:hover .alarm-spatial__controls,.alarm-spatial__stage:focus-within .alarm-spatial__controls { opacity:1; pointer-events:auto; }.alarm-spatial__controls button { font-size:10px; padding:8px; }.alarm-spatial__controls button[aria-pressed=true] { border-color:#68e6ff; }.alarm-spatial__controls label { display:flex; align-items:center; gap:6px; font-size:10px; color:#8bd9ef; }.alarm-spatial__controls input { width:70px; accent-color:#62eeff; }.alarm-spatial__controls output { min-width:28px; }
-.alarm-spatial__inspector { padding:11px 14px; border-top:1px solid #2a9bbc40; background:#07314821; }.alarm-spatial__inspector h3 { display:inline; font-size:13px; color:#86d9ee; font-weight:500; margin:0 0 0 12px; }.alarm-spatial__inspector p { font-size:10px; color:#86b8c9; margin:6px 0; line-height:1.6; }.alarm-spatial__inspector small { color:#4c96af; font-size:9px; }.alarm-spatial__inspector .alarm-spatial__caution { color:#587e91; font-size:9px; }
-.alarm-spatial__empty { margin:10px; width:210px; border:1px solid #4bdfff70; padding:14px; border-radius:10px; background:#021b29c9; color:#72e8f7; font-size:12px; line-height:1.6; }.alarm-spatial__empty p { font-size:10px; color:#80b2c4; }
-.alarm-spatial__pagination { position:absolute; bottom:8px; right:0; z-index:4; display:flex; align-items:center; gap:8px; font-size:10px; background:#02151e; }
-.alarm-spatial__footer { order:5; display:flex; justify-content:space-between; gap:10px; font-size:8px; color:#588ea3; letter-spacing:.05em; line-height:1.6; }
-.alarm-spatial .ba400-loading { z-index:7; background:#02111fe8; color:#9fe9ff; }.alarm-spatial .ba400-loading p,.alarm-spatial .ba400-loading span { color:#86bbd0; }
-.alarm-spatial__stage[data-mode=events] .alarm-spatial__events { inset:20px 0 70px; overflow-y:auto; pointer-events:auto; }.alarm-spatial__stage[data-mode=events] .alarm-spatial__event-list { grid-template-columns:repeat(2,minmax(0,1fr)); grid-template-rows:none; height:auto; gap:16px; padding:8px; }.alarm-spatial__stage[data-mode=events] .alarm-spatial__event { grid-column:auto!important; grid-row:auto!important; background:#041722f2; }.alarm-spatial__stage[data-mode=events] .alarm-spatial__connectors,.alarm-spatial__stage[data-mode=events] .monitor-alarm-anchor { visibility:hidden; }
-@keyframes spatial-reveal { from { opacity:0; transform:translateX(16px); } to { opacity:1; transform:none; } }
-@media(min-width:1800px) { .equipment-monitor__spatial-workspace.is-inspecting { padding-left:32%; } }
-@media(max-width:1100px) { .equipment-monitor__spatial-workspace.is-inspecting { padding-left:17%; }.equipment-monitor__spatial-workspace.is-inspecting .equipment-globe__selected-panel { display:none; }.alarm-spatial__shell { padding:16px; }.alarm-spatial__event { padding:10px; }.alarm-spatial__header-actions { flex-direction:column; align-items:end; gap:7px; }.alarm-spatial__tabs > span { display:none; } }
-/* En móvil las tarjetas se colocan debajo para conservar libre el área de giro. */
-@media(max-width:720px) {
-  .equipment-monitor__spatial-workspace.is-inspecting { padding:300px 8px 12px; min-height:0; }.equipment-monitor__spatial-workspace.is-inspecting > .equipment-globe { height:430px; min-height:430px; }
-  .alarm-spatial { border-radius:18px; }.alarm-spatial__shell { padding:13px; }.alarm-spatial h2 span { display:block; margin-top:6px; }.alarm-spatial__header p span { display:block; }
-  .alarm-spatial__stage { height:auto; min-height:460px; padding-top:450px; }.alarm-spatial .ba400-canvas { height:450px; }.alarm-spatial__events { position:relative; inset:auto; margin-bottom:10px; }
-  .alarm-spatial__event-list,.alarm-spatial__stage[data-mode=events] .alarm-spatial__event-list { grid-template-columns:1fr; grid-template-rows:none; height:auto; gap:14px; }.alarm-spatial__event { grid-column:1!important; grid-row:auto!important; padding:14px; }.alarm-spatial__event-content strong { font-size:12px; }.alarm-spatial__event-top b { font-size:12px; }
-  .alarm-spatial__context-card { grid-column:1!important; grid-row:auto!important; }
-  .alarm-spatial__connectors { display:none; }.alarm-spatial__controls { top:330px; bottom:auto; width:calc(100% - 12px); opacity:1; pointer-events:auto; }.alarm-spatial__stage-caption { top:425px; bottom:auto; font-size:7px; }
-  .alarm-spatial__metrics { grid-template-columns:1fr 1fr; }.alarm-spatial__metrics > div:last-child { grid-column:1/-1; }.alarm-spatial__metrics small { display:block; }.alarm-spatial__footer { flex-direction:column; }.alarm-spatial__inspector h3 { display:block; margin:6px 0; }.alarm-spatial__pagination { position:relative; justify-content:end; padding:10px; }
-  .alarm-spatial__stage[data-mode=events] .alarm-spatial__events { position:relative; inset:auto; overflow:visible; }.alarm-spatial__stage[data-mode=events] { padding-top:0; }.alarm-spatial__stage[data-mode=events] .ba400-canvas,.alarm-spatial__stage[data-mode=events] .alarm-spatial__controls,.alarm-spatial__stage[data-mode=events] .alarm-spatial__stage-caption { visibility:hidden; }
-}
-@media(hover:none) { .alarm-spatial__controls { opacity:1; pointer-events:auto; } }
-@media(prefers-reduced-motion:reduce) { .alarm-spatial { animation:none; }.alarm-spatial__controls,.alarm-spatial__event { transition:none; } }
-@media(min-width:721px) { .alarm-spatial__stage { height:clamp(500px,40vw,600px); min-height:500px; }.equipment-monitor__spatial-workspace.is-inspecting { min-height:960px; } }
-@media(min-width:1101px) { .equipment-monitor__spatial-workspace.is-inspecting { padding-left:31%; } }
-.alarm-spatial__event { border-color:transparent; border-radius:0; background:linear-gradient(125deg,#071a25eb,#00111dcc); }
-.alarm-spatial__event::before,.alarm-spatial__event::after { display:none; }
+@import './monitor.tokens.css';
 
-.alarm-spatial__controls .alarm-spatial__rotation-toggle { display:inline-flex; align-items:center; justify-content:center; flex-shrink:0; width:34px; height:34px; padding:8px; }
+/*
+ * Explorador de alarmas 3D (section.alarm-spatial): cristal oscuro cinematográfico sobre el globo.
+ * El workspace padre (monitorStage.css) ya pausa y difumina el globo, así que la raíz es translúcida
+ * sin backdrop-filter. Rejilla estricta y alineada, espaciados 12/16 px, escala 11/12/13/15/28 px;
+ * cero !important; rojo solo para riesgo; cian como acento de datos; movimiento solo por opacity/transform.
+ */
+
+/* ---------- Tinta de tono sobre cristal oscuro ---------- */
+/* El mapa data-tone → --tone-rgb vive en los tokens; aquí se añade la tinta legible sobre fondo oscuro. */
+.alarm-spatial { --tone-bright: #b9c6d0; }
+.alarm-spatial [data-tone='ok'] { --tone-bright: rgb(var(--mon-cyan-rgb)); }
+.alarm-spatial [data-tone='warning'] { --tone-bright: #ffd27a; }
+.alarm-spatial [data-tone='fatal'] { --tone-bright: #ff6b7a; }
+.alarm-spatial [data-tone='unknown'],
+.alarm-spatial [data-tone='muted'] { --tone-bright: #b9c6d0; }
+
+/* ---------- Raíz: cristal oscuro ---------- */
+.alarm-spatial {
+  position: relative;
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 16px;
+  padding: 16px;
+  border: 1px solid var(--stage-outline);
+  border-radius: 20px;
+  background-color: var(--stage-glass-strong);
+  box-shadow: var(--stage-shadow), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  color: var(--stage-ink);
+  color-scheme: dark;
+  font-family: var(--mon-font-body);
+  font-size: 13px;
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+  animation: alarm-spatial-reveal 0.28s ease-out;
+}
+
+@keyframes alarm-spatial-reveal {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Brackets de esquina cian de la raíz, en una sola capa decorativa (dentro del radio de 20 px). */
+.alarm-spatial::before {
+  --bracket: rgba(var(--mon-cyan-rgb), 0.55);
+  content: '';
+  position: absolute;
+  inset: 8px;
+  pointer-events: none;
+  background:
+    linear-gradient(var(--bracket), var(--bracket)) top left / 14px 1.5px no-repeat,
+    linear-gradient(var(--bracket), var(--bracket)) top left / 1.5px 14px no-repeat,
+    linear-gradient(var(--bracket), var(--bracket)) top right / 14px 1.5px no-repeat,
+    linear-gradient(var(--bracket), var(--bracket)) top right / 1.5px 14px no-repeat,
+    linear-gradient(var(--bracket), var(--bracket)) bottom left / 14px 1.5px no-repeat,
+    linear-gradient(var(--bracket), var(--bracket)) bottom left / 1.5px 14px no-repeat,
+    linear-gradient(var(--bracket), var(--bracket)) bottom right / 14px 1.5px no-repeat,
+    linear-gradient(var(--bracket), var(--bracket)) bottom right / 1.5px 14px no-repeat;
+}
+
+.alarm-spatial * { box-sizing: border-box; }
+.alarm-spatial button, .alarm-spatial input, .alarm-spatial output { font: inherit; color: inherit; }
+.alarm-spatial button { cursor: pointer; }
+.alarm-spatial button:disabled { opacity: 0.4; cursor: not-allowed; }
+.alarm-spatial :focus-visible { outline: 2px solid rgba(var(--mon-cyan-rgb), 0.9); outline-offset: 2px; }
+
+/* Botón instrumental compartido (36 px): cabecera, controles, paginación y reintento del visor. */
+.alarm-spatial__close,
+.alarm-spatial__controls button,
+.alarm-spatial__pagination button,
+.alarm-spatial .ba400-loading button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: 36px;
+  padding: 0 12px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 10px;
+  background: var(--stage-glass-soft);
+  color: var(--stage-ink);
+  font: 600 12px/1 var(--mon-font-body);
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+}
+
+.alarm-spatial__close:hover,
+.alarm-spatial__controls button:hover:not(:disabled),
+.alarm-spatial__pagination button:hover:not(:disabled),
+.alarm-spatial .ba400-loading button:hover {
+  border-color: var(--stage-outline-strong);
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.alarm-spatial__controls button[aria-pressed='true'] {
+  border-color: var(--stage-outline-strong);
+  background: rgba(var(--mon-cyan-rgb), 0.14);
+  color: rgb(var(--mon-cyan-rgb));
+}
+
+/* ---------- Cabecera ---------- */
+.alarm-spatial__header {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 12px 16px;
+  min-height: 56px;
+}
+
+.alarm-spatial__title { display: grid; gap: 4px; min-width: 0; }
+
+.alarm-spatial__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font: 600 11px/1.2 var(--mon-font-body);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgb(var(--mon-cyan-rgb));
+}
+
+.alarm-spatial__eyebrow::before {
+  content: '';
+  width: 7px;
+  height: 7px;
+  rotate: 45deg;
+  background: rgb(var(--mon-cyan-rgb));
+  flex-shrink: 0;
+}
+
+.alarm-spatial h2 {
+  margin: 0;
+  font: 600 28px/1.1 var(--mon-font-heading);
+  letter-spacing: -0.03em;
+  color: var(--stage-ink);
+}
+
+.alarm-spatial h2 span {
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.01em;
+  color: rgb(var(--mon-cyan-rgb));
+}
+
+.alarm-spatial__header p { margin: 0; font-size: 12px; color: var(--stage-ink-2); }
+.alarm-spatial__header p span { color: var(--stage-ink-3); }
+
+.alarm-spatial__header-actions { display: flex; align-items: center; justify-content: end; gap: 12px; flex-wrap: wrap; }
+
+.alarm-spatial .alarm-spatial__signal {
+  min-height: 32px;
+  border-color: rgba(var(--tone-rgb), 0.4);
+  background: rgba(var(--tone-rgb), 0.14);
+  color: var(--tone-bright);
+}
+
+.alarm-spatial__close { min-height: 36px; padding: 0 14px; }
+.alarm-spatial__close span { font-size: 15px; line-height: 1; color: var(--stage-ink-2); }
+
+/* ---------- Avisos: líneas ámbar con riel de 3 px ---------- */
+.alarm-spatial__notice {
+  margin: 0;
+  padding: 8px 12px 8px 16px;
+  border-radius: 10px;
+  background: rgba(var(--tone-rgb), 0.12);
+  color: var(--tone-bright);
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.alarm-spatial__notice.mon-rail::before { top: 8px; bottom: 8px; left: 6px; }
+
+/* ---------- Barra de herramientas en su propia fila (40 px) ---------- */
+/* Orden visual: pestañas · paginación a la izquierda; controles y despiece a la derecha. */
+.alarm-spatial__toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  min-height: 40px;
+}
+
+.alarm-spatial__tabs {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  padding: 3px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.alarm-spatial__tabs button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 30px;
+  padding: 0 12px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--stage-ink-2);
+  font: 600 12px/1 var(--mon-font-body);
+  white-space: nowrap;
+}
+
+.alarm-spatial__tabs button[aria-pressed='true'] {
+  background: rgba(var(--mon-cyan-rgb), 0.14);
+  color: rgb(var(--mon-cyan-rgb));
+}
+
+.alarm-spatial__tabs button span {
+  display: inline-grid;
+  place-items: center;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 6px;
+  border-radius: 6px;
+  background: rgba(var(--tone-rgb), 0.2);
+  color: var(--tone-bright);
+  font: 700 11px/1 var(--mon-font-heading);
+  font-variant-numeric: tabular-nums;
+}
+
+.alarm-spatial__pagination { order: 1; display: inline-flex; align-items: center; gap: 8px; }
+.alarm-spatial__pagination span { font: 600 12px/1 var(--mon-font-heading); font-variant-numeric: tabular-nums; color: var(--stage-ink-2); }
+
+.alarm-spatial__controls { order: 2; display: flex; flex-wrap: wrap; align-items: center; gap: 8px; min-width: 0; margin-left: auto; }
+
+.alarm-spatial__controls .alarm-spatial__rotation-toggle { width: 36px; padding: 0; flex-shrink: 0; }
+
+.alarm-spatial__explosion {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 36px;
+  padding: 0 10px 0 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.05);
+  font: 600 12px/1 var(--mon-font-body);
+  color: var(--stage-ink-2);
+  white-space: nowrap;
+}
+
+.alarm-spatial__explosion input { width: 120px; margin: 0; accent-color: rgb(var(--mon-cyan-rgb)); cursor: pointer; }
+.alarm-spatial__explosion input:disabled { cursor: not-allowed; }
+
+.alarm-spatial__explosion output {
+  min-width: 34px;
+  text-align: right;
+  font: 600 11px/1 var(--mon-font-heading);
+  font-variant-numeric: tabular-nums;
+  color: var(--stage-ink);
+}
+
+/* ---------- Escenario: rejilla 220 / 1fr / 220 × 3 filas ---------- */
+/* Altura mínima; si una columna de tarjetas necesita más, las pistas 1fr crecen con el aside (nunca recorta). */
+.alarm-spatial__stage {
+  --alarm-stage-h: clamp(520px, calc(100vh - 24rem), 640px);
+  --alarm-stage-h: clamp(520px, calc(100svh - 24rem), 640px);
+  display: grid;
+  grid-template-columns: 220px minmax(0, 1fr) 220px;
+  grid-template-rows: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  position: relative;
+  isolation: isolate;
+  overflow: clip;
+  min-width: 0;
+  min-height: var(--alarm-stage-h);
+}
+
+/* Viewport del holograma: la superficie más profunda del explorador. */
+.alarm-spatial__viewport {
+  grid-column: 2;
+  grid-row: 1 / -1;
+  position: relative;
+  z-index: 1;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+  border-radius: 14px;
+  border: 1px solid var(--stage-outline);
+  background: var(--mon-canvas);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+.alarm-spatial__viewport:hover { cursor: crosshair; }
+
+/* Suelo en perspectiva cian y halo estático bajo el modelo. ::before/::after del viewport son los brackets. */
+.alarm-spatial__floor {
+  position: absolute;
+  inset: 30% 12% -5%;
+  pointer-events: none;
+  background:
+    repeating-linear-gradient(0deg, transparent 0 36px, rgba(var(--mon-cyan-rgb), 0.05) 37px),
+    repeating-linear-gradient(90deg, transparent 0 36px, rgba(var(--mon-cyan-rgb), 0.05) 37px),
+    radial-gradient(ellipse at 50% 55%, rgba(var(--mon-cyan-rgb), 0.12), transparent 62%);
+  transform: perspective(550px) rotateX(50deg);
+  mask-image: radial-gradient(ellipse, #000, transparent 70%);
+  -webkit-mask-image: radial-gradient(ellipse, #000, transparent 70%);
+}
+
+.alarm-spatial .ba400-canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+.alarm-spatial .ba400-canvas canvas { display: block; width: 100%; height: 100%; }
+
+.alarm-spatial__hud,
+.alarm-spatial__stage-caption {
+  position: absolute;
+  left: 30px;
+  right: 30px;
+  z-index: 4;
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  pointer-events: none;
+  font: 600 11px/1.3 var(--mon-font-body);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--stage-ink-2);
+}
+
+.alarm-spatial__hud { top: 12px; }
+.alarm-spatial__hud span:first-child { color: rgb(var(--mon-cyan-rgb)); }
+.alarm-spatial__stage-caption { bottom: 12px; color: var(--stage-ink-3); }
+.alarm-spatial__stage-caption span:last-child { text-transform: none; letter-spacing: 0.02em; }
+
+.alarm-spatial__empty {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 4;
+  translate: -50% -50%;
+  width: max-content;
+  max-width: min(300px, calc(100% - 56px));
+  padding: 38px 18px 16px;
+  border: 1px solid var(--stage-outline);
+  border-radius: 14px;
+  background: var(--stage-glass-strong);
+  color: var(--stage-ink);
+  text-align: center;
+  pointer-events: none;
+}
+
+.alarm-spatial__empty.mon-reticle::before { top: 20px; box-shadow: inset 0 0 0 4px var(--stage-deep-2), inset 0 0 0 5px rgba(var(--mon-cyan-rgb), 0.9); }
+.alarm-spatial__empty strong { display: block; font: 600 13px/1.3 var(--mon-font-heading); }
+.alarm-spatial__empty p { margin: 4px 0 0; font-size: 12px; color: var(--stage-ink-2); }
+
+.alarm-spatial .ba400-loading { z-index: 7; gap: 12px; border-radius: inherit; background: rgba(7, 25, 39, 0.9); color: var(--stage-ink); }
+.alarm-spatial .ba400-loading strong { font: 600 15px/1.3 var(--mon-font-heading); }
+.alarm-spatial .ba400-loading p, .alarm-spatial .ba400-loading > span { margin: 0; font-size: 12px; color: var(--stage-ink-2); }
+.alarm-spatial .ba400-loading progress { accent-color: rgb(var(--mon-cyan-rgb)); }
+
+/* Conectores: trazo fino del tono (cian por defecto), sin brillo. */
+.alarm-spatial__connectors {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  overflow: visible;
+}
+
+.alarm-spatial__connectors path { fill: none; stroke: rgba(var(--tone-rgb, var(--mon-cyan-rgb)), 0.7); stroke-width: 1; }
+
+/* Anclas 3D sobre el holograma: punto de tono con halo; el texto queda transparente a 11 px. */
+.alarm-spatial .monitor-alarm-anchor {
+  position: absolute;
+  z-index: 2;
+  transform: translate(-50%, -50%);
+  width: 14px;
+  height: 14px;
+  padding: 0;
+  border-radius: 50%;
+  overflow: hidden;
+  font-size: 11px;
+  line-height: 14px;
+  white-space: nowrap;
+  text-indent: 100%;
+  color: transparent;
+  background: rgb(var(--tone-rgb));
+  border: 1.5px solid var(--stage-ink);
+  box-shadow: 0 0 0 4px rgba(var(--tone-rgb), 0.22);
+  cursor: pointer;
+}
+
+.monitor-alarm-anchor[hidden] { display: none; }
+
+/* ---------- Tarjetas: rejilla superpuesta idéntica a la del escenario; solo columnas 1 y 3 ---------- */
+/* Fila 1 arriba, fila 3 abajo (tiles de contexto) y la fila 2 reparte el espacio restante. */
+.alarm-spatial__events {
+  grid-column: 1 / -1;
+  grid-row: 1 / -1;
+  z-index: 3;
+  display: grid;
+  grid-template-columns: 220px minmax(0, 1fr) 220px;
+  grid-template-rows: repeat(3, auto);
+  align-content: space-between;
+  gap: 16px;
+  min-width: 0;
+  min-height: 0;
+  pointer-events: none;
+}
+
+.alarm-spatial__event,
+.alarm-spatial__context-card {
+  pointer-events: auto;
+  min-width: 0;
+  width: 100%;
+  align-self: start;
+}
+
+.alarm-spatial__event[data-slot='0'], .alarm-spatial__event[data-slot='2'], .alarm-spatial__event[data-slot='4'], .alarm-spatial__context-card[data-slot='4'] { grid-column: 1; }
+.alarm-spatial__event[data-slot='1'], .alarm-spatial__event[data-slot='3'], .alarm-spatial__event[data-slot='5'], .alarm-spatial__context-card[data-slot='5'] { grid-column: 3; }
+.alarm-spatial__event[data-slot='0'], .alarm-spatial__event[data-slot='1'] { grid-row: 1; }
+.alarm-spatial__event[data-slot='2'], .alarm-spatial__event[data-slot='3'] { grid-row: 2; }
+.alarm-spatial__event[data-slot='4'], .alarm-spatial__event[data-slot='5'], .alarm-spatial__context-card[data-slot='4'], .alarm-spatial__context-card[data-slot='5'] { grid-row: 3; align-self: end; }
+
+/* Marco octogonal: el recorte sigue la misma proporción que el trazo (14/300 × 14/180). */
+.alarm-spatial__event {
+  --card-tint: 0.14;
+  position: relative;
+  display: grid;
+  gap: 8px;
+  padding: 12px 14px;
+  border: 0;
+  border-radius: 0;
+  clip-path: polygon(4.667% 0, 95.333% 0, 100% 7.778%, 100% 92.222%, 95.333% 100%, 4.667% 100%, 0 92.222%, 0 7.778%);
+  background:
+    linear-gradient(165deg, rgba(var(--tone-rgb), var(--card-tint)), rgba(var(--tone-rgb), 0.02) 48%, rgba(255, 255, 255, 0.03)),
+    var(--stage-deep-2);
+  color: var(--stage-ink);
+  text-align: left;
+  font: 500 12px/1.4 var(--mon-font-body);
+  transition: transform var(--mon-ease);
+}
+
+.alarm-spatial__event:hover { --card-tint: 0.22; transform: translateY(-1px); }
+.alarm-spatial__event[aria-pressed='true'] { --card-tint: 0.26; }
+.alarm-spatial__event:focus-visible { outline: none; box-shadow: inset 0 0 0 2px rgba(var(--mon-cyan-rgb), 0.8); }
+
+.alarm-spatial__card-frame {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  fill: none;
+  stroke: rgba(var(--tone-rgb), 0.5);
+  stroke-width: 1;
+  pointer-events: none;
+}
+
+.alarm-spatial__card-frame path { vector-effect: non-scaling-stroke; }
+.alarm-spatial__card-frame path:nth-child(2) { opacity: 0.35; }
+.alarm-spatial__card-frame path:last-child { stroke: rgb(var(--tone-rgb)); stroke-width: 3; }
+
+.alarm-spatial__event:hover .alarm-spatial__card-frame,
+.alarm-spatial__event[aria-pressed='true'] .alarm-spatial__card-frame { stroke: rgb(var(--tone-rgb)); }
+
+.alarm-spatial__event-top {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  gap: 8px;
+  text-transform: uppercase;
+  color: var(--stage-ink-2);
+}
+
+.alarm-spatial__event-top b { font: 600 11px/1.35 var(--mon-font-body); letter-spacing: 0.08em; }
+.alarm-spatial__event-top > span { font-size: 13px; line-height: 1; color: var(--tone-bright); }
+
+.alarm-spatial__event-content { display: grid; grid-template-columns: 32px minmax(0, 1fr); gap: 10px; align-items: center; }
+.alarm-spatial__event-content > span { display: grid; gap: 4px; min-width: 0; }
+.alarm-spatial__glyph { width: 32px; height: 40px; color: var(--tone-bright); }
+
+.alarm-spatial__event-severity {
+  justify-self: start;
+  padding: 3px 7px;
+  border-radius: 6px;
+  background: rgba(var(--tone-rgb), 0.18);
+  color: var(--tone-bright);
+  font: 700 11px/1.2 var(--mon-font-body);
+  letter-spacing: 0.06em;
+}
+
+.alarm-spatial__event-content strong { font: 600 12px/1.35 var(--mon-font-body); color: var(--stage-ink); }
+
+.alarm-spatial__event-section {
+  display: grid;
+  grid-template-columns: max-content minmax(0, 1fr);
+  justify-content: space-between;
+  gap: 8px;
+  font: 600 11px/1.3 var(--mon-font-body);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--stage-ink-3);
+}
+
+.alarm-spatial__event-section > span { text-transform: none; letter-spacing: 0; text-align: right; color: var(--stage-ink-2); }
+
+.alarm-spatial__event-code {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 8px;
+  padding-top: 8px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  font: 600 11px/1.3 var(--mon-font-heading);
+  font-variant-numeric: tabular-nums;
+  color: var(--tone-bright);
+}
+
+.alarm-spatial__event-code time { font: 500 11px/1.3 var(--mon-font-body); color: var(--stage-ink-3); text-align: right; }
+
+/* Tiles de contexto (slots 4/5): lecturas oscuras alineadas con la base del viewport. */
+.alarm-spatial__context-card {
+  position: relative;
+  display: grid;
+  gap: 4px;
+  padding: 12px 14px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  background: var(--stage-glass-soft);
+  color: var(--stage-ink);
+}
+
+.alarm-spatial__context-eyebrow { font: 600 11px/1.3 var(--mon-font-body); letter-spacing: 0.12em; text-transform: uppercase; color: rgb(var(--mon-cyan-rgb)); }
+.alarm-spatial__context-card > strong { font: 600 15px/1.3 var(--mon-font-heading); font-variant-numeric: tabular-nums; color: var(--stage-ink); }
+.alarm-spatial__context-card p { display: flex; justify-content: space-between; gap: 8px; margin: 0; font-size: 11px; color: var(--stage-ink-3); }
+.alarm-spatial__context-card b { font-weight: 600; color: var(--stage-ink-2); text-align: right; }
+
+/* ---------- Modo Eventos: holograma inerte, tarjetas en tres columnas con scroll acotado ---------- */
+/* La lista dicta la altura del escenario (sin hueco bajo las tarjetas); el viewport oculto conserva su tamaño para el motor. */
+.alarm-spatial__stage[data-mode='events'] { min-height: 0; }
+
+.alarm-spatial__stage[data-mode='events'] .alarm-spatial__viewport,
+.alarm-spatial__stage[data-mode='events'] .alarm-spatial__connectors { visibility: hidden; }
+
+.alarm-spatial__stage[data-mode='events'] .alarm-spatial__events {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-rows: none;
+  grid-auto-rows: max-content;
+  align-content: start;
+  overflow: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(var(--mon-cyan-rgb), 0.35) transparent;
+  max-height: var(--alarm-stage-h);
+  padding: 2px;
+  pointer-events: auto;
+}
+
+.alarm-spatial__stage[data-mode='events'] .alarm-spatial__event { grid-column: auto; grid-row: auto; align-self: start; }
+
+/* ---------- Métricas: tres lecturas en tiles oscuros ---------- */
+.alarm-spatial__metrics {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.alarm-spatial__metrics > .mon-readout {
+  align-content: center;
+  gap: 4px;
+  min-height: 60px;
+  padding: 12px 16px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  background: var(--stage-glass-soft);
+}
+
+.alarm-spatial__metrics .mon-readout > span { color: rgb(var(--mon-cyan-rgb)); }
+.alarm-spatial__metrics .mon-readout > strong { color: var(--stage-ink); }
+.alarm-spatial__metrics strong[data-tone] { color: var(--tone-bright); }
+.alarm-spatial__metrics small { font: 500 11px/1.2 var(--mon-font-body); color: var(--stage-ink-3); }
+
+/* ---------- Inspector (ALARMA SELECCIONADA) ---------- */
+.alarm-spatial__inspector {
+  display: grid;
+  gap: 6px;
+  padding: 12px 16px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  background: var(--stage-glass-soft);
+}
+
+.alarm-spatial__inspector h3 { margin: 0; font: 600 15px/1.3 var(--mon-font-heading); letter-spacing: -0.01em; color: var(--stage-ink); }
+.alarm-spatial__inspector p { margin: 0; font-size: 13px; line-height: 1.5; color: var(--stage-ink-2); }
+.alarm-spatial__inspector small { font-size: 11px; color: var(--stage-ink-3); }
+.alarm-spatial__inspector .alarm-spatial__caution { font-size: 11px; color: var(--stage-ink-3); }
+
+/* ---------- Pie ---------- */
+.alarm-spatial__footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  min-height: 24px;
+  font: 600 11px/1.4 var(--mon-font-body);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--stage-ink-3);
+}
+
+/* ---------- Antecedentes (historial contextual) ---------- */
+.alarm-antecedents {
+  display: grid;
+  gap: 6px;
+  margin: 0;
+  padding: 8px 10px 8px 12px;
+  border-left: 2px solid rgba(var(--mon-warn-rgb), 0.8);
+  border-radius: 0 10px 10px 0;
+  background: rgba(var(--mon-warn-rgb), 0.08);
+  font-size: 12px;
+  line-height: 1.4;
+  color: var(--stage-ink-2);
+}
+
+.alarm-antecedents > b { font: 600 11px/1.3 var(--mon-font-body); color: #ffd27a; }
+.alarm-antecedents > span { display: grid; gap: 3px; }
+.alarm-antecedents__entry { padding-left: 8px; border-left: 2px solid rgb(var(--tone-rgb)); color: var(--tone-bright); }
+.alarm-antecedents__entry strong { font-weight: 600; color: inherit; }
+.alarm-antecedents__entry > span { color: var(--stage-ink-2); }
+.alarm-antecedents__severity { font: 700 11px/1.3 var(--mon-font-body); letter-spacing: 0.06em; }
+.alarm-antecedents time { font-size: 11px; color: var(--stage-ink-3); }
+.alarm-antecedents--compact { font-size: 11px; }
+
+/* ---------- Escalera única de puntos de ruptura ---------- */
+@media (min-width: 1100px) and (max-width: 1439px) {
+  .alarm-spatial__stage,
+  .alarm-spatial__events { grid-template-columns: 200px minmax(0, 1fr) 200px; }
+}
+
+/* Tarjetas bajo el viewport en dos columnas; sin conectores. */
+@media (max-width: 1099px) {
+  .alarm-spatial__stage { grid-template-columns: minmax(0, 1fr); grid-template-rows: auto auto; min-height: 0; }
+  .alarm-spatial__viewport { grid-column: 1; grid-row: 1; height: clamp(320px, 50vw, 440px); }
+  .alarm-spatial__events {
+    grid-column: 1;
+    grid-row: 2;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-rows: none;
+    align-content: start;
+    align-items: start;
+    pointer-events: auto;
+  }
+  .alarm-spatial__event[data-slot],
+  .alarm-spatial__context-card[data-slot] { grid-column: auto; grid-row: auto; align-self: start; }
+  .alarm-spatial__connectors { display: none; }
+  /* Eventos: el viewport oculto sale del flujo (sigue midiendo el escenario) y la lista ocupa la única fila. */
+  .alarm-spatial__stage[data-mode='events'] { grid-template-rows: auto; }
+  .alarm-spatial__stage[data-mode='events'] .alarm-spatial__viewport { position: absolute; inset: 0; grid-area: 1 / 1 / -1 / -1; height: auto; }
+  .alarm-spatial__stage[data-mode='events'] .alarm-spatial__events { grid-row: 1; grid-template-columns: repeat(2, minmax(0, 1fr)); max-height: none; overflow: visible; padding: 0; }
+}
+
+@media (max-width: 719px) {
+  .alarm-spatial__events,
+  .alarm-spatial__stage[data-mode='events'] .alarm-spatial__events { grid-template-columns: minmax(0, 1fr); }
+}
+
+@media (max-width: 560px) {
+  .alarm-spatial { padding: 12px; gap: 12px; }
+  /* Cabecera: título a la izquierda, Cerrar arriba a la derecha, chip de señal debajo. */
+  .alarm-spatial__header { grid-template-rows: auto auto; min-height: 0; gap: 8px 12px; }
+  .alarm-spatial__header-actions { display: contents; }
+  .alarm-spatial__title { grid-column: 1; grid-row: 1; }
+  .alarm-spatial__close { grid-column: 2; grid-row: 1; align-self: start; }
+  .alarm-spatial .alarm-spatial__signal { grid-column: 1 / -1; grid-row: 2; justify-self: start; }
+  .alarm-spatial__header p span { display: block; }
+  /* Controles en filas de 40 px (Restablecer · giro · Aislar / Cubiertas · Despiece): nada queda tras un scroll horizontal. */
+  .alarm-spatial__toolbar { gap: 8px; }
+  .alarm-spatial__tabs button { min-height: 34px; }
+  .alarm-spatial__controls { width: 100%; gap: 8px; }
+  .alarm-spatial__controls button, .alarm-spatial__explosion { min-height: 40px; padding-left: 10px; padding-right: 10px; font-size: 11px; }
+  .alarm-spatial__controls .alarm-spatial__rotation-toggle { width: 40px; padding: 0; }
+  .alarm-spatial__explosion { flex: 1 1 150px; min-width: 0; gap: 6px; padding-right: 8px; }
+  .alarm-spatial__explosion input { flex: 1 1 80px; width: auto; min-width: 64px; }
+  .alarm-spatial__explosion output { min-width: 30px; }
+  .alarm-spatial__stage { gap: 12px; }
+  .alarm-spatial__events { gap: 12px; }
+  .alarm-spatial__viewport { height: clamp(280px, 44vh, 400px); height: clamp(280px, 44svh, 400px); }
+  .alarm-spatial__hud, .alarm-spatial__stage-caption { left: 26px; right: 26px; letter-spacing: 0.08em; }
+  .alarm-spatial__hud span:last-child, .alarm-spatial__stage-caption span:last-child { display: none; }
+  .alarm-spatial__metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .alarm-spatial__metrics > .mon-readout:last-child { grid-column: 1 / -1; }
+  .alarm-spatial__inspector { padding: 12px; }
+  .alarm-spatial__footer { flex-direction: column; align-items: start; gap: 4px; }
+}
+
+/* Móvil horizontal: cabecera + toolbar + escenario caben en la altura disponible; tarjetas con scroll interno. */
+@media (orientation: landscape) and (max-height: 520px) {
+  .alarm-spatial { padding: 12px; gap: 12px; }
+  .alarm-spatial__header { grid-template-columns: minmax(0, 1fr) auto; grid-template-rows: auto; min-height: 40px; gap: 12px; }
+  .alarm-spatial__header-actions { display: flex; flex-wrap: nowrap; }
+  .alarm-spatial__title { grid-column: auto; grid-row: auto; grid-template-columns: auto minmax(0, 1fr); align-items: center; column-gap: 10px; }
+  .alarm-spatial__close { grid-column: auto; grid-row: auto; align-self: auto; min-height: 36px; }
+  .alarm-spatial .alarm-spatial__signal { grid-column: auto; grid-row: auto; justify-self: auto; }
+  .alarm-spatial__title .alarm-spatial__eyebrow { display: none; }
+  .alarm-spatial h2 { font-size: 15px; }
+  .alarm-spatial__header p { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .alarm-spatial__header p span { display: inline; }
+  /* Toolbar de 40 px en una fila: pestañas a la izquierda, controles compactos y despiece a la derecha. */
+  .alarm-spatial__toolbar { min-height: 40px; gap: 8px; }
+  .alarm-spatial__tabs { padding: 2px; }
+  .alarm-spatial__tabs button { min-height: 30px; padding: 0 10px; font-size: 11px; }
+  .alarm-spatial__controls { width: auto; gap: 6px; margin-left: auto; }
+  .alarm-spatial__controls button, .alarm-spatial__explosion { min-height: 32px; padding-left: 8px; padding-right: 8px; font-size: 11px; }
+  .alarm-spatial__controls .alarm-spatial__rotation-toggle { width: 32px; padding: 0; }
+  .alarm-spatial__explosion { flex: 0 1 auto; gap: 6px; padding-left: 8px; }
+  .alarm-spatial__explosion-label { display: none; }
+  .alarm-spatial__explosion input { width: 96px; flex: 0 0 96px; min-width: 0; }
+  .alarm-spatial__explosion output { min-width: 30px; }
+  .alarm-spatial__stage {
+    --alarm-stage-h: max(240px, calc(100vh - 9rem));
+    --alarm-stage-h: max(240px, calc(100dvh - 9rem));
+    grid-template-columns: minmax(0, 58%) minmax(0, 42%);
+    grid-template-rows: minmax(0, 1fr);
+    gap: 12px;
+    min-height: 0;
+    height: var(--alarm-stage-h);
+  }
+  .alarm-spatial__viewport { grid-column: 1; grid-row: 1; height: auto; }
+  .alarm-spatial__events,
+  .alarm-spatial__stage[data-mode='events'] .alarm-spatial__events {
+    grid-column: 2;
+    grid-row: 1;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: none;
+    grid-auto-rows: max-content;
+    align-content: start;
+    gap: 12px;
+    max-height: 100%;
+    overflow: auto;
+    overscroll-behavior: contain;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(var(--mon-cyan-rgb), 0.35) transparent;
+    padding: 0 2px 0 0;
+    pointer-events: auto;
+  }
+  .alarm-spatial__event[data-slot],
+  .alarm-spatial__context-card[data-slot] { grid-column: auto; grid-row: auto; align-self: start; }
+  .alarm-spatial__event { padding: 10px 12px; }
+  /* Eventos en horizontal: la lista toma las dos columnas (el viewport oculto sale del flujo). */
+  .alarm-spatial__stage[data-mode='events'] { grid-template-rows: minmax(0, 1fr); }
+  .alarm-spatial__stage[data-mode='events'] .alarm-spatial__viewport { position: absolute; inset: 0; grid-area: 1 / 1 / -1 / -1; }
+  .alarm-spatial__stage[data-mode='events'] .alarm-spatial__events { grid-column: 1 / -1; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .alarm-spatial__connectors { display: none; }
+  .alarm-spatial__hud, .alarm-spatial__stage-caption { left: 26px; right: 26px; letter-spacing: 0.08em; }
+  .alarm-spatial__hud span:last-child, .alarm-spatial__stage-caption span:last-child { display: none; }
+  .alarm-spatial__metrics { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .alarm-spatial__metrics > .mon-readout { min-height: 48px; padding: 8px 12px; }
+  .alarm-spatial__metrics > .mon-readout:last-child { grid-column: auto; }
+  .alarm-spatial__inspector { padding: 8px 12px; gap: 4px; }
+  .alarm-spatial__inspector .alarm-antecedents, .alarm-spatial__inspector small { display: none; }
+  .alarm-spatial__footer { flex-direction: row; flex-wrap: nowrap; align-items: center; }
+}
+
+@media (orientation: landscape) and (max-height: 520px) and (min-width: 720px) {
+  .alarm-spatial__connectors { display: block; }
+}
+
+@media (pointer: coarse) {
+  .alarm-spatial .ba400-canvas canvas { touch-action: pan-y; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .alarm-spatial { animation: none; }
+  .alarm-spatial__event { transition: none; }
+}

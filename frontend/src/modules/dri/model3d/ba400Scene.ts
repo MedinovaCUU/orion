@@ -14,11 +14,22 @@ export interface Ba400View {
   holographic?: boolean;
   autoRotate?: boolean;
 }
-export function ownedBounds(controller: BA400Controller, ids: string[]) {
-  const bounds = new THREE.Box3();
-  for (const id of ids) for (const mesh of controller.meshes(id)) {
-    mesh.geometry.computeBoundingBox();
-    if (mesh.geometry.boundingBox) bounds.union(mesh.geometry.boundingBox.clone().applyMatrix4(mesh.matrixWorld));
+// Las mallas por conjunto no cambian tras cargar el modelo: se memorizan por controlador.
+const meshesByController = new WeakMap<BA400Controller, Map<string, THREE.Mesh[]>>();
+const scratchBox = new THREE.Box3();
+function meshesOf(controller: BA400Controller, id: string) {
+  let cache = meshesByController.get(controller);
+  if (!cache) { cache = new Map(); meshesByController.set(controller, cache); }
+  let meshes = cache.get(id);
+  if (!meshes) { meshes = [...controller.meshes(id)]; cache.set(id, meshes); }
+  return meshes;
+}
+/** Caja envolvente en mundo de un conjunto; reutiliza la caja local ya calculada (se llama cada frame por marcador). */
+export function ownedBounds(controller: BA400Controller, ids: string[], target = new THREE.Box3()) {
+  const bounds = target.makeEmpty();
+  for (const id of ids) for (const mesh of meshesOf(controller, id)) {
+    if (!mesh.geometry.boundingBox) mesh.geometry.computeBoundingBox();
+    if (mesh.geometry.boundingBox) bounds.union(scratchBox.copy(mesh.geometry.boundingBox).applyMatrix4(mesh.matrixWorld));
   }
   return bounds;
 }
@@ -27,6 +38,14 @@ export function setCoverVisibility(controller: BA400Controller, hidden: boolean,
   for (const id of BA400_COVER_IDS) {
     for (const mesh of controller.meshes(id)) mesh.visible = !hidden || protectedSet.has(id);
   }
+}
+// Contornos holográficos (Monitoreo) por geometría: viven junto al modelo y se destruyen con él en disposeModel.
+// Con el modelo residente se reutilizan entre aperturas en lugar de recalcularse (~1.4 s para las 852 mallas).
+const hologramEdgeCache = new WeakMap<THREE.BufferGeometry, THREE.EdgesGeometry>();
+function hologramEdgesOf(geometry: THREE.BufferGeometry) {
+  let edges = hologramEdgeCache.get(geometry);
+  if (!edges) { edges = new THREE.EdgesGeometry(geometry, 32); hologramEdgeCache.set(geometry, edges); }
+  return edges;
 }
 export function disposeModel(root: THREE.Object3D) {
   const geometries = new Set<THREE.BufferGeometry>();
@@ -40,7 +59,8 @@ export function disposeModel(root: THREE.Object3D) {
       for (const value of Object.values(material)) if (value instanceof THREE.Texture) textures.add(value);
     }
   });
-  geometries.forEach(g => g.dispose()); materials.forEach(m => m.dispose());
+  geometries.forEach(g => { hologramEdgeCache.get(g)?.dispose(); hologramEdgeCache.delete(g); g.dispose(); });
+  materials.forEach(m => m.dispose());
   textures.forEach(t => { t.dispose(); if (typeof ImageBitmap !== 'undefined' && t.image instanceof ImageBitmap) t.image.close(); });
 }
 
@@ -50,7 +70,9 @@ export function createBa400Scene(host: HTMLElement, gltf: GLTF, onPick: (id: str
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(36, 1, 0.005, 50);
   const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: 'high-performance' });
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.75));
+  // En pantallas táctiles la densidad se limita a 1.5 para contener el costo de relleno; en puntero fino sigue en 1.75.
+  const coarsePointer = typeof window.matchMedia === 'function' && window.matchMedia('(pointer: coarse)').matches;
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, coarsePointer ? 1.5 : 1.75));
   renderer.setClearColor(0x081923, 0);
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
   renderer.toneMappingExposure = 0.95;
@@ -104,7 +126,6 @@ export function createBa400Scene(host: HTMLElement, gltf: GLTF, onPick: (id: str
   // Materiales de presentación exclusivos del monitoreo; el GLB y DRI conservan sus originales.
   const hologramOriginals = new Map<THREE.Mesh, THREE.Material | THREE.Material[]>();
   const hologramEdges: { mesh: THREE.Mesh; line: THREE.LineSegments }[] = [];
-  const edgeGeometries = new Map<THREE.BufferGeometry, THREE.EdgesGeometry>();
   const edgeMaterial = new THREE.LineBasicMaterial({ color: 0x63e8ff, transparent: true, opacity: 0.52, depthWrite: false });
   function setHolographic(enabled: boolean) {
     if (enabled === (hologramOriginals.size > 0)) return;
@@ -114,9 +135,7 @@ export function createBa400Scene(host: HTMLElement, gltf: GLTF, onPick: (id: str
         mesh.material = new THREE.MeshBasicMaterial({ color: 0x29bce8, transparent: true, opacity: 0.065, depthWrite: false });
         // Evita calcular contornos de mallas de muy alta densidad; la superficie cian sigue visible.
         if (mesh.geometry.getAttribute('position').count > 20000) continue;
-        let edges = edgeGeometries.get(mesh.geometry);
-        if (!edges) { edges = new THREE.EdgesGeometry(mesh.geometry, 32); edgeGeometries.set(mesh.geometry, edges); }
-        const line = new THREE.LineSegments(edges, edgeMaterial);
+        const line = new THREE.LineSegments(hologramEdgesOf(mesh.geometry), edgeMaterial);
         line.matrixAutoUpdate = false;
         scene.add(line); hologramEdges.push({ mesh, line });
       }
@@ -125,8 +144,8 @@ export function createBa400Scene(host: HTMLElement, gltf: GLTF, onPick: (id: str
         (mesh.material as THREE.Material).dispose(); mesh.material = material;
       }
       hologramOriginals.clear();
+      // Las líneas son de esta escena; sus geometrías de contorno pertenecen al modelo (ver hologramEdgeCache).
       hologramEdges.forEach(({ line }) => scene.remove(line)); hologramEdges.length = 0;
-      edgeGeometries.forEach(geometry => geometry.dispose()); edgeGeometries.clear();
     }
   }
   const raycaster = new THREE.Raycaster();
@@ -277,6 +296,9 @@ export function createBa400Scene(host: HTMLElement, gltf: GLTF, onPick: (id: str
   const resizeObserver = new ResizeObserver(resize); resizeObserver.observe(host);
   const intersectionObserver = new IntersectionObserver(entries => { inViewport = entries[0]?.isIntersecting ?? true; dirty = true; }); intersectionObserver.observe(host);
   let previousFrameTime = 0;
+  // Objetos de trabajo reutilizados por frame: sin asignaciones nuevas en el bucle de render.
+  const markerBounds = new THREE.Box3();
+  const markerCenter = new THREE.Vector3();
   function render(now: number) {
     if (disposed) return;
     frame = requestAnimationFrame(render);
@@ -300,8 +322,8 @@ export function createBa400Scene(host: HTMLElement, gltf: GLTF, onPick: (id: str
       renderer.render(scene, camera);
       // Las etiquetas siguen la posición real de cada conjunto al girar o expandir el modelo.
       for (const marker of alarmButtons) {
-        const bounds = ownedBounds(controller, [marker.partId]);
-        const point = bounds.getCenter(new THREE.Vector3()).project(camera);
+        const bounds = ownedBounds(controller, [marker.partId], markerBounds);
+        const point = bounds.getCenter(markerCenter).project(camera);
         marker.element.hidden = bounds.isEmpty() || (!!current?.isolated && current.primaryId !== marker.partId)
           || point.z < -1 || point.z > 1 || Math.abs(point.x) > 1 || Math.abs(point.y) > 1;
         marker.element.style.left = `${(point.x + 1) / 2 * host.clientWidth}px`;
@@ -320,12 +342,21 @@ export function createBa400Scene(host: HTMLElement, gltf: GLTF, onPick: (id: str
   frame = requestAnimationFrame(render);
   return {
     setView,
-    dispose() {
+    /**
+     * Libera la escena. Por defecto destruye también el modelo (propiedad exclusiva del visor, como en DRI).
+     * Con `retainModel: true` el modelo vuelve a su estado base (sin fantasmas ni resaltes, materiales originales,
+     * cubiertas visibles, despiece 0, sin contornos holográficos) y queda desprendido, listo para otro visor.
+     */
+    dispose(options?: { retainModel?: boolean }) {
+      if (disposed) return;
       disposed = true; cancelAnimationFrame(frame);
       resizeObserver.disconnect(); intersectionObserver.disconnect();
       canvas.removeEventListener('pointerdown', onDown); canvas.removeEventListener('pointerup', onUp); canvas.removeEventListener('webglcontextlost', contextLost);
       controls.removeEventListener('start', controlStart); controls.removeEventListener('end', controlEnd); controls.removeEventListener('change', controlChange);
-      controls.dispose(); restoreGhosts(); controller.dispose(); setHolographic(false); edgeMaterial.dispose(); disposeModel(model);
+      // controller.dispose() = despiece 0, visibilidad original de todas las mallas (cubiertas incluidas) y resaltes limpios.
+      controls.dispose(); restoreGhosts(); controller.dispose(); highlighted.clear(); setHolographic(false); edgeMaterial.dispose();
+      scene.remove(model);
+      if (!options?.retainModel) disposeModel(model);
       selectionBox.geometry.dispose(); (selectionBox.material as THREE.Material).dispose();
       grid.geometry.dispose(); (grid.material as THREE.Material).dispose();
       ringObjects.forEach(ring => { ring.geometry.dispose(); (ring.material as THREE.Material).dispose(); });

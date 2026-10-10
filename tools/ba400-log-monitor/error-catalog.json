@@ -635,6 +635,12 @@
     "error_type": "Warning",
     "more_data_available": "No"
   },
+  "613": {
+    "description": "Error del Ventilador (error de diagnóstico 3er hilo)",
+    "section": "SFX",
+    "error_type": "Warning",
+    "more_data_available": "Yes"
+  },
   "620": {
     "description": "Waste Tank Sensor Impossible Value",
     "section": "SFX",

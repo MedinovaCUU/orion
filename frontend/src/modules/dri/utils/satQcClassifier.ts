@@ -102,25 +102,59 @@ const TEST_ALIASES: Record<string, string> = {
   'TPROTB': 'PROT T',
   TRIG: 'TG',
   UREA: 'UREA UV',
+  // Nombres de prueba tal como los reporta el BA400 en LogConsum y en la base Ax00.
+  AMYLASE: 'AMY',
+  BILIRUBIND: 'BIL D',
+  BILIRUBINT: 'BIL T',
+  BILIRUBINDIRECT: 'BIL D',
+  BILIRUBINTOTAL: 'BIL T',
+  CALCIUMARS: 'CALCIUM ARSENAZO',
+  CKNAC: 'CK',
+  CREATININEENZ: 'CREA ENZ',
+  GLUCOSEHK: 'GLU HK',
+  HBA1C: 'HGB',
+  HDLCHOLESTEROL: 'HDL TOOS',
+  IRON: 'HIERRO FER',
+  LACTATE: 'LACTATO DE',
+  MICROALBUMIN: 'MALB',
+  TOTALPROTEIN: 'PROT T',
+  UREAUV: 'UREA UV',
 };
 
-const resolveReagent = (catalog: DriCatalog, result: SatQcResult) => {
-  if (result.reagentId) {
-    const explicit = catalog.reagents.find((reagent) => reagent.id === result.reagentId);
+export interface ReagentTestLookup {
+  reagentId?: string | null;
+  testKey?: string | null;
+  testName?: string | null;
+  testShortName?: string | null;
+}
+
+/** Resuelve una prueba del analizador (nombre corto, largo o clave) a un reactivo del catálogo DRI. */
+export const resolveReagentForTest = (catalog: DriCatalog, lookup: ReagentTestLookup) => {
+  if (lookup.reagentId) {
+    const explicit = catalog.reagents.find((reagent) => reagent.id === lookup.reagentId);
     if (explicit) return explicit;
   }
-  const resultKeys = [result.testKey, result.testShortName, result.testName]
+  const resultKeys = [lookup.testKey, lookup.testShortName, lookup.testName]
     .map(normalizeText)
     .flatMap((key) => [key, TEST_ALIASES[key.replace(/\s/g, '')] || ''])
     .filter(Boolean);
 
-  return (
-    catalog.reagents.find((reagent) => {
-      const candidates = reagentCandidates(reagent);
-      return resultKeys.some((key) => candidates.has(key));
-    }) || null
-  );
+  if (!resultKeys.length) return null;
+
+  // Mismo criterio que la lista de reactivos del DRI: el reactivo programado gana al sintético documental.
+  const matches = catalog.reagents.filter((reagent) => {
+    const candidates = reagentCandidates(reagent);
+    return resultKeys.some((key) => candidates.has(key));
+  });
+  if (!matches.length) return null;
+  const score = (reagent: DriReagent) => {
+    const metadata = (reagent.metadata || {}) as Record<string, unknown>;
+    return (metadata.syntheticFromContext ? 0 : 120) + (reagent.id === getCanonicalReagentKey(reagent) ? 40 : 0);
+  };
+  return [...matches].sort((left, right) => score(right) - score(left))[0];
 };
+
+const resolveReagent = (catalog: DriCatalog, result: SatQcResult) => resolveReagentForTest(catalog, result);
 
 const chooseReference = (reagent: DriReagent, result: SatQcResult) => {
   if (result.controlLevel !== 'level_1' && result.controlLevel !== 'level_2') {

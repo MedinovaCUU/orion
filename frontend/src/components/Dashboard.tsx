@@ -163,7 +163,7 @@ interface DashboardProps {
 export default function Dashboard({ session, initialTab }: DashboardProps) {
   const navigate = useNavigate();
   const actionMenuRef = useRef<HTMLDivElement | null>(null);
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const [activeTab, setActiveTab] = useState<DashboardTabKey>(initialTab ?? DEFAULT_DASHBOARD_TAB);
   const [authReady, setAuthReady] = useState(false);
   const [userRole, setUserRole] = useState<string | null>(null);
@@ -208,6 +208,8 @@ export default function Dashboard({ session, initialTab }: DashboardProps) {
   ];
   const visibleNavigationItems = navigationItems.filter((item) => canAccessTab(item.key));
   const activeTabIsVisible = visibleNavigationItems.some((item) => item.key === activeTab);
+  // Clave estable del conjunto visible: el arreglo se recrea en cada render y no sirve como dependencia.
+  const visibleNavigationKeys = visibleNavigationItems.map((item) => item.key).join('|');
 
   useEffect(() => {
     if (!activeTabIsVisible) {
@@ -224,15 +226,30 @@ export default function Dashboard({ session, initialTab }: DashboardProps) {
     }
   }, [initialTab]);
 
+  const hasTabParam = searchParams.has('tab');
+
   useEffect(() => {
+    // Aplica `?tab=` y lo consume: así el usuario puede cambiar de módulo después y un segundo enlace
+    // al mismo destino (p. ej. "Diagnosticar en DRI" desde Monitoreo) vuelve a aplicarse. Los demás
+    // parámetros (`serial`, `bpl`, `advisory`) se conservan para el módulo de destino.
     if (!requestedTab) {
       return;
     }
 
-    if (visibleNavigationItems.some((item) => item.key === requestedTab)) {
+    if (visibleNavigationKeys.split('|').includes(requestedTab)) {
       setActiveTab(requestedTab);
+      if (hasTabParam) {
+        setSearchParams(
+          (previous) => {
+            const next = new URLSearchParams(previous);
+            next.delete('tab');
+            return next;
+          },
+          { replace: true },
+        );
+      }
     }
-  }, [requestedTab, visibleNavigationItems]);
+  }, [requestedTab, visibleNavigationKeys, hasTabParam, setSearchParams]);
 
   useEffect(() => {
     let mounted = true;
@@ -331,16 +348,19 @@ export default function Dashboard({ session, initialTab }: DashboardProps) {
 
     const handleEscape = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
+        // Reclama la tecla solo con el menú abierto (fase de captura): otras capas que honran
+        // defaultPrevented, como el explorador 3D de Monitoreo, no se cierran con el mismo Escape.
+        if (isActionMenuOpen) event.preventDefault();
         setIsActionMenuOpen(false);
       }
     };
 
     document.addEventListener('mousedown', handlePointerDown);
-    window.addEventListener('keydown', handleEscape);
+    window.addEventListener('keydown', handleEscape, true);
 
     return () => {
       document.removeEventListener('mousedown', handlePointerDown);
-      window.removeEventListener('keydown', handleEscape);
+      window.removeEventListener('keydown', handleEscape, true);
     };
   }, [isActionMenuOpen]);
 
