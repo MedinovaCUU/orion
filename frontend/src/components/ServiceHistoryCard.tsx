@@ -6,8 +6,10 @@ import {
   historyTypeLabel,
   reflowText,
   scheduleSummary,
+  ticketLinkSummary,
   trainingTopics,
   type ServiceHistoryRow,
+  type ServiceTicketLink,
 } from './serviceHistoryRecord';
 
 interface ServiceHistoryCardRow extends ServiceHistoryRow {
@@ -20,6 +22,7 @@ interface ServiceHistoryCardRow extends ServiceHistoryRow {
   profiles?: { nombre_completo?: string | null } | null;
   averias_catalogo?: { detalle_averia?: string | null } | null;
   soluciones_catalogo?: { detalle_solucion?: string | null } | null;
+  ticket_links?: ServiceTicketLink[] | null;
   servicios_refacciones?: Array<{
     cantidad: number;
     refacciones_catalogo?: { codigo_refaccion?: string | null; descripcion?: string | null } | null;
@@ -100,6 +103,7 @@ export function ServiceHistoryCard({ serv }: { serv: ServiceHistoryCardRow }) {
   const showCodes = kind === 'servicio' || Boolean(serv.cda || serv.cds);
   const averia = serv.detalle_averia || serv.averias_catalogo?.detalle_averia || 'Avería de texto libre';
   const solucion = serv.detalle_solucion || serv.soluciones_catalogo?.detalle_solucion || 'Solución de texto libre';
+  const ticketLink = ticketLinkSummary(serv.ticket_links);
 
   return (
     <div
@@ -145,6 +149,12 @@ export function ServiceHistoryCard({ serv }: { serv: ServiceHistoryCardRow }) {
           </span>
         )}
       </div>
+
+      {ticketLink && (
+        <p style={{ margin: '0.55rem 0 0', fontSize: '0.8rem', color: 'var(--text-secondary)' }}>
+          <span style={{ color: 'var(--text-primary)', fontWeight: 600 }}>↳ </span>{ticketLink}
+        </p>
+      )}
 
       {serv.motivo && (
         <p style={{ margin: '0.6rem 0 0', fontWeight: 500, fontSize: '0.9rem' }}>

@@ -53,6 +53,12 @@ export function stubRecordsFetch(source: Array<Record<string, unknown>>) {
   const realFetch = window.fetch.bind(window);
   window.fetch = async (input, init) => {
     const url = typeof input === 'string' ? input : input instanceof URL ? input.href : input.url;
+    if (url.includes('/rpc/get_service_kpi_visit_links')) {
+      const links = source.filter((row, index) => row.closed_in_period && index % 5 === 0).map((row, k) => ({
+        ticket_id: row.ticket_id, folio: row.folio, servicio_id: `svc-${k}`, id_legacy: 5000 + k, fecha_servicio: String(row.opened_at).slice(0, 10),
+        dias: [0, 1, 1, 2, 2, 3, 4, 6, 9][k % 9], confianza: k % 3 === 0 ? 'segura' : 'probable', tipo: k % 4 ? 'correctivo' : 'visita', tecnico: 'Luis Pérez', revisitas: k % 4 === 0 ? 1 : 0 }));
+      return new Response(JSON.stringify(links), { status: 200, headers: { 'Content-Type': 'application/json' } });
+    }
     if (url.includes('/rpc/get_service_kpi_records')) {
       const body = JSON.parse(String(init?.body || '{}'));
       await new Promise(resolve => setTimeout(resolve, 250));

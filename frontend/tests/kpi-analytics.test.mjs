@@ -1,7 +1,8 @@
 // Per-ticket analytics behind the "Cumplimiento y tiempos" lab: run with `npm run test:kpi:analytics`.
 import assert from 'node:assert/strict';
 import {
-  arrivalMatrix, closingHistogram, complianceBy, curveMedian, formatSpan, kaplanMeier, lateShare, quantile, resolvedBy, toPoint, toPoints, wilson,
+  arrivalMatrix, closingHistogram, complianceBy, curveMedian, describeVisit, formatSpan, kaplanMeier, lateShare, quantile, resolvedBy, toPoint, toPoints,
+  toVisitLinks, visitIndicators, wilson,
 } from '../src/components/kpiAnalytics.ts';
 
 const H = 3600000;
@@ -79,8 +80,32 @@ assert.equal(byPerson.rows[0].value, null);
 assert.equal(byPerson.rows[0].name, 'Sin responsable');
 assert.equal(complianceBy(toPoints([closedRow(1, 10, 'dentro', { channel: 'falcon' })]), 'canal').rows[0].name, 'Falcon');
 
+// Ticket → visit (estimated): conversion over non-cancelled closures, days for tickets opened in the
+// period, first-visit fix when no other corrective follows within the recurrence window.
+const visitPoints = toPoints([closedRow(1, 30, 'dentro'), closedRow(2, 90, 'fuera'), closedRow(3, 10, 'dentro'), closedRow(4, 5, 'no_aplica', { closure_class: 'cancelado' }),
+  row(5, { opened_in_period: false, closed_in_period: true, closed_at: new Date(base + 50 * H).toISOString(), sla_result: 'dentro', sla_evaluable: true })]);
+const visitLinks = toVisitLinks([
+  { ticket_id: 't1', folio: 'OR-1', servicio_id: 's1', id_legacy: 2210, fecha_servicio: '2026-09-09', dias: 2, confianza: 'segura', tipo: 'correctivo', tecnico: 'Ana', revisitas: 0 },
+  { ticket_id: 't2', folio: 'OR-2', servicio_id: 's2', id_legacy: null, fecha_servicio: '2026-09-07', dias: 0, confianza: 'probable', tipo: 'visita', tecnico: null, revisitas: 1 },
+  { ticket_id: 't5', folio: 'OR-5', servicio_id: 's5', id_legacy: 9, fecha_servicio: '2026-09-12', dias: 5, confianza: 'registrada', tipo: 'correctivo', tecnico: 'Beto', revisitas: 0 },
+  { ticket_id: 'tx', servicio_id: 'sx', dias: 3, confianza: 'inventada' },
+]);
+assert.equal(visitLinks.length, 3, 'unknown confidence levels are dropped');
+const visits = visitIndicators(visitPoints, visitLinks);
+assert.equal(visits.closed, 4, 'cancelled closures leave the denominator');
+assert.equal(visits.closedWithVisit, 3);
+assert.equal(Math.round(visits.conversion.pct), 75);
+assert.equal(visits.linked, 2, 'days only count tickets opened in the period');
+assert.equal(visits.medianDays, 1);
+assert.equal(visits.firstFix, 2);
+assert.equal(Math.round(visits.firstFixRate.pct), 67);
+assert.deepEqual(visits.confidence, { registrada: 0, segura: 1, probable: 1 });
+assert.equal(visits.days[2].segura.length, 1); assert.equal(visits.days[0].probable.length, 1);
+assert.equal(describeVisit(visitLinks[0]), 'LEG-2210 · 2026-09-09 · correctivo · Ana · 2 días después');
+assert.equal(describeVisit(visitLinks[1]), 'Servicio · 2026-09-07 · visita · Sin ingeniero con perfil · el mismo día');
+
 assert.equal(formatSpan(0.5), '30 min');
 assert.equal(formatSpan(30), '30 h');
 assert.equal(formatSpan(2568), '107 días');
 assert.equal(formatSpan(null), 'Sin dato');
-console.log('PASS: parsing, Wilson intervals, Kaplan–Meier with censoring, closing histogram, arrivals by local hour, compliance by group and formatting');
+console.log('PASS: parsing, Wilson intervals, Kaplan–Meier with censoring, closing histogram, arrivals by local hour, compliance by group, ticket → visit and formatting');

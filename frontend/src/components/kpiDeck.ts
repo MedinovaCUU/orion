@@ -4,18 +4,18 @@
 // ticket rows of the current filters. Loaded on demand (pptxgenjs + ECharts).
 import PptxGenJS from 'pptxgenjs';
 import { BRAND_FONT_FAMILY, waitForBrandFonts } from '../config/brandFonts';
-import { fetchAllKpiRecords } from './serviceKpiApi';
+import { fetchAllKpiRecords, fetchVisitLinks } from './serviceKpiApi';
 import {
   chartsFor, definitions, formatCount, formatDateTime, formatHours, num, qualityLabels, sectionsFor, teamLabels,
   type CardSpec, type KpiSummary,
 } from './serviceKpiModel';
-import { toPoints, wilson } from './kpiAnalytics';
+import { toPoints, toVisitLinks, visitIndicators, wilson } from './kpiAnalytics';
 import {
-  arrivalsText, curveText, deckFacts, distributionText, evolutionText, executiveSummary, groupsText, periodLabel, previousLabel, scatterText,
+  arrivalsText, curveText, deckFacts, distributionText, evolutionText, executiveSummary, groupsText, periodLabel, previousLabel, scatterText, visitText,
   type SlideText,
 } from './kpiDeckNarrative';
 import {
-  arrivalsChart, BRAND, curveChart, evolutionChart, groupsChart, histogramChart, renderChart, scatterChart, seriesChart,
+  arrivalsChart, BRAND, curveChart, evolutionChart, groupsChart, histogramChart, renderChart, scatterChart, seriesChart, visitChart,
 } from './kpiDeckCharts';
 
 type Filters = Record<string, string | number>;
@@ -48,14 +48,16 @@ export interface DeckInput {
 export async function buildServiceDeck({ summary, filters, criteria, onProgress }: DeckInput) {
   const step = (message: string) => onProgress?.(message);
   step('Cargando tickets del periodo…');
-  const [records, red, white] = await Promise.all([
+  const [records, linkRows, red, white] = await Promise.all([
     fetchAllKpiRecords({ dataset: 'tickets', filters, match: { relevant: true }, search: '', sort: 'opened_at', desc: false }),
+    fetchVisitLinks(filters).catch(() => null),
     loadImage('bios-brand/BioS_wordmark_red.png'), loadImage('bios-brand/BioS_wordmark_white.png'),
     waitForBrandFonts(document, 4000),
   ]);
   await Promise.all(['400', '500', '600'].map(weight => document.fonts.load(`${weight} 16px "${FONT}"`).catch(() => [])));
   const points = toPoints(records.rows);
   const facts = deckFacts(summary, points);
+  const visits = linkRows ? visitIndicators(points, toVisitLinks(linkRows)) : null;
   const cutAt = Date.parse(summary.period.cut_at);
   const period = periodLabel(summary);
 
@@ -192,6 +194,7 @@ export async function buildServiceDeck({ summary, filters, criteria, onProgress 
   t(qualitySlide, bullets(qualitySpecs.map(spec => `${spec.label}: ${definitions[spec.definition]?.formula || ''}`), 10, C.graphite), { x: M, y: 4.55, w: W - 2 * M, h: 1.6, fit: 'shrink' });
   if (!surveys) t(qualitySlide, 'La satisfacción del cliente se mostrará cuando existan encuestas respondidas.', { x: M, y: 6.15, w: W - 2 * M, h: 0.3, fontSize: 9, color: C.slate });
   qualitySlide.addNotes(qualityNotes.join('\n'));
+  if (visits?.linked) await chartSlide(visitText(visits, summary.period.recurrence_days), visitChart(visits), 'Del ticket a la visita (estimado)');
 
   // ── 03 · Field activity ───────────────────────────────────────────────────────────────────
   step('Preparando actividad de campo…');
@@ -257,6 +260,7 @@ export async function buildServiceDeck({ summary, filters, criteria, onProgress 
     'Intervalo de confianza del 95 % (Wilson): rango plausible de un porcentaje; es amplio cuando hay pocos casos.',
     'Curva de cierre (Kaplan-Meier): los tickets aún abiertos cuentan hasta el corte y nunca se suponen cerrados.',
     'Tickets históricos de Biosisa (folio BIO-): fechas de creación y cierre registradas en Biosisa; responsable, el asignado en Biosisa.',
+    'Del ticket a la visita (estimado): el reporte de servicio de Biosisa no trae su ticket; se liga por número de serie y una visita en los 15 días siguientes.',
     'Pendientes: fotografía al corte del periodo. Los periodos se asignan por fecha local.',
   ];
   t(method, 'REGLAS', { x: M, y: 1.7, w: 6, h: 0.28, fontSize: 9.5, color: C.red, charSpacing: 1.5, bold: true });

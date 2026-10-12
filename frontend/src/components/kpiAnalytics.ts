@@ -160,6 +160,43 @@ export function complianceBy(points: TicketPoint[], key: DimensionKey, limit = 1
   return { rows: rows.slice(0, limit), overall: wilson(evaluated.length - late, evaluated.length), hidden: Math.max(0, rows.length - limit) };
 }
 
+// Ticket → visit (estimated for the Biosisa history: same serial, visit within 15 days of the ticket).
+export type VisitConfidence = 'segura' | 'probable' | 'registrada';
+export const VISIT_CONFIDENCE: VisitConfidence[] = ['registrada', 'segura', 'probable'];
+export const visitConfidenceLabels: Record<VisitConfidence, string> = { registrada: 'Capturada en Orion', segura: 'Liga segura', probable: 'Liga probable' };
+export interface VisitLink {
+  ticketId: string; folio: string; serviceId: string; legacyId: number | null; date: string; days: number;
+  confidence: VisitConfidence; kind: string; technician: string; revisits: number;
+}
+export const toVisitLinks = (rows: KpiRecord[]): VisitLink[] => rows.flatMap(row => {
+  const ticketId = text(row.ticket_id); const serviceId = text(row.servicio_id); const days = num(row.dias);
+  const confidence = text(row.confianza) as VisitConfidence | null;
+  if (!ticketId || !serviceId || days === null || !confidence || !VISIT_CONFIDENCE.includes(confidence)) return [];
+  return [{ ticketId, serviceId, days, confidence, folio: text(row.folio) || ticketId.slice(0, 8), legacyId: num(row.id_legacy), date: text(row.fecha_servicio) || '',
+    kind: text(row.tipo) || 'visita', technician: text(row.tecnico) || 'Sin ingeniero con perfil', revisits: num(row.revisitas) ?? 0 }];
+});
+export function visitIndicators(points: TicketPoint[], links: VisitLink[]) {
+  const byTicket = new Map(links.map(link => [link.ticketId, link]));
+  const closed = points.filter(point => point.closedInPeriod && !point.cancelled);
+  const closedWithVisit = closed.filter(point => byTicket.has(point.id));
+  const opened = points.filter(point => point.openedInPeriod && byTicket.has(point.id)).map(point => byTicket.get(point.id)!);
+  const firstFix = closedWithVisit.filter(point => byTicket.get(point.id)!.revisits === 0).length;
+  const days = Array.from({ length: 16 }, () => Object.fromEntries(VISIT_CONFIDENCE.map(confidence => [confidence, [] as TicketPoint[]])) as Record<VisitConfidence, TicketPoint[]>);
+  for (const point of points.filter(item => item.openedInPeriod)) {
+    const link = byTicket.get(point.id);
+    if (link && link.days >= 0 && link.days <= 15) days[link.days][link.confidence].push(point);
+  }
+  return {
+    byTicket, closed: closed.length, closedWithVisit: closedWithVisit.length, conversion: wilson(closedWithVisit.length, closed.length),
+    linked: opened.length, medianDays: quantile(opened.map(link => link.days), 0.5), p90Days: quantile(opened.map(link => link.days), 0.9),
+    firstFix, firstFixRate: wilson(firstFix, closedWithVisit.length),
+    confidence: Object.fromEntries(VISIT_CONFIDENCE.map(confidence => [confidence, opened.filter(link => link.confidence === confidence).length])) as Record<VisitConfidence, number>,
+    days,
+  };
+}
+export const describeVisit = (link: VisitLink) =>
+  `${link.legacyId !== null ? `LEG-${link.legacyId}` : 'Servicio'} · ${link.date} · ${link.kind} · ${link.technician} · ${link.days === 0 ? 'el mismo día' : `${link.days} ${link.days === 1 ? 'día' : 'días'} después`}`;
+
 // Time axes run on log10(hours) with ticks people read (1 h, 8 h, 24 h, 48 h, 7 días…) instead of powers of ten.
 export const FLOOR_HOURS = 0.25;
 export const TIME_TICKS = [0.25, 1, 4, 8, 24, 48, 168, 720, 2160, 8760];

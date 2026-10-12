@@ -65,7 +65,7 @@ for (const name of ['20260924010000_ticket_service_metrics.sql', '20260924020000
   '20261001020000_ticket_satisfaction_test_invitations.sql', '20261009010000_ticket_visibility_boundary.sql', '20261011020000_service_staff_kpis.sql',
   '20261011030000_service_staff_kpis_performance.sql', '20261012010000_servicios_historial_detalle_biosisa.sql',
   '20261012020000_kpi_tickets_historicos_biosisa.sql', '20261012030000_kpi_rendimiento_historicos.sql',
-  '20261012040000_kpi_tickets_biosisa_evaluados.sql']) {
+  '20261012040000_kpi_tickets_biosisa_evaluados.sql', '20261012050000_ticket_service_links.sql']) {
   await db.exec(await migration(name));
 }
 console.log('PASS: migration applies on top of the ticket, routing, satisfaction and visibility migrations');
@@ -390,5 +390,56 @@ await assert.rejects(ticket(12, '[Soporte Químico] Reapertura inválida', 'SER-
 await assert.rejects(ticket(13, '[Soporte Químico] Reapertura de planeación', 'SER-A', '2026-01-30T16:00:00Z', { reopens: T(23) }), /planeación no se reabre/);
 await assert.rejects(db.query(`update tickets set reabre_ticket_id = '${T(2)}' where id = '${T(9)}'`), /inmutable/);
 console.log('PASS: structured call/visit capture validated in the movement RPC, legacy 6-argument call, audited priority, reopen link rules');
+
+// ── Ticket → visit links for the Biosisa history (serial + date) ──────────────────────────────
+// Tickets open 2025-03-03 10:00 local; each equipment (LNK-n) tests one rule.
+await db.exec('reset role');
+const L = n => id('5', n); const V = n => id('6', n);
+await db.exec(`
+insert into tickets(id, asunto, estado, creado_en, numero_caso, numero_serie_equipo) values
+ ('${L(1)}','Soporte','cerrado','2025-03-03T16:00:00Z','BIO-1','LNK-1'), ('${L(2)}','Soporte','cerrado','2025-03-03T16:00:00Z','BIO-2','LNK-2'),
+ ('${L(3)}','Soporte','cerrado','2025-03-03T16:00:00Z','BIO-3','LNK-3'), ('${L(4)}','Soporte','cerrado','2025-03-03T16:00:00Z','BIO-4','LNK-4'),
+ ('${L(5)}','Soporte','cerrado','2025-03-03T16:00:00Z','BIO-5','LNK-5'), ('${L(6)}','Soporte','cerrado','2025-03-03T16:00:00Z','BIO-6','LNK-6'),
+ ('${L(7)}','Soporte','cerrado','2025-03-05T16:00:00Z','BIO-7',' lnk-1 ');
+insert into ticket_service_events(ticket_id, kind, detail, occurred_at, closure_reason) values
+ ('${L(1)}','cierre','Biosisa','2025-03-04T16:00:00Z','visita_programada'), ('${L(2)}','cierre','Biosisa','2025-03-03T18:00:00Z','solucionado'),
+ ('${L(3)}','cierre','Biosisa','2025-03-03T18:00:00Z','solucionado'), ('${L(4)}','cierre','Biosisa','2025-03-03T18:00:00Z','solucionado'),
+ ('${L(5)}','cierre','Biosisa','2025-03-04T16:00:00Z','visita_programada'), ('${L(6)}','cierre','Biosisa','2025-03-04T16:00:00Z','visita_programada'),
+ ('${L(7)}','cierre','Biosisa','2025-03-05T18:00:00Z','solucionado');
+insert into servicios_historial(id, no_serie, motivo, fecha_servicio, tipo_servicio, origen, id_legacy) values
+ ('${V(1)}','LNK-1','Correctivo','2025-03-07','correctivo','biosisa_servicio',901),
+ ('${V(9)}','LNK-1','Correctivo','2025-03-20','correctivo','biosisa_servicio',909),
+ ('${V(2)}','LNK-2','Preventivo','2025-03-05','preventivo','biosisa_servicio',902),
+ ('${V(30)}','LNK-3','Servicio telefónico','2025-03-04','otro','biosisa_llamada',930),
+ ('${V(3)}','LNK-3','Correctivo','2025-03-08','correctivo','biosisa_servicio',903),
+ ('${V(4)}','LNK-4','Correctivo','2025-03-13','correctivo','biosisa_servicio',904),
+ ('${V(5)}','LNK-5','Preventivo','2025-03-09','preventivo','biosisa_servicio',905),
+ ('${V(6)}','LNK-6','Correctivo','2025-03-23','correctivo','biosisa_servicio',906);
+`);
+assert.equal((await one('select rebuild_ticket_service_links() as n')).n, 5);
+const linksOf = async n => (await db.query(`select servicio_id, confianza, dias from ticket_service_links where ticket_id = '${L(n)}'`)).rows;
+assert.deepEqual(await linksOf(1), [{ servicio_id: V(1), confianza: 'segura', dias: 4 }], 'agendar visita + correctivo in 15 days');
+assert.deepEqual(await linksOf(2), [], 'a preventive after a solved ticket is planned maintenance, not its visit');
+assert.deepEqual(await linksOf(3), [{ servicio_id: V(3), confianza: 'probable', dias: 5 }], 'solved + corrective in 7 days; phone services never count');
+assert.deepEqual(await linksOf(4), [], 'solved + corrective after 7 days is not linked');
+assert.deepEqual(await linksOf(5), [{ servicio_id: V(5), confianza: 'probable', dias: 6 }], 'agendar visita + preventive is only probable');
+assert.deepEqual(await linksOf(6), [], 'nothing beyond 15 days');
+assert.deepEqual(await linksOf(7), [{ servicio_id: V(1), confianza: 'probable', dias: 2 }], 'one visit can answer several tickets; serials are normalized');
+assert.equal((await one('select rebuild_ticket_service_links() as n')).n, 5, 'rebuilding is idempotent');
+assert.equal((await one(`select count(*)::int as n from servicios_historial where ticket_id is not null and id in ('${V(1)}','${V(3)}','${V(5)}')`)).n, 0, 'captured links are never overwritten');
+await as('q1');
+await assert.rejects(db.query('select rebuild_ticket_service_links()'), /Solo administradores/);
+await db.exec('set role authenticated');
+assert.equal((await one('select count(*)::int as n from ticket_service_links')).n, 0, 'links follow ticket visibility');
+await assert.rejects(db.query('select * from get_service_kpi_visit_links($1)', [{ from: '2025-03-01', to: '2025-03-31' }]), /exclusivos para administradores/);
+await as('admin');
+await db.exec('set role authenticated');
+assert.equal((await one('select count(*)::int as n from ticket_service_links')).n, 5);
+const linkRows = (await db.query('select folio, confianza, dias, revisitas, tipo from get_service_kpi_visit_links($1) order by folio', [{ from: '2025-03-01', to: '2025-03-31' }])).rows;
+assert.deepEqual(linkRows.map(row => [row.folio, row.confianza, row.dias, row.revisitas, row.tipo]), [
+  ['BIO-1', 'segura', 4, 1, 'correctivo'], ['BIO-3', 'probable', 5, 0, 'correctivo'], ['BIO-5', 'probable', 6, 0, 'preventivo'], ['BIO-7', 'probable', 2, 1, 'correctivo'],
+], 'one row per linked ticket of the period, with correctives on the same equipment within the recurrence window');
+await db.exec('reset role');
+console.log('PASS: ticket → visit links: confidence rules, preventive and phone exclusions, 7/15-day windows, shared visits, idempotent rebuild, visibility and KPI rows');
 
 await db.close();

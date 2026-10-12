@@ -17,6 +17,7 @@ import {
 } from './equipmentTrainingExams';
 import { Loader } from './OrionLoader';
 import { ServiceHistoryCard } from './ServiceHistoryCard';
+import { fetchServiceTicketLinks } from './serviceLinksApi';
 import { summarizeHistory } from './serviceHistoryRecord';
 
 interface SupremoDraftState {
@@ -365,6 +366,11 @@ export default function Equipos() {
         soluciones_catalogo: catalogoSoluciones.find(s => s.cds === d.cds) || null
       }));
       setEquipoServicios(mappedData);
+      // Inferred ticket for each Biosisa visit, loaded apart so the history never depends on it.
+      const links = await fetchServiceTicketLinks(mappedData.map((row: { id: string }) => row.id));
+      if (links.size && requestId === serviciosRequestIdRef.current) {
+        setEquipoServicios(mappedData.map((row: { id: string }) => ({ ...row, ticket_links: links.get(row.id) || null })));
+      }
     }
     if (error) console.error("Error fetching historial:", error);
 

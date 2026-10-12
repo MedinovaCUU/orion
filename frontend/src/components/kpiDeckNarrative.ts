@@ -5,7 +5,7 @@ import {
   bucketLabel, formatCount, formatDate, formatHours, formatPct, num, ratioOf, type KpiSummary, type SeriesRow,
 } from './serviceKpiModel.ts';
 import {
-  arrivalMatrix, closingHistogram, complianceBy, curveMedian, formatSpan, kaplanMeier, resolvedBy, WEEKDAYS, wilson, type TicketPoint,
+  arrivalMatrix, closingHistogram, complianceBy, curveMedian, formatSpan, kaplanMeier, resolvedBy, WEEKDAYS, wilson, type TicketPoint, type visitIndicators,
 } from './kpiAnalytics.ts';
 
 export interface SlideText { kicker: string; headline: string; shows: string[]; howTo: string[]; source: string }
@@ -193,6 +193,27 @@ export function groupsText(facts: DeckFacts): SlideText {
       'No es un ranking: considera tipo de servicio, prioridad y carga antes de comparar personas.',
     ],
     source: `${SOURCE_TICKETS} Responsable: asignación vigente del caso.`,
+  };
+}
+
+export function visitText(visits: ReturnType<typeof visitIndicators>, recurrenceDays: number): SlideText {
+  const days = (value: number | null) => (value === null ? 'sin dato' : `${decimal.format(value)} ${value === 1 ? 'día' : 'días'}`);
+  const shows = visits.linked ? [
+    `${pct(visits.conversion?.pct ?? null)} de los cierres del periodo terminó en una visita (${formatCount(visits.closedWithVisit)} de ${formatCount(visits.closed)}).`,
+    `La visita llegó en una mediana de ${days(visits.medianDays)} después del ticket; el 90 %, antes de ${days(visits.p90Days)}.`,
+    `${pct(visits.firstFixRate?.pct ?? null)} se resolvió en esa primera visita: el equipo no necesitó otro correctivo en ${recurrenceDays} días (${formatCount(visits.firstFix)} de ${formatCount(visits.closedWithVisit)}).`,
+    `Confianza de la liga: ${formatCount(visits.confidence.segura)} seguras y ${formatCount(visits.confidence.probable)} probables${visits.confidence.registrada ? `; ${formatCount(visits.confidence.registrada)} capturadas en Orion` : ''}.`,
+  ] : [];
+  return {
+    kicker: 'Calidad del servicio',
+    headline: visits.linked ? `${pct(visits.conversion?.pct ?? null)} de los tickets terminó en visita, en una mediana de ${days(visits.medianDays)}` : 'Sin tickets con visita ligada en el periodo',
+    shows,
+    howTo: [
+      'Estimado: en el histórico de Biosisa el reporte de servicio no trae su ticket; se liga por número de serie del equipo y fecha.',
+      'Liga segura: ticket cerrado para agendar visita y un correctivo o visita en los 15 días siguientes. Probable: correctivo o visita en 7 días.',
+      'Cada columna cuenta los tickets según los días que tardó la visita.',
+    ],
+    source: 'Fuente: ORION · tickets de soporte, historial de servicios de campo y ligas por serie y fecha (estimadas).',
   };
 }
 

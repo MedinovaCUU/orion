@@ -1,9 +1,9 @@
 // Words of the PowerPoint deck: every sentence comes from the summary and the ticket rows.
 // Run with `npm run test:kpi:deck`.
 import assert from 'node:assert/strict';
-import { toPoints } from '../src/components/kpiAnalytics.ts';
+import { toPoints, toVisitLinks, visitIndicators } from '../src/components/kpiAnalytics.ts';
 import {
-  arrivalsText, curveText, deckFacts, distributionText, evolutionText, executiveSummary, groupsText, periodLabel, scatterText,
+  arrivalsText, curveText, deckFacts, distributionText, evolutionText, executiveSummary, groupsText, periodLabel, scatterText, visitText,
 } from '../src/components/kpiDeckNarrative.ts';
 
 const H = 3600000;
@@ -61,6 +61,15 @@ assert.ok(groups.howTo.some(line => line.includes('No es un ranking')));
 for (const text of [evolution, curveText(facts), distributionText(facts), scatterText(facts), arrivalsText(summary, facts), groups]) {
   assert.ok(text.headline && text.howTo.length && text.source.startsWith('Fuente: ORION'), text.headline);
 }
+
+const visitSlide = visitText(visitIndicators(points, toVisitLinks([
+  { ticket_id: 't0', folio: 'OR-0', servicio_id: 's0', dias: 1, confianza: 'segura', tipo: 'correctivo', revisitas: 0 },
+  { ticket_id: 't20', folio: 'OR-20', servicio_id: 's20', dias: 3, confianza: 'probable', tipo: 'visita', revisitas: 2 },
+])), 30);
+assert.match(visitSlide.headline, /^12\.5 % de los tickets terminó en visita, en una mediana de 2 días$/);
+assert.ok(visitSlide.shows.some(line => line.includes('50 % se resolvió en esa primera visita')));
+assert.ok(visitSlide.howTo[0].startsWith('Estimado:'));
+assert.equal(visitText(visitIndicators(points, []), 30).headline, 'Sin tickets con visita ligada en el periodo');
 
 // No data: every slide still says something true instead of dividing by zero.
 const empty = deckFacts({ ...summary, current: { tickets_opened: 0, tickets_closed: 0, tickets_cancelled: 0, pending_at_cut: 0 }, series: [] }, []);

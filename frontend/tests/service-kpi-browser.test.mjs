@@ -136,6 +136,9 @@ await context.route('**/rest/v1/**', async route => {
     if (failSummary) { await route.fulfill({ status: 503, contentType: 'application/json', body: JSON.stringify({ message: 'Servicio temporalmente no disponible' }) }); return; }
     data = summaryFor(body.p_filters);
   }
+  if (url.pathname.endsWith('/rpc/get_service_kpi_visit_links')) data = tickets.filter((row, i) => row.closure_class === 'solucionado' && i % 3 === 0).map((row, i) => ({
+    ticket_id: row.ticket_id, folio: row.folio, servicio_id: `svc-${i}`, id_legacy: 900 + i, fecha_servicio: '2026-09-10', dias: i % 5,
+    confianza: i % 2 ? 'probable' : 'segura', tipo: 'correctivo', tecnico: 'Diego Garcia', revisitas: i % 3 === 0 ? 1 : 0 }));
   if (url.pathname.endsWith('/rpc/get_service_kpi_records')) {
     // The time lab loads every relevant ticket once; drill-down requests are logged apart.
     (JSON.stringify(body.p_match) === '{"relevant":true}' ? labRequests : recordRequests).push(body);
@@ -174,7 +177,11 @@ try {
   for (const label of ['Cerrados antes de 24 h', 'Cerrados antes de 48 h', 'Mediana de cierre', 'Cumplimiento del plazo']) assert.ok(insights.includes(label), label);
   for (const title of ['Evolución: volumen y cierres fuera del plazo', 'Mapa de cierres', 'Curva de cierre', 'Distribución del tiempo de cierre', 'Cuándo llegan los tickets', 'Cumplimiento del plazo por grupo'])
     await page.locator('.kpi-lab-panel figcaption strong', { hasText: title }).first().waitFor();
-  await page.waitForFunction(() => [...document.querySelectorAll('.kpi-lab-canvas')].filter(el => el.querySelector('canvas')).length >= 6);
+  await page.waitForFunction(() => [...document.querySelectorAll('.kpi-lab-canvas')].filter(el => el.querySelector('canvas')).length >= 7);
+  const visitPanel = page.locator('.kpi-lab-panel', { hasText: 'Del ticket a la visita (estimado)' });
+  await visitPanel.waitFor();
+  const visitStats = await visitPanel.locator('.kpi-lab-visit-stats').innerText();
+  for (const label of ['Terminan en visita', 'Del ticket a la visita', 'Resuelto en la primera visita', 'Confianza de la liga']) assert.ok(visitStats.includes(label), label);
   await page.locator('.kpi-lab-panel', { hasText: 'Cumplimiento del plazo por grupo' }).getByRole('button', { name: 'Equipo', exact: true }).click();
   assert.equal(await page.locator('.kpi-lab-panel', { hasText: 'Cumplimiento del plazo por grupo' }).getByRole('button', { name: 'Equipo', exact: true }).getAttribute('aria-pressed'), 'true');
   await page.locator('.kpi-lab').screenshot({ path: shot('time-lab.png') });
@@ -186,6 +193,7 @@ try {
   const slideFiles = Object.keys(deck.files).filter(name => /^ppt\/slides\/slide\d+\.xml$/.test(name));
   assert.ok(slideFiles.length >= 14, `${slideFiles.length} diapositivas`);
   const deckText = (await Promise.all(slideFiles.map(name => deck.file(name).async('string')))).join(' ');
+  assert.ok(deckText.includes('terminó en visita'), 'the deck explains the ticket → visit estimate');
   for (const phrase of ['Indicadores de servicio', 'RESUMEN EJECUTIVO', 'LO QUE MUESTRA', 'CÓMO LEERLA', 'Balance de carga por colaborador', 'Cómo se calculan los indicadores', 'human - centred biotech'])
     assert.ok(deckText.includes(phrase), `la presentación incluye «${phrase}»`);
   assert.ok(Object.keys(deck.files).filter(name => name.startsWith('ppt/media/')).length >= 8, 'charts and wordmarks are embedded images');

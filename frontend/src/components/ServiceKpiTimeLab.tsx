@@ -1,17 +1,18 @@
 import { useEffect, useMemo, useRef, useState, type ReactNode, type RefObject } from 'react';
 import type * as echarts from 'echarts/core';
-import { fetchAllKpiRecords } from './serviceKpiApi';
+import { fetchAllKpiRecords, fetchVisitLinks } from './serviceKpiApi';
 import {
   bucketLabel, chartsFor, formatCount, num, SERIES_COLORS, STATUS_DANGER, type Drill, type KpiSummary, type KpiView,
 } from './serviceKpiModel';
 import {
   arrivalMatrix, closingHistogram, complianceBy, curveMedian, dimensions, formatSpan, HISTOGRAM_OUTCOMES, HOUR_BINS, kaplanMeier, lateShare,
-  FLOOR_HOURS, outcomeColors, outcomeLabels, resolvedBy, TIME_TICKS, toLog, toPoints, WEEKDAYS, wilson, type DimensionKey, type Outcome, type TicketPoint,
+  describeVisit, FLOOR_HOURS, outcomeColors, outcomeLabels, resolvedBy, TIME_TICKS, toLog, toPoints, toVisitLinks, VISIT_CONFIDENCE, visitConfidenceLabels, visitIndicators,
+  WEEKDAYS, wilson, type DimensionKey, type Outcome, type TicketPoint, type VisitConfidence, type VisitLink,
 } from './kpiAnalytics';
 import { axisLabel, axisLine, downloadChart, INK, MUTED, splitLine, tooltipBase, useEChart, type ChartHandlers, type ChartOption } from './kpiEcharts';
 
 type Filters = Record<string, string | number>;
-interface Selection { title: string; points: TicketPoint[] }
+interface Selection { title: string; points: TicketPoint[]; visits?: boolean }
 interface LabProps {
   view: KpiView; summary: KpiSummary; filters: Filters; revision: number;
   onDrill: (drill: Drill) => void; onOpenTicket: (ticket: { id: string; folio: string }) => void;
@@ -23,6 +24,7 @@ const legendBase = { type: 'scroll', top: 0, left: 0, right: 0, pageIconColor: I
 const pct = (value: number | null) => (value === null ? 'Sin dato' : `${round1(value)} %`);
 const html = (value: string) => value.replace(/[&<>"']/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char]!);
 const dateTime = (value: number) => new Date(value).toLocaleString('es-MX', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+const VISIT_COLORS: Record<VisitConfidence, string> = { registrada: '#2a78d6', segura: INK, probable: '#9fb2bc' };
 const CURVE_COLORS = ['#193b49', '#2a78d6', '#eb6834', '#1baf7a', '#8a5cc8'];
 const SCATTER_OUTCOMES: Outcome[] = ['dentro', 'fuera', 'justificado', 'sin_plazo', 'sin_dato', 'administrativo'];
 const timeAxis = (maxHours: number) => {
@@ -38,9 +40,9 @@ function Segmented<T extends string>({ label, value, options, onChange }: { labe
   </div>;
 }
 
-function ChartPanel({ title, note, option, handlers, height = 290, file, wide, controls, footer, label }: {
+function ChartPanel({ title, note, option, handlers, height = 290, file, wide, controls, footer, lead, label }: {
   title: string; note?: ReactNode; option: ChartOption | null; handlers?: ChartHandlers; height?: number; file: string; wide?: boolean;
-  controls?: (chart: RefObject<echarts.ECharts | null>) => ReactNode; footer?: ReactNode; label: string;
+  controls?: (chart: RefObject<echarts.ECharts | null>) => ReactNode; footer?: ReactNode; lead?: ReactNode; label: string;
 }) {
   const { ref, chart } = useEChart(option, handlers);
   return <figure className={`kpi-lab-panel${wide ? ' is-wide' : ''}`}>
@@ -50,6 +52,7 @@ function ChartPanel({ title, note, option, handlers, height = 290, file, wide, c
         <button type="button" className="kpi-lab-png" onClick={() => downloadChart(chart.current, file)} aria-label={`Descargar «${title}» como imagen`} title="Descargar imagen">PNG</button>
       </div>
     </figcaption>
+    {lead}
     <div ref={ref} className="kpi-lab-canvas" style={{ height }} role="img" aria-label={label} />
     {footer}
   </figure>;
@@ -122,7 +125,7 @@ export default function ServiceKpiTimeLab({ view, summary, filters, revision, on
   const root = useRef<HTMLDivElement>(null);
   const selectionRef = useRef<HTMLElement>(null);
   const [seen, setSeen] = useState(false);
-  const [state, setState] = useState<{ key: string | null; points: TicketPoint[]; error?: string }>({ key: null, points: [] });
+  const [state, setState] = useState<{ key: string | null; points: TicketPoint[]; links: VisitLink[]; linksReady: boolean; error?: string }>({ key: null, points: [], links: [], linksReady: false });
   const [curveBy, setCurveBy] = useState<'todos' | 'equipo' | 'prioridad' | 'canal' | 'region'>('todos');
   const [heatMetric, setHeatMetric] = useState<'llegadas' | 'fuera'>('llegadas');
   const [dimension, setDimension] = useState<DimensionKey>('responsable');
@@ -145,9 +148,14 @@ export default function ServiceKpiTimeLab({ view, summary, filters, revision, on
     if (!seen) return;
     let active = true;
     const key = requestKey;
-    fetchAllKpiRecords({ dataset: 'tickets', filters: JSON.parse(key.slice(0, key.lastIndexOf('|'))) as Filters, match: { relevant: true }, search: '', sort: 'opened_at', desc: false })
-      .then(result => { if (active) setState({ key, points: toPoints(result.rows) }); })
-      .catch(cause => { if (active) setState(current => ({ key, points: current.points, error: (cause as Error).message })); });
+    const filtersForKey = JSON.parse(key.slice(0, key.lastIndexOf('|'))) as Filters;
+    // Visit links are an estimate on top of the tickets: if they fail, the rest of the lab still loads.
+    Promise.all([
+      fetchAllKpiRecords({ dataset: 'tickets', filters: filtersForKey, match: { relevant: true }, search: '', sort: 'opened_at', desc: false }),
+      fetchVisitLinks(filtersForKey).then(rows => ({ rows, ok: true })).catch(() => ({ rows: [], ok: false })),
+    ])
+      .then(([result, links]) => { if (active) setState({ key, points: toPoints(result.rows), links: toVisitLinks(links.rows), linksReady: links.ok }); })
+      .catch(cause => { if (active) setState(current => ({ ...current, key, error: (cause as Error).message })); });
     return () => { active = false; };
   }, [seen, requestKey]);
 
@@ -155,9 +163,9 @@ export default function ServiceKpiTimeLab({ view, summary, filters, revision, on
   const loading = !seen || state.key !== requestKey;
   const error = state.key === requestKey ? state.error : undefined;
   const points = state.points;
-  const select = (title: string, list: TicketPoint[]) => {
+  const select = (title: string, list: TicketPoint[], visits = false) => {
     if (!list.length) return;
-    setSelection({ title, points: list, key: requestKey });
+    setSelection({ title, points: list, key: requestKey, visits });
     window.setTimeout(() => selectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 60);
   };
 
@@ -351,6 +359,31 @@ export default function ServiceKpiTimeLab({ view, summary, filters, revision, on
     },
   };
 
+  // ── Ticket → visit (estimated) ───────────────────────────────────────────────────────────
+  const visits = useMemo(() => {
+    const data = visitIndicators(points, state.links);
+    const present = VISIT_CONFIDENCE.filter(confidence => data.days.some(day => day[confidence].length));
+    const option: ChartOption = {
+      grid: { left: 8, right: 10, top: 40, bottom: 26, containLabel: true },
+      legend: { ...legendBase, data: present.map(confidence => visitConfidenceLabels[confidence]) },
+      tooltip: { ...tooltipBase, trigger: 'axis', axisPointer: { type: 'shadow', shadowStyle: { color: 'rgba(25,59,73,0.05)' } } },
+      xAxis: { type: 'category', data: data.days.map((_, day) => (day === 0 ? 'Mismo día' : `${day}`)), axisLabel, axisLine, axisTick: { show: false },
+        name: 'Días entre el ticket y la visita', nameLocation: 'middle', nameGap: 26, nameTextStyle: { color: MUTED, fontSize: 10 } },
+      yAxis: { type: 'value', minInterval: 1, axisLabel, splitLine, name: 'Tickets', nameTextStyle: { color: MUTED, fontSize: 10, align: 'left' } },
+      series: present.map(confidence => ({ name: visitConfidenceLabels[confidence], type: 'bar', stack: 'visitas', barMaxWidth: 34, cursor: 'pointer',
+        itemStyle: { color: VISIT_COLORS[confidence] }, data: data.days.map(day => day[confidence].length) })),
+    };
+    return { data, present, option };
+  }, [points, state.links]);
+  const visitHandlers: ChartHandlers = {
+    click: event => {
+      if (typeof event.dataIndex !== 'number' || typeof event.seriesIndex !== 'number') return;
+      const confidence = visits.present[event.seriesIndex];
+      select(`Visita ${event.dataIndex === 0 ? 'el mismo día' : `${event.dataIndex} días después`} del ticket · ${visitConfidenceLabels[confidence]}`, visits.data.days[event.dataIndex][confidence], true);
+    },
+  };
+  const days = (value: number | null) => (value === null ? 'Sin dato' : `${Math.round(value * 10) / 10} ${value === 1 ? 'día' : 'días'}`);
+
   const all = resolution.total;
   const insights = points.length ? [
     ['Cerrados antes de 24 h', pct(resolvedBy(all, 24)), `de ${formatCount(all.n)} tickets abiertos en el periodo`],
@@ -398,6 +431,20 @@ export default function ServiceKpiTimeLab({ view, summary, filters, revision, on
           note={<>Punto: % dentro del plazo; barra: intervalo 95 %; a la derecha, cierres fuera del plazo de los evaluables. Rojo o verde solo cuando la diferencia con el general es clara; huecos con menos de {minSample} casos.{compliance.hidden ? ` ${compliance.hidden} grupos más pequeños no se muestran.` : ''}</>}
           controls={() => <Segmented label="Agrupar por" value={dimension} onChange={setDimension}
             options={(Object.keys(dimensions) as DimensionKey[]).map(key => [key, dimensions[key].label])} />} />
+        {state.linksReady && visits.data.linked > 0 ? <ChartPanel wide title="Del ticket a la visita (estimado)" file="ticket_a_visita" option={visits.option} handlers={visitHandlers} height={260}
+          label="Tickets que terminaron en visita según los días entre el ticket y la visita, separados por confianza de la liga"
+          note={<>En el histórico de Biosisa el reporte de servicio no trae su ticket: se liga por número de serie y fecha (visita en los 15 días siguientes). <b>Segura</b>: ticket cerrado para agendar visita y un correctivo o visita; <b>probable</b>: correctivo o visita en 7 días. Lo capturado en Orion cuenta como liga registrada. Clic en una barra para listar sus tickets.</>}
+          lead={<dl className="kpi-lab-visit-stats">
+            <div><dt>Terminan en visita</dt><dd>{visits.data.conversion ? pct(visits.data.conversion.pct) : 'Sin dato'}</dd>
+              <span>{formatCount(visits.data.closedWithVisit)} de {formatCount(visits.data.closed)} cierres{visits.data.conversion ? ` · IC 95 % ${round1(visits.data.conversion.low)}–${round1(visits.data.conversion.high)} %` : ''}</span></div>
+            <div><dt>Del ticket a la visita</dt><dd>{days(visits.data.medianDays)}</dd><span>Mediana · 90 % antes de {days(visits.data.p90Days)} · {formatCount(visits.data.linked)} tickets</span></div>
+            <div><dt>Resuelto en la primera visita</dt><dd>{visits.data.firstFixRate ? pct(visits.data.firstFixRate.pct) : 'Sin dato'}</dd>
+              <span>{formatCount(visits.data.firstFix)} de {formatCount(visits.data.closedWithVisit)} sin otro correctivo en {summary.period.recurrence_days} días</span></div>
+            <div><dt>Confianza de la liga</dt><dd>{formatCount(visits.data.confidence.segura)} / {formatCount(visits.data.confidence.probable)}</dd>
+              <span>seguras / probables{visits.data.confidence.registrada ? ` · ${formatCount(visits.data.confidence.registrada)} capturadas en Orion` : ''}</span></div>
+          </dl>}
+          />
+          : !loading && <div className="kpi-lab-loading is-wide">{state.linksReady ? 'Del ticket a la visita: sin tickets con visita ligada en el periodo con estos filtros.' : 'Del ticket a la visita: las ligas todavía no están disponibles en el servidor.'}</div>}
       </div>
       {sel && <section ref={selectionRef} className="kpi-lab-selection" aria-label="Tickets seleccionados">
         <header>
@@ -406,12 +453,13 @@ export default function ServiceKpiTimeLab({ view, summary, filters, revision, on
           <button type="button" className="tc-text-button" onClick={() => setSelection(null)}>Quitar selección</button>
         </header>
         <div className="tc-table-scroll"><table className="tc-table kpi-mini-table">
-          <thead><tr><th>Folio</th><th>Cliente</th><th>Responsable</th><th>Apertura</th><th>Tiempo hasta el cierre</th><th>Plazo</th></tr></thead>
+          <thead><tr><th>Folio</th><th>Cliente</th><th>Responsable</th><th>Apertura</th><th>Tiempo hasta el cierre</th><th>Plazo</th>{sel.visits && <th>Visita ligada</th>}</tr></thead>
           <tbody>{[...sel.points].sort((a, b) => (b.hours ?? -1) - (a.hours ?? -1)).slice(0, 80).map(point => <tr key={point.id} className="is-clickable" tabIndex={0}
             onClick={() => onOpenTicket({ id: point.id, folio: point.folio })} onKeyDown={event => { if (event.key === 'Enter') onOpenTicket({ id: point.id, folio: point.folio }); }}>
             <td><strong>{point.folio}</strong></td><td>{point.client}</td><td>{point.responsible}</td><td>{dateTime(point.openedAt)}</td>
             <td>{point.hours === null ? 'Abierto' : formatSpan(point.hours)}</td>
             <td><span className="kpi-lab-outcome"><i className="kpi-lab-dot" style={{ background: outcomeColors[point.outcome] }} />{outcomeLabels[point.outcome]}</span></td>
+            {sel.visits && <td>{(() => { const link = visits.data.byTicket.get(point.id); return link ? <>{describeVisit(link)}{link.revisits ? <small> · {link.revisits} visita(s) más en {summary.period.recurrence_days} días</small> : null}</> : '—'; })()}</td>}
           </tr>)}</tbody>
         </table></div>
         {sel.points.length > 80 && <p className="kpi-note">Se muestran los 80 con mayor tiempo; acota la selección para ver el resto.</p>}

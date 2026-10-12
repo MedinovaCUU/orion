@@ -5,8 +5,8 @@ import { echarts, type ChartOption } from './kpiEcharts';
 import { BRAND_FONT_FAMILY } from '../config/brandFonts';
 import { bucketLabel, num, type ChartSpec, type KpiSummary } from './serviceKpiModel';
 import {
-  arrivalMatrix, curveMedian, formatSpan, HOUR_BINS, kaplanMeier, resolvedBy, TIME_TICKS, toLog, FLOOR_HOURS, WEEKDAYS, wilson,
-  type Outcome, type TicketPoint,
+  arrivalMatrix, curveMedian, formatSpan, HOUR_BINS, kaplanMeier, resolvedBy, TIME_TICKS, toLog, FLOOR_HOURS, VISIT_CONFIDENCE, visitConfidenceLabels, WEEKDAYS, wilson,
+  type Outcome, type TicketPoint, type VisitConfidence, type visitIndicators,
 } from './kpiAnalytics';
 import type { DeckFacts } from './kpiDeckNarrative';
 
@@ -170,6 +170,20 @@ export function groupsChart(facts: DeckFacts): ChartOption {
         markLine: overall ? { silent: true, symbol: 'none', lineStyle: { type: 'dashed', color: BRAND.slate, width: 1.2 },
           label: { formatter: `General ${round1(overall.pct)} %`, color: BRAND.slate, fontSize: 12, position: 'start' }, data: [{ xAxis: round1(overall.pct) }] } : undefined },
     ],
+  };
+}
+
+export function visitChart(visits: ReturnType<typeof visitIndicators>): ChartOption {
+  const colors: Record<VisitConfidence, string> = { registrada: BRAND.red, segura: BRAND.graphite, probable: BRAND.grey };
+  const present = VISIT_CONFIDENCE.filter(confidence => visits.days.some(day => day[confidence].length));
+  return {
+    grid: { left: 4, right: 4, top: 52, bottom: 34, containLabel: true },
+    legend: { ...legend, data: present.map(confidence => visitConfidenceLabels[confidence]) },
+    xAxis: { type: 'category', data: visits.days.map((_, day) => (day === 0 ? 'Mismo día' : `${day}`)), axisLabel: text, axisLine, axisTick: { show: false },
+      name: 'Días entre el ticket y la visita', nameLocation: 'middle', nameGap: 30, nameTextStyle: text },
+    yAxis: { type: 'value', minInterval: 1, axisLabel: text, splitLine, name: 'Tickets', nameTextStyle: { ...text, align: 'left' } },
+    series: present.map(confidence => ({ name: visitConfidenceLabels[confidence], type: 'bar', stack: 'visitas', barMaxWidth: 40,
+      itemStyle: { color: colors[confidence] }, data: visits.days.map(day => day[confidence].length) })),
   };
 }
 
