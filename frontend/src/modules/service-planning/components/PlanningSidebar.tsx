@@ -1,5 +1,4 @@
-import type { ComponentProps } from 'react';
-import PlanningIcon from './PlanningIcon';
+import PlanningIcon, { type PlanningIconName } from './PlanningIcon';
 import type { ServicePlanningSection } from '../types/servicePlanning.types';
 
 interface PlanningSidebarProps {
@@ -13,15 +12,15 @@ interface PlanningSidebarProps {
   reportsLabel?: string;
 }
 
-const ITEMS: Array<{ key: ServicePlanningSection; label: string; icon: ComponentProps<typeof PlanningIcon>['name'] }> = [
-  { key: 'tablero', label: 'Tablero en vivo', icon: 'users' },
-  { key: 'resumen', label: 'Resumen', icon: 'chart' },
+const ITEMS: Array<{ key: ServicePlanningSection; label: string; icon: PlanningIconName }> = [
+  { key: 'resumen', label: 'Resumen', icon: 'summary' },
   { key: 'calendario', label: 'Calendario', icon: 'calendar' },
   { key: 'tabla', label: 'Tabla maestra', icon: 'table' },
-  { key: 'guardias', label: 'Guardias', icon: 'shield' },
-  { key: 'ingenieros', label: 'Ingenieros', icon: 'users' },
+  { key: 'tablero', label: 'Tablero en vivo', icon: 'live' },
+  { key: 'guardias', label: 'Guardias', icon: 'guards' },
+  { key: 'ingenieros', label: 'Ingenieros', icon: 'engineers' },
   { key: 'alertas', label: 'Alertas', icon: 'bell' },
-  { key: 'reportes', label: 'Reportes', icon: 'chart' },
+  { key: 'reportes', label: 'Reportes', icon: 'reports' },
   { key: 'configuracion', label: 'Configuración', icon: 'settings' },
 ];
 

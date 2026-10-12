@@ -29,6 +29,7 @@ const PERSON_ALIAS_MAP: Record<string, string> = {
   FRANCISCO: 'Francisco',
   GARCIA: 'Diego Garcia Garcia',
   GUILLERMO: 'Guillermo Martinez',
+  GUILLRMO: 'Guillermo Martinez',
   HECTOR: 'Hector Cortes',
   IVONNE: 'Ivonne Jaramillo',
   LALO: 'Eduardo Ignacio Bautista',
@@ -120,7 +121,7 @@ const createPeopleResolver = (profiles: ProfileSummary[]) => {
   const resolve = (raw: string) => {
     const folded = foldText(raw);
     if (!folded) return null;
-    const alias = PERSON_ALIAS_MAP[folded];
+    const alias = PERSON_ALIAS_MAP[folded] || PERSON_ALIAS_MAP[cleanText(folded.replace(/\./g, ' '))];
     const exact = byName.get(normalizeText(alias || raw));
     if (exact) return exact.nombre_completo || null;
     if (alias) return alias;
@@ -131,10 +132,14 @@ const createPeopleResolver = (profiles: ProfileSummary[]) => {
   return {
     profileFor: (name: string) => byName.get(normalizeText(name)) || null,
     engineers: (tokens: string[]) =>
-      tokens
-        .filter((token) => !/^(PENDIENTE|NA|N\/A|POR DEFINIR)$/.test(foldText(token)))
-        .map((token) => resolve(token) || titleCase(token))
-        .filter(Boolean),
+      Array.from(
+        new Set(
+          tokens
+            .filter((token) => !/^(PENDIENTE|NA|N\/A|POR DEFINIR)$/.test(foldText(token)))
+            .map((token) => resolve(token) || titleCase(token))
+            .filter(Boolean),
+        ),
+      ),
     // Companion cells mix people and notes; unknown two- or three-word names are kept as external people.
     companions: (tokens: string[]) => {
       const people: string[] = [];
@@ -299,8 +304,12 @@ export const syncServicePlanningFromSheet = async ({
       continue;
     }
 
-    const engineers = people.engineers(activity.engineerTokens);
-    const { people: companions, notes: companionNotes } = people.companions(activity.companionTokens);
+    // The workbook writes the whole crew in the engineer cell ("MARTHA / FRANCISCO"):
+    // the first one is responsible and the rest go along as companions.
+    const [lead, ...crew] = people.engineers(activity.engineerTokens);
+    const engineers = lead ? [lead] : [];
+    const { people: companionPeople, notes: companionNotes } = people.companions(activity.companionTokens);
+    const companions = Array.from(new Set([...crew, ...companionPeople])).filter((name) => name !== lead);
     const sheetNotes = [...companionNotes, activity.rowNote].filter(Boolean);
     const serialNote = !activity.serial && activity.serialText && !/^(NA|N\/A|PENDIENTE)$/i.test(activity.serialText) ? `NS en la hoja: ${activity.serialText}` : '';
     const observationText = [activity.observations, ...sheetNotes, serialNote, activity.daysText ? `Días: ${activity.daysText}` : '']
@@ -383,13 +392,15 @@ export const syncServicePlanningFromSheet = async ({
       const changes = [
         cleanText(match.asunto) !== asunto ? 'actividad' : '',
         cleanText(String(previous.ingeniero_csv || '')) !== engineers.join(' / ') ? 'ingenieros' : '',
+        JSON.stringify(previous.companions_csv || []) !== JSON.stringify(companions) ? 'acompañantes' : '',
         (previous.scheduled_day || null) !== (metadata.scheduled_day || null) ? 'días' : '',
         activity.status === 'pospuesto' ? 'pospuesta' : '',
       ].filter(Boolean);
       updates.push({ row: match, payload, change: describe({ id: match.id, ...payload }, activity.week.weekLabel, changes.join(', ') || 'detalles') });
     } else {
       inserts.push({ ...payload, estado: 'abierto' });
-      summary.inserted.push(describe(payload, activity.week.weekLabel, engineers.join(' / ')));
+      const crewLabel = [engineers.join(' / '), companions.length ? `con ${companions.join(', ')}` : ''].filter(Boolean).join(' ');
+      summary.inserted.push(describe(payload, activity.week.weekLabel, crewLabel));
     }
   }
 

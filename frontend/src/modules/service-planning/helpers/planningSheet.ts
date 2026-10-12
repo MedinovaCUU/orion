@@ -360,9 +360,12 @@ const parseAvailabilityNote = (text: string) => {
   return { kind, daysLabel, personText };
 };
 
+// People in one cell come separated by "/", line breaks (read as "/"), backslash, "|", ",", ";", "+", "&",
+// dashes, or the words "Y", "E", "O", "Y/O" and "CON" ("LALO - DIEGO G", "LALO O GUILLERMO").
+// The words need spaces around them so initials such as "E. DURAN" stay whole.
 export const splitPeople = (value: string) =>
   cleanText(value)
-    .split(/\s*(?:\/|,|;|\+|&|\bY\b)\s*/i)
+    .split(/\s*(?:\sY\s*\/\s*O\s|[/\\|,;+&\-\u2013\u2014]|\s(?:Y|E|O|CON)\s)\s*/i)
     .map((entry) => cleanText(entry))
     .filter(Boolean);
 

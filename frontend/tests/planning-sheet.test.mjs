@@ -5,6 +5,7 @@ import {
   parseSheetDays,
   parseSheetIndex,
   parseSheetWeekLabel,
+  splitPeople,
 } from '../src/modules/service-planning/helpers/planningSheet.ts';
 
 // Synthetic page shaped like Google Drive's read-only view of the planning workbook (no real data).
@@ -60,6 +61,30 @@ const week = parseSheetWeekLabel('12 AL 16 OCTUBRE', 2026, 9);
 assert.equal(parseSheetDays('LUNES', week), '2026-10-12');
 assert.equal(parseSheetDays('7 AL 9', parseSheetWeekLabel('05 AL 09 OCTUBRE', 2026, 9)), '2026-10-07');
 assert.equal(parseSheetDays('CAMBIO', week), null);
+
+for (const [cell, expected] of [
+  ['MARTHA/FRANCISCO', ['MARTHA', 'FRANCISCO']],
+  ['LALO - DIEGO G', ['LALO', 'DIEGO G']],
+  ['LALO O GUILLERMO', ['LALO', 'GUILLERMO']],
+  ['LALO Y/O HECTOR', ['LALO', 'HECTOR']],
+  ['ALFREDO Y LUIS', ['ALFREDO', 'LUIS']],
+  ['OLIVIA E IVONNE', ['OLIVIA', 'IVONNE']],
+  ['LALO CON HECTOR', ['LALO', 'HECTOR']],
+  ['MONTAÑEZ/FCO, ERICK; LALO + BENJA & MEMO', ['MONTAÑEZ', 'FCO', 'ERICK', 'LALO', 'BENJA', 'MEMO']],
+  ['ANGEL\\HECTOR|NAVARRO – CHITALA', ['ANGEL', 'HECTOR', 'NAVARRO', 'CHITALA']],
+  ['D. GARCIA', ['D. GARCIA']],
+  ['E. DURAN', ['E. DURAN']],
+  ['DIEGO GARCIA', ['DIEGO GARCIA']],
+  ['SE CAMBIA A NOV', ['SE CAMBIA A NOV']],
+]) {
+  assert.deepEqual(splitPeople(cell), expected, `people in "${cell}"`);
+}
+const crewTab = parsePlanningTab(
+  page([td('12 AL 16 OCTUBRE', ' colspan="8"'), header, td('CAPACITACION') + td('BA200') + td('BIOLAB') + td('NA') + td('') + td('MARTHA<br>FRANCISCO') + td('') + td('')]),
+  { name: 'OCTUBRE', gid: '33' },
+  2026,
+);
+assert.deepEqual(crewTab.activities[0].engineerTokens, ['MARTHA', 'FRANCISCO'], 'a line break inside the cell separates people');
 
 const guards = parseGuardsTab(
   page([

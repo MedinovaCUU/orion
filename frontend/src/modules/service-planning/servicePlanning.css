@@ -1539,18 +1539,25 @@
 }
 
 .planning-sidebar__item-icon {
-  color: var(--planning-text-muted);
-  width: 18px;
-  height: 18px;
-}
-
-.planning-icon {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  line-height: 1;
-  font-style: normal;
-  vertical-align: middle;
+  color: var(--planning-text-muted);
+  width: 20px;
+  height: 20px;
+  transition: color 160ms ease;
+}
+
+.planning-sidebar__item:hover .planning-sidebar__item-icon {
+  color: var(--planning-text-secondary);
+}
+
+.planning-icon {
+  display: inline-block;
+  flex: 0 0 auto;
+  width: 1em;
+  height: 1em;
+  vertical-align: -0.14em;
 }
 
 .planning-sidebar__item strong {
@@ -1571,9 +1578,12 @@
   box-shadow: inset 0 0 0 1px rgba(239, 68, 68, 0.14), 0 12px 26px rgba(104, 116, 133, 0.1);
 }
 
-.planning-sidebar__item.active .planning-sidebar__item-icon,
 .planning-sidebar__item.active strong {
   color: var(--planning-text);
+}
+
+.planning-sidebar__item.active .planning-sidebar__item-icon {
+  color: var(--planning-red);
 }
 
 .planning-sidebar__count {
@@ -1670,14 +1680,14 @@
 }
 
 .planning-sidebar__item-icon .planning-icon {
-  font-size: 0.92rem;
+  font-size: 20px;
 }
 
 .planning-header__month .planning-icon,
 .planning-header__ghost .planning-icon,
 .planning-header__sync .planning-icon,
 .planning-header__primary .planning-icon {
-  font-size: 0.98rem;
+  font-size: 1.1rem;
 }
 
 .planning-header__month .input-field {
@@ -1746,6 +1756,9 @@
 }
 
 .planning-kpi-card__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   width: 28px;
   height: 28px;
   color: var(--planning-kpi-accent);
@@ -1753,7 +1766,7 @@
 }
 
 .planning-kpi-card__icon .planning-icon {
-  font-size: 1.4rem;
+  font-size: 1.45rem;
 }
 
 .planning-kpi-card__body {
@@ -1908,7 +1921,7 @@
 }
 
 .planning-service-card__meta-row .planning-icon {
-  font-size: 0.8rem;
+  font-size: 0.95rem;
   color: var(--planning-text-muted);
 }
 
@@ -2053,7 +2066,7 @@
 }
 
 .planning-alert-row__icon .planning-icon {
-  font-size: 0.92rem;
+  font-size: 1.1rem;
 }
 
 .planning-alert-row--critical .planning-alert-row__icon,
