@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import type { PlannedService, QuickCreateDraft, ServiceDetailUpdate } from '../types/servicePlanning.types';
 import type { ProfileSummary } from '../../../components/servicesPlanning';
-import october from '../../../../public/service-planning-sync/datasets/october-2026.json';
+import type { SheetAvailabilityNote } from '../helpers/planningSheet';
 import './livePlanningBoard.css';
 import EngineerWall from './EngineerWall';
 import FalconSlaWallAlerts from './FalconSlaWallAlerts';
@@ -9,7 +9,7 @@ import { buildFalconWallAlerts, type FalconTrackedTicket } from '../helpers/falc
 import useSecondTicker from '../../../components/useSecondTicker';
 import { buildRotationRoster } from '../helpers/weekendGuards';
 
-type Props = { services: PlannedService[]; profiles: ProfileSummary[]; month: string; canEdit: boolean; onCreate: (draft: QuickCreateDraft) => Promise<void>; onUpdate: (service: PlannedService, update: ServiceDetailUpdate) => Promise<void>; falconTickets?: FalconTrackedTicket[] };
+type Props = { services: PlannedService[]; profiles: ProfileSummary[]; month: string; canEdit: boolean; onCreate: (draft: QuickCreateDraft) => Promise<void>; onUpdate: (service: PlannedService, update: ServiceDetailUpdate) => Promise<void>; falconTickets?: FalconTrackedTicket[]; sheetNotes?: SheetAvailabilityNote[] };
 const NO_FALCON_TICKETS: FalconTrackedTicket[] = [];
 const retired = (name: string) => /\berick\b/i.test(name);
 const fields = ['scheduledDate', 'serviceType', 'platform', 'locality', 'serialNumber', 'observations', 'responsibleEngineers', 'companions'] as const;
@@ -32,7 +32,7 @@ function EditableRow({ service, canEdit, onUpdate }: { service: PlannedService; 
   };
   return <tr><td>{service.weekLabel}<small>{service.status.join(' · ')}</small></td>{fields.map((key, index) => <td key={key}>{key === 'serviceType' ? <select aria-label={`${labels[index]} ${service.locality}`} disabled={!canEdit || busy} value={value(key)} onChange={e => setDraft(d => ({ ...d, [key]: e.target.value }))}>{types.map(t => <option key={t}>{t}</option>)}</select> : <input aria-label={`${labels[index]} ${service.locality}`} type={key === 'scheduledDate' ? 'date' : 'text'} disabled={!canEdit || busy} value={value(key)} onChange={e => setDraft(d => ({ ...d, [key]: e.target.value }))} onKeyDown={e => { if (e.key === 'Enter' && Object.keys(draft).length) void save(); if (e.key === 'Escape') setDraft({}); }} />}</td>)}<td>{Object.keys(draft).length > 0 && <><button disabled={busy} onClick={() => void save()}>{busy ? 'Guardando…' : 'Guardar'}</button><button disabled={busy} onClick={() => setDraft({})}>Deshacer</button></>}{error && <span role="alert">{error}</span>}</td></tr>;
 }
-export default function LivePlanningBoard({ services, profiles, month, canEdit, onCreate, onUpdate, falconTickets = NO_FALCON_TICKETS }: Props) {
+export default function LivePlanningBoard({ services, profiles, month, canEdit, onCreate, onUpdate, falconTickets = NO_FALCON_TICKETS, sheetNotes = [] }: Props) {
   const [today, setToday] = useState(() => new Date().toLocaleDateString('en-CA', { timeZone: 'America/Ciudad_Juarez' }));
   const [editing, setEditing] = useState(false);
   const [search, setSearch] = useState('');
@@ -52,6 +52,8 @@ export default function LivePlanningBoard({ services, profiles, month, canEdit, 
   const nowMs = useSecondTicker(falconTickets.length > 0);
   const falconAlerts = useMemo(() => buildFalconWallAlerts(falconTickets, {}, nowMs), [falconTickets, nowMs]);
 
+  // Rest days, vacations and reservations written beside each week of the official workbook.
+  const monthNotes = sheetNotes.filter(note => note.week.monthKey === month);
   const rows = services.filter(s => s.month === month && (!engineer || s.responsibleEngineers.includes(engineer)) && `${s.locality} ${s.platform} ${s.serialNumber} ${s.responsibleEngineers.join(' ')}`.toLowerCase().includes(search.toLowerCase()));
   const create = async () => {
     setBusy(true); setError('');
@@ -72,7 +74,7 @@ export default function LivePlanningBoard({ services, profiles, month, canEdit, 
       const weekly = assigned.filter(s => !s.scheduledDate && s.weekStart <= today && s.weekEnd >= today);
       return <button key={name} className={engineer === name ? 'selected' : ''} onClick={() => setEngineer(engineer === name ? '' : name)}><strong>{name}</strong><span>{exact.length ? '● Programado hoy' : weekly.length ? '◐ Por confirmar día' : '○ Sin servicio hoy'}</span><small>{exact[0]?.locality || weekly[0]?.locality || 'Sin actividad registrada para hoy'}</small><small>{assigned.filter(s => s.month === month).length} actividades en el mes</small></button>;
     })}</div>
-    {month === '2026-10' && <aside className="live-planning__notes"><strong>Notas de octubre</strong>{october.availabilityNotes.map((n, i) => <span key={i}>{n.dateLabel}: {n.person} · {n.type}</span>)}<span>Villanueva, Zac: pendiente de reasignación tras la salida de Erick.</span></aside>}
+    {monthNotes.length > 0 && <aside className="live-planning__notes"><strong>Notas de la hoja oficial</strong>{monthNotes.map(n => <span key={`${n.tab}-${n.sheetRow}`}>{n.week.weekLabel.toLowerCase()}: {n.text}</span>)}</aside>}
     <div className="live-planning__tools"><div><h3>Planeación editable</h3><small>{rows.length} filas · Tab para navegar, Enter para guardar, Esc para deshacer la fila.</small></div><input aria-label="Buscar en el tablero" placeholder="Buscar localidad, serie o ingeniero" value={search} onChange={e => setSearch(e.target.value)} />{engineer && <button onClick={() => setEngineer('')}>Ver todo el equipo</button>}{canEdit && <button onClick={() => { setDraft(blank()); setAdding(true); }}>+ Agregar fila</button>}</div>
     <div className="live-planning__scroll"><table><thead><tr><th>Semana / estado</th>{labels.map(l => <th key={l}>{l}</th>)}<th>Guardar</th></tr></thead><tbody>{rows.map(service => <EditableRow key={service.id} service={service} canEdit={canEdit} onUpdate={onUpdate} />)}{!rows.length && <tr><td colSpan={10}>Sin actividades para este mes o filtro. Puedes agregar una fila.</td></tr>}</tbody></table></div>
     {adding && <form className="live-planning__new" onSubmit={e => { e.preventDefault(); void create(); }}><h3>Nueva fila</h3>{fields.map((key, i) => <label key={key}>{labels[i]}{key === 'serviceType' ? <select value={draft.serviceType} onChange={e => setDraft(d => ({ ...d, serviceType: e.target.value as QuickCreateDraft['serviceType'] }))}>{types.map(t => <option key={t}>{t}</option>)}</select> : <input disabled={busy} required={key === 'locality' || key === 'scheduledDate'} type={key === 'scheduledDate' ? 'date' : 'text'} value={draft[key]} onChange={e => setDraft(d => ({ ...d, [key]: e.target.value }))} />}</label>)}<button disabled={busy} type="submit">{busy ? 'Guardando…' : 'Guardar fila'}</button><button disabled={busy} type="button" onClick={() => setAdding(false)}>Cancelar</button>{error && <p role="alert">{error}</p>}</form>}

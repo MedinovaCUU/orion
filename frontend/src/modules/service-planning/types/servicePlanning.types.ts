@@ -65,7 +65,7 @@ export interface WeekendGuardAssignment {
   weekendEnd: string;
   month: string;
   label: string;
-  source: 'seed' | 'generated';
+  source: 'seed' | 'official' | 'generated';
   phase: 'historico' | 'proximo' | 'programado';
   applicativoOriginal: string;
   applicativoAssigned: string;
@@ -96,6 +96,9 @@ export interface PlannedServiceTrace {
   importedFromExcel: boolean;
   importBatchId?: string;
   sourceFileName?: string;
+  sourceRowKey?: string;
+  // Workbook details (sheet_* metadata) kept untouched through edits made in Orion.
+  sheetMeta?: Record<string, unknown>;
   createdBy?: string;
   updatedBy?: string;
   assignedBy?: string;

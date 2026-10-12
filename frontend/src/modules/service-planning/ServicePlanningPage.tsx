@@ -55,6 +55,7 @@ import type {
   ProfileSummary,
 } from '../../components/servicesPlanning';
 import useSecondTicker from '../../components/useSecondTicker';
+import usePlanningSheet from './helpers/usePlanningSheet';
 import './servicePlanning.css';
 import { PanelLoader } from '../../components/OrionLoader';
 
@@ -199,9 +200,19 @@ export default function ServicePlanningPage({
   const permissions = getPermissions(role);
   const currentMonthKey = useMemo(() => getCurrentMonthKey(), []);
   const [guardOverrides, setGuardOverrides] = useState<WeekendGuardOverrideMap>(() => loadWeekendGuardOverrides());
+  const planningSheet = usePlanningSheet();
+  const officialGuards = useMemo(
+    () =>
+      (planningSheet?.guards || []).map((weekend) => ({
+        weekendStart: weekend.weekendStart,
+        applicativo: weekend.aplicativo,
+        ingenieria: weekend.ingenieria,
+      })),
+    [planningSheet],
+  );
   const weekendGuards = useMemo(
-    () => buildWeekendGuardSchedule(staffProfiles, guardOverrides),
-    [guardOverrides, staffProfiles],
+    () => buildWeekendGuardSchedule(staffProfiles, guardOverrides, new Date(), officialGuards),
+    [guardOverrides, officialGuards, staffProfiles],
   );
   const monthOptions = useMemo(() => buildMonthOptions(services, weekendGuards.months), [services, weekendGuards.months]);
   const initialMonth = monthOptions.find((option) => option.value === currentMonthKey)?.value || monthOptions[0]?.value || currentMonthKey;
@@ -341,21 +352,25 @@ export default function ServicePlanningPage({
       return;
     }
 
-    const confirmed = window.confirm(
-      'Esto reemplazara las semanas incluidas en el dataset de planeacion para junio y julio 2026. ¿Deseas continuar?',
-    );
-    if (!confirmed) {
-      return;
-    }
-
+    // The official workbook is the source of truth, so the sync runs without asking and reports what it did.
     setPlanningSyncBusy(true);
     setPlanningSyncFeedback(null);
 
     try {
       const summary = await onSyncPlanning();
+      const plural = (count: number, one: string, many: string) => `${count} ${count === 1 ? one : many}`;
+      const changes = [
+        summary.inserted.length ? plural(summary.inserted.length, 'nueva', 'nuevas') : '',
+        summary.updated.length ? plural(summary.updated.length, 'actualizada', 'actualizadas') : '',
+        summary.removed.length ? plural(summary.removed.length, 'retirada', 'retiradas') : '',
+        summary.flagged.length ? `${plural(summary.flagged.length, 'marcada', 'marcadas')} para revisar (ya tenían viaje o reporte)` : '',
+      ].filter(Boolean);
+      const source = `hoja oficial (${summary.readTabs.join(', ').toLowerCase()})`;
       setPlanningSyncFeedback({
         tone: 'success',
-        message: `Se sincronizaron ${summary.insertCount} actividades en ${summary.replaceWeeks.length} semanas.`,
+        message: changes.length
+          ? `Planeación al día con la ${source}: ${changes.join(', ')}.`
+          : `Planeación al día: Orion ya coincide con la ${source}. No hubo cambios.`,
       });
     } catch (error) {
       const message = error instanceof Error ? error.message : 'No fue posible sincronizar la planeacion.';
@@ -463,7 +478,7 @@ export default function ServicePlanningPage({
 
     switch (section) {
       case 'tablero':
-        return <LivePlanningBoard services={services} profiles={staffProfiles} month={filters.month} canEdit={permissions.canEditAll} onCreate={onCreateService} onUpdate={onUpdateService} falconTickets={falconTrackedReactiveTickets} />;
+        return <LivePlanningBoard services={services} profiles={staffProfiles} month={filters.month} canEdit={permissions.canEditAll} onCreate={onCreateService} onUpdate={onUpdateService} falconTickets={falconTrackedReactiveTickets} sheetNotes={planningSheet?.notes} />;
       case 'resumen':
       case 'calendario':
         return renderSummary();

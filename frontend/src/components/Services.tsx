@@ -8,7 +8,7 @@ import {
 } from '../modules/service-planning/helpers/normalizeService';
 import {
   canAccessPlanningSync,
-  syncServicePlanningDataset,
+  syncServicePlanningFromSheet,
 } from '../modules/service-planning/helpers/servicePlanningSync';
 import type {
   PlannedService,
@@ -194,8 +194,7 @@ export default function Services({ subPermissions = ['planeacion', 'viajes', 're
   };
 
   const handleSyncPlanning = async () => {
-    const summary = await syncServicePlanningDataset({
-      datasetName: 'october-2026',
+    const summary = await syncServicePlanningFromSheet({
       actorName: currentUserName || 'Operacion ORION',
       profiles: engineerProfiles,
     });

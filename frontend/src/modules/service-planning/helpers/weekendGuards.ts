@@ -37,7 +37,7 @@ interface GuardRosterConfig {
   aliases: string[];
 }
 
-interface SeedWeekendPattern {
+export interface SeedWeekendPattern {
   weekendStart: string;
   applicativo: string;
   ingenieria: string;
@@ -62,7 +62,7 @@ const GUARD_ROSTER_CONFIG: GuardRosterConfig[] = [
     accentRgb: '249, 115, 22',
     active: true,
     profileCandidates: ['Ricardo Vilchis'],
-    aliases: ['ricardo', 'ricardo vilchis', 'ricardo vilchys', 'ricardo de aplicativo', 'ricardo aplicativo'],
+    aliases: ['ricardo', 'ricardo v', 'ricardo vilchis', 'ricardo vilchys', 'ricardo de aplicativo', 'ricardo aplicativo'],
   },
   {
     key: 'ivonne-jaramillo',
@@ -172,7 +172,7 @@ const GUARD_ROSTER_CONFIG: GuardRosterConfig[] = [
     accentRgb: '99, 102, 241',
     active: true,
     profileCandidates: ['Ricardo Montanez', 'Ricardo Montañez'],
-    aliases: ['ricardo', 'ricardo montanez', 'ricardo montañez', 'ricardo de ingenieria', 'ricardo ingenieria'],
+    aliases: ['ricardo', 'ricardo m', 'ricardo montanez', 'ricardo montañez', 'ricardo de ingenieria', 'ricardo ingenieria'],
   },
   {
     key: 'eduardo-bautista',
@@ -425,14 +425,17 @@ export const buildWeekendGuardSchedule = (
   profiles: ProfileSummary[],
   overrides: WeekendGuardOverrideMap,
   referenceDate = new Date(),
+  // Weekends from the GUARDIAS tab of the official workbook; past and future ones are both fixed.
+  officialPattern: SeedWeekendPattern[] = [],
 ): WeekendGuardScheduleData => {
   const roster = buildRotationRoster(profiles);
   const sanitizedOverrides = normalizeOverrideMap(overrides, roster);
   const rawAssignments: Array<Omit<WeekendGuardAssignment, 'phase'>> = [];
   const today = startOfDay(referenceDate).getTime();
-  const historicalSeedPattern = SEED_WEEKEND_PATTERN.filter(
-    (seedEntry) => startOfDay(seedEntry.weekendStart).getTime() <= today,
-  );
+  const usesOfficialPattern = officialPattern.length > 0;
+  const historicalSeedPattern = usesOfficialPattern
+    ? officialPattern
+    : SEED_WEEKEND_PATTERN.filter((seedEntry) => startOfDay(seedEntry.weekendStart).getTime() <= today);
 
   for (const seedEntry of historicalSeedPattern) {
     const override = sanitizedOverrides[seedEntry.weekendStart];
@@ -448,7 +451,7 @@ export const buildWeekendGuardSchedule = (
       weekendEnd: addDays(seedEntry.weekendStart, 1),
       month: formatMonthKey(seedEntry.weekendStart),
       label: formatWeekendLabel(seedEntry.weekendStart),
-      source: 'seed',
+      source: usesOfficialPattern ? 'official' : 'seed',
       applicativoOriginal,
       applicativoAssigned,
       ingenieriaOriginal,

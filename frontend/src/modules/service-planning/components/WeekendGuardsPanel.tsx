@@ -144,7 +144,7 @@ export default function WeekendGuardsPanel({
                           : assignment.phase === 'proximo'
                             ? 'Proxima guardia'
                             : 'Programada'}{' '}
-                        · {assignment.source === 'seed' ? 'Patron base' : 'Rotacion generada'}
+                        · {assignment.source === 'official' ? 'Hoja oficial' : assignment.source === 'seed' ? 'Patron base' : 'Rotacion generada'}
                       </p>
                     </div>
                     <div className="planning-guards__weekend-chips">

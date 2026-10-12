@@ -787,6 +787,10 @@ export const mapPendingTicketToPlannedService = (
       importedFromExcel,
       importBatchId: typeof rawMeta.import_batch_id === 'string' ? rawMeta.import_batch_id : undefined,
       sourceFileName: typeof rawMeta.source_file_name === 'string' ? rawMeta.source_file_name : undefined,
+      sourceRowKey: typeof rawMeta.source_row_key === 'string' ? rawMeta.source_row_key : undefined,
+      sheetMeta: Object.fromEntries(
+        Object.entries(rawMeta).filter(([key]) => key.startsWith('sheet_') || key === 'source_sheet_url'),
+      ),
       createdBy: typeof rawMeta.created_by_name === 'string' ? rawMeta.created_by_name : undefined,
       updatedBy: typeof rawMeta.updated_by_name === 'string' ? rawMeta.updated_by_name : undefined,
       assignedBy: typeof rawMeta.assigned_by_name === 'string' ? rawMeta.assigned_by_name : undefined,
@@ -897,6 +901,7 @@ export const buildPlannedServiceUpdate = (
   );
 
   const metadata = {
+    ...(service.trace.sheetMeta || {}),
     fecha_tentativa: service.weekLabel,
     week_start: service.weekStart,
     week_end: service.weekEnd,
@@ -920,6 +925,7 @@ export const buildPlannedServiceUpdate = (
     updated_at: new Date().toISOString(),
     import_batch_id: service.trace.importBatchId || null,
     source_file_name: service.trace.sourceFileName || null,
+    source_row_key: service.trace.sourceRowKey || null,
     ingeniero_csv: nextResponsibleEngineers.join(' / '),
     travel_request_id: service.links.linkedTravelRequestId || null,
     travel_status: service.links.linkedTravelStatus || null,

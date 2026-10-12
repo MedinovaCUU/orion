@@ -62,7 +62,7 @@ export default function PlanningHeader({
             className="button-primary inactive planning-header__sync"
             onClick={onSync}
             disabled={syncBusy}
-            title="Sincronizar planeacion desde el dataset interno"
+            title="Traer a Orion la planeación oficial (hoja de Google) de esta semana en adelante"
           >
             <PlanningIcon name="refresh" />
             {syncBusy ? 'Sincronizando...' : 'Sincronizar'}

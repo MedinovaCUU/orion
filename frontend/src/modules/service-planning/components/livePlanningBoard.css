@@ -15,8 +15,8 @@
 @media(max-height:800px){.engineer-wall__header h2{font-size:24px}.engineer-wall__eyebrow{font-size:9px}.engineer-wall__metrics{padding:7px 0;gap:18px}.engineer-wall__metrics b{font-size:20px}.engineer-wall__header{gap:8px}.engineer-wall__footer{gap:8px}.engineer-wall__footer button{padding:6px 8px}}
 @media(max-width:700px){.engineer-wall--screen{padding:12px;gap:8px}.engineer-wall__header h2{font-size:20px}.engineer-wall__header p,.engineer-wall__footer>span{display:none}.engineer-wall__controls{gap:6px}.engineer-wall time{font-size:16px}.engineer-wall__metrics{gap:8px;font-size:10px}.engineer-wall__metrics b{font-size:16px}.engineer-wall__footer>div{gap:6px}.engineer-wall button{font-size:11px}}
 /* Shared ORION identity: use the application's surfaces, typography and red accent. */
-.engineer-wall{--wall-bg:var(--bg-color,#eaf1f6);--wall-card:var(--bg-card-strong,#ffffff);background:var(--wall-bg);color:var(--text-primary,#17202b);font-family:var(--font-body,'Manrope',sans-serif)}
-.engineer-wall h2,.engineer-wall h3,.engineer-wall__destination{font-family:var(--font-heading,'Sora',sans-serif);color:var(--text-primary,#17202b)}
+.engineer-wall{--wall-bg:var(--bg-color,#eaf1f6);--wall-card:var(--bg-card-strong,#ffffff);background:var(--wall-bg);color:var(--text-primary,#17202b);font-family:var(--font-body,'Alliance No.2',sans-serif)}
+.engineer-wall h2,.engineer-wall h3,.engineer-wall__destination{font-family:var(--font-heading,'Alliance No.2',sans-serif);color:var(--text-primary,#17202b)}
 .engineer-wall__header .brand-lockup__logo{height:27px;width:auto;max-width:110px;object-fit:contain}.engineer-wall__header h2{font-size:22px}
 .engineer-wall p,.engineer-wall time,.engineer-wall__metrics,.engineer-wall__footer,.engineer-wall__area,.engineer-wall__label{color:var(--text-secondary,#5d6674)}
 .engineer-wall button,.engineer-wall__metrics select{background:var(--bg-card-strong,#fff);color:var(--text-primary,#17202b);border-color:var(--border-strong,#ccd4dd)}
@@ -56,7 +56,7 @@
 .wall-sla__label{font-size:10px;letter-spacing:.1em;text-transform:uppercase;font-weight:700;color:var(--text-secondary,#5d6674);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .wall-sla__item--critical .wall-sla__label,.wall-sla__item--breached .wall-sla__label{color:var(--brand-red-ink,#8c2731)}
 .wall-sla__item--warning .wall-sla__label{color:var(--planning-warning-ink,#8b5d17)}
-.wall-sla__timer{font-family:var(--font-heading,'Sora',sans-serif);font-size:clamp(18px,1.6vw,28px);line-height:1.05;font-variant-numeric:tabular-nums;color:var(--text-primary,#17202b);white-space:nowrap}
+.wall-sla__timer{font-family:var(--font-heading,'Alliance No.2',sans-serif);font-size:clamp(18px,1.6vw,28px);line-height:1.05;font-variant-numeric:tabular-nums;color:var(--text-primary,#17202b);white-space:nowrap}
 .wall-sla__item--critical .wall-sla__timer,.wall-sla__item--breached .wall-sla__timer{color:var(--brand-red-ink,#8c2731)}
 .wall-sla__subject,.wall-sla__meta{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .wall-sla__subject{font-size:12px;color:var(--text-primary,#17202b)}

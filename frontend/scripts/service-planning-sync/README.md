@@ -86,8 +86,17 @@ Flujo recomendado:
 4. Correr `--apply`.
 5. Verificar en el modulo.
 
-Boton en la pagina:
+Boton en la pagina (fuente oficial en vivo):
 
-- La vista de planeacion tiene un boton pequeno de `Sincronizar`.
-- Solo se muestra para el perfil habilitado en `canAccessPlanningSync`.
-- El boton lee el mismo dataset publico y reescribe las semanas incluidas en `replaceWeeks`.
+- El boton `Sincronizar` ya no usa estos JSON: lee en vivo la hoja oficial `PROGRAMACION 2026.xlsx`
+  (vista de solo lectura de Google Drive, id `1V7Uhwp1esEfP7UVv-v8FrDQTUhV7SjT9`) desde el navegador.
+  Google responde esas paginas con CORS, asi que no hace falta servidor.
+- Codigo: `src/modules/service-planning/helpers/planningSheet.ts` (parser sin DOM: semanas, celdas combinadas,
+  dias, notas TXT/VAC, estados CANCELADO/POSPUESTO, colores, guardias) y `planningSheetSource.ts` (lectura y cache).
+- Solo lee el mes anterior en adelante (MARZO y ABRIL pesan 11-17 MB por una fila copiada en miles de columnas).
+- De la semana actual en adelante deja Orion igual que la hoja: agrega lo que falta, actualiza lo que cambio,
+  quita lo que la hoja ya no tiene o cancelo (si ya tenia viaje o reporte solo lo marca como bloqueado).
+  Nunca toca semanas pasadas ni actividades cerradas. Por eso no pide confirmacion.
+- Las notas de disponibilidad del tablero y las guardias de fin de semana tambien salen de la hoja.
+- Prueba: `node tests/planning-sheet.test.mjs`.
+- El script de linea de comandos de arriba sigue usando los JSON y `replaceWeeks` (reescribe esas semanas).
