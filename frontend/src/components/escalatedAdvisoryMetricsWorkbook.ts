@@ -4,6 +4,7 @@ import type {
   AdvisoryMetricsTrainerRow,
   AdvisoryMetricsValueRow,
 } from './escalatedAdvisoryMetricsExport';
+import { BRAND_FONT_FAMILY, BRAND_FONT_STACK, brandFontFaceCssInline } from '../config/brandFonts';
 
 interface AdvisoryBucketRow {
   label: string;
@@ -78,8 +79,10 @@ const BRAND = {
   white: '#FFFFFF',
 } as const;
 
-const FONT_BODY = 'Aptos';
-const FONT_HEADLINE = 'Aptos Display';
+// Excel recibe el nombre de familia; el SVG necesita la pila entre comillas ("No.2" no es un identificador CSS válido).
+const FONT_BODY = BRAND_FONT_FAMILY;
+const FONT_HEADLINE = BRAND_FONT_FAMILY;
+const SVG_FONT = BRAND_FONT_STACK;
 const DATE_TIME_FORMAT = 'dd/mm/yyyy hh:mm';
 
 const RESPONSE_BUCKETS = [
@@ -318,9 +321,12 @@ const aggregateRankRows = (values: string[], limit = 6) => {
 const sortMetricRows = (rows: AdvisoryMetricsValueRow[]) =>
   [...rows].sort((left, right) => right.value - left.value || left.label.localeCompare(right.label, 'es'));
 
-const svgToPngDataUrl = (svgMarkup: string, width: number, height: number) =>
-  new Promise<string>((resolve, reject) => {
-    const blob = new Blob([svgMarkup], { type: 'image/svg+xml;charset=utf-8' });
+const svgToPngDataUrl = async (svgMarkup: string, width: number, height: number) => {
+  // Un SVG cargado como imagen no puede pedir fuentes externas: Alliance viaja embebida en el propio SVG.
+  const fontCss = await brandFontFaceCssInline();
+  const markup = fontCss ? svgMarkup.replace(/<svg\b[^>]*>/, root => `${root}<defs><style>${fontCss}</style></defs>`) : svgMarkup;
+  return new Promise<string>((resolve, reject) => {
+    const blob = new Blob([markup], { type: 'image/svg+xml;charset=utf-8' });
     const url = URL.createObjectURL(blob);
     const image = new Image();
     image.onload = () => {
@@ -348,6 +354,7 @@ const svgToPngDataUrl = (svgMarkup: string, width: number, height: number) =>
     };
     image.src = url;
   });
+};
 
 const createHorizontalBarChartSvg = (
   title: string,
@@ -370,12 +377,12 @@ const createHorizontalBarChartSvg = (
       const widthValue = Math.max(14, (row.value / maxValue) * barWidth);
       const shareLabel = typeof row.share === 'number' ? ` · ${row.share}%` : '';
       return `
-        <text x="${labelX}" y="${y + 18}" font-size="15" font-family="${FONT_BODY}" fill="${BRAND.ink}">${escapeXml(
+        <text x="${labelX}" y="${y + 18}" font-size="15" font-family="${SVG_FONT}" fill="${BRAND.ink}">${escapeXml(
           truncateLabel(row.label, 28),
         )}</text>
         <rect x="${barX}" y="${y}" rx="12" ry="12" width="${barWidth}" height="18" fill="${BRAND.silverStrong}" />
         <rect x="${barX}" y="${y}" rx="12" ry="12" width="${widthValue}" height="18" fill="${row.color}" />
-        <text x="${rightX}" y="${y + 15}" font-size="15" font-family="${FONT_HEADLINE}" text-anchor="end" fill="${BRAND.ink}">${escapeXml(
+        <text x="${rightX}" y="${y + 15}" font-size="15" font-family="${SVG_FONT}" text-anchor="end" fill="${BRAND.ink}">${escapeXml(
           `${formatInteger(row.value)}${shareLabel}`,
         )}</text>
       `;
@@ -385,10 +392,10 @@ const createHorizontalBarChartSvg = (
   return `
     <svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}">
       <rect x="0" y="0" width="${width}" height="${height}" rx="28" fill="${BRAND.white}" />
-      <text x="34" y="42" font-size="28" font-family="${FONT_HEADLINE}" font-weight="700" fill="${BRAND.ink}">${escapeXml(
+      <text x="34" y="42" font-size="28" font-family="${SVG_FONT}" font-weight="700" fill="${BRAND.ink}">${escapeXml(
         title,
       )}</text>
-      <text x="34" y="72" font-size="16" font-family="${FONT_BODY}" fill="${BRAND.muted}">${escapeXml(subtitle)}</text>
+      <text x="34" y="72" font-size="16" font-family="${SVG_FONT}" fill="${BRAND.muted}">${escapeXml(subtitle)}</text>
       ${body}
     </svg>
   `;
@@ -414,7 +421,7 @@ const createTimelineChartSvg = (rows: AdvisoryMetricsTimelineRow[]) => {
       const label = Math.round(maxTotal * factor);
       return `
         <line x1="${left}" x2="${width - right}" y1="${y}" y2="${y}" stroke="${BRAND.silverLine}" stroke-dasharray="4 6" />
-        <text x="${left - 12}" y="${y + 5}" font-size="12" font-family="${FONT_BODY}" text-anchor="end" fill="${BRAND.muted}">${escapeXml(
+        <text x="${left - 12}" y="${y + 5}" font-size="12" font-family="${SVG_FONT}" text-anchor="end" fill="${BRAND.muted}">${escapeXml(
           formatInteger(label),
         )}</text>
       `;
@@ -447,10 +454,10 @@ const createTimelineChartSvg = (rows: AdvisoryMetricsTimelineRow[]) => {
 
       return `
         ${stacked}
-        <text x="${barX + barWidth / 2}" y="${top + chartHeight + 24}" font-size="13" font-family="${FONT_BODY}" text-anchor="middle" fill="${BRAND.ink}">${escapeXml(
+        <text x="${barX + barWidth / 2}" y="${top + chartHeight + 24}" font-size="13" font-family="${SVG_FONT}" text-anchor="middle" fill="${BRAND.ink}">${escapeXml(
           row.label,
         )}</text>
-        <text x="${barX + barWidth / 2}" y="${top + chartHeight + 42}" font-size="12" font-family="${FONT_BODY}" text-anchor="middle" fill="${BRAND.muted}">${escapeXml(
+        <text x="${barX + barWidth / 2}" y="${top + chartHeight + 42}" font-size="12" font-family="${SVG_FONT}" text-anchor="middle" fill="${BRAND.muted}">${escapeXml(
           formatInteger(total),
         )}</text>
       `;
@@ -460,16 +467,16 @@ const createTimelineChartSvg = (rows: AdvisoryMetricsTimelineRow[]) => {
   return `
     <svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}">
       <rect x="0" y="0" width="${width}" height="${height}" rx="28" fill="${BRAND.white}" />
-      <text x="34" y="42" font-size="28" font-family="${FONT_HEADLINE}" font-weight="700" fill="${BRAND.ink}">Timeline operativo</text>
-      <text x="34" y="72" font-size="16" font-family="${FONT_BODY}" fill="${BRAND.muted}">Nuevas, respondidas y cerradas por dia en la ventana visible</text>
+      <text x="34" y="42" font-size="28" font-family="${SVG_FONT}" font-weight="700" fill="${BRAND.ink}">Timeline operativo</text>
+      <text x="34" y="72" font-size="16" font-family="${SVG_FONT}" fill="${BRAND.muted}">Nuevas, respondidas y cerradas por dia en la ventana visible</text>
       ${grid}
       ${bars}
       <circle cx="34" cy="${height - 26}" r="6" fill="${BRAND.red}" />
-      <text x="48" y="${height - 21}" font-size="13" font-family="${FONT_BODY}" fill="${BRAND.ink}">Nuevas</text>
+      <text x="48" y="${height - 21}" font-size="13" font-family="${SVG_FONT}" fill="${BRAND.ink}">Nuevas</text>
       <circle cx="126" cy="${height - 26}" r="6" fill="${BRAND.teal}" />
-      <text x="140" y="${height - 21}" font-size="13" font-family="${FONT_BODY}" fill="${BRAND.ink}">Respondidas</text>
+      <text x="140" y="${height - 21}" font-size="13" font-family="${SVG_FONT}" fill="${BRAND.ink}">Respondidas</text>
       <circle cx="260" cy="${height - 26}" r="6" fill="${BRAND.green}" />
-      <text x="274" y="${height - 21}" font-size="13" font-family="${FONT_BODY}" fill="${BRAND.ink}">Cerradas</text>
+      <text x="274" y="${height - 21}" font-size="13" font-family="${SVG_FONT}" fill="${BRAND.ink}">Cerradas</text>
     </svg>
   `;
 };

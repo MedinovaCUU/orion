@@ -1,4 +1,37 @@
-@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Sora:wght@400;500;600;700&display=swap');
+/* Tipografía corporativa Biosystems: Alliance No.2 (licencia web de Biosystems).
+   Solo existen Light, Regular, Medium y SemiBold: los pesos 700-900 se sirven con SemiBold
+   para que el navegador nunca sintetice una negrita falsa. */
+@font-face {
+  font-family: 'Alliance No.2';
+  font-style: normal;
+  font-weight: 100 300;
+  font-display: swap;
+  src: url('/fonts/alliance/AllianceNo2-Light.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Alliance No.2';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/fonts/alliance/AllianceNo2-Regular.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Alliance No.2';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('/fonts/alliance/AllianceNo2-Medium.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Alliance No.2';
+  font-style: normal;
+  font-weight: 600 900;
+  font-display: swap;
+  src: url('/fonts/alliance/AllianceNo2-SemiBold.woff2') format('woff2');
+}
 
 :root {
   color-scheme: light;
@@ -63,8 +96,8 @@
   --pill-brand-text: var(--brand-red-ink);
   --shadow-xl: 0 28px 72px rgba(104, 116, 133, 0.16);
   --shadow-lg: 0 18px 42px rgba(117, 128, 143, 0.12);
-  --font-body: 'Manrope', sans-serif;
-  --font-heading: 'Sora', sans-serif;
+  --font-body: 'Alliance No.2', 'Helvetica Neue', Arial, sans-serif;
+  --font-heading: 'Alliance No.2', 'Helvetica Neue', Arial, sans-serif;
 }
 
 * {
@@ -108,6 +141,15 @@ input,
 textarea,
 select {
   font: inherit;
+}
+
+/* Sin tipografía monoespaciada: códigos y claves también van en Alliance, con cifras tabulares. */
+code,
+kbd,
+samp,
+pre {
+  font-family: var(--font-body);
+  font-variant-numeric: tabular-nums;
 }
 
 h1,

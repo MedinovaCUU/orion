@@ -1,6 +1,6 @@
 .tracking-section--mission { --mission-ink: #142b36; --mission-accent: #097f86; }
 .tracking-mission-header { display:flex; justify-content:space-between; align-items:center; gap:24px; padding:20px 4px; }
-.tracking-mission-header h3 { font-family:'Avenir Next', 'Trebuchet MS', sans-serif; font-size:clamp(26px,3vw,44px); letter-spacing:-1.6px; margin:8px 0; color:var(--mission-ink); }
+.tracking-mission-header h3 { font-family:var(--font-heading); font-size:clamp(26px,3vw,44px); letter-spacing:-1.6px; margin:8px 0; color:var(--mission-ink); }
 .tracking-mission-header p { color:#627583; margin:0; }
 .tracking-section--mission > .tracking-grid--top { display:none; }
 .tracking-section--mission.is-capturing > .tracking-grid--top { display:grid; }
@@ -48,7 +48,7 @@
 .mission-card:focus-visible, .mission-search input:focus-visible { outline:3px solid #0fa7a0; outline-offset:2px; }
 .mission-card-top,.mission-card-bottom { display:flex; justify-content:space-between; gap:12px; font-size:11px; }
 .mission-card-top { text-transform:uppercase; letter-spacing:1.5px; }
-.mission-card > strong { display:block; font-family:'Avenir Next',monospace; font-weight:500; font-size:clamp(20px,2vw,27px); letter-spacing:.8px; margin:10px 0 20px; overflow-wrap:anywhere; }
+.mission-card > strong { display:block; font-family:var(--font-body); font-variant-numeric:tabular-nums; font-weight:500; font-size:clamp(20px,2vw,27px); letter-spacing:.8px; margin:10px 0 20px; overflow-wrap:anywhere; }
 .mission-card-bottom { align-items:center; }
 .mission-card-bottom > span:first-child { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:50%; }
 .mission-state { border:1px solid currentColor; padding:5px 8px; border-radius:20px; font-size:10px; }
@@ -57,7 +57,7 @@
 .mission-state--incidencia { color:#c56731; }
 .mission-detail { position:sticky; top:20px; background:radial-gradient(ellipse at top right,rgba(var(--glass-rgb),.15),transparent 65%),linear-gradient(130deg,#ffffffb0,#ffffff60); backdrop-filter:blur(28px) saturate(130%); -webkit-backdrop-filter:blur(28px) saturate(130%); border:1px solid #ffffffe0; border-radius:28px; padding:30px; box-shadow:inset 0 1px 0 #fff,0 18px 50px #183f4d08; animation:mission-in .45s ease-out; }
 .mission-detail-heading { display:flex; justify-content:space-between; color:#557a83; font-size:10px; letter-spacing:2px; gap:12px; }
-.mission-detail h4 { font-family:'Avenir Next',monospace; font-size:clamp(26px,3vw,38px); color:#173b46; margin:20px 0 10px; overflow-wrap:anywhere; }
+.mission-detail h4 { font-family:var(--font-body); font-variant-numeric:tabular-nums; font-size:clamp(26px,3vw,38px); color:#173b46; margin:20px 0 10px; overflow-wrap:anywhere; }
 .mission-status { font-size:17px; color:var(--glass-ink); line-height:1.5; }
 .mission-route { display:grid; grid-template-columns:1fr 30px 1fr; gap:15px; padding:25px 0; margin-top:18px; border-top:1px solid #e1ebed; align-items:center; }
 .mission-route small,.mission-facts small { display:block; color:#789098; font-size:10px; letter-spacing:1.4px; margin-bottom:10px; }

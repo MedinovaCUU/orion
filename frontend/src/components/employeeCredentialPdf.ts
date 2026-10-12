@@ -1,4 +1,5 @@
 import jsPDF from 'jspdf';
+import { registerBrandPdfFonts, setPdfFont } from '../config/brandFonts';
 
 export interface EmployeeCredentialPdfPayload {
   fullName: string;
@@ -72,11 +73,11 @@ const drawInfoCard = (doc: jsPDF, x: number, y: number, width: number, label: st
   setFill(doc, COLORS.shellTint);
   setDraw(doc, COLORS.border);
   doc.roundedRect(x, y, width, height, 3.2, 3.2, 'FD');
-  doc.setFont('helvetica', 'bold');
+  setPdfFont(doc, 'bold');
   doc.setFontSize(6);
   setText(doc, COLORS.muted);
   doc.text(label.toUpperCase(), x + 2.6, y + 4);
-  doc.setFont('helvetica', 'bold');
+  setPdfFont(doc, 'bold');
   doc.setFontSize(8.8);
   setText(doc, COLORS.ink);
   const lines = doc.splitTextToSize(value || 'N/D', width - 5.2) as string[];
@@ -90,6 +91,7 @@ export const downloadEmployeeCredentialPdf = async (payload: EmployeeCredentialP
     format: [56, 90],
     compress: true,
   });
+  await registerBrandPdfFonts(doc);
 
   const logoDataUrl = await fetchImageDataUrl(BRAND_LOGO_URL);
   const photoDataUrl = await fetchImageDataUrl(payload.photoUrl);
@@ -117,22 +119,22 @@ export const downloadEmployeeCredentialPdf = async (payload: EmployeeCredentialP
   if (logoDataUrl) {
     doc.addImage(logoDataUrl, 'PNG', 33.4, 9, 14.4, 5.2);
   } else {
-    doc.setFont('helvetica', 'bold');
+    setPdfFont(doc, 'bold');
     doc.setFontSize(9);
     setText(doc, COLORS.accentDeep);
     doc.text('BioSystems', 48, 12.8, { align: 'right' });
   }
 
   setText(doc, COLORS.muted);
-  doc.setFont('helvetica', 'normal');
+  setPdfFont(doc);
   doc.setFontSize(5.7);
   doc.text('BioSystems', 48, 17.4, { align: 'right' });
-  doc.setFont('helvetica', 'bold');
+  setPdfFont(doc, 'bold');
   doc.setFontSize(8.7);
   setText(doc, COLORS.ink);
   doc.text('Identificación', 48, 23.4, { align: 'right' });
   doc.text('laboral digital', 48, 28.1, { align: 'right' });
-  doc.setFont('helvetica', 'normal');
+  setPdfFont(doc);
   doc.setFontSize(5.8);
   setText(doc, COLORS.muted);
   doc.text('ORION · Servicio técnico', 48, 33, { align: 'right' });
@@ -146,7 +148,7 @@ export const downloadEmployeeCredentialPdf = async (payload: EmployeeCredentialP
     setFill(doc, COLORS.shellTint);
     setDraw(doc, COLORS.border);
     doc.roundedRect(15, 36.2, 18.5, 23.2, 4.2, 4.2, 'FD');
-    doc.setFont('helvetica', 'bold');
+    setPdfFont(doc, 'bold');
     doc.setFontSize(12);
     setText(doc, COLORS.accentDeep);
     doc.text(initials, 24.25, 49.8, { align: 'center' });
@@ -156,18 +158,18 @@ export const downloadEmployeeCredentialPdf = async (payload: EmployeeCredentialP
   setDraw(doc, COLORS.accent);
   doc.roundedRect(15, 62.6, 31, 8.6, 4.3, 4.3, 'FD');
   setText(doc, COLORS.ink);
-  doc.setFont('helvetica', 'bold');
+  setPdfFont(doc, 'bold');
   doc.setFontSize(6.2);
   setText(doc, COLORS.accentDeep);
   doc.text(payload.areaLabel.toUpperCase().slice(0, 38), 30.5, 68, { align: 'center' });
 
-  doc.setFont('helvetica', 'bold');
+  setPdfFont(doc, 'bold');
   doc.setFontSize(11.5);
   setText(doc, COLORS.ink);
   const fullNameLines = doc.splitTextToSize(payload.fullName || 'Nombre pendiente', 37) as string[];
   doc.text(fullNameLines.slice(0, 2), 15, 76.8);
 
-  doc.setFont('helvetica', 'normal');
+  setPdfFont(doc);
   doc.setFontSize(7.8);
   setText(doc, COLORS.muted);
   doc.text(payload.jobTitle || payload.roleLabel || 'Personal BioSystems', 15, 86);
@@ -186,17 +188,17 @@ export const downloadEmployeeCredentialPdf = async (payload: EmployeeCredentialP
   if (logoDataUrl) {
     doc.addImage(logoDataUrl, 'PNG', 6.8, 8.6, 18.6, 6.8);
   } else {
-    doc.setFont('helvetica', 'bold');
+    setPdfFont(doc, 'bold');
     doc.setFontSize(10);
     setText(doc, COLORS.accentDeep);
     doc.text('BioSystems', 7.5, 13.2);
   }
 
-  doc.setFont('helvetica', 'bold');
+  setPdfFont(doc, 'bold');
   doc.setFontSize(8.6);
   setText(doc, COLORS.ink);
   doc.text('Reverso de validación', 7.2, 20.5);
-  doc.setFont('helvetica', 'normal');
+  setPdfFont(doc);
   doc.setFontSize(5.8);
   setText(doc, COLORS.muted);
   doc.text('Presenta esta vista si requieren más datos.', 7.2, 24);
@@ -211,11 +213,11 @@ export const downloadEmployeeCredentialPdf = async (payload: EmployeeCredentialP
   setFill(doc, COLORS.shell);
   setDraw(doc, COLORS.border);
   doc.roundedRect(7.2, 74, 41.4, 9.2, 3.2, 3.2, 'FD');
-  doc.setFont('helvetica', 'bold');
+  setPdfFont(doc, 'bold');
   doc.setFontSize(5.8);
   setText(doc, COLORS.muted);
   doc.text('Correo', 9.8, 78);
-  doc.setFont('helvetica', 'bold');
+  setPdfFont(doc, 'bold');
   doc.setFontSize(6.8);
   setText(doc, COLORS.ink);
   const emailLines = doc.splitTextToSize(payload.email || 'N/D', 36.5) as string[];

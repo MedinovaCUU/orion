@@ -1,3 +1,5 @@
+import { EMAIL_FONT_FACES, EMAIL_FONT_STACK } from '../_shared/emailFonts.ts';
+
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Methods': 'POST, OPTIONS',
@@ -362,7 +364,8 @@ const buildHtml = (payload: TravelEmailPayload) => {
       : 'Sin alertas adicionales registradas.';
 
   return `
-  <div style="margin:0; padding:28px; background:${THEME.pageBg}; font-family:Inter,Segoe UI,Roboto,Arial,sans-serif;">
+  ${EMAIL_FONT_FACES}
+  <div style="margin:0; padding:28px; background:${THEME.pageBg}; font-family:${EMAIL_FONT_STACK};">
     <div style="max-width:920px; margin:0 auto; background:${THEME.shellBg}; border-radius:28px; overflow:hidden; border:1px solid ${THEME.shellBorder}; box-shadow:0 24px 60px rgba(0,0,0,0.34), inset 0 1px 0 rgba(255,255,255,0.52);">
       <div style="padding:26px 30px; background:linear-gradient(135deg, ${THEME.heroStart} 0%, ${THEME.heroMid} 48%, ${THEME.heroEnd} 100%); position:relative;">
         <div style="position:absolute; inset:0; background:${THEME.sheen}; pointer-events:none;"></div>

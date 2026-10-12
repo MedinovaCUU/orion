@@ -208,7 +208,7 @@
 
 /* Tipografía SVG */
 .a15-anim svg text {
-  font-family: 'Manrope', system-ui, sans-serif;
+  font-family: var(--font-body);
 }
 
 .a15-label { font-size: 15px; font-weight: 700; fill: #17202b; }

@@ -1,4 +1,5 @@
 import jsPDF from 'jspdf';
+import { registerBrandPdfFonts, setPdfFont } from '../config/brandFonts';
 import { downloadAdvisoryMetricsWorkbook } from './escalatedAdvisoryMetricsWorkbook';
 
 export interface AdvisoryMetricsValueRow {
@@ -158,11 +159,11 @@ const drawKpiCard = (
 ) => {
   drawSectionCard(doc, x, y, width, 82);
   setText(doc, BRAND.muted);
-  doc.setFont('helvetica', 'normal');
+  setPdfFont(doc);
   doc.setFontSize(9);
   doc.text(title.toUpperCase(), x + 16, y + 20);
   setText(doc, accent);
-  doc.setFont('helvetica', 'bold');
+  setPdfFont(doc, 'bold');
   doc.setFontSize(22);
   doc.text(value, x + 16, y + 52);
 };
@@ -179,7 +180,7 @@ const drawMiniTable = (
   const height = 46 + rows.length * rowHeight;
   drawSectionCard(doc, x, y, width, height);
   setText(doc, BRAND.ink);
-  doc.setFont('helvetica', 'bold');
+  setPdfFont(doc, 'bold');
   doc.setFontSize(12);
   doc.text(title, x + 16, y + 22);
 
@@ -190,11 +191,11 @@ const drawMiniTable = (
       doc.line(x + 16, rowY - 12, x + width - 16, rowY - 12);
     }
     setText(doc, BRAND.muted);
-    doc.setFont('helvetica', 'normal');
+    setPdfFont(doc);
     doc.setFontSize(10);
     doc.text(row.label, x + 16, rowY);
     setText(doc, BRAND.ink);
-    doc.setFont('helvetica', 'bold');
+    setPdfFont(doc, 'bold');
     doc.text(row.value, x + width - 16, rowY, { align: 'right' });
   });
 
@@ -212,7 +213,7 @@ const drawTrainerTable = (
   const height = 56 + rows.length * rowHeight;
   drawSectionCard(doc, x, y, width, height);
   setText(doc, BRAND.ink);
-  doc.setFont('helvetica', 'bold');
+  setPdfFont(doc, 'bold');
   doc.setFontSize(12);
   doc.text('Carga por trainer', x + 16, y + 22);
 
@@ -225,11 +226,11 @@ const drawTrainerTable = (
     }
 
     setText(doc, BRAND.ink);
-    doc.setFont('helvetica', 'bold');
+    setPdfFont(doc, 'bold');
     doc.setFontSize(10.5);
     doc.text(row.label, x + 16, rowY);
     setText(doc, BRAND.muted);
-    doc.setFont('helvetica', 'normal');
+    setPdfFont(doc);
     doc.setFontSize(9);
     doc.text(`1ra respuesta: ${formatMinutesLabel(row.avgFirstResponseMinutes)}`, x + 16, rowY + 13);
 
@@ -248,7 +249,7 @@ const drawTrainerTable = (
     doc.roundedRect(barX, rowY + 6, secondWidth, 8, 6, 6, 'F');
 
     setText(doc, BRAND.ink);
-    doc.setFont('helvetica', 'bold');
+    setPdfFont(doc, 'bold');
     doc.setFontSize(10);
     doc.text(`${row.assigned}`, x + width - 48, rowY - 1, { align: 'right' });
     doc.text(`${row.responded}`, x + width - 48, rowY + 13, { align: 'right' });
@@ -270,7 +271,7 @@ const drawTopCrosses = (
   drawSectionCard(doc, x, y, width, height);
 
   setText(doc, BRAND.ink);
-  doc.setFont('helvetica', 'bold');
+  setPdfFont(doc, 'bold');
   doc.setFontSize(12);
   doc.text('Cruces solicitante · incidencia', x + 16, y + 22);
 
@@ -281,14 +282,14 @@ const drawTopCrosses = (
       doc.line(x + 16, rowY - 12, x + width - 16, rowY - 12);
     }
     setText(doc, BRAND.ink);
-    doc.setFont('helvetica', 'bold');
+    setPdfFont(doc, 'bold');
     doc.setFontSize(9.8);
     doc.text(row.requester, x + 16, rowY);
     setText(doc, BRAND.muted);
-    doc.setFont('helvetica', 'normal');
+    setPdfFont(doc);
     doc.text(row.type, x + 160, rowY);
     setText(doc, BRAND.red);
-    doc.setFont('helvetica', 'bold');
+    setPdfFont(doc, 'bold');
     doc.text(`${row.count}`, x + width - 16, rowY, { align: 'right' });
   });
 
@@ -305,7 +306,7 @@ const drawTimeline = (
   const height = 164;
   drawSectionCard(doc, x, y, width, height);
   setText(doc, BRAND.ink);
-  doc.setFont('helvetica', 'bold');
+  setPdfFont(doc, 'bold');
   doc.setFontSize(12);
   doc.text('Timeline operativo', x + 16, y + 22);
 
@@ -340,13 +341,13 @@ const drawTimeline = (
     });
 
     setText(doc, BRAND.muted);
-    doc.setFont('helvetica', 'normal');
+    setPdfFont(doc);
     doc.setFontSize(8.8);
     doc.text(row.label, barX + barWidth / 2, chartY + chartHeight + 18, { align: 'center' });
   });
 
   setText(doc, BRAND.muted);
-  doc.setFont('helvetica', 'normal');
+  setPdfFont(doc);
   doc.setFontSize(9);
   doc.text('Rojo: nuevas · Azul: respondidas · Verde: cerradas', x + 16, y + height - 16);
   return height;
@@ -361,6 +362,7 @@ export const downloadAdvisoryMetricsPdf = async (payload: AdvisoryMetricsExportP
   const paperDataUrl = assetResults[1].status === 'fulfilled' ? assetResults[1].value : null;
 
   const doc = new jsPDF({ unit: 'pt', format: 'a4' });
+  await registerBrandPdfFonts(doc);
   const pageWidth = doc.internal.pageSize.getWidth();
   const pageHeight = doc.internal.pageSize.getHeight();
   const marginX = 30;
@@ -395,15 +397,15 @@ export const downloadAdvisoryMetricsPdf = async (payload: AdvisoryMetricsExportP
   }
 
   setText(doc, BRAND.muted);
-  doc.setFont('helvetica', 'normal');
+  setPdfFont(doc);
   doc.setFontSize(10);
   doc.text('ORION · Analítica de asesorías', pageWidth - marginX, cursorY + 10, { align: 'right' });
   setText(doc, BRAND.ink);
-  doc.setFont('helvetica', 'bold');
+  setPdfFont(doc, 'bold');
   doc.setFontSize(22);
   doc.text(`Métricas de ${payload.areaLabel.toLowerCase()}`, pageWidth - marginX, cursorY + 34, { align: 'right' });
   setText(doc, BRAND.muted);
-  doc.setFont('helvetica', 'normal');
+  setPdfFont(doc);
   doc.setFontSize(10.5);
   doc.text(`${payload.scopeLabel} · ${payload.generatedAt}`, pageWidth - marginX, cursorY + 52, { align: 'right' });
   cursorY += 68;

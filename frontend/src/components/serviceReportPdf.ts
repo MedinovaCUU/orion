@@ -1,4 +1,5 @@
 import jsPDF from 'jspdf';
+import { registerBrandPdfFonts, setPdfFont } from '../config/brandFonts';
 import logoDataUrl from '../assets/orion-imagotipo.png?inline';
 import {
   getSpecialClientReferenceLabel,
@@ -231,7 +232,7 @@ const renderFooter = (doc: jsPDF, generatedAt: Date) => {
     doc.setLineWidth(0.45);
     doc.line(PAGE.marginX, PAGE.height - PAGE.footer - 6, PAGE.width - PAGE.marginX, PAGE.height - PAGE.footer - 6);
 
-    doc.setFont('helvetica', 'normal');
+    setPdfFont(doc);
     doc.setFontSize(7);
     setText(doc, COLORS.muted);
     doc.text(
@@ -258,12 +259,12 @@ const renderMetricCard = (
   setDraw(doc, COLORS.line);
   doc.roundedRect(x, y, width, DENSITY.metricHeight, 8, 8, 'FD');
 
-  doc.setFont('helvetica', 'bold');
+  setPdfFont(doc, 'bold');
   doc.setFontSize(7);
   setText(doc, COLORS.muted);
   doc.text(label.toUpperCase(), x + 10, y + 12);
 
-  doc.setFont('helvetica', 'bold');
+  setPdfFont(doc, 'bold');
   doc.setFontSize(10.5);
   setText(doc, soft ? COLORS.accent : COLORS.ink);
   const lines = wrapText(doc, value, width - 20, 10.5).slice(0, 2);
@@ -271,13 +272,13 @@ const renderMetricCard = (
 };
 
 const renderSectionHeader = (doc: jsPDF, y: number, title: string, subtitle?: string) => {
-  doc.setFont('helvetica', 'bold');
+  setPdfFont(doc, 'bold');
   doc.setFontSize(10);
   setText(doc, COLORS.ink);
   doc.text(title, PAGE.marginX, y);
 
   if (subtitle) {
-    doc.setFont('helvetica', 'normal');
+    setPdfFont(doc);
     doc.setFontSize(7.5);
     setText(doc, COLORS.muted);
     doc.text(subtitle, PAGE.marginX, y + 9);
@@ -368,12 +369,12 @@ const renderFieldGrid = (
       setDraw(doc, COLORS.line);
       doc.roundedRect(cursorX, cursorY, cellWidth, rowHeight, radius, radius, 'FD');
 
-      doc.setFont('helvetica', 'bold');
+      setPdfFont(doc, 'bold');
       doc.setFontSize(labelFontSize);
       setText(doc, COLORS.muted);
       doc.text(field.label.toUpperCase(), cursorX + paddingX, cursorY + labelOffsetY);
 
-      doc.setFont('helvetica', 'normal');
+      setPdfFont(doc);
       doc.setFontSize(valueFontSize);
       setText(doc, COLORS.ink);
       doc.text(wrapText(doc, field.value, cellWidth - paddingX * 2, valueFontSize), cursorX + paddingX, cursorY + valueOffsetY);
@@ -476,12 +477,12 @@ const renderFactsCard = (
         doc.line(cursorX - gap / 2, cursorY + 1, cursorX - gap / 2, cursorY + row.height - 3);
       }
 
-      doc.setFont('helvetica', 'bold');
+      setPdfFont(doc, 'bold');
       doc.setFontSize(labelFontSize);
       setText(doc, tone === 'accent' ? COLORS.accent : COLORS.muted);
       doc.text(field.label.toUpperCase(), cursorX, cursorY + labelOffsetY);
 
-      doc.setFont('helvetica', 'normal');
+      setPdfFont(doc);
       doc.setFontSize(valueFontSize);
       setText(doc, COLORS.ink);
       doc.text(field.lines, cursorX, cursorY + valueOffsetY);
@@ -522,12 +523,12 @@ const renderNarrativeBlock = (
   setDraw(doc, COLORS.line);
   doc.roundedRect(x, y, width, height, 10, 10, 'FD');
 
-  doc.setFont('helvetica', 'bold');
+  setPdfFont(doc, 'bold');
   doc.setFontSize(7.2);
   setText(doc, tone === 'accent' ? COLORS.accent : COLORS.muted);
   doc.text(title.toUpperCase(), x + 10, y + labelOffsetY);
 
-  doc.setFont('helvetica', 'normal');
+  setPdfFont(doc);
   doc.setFontSize(valueFontSize);
   setText(doc, COLORS.ink);
   doc.text(lines, x + 10, y + valueOffsetY);
@@ -576,7 +577,7 @@ const renderMaterialsTable = (
 
     let cursorX = PAGE.marginX;
     columns.forEach((column) => {
-      doc.setFont('helvetica', 'bold');
+      setPdfFont(doc, 'bold');
       doc.setFontSize(6.8);
       setText(doc, COLORS.muted);
       doc.text(column.label.toUpperCase(), cursorX + 8, cursorY + 13);
@@ -630,7 +631,7 @@ const renderMaterialsTable = (
       { lines: quantityLines, width: columns[2].width, size: 8.8 },
       { lines: notesLines, width: columns[3].width, size: 8.4 },
     ].forEach((cell) => {
-      doc.setFont('helvetica', 'normal');
+      setPdfFont(doc);
       doc.setFontSize(cell.size);
       setText(doc, COLORS.ink);
       doc.text(cell.lines, cursorX + 8, cursorY + 12);
@@ -658,7 +659,7 @@ const renderSignatureCard = (
   setDraw(doc, COLORS.line);
   doc.roundedRect(x, y, width, height, 10, 10, 'FD');
 
-  doc.setFont('helvetica', 'bold');
+  setPdfFont(doc, 'bold');
   doc.setFontSize(7);
   setText(doc, COLORS.muted);
   doc.text(title.toUpperCase(), x + 10, y + 12);
@@ -667,13 +668,13 @@ const renderSignatureCard = (
     try {
       doc.addImage(signatureDataUrl, 'PNG', x + 14, y + 18, width - 28, 34, undefined, 'FAST');
     } catch {
-      doc.setFont('helvetica', 'normal');
+      setPdfFont(doc);
       doc.setFontSize(8.4);
       setText(doc, COLORS.muted);
       doc.text('No se pudo renderizar la firma en este PDF.', x + 10, y + 36);
     }
   } else {
-    doc.setFont('helvetica', 'normal');
+    setPdfFont(doc);
     doc.setFontSize(8.4);
     setText(doc, COLORS.muted);
     doc.text('Firma no capturada.', x + 10, y + 36);
@@ -682,7 +683,7 @@ const renderSignatureCard = (
   setDraw(doc, COLORS.line);
   doc.line(x + 10, y + 58, x + width - 10, y + 58);
 
-  doc.setFont('helvetica', 'bold');
+  setPdfFont(doc, 'bold');
   doc.setFontSize(8.8);
   setText(doc, COLORS.ink);
   doc.text(valueOrFallback(name), x + 10, y + 72);
@@ -705,6 +706,7 @@ export const generateServiceReportPdf = async (
     format: 'a4',
     compress: true,
   });
+  await registerBrandPdfFonts(doc);
   const generatedAt = options.generatedAt || new Date();
   const reportReference = resolveServiceReportReference(form);
   const fileName = buildServiceReportPdfFileName(form);
@@ -755,12 +757,12 @@ export const generateServiceReportPdf = async (
     }
   }
 
-  doc.setFont('helvetica', 'bold');
+  setPdfFont(doc, 'bold');
   doc.setFontSize(17);
   setText(doc, COLORS.shell);
   doc.text('Reporte de servicio', textX, headerCenterY - 4);
 
-  doc.setFont('helvetica', 'normal');
+  setPdfFont(doc);
   doc.setFontSize(7.9);
   doc.text(
     wrapText(
@@ -775,14 +777,14 @@ export const generateServiceReportPdf = async (
     headerCenterY + 10,
   );
 
-  doc.setFont('helvetica', 'bold');
+  setPdfFont(doc, 'bold');
   doc.setFontSize(8);
   setText(doc, COLORS.shellMuted);
   const badgeTextX = PAGE.width - PAGE.marginX - (DENSITY.badgeWidth - 12);
   const badgeTextWidth = DENSITY.badgeWidth - 24;
   doc.text('FOLIO', badgeTextX, cursorY + 18);
 
-  doc.setFont('helvetica', 'bold');
+  setPdfFont(doc, 'bold');
   setText(doc, COLORS.shell);
   const badgeReference = fitTextBlock(doc, reportReference, badgeTextWidth, {
     preferredSize: 12.2,
@@ -794,7 +796,7 @@ export const generateServiceReportPdf = async (
     doc.text(line, badgeTextX, cursorY + 32 + index * 10.2);
   });
 
-  doc.setFont('helvetica', 'normal');
+  setPdfFont(doc);
   doc.setFontSize(7.6);
   doc.text(`Estado: ${STATUS_LABELS[options.status]}`, badgeTextX, cursorY + 54);
   doc.text(`Reporte: ${options.reportId.slice(0, 8).toUpperCase()}`, badgeTextX, cursorY + 65);
