@@ -77,10 +77,15 @@ export const DRI_VALIDATION_FIXTURES: DriValidationFixture[] = [
   },
   {
     id: 'case-7',
-    title: 'Correctas e incorrectas comparten subsistema',
+    title: 'Correctas e incorrectas comparten filtro: óptica exonerada',
+    // Regla del propietario (2026-10-10): el filtro de 340 nm lo comparten dos fallidas y dos correctas,
+    // así que no discrimina; la lectura debe ir a control/lote/preanalítica antes que a la óptica.
     input: { ...createBaseForm(), failedReagentIds: ['ADA', 'UREA_UV'], correctReagentIds: ['ALT_GPT', 'AST_GOT'] },
-    expectedTopHypothesis: 'óptica',
-    expectedRuleIds: ['ba400_optical_photometry'],
+    expectedTopHypothesis: 'control',
+    expectedRuleIds: ['ba400_control_preanalytical'],
+    maximumProbabilityByRule: {
+      ba400_optical_photometry: 40,
+    },
   },
   {
     id: 'case-8',
@@ -199,6 +204,49 @@ export const DRI_VALIDATION_FIXTURES: DriValidationFixture[] = [
       ba400_temperature: 55,
       ba400_fluidics_pipetting: 55,
     },
+  },
+  {
+    id: 'case-16',
+    title: 'Filtro 505 nm exonerado por contraste',
+    // Regla del propietario (2026-10-10): si un reactivo a 505 nm falla pero otros tres a 505 nm salen
+    // correctos, el filtro no discrimina y la hipótesis óptica debe descartarse o reducirse mucho.
+    input: { ...createBaseForm(), failedReagentIds: ['GLU'], correctReagentIds: ['CHOL', 'TG', 'URIC'] },
+    expectedTopHypothesis: 'control',
+    expectedRuleIds: ['ba400_control_preanalytical'],
+    maximumProbabilityByRule: {
+      ba400_optical_photometry: 30,
+    },
+  },
+  {
+    id: 'case-17',
+    title: 'Filtro 505 nm implicado por contraste',
+    input: { ...createBaseForm(), failedReagentIds: ['GLU', 'CHOL', 'TG'], correctReagentIds: ['ALB', 'AMY'] },
+    expectedTopHypothesis: 'óptica',
+    expectedRuleIds: ['ba400_optical_photometry'],
+    minimumProbabilityByRule: {
+      ba400_optical_photometry: 55,
+    },
+  },
+  {
+    id: 'case-18',
+    title: 'Lote caducado en uso (SAT + einfo.bio) sobre un patrón óptico débil',
+    // GLU falla con el lote 00005 del producto 21503 (cad. 2028-03-31) pipeteado después de caducar;
+    // ALB y CHOL trabajan con lotes vigentes. El lote explica la desviación antes que la óptica.
+    input: {
+      ...createBaseForm(),
+      eventDate: '2028-05-02',
+      failedReagentIds: ['GLU'],
+      correctReagentIds: ['ALB', 'CHOL'],
+      reagentBottles: [
+        { testName: 'GLUCOSE', reagentId: 'GLU', reagentRole: 'R1', techniqueCode: '503', lot: '00005', expiresAt: '2028-03-31', barcode: '50311032800005000123', bottleCount: 2, firstSeenAt: '2027-11-10T08:00:00.000Z', openedAt: '2028-04-20T08:00:00.000Z', lastSeenAt: '2028-05-02T09:00:00.000Z', pipettingCount: 1800, lotFactsKey: '21503:0001935' },
+        { testName: 'GLUCOSE', reagentId: 'GLU', reagentRole: 'R1', techniqueCode: '503', lot: '00002', expiresAt: '2027-10-31', barcode: '50311102700002000045', bottleCount: 3, firstSeenAt: '2027-03-01T08:00:00.000Z', openedAt: '2027-09-01T08:00:00.000Z', lastSeenAt: '2027-11-09T09:00:00.000Z', pipettingCount: 2600, lotFactsKey: '21503:0000555' },
+        { testName: 'ALBUMIN', reagentId: 'ALB', reagentRole: 'R1', techniqueCode: '547', lot: '00002', expiresAt: '2029-12-31', barcode: '54711122900002000077', bottleCount: 1, firstSeenAt: '2028-03-01T08:00:00.000Z', openedAt: '2028-03-01T08:00:00.000Z', lastSeenAt: '2028-05-02T09:00:00.000Z', pipettingCount: 900, lotFactsKey: '21547:0001144' },
+        { testName: 'CHOLESTEROL', reagentId: 'CHOL', reagentRole: 'R1', techniqueCode: '505', lot: '00002', expiresAt: '2029-08-31', barcode: '50511082900002000031', bottleCount: 1, firstSeenAt: '2028-02-15T08:00:00.000Z', openedAt: '2028-02-15T08:00:00.000Z', lastSeenAt: '2028-05-02T09:00:00.000Z', pipettingCount: 700, lotFactsKey: '21505:0001707' },
+      ],
+    },
+    expectedTopHypothesis: 'control',
+    expectedRuleIds: ['ba400_control_preanalytical'],
+    maximumProbabilityByRule: { ba400_optical_photometry: 45 },
   },
 ];
 

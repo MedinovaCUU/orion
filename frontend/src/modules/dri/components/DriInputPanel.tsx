@@ -1,3 +1,4 @@
+import { useMemo, useState } from 'react';
 import type { ChangeEvent } from 'react';
 import {
   DRI_CONTROL_LEVEL_OPTIONS,
@@ -19,6 +20,8 @@ import type {
   DriServiceTestInput,
   DriServiceUtilityId,
 } from '../types/dri.types';
+import DriReagentLotCard from './DriReagentLotCard';
+import { applyLotFactsToProfile, assessReagentLots, governingLotFacts, reagentMatchKey } from '../utils/lotIntelligence';
 
 const SERVICE_UTILITY_OPTIONS: Array<{ value: DriServiceUtilityId; label: string }> = [
   { value: 'photometry', label: 'Photometry' },
@@ -75,7 +78,13 @@ const formatMeasurement = (limit: DriMeasurementLimit | null) => {
 };
 
 const formatInterferenceThreshold = (threshold: DriInterferenceThreshold) =>
-  `${threshold.label} > ${threshold.thresholdValue} ${threshold.unit}`;
+  threshold.condition === 'elevated'
+    ? `${threshold.label}: interfiere si está elevada`
+    : threshold.anyLevel
+    ? `${threshold.label}: interfiere${threshold.testedUpTo ? ` (probada hasta ${threshold.testedUpTo.value} ${threshold.testedUpTo.unit})` : ''}`
+    : threshold.effect === 'may_interfere_above'
+    ? `${threshold.label}: interfiere desde ${threshold.thresholdValue} ${threshold.unit}`
+    : `${threshold.label} > ${threshold.thresholdValue} ${threshold.unit}`;
 
 const shouldShowAnchorMeasurements = (eventType: DriCaseFormState['eventType']) =>
   ['dilution_error', 'non_linear', 'poor_repeatability', 'incoherent_result'].includes(eventType);
@@ -134,7 +143,13 @@ export default function DriInputPanel({
   evidenceTasks,
   selectedReagent,
   selectedReagentProfile,
+  embedded = false,
+  provenance,
 }: {
+  /** Dentro del dock del banco de trabajo: sin cabecera, sin fila de equipos y sin botón final (viven en la franja de mando). */
+  embedded?: boolean;
+  /** Procedencia de campos y reactivos escritos por una fuente (SAT, BPL, Monitoreo, Asesoría) y aún no editados a mano. */
+  provenance?: { byField: Map<string, string>; byReagent: Map<string, string> };
   form: DriCaseFormState;
   filteredReagents: DriReagent[];
   qcReferenceOptions: DriQcReference[];
@@ -170,14 +185,61 @@ export default function DriInputPanel({
 }) {
   const handleInput = (field: keyof DriCaseFormState) => (event: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) =>
     onFormChange(field as never, event.target.value as never);
+  const fieldProvenance = (field: keyof DriCaseFormState) => {
+    const source = provenance?.byField.get(field);
+    return source ? { 'data-provenance': 'source', title: source } : {};
+  };
+  const reagentProvenance = (reagentId: string) => provenance?.byReagent.get(reagentId) || null;
   const showAnchorMeasurements = shouldShowAnchorMeasurements(form.eventType);
   const showBlankCapture = shouldShowBlankCapture(form);
   const selectedMeasurement = selectedReagent ? reagentMeasurements[selectedReagent.id] || null : null;
   const selectedBlankGuidance = inferBlankGuidance(selectedReagentProfile);
+  // Lote en uso del reactivo seleccionado (SAT + einfo.bio): la ficha muestra los límites del IFU de ese lote,
+  // igual que los usa el motor, y no los genéricos del catálogo.
+  // Pruebas que el equipo corrió en los últimos 60 días del SAT: el filtro reduce la lista a lo que importa.
+  const [satOnly, setSatOnly] = useState(true);
+  const satTests = useMemo(() => {
+    const bottles = form.reagentBottles || [];
+    const lastMs = bottles.reduce((max, bottle) => Math.max(max, Date.parse(bottle.lastSeenAt || '') || 0), 0);
+    const ids = new Set<string>();
+    const keys = new Set<string>();
+    bottles.forEach((bottle) => {
+      const seen = Date.parse(bottle.lastSeenAt || '') || 0;
+      if (lastMs && seen < lastMs - 60 * 86_400_000) return;
+      if (bottle.reagentId) ids.add(bottle.reagentId);
+      if (bottle.reagentKey) keys.add(bottle.reagentKey);
+    });
+    return { ids, keys };
+  }, [form.reagentBottles]);
+  const satFilterAvailable = satTests.ids.size + satTests.keys.size > 0;
+  const visibleReagents = useMemo(() => {
+    if (!satOnly || !satFilterAvailable) return filteredReagents;
+    return filteredReagents.filter(
+      (reagent) =>
+        satTests.ids.has(reagent.id) ||
+        satTests.keys.has(reagentMatchKey(reagent)) ||
+        form.failedReagentIds.includes(reagent.id) ||
+        form.correctReagentIds.includes(reagent.id),
+    );
+  }, [satOnly, satFilterAvailable, filteredReagents, satTests, form.failedReagentIds, form.correctReagentIds]);
+  const selectedOutcome = selectedReagent && form.failedReagentIds.includes(selectedReagent.id) ? 'failed' : 'correct';
+  const selectedLots = useMemo(
+    () =>
+      selectedReagent && form.reagentBottles?.length
+        ? assessReagentLots(
+            { reagentBottles: form.reagentBottles, eventDate: form.eventDate, reagentMeasurements: form.reagentMeasurements, bplEvidence: form.bplEvidence },
+            { id: selectedReagent.id, key: reagentMatchKey(selectedReagent), code: selectedReagent.displayCode || selectedReagent.id },
+            selectedOutcome,
+          )
+        : [],
+    [selectedReagent, selectedOutcome, form.reagentBottles, form.eventDate, form.reagentMeasurements, form.bplEvidence],
+  );
+  const selectedLotFacts = governingLotFacts(selectedLots);
+  const detailProfile = selectedReagentProfile && selectedLotFacts ? applyLotFactsToProfile(selectedReagentProfile, selectedLotFacts) : selectedReagentProfile;
 
   return (
-    <section className="dri-panel dri-panel--form">
-      <div className="dri-panel__head">
+    <section className={`dri-panel dri-panel--form ${embedded ? 'dri-panel--embedded' : ''}`}>
+      {!embedded ? <div className="dri-panel__head">
         <div>
           <span className="dri-panel__eyebrow">Registrar escenario</span>
           <h3>Captura del caso</h3>
@@ -191,9 +253,9 @@ export default function DriInputPanel({
           ) : null}
           <button type="button" className="dri-ghost-button" onClick={onReset}>Reiniciar</button>
         </div>
-      </div>
+      </div> : null}
 
-      <div className="dri-platform-row">
+      {!embedded ? <div className="dri-platform-row">
         {DRI_EQUIPMENT_OPTIONS.map((option) => (
           <button
             key={option.value}
@@ -205,30 +267,30 @@ export default function DriInputPanel({
             {option.supportStatus === 'specializing' ? <span>en especialización</span> : <span>listo</span>}
           </button>
         ))}
-      </div>
+      </div> : null}
 
       <div className="dri-form-grid">
-        <label className="dri-field dri-field--span-2">
+        {!embedded ? <label className="dri-field dri-field--span-2" {...fieldProvenance('serialNumber')}>
           <span>Serie</span>
           <input className="input-field" value={form.serialNumber} onChange={handleInput('serialNumber')} placeholder="8340..." />
-        </label>
-        <label className="dri-field dri-field--span-2">
+        </label> : null}
+        <label className="dri-field dri-field--span-2" {...fieldProvenance('eventDate')}>
           <span>Fecha</span>
           <input type="date" className="input-field" value={form.eventDate} onChange={handleInput('eventDate')} />
         </label>
-        <label className="dri-field dri-field--span-3">
+        <label className="dri-field dri-field--span-3" {...fieldProvenance('eventType')}>
           <span>Tipo de falla</span>
           <select className="input-field" value={form.eventType} onChange={handleInput('eventType')}>
             {DRI_EVENT_OPTIONS.map((option) => <option key={option.value} value={option.value}>{option.label}</option>)}
           </select>
         </label>
-        <label className="dri-field dri-field--span-2">
+        <label className="dri-field dri-field--span-2" {...fieldProvenance('failureDirection')}>
           <span>Dirección</span>
           <select className="input-field" value={form.failureDirection} onChange={handleInput('failureDirection')}>
             {DRI_FAILURE_OPTIONS.map((option) => <option key={option.value} value={option.value}>{option.label}</option>)}
           </select>
         </label>
-        <label className="dri-field dri-field--span-2">
+        <label className="dri-field dri-field--span-2" {...fieldProvenance('controlLevel')}>
           <span>Control</span>
           <select className="input-field" value={form.controlLevel} onChange={handleInput('controlLevel')}>
             {DRI_CONTROL_LEVEL_OPTIONS.map((option) => <option key={option.value} value={option.value}>{option.label}</option>)}
@@ -236,41 +298,41 @@ export default function DriInputPanel({
         </label>
         {showAnchorMeasurements ? (
           <>
-            <label className="dri-field dri-field--span-2">
+            <label className="dri-field dri-field--span-2" {...fieldProvenance('expectedValue')}>
               <span>Esperado ancla</span>
               <input className="input-field" value={form.expectedValue} onChange={handleInput('expectedValue')} placeholder="400" />
             </label>
-            <label className="dri-field dri-field--span-2">
+            <label className="dri-field dri-field--span-2" {...fieldProvenance('obtainedValue')}>
               <span>Obtenido ancla</span>
               <input className="input-field" value={form.obtainedValue} onChange={handleInput('obtainedValue')} placeholder="200" />
             </label>
           </>
         ) : null}
-        <label className="dri-field dri-field--span-2">
+        <label className="dri-field dri-field--span-2" {...fieldProvenance('reagentLot')}>
           <span>Lote reactivo</span>
           <input className="input-field" value={form.reagentLot} onChange={handleInput('reagentLot')} placeholder="RGT-..." />
         </label>
-        <label className="dri-field dri-field--span-2">
+        <label className="dri-field dri-field--span-2" {...fieldProvenance('controlLot')}>
           <span>Lote control</span>
           <input className="input-field" value={form.controlLot} onChange={handleInput('controlLot')} placeholder="CTRL-..." />
         </label>
-        <label className="dri-field dri-field--span-2">
+        <label className="dri-field dri-field--span-2" {...fieldProvenance('calibratorName')}>
           <span>Calibrador</span>
           <input className="input-field" value={form.calibratorName} onChange={handleInput('calibratorName')} placeholder="Nombre/ID" />
         </label>
-        <label className="dri-field dri-field--span-2">
+        <label className="dri-field dri-field--span-2" {...fieldProvenance('calibratorLot')}>
           <span>Lote calibrador</span>
           <input className="input-field" value={form.calibratorLot} onChange={handleInput('calibratorLot')} placeholder="CAL-..." />
         </label>
-        <label className="dri-field dri-field--span-2">
+        <label className="dri-field dri-field--span-2" {...fieldProvenance('reagentOpenedAt')}>
           <span>Apertura · opcional</span>
           <input type="date" className="input-field" value={form.reagentOpenedAt} onChange={handleInput('reagentOpenedAt')} />
         </label>
-        <label className="dri-field dri-field--span-2">
+        <label className="dri-field dri-field--span-2" {...fieldProvenance('reagentExpiryDate')}>
           <span>Caducidad · opcional</span>
           <input type="date" className="input-field" value={form.reagentExpiryDate} onChange={handleInput('reagentExpiryDate')} />
         </label>
-        <label className="dri-field dri-field--span-2">
+        <label className="dri-field dri-field--span-2" {...fieldProvenance('ambientTemperatureC')}>
           <span>Temp. ambiente °C · opcional</span>
           <input className="input-field" value={form.ambientTemperatureC} onChange={handleInput('ambientTemperatureC')} placeholder="24.5" />
         </label>
@@ -360,9 +422,15 @@ export default function DriInputPanel({
         <div className="dri-selection-summary">
           <span className="dri-badge dri-badge--red">Fallidas · {form.failedReagentIds.length}</span>
           <span className="dri-badge dri-badge--teal">Correctas · {form.correctReagentIds.length}</span>
+          {satFilterAvailable ? (
+            <label className="dri-sat-filter">
+              <input type="checkbox" checked={satOnly} onChange={(event) => setSatOnly(event.target.checked)} />
+              <span>Solo pruebas del SAT ({visibleReagents.length})</span>
+            </label>
+          ) : null}
         </div>
         <div className="dri-reagent-list">
-          {filteredReagents.map((reagent) => {
+          {visibleReagents.map((reagent) => {
             const failed = form.failedReagentIds.includes(reagent.id);
             const correct = form.correctReagentIds.includes(reagent.id);
             const measurement = reagentMeasurements[reagent.id];
@@ -372,7 +440,8 @@ export default function DriInputPanel({
               <div
                 key={reagent.id}
                 className={`dri-reagent-pill-card ${failed ? 'is-failed' : correct ? 'is-correct' : ''}`}
-                title={`${reagent.displayCode || reagent.id} · ${reagent.displayName || reagent.name}`}
+                data-provenance={reagentProvenance(reagent.id) ? 'source' : undefined}
+                title={`${reagent.displayCode || reagent.id} · ${reagent.displayName || reagent.name}${reagentProvenance(reagent.id) ? ` · ${reagentProvenance(reagent.id)}` : ''}`}
               >
                 <button
                   type="button"
@@ -432,8 +501,13 @@ export default function DriInputPanel({
                   ) : null}
                 </div>
                 {reference ? (
-                  <div className="dri-reagent-pill__meta">
-                    <span>Tgt {formatQcValue(reference.targetValue, reference.unit)}</span>
+                  <div
+                    className="dri-reagent-pill__meta"
+                    title={`${reference.methodName || 'Referencia QC'}${reference.lot ? ` · lote ${reference.lot}` : ''} · ±3 SD ${formatQcValue(reference.rejectLow, null)}–${formatQcValue(reference.rejectHigh, reference.unit)}${assessment?.zScore !== null && assessment?.zScore !== undefined ? ` · z ${assessment.zScore.toFixed(1)}` : ''}`}
+                  >
+                    <span>
+                      Tgt {formatQcValue(reference.targetValue, null)} ± {formatQcValue(reference.sd1, reference.unit)}
+                    </span>
                   </div>
                 ) : null}
               </div>
@@ -441,7 +515,7 @@ export default function DriInputPanel({
           })}
         </div>
 
-        {selectedReagent && selectedReagentProfile ? (
+        {selectedReagent && detailProfile ? (
           <div className="dri-reagent-detail">
             <div className="dri-reagent-detail__head">
               <div>
@@ -449,14 +523,23 @@ export default function DriInputPanel({
                 <h5>{selectedReagent.displayCode || selectedReagent.id} · {selectedReagent.displayName || selectedReagent.name}</h5>
               </div>
               <div className="dri-inline-badges">
-                {selectedReagentProfile.reactionKind.value !== 'other' ? (
-                  <span className="dri-mini-badge">{selectedReagentProfile.reactionKind.value}</span>
+                {detailProfile.reactionKind.value !== 'other' ? (
+                  <span className="dri-mini-badge">{detailProfile.reactionKind.value}</span>
                 ) : null}
-                {selectedReagentProfile.reagentScheme.value !== 'unknown' ? (
-                  <span className="dri-mini-badge">{selectedReagentProfile.reagentScheme.value}</span>
+                {detailProfile.reagentScheme.value !== 'unknown' ? (
+                  <span className="dri-mini-badge">{detailProfile.reagentScheme.value}</span>
                 ) : null}
-                {selectedReagentProfile.platforms.value.length ? (
-                  <span className="dri-mini-badge">{selectedReagentProfile.platforms.value.join(' · ')}</span>
+                {detailProfile.platforms.value.length ? (
+                  <span className="dri-mini-badge">{detailProfile.platforms.value.join(' · ')}</span>
+                ) : null}
+                {selectedLotFacts ? (
+                  <span
+                    className="dri-mini-badge"
+                    data-testid="dri-lot-ifu-badge"
+                    title={`Límites, estabilidad e interferencias del IFU ${selectedLotFacts.ifu?.ifuCode || ''} del lote ${selectedLotFacts.productLot}`.replace(/\s+/g, ' ')}
+                  >
+                    IFU del lote {selectedLotFacts.productLot}
+                  </span>
                 ) : null}
               </div>
             </div>
@@ -464,15 +547,15 @@ export default function DriInputPanel({
             <div className="dri-reagent-detail__metrics">
               <div className="dri-reagent-metric">
                 <span>Límite detección</span>
-                <strong>{formatMeasurement(selectedReagentProfile.detectionLimit.value)}</strong>
+                <strong>{formatMeasurement(detailProfile.detectionLimit.value)}</strong>
               </div>
               <div className="dri-reagent-metric">
                 <span>Límite cuantificación</span>
-                <strong>{formatMeasurement(selectedReagentProfile.quantificationLimit.value)}</strong>
+                <strong>{formatMeasurement(detailProfile.quantificationLimit.value)}</strong>
               </div>
               <div className="dri-reagent-metric">
                 <span>Límite linealidad</span>
-                <strong>{formatMeasurement(selectedReagentProfile.linearityLimit.value)}</strong>
+                <strong>{formatMeasurement(detailProfile.linearityLimit.value)}</strong>
               </div>
               <div className="dri-reagent-metric">
                 <span>Valor capturado</span>
@@ -494,11 +577,18 @@ export default function DriInputPanel({
               </div>
             ) : null}
 
-            {selectedReagentProfile.interferenceThresholds.value.length ? (
+            <DriReagentLotCard
+              lots={selectedLots}
+              headerFactsKey={selectedLotFacts?.key || null}
+              reagentCode={selectedReagent.displayCode || selectedReagent.id}
+              hasBottles={Boolean(form.reagentBottles?.length)}
+            />
+
+            {detailProfile.interferenceThresholds.value.length ? (
               <div className="dri-reagent-detail__group">
                 <span className="dri-panel__eyebrow">Interferencias críticas IFU</span>
                 <div className="dri-evidence-summary">
-                  {selectedReagentProfile.interferenceThresholds.value.slice(0, 4).map((threshold) => (
+                  {detailProfile.interferenceThresholds.value.slice(0, 4).map((threshold) => (
                     <span key={`${selectedReagent.id}-${threshold.interferent}-${threshold.thresholdValue}`} className="dri-badge dri-badge--neutral">
                       {formatInterferenceThreshold(threshold)}
                     </span>
@@ -507,11 +597,11 @@ export default function DriInputPanel({
               </div>
             ) : null}
 
-            {selectedReagentProfile.procedureLimitations.value.length ? (
+            {detailProfile.procedureLimitations.value.length ? (
               <div className="dri-reagent-detail__group">
                 <span className="dri-panel__eyebrow">Limitaciones del procedimiento</span>
                 <ul className="dri-reagent-detail__list">
-                  {selectedReagentProfile.procedureLimitations.value.slice(0, 2).map((item) => (
+                  {detailProfile.procedureLimitations.value.slice(0, 2).map((item) => (
                     <li key={`${selectedReagent.id}-${item}`}>{item}</li>
                   ))}
                 </ul>
@@ -667,9 +757,9 @@ export default function DriInputPanel({
         </div>
       </div>
 
-      <button type="button" className="button-primary dri-submit" disabled={!canAnalyze || saving} onClick={onAnalyze}>
+      {!embedded ? <button type="button" className="button-primary dri-submit" disabled={!canAnalyze || saving} onClick={onAnalyze}>
         {saving ? 'Generando diagnóstico...' : 'Generar diagnóstico diferencial'}
-      </button>
+      </button> : null}
     </section>
   );
 }

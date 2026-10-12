@@ -229,8 +229,29 @@ export const buildRelationSignals = (
   const logger = createDriLogger(runId, platform, sink);
   const signalMap = new Map<string, DriRelationSignal>();
 
+  const openedAtMs = form.reagentOpenedAt ? Date.parse(form.reagentOpenedAt) : Number.NaN;
+  const eventAtMs = form.eventDate ? Date.parse(form.eventDate) : Number.NaN;
+  const hoursOnboard =
+    Number.isFinite(openedAtMs) && Number.isFinite(eventAtMs) && eventAtMs >= openedAtMs ? (eventAtMs - openedAtMs) / 3_600_000 : null;
+
   const pushProfileSignals = (profile: DriReagentProfile, outcome: 'failed' | 'correct') => {
     const { text, ifuFacts } = extractProfileText(profile);
+    const onboardStability = profile.onboardStabilityHours.value;
+    // La fecha de apertura capturada es la del lote fallido: no se proyecta sobre las pruebas correctas.
+    if (outcome === 'failed' && hoursOnboard !== null && onboardStability && hoursOnboard > onboardStability) {
+      // Estabilidad a bordo excedida según IFU: inestabilidad del reactivo antes que hardware.
+      registerSignal(
+        signalMap,
+        {
+          id: 'stability:onboard',
+          category: 'storage',
+          label: `Estabilidad a bordo excedida (${Math.round(hoursOnboard)} h abierto)`,
+          suspectedSubsystems: ['fridge', 'reagent_arm_r1'],
+        },
+        profile.id,
+        outcome,
+      );
+    }
     const storageMin = typeof ifuFacts.storageTempMinC === 'number' ? ifuFacts.storageTempMinC : null;
     const storageMax = typeof ifuFacts.storageTempMaxC === 'number' ? ifuFacts.storageTempMaxC : null;
     const blankDeterioration = typeof ifuFacts.blankDeterioration === 'string' ? ifuFacts.blankDeterioration : null;

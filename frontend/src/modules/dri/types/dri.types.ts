@@ -259,6 +259,176 @@ export interface DriBplEvidenceSummary {
   unmatchedTests: string[];
 }
 
+export type DriSampleMatrix = 'serum' | 'plasma' | 'urine' | 'csf';
+
+/** Hechos de un lote de reactivo tomados del IFU publicado en einfo.bio para ese lote. */
+export interface DriLotIfuFacts {
+  ifuCode: string | null;
+  ifuDate: string | null;
+  detectionLimit: { value: number | null; unit: string } | null;
+  quantificationLimit: { value: number | null; unit: string } | null;
+  linearityLimit: { value: number | null; unit: string } | null;
+  precision: Array<{ mean: number | null; unit: string; repeatabilityCv: number | null; totalCv: number | null; matrix?: DriSampleMatrix | null }>;
+  onboardStability: {
+    text: string;
+    hours: number | null;
+    /** Reactivo de trabajo preparado (p. ej. con fosfato de piridoxal): estabilidad propia, más corta. */
+    workingReagents?: Array<{ name: string; text: string; hours: number | null }>;
+  } | null;
+  deteriorationSigns: string | null;
+  interferences: string | null;
+  interferenceThresholds: Array<{
+    interferent: string;
+    label: string;
+    thresholdValue: number | null;
+    unit: string;
+    /** «no interfiere hasta N» o «interfiere (N)»; los archivos antiguos no lo traen y equivalen a no_interference_below. */
+    effect?: DriInterferenceThreshold['effect'];
+    matrix?: DriSampleMatrix | null;
+    /** «hasta N … interfiere»: interfiere dentro del intervalo probado, sin nivel seguro declarado. */
+    testedUpTo?: { value: number; unit: string } | null;
+    condition?: string | null;
+  }>;
+  calibratorCodes: string[];
+  controlCodes: string[];
+  referenceValues: string | null;
+  calibration: string | null;
+  parameters: Record<string, unknown>;
+}
+
+/** Certificado de análisis (CoA) del lote de producto: lotes de componente y datos de control de fábrica. */
+export interface DriLotCoaFacts {
+  productCode: string | null;
+  productLot: string | null;
+  expiresAt: string | null;
+  manufacturedAt: string | null;
+  components: Array<{ component: string; lot: string; expiresAt: string }>;
+  controlData: Array<{ name: string; lot: string | null; unit: string | null; result: number | null; specMin: number | null; specMax: number | null; verdict: string | null }>;
+  released: boolean;
+}
+
+/** Lote de producto en einfo.bio ligado a un lote de componente (botella) del SAT. */
+export interface DriLotFacts {
+  key: string;
+  productCode: string;
+  productLot: string;
+  title: string | null;
+  expiresAt: string | null;
+  componentLot: string;
+  componentMatchConfirmed: boolean;
+  techniqueCode: string;
+  testNames: string[];
+  sourceUrl: string;
+  fetchedAt: string;
+  ifu: DriLotIfuFacts | null;
+  coa: DriLotCoaFacts | null;
+}
+
+/** Frasco físico (serie del código de barras) de un lote: primer y último pipeteo vistos en el SAT. */
+export interface DriBottleOpening {
+  barcode: string;
+  firstSeenAt: string | null;
+  lastSeenAt: string | null;
+  pipettingCount: number;
+}
+
+/**
+ * Lote de reactivo en uso en el caso, agregado desde las botellas del SAT (una entrada por prueba, rol R1/R2,
+ * lote de componente y caducidad) y ligado a los hechos del lote publicados en einfo.bio.
+ */
+export interface DriCaseReagentBottle {
+  testName: string;
+  reagentId: string | null;
+  /** Clave canónica del reactivo (código visible): une duplicados del catálogo (GLU/GLUCOSA) con el caso. */
+  reagentKey?: string | null;
+  reagentRole: 'R1' | 'R2';
+  techniqueCode: string;
+  /** Lote de componente (5 caracteres del código de barras = LotNumber del analizador = lote del CoA). */
+  lot: string;
+  /** Último día del mes de caducidad impreso en el código de barras. */
+  expiresAt: string;
+  /** Código de barras del frasco más reciente del lote. */
+  barcode: string;
+  /** Frascos físicos (series) vistos de este lote. */
+  bottleCount: number;
+  /** Primer pipeteo del lote en el equipo. */
+  firstSeenAt: string | null;
+  /** Primer pipeteo del frasco más reciente del lote (apertura aproximada). */
+  openedAt: string | null;
+  lastSeenAt: string | null;
+  pipettingCount: number;
+  lotFactsKey: string | null;
+  /** Frascos del lote ordenados por apertura; permiten saber qué frasco estaba abierto en la fecha del evento. */
+  openings?: DriBottleOpening[];
+}
+
+export type DriLotFindingType = 'expired' | 'near_expiry' | 'lot_change' | 'onboard_exceeded' | 'blank_out_of_coa' | 'undocumented';
+
+/** Hallazgo sobre el lote en uso de un reactivo del caso (fallido o correcto, para el contraste). */
+export interface DriLotFinding {
+  id: string;
+  type: DriLotFindingType;
+  reagentId: string;
+  reagentCode: string;
+  outcome: DriOutcomeType;
+  role: 'R1' | 'R2';
+  lot: string;
+  productLot: string | null;
+  title: string;
+  explanation: string;
+  score: number;
+  /** El dato de origen es el mismo blanco rechazado que ya trae el monitor BPL (no es evidencia independiente). */
+  fromBpl?: boolean;
+  /**
+   * El SAT muestra la condición mientras el lote estaba en uso cerca del evento. Los hallazgos extrapolados
+   * (último lote conocido cuando el SAT termina antes) son informativos: no cuentan para el contraste.
+   */
+  observed: boolean;
+}
+
+/** Uso del lote activo respecto al evento: visto cerca del evento, último conocido (el SAT termina antes) o retirado. */
+export type DriLotUsage = 'observed' | 'last_known' | 'stopped';
+
+/** Lote en uso de un reactivo del caso en la fecha del evento, con sus hechos y métricas derivadas. */
+export interface DriLotInUse {
+  reagentId: string;
+  reagentCode: string;
+  outcome: DriOutcomeType;
+  role: 'R1' | 'R2';
+  bottle: DriCaseReagentBottle;
+  /** Frasco abierto en la fecha del evento (el último abierto hasta ese día). */
+  opening: DriBottleOpening;
+  facts: DriLotFacts | null;
+  /** Caducidad efectiva: la del CoA para el lote de componente confirmado si es anterior a la del código de barras. */
+  expiresAt: string;
+  expirySource: 'coa' | 'barcode';
+  daysToExpiry: number | null;
+  /** Horas desde la apertura del frasco hasta el inicio del día del evento. */
+  hoursOnboard: number | null;
+  /** Días de calendario desde la apertura del frasco hasta el día del evento. */
+  daysOnboard: number | null;
+  usage: DriLotUsage;
+  /** Días entre el último pipeteo del frasco y el evento. */
+  daysSinceLastUse: number | null;
+  /** Inicio de la racha actual del lote (después del último cambio real de lote). */
+  runStartedAt: string | null;
+  previousLot: string | null;
+  lotChangedDaysBefore: number | null;
+  /** El SAT termina antes del día del evento. */
+  satEndsBeforeEvent: boolean;
+  /** Hay blanco capturado y especificación de blanco del CoA confirmada: el blanco de este lote se pudo evaluar. */
+  blankEvaluable: boolean;
+  findings: DriLotFinding[];
+}
+
+export interface DriLotIntelligence {
+  lotsInUse: DriLotInUse[];
+  findings: DriLotFinding[];
+  documentedCount: number;
+  undocumentedCount: number;
+  factsGeneratedAt: string | null;
+}
+
 export interface DriReagentMeasurementInput {
   reagentId: string;
   obtainedValue: string;
@@ -275,6 +445,11 @@ export interface DriReagentMeasurementInput {
   sourceResultId?: string | null;
   qcBand?: DriQcBand | null;
   matchConfidence?: 'exact' | 'compatible' | 'unmatched' | null;
+  /**
+   * Referencia con la que se evaluó un control importado (target ± SD del lote de control en uso). Viaja con la
+   * medición porque la del analizador no existe en el catálogo y la lista debe mostrar la misma que se usó.
+   */
+  qcReference?: DriQcReference | null;
 }
 
 export interface DriServiceTestInput {
@@ -377,6 +552,11 @@ export interface DriInterferenceThreshold {
   unit: string;
   effect: 'may_interfere_above' | 'no_interference_below';
   sourceExcerpt?: string | null;
+  /** El IFU declara que interfiere sin un nivel seguro: cualquier concentración observada cuenta. */
+  anyLevel?: boolean;
+  testedUpTo?: { value: number; unit: string } | null;
+  /** «Una concentración elevada de … puede interferir»: sin nivel comparable; solo informativo. */
+  condition?: string | null;
 }
 
 export interface DriCaseFormState {
@@ -405,6 +585,8 @@ export interface DriCaseFormState {
   signals: DriCaseSignals;
   /** Evidencia automática del monitor BPL; opcional para no romper fixtures ni casos antiguos. */
   bplEvidence?: DriBplEvidenceSummary | null;
+  /** Botellas de reactivo del SAT (lote, caducidad, serie) ligadas a los hechos del lote en einfo.bio. */
+  reagentBottles?: DriCaseReagentBottle[] | null;
 }
 
 export interface DriReagentProfile {
@@ -557,6 +739,45 @@ export interface DriEngineLogEntry {
   details: Record<string, unknown>;
 }
 
+/** Veredicto de contraste de un factor compartido entre fallidas y correctas. */
+export type DriContrastVerdict = 'implicates' | 'ambiguous' | 'exonerates' | 'untested';
+
+export interface DriContrastRow {
+  signalId: string;
+  category: DriRelationSignal['category'];
+  label: string;
+  failedShared: string[];
+  correctShared: string[];
+  failedTotal: number;
+  correctTotal: number;
+  failedCoverage: number;
+  correctCoverage: number;
+  /** -1..1: cobertura de fallidas menos cobertura de correctas. */
+  balance: number;
+  /** 0..1: proporción de correctas entre las pruebas que comparten el factor. */
+  exonerationStrength: number;
+  verdict: DriContrastVerdict;
+  explanation: string;
+  /** Reactivos del catálogo (misma plataforma) que comparten el factor y aún no están en el caso. */
+  untestedReagentIds: string[];
+  suspectedSubsystems: DriMechanicalSubsystemId[];
+  suspicionScore: number;
+}
+
+export interface DriDiscriminatingTest {
+  reagentId: string;
+  weight: number;
+  signalIds: string[];
+  reason: string;
+}
+
+export interface DriContrastAnalysis {
+  rows: DriContrastRow[];
+  exonerations: DriContrastRow[];
+  implications: DriContrastRow[];
+  discriminatingTests: DriDiscriminatingTest[];
+}
+
 export interface DriEngineResult {
   runId: string;
   platform: DriEquipmentModel;
@@ -569,6 +790,10 @@ export interface DriEngineResult {
   logs: DriEngineLogEntry[];
   matchedQcReference: DriQcReference | null;
   qcAssessment: DriQcAssessment | null;
+  /** Contraste fallidas/correctas por factor compartido; opcional para resultados persistidos antiguos. */
+  contrast?: DriContrastAnalysis;
+  /** Lotes en uso (SAT) con hechos del lote (einfo.bio); null cuando el caso no trae botellas. */
+  lotIntelligence?: DriLotIntelligence | null;
 }
 
 export interface DriDiagnosticCaseItemRecord {

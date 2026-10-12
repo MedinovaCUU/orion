@@ -28,6 +28,23 @@ export interface SatLotEvidence {
   tests: string[];
 }
 
+/** Botella de reactivo observada en los consumos, con el lote y la caducidad decodificados del código de barras. */
+export interface SatReagentBottle {
+  testName: string;
+  reagentRole: 'R1' | 'R2';
+  barcode: string;
+  techniqueCode: string;
+  lot: string;
+  expiryMonth: number;
+  expiryYear: number;
+  expiresAt: string;
+  bottleSerial: string;
+  firstSeenAt: string | null;
+  lastSeenAt: string | null;
+  pipettingCount: number;
+  sourceFile: string;
+}
+
 export interface SatConsumptionSummary {
   summaryKey: string;
   bucketMonth: string;
@@ -115,6 +132,8 @@ export interface SatReportSummary {
   lots: SatLotEvidence[];
   consumption: SatConsumptionSummary[];
   rotors: SatRotorSummary[];
+  /** Botellas de reactivo decodificadas (lote, caducidad, serie); vacío en reportes sin códigos de barras legibles. */
+  reagentBottles?: SatReagentBottle[];
   /** Filled by the server-side .bak extractor. CSV/XML-only imports leave it empty. */
   qcResults?: SatQcResult[];
   coverage: SatReportCoverage;
@@ -134,7 +153,19 @@ export interface SatReportSummary {
 
 export interface SatPersistResult {
   importId: string | null;
+  /** Ruta del original, o de su manifiesto `.manifest.json` cuando se guardó en partes. */
   storagePath: string | null;
+  /** Partes en que se guardó el original (1 = archivo entero, 0 = no se guardó). */
+  storedParts?: number;
   persisted: boolean;
   warning: string | null;
+  /** Lo que quedó escrito en las tablas de Monitoreo y DRI. */
+  written?: {
+    consumptionMonths: number;
+    consumptionRows: number;
+    rotorRows: number;
+    eventRows: number;
+    lotRows: number;
+    qcEventRows: number;
+  };
 }

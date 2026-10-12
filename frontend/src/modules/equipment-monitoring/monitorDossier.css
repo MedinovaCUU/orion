@@ -778,7 +778,8 @@
 }
 
 .equipment-monitor__empty-state code {
-  font: 600 11.5px/1 ui-monospace, 'SF Mono', Menlo, monospace;
+  font: 600 11.5px/1 var(--mon-font-body);
+  font-variant-numeric: tabular-nums;
   color: var(--mon-ink);
 }
 

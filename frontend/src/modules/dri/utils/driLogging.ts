@@ -7,6 +7,18 @@ const toneMethod: Record<DriLogLevel, 'info' | 'warn' | 'error' | 'info'> = {
   error: 'error',
 };
 
+let quietDepth = 0;
+
+/** Ejecuta `fn` sin eco en consola: las entradas siguen llegando al `sink` del motor. */
+export const withQuietDriLogging = <T,>(fn: () => T): T => {
+  quietDepth += 1;
+  try {
+    return fn();
+  } finally {
+    quietDepth -= 1;
+  }
+};
+
 export const createDriLogger = (runId: string, platform: string, sink: DriEngineLogEntry[]) => {
   const push = (
     namespace: string,
@@ -24,8 +36,10 @@ export const createDriLogger = (runId: string, platform: string, sink: DriEngine
       details,
     };
     sink.push(entry);
-    const method = toneMethod[level];
-    console[method](`${namespace} ${step} · ${message}`, details);
+    if (quietDepth === 0) {
+      const method = toneMethod[level];
+      console[method](`${namespace} ${step} · ${message}`, details);
+    }
     return entry;
   };
 

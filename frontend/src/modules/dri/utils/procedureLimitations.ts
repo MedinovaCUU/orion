@@ -21,6 +21,17 @@ export interface DriProcedureFinding {
 
 const normalizeUnit = (value?: string | null) => (value || '').replace(/\s+/g, '').toLowerCase();
 
+/** Factor a mg/dL para unidades de masa por volumen (g/L ×100, mg/L ×0.1, g/dL ×1000); null si no es convertible. */
+const MASS_TO_MG_DL: Record<string, number> = { 'mg/dl': 1, 'g/l': 100, 'mg/l': 0.1, 'g/dl': 1000 };
+
+/** Lleva un valor de interferente a la unidad del umbral cuando ambas son de masa por volumen. */
+const toThresholdUnit = (value: number, unit: string, thresholdUnit: string) => {
+  if (normalizeUnit(unit) === normalizeUnit(thresholdUnit)) return value;
+  const from = MASS_TO_MG_DL[normalizeUnit(unit)];
+  const to = MASS_TO_MG_DL[normalizeUnit(thresholdUnit)];
+  return from && to ? (value * from) / to : null;
+};
+
 const parseOptionalNumeric = (value: string | number | null | undefined) => {
   if (typeof value === 'number') {
     return Number.isFinite(value) ? value : null;
@@ -93,13 +104,25 @@ export const assessProcedureLimitations = ({
 
   failedProfiles.forEach((profile) => {
     profile.interferenceThresholds.value.forEach((threshold) => {
-      const observed = observedInterferents.find(
-        (candidate) =>
-          candidate.interferent === threshold.interferent &&
-          normalizeUnit(candidate.unit) === normalizeUnit(threshold.unit),
-      );
+      // La observación puede venir en otra unidad de masa (12 g/L de hemoglobina contra un umbral en mg/dL).
+      // Si el IFU declara interferencia sin nivel seguro, cualquier valor observado cuenta, en cualquier unidad.
+      // «Interfiere si está elevada» no tiene un nivel comparable con lo observado: solo se muestra en la ficha.
+      if (threshold.condition === 'elevated') return;
+      const observed = observedInterferents
+        .filter((candidate) => candidate.interferent === threshold.interferent)
+        .map((candidate) => {
+          // Un índice HIL en 0 no es interferencia aunque el IFU no declare un nivel seguro.
+          if (threshold.anyLevel) return candidate.value > 0 ? { ...candidate, original: `${candidate.value} ${candidate.unit}` } : null;
+          const converted = toThresholdUnit(candidate.value, candidate.unit, threshold.unit);
+          return converted === null ? null : { ...candidate, value: converted, unit: threshold.unit, original: `${candidate.value} ${candidate.unit}` };
+        })
+        .filter((candidate): candidate is NonNullable<typeof candidate> => candidate !== null)
+        // Se evalúan todas las menciones: gana la mayor (una toma baja en g/L no oculta otra alta en mg/dL).
+        .sort((left, right) => right.value - left.value)[0];
 
-      if (!observed || observed.value <= threshold.thresholdValue) {
+      // «no interfiere hasta N»: solo por encima de N hay riesgo. «interfiere (N)»: desde N ya hay interferencia.
+      const interferesFromThreshold = threshold.effect === 'may_interfere_above';
+      if (!observed || (!threshold.anyLevel && (interferesFromThreshold ? observed.value < threshold.thresholdValue : observed.value <= threshold.thresholdValue))) {
         return;
       }
 
@@ -109,7 +132,11 @@ export const assessProcedureLimitations = ({
         reagentId: profile.id,
         reagentCode: profile.referenceCode.value || profile.id,
         title: `${profile.referenceCode.value || profile.id} · posible interferencia por ${threshold.label}`,
-        explanation: `${threshold.label} observada ${observed.value} ${observed.unit}; el IFU indica no interferencia solo hasta ${threshold.thresholdValue} ${threshold.unit}.`,
+        explanation: threshold.anyLevel
+          ? `${threshold.label} observada ${observed.original}; el IFU declara que interfiere${threshold.testedUpTo ? ` (probada hasta ${threshold.testedUpTo.value} ${threshold.testedUpTo.unit})` : ''}, sin un nivel seguro.`
+          : interferesFromThreshold
+          ? `${threshold.label} observada ${observed.original}; el IFU declara interferencia desde ${threshold.thresholdValue} ${threshold.unit}.`
+          : `${threshold.label} observada ${observed.original}; el IFU indica no interferencia solo hasta ${threshold.thresholdValue} ${threshold.unit}.`,
         score: 82,
         source: 'observations',
         interferent: threshold.interferent,

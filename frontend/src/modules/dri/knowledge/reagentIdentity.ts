@@ -367,6 +367,32 @@ const buildSupplementalProductEntries = (
 
 export const getReagentDisplayCode = (reagent: DriReagent) => reagent.displayCode || reagent.referenceCode || reagent.id;
 
+/**
+ * Clave con la que se agrupan los duplicados del catálogo (GLU y GLUCOSA comparten código visible). Es la misma
+ * para la lista de reactivos del tablero, la clasificación de controles y las botellas del SAT.
+ */
+export const reagentSelectionKey = (reagent: DriReagent) => getReagentDisplayCode(reagent).trim().toUpperCase() || getCanonicalReagentKey(reagent);
+
+/**
+ * Puntuación para elegir el reactivo representativo entre duplicados. Una sola regla para todo el módulo: si la
+ * lista muestra «MG», un control de magnesio debe marcar «MG» y no un duplicado que la lista oculta.
+ */
+export const reagentSelectionScore = (reagent: DriReagent) => {
+  const metadata = (reagent.metadata || {}) as Record<string, unknown>;
+  let score = metadata.syntheticFromContext ? 0 : 120;
+  if (reagent.id === reagentSelectionKey(reagent)) score += 40;
+  if (reagent.primaryWavelengthNm !== null && reagent.primaryWavelengthNm !== undefined) score += 30;
+  if (reagent.readMode) score += 20;
+  if (reagent.reagentType) score += 20;
+  if (reagent.reportedMethod) score += 20;
+  if (String(reagent.sourceStatus || '').toLowerCase().includes('ifu')) score += 10;
+  return score;
+};
+
+/** El representativo de un grupo de duplicados: mayor puntuación y, a igualdad, id en orden alfabético. */
+export const pickRepresentativeReagent = <T extends DriReagent>(reagents: T[]) =>
+  [...reagents].sort((left, right) => reagentSelectionScore(right) - reagentSelectionScore(left) || left.id.localeCompare(right.id))[0] || null;
+
 export const getReagentDisplayName = (reagent: DriReagent) => reagent.displayName || reagent.name || reagent.id;
 
 export const buildReagentSearchText = (reagent: DriReagent) => {

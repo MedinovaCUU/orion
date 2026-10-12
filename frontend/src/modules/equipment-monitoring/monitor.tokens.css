@@ -41,8 +41,8 @@
   --mon-pill: 999px;
   --mon-ease: 0.22s ease;
   /* tipografía */
-  --mon-font-heading: var(--font-heading, 'Sora', sans-serif);
-  --mon-font-body: var(--font-body, 'Manrope', sans-serif);
+  --mon-font-heading: var(--font-heading, 'Alliance No.2', sans-serif);
+  --mon-font-body: var(--font-body, 'Alliance No.2', sans-serif);
   /* escenario profundo: cristal oscuro sobre el globo (riel, HUD, explorador 3D) */
   --stage-deep: #071927;
   --stage-deep-2: #0b2638;

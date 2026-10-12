@@ -2,6 +2,84 @@ import { supabase } from '../../supabaseClient';
 import type { SatPersistResult, SatQcResult, SatReportSummary } from './satReportTypes';
 
 const SAT_BUCKET = 'sat-reports';
+
+let cachedExportPassword: string | null = null;
+
+/**
+ * Contraseña de exportación de los SAT: es un secreto del proyecto en Supabase (`SAT_EXPORT_PASSWORD`) que entrega
+ * la función `sat-export-password` solo a usuarios con sesión. Se guarda en memoria durante la sesión de la página.
+ * Devuelve null sin sesión (modo demostración) o si el secreto no está configurado.
+ */
+export const loadSatExportPassword = async (): Promise<string | null> => {
+  if (cachedExportPassword) return cachedExportPassword;
+  const { data: sessionData } = await supabase.auth.getSession();
+  if (!sessionData.session) return null;
+  const { data, error } = await supabase.functions.invoke('sat-export-password', { body: {} });
+  const password = !error && data && typeof data.password === 'string' ? data.password : '';
+  if (!password) return null;
+  cachedExportPassword = password;
+  return password;
+};
+/**
+ * Tamaño de cada parte del SAT original en Storage. Los SAT traen el respaldo .bak y pasan de 100 MiB (límite del
+ * bucket) con facilidad; en partes de 45 MiB caben bajo cualquier límite de carga del proyecto (50 MiB por defecto).
+ */
+export const SAT_PART_BYTES = 45 * 1024 * 1024;
+
+/** Manifiesto de un SAT guardado en partes: se vuelve a unir concatenando `parts` en orden. */
+export interface SatStorageManifest {
+  schemaVersion: 'sat-parts-v1';
+  fileName: string;
+  fileSize: number;
+  sha256: string;
+  partBytes: number;
+  parts: Array<{ path: string; size: number }>;
+}
+
+/** Lo mínimo de un bucket de Storage que necesita la subida (inyectable en pruebas). */
+export interface SatUploadBucket {
+  upload: (path: string, body: Blob, options: { contentType: string; upsert: boolean; cacheControl: string }) => Promise<{ error: { message: string } | null }>;
+}
+
+/** Sube el original entero o en partes con su manifiesto; devuelve la ruta que se enlaza al registro. */
+export const uploadSatOriginal = async (
+  bucket: SatUploadBucket,
+  file: File,
+  sha256: string,
+  storagePath: string,
+  onProgress?: (message: string, percent: number) => void,
+  partBytes = SAT_PART_BYTES,
+): Promise<{ path: string; parts: number } | { error: string }> => {
+  const options = { contentType: 'application/octet-stream', upsert: true, cacheControl: '3600' };
+  if (file.size <= partBytes) {
+    const result = await bucket.upload(storagePath, file, options);
+    return result.error ? { error: result.error.message } : { path: storagePath, parts: 1 };
+  }
+  const total = Math.ceil(file.size / partBytes);
+  const pad = (value: number) => String(value).padStart(3, '0');
+  const parts: SatStorageManifest['parts'] = [];
+  for (let index = 0; index < total; index += 1) {
+    const start = index * partBytes;
+    const blob = file.slice(start, Math.min(file.size, start + partBytes), 'application/octet-stream');
+    const path = `${storagePath}.part-${pad(index + 1)}-of-${pad(total)}`;
+    onProgress?.(`Guardando el SAT original · parte ${index + 1} de ${total}`, 72 + Math.round((index / total) * 24));
+    const result = await bucket.upload(path, blob, options);
+    if (result.error) return { error: `parte ${index + 1} de ${total}: ${result.error.message}` };
+    parts.push({ path, size: blob.size });
+  }
+  const manifest: SatStorageManifest = {
+    schemaVersion: 'sat-parts-v1',
+    fileName: file.name,
+    fileSize: file.size,
+    sha256,
+    partBytes,
+    parts,
+  };
+  const manifestPath = `${storagePath}.manifest.json`;
+  const manifestBlob = new Blob([JSON.stringify(manifest, null, 2)], { type: 'application/octet-stream' });
+  const result = await bucket.upload(manifestPath, manifestBlob, options);
+  return result.error ? { error: `manifiesto: ${result.error.message}` } : { path: manifestPath, parts: total };
+};
 const chunk = <T,>(rows: T[], size = 250) => {
   const batches: T[][] = [];
   for (let index = 0; index < rows.length; index += size) batches.push(rows.slice(index, index + size));
@@ -202,18 +280,14 @@ export const persistSatReport = async (
     }));
   if (qcEvents.length) await writeBatches('qc_events', qcEvents);
 
-  onProgress?.('Conservando el SAT original cifrado', 72);
-  const uploadResult = await supabase.storage.from(SAT_BUCKET).upload(storagePath, file, {
-    contentType: 'application/octet-stream',
-    upsert: true,
-    cacheControl: '3600',
-  });
-  if (uploadResult.error) {
-    warnings.push(`Los datos normalizados quedaron guardados, pero el archivo original no: ${uploadResult.error.message}`);
+  onProgress?.('Guardando el SAT original cifrado', 72);
+  const upload = await uploadSatOriginal(supabase.storage.from(SAT_BUCKET), file, summary.sha256, storagePath, onProgress);
+  if ('error' in upload) {
+    warnings.push(`Los datos quedaron guardados, pero el archivo original no (${upload.error}). Puedes volver a importar el mismo archivo para reintentarlo.`);
   } else {
     const { error } = await supabase
       .from('sat_report_imports')
-      .update({ storage_path: storagePath, updated_at: new Date().toISOString() })
+      .update({ storage_path: upload.path, updated_at: new Date().toISOString() })
       .eq('id', importId);
     if (error) warnings.push(`El archivo se almacenó, pero no se pudo enlazar al registro: ${error.message}`);
   }
@@ -221,9 +295,18 @@ export const persistSatReport = async (
   onProgress?.('Importación lista para Monitoreo y DRI', 100);
   return {
     importId,
-    storagePath: uploadResult.error ? null : storagePath,
+    storagePath: 'error' in upload ? null : upload.path,
+    storedParts: 'error' in upload ? 0 : upload.parts,
     persisted: true,
     warning: warnings.join(' ') || null,
+    written: {
+      consumptionMonths: new Set(summary.consumption.map((row) => row.bucketMonth)).size,
+      consumptionRows: consumptionRows.length,
+      rotorRows: rotorRows.length,
+      eventRows: summary.events.length,
+      lotRows: summary.lots.length,
+      qcEventRows: qcEvents.length,
+    },
   };
 };
 

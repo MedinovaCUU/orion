@@ -103,11 +103,11 @@ export const BA400_KNOWLEDGE: DriPlatformKnowledge = {
       confirmatoryActions: [
         'Ejecutar Thermostatting.',
         'Comparar enzimáticas sensibles vs endpoint estables.',
-        'Revisar refrigeración y estabilidad abordo.',
+        'Revisar refrigeración y estabilidad a bordo.',
       ],
       correctiveActions: [
         'Confirmar temperatura del rotor y refrigerador antes de culpar al reactivo.',
-        'Validar reactivo fresco y estabilidad abordo.',
+        'Validar reactivo fresco y estabilidad a bordo.',
       ],
       candidateParts: ['Sensor térmico', 'Rotor de reacción', 'Módulo de refrigeración'],
       checklist: [

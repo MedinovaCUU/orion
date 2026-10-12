@@ -104,7 +104,7 @@ const BA400_HIERARCHY: DriBa400HierarchyNodeDefinition[] = [
 
   { id: 'pipetting:sample_arm', parentId: 'sys:pipetting', rootId: 'pipetting', label: 'Brazo de muestra', subtitle: 'coágulo · nivel · colisión', depth: 2, mechanicalSubsystems: ['sample_arm', 'clot_sensor', 'level_detection'], signalCategories: ['service', 'water', 'contamination', 'dilution', 'volume'] },
   { id: 'pipetting:r1_arm', parentId: 'sys:pipetting', rootId: 'pipetting', label: 'Brazo R1', subtitle: 'temperatura · nivel · colisión', depth: 2, mechanicalSubsystems: ['reagent_arm_r1', 'level_detection'], signalCategories: ['scheme', 'service', 'volume'] },
-  { id: 'pipetting:r2_arm', parentId: 'sys:pipetting', rootId: 'pipetting', label: 'Brazo R2', subtitle: 'temperatura · nivel · colisión', depth: 2, mechanicalSubsystems: ['reagent_arm_r2', 'level_detection'], signalCategories: ['r2', 'scheme', 'service', 'volume'] },
+  { id: 'pipetting:r2_arm', parentId: 'sys:pipetting', rootId: 'pipetting', label: 'Brazo R2', subtitle: 'documentado R2 · físicamente izquierdo · nivel · colisión', depth: 2, mechanicalSubsystems: ['reagent_arm_r2', 'level_detection'], signalCategories: ['r2', 'scheme', 'service', 'volume'] },
   { id: 'pipetting:mixing', parentId: 'sys:pipetting', rootId: 'pipetting', label: 'Agitación', subtitle: 'muestra y post-R2', depth: 2, mechanicalSubsystems: ['stirrer'], signalCategories: ['reaction', 'technique', 'r2', 'service'] },
 
   { id: 'wash:tip_head', parentId: 'sys:wash', rootId: 'wash', label: 'Cabezal de 7 puntas', subtitle: '10 etapas de lavado', depth: 2, mechanicalSubsystems: ['wash_station'], signalCategories: ['blank', 'water', 'contamination'] },

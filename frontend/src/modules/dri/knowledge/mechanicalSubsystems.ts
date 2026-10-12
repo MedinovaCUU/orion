@@ -3,7 +3,7 @@ import type { DriMechanicalSubsystemId } from '../types/dri.types';
 export const DRI_SUBSYSTEM_LABELS: Record<DriMechanicalSubsystemId, string> = {
   sample_arm: 'Brazo de muestra',
   reagent_arm_r1: 'Brazo de reactivo R1',
-  reagent_arm_r2: 'Brazo de reactivo R2',
+  reagent_arm_r2: 'Brazo de reactivo R2 (documentado como R2; físicamente el brazo izquierdo)',
   reaction_rotor: 'Rotor de reacción',
   wash_station: 'Estación de lavado',
   optical_system: 'Sistema óptico',

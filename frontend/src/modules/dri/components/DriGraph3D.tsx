@@ -2,6 +2,7 @@ import { Billboard, CubicBezierLine, OrbitControls, Text } from '@react-three/dr
 import { Canvas, type ThreeEvent, useFrame } from '@react-three/fiber';
 import { useMemo, useRef } from 'react';
 import { AdditiveBlending, Vector3, type Group, type Mesh } from 'three';
+import { BRAND_FONT_TTF } from '../../../config/brandFonts';
 import type { DriGraphEdge, DriGraphNode } from '../driTypes';
 
 interface DriGraph3DProps {
@@ -17,6 +18,8 @@ interface DriGraph3DProps {
     factorStep: number;
     reagentRadius: number;
   };
+  /** Pausa el render (fuera de pantalla, pestaña oculta): no cambia el aspecto del grafo. */
+  paused?: boolean;
 }
 
 interface PositionedNode extends DriGraphNode {
@@ -827,6 +830,7 @@ function FloatingNode({
       <Billboard follow position={[0, labelOffset, 0]}>
         <Text
           ref={labelRef}
+          font={BRAND_FONT_TTF.medium}
           color={labelColor}
           fontSize={
             ambient
@@ -861,6 +865,7 @@ function FloatingNode({
         {showSubtitle ? (
           <Text
             ref={subtitleRef}
+            font={BRAND_FONT_TTF.regular}
             position={[
               0,
               ambient
@@ -1326,7 +1331,7 @@ function GraphScene({ nodes, edges, selectedNodeIds, onToggleNode, focusedSystem
   );
 }
 
-export default function DriGraph3D(props: DriGraph3DProps) {
+export default function DriGraph3D({ paused = false, ...props }: DriGraph3DProps) {
   if (props.nodes.length === 0) {
     return <div className="dri-graph-empty">Selecciona reactivos fallidos y correctos para construir el grafo relacional.</div>;
   }
@@ -1334,6 +1339,7 @@ export default function DriGraph3D(props: DriGraph3DProps) {
   return (
     <div className="dri-graph-canvas">
       <Canvas
+        frameloop={paused ? 'never' : 'always'}
         camera={{
           position: [...DRI_GRAPH_CONFIG.scene.camera.position] as [number, number, number],
           fov: DRI_GRAPH_CONFIG.scene.camera.fov,

@@ -12,6 +12,8 @@ const pageErrors = [];
 const writes = [];
 const failedResponses = [];
 const page = await browser.newPage({ viewport: { width: 1600, height: 1100 }, deviceScaleFactor: 1 });
+// La animación de bienvenida (8 s) cubre la página en un contexto nuevo; se marca como vista para que los clics lleguen al visor.
+await page.addInitScript(() => { try { window.sessionStorage.setItem('orion.intro.seen', '1'); } catch { /* sin almacenamiento */ } });
 page.on('pageerror', e => pageErrors.push(e.message));
 page.on('request', request => { if (['POST', 'PUT', 'PATCH', 'DELETE'].includes(request.method()) && /supabase|rest\/v1/.test(request.url())) writes.push(request.url()); });
 page.on('response', r => { if (r.status() >= 400 && !r.url().includes('favicon')) failedResponses.push([r.status(), r.url()]); });
@@ -21,8 +23,18 @@ const workspace = page.locator('.ba400-workspace');
 const inspector = page.locator('.ba400-inspector');
 const ready = async (p = page) => {
   await p.getByTestId('ba400-canvas').waitFor({ timeout: 60000 });
-  await p.waitForFunction(() => ['ready', 'error'].includes(document.querySelector('[data-testid="ba400-canvas"]')?.getAttribute('data-state')), null, { timeout: 60000 });
-  assert.equal(await p.getByTestId('ba400-canvas').getAttribute('data-state'), 'ready', await p.locator('.ba400-stage').innerText());
+  // Un diagnóstico nuevo remonta la sesión del visor en una transición diferida: el lienzo anterior puede seguir
+  // en 'ready' un instante antes de que el nuevo aparezca en 'loading'. Se espera a que el estado sea estable.
+  const deadline = Date.now() + 60000;
+  for (;;) {
+    await p.waitForFunction(() => ['ready', 'error'].includes(document.querySelector('[data-testid="ba400-canvas"]')?.getAttribute('data-state')), null, { timeout: 60000 });
+    await p.waitForTimeout(500);
+    const state = await p.getByTestId('ba400-canvas').getAttribute('data-state');
+    if (state === 'ready' || state === 'error' || Date.now() > deadline) {
+      assert.equal(state, 'ready', await p.locator('.ba400-stage').innerText());
+      return;
+    }
+  }
 };
 const choose = async (title) => { await page.locator('.ba400-finding-list').getByRole('button', { name: new RegExp(title) }).click(); await page.waitForTimeout(850); };
 const screenshot = async (name, target = page) => { await target.screenshot({ path: fileURLToPath(new URL(name + '.png', out)) }); };
@@ -36,7 +48,10 @@ try {
   await page.waitForTimeout(850);
   await screenshot('01-demo-overview');
   checks.push('DEMO BA400 opens offline seeded real-engine case, six findings, assembled model');
-  // Actual raycast selection, not a catalog click.
+  // Actual raycast selection, not a catalog click. The explorer now lives below the relation map,
+  // so it is scrolled into view first (raw mouse clicks do not auto-scroll).
+  await page.getByTestId('ba400-stage').scrollIntoViewIfNeeded();
+  await page.waitForTimeout(600);
   const canvas = await page.locator('.ba400-canvas canvas').boundingBox();
   await page.mouse.click(canvas.x + canvas.width * .5, canvas.y + canvas.height * .55);
   await page.locator('.ba400-inspector-title').waitFor();
@@ -151,6 +166,7 @@ try {
   assert.equal(failedResponses.length, 0, JSON.stringify(failedResponses));
   // New browser context has no module cache: simulate a real recoverable HTTP failure.
   const errorPage = await browser.newPage({ viewport: { width: 1440, height: 1000 } });
+  await errorPage.addInitScript(() => { try { window.sessionStorage.setItem('orion.intro.seen', '1'); } catch { /* sin almacenamiento */ } });
   let attempts = 0;
   await errorPage.route('**/BA400_web.glb*', async route => {
     attempts++;

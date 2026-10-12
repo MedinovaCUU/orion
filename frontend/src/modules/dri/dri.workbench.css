@@ -1,0 +1,447 @@
+/*
+ * Banco de trabajo DRI. Orden vertical a todo lo ancho: franja de mando compacta, escenario del mapa de
+ * relaciones (casi pantalla completa), fuentes de evidencia y panel de herramientas (Caso / Hipótesis /
+ * Contraste / Evidencia) con rejillas de varias columnas; el explorador 3D cierra la página.
+ * Identidad perla/HUD: cian para datos, rojo Biosystems solo para riesgo, ámbar para pendiente, grafito sin dato.
+ */
+.dri-workbench {
+  --dri-stage-h: clamp(36rem, calc(100svh - 9rem), 80rem);
+  --dri-gap: 1rem;
+  --dri-cyan-rgb: var(--environmental-rgb, 105, 221, 224);
+  --dri-cyan-ink: #1f6f8a;
+  --dri-risk-rgb: var(--brand-red-rgb, 243, 39, 53);
+  --dri-warn-rgb: 255, 196, 94;
+  --dri-graphite-rgb: 124, 136, 149;
+  gap: var(--dri-gap);
+}
+
+/* ---------- Franja de mando: una sola línea en escritorio ---------- */
+.dri-command {
+  display: grid;
+  grid-template-columns: minmax(16rem, 1fr) auto auto;
+  align-items: center;
+  gap: 0.6rem 1.25rem;
+  padding: 0.7rem 1.1rem;
+}
+
+.dri-command__identity {
+  display: grid;
+  gap: 0.3rem;
+  min-width: 0;
+}
+
+.dri-command__identity .dri-hero__eyebrow {
+  font-size: 0.6875rem;
+}
+
+.dri-command__identity h2 {
+  font-size: 1.05rem;
+  line-height: 1.25;
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.dri-command__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.dri-command__chips .dri-badge {
+  min-height: 1.55rem;
+  padding: 0.15rem 0.55rem;
+  font-size: 0.6875rem;
+}
+
+.dri-command__case {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 0.75rem;
+  min-width: 0;
+}
+
+.dri-command__platforms {
+  display: inline-flex;
+  gap: 0.3rem;
+  padding: 0.2rem;
+  border-radius: 999px;
+  border: 1px solid var(--surface-outline);
+  background: rgba(255, 255, 255, 0.66);
+}
+
+.dri-command__platforms .dri-platform-pill {
+  width: auto;
+  padding: 0.3rem 0.75rem;
+  border-radius: 999px;
+  border-color: transparent;
+  background: transparent;
+  box-shadow: none;
+}
+
+.dri-command__platforms .dri-platform-pill strong {
+  font-size: 0.8rem;
+}
+
+.dri-command__platforms .dri-platform-pill span {
+  display: none;
+}
+
+.dri-command__platforms .dri-platform-pill.is-active {
+  background: linear-gradient(180deg, rgba(var(--dri-cyan-rgb), 0.24), rgba(var(--dri-cyan-rgb), 0.12));
+  border-color: rgba(var(--dri-cyan-rgb), 0.38);
+}
+
+.dri-command__platforms .dri-platform-pill.is-active strong {
+  color: var(--dri-cyan-ink);
+}
+
+.dri-command__serial {
+  display: inline-grid;
+  grid-template-columns: auto minmax(9rem, 11rem) auto;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.dri-command__serial > span {
+  font-size: 0.6875rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+}
+
+.dri-command__serial .input-field {
+  min-height: 2.3rem;
+  padding: 0.35rem 0.7rem;
+}
+
+.dri-command__actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.dri-command__actions .dri-pill-button,
+.dri-command__actions .dri-ghost-button,
+.dri-command__serial .dri-pill-button {
+  min-height: 2.2rem;
+  padding: 0.3rem 0.8rem;
+  font-size: 0.78rem;
+}
+
+.dri-command__generate {
+  min-height: 2.4rem;
+  padding: 0.4rem 1.1rem;
+  background: linear-gradient(135deg, rgba(var(--dri-risk-rgb), 0.96), rgba(138, 32, 43, 0.94));
+  border-color: rgba(var(--dri-risk-rgb), 0.28);
+  color: var(--text-on-brand);
+  box-shadow:
+    0 14px 28px rgba(var(--dri-risk-rgb), 0.18),
+    inset 0 1px 0 rgba(255, 255, 255, 0.18);
+}
+
+.dri-command__generate:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.dri-alert--info {
+  border-color: rgba(var(--dri-cyan-rgb), 0.3);
+  background: linear-gradient(180deg, rgba(var(--dri-cyan-rgb), 0.16), rgba(236, 247, 251, 0.8));
+  color: var(--dri-cyan-ink);
+}
+
+/* ---------- Escenario a todo lo ancho ---------- */
+.dri-workbench__stage {
+  min-width: 0;
+}
+
+.dri-stage {
+  position: relative;
+  height: var(--dri-stage-h);
+  min-width: 0;
+  border-radius: 1.5rem;
+  overflow: hidden;
+  isolation: isolate;
+  border: 1px solid rgba(var(--environmental-blue-rgb), 0.16);
+  background:
+    radial-gradient(circle at top right, rgba(var(--dri-risk-rgb), 0.06), transparent 26%),
+    radial-gradient(circle at 86% 22%, rgba(var(--environmental-blue-rgb), 0.08), transparent 28%),
+    radial-gradient(circle at 18% 16%, rgba(255, 255, 255, 0.72), transparent 22%),
+    linear-gradient(180deg, rgba(247, 250, 252, 0.98), rgba(229, 236, 241, 0.96)),
+    rgba(234, 240, 244, 0.92);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.72),
+    0 24px 46px rgba(105, 119, 136, 0.14);
+}
+
+/* ---------- Fuentes de evidencia ---------- */
+.dri-sources {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+/* ---------- Panel de herramientas a todo lo ancho ---------- */
+.dri-workbench__panel {
+  display: grid;
+  gap: 0.9rem;
+  min-width: 0;
+}
+
+.dri-dock-tabs {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  width: fit-content;
+  max-width: 100%;
+  padding: 0.3rem;
+  border-radius: 999px;
+  border: 1px solid var(--surface-outline);
+  background: rgba(255, 255, 255, 0.7);
+}
+
+.dri-dock-tab {
+  appearance: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  min-height: 2.3rem;
+  padding: 0.35rem 1rem;
+  white-space: nowrap;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--text-secondary);
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  cursor: pointer;
+  transition: background 0.18s ease, color 0.18s ease, border-color 0.18s ease;
+}
+
+.dri-dock-tab__count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.4rem;
+  height: 1.4rem;
+  padding: 0 0.3rem;
+  border-radius: 999px;
+  background: rgba(var(--dri-graphite-rgb), 0.14);
+  color: var(--text-secondary);
+  font-size: 0.7rem;
+  font-weight: 800;
+}
+
+.dri-dock-tab.is-active {
+  background: linear-gradient(180deg, rgba(var(--dri-cyan-rgb), 0.22), rgba(var(--dri-cyan-rgb), 0.12));
+  border-color: rgba(var(--dri-cyan-rgb), 0.35);
+  color: var(--dri-cyan-ink);
+}
+
+.dri-dock-tab.is-active .dri-dock-tab__count {
+  background: rgba(var(--dri-cyan-rgb), 0.3);
+  color: var(--dri-cyan-ink);
+}
+
+.dri-dock-section {
+  display: grid;
+  gap: 0.9rem;
+  padding: 1.25rem;
+  border-radius: 1.5rem;
+  border: 1px solid var(--surface-outline);
+  background:
+    radial-gradient(circle at top right, rgba(var(--dri-risk-rgb), 0.06), transparent 26%),
+    linear-gradient(160deg, rgba(255, 255, 255, 0.92), rgba(242, 246, 249, 0.76)),
+    rgba(255, 255, 255, 0.42);
+  box-shadow: var(--surface-shadow);
+}
+
+.dri-dock-section .dri-panel__head {
+  margin-bottom: 0;
+}
+
+/* Rejillas de varias columnas: el panel ocupa todo el ancho, las listas no deben ser una sola columna. */
+.dri-workbench__panel .dri-dock__list {
+  grid-template-columns: repeat(auto-fill, minmax(26rem, 1fr));
+  align-items: start;
+}
+
+.dri-workbench__panel .dri-dock-card {
+  min-width: 0;
+}
+
+.dri-workbench__panel .dri-contrast__groups {
+  grid-template-columns: repeat(auto-fill, minmax(24rem, 1fr));
+  align-items: start;
+}
+
+.dri-workbench__panel .dri-dock-tests__list {
+  grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
+  align-items: start;
+}
+
+.dri-workbench__panel .dri-evidence-grid {
+  grid-template-columns: repeat(auto-fit, minmax(22rem, 1fr));
+  align-items: start;
+}
+
+.dri-workbench__panel .dri-evidence-grid > section:first-child {
+  grid-column: 1 / -1;
+}
+
+/* Formulario dentro del panel: conserva la rejilla ancha original; solo se oculta lo que vive en la franja. */
+.dri-panel--embedded {
+  padding: 1.25rem;
+}
+
+/* Procedencia: un campo o reactivo escrito por una fuente y aún no editado lleva un riel cian. */
+.dri-panel--embedded [data-provenance='source'] .input-field,
+.dri-panel--form [data-provenance='source'] .input-field {
+  box-shadow: inset 3px 0 0 rgba(var(--dri-cyan-rgb), 0.85);
+}
+
+.dri-reagent-pill-card[data-provenance='source'] {
+  box-shadow: inset 3px 0 0 rgba(var(--dri-cyan-rgb), 0.85);
+}
+
+.dri-fixture-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(22rem, 1fr));
+  gap: 0.4rem 1.2rem;
+  margin: 0.6rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.dri-fixture-list li {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+}
+
+.dri-fixture-list__title {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.dri-mini-badge.is-pass {
+  border-color: rgba(var(--dri-cyan-rgb), 0.4);
+  color: var(--dri-cyan-ink);
+}
+
+.dri-mini-badge.is-fail {
+  border-color: rgba(var(--dri-warn-rgb), 0.5);
+  color: #8a5f00;
+}
+
+/* ---------- Explorador 3D ---------- */
+.dri-explorer {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.dri-explorer__bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.85rem 1.1rem;
+  border-radius: 1.2rem;
+  border: 1px solid var(--surface-outline);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.92), rgba(244, 247, 250, 0.82)),
+    rgba(255, 255, 255, 0.44);
+}
+
+.dri-explorer__bar strong {
+  display: block;
+  color: var(--text-primary);
+  font-size: 0.9rem;
+}
+
+.dri-explorer__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+
+/* El visor trae su escenario a 100dvh; dentro del cajón se acota a la ventana sin tocar ba400.css. */
+.dri-explorer .ba400-stage {
+  height: clamp(28rem, calc(100svh - 12rem), 60rem);
+}
+
+/* ---------- Escalera de puntos de quiebre ---------- */
+@media (max-width: 1260px) {
+  .dri-workbench {
+    --dri-stage-h: clamp(30rem, calc(100svh - 10rem), 60rem);
+  }
+
+  .dri-command {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+
+  .dri-command__actions {
+    grid-column: 1 / -1;
+    justify-content: flex-start;
+  }
+
+  .dri-sources {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 960px) {
+  .dri-command {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .dri-command__identity h2 {
+    white-space: normal;
+  }
+}
+
+@media (max-width: 560px) {
+  .dri-workbench {
+    --dri-stage-h: clamp(24rem, calc(100svh - 8rem), 40rem);
+  }
+
+  .dri-sources {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .dri-command__platforms {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .dri-command__serial {
+    grid-template-columns: auto minmax(0, 1fr);
+  }
+
+  .dri-command__serial .dri-pill-button {
+    grid-column: 1 / -1;
+  }
+
+  .dri-dock-tabs {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    border-radius: 1rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dri-dock-tab {
+    transition: none;
+  }
+}

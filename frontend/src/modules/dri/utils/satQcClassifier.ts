@@ -1,5 +1,5 @@
 import type { SatQcResult } from '../../sat-report/satReportTypes';
-import { getCanonicalReagentKey, getReagentDisplayCode } from '../knowledge/reagentIdentity';
+import { getCanonicalReagentKey, getReagentDisplayCode, pickRepresentativeReagent } from '../knowledge/reagentIdentity';
 import type {
   DriCatalog,
   DriQcAssessment,
@@ -118,6 +118,8 @@ const TEST_ALIASES: Record<string, string> = {
   LACTATE: 'LACTATO DE',
   MICROALBUMIN: 'MALB',
   TOTALPROTEIN: 'PROT T',
+  PROTEINTOTALBIR: 'PROT T',
+  PROTEINTOTAL: 'PROT T',
   UREAUV: 'UREA UV',
 };
 
@@ -141,40 +143,41 @@ export const resolveReagentForTest = (catalog: DriCatalog, lookup: ReagentTestLo
 
   if (!resultKeys.length) return null;
 
-  // Mismo criterio que la lista de reactivos del DRI: el reactivo programado gana al sintético documental.
+  // Mismo criterio que la lista de reactivos del DRI: entre duplicados gana el representativo que la lista muestra.
   const matches = catalog.reagents.filter((reagent) => {
     const candidates = reagentCandidates(reagent);
     return resultKeys.some((key) => candidates.has(key));
   });
   if (!matches.length) return null;
-  const score = (reagent: DriReagent) => {
-    const metadata = (reagent.metadata || {}) as Record<string, unknown>;
-    return (metadata.syntheticFromContext ? 0 : 120) + (reagent.id === getCanonicalReagentKey(reagent) ? 40 : 0);
-  };
-  return [...matches].sort((left, right) => score(right) - score(left))[0];
+  return pickRepresentativeReagent(matches);
 };
 
 const resolveReagent = (catalog: DriCatalog, result: SatQcResult) => resolveReagentForTest(catalog, result);
 
+/**
+ * Referencia del lote de control EN USO. El control se juzga contra el target ± SD de su propio lote:
+ *  1. el que el laboratorio programó en el analizador para ese lote (target y SD del respaldo .bak; sus límites
+ *     son ±3 SD);
+ *  2. si el analizador no los trae, la hoja de valores de einfo.bio solo cuando el lote coincide exactamente.
+ * Nunca se usa la hoja de otro lote: sus targets no describen el control que se corrió (por eso CK-MB 34 U/L,
+ * fuera de 50–75 en su lote, salía «correcto» contra un target ajeno de 41.5).
+ */
 const chooseReference = (reagent: DriReagent, result: SatQcResult) => {
+  // DRI maneja niveles I y II; un nivel III o desconocido queda pendiente.
   if (result.controlLevel !== 'level_1' && result.controlLevel !== 'level_2') {
     return { reference: null, confidence: 'unmatched' as const };
   }
   const resolvedControlLevel = result.controlLevel;
   const expectedUnit = normalizeUnit(result.unit);
-  const candidates = extractQcReferences(reagent).filter(
-    (reference) =>
-      reference.controlLevel === resolvedControlLevel &&
-      (!expectedUnit || normalizeUnit(reference.unit) === expectedUnit),
-  );
   const analyzerReference = (): DriQcReference | null => {
-    if (result.analyzerMin === null || result.analyzerMax === null || result.analyzerMin >= result.analyzerMax) return null;
-    const target = result.analyzerTarget ?? (result.analyzerMin + result.analyzerMax) / 2;
-    const sd = result.analyzerSd && result.analyzerSd > 0
-      ? result.analyzerSd
-      : (result.analyzerMax - result.analyzerMin) / 6;
+    const hasLimits = result.analyzerMin !== null && result.analyzerMax !== null && result.analyzerMin < result.analyzerMax;
+    const hasSd = result.analyzerSd !== null && result.analyzerSd > 0;
+    const target = result.analyzerTarget ?? (hasLimits ? ((result.analyzerMin as number) + (result.analyzerMax as number)) / 2 : null);
+    if (target === null || (!hasSd && !hasLimits)) return null;
+    // Sin SD explícita, los límites del BA400 son target ± 3 SD.
+    const sd = hasSd ? (result.analyzerSd as number) : ((result.analyzerMax as number) - (result.analyzerMin as number)) / 6;
     return {
-      id: `sat-analyzer::${result.serialNumber}::${result.testKey}::${result.controlLevel}`,
+      id: `sat-analyzer::${result.serialNumber}::${result.testKey}::${result.controlLevel}::${result.controlLot || 'sin-lote'}`,
       reagentId: reagent.id,
       reagentDisplayCode: getReagentDisplayCode(reagent),
       reagentDisplayName: reagent.displayName || reagent.name,
@@ -182,7 +185,7 @@ const chooseReference = (reagent: DriReagent, result: SatQcResult) => {
       lot: result.controlLot,
       controlLevel: resolvedControlLevel,
       analyteName: result.testName,
-      methodName: 'Límites configurados en el analizador',
+      methodName: `Lote de control en uso${result.controlName ? ` (${result.controlName})` : ''} programado en el equipo`,
       unit: result.unit,
       targetValue: target,
       sd1: sd,
@@ -190,37 +193,42 @@ const chooseReference = (reagent: DriReagent, result: SatQcResult) => {
       sd1High: target + sd,
       sd2Low: target - 2 * sd,
       sd2High: target + 2 * sd,
-      rejectLow: result.analyzerMin,
-      rejectHigh: result.analyzerMax,
-      traceability: 'Configuración QC del equipo',
-      matchConfidence: 'compatible',
+      rejectLow: target - 3 * sd,
+      rejectHigh: target + 3 * sd,
+      traceability: 'Configuración QC del equipo para el lote en uso',
+      matchConfidence: 'exact',
       sourceStatus: 'user_captured',
       sourceType: 'ba400_export',
-      sourceReference: `SAT ${result.serialNumber} · ${result.resultAt}`,
+      sourceReference: `SAT ${result.serialNumber} · lote ${result.controlLot || 'sin lote'} · ${result.resultAt}`,
     };
   };
-  if (!candidates.length) {
-    const fallback = analyzerReference();
-    return { reference: fallback, confidence: fallback ? 'compatible' as const : 'unmatched' as const };
-  }
 
+  const fromAnalyzer = analyzerReference();
+  if (fromAnalyzer) return { reference: fromAnalyzer, confidence: 'exact' as const };
+
+  const candidates = extractQcReferences(reagent).filter(
+    (reference) =>
+      reference.controlLevel === resolvedControlLevel &&
+      (!expectedUnit || normalizeUnit(reference.unit) === expectedUnit),
+  );
   const exactLot = result.controlLot
     ? candidates.filter((reference) => normalizeText(reference.lot) === normalizeText(result.controlLot))
     : [];
-  if (exactLot.length === 1) return { reference: exactLot[0], confidence: 'exact' as const };
-  if (exactLot.length > 1) {
+  if (exactLot.length) {
     const closest = [...exactLot].sort(
       (left, right) =>
         Math.abs(result.resultValue - left.targetValue) - Math.abs(result.resultValue - right.targetValue),
     )[0];
     return { reference: closest, confidence: 'exact' as const };
   }
+  // Sin datos del lote en uso no hay contra qué juzgarlo: queda pendiente en lugar de usar otro lote.
+  return { reference: null, confidence: 'unmatched' as const };
+};
 
-  // A result without a matching lot is only safe when EInfo exposes one unique
-  // reference for the reagent + level + unit. Multiple lots stay pending.
-  if (candidates.length === 1) return { reference: candidates[0], confidence: 'compatible' as const };
-  const fallback = analyzerReference();
-  return { reference: fallback, confidence: fallback ? 'compatible' as const : 'unmatched' as const };
+/** Decimales con los que se muestra un control: los que distinguen una décima de SD. */
+const decimalsForSd = (sd: number | null | undefined) => {
+  if (!sd || !Number.isFinite(sd) || sd <= 0) return 3;
+  return Math.max(0, Math.min(4, Math.ceil(-Math.log10(sd)) + 1));
 };
 
 const bandSeverity: Record<string, number> = {
@@ -272,7 +280,7 @@ export const classifySatQcResults = (catalog: DriCatalog, results: SatQcResult[]
     if (item.outcome === 'correct') correctReagentIds.push(reagentId);
     reagentMeasurements[reagentId] = {
       reagentId,
-      obtainedValue: String(item.result.resultValue),
+      obtainedValue: item.result.resultValue.toFixed(decimalsForSd(item.reference.sd1)).replace(/(\.\d*?)0+$/, '$1').replace(/\.$/, ''),
       blankAbsorbance: '',
       selectedQcReferenceId: item.reference.id,
       expectedValue: String(item.reference.targetValue),
@@ -286,6 +294,7 @@ export const classifySatQcResults = (catalog: DriCatalog, results: SatQcResult[]
       sourceResultId: item.result.id || null,
       qcBand: item.assessment.band,
       matchConfidence: item.matchConfidence,
+      qcReference: item.reference,
     };
   });
 

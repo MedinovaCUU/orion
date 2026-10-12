@@ -1,4 +1,5 @@
 import type { SatQcResult } from '../../sat-report/satReportTypes';
+import { toLocalIsoDate } from './lotDates';
 import {
   formatBplNumber,
   summarizeBplEventMetrics,
@@ -93,7 +94,8 @@ const bandFromQc = (event: BplEvent): DriQcBand => {
 const toControlLevel = (value: string | null | undefined): DriCaseFormState['controlLevel'] | null =>
   value === 'level_1' || value === 'level_2' ? value : null;
 
-const toIsoDate = (value: string | null) => (value ? value.slice(0, 10) : null);
+// Día local (México): un evento de las 19:30 guardado como 01:30 UTC del día siguiente sigue siendo de hoy.
+const toIsoDate = (value: string | null) => toLocalIsoDate(value);
 
 /**
  * Proyecta el resumen BPL de una serie sobre el formulario DRI. La evaluación del

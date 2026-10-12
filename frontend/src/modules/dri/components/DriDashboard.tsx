@@ -1,17 +1,24 @@
-import { startTransition, useDeferredValue, useEffect, useMemo, useState } from 'react';
-import DriGraph3D, { DRI_GRAPH_CONFIG } from './DriGraph3D';
+import { startTransition, useCallback, useDeferredValue, useEffect, useMemo, useRef, useState } from 'react';
+import { DRI_GRAPH_CONFIG } from './DriGraph3D';
+import DriAdvisoryPicker from './DriAdvisoryPicker';
+import DriCommandStrip from './DriCommandStrip';
+import DriContrastMatrix from './DriContrastMatrix';
 import DriEvidencePanel from './DriEvidencePanel';
-import DriHypothesisCard from './DriHypothesisCard';
+import DriHypothesisDock from './DriHypothesisDock';
 import DriInputPanel from './DriInputPanel';
+import DriRelationStage from './DriRelationStage';
+import DriSourcesStrip from './DriSourcesStrip';
 import Ba400DiagnosticViewer from '../model3d/Ba400DiagnosticViewer';
-import DriRelationMatrix from './DriRelationMatrix';
 import { getLocalDriCatalog, loadDriCatalog, loadDriHistory, persistDriCase, uploadDriEvidenceAsset } from '../driData';
-import { runDriEngine, runDriValidationFixtures } from '../driEngine';
+import { toLocalIsoDate } from '../utils/lotDates';
+import { DRI_VALIDATION_FIXTURES, runDriEngine, runDriValidationFixtures } from '../driEngine';
+import { useDriContextSources } from '../hooks/useDriContextSources';
 import {
   buildReagentSearchText,
   getCanonicalReagentKey,
   getReagentDisplayCode,
   getReagentDisplayName,
+  reagentSelectionScore,
 } from '../knowledge/reagentIdentity';
 import { buildReagentProfiles } from '../knowledge/reagentRelations';
 import {
@@ -22,13 +29,10 @@ import {
   getDriSignalCategoryColor,
 } from '../knowledge/ba400SubsystemHierarchy';
 import { buildObservationBlockFromEvidence, runDriEvidenceOcr } from '../utils/driEvidenceOcr';
-import { createDriLogger } from '../utils/driLogging';
+import { createDriLogger, withQuietDriLogging } from '../utils/driLogging';
 import { assessQcReference, findQcReferenceById, getMatchingQcReferences } from '../utils/qcReferenceUtils';
-import { classifySatQcResults } from '../utils/satQcClassifier';
-import { applyBplProjectionToForm, buildDriBplProjection, describeBplProjection } from '../utils/bplEvidence';
-import type { BplSerialSummary } from '../../equipment-monitoring/bplEvents';
+import { DRI_SOURCE_LABELS } from '../utils/contextSources';
 import { getValidatedSession } from '../../../supabaseClient';
-import type { SatReportSummary } from '../../sat-report/satReportTypes';
 import type {
   DriCaseFormState,
   DriCatalog,
@@ -37,6 +41,7 @@ import type {
   DriEvidenceArtifact,
   DriGraphEdge,
   DriGraphNode,
+  DriHypothesisResult,
   DriQcAssessment,
   DriQcReference,
   DriRelationSignal,
@@ -45,7 +50,9 @@ import type {
   DriReagentProfile,
   DriServiceTestInput,
 } from '../types/dri.types';
+import type { DriLiveState, DriReagentState, DriShellControls } from './driWorkbench.types';
 import { PanelLoader } from '../../../components/OrionLoader';
+import '../dri.workbench.css';
 
 const createEmptyReagentMeasurement = (reagentId: string): DriReagentMeasurementInput => ({
   reagentId,
@@ -62,7 +69,7 @@ const createEmptyReagentMeasurement = (reagentId: string): DriReagentMeasurement
 const createInitialFormState = (): DriCaseFormState => ({
   equipmentModel: 'BA400',
   serialNumber: '',
-  eventDate: new Date().toISOString().slice(0, 10),
+  eventDate: toLocalIsoDate(new Date().toISOString()) || '',
   eventType: 'qc_out_of_range',
   failureDirection: 'high',
   reagentLot: '',
@@ -184,35 +191,8 @@ const ANCHOR_EVENT_TYPES = new Set<DriCaseFormState['eventType']>([
   'incoherent_result',
 ]);
 
-const scoreReagentProfileForSelection = (profile: DriReagentProfile, canonicalKey: string) => {
-  const metadata = (profile.legacy.metadata || {}) as Record<string, unknown>;
-  const syntheticFromContext = Boolean(metadata.syntheticFromContext);
-  let score = 0;
-
-  if (!syntheticFromContext) {
-    score += 120;
-  }
-  if (profile.id === canonicalKey) {
-    score += 40;
-  }
-  if (profile.primaryWavelengthNm.value !== null) {
-    score += 30;
-  }
-  if (profile.legacy.readMode) {
-    score += 20;
-  }
-  if (profile.legacy.reagentType) {
-    score += 20;
-  }
-  if (profile.legacy.reportedMethod) {
-    score += 20;
-  }
-  if (String(profile.legacy.sourceStatus || '').toLowerCase().includes('ifu')) {
-    score += 10;
-  }
-
-  return score;
-};
+// Misma regla que la clasificación de controles y las botellas del SAT (knowledge/reagentIdentity.ts).
+const scoreReagentProfileForSelection = (profile: DriReagentProfile) => reagentSelectionScore(profile.legacy);
 
 const dedupeProfilesByCanonicalKey = (profiles: DriReagentProfile[]) => {
   const canonicalProfiles = new Map<string, DriReagentProfile>();
@@ -226,9 +206,9 @@ const dedupeProfilesByCanonicalKey = (profiles: DriReagentProfile[]) => {
       return;
     }
 
-    const nextScore = scoreReagentProfileForSelection(profile, canonicalKey);
-    const currentScore = scoreReagentProfileForSelection(existing, canonicalKey);
-    if (nextScore > currentScore) {
+    const nextScore = scoreReagentProfileForSelection(profile);
+    const currentScore = scoreReagentProfileForSelection(existing);
+    if (nextScore > currentScore || (nextScore === currentScore && profile.id.localeCompare(existing.id) < 0)) {
       canonicalProfiles.set(canonicalKey, profile);
     }
   });
@@ -422,7 +402,7 @@ const buildDemoFormState = (catalog: DriCatalog): DriCaseFormState => {
   return {
     equipmentModel: 'BA400',
     serialNumber: '8340-DEMO-01',
-    eventDate: new Date().toISOString().slice(0, 10),
+    eventDate: toLocalIsoDate(new Date().toISOString()) || '',
     eventType: 'qc_out_of_range',
     failureDirection: 'high',
     reagentLot: 'BA400-RGT-2406A',
@@ -433,8 +413,9 @@ const buildDemoFormState = (catalog: DriCatalog): DriCaseFormState => {
     selectedQcReferenceId: '',
     expectedValue: '39.7',
     obtainedValue: '53.0',
-    reagentExpiryDate: '2026-12-31',
-    reagentOpenedAt: '2026-06-01',
+    // Fechas relativas: la demo no debe disparar por sí sola la señal de estabilidad a bordo.
+    reagentExpiryDate: new Date(Date.now() + 120 * 86_400_000).toISOString().slice(0, 10),
+    reagentOpenedAt: new Date(Date.now() - 9 * 86_400_000).toISOString().slice(0, 10),
     ambientTemperatureC: '27.4',
     observations:
       'Demo BA400: los controles de GLU, CHOL, LDH, MG y UREA salen altos y fuera de rechazo. ALT, AST, ALB, ADA y URIC permanecen correctas. Photometry mostró deriva leve y Washing station dejó duda de arrastre. Curvas mayormente aceptables, sin rechazo óptico continuo.',
@@ -554,17 +535,22 @@ const buildFullRandomDemoFormState = (
   };
 };
 
+type DriDockTab = 'caso' | 'hipotesis' | 'contraste' | 'evidencia';
+
+const formSignature = (form: DriCaseFormState) => JSON.stringify(form);
+
 export default function DriDashboard({
   subPermissions = ['captura', 'grafo', 'diagnostico'],
-  satContext = null,
-  bplContext = null,
   previewMode = false,
+  requestedSerial = '',
+  requestedApply = 'none',
 }: {
   subPermissions?: string[];
-  satContext?: SatReportSummary | null;
-  /** Evidencia viva del monitor BPL; cada `token` nuevo vuelve a proyectarla sobre el formulario. */
-  bplContext?: { summary: BplSerialSummary; token: number } | null;
   previewMode?: boolean;
+  /** Serie pedida por URL (llegada desde Monitoreo). */
+  requestedSerial?: string;
+  /** Qué fuentes se proyectan sin clic adicional al llegar con una serie. */
+  requestedApply?: 'none' | 'bpl' | 'all';
 }) {
   const canCapture = subPermissions.includes('captura');
   const canViewGraph = subPermissions.includes('grafo');
@@ -574,8 +560,12 @@ export default function DriDashboard({
   const [catalogWarning, setCatalogWarning] = useState<string | null>(null);
   const [history, setHistory] = useState<DriDiagnosticCaseRecord[]>([]);
   const [form, setForm] = useState<DriCaseFormState>(() => createInitialFormState());
-  const [analysis, setAnalysis] = useState<DriEngineResult | null>(null);
+  /** Resultado fijado (guardado, demo o "localizar"): alimenta el explorador 3D y no cambia con cada tecla. */
+  const [committedAnalysis, setCommittedAnalysis] = useState<DriEngineResult | null>(null);
+  /** Firma del formulario con el que se fijó el resultado: "Fijar lectura viva" solo aparece si cambió. */
+  const [committedSignature, setCommittedSignature] = useState<string | null>(null);
   const [activeCase, setActiveCase] = useState<DriDiagnosticCaseRecord | null>(null);
+  const [savedSignature, setSavedSignature] = useState<string | null>(null);
   const [search, setSearch] = useState('');
   const [selectedReagentId, setSelectedReagentId] = useState<string | null>(null);
   const [selectedNodeId, setSelectedNodeId] = useState<string | null>(null);
@@ -584,81 +574,35 @@ export default function DriDashboard({
   const [spatialSelectionVersion, setSpatialSelectionVersion] = useState(0);
   const [demoActive, setDemoActive] = useState(false);
   const [focusedSystemKey, setFocusedSystemKey] = useState<string | null>(null);
-  const [showRelationGraph, setShowRelationGraph] = useState(false);
   const [graphMultiSelect, setGraphMultiSelect] = useState(false);
-  const [graphShellControls, setGraphShellControls] = useState(() => ({ ...DRI_GRAPH_CONFIG.layout.defaultRadii }));
+  const [graphShellControls, setGraphShellControls] = useState<DriShellControls>(() => ({ ...DRI_GRAPH_CONFIG.layout.defaultRadii }));
+  const [dockTab, setDockTab] = useState<DriDockTab>('caso');
+  const [explorerOpen, setExplorerOpen] = useState(previewMode);
+  const [advisoryPickerOpen, setAdvisoryPickerOpen] = useState(false);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [persistWarning, setPersistWarning] = useState<string | null>(null);
   const [evidenceTasks, setEvidenceTasks] = useState<Record<string, DriEvidenceTaskState>>({});
   const [sessionEmail, setSessionEmail] = useState<string | null>(null);
   const deferredSearch = useDeferredValue(search);
+  const deferredForm = useDeferredValue(form);
+  const explorerRef = useRef<HTMLElement>(null);
 
-  useEffect(() => {
-    if (!satContext) return;
-    setAnalysis(null); setActiveCase(null); setSelectedHypothesisKey(null);
-    const latestLot = (kind: 'reagent' | 'control' | 'calibrator') =>
-      [...satContext.lots]
-        .filter((lot) => lot.kind === kind)
-        .sort((left, right) => (right.lastSeenAt || '').localeCompare(left.lastSeenAt || ''))[0];
-    const latestReagentLot = latestLot('reagent')?.lot || '';
-    const latestControlLot = latestLot('control')?.lot || '';
-    const latestCalibrator = latestLot('calibrator');
-    const eventExcerpt = satContext.events
-      .filter((event) => event.category === 'error' || event.category === 'warning')
-      .slice(-8)
-      .map((event) => `[${event.category.toUpperCase()}${event.code ? ` ${event.code}` : ''}] ${event.message}`)
-      .join('\n');
-    const contextBlock = [
-      `[SAT:${satContext.sha256.slice(0, 12)}] ${satContext.fileName}`,
-      `Cobertura: ${satContext.coverage.processedFiles}/${satContext.coverage.totalFiles} archivos; ${satContext.findings.distinctTests} pruebas; ${satContext.findings.distinctLots} lotes.`,
-      eventExcerpt,
-    ].filter(Boolean).join('\n');
+  const invalidateCommitted = useCallback(() => {
+    setCommittedAnalysis(null);
+    setCommittedSignature(null);
+    setActiveCase(null);
+    setSavedSignature(null);
+  }, []);
 
-    setForm((current) => ({
-      ...current,
-      equipmentModel: satContext.equipmentModel,
-      serialNumber: satContext.serialNumber,
-      eventDate: (satContext.reportGeneratedAt || new Date().toISOString()).slice(0, 10),
-      reagentLot: latestReagentLot || current.reagentLot,
-      controlLot: latestControlLot || current.controlLot,
-      calibratorLot: latestCalibrator?.lot || current.calibratorLot,
-      calibratorName: latestCalibrator?.name || current.calibratorName,
-      observations: [current.observations.replace(/\[SAT:[\s\S]*$/m, '').trim(), contextBlock].filter(Boolean).join('\n\n'),
-    }));
-    setPersistWarning(
-      satContext.coverage.hasDatabaseBackup
-        ? 'Contexto SAT aplicado. La evidencia legible está disponible; el respaldo .bak permanece pendiente de extracción profunda.'
-        : 'Contexto SAT aplicado al diagnóstico.',
-    );
-  }, [satContext]);
-
-  useEffect(() => {
-    if (!satContext?.qcResults?.length || !catalog) return;
-    const projection = classifySatQcResults(catalog, satContext.qcResults);
-    setForm((current) => ({
-      ...current,
-      failedReagentIds: projection.failedReagentIds,
-      correctReagentIds: projection.correctReagentIds,
-      reagentMeasurements: {
-        ...current.reagentMeasurements,
-        ...projection.reagentMeasurements,
-      },
-    }));
-    setPersistWarning(
-      `${projection.matchedCount} controles recientes evaluados con referencias EInfo; ` +
-        `${projection.failedReagentIds.length} reactivos fallidos, ${projection.correctReagentIds.length} correctos` +
-        (projection.pendingCount ? ` y ${projection.pendingCount} resultados pendientes por lote, nivel o unidad.` : '.'),
-    );
-  }, [catalog, satContext]);
-
-  useEffect(() => {
-    if (!bplContext || !catalog) return;
-    const projection = buildDriBplProjection(bplContext.summary, catalog);
-    setAnalysis(null); setActiveCase(null); setSelectedHypothesisKey(null); setDemoActive(false);
-    setForm((current) => applyBplProjectionToForm(current, projection));
-    setPersistWarning(describeBplProjection(projection));
-  }, [bplContext, catalog]);
+  const sources = useDriContextSources({
+    catalog,
+    form,
+    setForm,
+    enabled: !previewMode,
+    // La procedencia de demo solo se pierde con «Reiniciar»; aplicar o quitar fuentes no la cambia.
+    onFormProjected: () => invalidateCommitted(),
+  });
 
   useEffect(() => {
     let mounted = true;
@@ -669,7 +613,7 @@ export default function DriDashboard({
         const demoForm = buildDemoFormState(localCatalog);
         const result = runDriEngine(demoForm, localCatalog);
         setCatalog(localCatalog); setCatalogSource('Catálogo documental local'); setHistory([]);
-        setForm(demoForm); setAnalysis(result); setDemoActive(true);
+        setForm(demoForm); setCommittedAnalysis(result); setDemoActive(true);
         setSelectedHypothesisKey(result.hypotheses.find(h => h.matchedRuleIds.includes('ba400_optical_photometry'))?.key || result.hypotheses[0]?.key || null);
         setLoading(false);
         return;
@@ -689,6 +633,24 @@ export default function DriDashboard({
     };
   }, [previewMode]);
 
+  // Llegada desde Monitoreo (`?serial=…`): la serie entra al caso y las fuentes se buscan de inmediato.
+  // Sin serie, se deja disponible (no aplicado) el último reporte SAT importado.
+  const requestedKey = `${requestedSerial}|${requestedApply}`;
+  const handledRequestRef = useRef<string | null>(null);
+  useEffect(() => {
+    if (previewMode || loading || !catalog || handledRequestRef.current === requestedKey) return;
+    handledRequestRef.current = requestedKey;
+    const serial = requestedSerial.trim();
+    if (serial) {
+      setForm((current) => ({ ...current, serialNumber: serial }));
+      void sources.loadAllForSerial(serial, { apply: requestedApply });
+    } else {
+      void sources.loadSat();
+    }
+    // `sources` cambia en cada render; la petición solo se atiende una vez por clave.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [catalog, loading, previewMode, requestedApply, requestedKey, requestedSerial]);
+
   const profiles = useMemo(() => (catalog ? buildReagentProfiles(catalog) : []), [catalog]);
   const supportedProfiles = useMemo(() => {
     const compatibleProfiles = profiles.filter(
@@ -700,6 +662,31 @@ export default function DriDashboard({
     () => new Map(supportedProfiles.map((profile) => [profile.id, profile])),
     [supportedProfiles],
   );
+  const reagentById = useMemo(() => new Map((catalog?.reagents || []).map((reagent) => [reagent.id, reagent])), [catalog?.reagents]);
+  const reagentLabel = useCallback((reagentId: string) => {
+    const reagent = reagentById.get(reagentId);
+    return reagent ? getReagentDisplayCode(reagent) : reagentId;
+  }, [reagentById]);
+  const reagentName = useCallback((reagentId: string) => {
+    const reagent = reagentById.get(reagentId);
+    return reagent ? getReagentDisplayName(reagent) : reagentId;
+  }, [reagentById]);
+  const isReagentVisible = useCallback((reagentId: string) => supportedProfileById.has(reagentId), [supportedProfileById]);
+
+  /** Motor en vivo: se recalcula (sin eco en consola) con cada cambio del caso. */
+  const analysis = useMemo<DriEngineResult | null>(() => {
+    if (!catalog || !deferredForm.failedReagentIds.length) return null;
+    return withQuietDriLogging(() => runDriEngine(deferredForm, catalog));
+  }, [catalog, deferredForm]);
+  const previousAnalysisRef = useRef<DriEngineResult | null>(null);
+  const [previousAnalysis, setPreviousAnalysis] = useState<DriEngineResult | null>(null);
+  useEffect(() => {
+    // El delta compara contra el resultado vivo anterior, no contra el fijado.
+    setPreviousAnalysis(previousAnalysisRef.current);
+    previousAnalysisRef.current = analysis;
+  }, [analysis]);
+
+  const liveState: DriLiveState = !analysis ? 'empty' : savedSignature && savedSignature === formSignature(form) && activeCase ? 'saved' : 'live';
 
   const filteredReagents = useMemo(() => {
     const base = supportedProfiles.map((profile) => profile.legacy);
@@ -764,6 +751,12 @@ export default function DriDashboard({
     }
 
     caseReagentIds.forEach((reagentId) => {
+      // Un control importado trae la referencia de su lote en uso (target ± SD del equipo): esa manda.
+      const carried = form.reagentMeasurements[reagentId]?.qcReference;
+      if (carried) {
+        map.set(reagentId, carried);
+        return;
+      }
       const explicitReferenceId =
         form.reagentMeasurements[reagentId]?.selectedQcReferenceId ||
         (selectedQcReference?.reagentId === reagentId ? selectedQcReference.id : '');
@@ -817,6 +810,13 @@ export default function DriDashboard({
     () => analysis?.hypotheses.find((hypothesis) => hypothesis.key === selectedHypothesisKey) || analysis?.hypotheses[0] || null,
     [analysis?.hypotheses, selectedHypothesisKey],
   );
+  const committedFinding = useMemo<DriHypothesisResult | null>(
+    () =>
+      committedAnalysis?.hypotheses.find((hypothesis) => hypothesis.key === selectedHypothesisKey) ||
+      committedAnalysis?.hypotheses[0] ||
+      null,
+    [committedAnalysis?.hypotheses, selectedHypothesisKey],
+  );
 
   const graphSelectedProfiles = useMemo(
     () =>
@@ -850,18 +850,19 @@ export default function DriDashboard({
 
   const graphSystemPills = useMemo(
     () =>
-      hierarchyGraph.nodes
-        .filter((node) => node.type === 'ambient_factor' && node.tier === 1)
-        .map((node) => ({
-          key: String(node.clusterKey || '').replace(/^ambient:/, ''),
-          label: node.label,
-        })),
-    [hierarchyGraph.nodes],
+      analysis
+        ? hierarchyGraph.nodes
+            .filter((node) => node.type === 'ambient_factor' && node.tier === 1)
+            .map((node) => ({
+              key: String(node.clusterKey || '').replace(/^ambient:/, ''),
+              label: node.label,
+            }))
+        : [],
+    [analysis, hierarchyGraph.nodes],
   );
 
   const graphNodes = useMemo<DriGraphNode[]>(() => {
     if (!analysis || !catalog) return [];
-    const reagentById = new Map(catalog.reagents.map((reagent) => [reagent.id, reagent]));
     const nodes: DriGraphNode[] = [];
     form.failedReagentIds.forEach((id) => {
       const reagent = reagentById.get(id);
@@ -918,7 +919,7 @@ export default function DriDashboard({
       });
     });
     return [...nodes, ...hierarchyGraph.nodes];
-  }, [analysis, catalog, form.correctReagentIds, form.failedReagentIds, hierarchyGraph.nodes, topGraphSignals]);
+  }, [analysis, catalog, form.correctReagentIds, form.failedReagentIds, hierarchyGraph.nodes, reagentById, topGraphSignals]);
 
   const graphEdges = useMemo<DriGraphEdge[]>(() => {
     if (!analysis) return [];
@@ -958,6 +959,8 @@ export default function DriDashboard({
     ];
   }, [analysis, hierarchyGraph.edges, topGraphSignals]);
 
+  const graphNodeById = useMemo(() => new Map(graphNodes.map((node) => [node.id, node])), [graphNodes]);
+  const selectedNode = selectedNodeId ? graphNodeById.get(selectedNodeId) || null : null;
   const selectedSignal = useMemo(
     () =>
       selectedNodeId?.startsWith('signal:')
@@ -965,8 +968,29 @@ export default function DriDashboard({
         : null,
     [analysis?.relationSignals, selectedNodeId],
   );
+  const selectedSignalId = selectedSignal?.id || null;
 
   const fixtureResults = useMemo(() => (catalog ? runDriValidationFixtures(catalog) : []), [catalog]);
+
+  /** Qué campos y reactivos siguen tal como los escribió una fuente (para marcar su procedencia en la captura). */
+  const sourceReceipts = [sources.sat.receipt, sources.bpl.receipt, sources.monitoring.receipt, sources.advisory.receipt];
+  const provenance = useMemo(() => {
+    const byField = new Map<string, string>();
+    const byReagent = new Map<string, string>();
+    sourceReceipts.forEach((receipt) => {
+      if (!receipt) return;
+      const label = `Desde ${DRI_SOURCE_LABELS[receipt.sourceKind]} · ${receipt.label}`;
+      receipt.fields.forEach((field) => {
+        if (String(form[field.key] ?? '') === field.applied) byField.set(field.key, label);
+      });
+      receipt.reagentStates.forEach((state) => {
+        const current = form.failedReagentIds.includes(state.reagentId) ? 'failed' : form.correctReagentIds.includes(state.reagentId) ? 'correct' : 'none';
+        if (state.applied !== 'none' && current === state.applied) byReagent.set(state.reagentId, label);
+      });
+    });
+    return { byField, byReagent };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [form, ...sourceReceipts]);
 
   useEffect(() => {
     if (!qcReferenceOptions.length) {
@@ -986,35 +1010,57 @@ export default function DriDashboard({
 
     if (!form.selectedQcReferenceId && qcReferenceOptions.length === 1 && qcReferenceReagentIds.length === 1) {
       const [reference] = qcReferenceOptions;
-      setForm((current) => ({
-        ...current,
-        selectedQcReferenceId: reference.id,
-        expectedValue: current.expectedValue || String(reference.targetValue),
-        controlLot: current.controlLot || reference.lot || '',
-        reagentMeasurements: {
-          ...current.reagentMeasurements,
-          [reference.reagentId]: {
-            ...(current.reagentMeasurements[reference.reagentId] || createEmptyReagentMeasurement(reference.reagentId)),
-            selectedQcReferenceId: reference.id,
-            expectedValue: current.reagentMeasurements[reference.reagentId]?.expectedValue || String(reference.targetValue),
-            unit: current.reagentMeasurements[reference.reagentId]?.unit || reference.unit || null,
-            updatedAt: current.reagentMeasurements[reference.reagentId]?.updatedAt || new Date().toISOString(),
-          },
-        },
-      }));
+      setForm((current) => {
+        const existing = current.reagentMeasurements[reference.reagentId];
+        // Una medición importada por una fuente se deja intacta: así "Quitar del diagnóstico" la reconoce y la retira.
+        const measurements =
+          existing?.source === 'auto_import'
+            ? current.reagentMeasurements
+            : {
+                ...current.reagentMeasurements,
+                [reference.reagentId]: {
+                  ...(existing || createEmptyReagentMeasurement(reference.reagentId)),
+                  selectedQcReferenceId: reference.id,
+                  expectedValue: existing?.expectedValue || String(reference.targetValue),
+                  unit: existing?.unit || reference.unit || null,
+                  updatedAt: existing?.updatedAt || new Date().toISOString(),
+                },
+              };
+        return {
+          ...current,
+          selectedQcReferenceId: reference.id,
+          expectedValue: current.expectedValue || String(reference.targetValue),
+          controlLot: current.controlLot || reference.lot || '',
+          reagentMeasurements: measurements,
+        };
+      });
     }
   }, [form.selectedQcReferenceId, qcReferenceOptions, qcReferenceReagentIds.length]);
 
   const handleFormChange = <K extends keyof DriCaseFormState>(field: K, value: DriCaseFormState[K]) => {
     setForm((current) => ({ ...current, [field]: value }));
     if (field === 'equipmentModel' || field === 'serialNumber') {
-      // Keep demo provenance until a full form reset; editing a serial is not real evidence.
-      setAnalysis(null); setActiveCase(null); setSelectedHypothesisKey(null);
+      // Cambiar equipo o serie invalida el resultado fijado para evitar asociaciones cruzadas en el explorador.
+      invalidateCommitted();
+      setSelectedHypothesisKey(null);
     }
   };
 
   const handleToggleSignal = (field: keyof DriCaseFormState['signals']) => {
     setForm((current) => ({ ...current, signals: { ...current.signals, [field]: !current.signals[field] } }));
+  };
+
+  const setReagentState = (reagentId: string, state: DriReagentState) => {
+    setSelectedReagentId(reagentId);
+    setForm((current) => {
+      const failedSet = new Set(current.failedReagentIds);
+      const correctSet = new Set(current.correctReagentIds);
+      failedSet.delete(reagentId);
+      correctSet.delete(reagentId);
+      if (state === 'failed') failedSet.add(reagentId);
+      if (state === 'correct') correctSet.add(reagentId);
+      return { ...current, failedReagentIds: Array.from(failedSet), correctReagentIds: Array.from(correctSet) };
+    });
   };
 
   const handleReagentCycle = (reagentId: string) => {
@@ -1090,12 +1136,46 @@ export default function DriDashboard({
     setSelectedNodeId(null);
   };
 
-  const updateGraphShellControl = (field: keyof typeof graphShellControls, value: number) => {
+  const selectSignalInGraph = (signal: DriRelationSignal | null) => {
+    if (!signal) {
+      clearGraphSelection();
+      return;
+    }
+    if (signal.category === 'service' && form.equipmentModel === 'BA400') {
+      const systemNodeIds = getBa400SystemNodeIdsForSignal(signal);
+      setSelectedNodeId(systemNodeIds[0] || null);
+      setSelectedNodeIds(systemNodeIds);
+      return;
+    }
+    const nodeId = signalNodeId(signal.id);
+    setSelectedNodeId(nodeId);
+    setSelectedNodeIds([nodeId]);
+  };
+
+  const updateGraphShellControl = (field: keyof DriShellControls, value: number) => {
     setGraphShellControls((current) => ({ ...current, [field]: value }));
   };
 
-  const handleGraphShellControlInput = (field: keyof typeof graphShellControls, rawValue: string) => {
-    updateGraphShellControl(field, Number(rawValue));
+  /** Fija el resultado vivo para el explorador 3D (sin guardar). */
+  const commitLiveAnalysis = (hypothesisKey?: string | null) => {
+    if (!catalog || !form.failedReagentIds.length) return null;
+    const result = runDriEngine(form, catalog);
+    const signature = formSignature(form);
+    startTransition(() => {
+      setCommittedAnalysis(result);
+      setCommittedSignature(signature);
+      setSelectedHypothesisKey(hypothesisKey || result.hypotheses[0]?.key || null);
+      setSpatialSelectionVersion((version) => version + 1);
+    });
+    return result;
+  };
+
+  const openExplorerAt = (hypothesis: DriHypothesisResult) => {
+    commitLiveAnalysis(hypothesis.key);
+    setExplorerOpen(true);
+    window.setTimeout(() => {
+      explorerRef.current?.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth', block: 'start' });
+    }, 60);
   };
 
   const handleAnalyze = async () => {
@@ -1103,12 +1183,16 @@ export default function DriDashboard({
     setSaving(true);
     setPersistWarning(null);
     const result = runDriEngine(form, catalog);
+    const signature = formSignature(form);
     startTransition(() => {
-      setAnalysis(result);
+      setCommittedAnalysis(result);
+      setCommittedSignature(signature);
       setSelectedNodeId(null);
       setSelectedNodeIds([]);
       setSelectedHypothesisKey(result.hypotheses[0]?.key || null);
+      setSpatialSelectionVersion((version) => version + 1);
     });
+    setExplorerOpen(true);
     if (previewMode || demoActive) {
       setPersistWarning('Prueba local: el diagnóstico no se guarda en producción.');
       setSaving(false);
@@ -1116,23 +1200,44 @@ export default function DriDashboard({
     }
     const persisted = await persistDriCase(form, result);
     setActiveCase(persisted.caseRecord);
+    setSavedSignature(formSignature(form));
     setPersistWarning(persisted.persistWarning);
     setHistory((current) => [persisted.caseRecord, ...current.filter((item) => item.id !== persisted.caseRecord.id)].slice(0, 24));
     setSaving(false);
   };
 
-  const handleLoadDemo = () => {
-    setDemoActive(true); setSpatialSelectionVersion(0);
-    if (!catalog) {
-      return;
-    }
+  const loadDemoForm = (demoForm: DriCaseFormState) => {
+    if (!catalog) return;
+    setDemoActive(true);
+    setSpatialSelectionVersion(0);
+    setPersistWarning(null);
+    setEvidenceTasks({});
+    setSearch('');
+    sources.clearAll();
+    setSelectedReagentId(demoForm.failedReagentIds[0] || demoForm.correctReagentIds[0] || null);
+    setForm(demoForm);
+    const result = runDriEngine(demoForm, catalog);
+    const signature = formSignature(demoForm);
+    startTransition(() => {
+      setCommittedAnalysis(result);
+      setCommittedSignature(signature);
+      setSelectedNodeId(null);
+      setSelectedNodeIds([]);
+      setSelectedHypothesisKey(result.hypotheses[0]?.key || null);
+    });
+    setActiveCase(null);
+    setSavedSignature(null);
+    setExplorerOpen(true);
+  };
 
+  const handleLoadDemo = () => {
+    if (!catalog) return;
     const baseDemo = buildDemoFormState(catalog);
     const demoReferences = getMatchingQcReferences(catalog, baseDemo, baseDemo.failedReagentIds);
     const selectedReference =
       demoReferences.find((reference) => reference.controlLevel === 'level_1') || demoReferences[0] || null;
 
-    const demoForm: DriCaseFormState = {
+    loadDemoForm({
       ...baseDemo,
       selectedQcReferenceId: selectedReference?.id || '',
       expectedValue: selectedReference ? String(selectedReference.targetValue) : baseDemo.expectedValue,
@@ -1148,46 +1253,25 @@ export default function DriDashboard({
             },
           }
         : baseDemo.reagentMeasurements,
-    };
-
-    setPersistWarning(null);
-    setEvidenceTasks({});
-    setSearch('');
-    setSelectedReagentId(demoForm.failedReagentIds[0] || demoForm.correctReagentIds[0] || null);
-    setForm(demoForm);
-
-    const result = runDriEngine(demoForm, catalog);
-    startTransition(() => {
-      setAnalysis(result);
-      setSelectedNodeId(null);
-      setSelectedNodeIds([]);
-      setSelectedHypothesisKey(result.hypotheses[0]?.key || null);
     });
-    setActiveCase(null);
   };
 
   const handleLoadFullDemo = () => {
-    setDemoActive(true); setSpatialSelectionVersion(0);
-    if (!catalog) {
-      return;
-    }
+    if (!catalog) return;
+    loadDemoForm(buildFullRandomDemoFormState(catalog, supportedProfiles, form.equipmentModel));
+  };
 
-    const demoForm = buildFullRandomDemoFormState(catalog, supportedProfiles, form.equipmentModel);
-
-    setPersistWarning(null);
+  const handleReset = () => {
     setEvidenceTasks({});
-    setSearch('');
-    setSelectedReagentId(demoForm.failedReagentIds[0] || demoForm.correctReagentIds[0] || null);
-    setForm(demoForm);
-
-    const result = runDriEngine(demoForm, catalog);
-    startTransition(() => {
-      setAnalysis(result);
-      setSelectedNodeId(null);
-      setSelectedNodeIds([]);
-      setSelectedHypothesisKey(result.hypotheses[0]?.key || null);
-    });
-    setActiveCase(null);
+    invalidateCommitted();
+    setSelectedHypothesisKey(null);
+    setDemoActive(false);
+    setSelectedReagentId(null);
+    setSelectedNodeId(null);
+    setSelectedNodeIds([]);
+    setPersistWarning(null);
+    sources.clearAll();
+    setForm(createInitialFormState());
   };
 
   const applyQcReference = (reference: DriQcReference) => {
@@ -1439,278 +1523,267 @@ export default function DriDashboard({
     );
   }
 
+  const showDemoButton = previewMode || sessionEmail === DEMO_ACCOUNT_EMAIL;
+  const caseCode = activeCase?.caseCode || (committedAnalysis ? `DRI-${committedAnalysis.runId.slice(0, 8).toUpperCase()}` : null);
+  const appliedSourceLabels = sources.appliedKinds.map((kind) => DRI_SOURCE_LABELS[kind]);
+  const stageCounts = {
+    failed: form.failedReagentIds.length,
+    correct: form.correctReagentIds.length,
+    factors: graphNodes.filter((node) => node.type === 'factor').length,
+    systems: graphSystemPills.length,
+  };
+  const dockTabs: Array<{ key: DriDockTab; label: string; count?: number | null; visible: boolean }> = [
+    { key: 'caso', label: 'Caso', visible: canCapture },
+    { key: 'hipotesis', label: 'Hipótesis', count: analysis ? analysis.hypotheses.length : null, visible: canViewDiagnosis },
+    { key: 'contraste', label: 'Contraste', count: analysis?.contrast ? analysis.contrast.exonerations.length : null, visible: canViewGraph },
+    { key: 'evidencia', label: 'Evidencia', visible: canViewDiagnosis },
+  ];
+  const visibleDockTabs = dockTabs.filter((tab) => tab.visible);
+  const activeDockTab = visibleDockTabs.some((tab) => tab.key === dockTab) ? dockTab : visibleDockTabs[0]?.key || 'caso';
+
   return (
-    <div className="dri-shell">
-      <section className="dri-hero card">
-        <div className="dri-hero__identity">
-          <div>
-            <div className="dri-hero__eyebrow">DRI · Diagnóstico por Relaciones Inteligentes</div>
-            <h2>Inteligencia diagnóstica. Precisión espacial.</h2>
-          </div>
-        </div>
-        <div className="dri-hero__status">
-          {previewMode || sessionEmail === DEMO_ACCOUNT_EMAIL ? <button type="button" className="dri-pill-button" onClick={handleLoadDemo}>Demo BA400</button> : null}
-          <span className="dri-badge dri-badge--teal">{catalogSource}</span>
-          <span className="dri-badge dri-badge--neutral">{supportedProfiles.length} reactivos visibles</span>
-          {analysis ? <span className="dri-badge dri-badge--amber">{analysis.hypotheses.length} hipótesis</span> : null}
-          {form.bplEvidence ? <span className="dri-badge dri-badge--teal" title={form.bplEvidence.sourceReference}>Evidencia BPL · {form.bplEvidence.eventCount} eventos</span> : null}
-        </div>
-      </section>
+    <div className="dri-shell dri-workbench" data-live={liveState}>
+      <DriCommandStrip
+        equipmentModel={form.equipmentModel}
+        onEquipmentChange={(model) => handleFormChange('equipmentModel', model)}
+        serial={form.serialNumber}
+        onSerialChange={(serial) => handleFormChange('serialNumber', serial)}
+        canCapture={canCapture}
+        catalogSource={catalogSource}
+        visibleReagents={supportedProfiles.length}
+        liveState={liveState}
+        hypothesisCount={analysis?.hypotheses.length || 0}
+        caseCode={caseCode}
+        appliedSources={appliedSourceLabels}
+        bplEventCount={form.bplEvidence ? form.bplEvidence.eventCount : null}
+        showDemo={showDemoButton}
+        onLoadDemo={handleLoadDemo}
+        onLoadFullDemo={handleLoadFullDemo}
+        onReset={handleReset}
+        onGenerate={() => void handleAnalyze()}
+        canGenerate={Boolean(form.serialNumber.trim() && form.failedReagentIds.length)}
+        saving={saving}
+        onSearchSources={() => void sources.loadAllForSerial(form.serialNumber, { apply: 'none' })}
+        sourcesBusy={sources.busy}
+      />
 
       {catalogWarning ? <div className="dri-alert dri-alert--warning">{catalogWarning}</div> : null}
       {persistWarning ? <div className="dri-alert dri-alert--warning">{persistWarning}</div> : null}
+      {sources.lastMessage ? <div className="dri-alert dri-alert--info">{sources.lastMessage}</div> : null}
 
-      {canViewDiagnosis ? <Ba400DiagnosticViewer
-        equipment={form.equipmentModel}
-        serialNumber={form.serialNumber}
-        analysis={analysis?.platform === form.equipmentModel ? analysis : null}
-        selectedFinding={analysis?.platform === form.equipmentModel ? selectedHypothesis : null}
-        selectionVersion={spatialSelectionVersion}
-        onSelectFinding={(key) => { setSelectedHypothesisKey(key); setSpatialSelectionVersion(v => v + 1); }}
-        onEquipmentChange={canCapture ? model => handleFormChange('equipmentModel', model) : undefined}
-        fixtureLabel={demoActive ? 'Demostración del motor DRI' : null}
-      /> : null}
-
-      <div className="dri-stack">
-        {canCapture ? <DriInputPanel
-          form={form}
-          filteredReagents={filteredReagents}
-          qcReferenceOptions={qcReferenceOptions}
-          selectedQcReference={selectedQcReference}
-          qcAssessment={qcAssessment}
-          reagentMeasurements={form.reagentMeasurements}
-          reagentQcReferenceById={reagentQcReferenceById}
-          reagentQcAssessmentById={reagentQcAssessmentById}
-          search={search}
-          onSearchChange={setSearch}
-          onFormChange={handleFormChange}
-          onToggleSignal={handleToggleSignal}
-          onCycleReagent={handleReagentCycle}
-          onUpdateReagentMeasurement={updateReagentMeasurement}
-          onApplyQcReference={applyQcReference}
-          onAnalyze={handleAnalyze}
-          onLoadDemo={handleLoadDemo}
-          onLoadFullDemo={handleLoadFullDemo}
-          showDemoButton={previewMode || sessionEmail === DEMO_ACCOUNT_EMAIL}
-          canAnalyze={Boolean(form.serialNumber.trim() && form.failedReagentIds.length)}
-          saving={saving}
-          onAddServiceTest={addServiceTest}
-          onUpdateServiceTest={updateServiceTest}
-          onRemoveServiceTest={removeServiceTest}
-          onAddEvidenceItem={addEvidenceItem}
-          onUpdateEvidenceItem={updateEvidenceItem}
-          onRemoveEvidenceItem={removeEvidenceItem}
-          onSelectEvidenceFile={handleEvidenceFile}
-          evidenceTasks={evidenceTasks}
-          selectedReagent={selectedReagent}
-          selectedReagentProfile={selectedReagentProfile}
-          onReset={() => {
-            setEvidenceTasks({});
-            setAnalysis(null); setActiveCase(null); setSelectedHypothesisKey(null); setDemoActive(false);
-            setSelectedReagentId(null);
-            setSelectedNodeId(null);
-            setSelectedNodeIds([]);
-            setForm(createInitialFormState());
-          }}
-        /> : null}
-
-        {canViewGraph ? <button type="button" className="dri-pill-button" aria-expanded={showRelationGraph} onClick={() => setShowRelationGraph(current => !current)}>{showRelationGraph ? 'Ocultar mapa de relaciones' : 'Abrir mapa de relaciones DRI'}</button> : null}
-        {canViewGraph && showRelationGraph ? <section className="dri-panel dri-panel--graph">
-          <div className="dri-panel__head">
-            <div>
-              <span className="dri-panel__eyebrow">Grafo de reactivos y factores</span>
-              <h3>Relaciones activas del caso</h3>
-            </div>
-            {analysis ? (
-              <div className="dri-inline-badges">
-                {analysis.topSubsystems.slice(0, 3).map((item) => (
-                  <span key={item.subsystem} className="dri-badge dri-badge--neutral">
-                    {item.subsystem} · {Math.round(item.score)}
-                  </span>
-                ))}
-              </div>
-            ) : null}
-          </div>
-          <div className="dri-graph-controls">
-            <div className="dri-graph-controls__systems">
-              <button
-                type="button"
-                className={`dri-pill-button ${focusedSystemKey === null ? 'is-active' : ''}`}
-                onClick={() => setFocusedSystemKey(null)}
-              >
-                Todos
-              </button>
-              {graphSystemPills.map((system) => (
-                <button
-                  key={system.key}
-                  type="button"
-                  className={`dri-pill-button ${focusedSystemKey === system.key ? 'is-active' : ''}`}
-                  onClick={() => setFocusedSystemKey((current) => (current === system.key ? null : system.key))}
-                >
-                  {system.label}
-                </button>
-              ))}
-              <button
-                type="button"
-                className={`dri-pill-button ${graphMultiSelect ? 'is-active' : ''}`}
-                onClick={() => setGraphMultiSelect((current) => !current)}
-              >
-                Selección múltiple
-              </button>
-              <button type="button" className="dri-pill-button" onClick={clearGraphSelection}>
-                Limpiar selección
-              </button>
-            </div>
-            <div className="dri-graph-controls__sliders">
-              <label className="dri-graph-slider">
-                <span>Núcleo</span>
-                <strong>{graphShellControls.systemCoreRadius.toFixed(2)}</strong>
-                <input
-                  type="range"
-                  min="0"
-                  max="2"
-                  step="0.02"
-                  value={graphShellControls.systemCoreRadius}
-                  onChange={(event) => handleGraphShellControlInput('systemCoreRadius', event.currentTarget.value)}
-                  onInput={(event) => handleGraphShellControlInput('systemCoreRadius', event.currentTarget.value)}
-                />
-              </label>
-              <label className="dri-graph-slider">
-                <span>Separación estratos</span>
-                <strong>{graphShellControls.systemStep.toFixed(2)}</strong>
-                <input
-                  type="range"
-                  min="0"
-                  max="1.4"
-                  step="0.02"
-                  value={graphShellControls.systemStep}
-                  onChange={(event) => handleGraphShellControlInput('systemStep', event.currentTarget.value)}
-                  onInput={(event) => handleGraphShellControlInput('systemStep', event.currentTarget.value)}
-                />
-              </label>
-              <label className="dri-graph-slider">
-                <span>Base factores</span>
-                <strong>{graphShellControls.factorBaseRadius.toFixed(2)}</strong>
-                <input
-                  type="range"
-                  min="3"
-                  max="8"
-                  step="0.05"
-                  value={graphShellControls.factorBaseRadius}
-                  onChange={(event) => handleGraphShellControlInput('factorBaseRadius', event.currentTarget.value)}
-                  onInput={(event) => handleGraphShellControlInput('factorBaseRadius', event.currentTarget.value)}
-                />
-              </label>
-              <label className="dri-graph-slider">
-                <span>Paso factores</span>
-                <strong>{graphShellControls.factorStep.toFixed(2)}</strong>
-                <input
-                  type="range"
-                  min="0.75"
-                  max="1.6"
-                  step="0.01"
-                  value={graphShellControls.factorStep}
-                  onChange={(event) => handleGraphShellControlInput('factorStep', event.currentTarget.value)}
-                  onInput={(event) => handleGraphShellControlInput('factorStep', event.currentTarget.value)}
-                />
-              </label>
-              <label className="dri-graph-slider">
-                <span>Radio reactivos</span>
-                <strong>{graphShellControls.reagentRadius.toFixed(2)}</strong>
-                <input
-                  type="range"
-                  min="5"
-                  max="15"
-                  step="0.01"
-                  value={graphShellControls.reagentRadius}
-                  onChange={(event) => handleGraphShellControlInput('reagentRadius', event.currentTarget.value)}
-                  onInput={(event) => handleGraphShellControlInput('reagentRadius', event.currentTarget.value)}
-                />
-              </label>
-            </div>
-          </div>
-          <div className="dri-graph-stage">
-            <DriGraph3D
+      <div className="dri-workbench__stage">
+        {canViewGraph ? (
+            <DriRelationStage
               nodes={graphNodes}
               edges={graphEdges}
               selectedNodeIds={selectedNodeIds}
               onToggleNode={handleToggleGraphNode}
+              onClearSelection={clearGraphSelection}
               focusedSystemKey={focusedSystemKey}
+              onFocusSystem={setFocusedSystemKey}
+              systemPills={graphSystemPills}
+              multiSelect={graphMultiSelect}
+              onToggleMultiSelect={() => setGraphMultiSelect((current) => !current)}
               shellControls={graphShellControls}
+              onShellControlChange={updateGraphShellControl}
+              onResetShellControls={() => setGraphShellControls({ ...DRI_GRAPH_CONFIG.layout.defaultRadii })}
+              analysis={analysis}
+              selectedSignal={selectedSignal}
+              selectedNode={selectedNode}
+              counts={stageCounts}
+              liveState={liveState}
+              caseCode={caseCode}
+              isDemo={demoActive}
+              reagentLabel={reagentLabel}
             />
-          </div>
-          {analysis ? (
-            <>
-              <div className="dri-case-ribbon">
-                <span>Señales faltantes: {analysis.missingEvidence.length ? analysis.missingEvidence.join(' · ') : 'Sin vacíos críticos'}</span>
-                <strong>{activeCase?.caseCode || `DRI-${analysis.runId.slice(0, 8).toUpperCase()}`}</strong>
-              </div>
-              <DriRelationMatrix
-                signals={analysis.relationSignals}
-                onSelectSignal={(signal) => {
-                  if (signal.category === 'service' && form.equipmentModel === 'BA400') {
-                    const systemNodeIds = getBa400SystemNodeIdsForSignal(signal);
-                    setSelectedNodeId(systemNodeIds[0] || null);
-                    setSelectedNodeIds(systemNodeIds);
-                    return;
-                  }
-                  const nodeId = signalNodeId(signal.id);
-                  setSelectedNodeId(nodeId);
-                  setSelectedNodeIds([nodeId]);
-                }}
-              />
-            </>
-          ) : (
-            <div className="dri-empty-state">Selecciona fallidas y correctas, luego genera el diagnóstico diferencial.</div>
-          )}
-        </section> : null}
+          ) : null}
+      </div>
 
-        {canViewDiagnosis ? <section className="dri-panel dri-panel--side">
-          <div className="dri-panel__head">
-            <div>
-              <span className="dri-panel__eyebrow">Lectura guiada del caso</span>
-              <h3>Ranking diagnóstico y trazabilidad clínica técnica</h3>
-            </div>
+      {canCapture ? (
+        <DriSourcesStrip
+          sources={sources}
+          serial={form.serialNumber}
+          previewMode={previewMode}
+          onImportSat={sources.acceptImportedSat}
+          onOpenAdvisoryPicker={() => setAdvisoryPickerOpen(true)}
+        />
+      ) : null}
+
+      <section className="dri-workbench__panel" aria-label="Herramientas del caso">
+          <div className="dri-dock-tabs" role="tablist">
+            {visibleDockTabs.map((tab) => (
+              <button
+                key={tab.key}
+                type="button"
+                role="tab"
+                aria-selected={activeDockTab === tab.key}
+                className={`dri-dock-tab ${activeDockTab === tab.key ? 'is-active' : ''}`}
+                onClick={() => setDockTab(tab.key)}
+                title={tab.key === 'contraste' && tab.count !== null && tab.count !== undefined ? `${tab.count} factores con menos peso (sin descartar)` : undefined}
+              >
+                {tab.label}
+                {tab.count !== null && tab.count !== undefined ? <b className="dri-dock-tab__count">{tab.count}</b> : null}
+              </button>
+            ))}
           </div>
 
-          {selectedSignal ? (
-            <div className="dri-side-block">
-              <span className="dri-side-block__label">Relación seleccionada</span>
-              <strong>{selectedSignal.label}</strong>
-              <p>{selectedSignal.evidenceFor[0]}</p>
-              <p>{selectedSignal.evidenceAgainst[0]}</p>
-            </div>
+          {activeDockTab === 'caso' && canCapture ? (
+            <DriInputPanel
+              embedded
+              form={form}
+              filteredReagents={filteredReagents}
+              qcReferenceOptions={qcReferenceOptions}
+              selectedQcReference={selectedQcReference}
+              qcAssessment={qcAssessment}
+              reagentMeasurements={form.reagentMeasurements}
+              reagentQcReferenceById={reagentQcReferenceById}
+              reagentQcAssessmentById={reagentQcAssessmentById}
+              search={search}
+              onSearchChange={setSearch}
+              onFormChange={handleFormChange}
+              onToggleSignal={handleToggleSignal}
+              onCycleReagent={handleReagentCycle}
+              onUpdateReagentMeasurement={updateReagentMeasurement}
+              onApplyQcReference={applyQcReference}
+              onAnalyze={() => void handleAnalyze()}
+              onLoadDemo={handleLoadDemo}
+              onLoadFullDemo={handleLoadFullDemo}
+              showDemoButton={showDemoButton}
+              canAnalyze={Boolean(form.serialNumber.trim() && form.failedReagentIds.length)}
+              saving={saving}
+              onAddServiceTest={addServiceTest}
+              onUpdateServiceTest={updateServiceTest}
+              onRemoveServiceTest={removeServiceTest}
+              onAddEvidenceItem={addEvidenceItem}
+              onUpdateEvidenceItem={updateEvidenceItem}
+              onRemoveEvidenceItem={removeEvidenceItem}
+              onSelectEvidenceFile={handleEvidenceFile}
+              evidenceTasks={evidenceTasks}
+              selectedReagent={selectedReagent}
+              selectedReagentProfile={selectedReagentProfile}
+              onReset={handleReset}
+              provenance={provenance}
+            />
           ) : null}
 
-          {analysis ? (
-            <div className="dri-hypothesis-list">
-              {analysis.hypotheses.map((hypothesis) => (
-                <DriHypothesisCard
-                  key={hypothesis.key}
-                  hypothesis={hypothesis}
-                  selected={selectedHypothesis?.key === hypothesis.key}
-                  onSelect={() => {
-                    setSelectedHypothesisKey(hypothesis.key); setSpatialSelectionVersion(v => v + 1);
-                    document.getElementById('dri-equipment-3d')?.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth', block: 'start' });
-                  }}
-                />
-              ))}
+          {activeDockTab === 'hipotesis' && canViewDiagnosis ? (
+            <DriHypothesisDock
+              analysis={analysis}
+              previousAnalysis={previousAnalysis}
+              selectedHypothesisKey={selectedHypothesis?.key || null}
+              onSelectHypothesis={(key) => {
+                setSelectedHypothesisKey(key);
+                setSpatialSelectionVersion((version) => version + 1);
+              }}
+              onLocateInExplorer={openExplorerAt}
+              explorerAvailable={canViewDiagnosis && form.equipmentModel === 'BA400'}
+              liveState={liveState}
+              caseCode={caseCode}
+              saving={saving}
+              canSave={canCapture && Boolean(form.serialNumber.trim() && form.failedReagentIds.length)}
+              isDemo={previewMode || demoActive}
+              onSave={() => void handleAnalyze()}
+              reagentLabel={reagentLabel}
+              isReagentVisible={isReagentVisible}
+              onSetReagentState={setReagentState}
+              readOnly={!canCapture}
+            />
+          ) : null}
+
+          {activeDockTab === 'contraste' && canViewGraph ? (
+            <DriContrastMatrix
+              analysis={analysis}
+              failedReagentIds={form.failedReagentIds}
+              correctReagentIds={form.correctReagentIds}
+              reagentLabel={reagentLabel}
+              reagentName={reagentName}
+              isReagentVisible={isReagentVisible}
+              onSetReagentState={setReagentState}
+              readOnly={!canCapture}
+              selectedSignalId={selectedSignalId}
+              onSelectSignal={(signalId) => selectSignalInGraph(signalId ? analysis?.relationSignals.find((signal) => signal.id === signalId) || null : null)}
+            />
+          ) : null}
+
+          {activeDockTab === 'evidencia' && canViewDiagnosis ? (
+            <div className="dri-dock-section">
+              {analysis ? (
+                <DriEvidencePanel evidenceRows={analysis.evidenceRows} logs={analysis.logs} history={history} />
+              ) : (
+                <div className="dri-empty-state">La evidencia relacional aparece cuando el caso tiene pruebas fallidas.</div>
+              )}
+              <div className="dri-side-block">
+                <span className="dri-side-block__label">Fixtures de validación</span>
+                <strong>{fixtureResults.filter((result) => result.passed).length} / {fixtureResults.length} escenarios</strong>
+                <p>Los fixtures cubren 340 nm, R2, dilución, temperatura, control, linealidad, interferencias, pruebas de servicio y contraste 505 nm.</p>
+                <ul className="dri-fixture-list">
+                  {fixtureResults.map((result) => (
+                    <li key={result.id} data-passed={result.passed}>
+                      <span className={`dri-mini-badge ${result.passed ? 'is-pass' : 'is-fail'}`}>{result.passed ? 'pasa' : 'falla'}</span>
+                      <span className="dri-fixture-list__title">{result.id} · {result.title}</span>
+                      {showDemoButton ? (
+                        <button
+                          type="button"
+                          className="dri-ghost-button"
+                          onClick={() => {
+                            const fixture = DRI_VALIDATION_FIXTURES.find((item) => item.id === result.id);
+                            if (fixture) loadDemoForm({ ...fixture.input, serialNumber: `${fixture.input.serialNumber}-${fixture.id.toUpperCase()}` });
+                          }}
+                        >
+                          Cargar en el caso
+                        </button>
+                      ) : null}
+                    </li>
+                  ))}
+                </ul>
+              </div>
             </div>
-          ) : (
-            <div className="dri-empty-state">Todavía no hay hipótesis generadas para este caso.</div>
-          )}
+          ) : null}
+      </section>
 
-          <div className="dri-side-block">
-            <span className="dri-side-block__label">Fixtures de validación</span>
-            <strong>{fixtureResults.filter((result) => result.passed).length} / {fixtureResults.length} escenarios</strong>
-            <p>Los fixtures cubren 340 nm, R2, dilución, temperatura, control, linealidad, interferencias y pruebas de servicio.</p>
+      {canViewDiagnosis ? (
+        <section ref={explorerRef} className="dri-explorer" data-open={explorerOpen} aria-label="Explorador 3D del equipo">
+          <div className="dri-explorer__bar">
+            <div>
+              <span className="dri-panel__eyebrow">Localización espacial</span>
+              <strong>{committedAnalysis ? `${committedAnalysis.hypotheses.length} hallazgos fijados${caseCode ? ` · ${caseCode}` : ''}` : 'Sin diagnóstico fijado: explora el equipo o fija un hallazgo desde Hipótesis'}</strong>
+            </div>
+            <div className="dri-explorer__actions">
+              {analysis && committedSignature !== formSignature(form) ? (
+                <button type="button" className="dri-pill-button" onClick={() => { commitLiveAnalysis(selectedHypothesis?.key); setExplorerOpen(true); }}>
+                  Fijar lectura viva
+                </button>
+              ) : null}
+              <button type="button" className="dri-pill-button" aria-expanded={explorerOpen} onClick={() => setExplorerOpen((current) => !current)}>
+                {explorerOpen ? 'Ocultar explorador 3D' : 'Abrir explorador 3D'}
+              </button>
+            </div>
           </div>
-        </section> : null}
+          {explorerOpen ? (
+            <Ba400DiagnosticViewer
+              equipment={form.equipmentModel}
+              serialNumber={form.serialNumber}
+              analysis={committedAnalysis?.platform === form.equipmentModel ? committedAnalysis : null}
+              selectedFinding={committedAnalysis?.platform === form.equipmentModel ? committedFinding : null}
+              selectionVersion={spatialSelectionVersion}
+              onSelectFinding={(key) => { setSelectedHypothesisKey(key); setSpatialSelectionVersion(v => v + 1); }}
+              onEquipmentChange={canCapture ? model => handleFormChange('equipmentModel', model) : undefined}
+              fixtureLabel={demoActive ? 'Demostración del motor DRI' : null}
+            />
+          ) : null}
+        </section>
+      ) : null}
 
-        {canViewDiagnosis && analysis ? (
-          <DriEvidencePanel evidenceRows={analysis.evidenceRows} logs={analysis.logs} history={history} />
-        ) : null}
-      </div>
+      <DriAdvisoryPicker
+        open={advisoryPickerOpen}
+        onClose={() => setAdvisoryPickerOpen(false)}
+        onSelect={(advisoryCase) => {
+          setAdvisoryPickerOpen(false);
+          sources.acceptAdvisory(advisoryCase);
+          setDockTab('caso');
+        }}
+        serialHint={form.serialNumber}
+      />
     </div>
   );
 }

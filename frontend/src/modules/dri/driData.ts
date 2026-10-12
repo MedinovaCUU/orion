@@ -197,6 +197,22 @@ const buildCaseSummary = (form: DriCaseFormState, engineResult: DriEngineResult)
   return `${form.failedReagentIds.length} prueba(s) fallida(s), ${form.correctReagentIds.length} correcta(s). Hipótesis líder: ${topHypothesis.title} (${topHypothesis.probabilityLabel}).`;
 };
 
+/**
+ * Base de lote del diagnóstico para auditoría: los lotes de las pruebas del caso (con sus frascos) y los
+ * hallazgos de lote que usó el motor. Solo las pruebas del caso, no las ~90 combinaciones del SAT completo.
+ */
+const buildLotMetadata = (form: DriCaseFormState, engineResult: DriEngineResult) => {
+  const intelligence = engineResult.lotIntelligence || null;
+  if (!form.reagentBottles?.length || !intelligence) return {};
+  const ids = new Set([...form.failedReagentIds, ...form.correctReagentIds]);
+  const keys = new Set(intelligence.lotsInUse.map((lot) => lot.bottle.reagentKey).filter((key): key is string => Boolean(key)));
+  return {
+    reagentBottles: form.reagentBottles.filter((bottle) => (bottle.reagentId && ids.has(bottle.reagentId)) || (bottle.reagentKey && keys.has(bottle.reagentKey))),
+    lotFindings: intelligence.findings,
+    lotFactsGeneratedAt: intelligence.factsGeneratedAt,
+  };
+};
+
 const buildLocalCaseRecord = (form: DriCaseFormState, engineResult: DriEngineResult): DriDiagnosticCaseRecord => ({
   id: `local-${engineResult.runId}`,
   caseCode: `LOCAL-${engineResult.runId.slice(0, 8).toUpperCase()}`,
@@ -223,6 +239,7 @@ const buildLocalCaseRecord = (form: DriCaseFormState, engineResult: DriEngineRes
     serviceTests: form.serviceTests,
     evidenceItems: form.evidenceItems,
     bplEvidence: form.bplEvidence ?? null,
+    ...buildLotMetadata(form, engineResult),
     localOnly: true,
   },
   status: 'open',
@@ -438,6 +455,7 @@ export async function persistDriCase(
           serviceTests: form.serviceTests,
           evidenceItems: form.evidenceItems,
           bplEvidence: form.bplEvidence ?? null,
+          ...buildLotMetadata(form, engineResult),
         },
         created_by: user?.id ?? null,
         updated_by: user?.id ?? null,

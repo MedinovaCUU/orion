@@ -2,12 +2,16 @@ import { A15_KNOWLEDGE } from '../knowledge/a15.rules';
 import { BA200_KNOWLEDGE } from '../knowledge/ba200.rules';
 import { BA400_KNOWLEDGE } from '../knowledge/ba400.rules';
 import { buildReagentProfiles } from '../knowledge/reagentRelations';
+import { buildContrastAnalysis, exonerationPoints } from './contrastAnalysis';
 import { buildFactorAggregates, buildRelationSignals } from './evidenceMapper';
 import { buildHypothesisRecommendation, rankSubsystems } from './recommendationEngine';
 import { resolveProbabilityLabel, scoreHypothesis, type DriScoreContribution } from './scoringEngine';
 import { createDriLogger } from '../utils/driLogging';
 import { assessDilutionPattern } from '../utils/dilutionUtils';
 import { assessProcedureLimitations } from '../utils/procedureLimitations';
+import { assessLotIntelligence, lotContrast, reagentMatchKey } from '../utils/lotIntelligence';
+import { localDayEndMs, parseInstantMs } from '../utils/lotDates';
+import type { DriLotFinding, DriLotIntelligence } from '../types/dri.types';
 import { assessQcReference, findQcReferenceById } from '../utils/qcReferenceUtils';
 import { normalizeText } from '../utils/relationUtils';
 import type {
@@ -238,6 +242,56 @@ const buildQcEvidenceRow = (reference: DriQcReference, assessment: DriQcAssessme
   source: 'Valuesheet QC',
 });
 
+const LOT_FINDING_SOURCE = 'Lote en uso (SAT · einfo.bio)';
+
+/**
+ * Filas de evidencia por hallazgo de lote de las pruebas fallidas. Igual que las filas de factores, el contraste
+ * con las correctas evaluables se ve en la fila: si lo comparten, la fila lo dice y baja de puntuación; si no hubo
+ * correctas evaluables, también. `skipReagents` evita repetir lo que ya tiene fila propia (estabilidad capturada a mano).
+ */
+const buildLotEvidenceRows = (
+  intelligence: DriLotIntelligence | null,
+  failedCount: number,
+  skipReagents: { type: DriLotFinding['type']; reagentIds: string[] } | null = null,
+): DriEvidenceRow[] => {
+  if (!intelligence) return [];
+  const seen = new Set<string>();
+  return intelligence.findings
+    .filter((finding) => finding.outcome === 'failed' && finding.score >= 30)
+    .filter((finding) => !(skipReagents && finding.type === skipReagents.type && skipReagents.reagentIds.includes(finding.reagentId)))
+    .filter((finding) => {
+      const key = `${finding.type}:${finding.reagentId}`;
+      if (seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    })
+    .map((finding) => {
+      const contrast = lotContrast(intelligence, finding.type, failedCount);
+      // La fila dice que el hallazgo no separa en cuanto las correctas evaluadas lo comparten, aunque las
+      // fallidas que lo tienen no sean mayoría.
+      const shared = contrast.correctObserved && contrast.correctCoverage > 0 && (contrast.correctCoverage >= 0.5 || contrast.correctCoverage >= contrast.failedCoverage);
+      const against = !finding.observed
+        ? 'Extrapolado: el SAT no muestra el lote en uso cerca del evento.'
+        : shared
+          ? `También lo comparten ${Math.round(contrast.correctCoverage * 100)}% de las correctas evaluadas: no separa fallidas de correctas.`
+          : !contrast.correctObserved
+            ? 'Sin pruebas correctas evaluables en el SAT para contrastarlo.'
+            : '';
+      const factor = !finding.observed ? 0.6 : shared ? 0.4 : !contrast.correctObserved ? 0.75 : 1;
+      return {
+        id: finding.id,
+        title: finding.title,
+        category: 'lot',
+        failedCoverage: contrast.failedCoverage,
+        correctCoverage: contrast.correctCoverage,
+        score: Math.round(finding.score * factor),
+        evidenceFor: finding.explanation,
+        evidenceAgainst: against,
+        source: LOT_FINDING_SOURCE,
+      };
+    });
+};
+
 const buildProcedureEvidenceRow = (finding: ReturnType<typeof assessProcedureLimitations>['findings'][number]): DriEvidenceRow => ({
   id: `procedure:${finding.id}`,
   title: finding.title,
@@ -249,6 +303,10 @@ const buildProcedureEvidenceRow = (finding: ReturnType<typeof assessProcedureLim
   evidenceAgainst: 'Antes de culpar al hardware, confirmar la limitación del procedimiento y la unidad reportada.',
   source: finding.source === 'observations' ? 'IFU + observaciones' : 'IFU / rango metrológico',
 });
+
+/** Techo de la evidencia indirecta: lineal hasta 70 y comprimido a la mitad por encima (100 → 85). */
+export const UNCONFIRMED_PROBABILITY_CAP = 85;
+const capUnconfirmedProbability = (score: number) => (score <= 70 ? score : Math.min(UNCONFIRMED_PROBABILITY_CAP, Math.round(70 + (score - 70) / 2)));
 
 const createHypothesis = (
   key: string,
@@ -263,6 +321,9 @@ const createHypothesis = (
   serviceTestAbnormal: boolean,
 ): DriHypothesisResult => {
   const scoring = scoreHypothesis(title, positive, negative, missingEvidence);
+  // Sin una prueba directa anormal (Photometry, bombas, temperatura…) la evidencia es indirecta: el puntaje
+  // se comprime por encima de 70 hasta un máximo de 85 (el orden se conserva). Solo la confirmación llega a 100.
+  const probability = serviceTestAbnormal ? scoring.probabilityScore : capUnconfirmedProbability(scoring.probabilityScore);
   const serviceScriptIds = Array.from(
     new Set(rule.checklist.flatMap((step) => step.serviceScriptIds || [])),
   );
@@ -270,11 +331,11 @@ const createHypothesis = (
     {
       key,
       title,
-      score: scoring.probabilityScore,
-      probabilityScore: scoring.probabilityScore,
+      score: probability,
+      probabilityScore: probability,
       confidenceScore: scoring.confidenceScore,
       severity: scoring.severity,
-      probabilityLabel: resolveProbabilityLabel(scoring.probabilityScore),
+      probabilityLabel: resolveProbabilityLabel(probability),
       status: 'generated',
       suspectedSubsystem,
       explanation: `${explanation} ${scoring.explanationText}`,
@@ -282,9 +343,9 @@ const createHypothesis = (
       evidenceAgainst: negative.map((item) => item.label),
       recommendedNextTest: rule.checklist[0]?.title || null,
       invasivenessLevel:
-        scoring.probabilityScore >= 86 && serviceTestAbnormal
+        probability >= 86 && serviceTestAbnormal
           ? 'possible_part'
-          : scoring.probabilityScore >= 70
+          : probability >= 70
             ? 'service_test'
             : 'operational_review',
       supportingFactorIds: [],
@@ -311,12 +372,18 @@ export function runDifferentialDiagnosisEngine(form: DriCaseFormState, catalog: 
     profile.platforms.value.length === 0 || profile.platforms.value.includes(form.equipmentModel),
   );
   const profileById = new Map(profiles.map((profile) => [profile.id, profile]));
-  const failedProfiles = form.failedReagentIds
+  const catalogFailedProfiles = form.failedReagentIds
     .map((id) => profileById.get(id))
     .filter((profile): profile is DriReagentProfile => Boolean(profile));
-  const correctProfiles = form.correctReagentIds
+  const catalogCorrectProfiles = form.correctReagentIds
     .map((id) => profileById.get(id))
     .filter((profile): profile is DriReagentProfile => Boolean(profile));
+  // Lotes en uso (SAT) + hechos del lote (einfo.bio): los límites y la estabilidad del IFU del lote en uso
+  // sustituyen a los genéricos del catálogo para las pruebas que tienen botella identificada.
+  const lotAssessment = assessLotIntelligence(form, catalogFailedProfiles, catalogCorrectProfiles);
+  const lotIntelligence = lotAssessment?.intelligence || null;
+  const failedProfiles = lotAssessment?.failedProfiles || catalogFailedProfiles;
+  const correctProfiles = lotAssessment?.correctProfiles || catalogCorrectProfiles;
 
   logger.info('ENGINE', 'input', 'Caso recibido por el motor diferencial.', {
     platform: form.equipmentModel,
@@ -328,6 +395,17 @@ export function runDifferentialDiagnosisEngine(form: DriCaseFormState, catalog: 
 
   const factorAggregates = buildFactorAggregates(catalog, failedProfiles, correctProfiles, runId, form.equipmentModel, logs);
   const relationSignals = buildRelationSignals(form, failedProfiles, correctProfiles, factorAggregates, runId, form.equipmentModel, logs);
+  const contrast = buildContrastAnalysis({ signals: relationSignals, failedProfiles, correctProfiles, platformProfiles: profiles });
+  const contrastFor = (signal: DriRelationSignal | undefined | null) =>
+    signal ? contrast.rows.find((row) => row.signalId === signal.id) || null : null;
+  const isExonerated = (signal: DriRelationSignal | undefined | null) => contrastFor(signal)?.verdict === 'exonerates';
+  if (contrast.exonerations.length || contrast.implications.length) {
+    logger.info('EVIDENCE', 'contrast', 'Contraste fallidas/correctas por factor compartido.', {
+      exonerated: contrast.exonerations.map((row) => ({ id: row.signalId, label: row.label, strength: row.exonerationStrength })),
+      implicated: contrast.implications.map((row) => ({ id: row.signalId, label: row.label, score: row.suspicionScore })),
+      discriminatingTests: contrast.discriminatingTests.slice(0, 5).map((test) => test.reagentId),
+    });
+  }
   const matchedQcReference = form.selectedQcReferenceId ? findQcReferenceById(catalog, form.selectedQcReferenceId) : null;
   const qcAssessment = assessQcReference(matchedQcReference, form.obtainedValue);
   const procedureAssessment = assessProcedureLimitations({
@@ -339,6 +417,10 @@ export function runDifferentialDiagnosisEngine(form: DriCaseFormState, catalog: 
   const bplSignals = summarizeBplEvidenceForEngine(bplEvidence);
   const evidenceRows = [
     ...(matchedQcReference && qcAssessment ? [buildQcEvidenceRow(matchedQcReference, qcAssessment)] : []),
+    ...buildLotEvidenceRows(lotIntelligence, failedProfiles.length, {
+      type: 'onboard_exceeded',
+      reagentIds: relationSignals.find((signal) => signal.id === 'stability:onboard')?.relatedReagentIds || [],
+    }),
     ...buildBplEvidenceRows(bplEvidence),
     ...procedureAssessment.findings.map((finding) => buildProcedureEvidenceRow(finding)),
     ...buildEvidenceRows(relationSignals),
@@ -346,13 +428,22 @@ export function runDifferentialDiagnosisEngine(form: DriCaseFormState, catalog: 
   const hypotheses: DriHypothesisResult[] = [];
   const dilutionAssessment = assessDilutionPattern(form.expectedValue, form.obtainedValue);
 
-  const wavelengthSignal = topSignal(relationSignals, 'wavelength');
+  // El filtro primario manda: un filtro de referencia (p. ej. 670 nm) compartido por casi todas las técnicas
+  // no debe convertirse por sí solo en el impulsor de la hipótesis óptica.
+  const wavelengthSignal =
+    topSignal(relationSignals, 'wavelength', (signal) => !signal.id.startsWith('wavelength:ref:')) ||
+    topSignal(relationSignals, 'wavelength');
   const bireactiveSignal = topSignal(relationSignals, 'scheme', (signal) => signal.id === 'scheme:bireactive');
   const monoreactiveSignal = topSignal(relationSignals, 'scheme', (signal) => signal.id === 'scheme:monoreactive');
   const temperatureSignal = topSignal(relationSignals, 'temperature');
   const washSignal = topSignal(relationSignals, 'water');
   const topTechnicalSignal = relationSignals[0];
-  const weakPattern = !topTechnicalSignal || topTechnicalSignal.suspicionScore < 46;
+  // Para leer el "patrón técnico dominante" se ignoran las pruebas de servicio (evalúan sistemas, no factores).
+  const topRelationSignal = relationSignals.find((signal) => signal.category !== 'service') || null;
+  const topRelationContrast = contrastFor(topRelationSignal);
+  const weakPattern = !topTechnicalSignal || (topTechnicalSignal.suspicionScore < 46 && topRelationContrast?.verdict !== 'implicates');
+  const stabilitySignal = topSignal(relationSignals, 'storage', (signal) => signal.id === 'stability:onboard');
+  const r2SharedSignal = topSignal(relationSignals, 'r2');
   const abnormalPhotometry = hasAbnormalServiceTest(form, 'photometry');
   const abnormalPumps = hasAbnormalServiceTest(form, 'motors_valves_pumps');
   const abnormalThermostat = hasAbnormalServiceTest(form, 'thermostatting');
@@ -360,6 +451,23 @@ export function runDifferentialDiagnosisEngine(form: DriCaseFormState, catalog: 
   const procedureFindings = procedureAssessment.findings.filter((item) => item.type === 'interference');
   const metrologyFindings = procedureAssessment.findings.filter((item) => item.type !== 'interference');
   const strongestProcedureFinding = procedureAssessment.findings[0] || null;
+  // Hallazgos de lote que explican por sí solos una desviación (caducado en uso, blanco fuera del CoA, estabilidad
+  // del lote). Igual que los factores técnicos, solo cuentan si separan fallidas de correctas; el blanco que ya
+  // trae el monitor BPL no se cuenta dos veces, y un «último lote conocido» sin uso observado no castiga hardware.
+  const lotContrastOf = (type: DriLotFinding['type']) => lotContrast(lotIntelligence, type, failedProfiles.length);
+  const strongLotTypes: DriLotFinding['type'][] = ['expired', 'blank_out_of_coa', 'onboard_exceeded'];
+  const strongestLotFinding =
+    lotIntelligence?.findings.find(
+      (finding) =>
+        finding.outcome === 'failed' &&
+        strongLotTypes.includes(finding.type) &&
+        finding.score >= 66 &&
+        finding.observed &&
+        !finding.fromBpl &&
+        // Un blanco fotométrico instrumental rechazado deja abierta la óptica aunque el blanco de reactivo esté fuera del CoA.
+        !(finding.type === 'blank_out_of_coa' && bplSignals.photometryRejected) &&
+        lotContrastOf(finding.type).discriminates,
+    ) || null;
 
   if (matchedQcReference && qcAssessment) {
     logger.info('EVIDENCE', 'qc-reference', 'Se aplicó referencia QC del valuesheet al caso.', {
@@ -400,6 +508,30 @@ export function runDifferentialDiagnosisEngine(form: DriCaseFormState, catalog: 
     });
   }
 
+  if (lotIntelligence) {
+    logger.info('EVIDENCE', 'lot-intelligence', 'Lotes en uso del SAT ligados a los hechos del lote en einfo.bio.', {
+      lotsInUse: lotIntelligence.lotsInUse.map((lot) => ({
+        reagentId: lot.reagentId,
+        role: lot.role,
+        outcome: lot.outcome,
+        lot: lot.bottle.lot,
+        productLot: lot.facts?.productLot || null,
+        expiresAt: lot.expiresAt,
+        expirySource: lot.expirySource,
+        barcodeExpiresAt: lot.bottle.expiresAt,
+        usage: lot.usage,
+        daysToExpiry: lot.daysToExpiry,
+        hoursOnboard: lot.hoursOnboard === null ? null : Math.round(lot.hoursOnboard),
+        lotChangedDaysBefore: lot.lotChangedDaysBefore,
+        ifuCode: lot.facts?.ifu?.ifuCode || null,
+      })),
+      findings: lotIntelligence.findings.map((finding) => ({ id: finding.id, score: finding.score, explanation: finding.explanation })),
+      documentedCount: lotIntelligence.documentedCount,
+      undocumentedCount: lotIntelligence.undocumentedCount,
+      factsGeneratedAt: lotIntelligence.factsGeneratedAt,
+    });
+  }
+
   if (platformKnowledge.supportStatus !== 'ready') {
     logger.warn('ENGINE', 'platform-fallback', 'La plataforma está en especialización; se usará conocimiento base orientado a BA400.', {
       requestedPlatform: form.equipmentModel,
@@ -415,13 +547,22 @@ export function runDifferentialDiagnosisEngine(form: DriCaseFormState, catalog: 
     const serviceEvidence = buildRuleServiceEvidence(form, rule);
     positive.push(...serviceEvidence.positive);
     negative.push(...serviceEvidence.negative);
-    if (wavelengthSignal?.failedCoverage && wavelengthSignal.failedCoverage >= 0.6) {
-      positive.push({ label: `${Math.round(wavelengthSignal.failedCoverage * 100)}% de fallidas comparten ${wavelengthSignal.label}.`, points: 26 });
-    }
-    if ((wavelengthSignal?.correctCoverage || 0) <= 0.3) {
-      positive.push({ label: 'Las pruebas correctas no comparten de forma fuerte el mismo filtro.', points: 12 });
+    const wavelengthContrast = contrastFor(wavelengthSignal);
+    if (wavelengthContrast?.verdict === 'exonerates') {
+      // El filtro también lo usan las pruebas correctas: no discrimina y pierde peso, pero sigue en la lista
+      // (una falla parcial puede afectar solo a algunas técnicas) hasta que Photometry/baseline lo resuelva.
+      positive.push({ label: `${wavelengthContrast.failedShared.length} de ${wavelengthContrast.failedTotal} fallidas usan ${wavelengthSignal!.label}.`, points: 26 });
+      negative.push({ label: wavelengthContrast.explanation, points: exonerationPoints(wavelengthContrast, 38) });
     } else {
-      negative.push({ label: 'Las pruebas correctas también usan el mismo filtro/subsistema.', points: 16 });
+      const sharesFilter = Boolean(wavelengthSignal) && (wavelengthSignal!.failedCoverage >= 0.6 || wavelengthContrast?.verdict === 'implicates');
+      if (sharesFilter) {
+        positive.push({ label: `${Math.round(wavelengthSignal!.failedCoverage * 100)}% de fallidas comparten ${wavelengthSignal!.label}.`, points: 26 });
+      }
+      if (wavelengthContrast?.verdict === 'implicates' || (wavelengthSignal?.correctCoverage || 0) <= 0.3) {
+        positive.push({ label: 'Las pruebas correctas no comparten de forma fuerte el mismo filtro.', points: 12 });
+      } else {
+        negative.push({ label: 'Las pruebas correctas también usan el mismo filtro/subsistema.', points: 16 });
+      }
     }
     if (form.eventType === 'absorbance_error' || form.eventType === 'failed_blank') {
       positive.push({ label: 'El tipo de problema es compatible con fotometría/absorbancia.', points: 14 });
@@ -436,6 +577,9 @@ export function runDifferentialDiagnosisEngine(form: DriCaseFormState, catalog: 
     }
     if (strongestProcedureFinding) {
       negative.push({ label: `Existe una explicación analítica más directa: ${strongestProcedureFinding.explanation}`, points: 18 });
+    }
+    if (strongestLotFinding) {
+      negative.push({ label: `El lote en uso explica la desviación antes que la óptica: ${strongestLotFinding.title}.`, points: 16 });
     }
     if (!hasRecordedServiceTest(form, 'photometry') && !hasRecordedServiceTest(form, 'baseline_darkness_current')) {
       missingEvidence.push('Resultado de Photometry / baseline');
@@ -469,10 +613,15 @@ export function runDifferentialDiagnosisEngine(form: DriCaseFormState, catalog: 
     const serviceEvidence = buildRuleServiceEvidence(form, rule);
     positive.push(...serviceEvidence.positive);
     negative.push(...serviceEvidence.negative);
-    if ((bireactiveSignal?.failedCoverage || 0) >= 0.55) {
+    const r2Contrast = contrastFor(r2SharedSignal) || contrastFor(bireactiveSignal);
+    if (r2Contrast?.verdict === 'exonerates') {
+      positive.push({ label: `${r2Contrast.failedShared.length} de ${r2Contrast.failedTotal} fallidas dependen de ${r2Contrast.label}.`, points: 24 });
+      negative.push({ label: r2Contrast.explanation, points: exonerationPoints(r2Contrast, 24) });
+    } else if ((bireactiveSignal?.failedCoverage || 0) >= 0.55) {
       positive.push({ label: 'Las fallidas se concentran en técnicas bireactivas.', points: 24 });
     }
-    if ((monoreactiveSignal?.correctCoverage || 0) >= 0.25) {
+    // El contraste con monoreactivas solo cuenta si alguna fallida depende de R2.
+    if ((monoreactiveSignal?.correctCoverage || 0) >= 0.25 && ((r2SharedSignal?.failedCoverage || 0) > 0 || (bireactiveSignal?.failedCoverage || 0) > 0)) {
       positive.push({ label: 'Las monoreactivas comparables se mantienen correctas.', points: 18 });
     }
     if (bplSignals.calibrationRejectedCount > 0 && (bireactiveSignal?.failedCoverage || 0) >= 0.55) {
@@ -486,6 +635,9 @@ export function runDifferentialDiagnosisEngine(form: DriCaseFormState, catalog: 
     }
     if (strongestProcedureFinding) {
       negative.push({ label: `La limitación IFU/analítica puede explicar la desviación sin culpar a R2: ${strongestProcedureFinding.title}.`, points: 16 });
+    }
+    if (strongestLotFinding) {
+      negative.push({ label: `El lote en uso puede explicar la desviación sin culpar a R2: ${strongestLotFinding.title}.`, points: 14 });
     }
     if (positive.length) {
       hypotheses.push(
@@ -513,7 +665,11 @@ export function runDifferentialDiagnosisEngine(form: DriCaseFormState, catalog: 
     const serviceEvidence = buildRuleServiceEvidence(form, rule);
     positive.push(...serviceEvidence.positive);
     negative.push(...serviceEvidence.negative);
-    if ((temperatureSignal?.failedCoverage || 0) >= 0.45) {
+    const temperatureContrast = contrastFor(temperatureSignal);
+    if (temperatureContrast?.verdict === 'exonerates') {
+      positive.push({ label: `${temperatureContrast.failedShared.length} de ${temperatureContrast.failedTotal} fallidas son sensibles a temperatura o cinética.`, points: 20 });
+      negative.push({ label: temperatureContrast.explanation, points: exonerationPoints(temperatureContrast, 20) });
+    } else if ((temperatureSignal?.failedCoverage || 0) >= 0.45) {
       positive.push({ label: 'Las fallidas son sensibles a temperatura o cinética.', points: 20 });
     }
     if (Number(form.ambientTemperatureC) >= 28) {
@@ -528,6 +684,9 @@ export function runDifferentialDiagnosisEngine(form: DriCaseFormState, catalog: 
     if (strongestProcedureFinding) {
       negative.push({ label: `Existe una limitación del procedimiento documentada que puede explicar el sesgo: ${strongestProcedureFinding.title}.`, points: 16 });
     }
+    if (strongestLotFinding) {
+      negative.push({ label: `El lote en uso puede explicar el sesgo sin termostatización: ${strongestLotFinding.title}.`, points: 14 });
+    }
     if (!hasRecordedServiceTest(form, 'thermostatting')) {
       missingEvidence.push('Resultado de Thermostatting');
     }
@@ -541,7 +700,7 @@ export function runDifferentialDiagnosisEngine(form: DriCaseFormState, catalog: 
           positive,
           negative,
           missingEvidence,
-          'El patrón es compatible con termostatización, estabilidad abordo o refrigeración.',
+          'El patrón es compatible con termostatización, estabilidad a bordo o refrigeración.',
           rule,
           serviceEvidence.confirmedPrimaryAbnormal,
         ),
@@ -574,6 +733,9 @@ export function runDifferentialDiagnosisEngine(form: DriCaseFormState, catalog: 
     }
     if (strongestProcedureFinding) {
       negative.push({ label: `Hay una explicación analítica/IFU más directa que una falla fluídica: ${strongestProcedureFinding.title}.`, points: 14 });
+    }
+    if (strongestLotFinding) {
+      negative.push({ label: `El lote en uso ofrece una explicación más directa que una falla fluídica: ${strongestLotFinding.title}.`, points: 12 });
     }
     if (!dilutionAssessment.explanation) {
       missingEvidence.push('Resultados de linealidad / dilución 1:2, 1:4, 1:5');
@@ -651,7 +813,11 @@ export function runDifferentialDiagnosisEngine(form: DriCaseFormState, catalog: 
     if (form.signals.intermittentPattern) {
       positive.push({ label: 'El patrón es intermitente y compatible con carryover.', points: 10 });
     }
-    if ((washSignal?.failedCoverage || 0) >= 0.2) {
+    const washContrast = contrastFor(washSignal);
+    if (washContrast?.verdict === 'exonerates') {
+      positive.push({ label: `${washContrast.failedShared.length} de ${washContrast.failedTotal} fallidas son sensibles a agua o lavado.`, points: 12 });
+      negative.push({ label: washContrast.explanation, points: exonerationPoints(washContrast, 12) });
+    } else if ((washSignal?.failedCoverage || 0) >= 0.2) {
       positive.push({ label: 'Hay reactivos sensibles a agua/lavado entre las fallidas.', points: 12 });
     }
     if (bplSignals.reagentBlankRejectedCount > 0) {
@@ -697,6 +863,110 @@ export function runDifferentialDiagnosisEngine(form: DriCaseFormState, catalog: 
     negative.push(...serviceEvidence.negative);
     if (weakPattern) {
       positive.push({ label: 'No hay un patrón técnico común dominante entre las fallidas.', points: 22 });
+    } else if (topRelationSignal && isExonerated(topRelationSignal)) {
+      positive.push({
+        label: `El factor técnico dominante (${topRelationSignal.label}) también lo comparten las pruebas correctas: el contraste apunta a control, lote o preanalítica antes que al hardware.`,
+        points: 22,
+      });
+    }
+    // Estabilidad a bordo capturada a mano: si el SAT muestra que las correctas también la exceden, no separa.
+    const satOnboardContrast = lotIntelligence ? lotContrastOf('onboard_exceeded') : null;
+    // Basta con el lado de las correctas: la fecha capturada a mano cubre a las fallidas aunque el SAT no las vea.
+    const satOnboardShared = Boolean(satOnboardContrast?.correctObserved && satOnboardContrast.correctCoverage >= 0.5);
+    if ((stabilitySignal?.failedCoverage || 0) >= 0.5) {
+      if (satOnboardShared) {
+        negative.push({ label: `${stabilitySignal!.label}, pero el SAT muestra que las pruebas correctas también exceden la estabilidad a bordo: no separa fallidas de correctas.`, points: 6 });
+      } else {
+        positive.push({ label: `${stabilitySignal!.label}: el reactivo lleva abierto más tiempo del que admite su IFU; revisar lote y estabilidad antes del hardware.`, points: 18 });
+      }
+    }
+    if (lotIntelligence) {
+      const failedFindings = (type: DriLotFinding['type'], observedOnly = true) =>
+        lotIntelligence.findings.filter((finding) => finding.outcome === 'failed' && finding.type === type && (!observedOnly || finding.observed));
+      const describe = (type: DriLotFinding['type'], observedOnly = true) =>
+        failedFindings(type, observedOnly)
+          .map((finding) => `${finding.reagentCode} ${finding.role} ${finding.lot}`)
+          .filter((label, index, list) => list.indexOf(label) === index)
+          .slice(0, 4)
+          .join(', ');
+      const percent = (value: number) => `${Math.round(value * 100)}%`;
+      const addMissing = (item: string) => {
+        if (!missingEvidence.includes(item)) missingEvidence.push(item);
+      };
+      const noCorrectLots = 'Lotes de las pruebas correctas en el SAT (para contrastar el lote de las fallidas)';
+      const counts = (contrast: { failedCoverage: number; sharedWithCorrect: boolean }) => contrast.failedCoverage >= 0.5 && !contrast.sharedWithCorrect;
+
+      const expired = lotContrastOf('expired');
+      if (counts(expired)) {
+        positive.push({ label: `Lote caducado en uso en ${percent(expired.failedCoverage)} de las fallidas (${describe('expired')}): la desviación tiene causa de lote antes que de hardware.`, points: 26 });
+        if (expired.discriminates && expired.correctCoverage === 0) {
+          positive.push({ label: 'Ninguna prueba correcta evaluada en el SAT trabaja con lote caducado: el contraste señala al lote.', points: 8 });
+        } else if (!expired.correctObserved) {
+          addMissing(noCorrectLots);
+        }
+      } else if (expired.sharedWithCorrect) {
+        negative.push({ label: 'Las pruebas correctas también trabajan con lote caducado: la caducidad no separa fallidas de correctas.', points: 6 });
+      } else {
+        const lastKnown = new Set(failedFindings('expired', false).filter((finding) => !finding.observed).map((finding) => finding.reagentId));
+        if (failedProfiles.length && lastKnown.size / failedProfiles.length >= 0.5) {
+          positive.push({ label: `El último lote registrado de ${percent(lastKnown.size / failedProfiles.length)} de las fallidas está caducado (${describe('expired', false)}): confirmar el lote cargado el día del evento.`, points: 12 });
+          addMissing('Lote cargado el día del evento (el SAT termina antes)');
+        }
+      }
+
+      const blank = lotContrastOf('blank_out_of_coa');
+      if (counts(blank)) {
+        const onlyBpl = failedFindings('blank_out_of_coa').every((finding) => finding.fromBpl);
+        positive.push(
+          onlyBpl
+            ? { label: `El blanco rechazado en el monitor BPL también queda fuera del límite del certificado del lote (${describe('blank_out_of_coa')}): compatible con deterioro del reactivo.`, points: 10 }
+            : { label: `Blanco de reactivo fuera del límite del certificado del lote (${describe('blank_out_of_coa')}): deterioro del reactivo según IFU.`, points: 22 },
+        );
+        if (!blank.correctObserved) addMissing('Blanco de reactivo de una prueba correcta (para contrastar el blanco fuera del certificado)');
+      }
+
+      // La estabilidad capturada a mano ya suma arriba; la del SAT solo suma si aquella no cubre a la mayoría.
+      const onboard = lotContrastOf('onboard_exceeded');
+      if (counts(onboard) && (stabilitySignal?.failedCoverage || 0) < 0.5) {
+        positive.push({ label: `Estabilidad a bordo del IFU del lote excedida (${describe('onboard_exceeded')}).`, points: 16 });
+        if (!onboard.correctObserved) addMissing(noCorrectLots);
+      }
+
+      const lotChange = lotContrastOf('lot_change');
+      if (counts(lotChange)) {
+        // Si el monitor BPL ya muestra una calibración aceptada de esas pruebas después del cambio, el requisito del IFU se cumplió.
+        const changed = lotIntelligence.lotsInUse.filter((lot) => lot.outcome === 'failed' && lot.findings.some((finding) => finding.type === 'lot_change' && finding.observed));
+        // Misma clave canónica que las botellas (GLU/GLUCOSA, CRP/PROTEINA_C) y entre el cambio y el fin del día del evento.
+        const keyOf = (reagentId: string | null) => {
+          const reagent = reagentId ? catalog.reagents.find((item) => item.id === reagentId) : null;
+          return reagent ? reagentMatchKey(reagent) : reagentId;
+        };
+        const eventEnd = localDayEndMs(form.eventDate);
+        const calibratedAfter = changed.filter((lot) => {
+          const lotKey = lot.bottle.reagentKey || keyOf(lot.reagentId);
+          const changedAt = parseInstantMs(lot.runStartedAt);
+          return (bplEvidence?.calibrations || []).some((calibration) => {
+            const at = parseInstantMs(calibration.observedAt);
+            return (
+              (calibration.reagentId === lot.reagentId || keyOf(calibration.reagentId) === lotKey) &&
+              /accept/i.test(calibration.status) &&
+              Number.isFinite(at) &&
+              Number.isFinite(changedAt) &&
+              at >= changedAt &&
+              (!Number.isFinite(eventEnd) || at <= eventEnd)
+            );
+          });
+        });
+        if (changed.length && calibratedAfter.length === changed.length) {
+          negative.push({ label: `Cambio de lote reciente (${describe('lot_change')}), pero el monitor BPL muestra una calibración aceptada después del cambio.`, points: 4 });
+        } else {
+          positive.push({ label: `Cambio de lote reciente solo en las fallidas (${describe('lot_change')}): el IFU exige calibrar tras cambiar de lote.`, points: 16 });
+          addMissing('Calibración aceptada después del cambio de lote');
+          if (!lotChange.correctObserved) addMissing(noCorrectLots);
+        }
+      } else if (lotChange.sharedWithCorrect) {
+        negative.push({ label: 'Las pruebas correctas también cambiaron de lote hace poco: el cambio de lote no discrimina.', points: 6 });
+      }
     }
     if (form.signals.normalCurvesObserved) {
       positive.push({ label: 'Se observaron curvas normales pese a la desviación analítica.', points: 12 });
@@ -726,7 +996,7 @@ export function runDifferentialDiagnosisEngine(form: DriCaseFormState, catalog: 
     } else if (qcAssessment?.band === 'within_1s' || qcAssessment?.band === 'within_2s') {
       negative.push({ label: 'La referencia QC aplicada no confirma rechazo todavía.', points: 16 });
     }
-    if ((wavelengthSignal?.failedCoverage || 0) >= 0.6 || abnormalPhotometry || abnormalPumps || abnormalThermostat) {
+    if (((wavelengthSignal?.failedCoverage || 0) >= 0.6 && !isExonerated(wavelengthSignal)) || abnormalPhotometry || abnormalPumps || abnormalThermostat) {
       negative.push({ label: 'Existe una señal mecánica más fuerte que compite con una causa preanalítica.', points: 18 });
     }
     if (!form.controlLot && !form.calibratorLot) {
@@ -878,5 +1148,7 @@ export function runDifferentialDiagnosisEngine(form: DriCaseFormState, catalog: 
     logs,
     matchedQcReference,
     qcAssessment,
+    contrast,
+    lotIntelligence,
   };
 }

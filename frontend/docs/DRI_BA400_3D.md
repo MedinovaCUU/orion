@@ -1,6 +1,6 @@
 # BA400 en DRI: integración y demostración
 
-Implementado en el módulo React/TypeScript existente de Orion; conserva el motor DRI, sus puntuaciones, sus estados y la selección de equipos. El nuevo espacio de inspección precede a la captura. El mapa relacional sigue disponible mediante «Abrir mapa de relaciones DRI» y se monta al abrirlo para no mantener dos escenas activas sin necesidad.
+Implementado en el módulo React/TypeScript existente de Orion; conserva el motor DRI, sus puntuaciones, sus estados y la selección de equipos. Desde el reacomodo de octubre de 2026 (ver `DRI_WORKBENCH.md`) el mapa relacional es el escenario principal y está siempre abierto; el explorador 3D vive en un cajón plegable debajo del banco de trabajo, abierto en la demo, al generar un diagnóstico y al pulsar «Localizar en el equipo 3D» desde una hipótesis. Solo recibe el resultado fijado (guardado, demo o localización), nunca la lectura viva, para no reiniciar su sesión con cada tecla. El lienzo del grafo se pausa cuando no está a la vista, así no hay dos escenas animando sin necesidad.
 
 ## Abrir el DEMO
 

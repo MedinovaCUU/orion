@@ -1,10 +1,12 @@
 import type { Entry, FileEntry } from '@zip.js/zip.js';
+import { decodeBa400ReagentBarcode } from './satBarcode';
 import type {
   SatArchiveEntrySummary,
   SatConsumptionSummary,
   SatDiagnosticEvent,
   SatEventCategory,
   SatLotEvidence,
+  SatReagentBottle,
   SatReportSummary,
   SatRotorSummary,
 } from './satReportTypes';
@@ -49,20 +51,39 @@ const parseReportDate = (fileName: string, entries: Entry[]) => {
   return newest ? new Date(newest).toISOString() : null;
 };
 
-const parseCsvLine = (line: string) => {
+/**
+ * Dialecto de un CSV del SAT. Las exportaciones antiguas (2019 → principios de 2026) separan con ";" salvo la
+ * primera pareja "Date,AnalyzerSN", y llevan la unidad en el nombre de la columna ("VR1(uL)"); las nuevas
+ * separan todo con "," y añaden columnas de control, calibrador, ISE y pruebas de fábrica.
+ */
+interface CsvDialect {
+  delimiter: ',' | ';';
+  /** El primer separador de cada línea es una coma aunque el resto sean punto y coma. */
+  mixedFirstComma: boolean;
+}
+
+const detectCsvDialect = (headerLine: string): CsvDialect => {
+  const semicolons = (headerLine.match(/;/g) || []).length;
+  const commas = (headerLine.match(/,/g) || []).length;
+  if (semicolons > commas) return { delimiter: ';', mixedFirstComma: commas > 0 && headerLine.indexOf(',') < headerLine.indexOf(';') };
+  return { delimiter: ',', mixedFirstComma: false };
+};
+
+const parseCsvLine = (line: string, dialect: CsvDialect = { delimiter: ',', mixedFirstComma: false }) => {
+  const source = dialect.mixedFirstComma ? line.replace(',', dialect.delimiter) : line;
   const values: string[] = [];
   let current = '';
   let quoted = false;
-  for (let index = 0; index < line.length; index += 1) {
-    const char = line[index];
+  for (let index = 0; index < source.length; index += 1) {
+    const char = source[index];
     if (char === '"') {
-      if (quoted && line[index + 1] === '"') {
+      if (quoted && source[index + 1] === '"') {
         current += '"';
         index += 1;
       } else {
         quoted = !quoted;
       }
-    } else if (char === ',' && !quoted) {
+    } else if (char === dialect.delimiter && !quoted) {
       values.push(current);
       current = '';
     } else {
@@ -73,8 +94,11 @@ const parseCsvLine = (line: string) => {
   return values;
 };
 
+/** "VR1(uL)" → "VR1": la unidad en el encabezado no cambia el significado de la columna. */
+const normalizeHeader = (header: string) => normalize(header).replace(/\s*\([^)]*\)\s*$/, '');
+
 const toRow = (headers: string[], values: string[]) =>
-  Object.fromEntries(headers.map((header, index) => [normalize(header), normalize(values[index])]));
+  Object.fromEntries(headers.map((header, index) => [header, normalize(values[index])]));
 
 const parseNumber = (value: string) => {
   const parsed = Number.parseFloat(value.replace(',', '.'));
@@ -99,7 +123,10 @@ const parseDate = (value: string): string | null => {
   ).toISOString();
 };
 
-const monthFromFile = (name: string) => name.match(/_(\d{6})\.csv$/i)?.[1] || '';
+const monthFromFile = (name: string) => {
+  const match = name.match(/_(\d{4})_?(\d{2})\.csv$/i);
+  return match ? `${match[1]}${match[2]}` : '';
+};
 const serialFromFile = (name: string) => name.match(/(?:^|\/)(\d+)_/i)?.[1] || '';
 
 interface MutableConsumption extends SatConsumptionSummary {
@@ -121,10 +148,14 @@ const classifyLot = (sampleClass: string, name: string): SatLotEvidence['kind'] 
   return 'unknown';
 };
 
+/** Nombres y lotes del SAT traen tabulaciones y espacios repetidos ("CONTROL 2   0001", "\t0001  A"). */
+const compactLabel = (value: string) => value.replace(/\s+/g, ' ').trim();
+
 const addLot = (
   lots: Map<string, SatLotEvidence>,
-  candidate: Omit<SatLotEvidence, 'tests'> & { testName: string },
+  rawCandidate: Omit<SatLotEvidence, 'tests'> & { testName: string },
 ) => {
+  const candidate = { ...rawCandidate, name: compactLabel(rawCandidate.name), lot: compactLabel(rawCandidate.lot) };
   if (!candidate.lot) return;
   const key = `${candidate.kind}|${candidate.name}|${candidate.lot}`.toUpperCase();
   const current = lots.get(key);
@@ -137,6 +168,48 @@ const addLot = (
   if (candidate.testName && !current.tests.includes(candidate.testName)) current.tests.push(candidate.testName);
 };
 
+/** Registra una botella (por código de barras) y, si el código se decodifica, su lote como evidencia de reactivo. */
+const addBottle = (
+  bottles: Map<string, SatReagentBottle>,
+  lots: Map<string, SatLotEvidence>,
+  raw: { barcode: string; testName: string; eventAt: string | null; sourceFile: string },
+) => {
+  const decoded = decodeBa400ReagentBarcode(raw.barcode);
+  if (!decoded) return;
+  const key = `${raw.testName}|${decoded.barcode}`.toUpperCase();
+  const current = bottles.get(key);
+  if (!current) {
+    bottles.set(key, {
+      testName: raw.testName,
+      reagentRole: decoded.reagentRole,
+      barcode: decoded.barcode,
+      techniqueCode: decoded.techniqueCode,
+      lot: decoded.lot,
+      expiryMonth: decoded.expiryMonth,
+      expiryYear: decoded.expiryYear,
+      expiresAt: decoded.expiresAt,
+      bottleSerial: decoded.bottleSerial,
+      firstSeenAt: raw.eventAt,
+      lastSeenAt: raw.eventAt,
+      pipettingCount: 1,
+      sourceFile: raw.sourceFile,
+    });
+  } else {
+    current.pipettingCount += 1;
+    current.firstSeenAt = mergeDate(current.firstSeenAt, raw.eventAt, 'min');
+    current.lastSeenAt = mergeDate(current.lastSeenAt, raw.eventAt, 'max');
+  }
+  addLot(lots, {
+    kind: 'reagent',
+    name: `${raw.testName} ${decoded.reagentRole}`,
+    lot: decoded.lot,
+    firstSeenAt: raw.eventAt,
+    lastSeenAt: raw.eventAt,
+    sourceFile: raw.sourceFile,
+    testName: raw.testName,
+  });
+};
+
 const parseConsumptionCsv = (
   text: string,
   sourceFile: string,
@@ -144,14 +217,16 @@ const parseConsumptionCsv = (
   defaultModel: 'BA400' | 'BA200' | 'A15',
   summaries: Map<string, MutableConsumption>,
   lots: Map<string, SatLotEvidence>,
+  bottles: Map<string, SatReagentBottle>,
 ) => {
   const lines = text.split(/\r?\n/).filter((line) => line.trim());
   if (lines.length < 2) return;
-  const headers = parseCsvLine(lines[0]).map(normalize);
+  const dialect = detectCsvDialect(lines[0]);
+  const headers = parseCsvLine(lines[0], dialect).map(normalizeHeader);
   const bucketMonth = monthFromFile(sourceFile);
 
   for (const line of lines.slice(1)) {
-    const row = toRow(headers, parseCsvLine(line));
+    const row = toRow(headers, parseCsvLine(line, dialect));
     const serialNumber = row.AnalyzerSN || serialFromFile(sourceFile) || defaultSerial;
     const equipmentModel = inferModelFromSerial(serialNumber, defaultModel);
     const testName = row.TestName;
@@ -222,6 +297,9 @@ const parseConsumptionCsv = (
         testName,
       });
     }
+    for (const barcode of [row.BarcodeR1 || '', row.BarcodeR2 || '']) {
+      if (barcode) addBottle(bottles, lots, { barcode, testName, eventAt, sourceFile });
+    }
     for (const [name, identifier, kind] of [
       [`${testName} R1`, row.BarcodeR1 || '', 'barcode'],
       [`${testName} R2`, row.BarcodeR2 || '', 'barcode'],
@@ -249,10 +327,11 @@ const parseRotorCsv = (
 ) => {
   const lines = text.split(/\r?\n/).filter((line) => line.trim());
   if (lines.length < 2) return;
-  const headers = parseCsvLine(lines[0]).map(normalize);
+  const dialect = detectCsvDialect(lines[0]);
+  const headers = parseCsvLine(lines[0], dialect).map(normalizeHeader);
   const bucketMonth = monthFromFile(sourceFile);
   for (const line of lines.slice(1)) {
-    const row = toRow(headers, parseCsvLine(line));
+    const row = toRow(headers, parseCsvLine(line, dialect));
     const serialNumber = row.AnalyzerSN || serialFromFile(sourceFile) || defaultSerial;
     const eventAt = parseDate(row.Date);
     if (!serialNumber || !eventAt) continue;
@@ -287,14 +366,26 @@ const xmlAttributes = (raw: string) => {
   return attributes;
 };
 
+/**
+ * Mensajes de rutina del software (exportar al histórico, consultar ejecuciones, cronómetros de pantalla) que
+ * mencionan QC o calibradores sin ser un resultado: antes se contaban como controles y llenaban `qc_events`.
+ */
+const ROUTINE_MESSAGE = /EXPORT .*(RESULTS|HISTORIC)|HISTORIC MODULE|GET EXECUTIONS FOR|LOCKS FOR|NOTE: HIGH VALUES|CREATEEXECUTIONSPROCESS|POSITIONS CLOSED|RESETWORKSESSION/;
+/** Palabras que convierten una mención de QC o calibración en un resultado con interés diagnóstico. */
+const OUTCOME_WORDS = /FAIL|REJECT|OUT OF RANGE|FUERA DE RANGO|RECHAZ|WESTGARD|NOT ACCEPTED|NO ACEPTAD|INVALID|ERROR|ALARM/;
+
 const classifyMessage = (message: string, logType = ''): SatEventCategory | null => {
-  const normalized = `${logType} ${message}`.toUpperCase();
+  const level = logType.toUpperCase();
+  const text = message.toUpperCase();
+  const normalized = `${level} ${text}`;
   if (/\bNO EXCEPTION\b/.test(normalized)) return 'operation';
+  if (ROUTINE_MESSAGE.test(text)) return 'operation';
   if (/\b(ERROR|EXCEPTION|FATAL|FAULT)\b|E:\(\d+\)/.test(normalized)) return 'error';
-  if (/\b(WARN|WARNING|ALARM)\b/.test(normalized)) return 'warning';
-  if (/\b(QC|QUALITY CONTROL|CONTROL)\b/.test(normalized)) return 'qc';
-  if (/CALIBRAT|CALIBRACI[OÓ]N|CALIBRADOR/.test(normalized)) return 'calibration';
-  if (/RESETWORKSESSION|MAINTENANCE|SERVICE|HISTORIC|BLANK/.test(normalized)) return 'operation';
+  // Advertencia: la marca el nivel del registro, no una palabra suelta dentro de un mensaje informativo.
+  if (/\b(WARN|WARNING|ALARM)\b/.test(level) || /^(WARNING|ALARM)\b/.test(text)) return 'warning';
+  if (/\b(QC|QUALITY CONTROL|CONTROL)\b/.test(text)) return OUTCOME_WORDS.test(text) ? 'qc' : 'operation';
+  if (/CALIBRAT|CALIBRACI[OÓ]N|CALIBRADOR/.test(text)) return OUTCOME_WORDS.test(text) ? 'calibration' : 'operation';
+  if (/MAINTENANCE|SERVICE|BLANK/.test(text)) return 'operation';
   return null;
 };
 
@@ -370,7 +461,7 @@ const sha1 = (value: string) =>
   crypto.subtle.digest('SHA-1', new TextEncoder().encode(value)).then(toHex);
 
 export class SatPasswordRequiredError extends Error {
-  constructor(message = 'El SAT está cifrado. Escribe la contraseña de exportación para procesarlo.') {
+  constructor(message = 'El SAT está cifrado y no se tiene la contraseña de exportación.') {
     super(message);
     this.name = 'SatPasswordRequiredError';
   }
@@ -378,7 +469,7 @@ export class SatPasswordRequiredError extends Error {
 
 export const parseSatReport = async (
   file: File,
-  password: string,
+  password = '',
   onProgress?: (message: string, percent: number) => void,
 ): Promise<SatReportSummary> => {
   onProgress?.('Leyendo estructura protegida del SAT', 4);
@@ -402,6 +493,7 @@ export const parseSatReport = async (
     const consumption = new Map<string, MutableConsumption>();
     const rotors = new Map<string, SatRotorSummary>();
     const lots = new Map<string, SatLotEvidence>();
+    const bottles = new Map<string, SatReagentBottle>();
     const events: SatDiagnosticEvent[] = [];
     const archiveEntries: SatArchiveEntrySummary[] = [];
     const firmwareAdjustments: string[] = [];
@@ -439,13 +531,13 @@ export const parseSatReport = async (
           firmwareAdjustments.push(...text.split(/\r?\n/).map(normalize).filter(Boolean).slice(0, 200));
         } else if (/\.xml$/i.test(entry.filename)) parseXmlLog(text, entry.filename, events);
         else if (/ReagentConsumption/i.test(entry.filename)) {
-          parseConsumptionCsv(text, entry.filename, inferredSerial, fallbackModel, consumption, lots);
+          parseConsumptionCsv(text, entry.filename, inferredSerial, fallbackModel, consumption, lots, bottles);
         } else if (/RotorConsumption/i.test(entry.filename)) {
           parseRotorCsv(text, entry.filename, inferredSerial, fallbackModel, rotors);
         }
       } catch (error) {
         if (entry.encrypted) {
-          throw new SatPasswordRequiredError('No fue posible abrir el SAT. Verifica la contraseña de exportación.');
+          throw new SatPasswordRequiredError('No fue posible abrir el SAT con la contraseña de exportación.');
         }
         throw error;
       }
@@ -505,6 +597,7 @@ export const parseSatReport = async (
       lots: [...lots.values()].map((lot) => ({ ...lot, tests: lot.tests.slice(0, 100) })),
       consumption: consumptionRows,
       rotors: rotorRows,
+      reagentBottles: [...bottles.values()].sort((left, right) => (left.firstSeenAt || '').localeCompare(right.firstSeenAt || '')),
       coverage: {
         processedFiles: archiveEntries.filter((entry) => entry.status === 'processed').length,
         totalFiles: archiveEntries.length,

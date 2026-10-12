@@ -483,6 +483,17 @@
   margin-bottom: 0.85rem;
 }
 
+.dri-sat-filter {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-left: auto;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--dri-cyan-ink, #1f6f8a);
+  cursor: pointer;
+}
+
 .dri-picker__search {
   max-width: 17rem;
 }
@@ -566,6 +577,138 @@
   display: grid;
   gap: 0.32rem;
   color: var(--text-secondary);
+}
+
+/* Lote en uso (SAT + einfo.bio) dentro de la ficha del reactivo. Rojo solo para fuera de especificación. */
+.dri-lot {
+  display: grid;
+  gap: 0.55rem;
+}
+
+.dri-lot__empty {
+  margin: 0;
+  font-size: 0.82rem;
+  color: var(--text-tertiary);
+}
+
+.dri-lot-card {
+  display: grid;
+  gap: 0.55rem;
+  padding: 0.75rem 0.85rem;
+  border-radius: 0.95rem;
+  border: 1px solid rgba(124, 136, 149, 0.14);
+  background: rgba(255, 255, 255, 0.72);
+}
+
+.dri-lot-card[data-risk='high'] {
+  border-color: rgba(var(--brand-red-rgb), 0.32);
+  background: linear-gradient(180deg, rgba(var(--brand-red-rgb), 0.05), rgba(255, 255, 255, 0.72));
+}
+
+.dri-lot-card[data-risk='watch'] {
+  border-color: rgba(var(--bioprocess-rgb), 0.4);
+  background: linear-gradient(180deg, rgba(var(--bioprocess-rgb), 0.08), rgba(255, 255, 255, 0.72));
+}
+
+.dri-lot-card__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.35rem 0.75rem;
+}
+
+.dri-lot-card__head strong {
+  font-size: 0.9rem;
+  color: var(--text-primary);
+}
+
+.dri-lot-card__expiry {
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+}
+
+.dri-lot-card[data-expired='true'] .dri-lot-card__expiry {
+  color: var(--brand-red-ink);
+  font-weight: 600;
+}
+
+.dri-lot-card__link {
+  margin-left: auto;
+  font-size: 0.76rem;
+  letter-spacing: 0.02em;
+  color: var(--dri-cyan-ink, #1f6f8a);
+  text-decoration: none;
+}
+
+.dri-lot-card__link:hover,
+.dri-lot-card__link:focus-visible {
+  text-decoration: underline;
+}
+
+.dri-lot-card__facts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
+  gap: 0.4rem 0.75rem;
+  margin: 0;
+}
+
+.dri-lot-card__facts div {
+  display: grid;
+  gap: 0.12rem;
+  min-width: 0;
+}
+
+.dri-lot-card__facts dt {
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+}
+
+.dri-lot-card__facts dd {
+  margin: 0;
+  font-size: 0.84rem;
+  color: var(--text-primary);
+  overflow-wrap: anywhere;
+}
+
+.dri-lot-card__usage {
+  margin: 0;
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+}
+
+.dri-lot-card__findings {
+  display: grid;
+  gap: 0.4rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.dri-lot-finding {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.3rem 0.55rem;
+}
+
+.dri-lot-finding .dri-badge {
+  flex: none;
+}
+
+.dri-lot-finding__text {
+  flex: 1 1 18rem;
+  font-size: 0.78rem;
+  line-height: 1.4;
+  color: var(--text-secondary);
+}
+
+@media (max-width: 560px) {
+  .dri-lot-card__link {
+    margin-left: 0;
+    flex-basis: 100%;
+  }
 }
 
 .dri-reagent-pill-card {
@@ -671,7 +814,7 @@
   display: flex;
   justify-content: center;
   min-height: 0.9rem;
-  font-size: 0.68rem;
+  font-size: 0.6875rem;
   color: var(--text-tertiary);
   text-align: center;
 }
@@ -1483,27 +1626,6 @@
     grid-template-columns: 1fr;
   }
 }
-.dri-sat-context {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  margin-bottom: 1rem;
-  padding: 1rem 1.2rem;
-  border: 1px solid rgba(39, 161, 141, 0.22);
-  background: linear-gradient(120deg, rgba(225, 246, 239, 0.92), rgba(237, 247, 250, 0.92));
-}
-
-.dri-sat-context > div:first-child { display: grid; gap: 0.25rem; }
-.dri-sat-context span { color: #1e7f70; font-size: 0.7rem; font-weight: 800; letter-spacing: 0.09em; text-transform: uppercase; }
-.dri-sat-context strong { color: #173f4d; }
-.dri-sat-context p { margin: 0; max-width: 78ch; color: #5b717b; font-size: 0.78rem; }
-.dri-sat-context__actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 0.6rem; }
-
-@media (max-width: 760px) {
-  .dri-sat-context { align-items: stretch; flex-direction: column; }
-  .dri-sat-context__actions { justify-content: flex-start; }
-}
 .dri-reagent-pill__qc-origin {
   align-items: center;
   background: rgba(24, 151, 132, 0.1);
@@ -1511,7 +1633,7 @@
   border-radius: 999px;
   color: #167b6e;
   display: inline-flex;
-  font-size: 0.58rem;
+  font-size: 0.6875rem;
   font-weight: 750;
   justify-content: center;
   line-height: 1;
@@ -1532,65 +1654,4 @@
   background: rgba(210, 45, 61, 0.1);
   border-color: rgba(210, 45, 61, 0.28);
   color: #ae2433;
-}
-
-/* Contexto BPL: evidencia viva del monitor BA400 (blancos, calibraciones, QC). */
-.dri-bpl-context {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  margin-bottom: 1rem;
-  padding: 1rem 1.2rem;
-  border: 1px solid rgba(var(--environmental-blue-rgb, 99, 174, 254), 0.24);
-  background:
-    radial-gradient(circle at top right, rgba(var(--environmental-blue-rgb, 99, 174, 254), 0.12), transparent 30%),
-    linear-gradient(120deg, rgba(236, 247, 251, 0.94), rgba(244, 248, 252, 0.92));
-}
-
-.dri-bpl-context > div:first-child { display: grid; gap: 0.3rem; min-width: 0; }
-.dri-bpl-context__eyebrow { color: #1f6f8a; font-size: 0.7rem; font-weight: 800; letter-spacing: 0.09em; text-transform: uppercase; }
-.dri-bpl-context strong { color: #173f4d; }
-.dri-bpl-context p { margin: 0; max-width: 78ch; color: #5b717b; font-size: 0.78rem; }
-.dri-bpl-context__actions { display: flex; flex-wrap: wrap; justify-content: flex-end; align-items: center; gap: 0.6rem; }
-.dri-bpl-context__actions .input-field { width: 11rem; min-height: 2.4rem; padding: 0.4rem 0.75rem; }
-
-.dri-bpl-context__stats {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.45rem;
-  margin-top: 0.2rem;
-}
-
-.dri-bpl-context__stat {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.35rem;
-  padding: 0.3rem 0.65rem;
-  border-radius: 999px;
-  border: 1px solid rgba(124, 136, 149, 0.16);
-  background: rgba(255, 255, 255, 0.72);
-  color: var(--text-secondary);
-  font-size: 0.72rem;
-  font-weight: 700;
-  letter-spacing: 0.02em;
-}
-
-.dri-bpl-context__stat i {
-  width: 0.5rem;
-  height: 0.5rem;
-  border-radius: 999px;
-  background: rgba(124, 136, 149, 0.5);
-}
-
-.dri-bpl-context__stat[data-tone='rejected'] { color: #8d1e29; border-color: rgba(var(--brand-red-rgb, 243, 39, 53), 0.24); background: rgba(var(--brand-red-rgb, 243, 39, 53), 0.08); }
-.dri-bpl-context__stat[data-tone='rejected'] i { background: rgb(var(--brand-red-rgb, 243, 39, 53)); }
-.dri-bpl-context__stat[data-tone='pending'] { color: #8a5f00; border-color: rgba(var(--warning-rgb, 255, 209, 120), 0.4); background: rgba(var(--warning-rgb, 255, 209, 120), 0.16); }
-.dri-bpl-context__stat[data-tone='pending'] i { background: rgb(var(--warning-rgb, 255, 209, 120)); }
-.dri-bpl-context__stat[data-tone='accepted'] { color: #1f6f8a; border-color: rgba(var(--environmental-blue-rgb, 99, 174, 254), 0.3); background: rgba(var(--environmental-blue-rgb, 99, 174, 254), 0.1); }
-.dri-bpl-context__stat[data-tone='accepted'] i { background: rgb(var(--environmental-blue-rgb, 99, 174, 254)); }
-
-@media (max-width: 760px) {
-  .dri-bpl-context { align-items: stretch; flex-direction: column; }
-  .dri-bpl-context__actions { justify-content: flex-start; }
 }

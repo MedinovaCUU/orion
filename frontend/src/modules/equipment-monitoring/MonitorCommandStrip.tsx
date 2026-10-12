@@ -254,7 +254,13 @@ export default memo(function MonitorCommandStrip({
           ))}
         </div>
         <div className="equipment-monitor__tool">
-          <SatReportImporter compact onImported={onSatImported} />
+          <SatReportImporter
+            compact
+            onImported={onSatImported}
+            describe={(summary) => ({
+              next: [`Busca la serie ${summary.serialNumber} en Monitoreo para ver sus consumos y rotores; el tablero se está actualizando.`],
+            })}
+          />
         </div>
         <ActionsMenu onRefresh={onRefresh} showSimulatedCoverage={showSimulatedCoverage} onToggleSimulatedCoverage={onToggleSimulatedCoverage} />
       </div>
