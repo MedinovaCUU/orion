@@ -1,0 +1,25 @@
+{
+  "payload": {
+    "name": "orion_primera_respuesta_v1",
+    "language": "es_MX",
+    "category": "UTILITY",
+    "components": [
+      {
+        "type": "BODY",
+        "text": "Orion-Biosystems registró la primera atención de tu ticket {{1}}. Nuestro equipo de servicio dará seguimiento a tu solicitud. Conserva este folio para consultar el avance del caso.",
+        "example": {
+          "body_text": [
+            [
+              "OR-001"
+            ]
+          ]
+        }
+      }
+    ]
+  },
+  "result": {
+    "id": "1639875710966976",
+    "status": "PENDING",
+    "category": "UTILITY"
+  }
+}

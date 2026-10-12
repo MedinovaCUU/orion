@@ -8,6 +8,7 @@ import {
 } from './servicesPlanning';
 import { formatCaseNumber } from './ticketCaseUtils';
 import { Loader } from './OrionLoader';
+import { activityMotiveLabels, activityResultLabels, historyServiceTypes } from './serviceKpiModel';
 
 export interface CaseTicketRecord {
   id: string;
@@ -18,6 +19,7 @@ export interface CaseTicketRecord {
   actualizado_en?: string | null;
   numero_caso?: string | null;
   numero_serie_equipo?: string | null;
+  prioridad?: string | null;
 }
 
 interface TicketCaseDetailProps {
@@ -35,6 +37,11 @@ interface CaseLogRow {
   estado_resultante: string | null;
   visible_cliente: boolean;
   creado_en: string;
+  actividad_duracion_min?: number | null;
+  actividad_motivo?: string | null;
+  actividad_resultado?: string | null;
+  codigo_averia?: string | null;
+  codigo_solucion?: string | null;
   profiles?: { nombre_completo?: string | null } | null;
   tickets?: { numero_caso?: string | null } | null;
 }
@@ -47,6 +54,8 @@ interface ServiceHistoryRow {
   cds?: string | null;
   fecha_servicio?: string | null;
   creado_en: string;
+  tipo_servicio?: string | null;
+  resultado?: string | null;
   profiles?: { nombre_completo?: string | null } | null;
   servicios_refacciones?: Array<{
     cantidad: number;
@@ -211,7 +220,15 @@ export default function TicketCaseDetail({ ticket, equipment, canWrite, onChange
       eyebrow: `${activityLabels[row.tipo] || row.tipo}${row.tickets?.numero_caso ? ` · Caso ${row.tickets.numero_caso}` : ''}`,
       title: row.profiles?.nombre_completo || 'Equipo técnico',
       detail: row.detalle,
-      meta: `${row.visible_cliente ? 'Visible para cliente' : 'Nota interna'}${row.estado_resultante ? ` · ${statusLabels[row.estado_resultante] || row.estado_resultante}` : ''}`,
+      meta: [
+        row.visible_cliente ? 'Visible para cliente' : 'Nota interna',
+        row.estado_resultante ? statusLabels[row.estado_resultante] || row.estado_resultante : '',
+        row.actividad_duracion_min ? `${row.actividad_duracion_min} min` : '',
+        row.actividad_motivo ? `Motivo: ${activityMotiveLabels[row.actividad_motivo] || row.actividad_motivo}` : '',
+        row.actividad_resultado ? `Resultado: ${activityResultLabels[row.actividad_resultado] || row.actividad_resultado}` : '',
+        row.codigo_averia ? `Avería ${row.codigo_averia}` : '',
+        row.codigo_solucion ? `Solución ${row.codigo_solucion}` : '',
+      ].filter(Boolean).join(' · '),
       tone: 'activity' as const,
     }));
     const serviceEntries = services.map((row) => {
@@ -221,10 +238,10 @@ export default function TicketCaseDetail({ ticket, equipment, canWrite, onChange
       return {
         id: `service-${row.id}`,
         timestamp: row.creado_en || row.fecha_servicio || '',
-        eyebrow: 'Servicio realizado',
+        eyebrow: row.tipo_servicio ? `Servicio realizado · ${historyServiceTypes[row.tipo_servicio] || row.tipo_servicio}` : 'Servicio realizado',
         title: row.motivo || 'Intervención registrada',
         detail: [row.cda ? `Avería ${row.cda}` : '', row.cds ? `Solución ${row.cds}` : '', parts].filter(Boolean).join(' · ') || 'Acta de servicio ligada al equipo.',
-        meta: row.profiles?.nombre_completo || 'Historial maestro',
+        meta: [row.profiles?.nombre_completo || 'Historial maestro', row.resultado ? `Resultado: ${activityResultLabels[row.resultado] || row.resultado}` : ''].filter(Boolean).join(' · '),
         tone: 'service' as const,
       };
     });

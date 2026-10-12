@@ -28,4 +28,12 @@ assert.equal(hoursBetween(end(1),start),null);
 assert.equal(formatDuration(49.5),'2 d 1 h 30 min');
 assert.equal(formatDuration(null),'Sin dato');
 assert.equal(facts([closure(2)]).owner,'Ana');
-console.log('PASS: SLA boundaries, missing history, administrative closures, review vs approval, adjusted denominator, attribution and durations');
+// Cases imported from Biosisa (BIO-) are measured like any other: late is late, on time is on time.
+const legacy = hours => ticketControlFacts({...ticket,numero_caso:'BIO-2335'},[closure(hours)],Date.parse(end(200)));
+assert.equal(legacy(72).sla,'vencido');
+assert.equal(legacy(12).sla,'dentro');
+const mixed = summarizeControl([facts([closure(24)]), facts([closure(72)]), legacy(72), legacy(12)]);
+assert.equal(mixed.late,2);
+assert.equal(mixed.eligible,4);
+assert.equal(mixed.compliance,50);
+console.log('PASS: SLA boundaries, missing history, administrative closures, review vs approval, adjusted denominator, attribution, durations and Biosisa cases measured like any other');

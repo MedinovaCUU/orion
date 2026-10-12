@@ -130,3 +130,5 @@
 .tc-center .tc-unassigned input { width: 17px; height: 17px; min-height: 0; margin: 0; padding: 0; flex: 0 0 17px; }
 .tc-center .tc-routing { margin: 16px 28px; }
 @media (max-width: 640px) { .tc-center .tc-routing { margin: 12px; } .tc-center .tc-unassigned { padding: 0 12px 12px; } }
+.tc-activity-fields { display:grid; grid-template-columns:repeat(auto-fill,minmax(170px,1fr)); gap:10px; margin:0; padding:12px; border:1px solid #dbe5eb; border-radius:10px; }
+.tc-activity-fields legend { padding:0 6px; font-size:11px; font-weight:600; color:#576e79; }

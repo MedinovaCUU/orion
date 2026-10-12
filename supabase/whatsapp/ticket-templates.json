@@ -1,0 +1,248 @@
+[
+  {
+    "purpose": "Recepción de ticket",
+    "parameters": [
+      "Folio",
+      "Equipo y serie"
+    ],
+    "payload": {
+      "name": "orion_ticket_recibido_v1",
+      "language": "es_MX",
+      "category": "UTILITY",
+      "components": [
+        {
+          "type": "BODY",
+          "text": "Orion-Biosystems recibió tu solicitud de soporte y registró el ticket {{1}} para el equipo {{2}}. Revisaremos el caso y te informaremos el siguiente paso por este medio. Conserva este folio para dar seguimiento.",
+          "example": {
+            "body_text": [
+              [
+                "CASO-2026-001",
+                "BA400 / SERIE-001"
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  },
+  {
+    "purpose": "Asignación de técnico",
+    "parameters": [
+      "Folio",
+      "Nombre del técnico"
+    ],
+    "payload": {
+      "name": "orion_ticket_asignado_v1",
+      "language": "es_MX",
+      "category": "UTILITY",
+      "components": [
+        {
+          "type": "BODY",
+          "text": "Tu ticket {{1}} de Orion-Biosystems fue asignado al técnico {{2}}, quien dará seguimiento a tu solicitud de soporte. Puedes responder a este mensaje para agregar información del caso.",
+          "example": {
+            "body_text": [
+              [
+                "CASO-2026-001",
+                "Juan Pérez"
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  },
+  {
+    "purpose": "Visita programada",
+    "parameters": [
+      "Folio",
+      "Fecha",
+      "Hora y zona horaria",
+      "Lugar"
+    ],
+    "payload": {
+      "name": "orion_visita_programada_v1",
+      "language": "es_MX",
+      "category": "UTILITY",
+      "components": [
+        {
+          "type": "BODY",
+          "text": "Orion-Biosystems programó la visita de servicio de tu ticket {{1}} para el {{2}} a las {{3}} en {{4}}. Responde CONFIRMAR para confirmar la disponibilidad o CAMBIAR para solicitar otro horario.",
+          "example": {
+            "body_text": [
+              [
+                "CASO-2026-001",
+                "5 de octubre de 2026",
+                "10:00 h, hora de Ciudad de México",
+                "Laboratorio Central, recepción"
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  },
+  {
+    "purpose": "Recordatorio de visita",
+    "parameters": [
+      "Folio",
+      "Fecha",
+      "Hora y zona horaria",
+      "Equipo y serie"
+    ],
+    "payload": {
+      "name": "orion_recordatorio_visita_v1",
+      "language": "es_MX",
+      "category": "UTILITY",
+      "components": [
+        {
+          "type": "BODY",
+          "text": "Te recordamos la visita de Orion-Biosystems correspondiente a tu ticket {{1}}, programada para el {{2}} a las {{3}}. Por favor, ten disponible el equipo {{4}} para el servicio. Si necesitas reprogramar, responde a este mensaje.",
+          "example": {
+            "body_text": [
+              [
+                "CASO-2026-001",
+                "5 de octubre de 2026",
+                "10:00 h, hora de Ciudad de México",
+                "BA400 / SERIE-001"
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  },
+  {
+    "purpose": "Solicitud de información",
+    "parameters": [
+      "Folio",
+      "Dato técnico solicitado"
+    ],
+    "payload": {
+      "name": "orion_datos_ticket_v1",
+      "language": "es_MX",
+      "category": "UTILITY",
+      "components": [
+        {
+          "type": "BODY",
+          "text": "Para continuar con tu solicitud de soporte {{1}} en Orion-Biosystems, necesitamos el siguiente dato del equipo: {{2}}. Responde a este mensaje con la información solicitada. No incluyas datos de pacientes.",
+          "example": {
+            "body_text": [
+              [
+                "CASO-2026-001",
+                "código de error que aparece en pantalla"
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  },
+  {
+    "purpose": "Reprogramación de visita",
+    "parameters": [
+      "Folio",
+      "Nueva fecha",
+      "Nueva hora y zona horaria"
+    ],
+    "payload": {
+      "name": "orion_reprogramacion_visita_v1",
+      "language": "es_MX",
+      "category": "UTILITY",
+      "components": [
+        {
+          "type": "BODY",
+          "text": "La visita de servicio de tu ticket {{1}} con Orion-Biosystems fue reprogramada para el {{2}} a las {{3}}. Responde CONFIRMAR si estás disponible o CAMBIAR para solicitar otro horario.",
+          "example": {
+            "body_text": [
+              [
+                "CASO-2026-001",
+                "6 de octubre de 2026",
+                "12:00 h, hora de Ciudad de México"
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  },
+  {
+    "purpose": "Refacción pendiente",
+    "parameters": [
+      "Folio",
+      "Refacción",
+      "Equipo y serie"
+    ],
+    "payload": {
+      "name": "orion_refaccion_pendiente_v1",
+      "language": "es_MX",
+      "category": "UTILITY",
+      "components": [
+        {
+          "type": "BODY",
+          "text": "El servicio de tu ticket {{1}} en Orion-Biosystems está en espera de la refacción {{2}} para el equipo {{3}}. Te avisaremos cuando esté disponible para continuar con la atención. Puedes responder a este mensaje para consultar el estado del caso.",
+          "example": {
+            "body_text": [
+              [
+                "CASO-2026-001",
+                "bomba de lavado",
+                "BA400 / SERIE-001"
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  },
+  {
+    "purpose": "Confirmación de solución",
+    "parameters": [
+      "Folio",
+      "Equipo y serie"
+    ],
+    "payload": {
+      "name": "orion_confirmacion_solucion_v1",
+      "language": "es_MX",
+      "category": "UTILITY",
+      "components": [
+        {
+          "type": "BODY",
+          "text": "Orion-Biosystems finalizó la intervención de tu ticket {{1}} en el equipo {{2}}. Antes de cerrar el caso, necesitamos confirmar el resultado contigo. Responde RESUELTO si el equipo funciona correctamente o SEGUIMIENTO si el problema continúa.",
+          "example": {
+            "body_text": [
+              [
+                "CASO-2026-001",
+                "BA400 / SERIE-001"
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  },
+  {
+    "purpose": "Reapertura de ticket",
+    "parameters": [
+      "Folio",
+      "Equipo y serie"
+    ],
+    "payload": {
+      "name": "orion_ticket_reabierto_v1",
+      "language": "es_MX",
+      "category": "UTILITY",
+      "components": [
+        {
+          "type": "BODY",
+          "text": "Tu ticket {{1}} de Orion-Biosystems para el equipo {{2}} fue reabierto para continuar con la atención. El equipo de soporte revisará el caso. Puedes responder a este mensaje para compartir información adicional sobre la falla.",
+          "example": {
+            "body_text": [
+              [
+                "CASO-2026-001",
+                "BA400 / SERIE-001"
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  }
+]

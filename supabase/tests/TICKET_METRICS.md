@@ -83,6 +83,35 @@ simula a Francisco y otro responsable, sin usar sesiones o tickets reales.
 - No se inventan asignaciones para casos históricos ni de planeación a partir del creador. Administración puede asignarlos explícitamente; el reparto automático procesa solo solicitudes de soporte con especialidad identificada.
 - Pruebas PGlite cubren prioridad habitual, territorio, especialidad, falta de configuración, aislamiento del creador, RPC heredado, movimiento permitido y revocación tras reasignar. Pruebas de navegador cubren configuración, reparto de pendientes, control y alarmas entre usuarios.
 
+## Reglas de asignación del dueño (20261011040000)
+
+Vigentes desde el 11/10/2026 hasta nueva indicación. Sustituyen el reparto de `20260924040000`
+(habitual → sorteo por territorio), que en producción no asignaba nada porque no había coberturas
+ni responsables habituales. Cada caso de soporte nuevo se asigna, siempre dentro de su especialidad
+(`[Soporte Ingeniero]` → ingenieros, `[Soporte Químico]` → químicos según `employee_type`), en este orden:
+
+1. **Continuidad**: quien atendió el caso que se reabre (`reabre_ticket_id`), el responsable habitual
+   del equipo (`ticket_equipment_owners`) o quien atendió el caso anterior del mismo equipo y área.
+2. **Región**: quien cubre el estado del equipo (`ticket_staff_coverage`); sin equipo en flota se usa
+   la línea «Estado:» de la captura.
+3. **Carga equilibrada**: menos casos de soporte abiertos; en empate, quien cerró su último caso hace
+   más tiempo; después, al azar.
+
+- Se salta a quien hoy está ocupado: 3 o más casos abiertos, una planeación fechada hoy que lo nombra
+  (`scheduled_date`/`fecha_acordada`, o semana de un solo día) o un viaje (`travel_requests`) que cubre
+  hoy. La planeación de toda la semana no cuenta. Si todos están ocupados, se asigna al de menor carga.
+- Casos de gobierno (Falcon, Genesis, Centrum, Dicipa; `ticket_is_government`): el equipo de gobierno
+  (`ticket_government_team`, sembrado con Benjamín y Ángel, editable en el centro de control) cuenta
+  un caso menos. No es obligatorio.
+- `ticket_assignment_ranking(ticket)` ordena a todo el personal habilitado del área con la regla y el
+  motivo; `route_support_ticket` toma al primero, registra `source` (`continuidad`, `region`, `carga`)
+  y deja en la bitácora la regla, el motivo y a quién se omitió por estar ocupado. Un candado de
+  transacción evita que dos casos simultáneos lean la misma carga.
+- Sin especialidad, planeación, cerrados o con asignación (incluidos retiros manuales) no se tocan.
+  «Distribuir casos sin asignación» aplica las mismas reglas a los pendientes.
+
+Prueba: `PGLITE_MODULE=<ruta>/@electric-sql/pglite/dist/index.js node supabase/tests/ticket_assignment_rules.test.mjs`.
+
 ## Bandeja operativa por responsable (frontend)
 
 La bandeja de Tickets filtra en el navegador los casos que ve un perfil no
@@ -124,3 +153,60 @@ con fecha planeada anterior al 13/10/2026 reproduciendo el cierre de la ingesta 
 estado resultante `cerrado` (los triggers cierran el ticket y registran el evento) clasificado como
 `administrativo`. La fecha sale de `week_end` / `scheduled_date` / `week_start` o de la etiqueta
 `fecha_tentativa` con el año de creación. Incluye una vista previa de solo lectura.
+
+## Indicadores del personal: químicos e ingenieros (20261011020000)
+
+El centro de control suma tres secciones a «Control de casos»: **Resumen general**, **Químicos** e
+**Ingenieros**. Todo se calcula en el servidor (`get_service_kpi_summary`, `get_service_kpi_records`,
+`get_service_kpi_options`, solo administradores); el navegador no descarga los tickets para agregarlos.
+Tarjetas, gráficas, tablas y exportaciones leen las mismas filas (`service_kpi_*_rows`), por lo que el
+total de una tarjeta es el total de los registros que abre.
+
+**Fuentes.** Tickets de soporte (la planeación se mide como actividad programada), eventos de servicio,
+bitácora (llamadas y visitas), planeación `[PLAN]`, historial de servicio + refacciones, partes SAP,
+reportes de servicio/remotos y encuestas respondidas.
+
+**Reglas de cálculo.**
+- Periodo por fecha local (`service_kpi_settings.timezone`, America/Chihuahua). Aperturas, cierres y
+  actividades por su fecha; pendientes como fotografía al corte (fin del periodo o ahora).
+- Periodo anterior equivalente: meses completos → mismos meses previos; mes a la fecha → mismos días del
+  mes anterior; otro rango → mismo número de días previos.
+- Plazo: `ticket_sla_policies` (canal, región, especialidad, prioridad; menor precedencia gana; horas
+  corridas u hábiles, zona horaria y estados de pausa). Se sembraron las reglas vigentes: Falcon CDMX 24 h,
+  Falcon foráneo 48 h, soporte general 48 h, corridas y sin pausas. Sin regla activa → «sin plazo».
+- Cierres fuera de plazo = fuera ÷ cierres con plazo evaluable × 100. Excluye cancelaciones (cierre
+  administrativo) y cierres sin fecha; los «sin plazo» se informan aparte; las demoras justificadas
+  siguen contando como fuera de plazo (subconjunto).
+- Primera respuesta: primer contacto registrado (respuesta, llamada o visita). Resolución: cierres
+  solucionados (promedio, mediana, P90) por tipo de servicio y prioridad.
+- Reapertura: caso nuevo vinculado (`tickets.reabre_ticket_id`); el cerrado no se reabre. Solo cierres
+  posteriores a `capture_since` son evaluables.
+- Visitas: registros del mismo equipo y día = una visita. Una actividad con varios participantes cuenta
+  una vez para el equipo y una vez para cada participante. Un ticket se atribuye al responsable vigente;
+  las reasignaciones quedan en `ticket_assignment_history`.
+- Preventivos: programados del periodo realizados ÷ programados. Realizado = cierre solucionado,
+  marcado «realizado» o mantenimiento preventivo al mismo equipo en el mismo mes. Un cierre
+  administrativo no es evidencia. Fuera de programación = preventivo ejecutado sin preventivo programado.
+- Reincidencia: mismo código de avería en el mismo equipo dentro de N días (`recurrence_days`, filtro);
+  solo eventos con la ventana completa. Efectividad por avería y solución con tamaño de muestra.
+- Costos: solo líneas con precio registrado; se informa la cobertura.
+- «0» = sin actividad; «Sin dato» = falta el campo; «No aplica» = denominador cero.
+
+**Captura nueva.** Prioridad del caso (alta y expediente, auditada con `set_ticket_priority`), vínculo de
+reapertura, duración/motivo/resultado/códigos de llamadas y visitas (`register_ticket_movement` con
+`p_activity`, compatible con la firma de 6 argumentos), tipo y resultado del servicio en el diagnóstico
+(`servicios_historial.tipo_servicio`, `resultado`), historial de estados para pausas. Los históricos no se
+modifican; su tipo se clasifica al consultar y los registros evidentemente de prueba se excluyen.
+
+**Despliegue.** Aplicar la migración antes de publicar el frontend (el alta de tickets y el diagnóstico
+envían columnas nuevas). `20261011030000_service_staff_kpis_performance.sql` reemplaza
+`service_kpi_activity_rows` por una versión con uniones por equipo y mes: mismas filas (verificado fila
+por fila en producción) y ~280 ms en lugar de ~935 ms por conjunto.
+
+**Pruebas.**
+- `PGLITE_MODULE=<ruta>/@electric-sql/pglite/dist/index.js node supabase/tests/service_staff_kpis.test.mjs`
+  (cálculos, límites de fecha, denominadores, reaperturas, cierres fuera de plazo, horario hábil y pausas,
+  filtros, permisos y tarjetas = registros bajo los mismos filtros).
+- `npm run test:kpi:model` (estados cero / sin dato / no aplica, periodos, CSV).
+- `npm run test:kpi:browser` con Vite en el puerto 5200 (secciones, filtros, tarjeta → registros,
+  paginación, orden, búsqueda, CSV/Excel completos, registro → ticket, captura, móvil). No usa datos reales.

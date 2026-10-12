@@ -2,7 +2,7 @@ export const closureReasons = {
   solucionado: 'Solucionado',
   visita_programada: 'Visita programada',
   sin_respuesta: 'Sin respuesta del cliente',
-  administrativo: 'Otro cierre administrativo',
+  administrativo: 'Enviado a administrativo',
 } as const;
 export type ClosureReason = keyof typeof closureReasons;
 export interface TicketServiceEvent {

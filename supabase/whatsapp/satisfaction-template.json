@@ -1,0 +1,19 @@
+{
+  "name": "orion_encuesta_servicio_v1",
+  "language": "es_MX",
+  "category": "UTILITY",
+  "components": [
+    {
+      "type": "BODY",
+      "text": "El servicio de tu ticket {{1}} de Orion-Biosystems ha concluido. Queremos conocer tu experiencia con esta atención. Responde cinco preguntas en aproximadamente un minuto: {{2}}. Tu evaluación nos ayuda a mejorar el servicio recibido.",
+      "example": {
+        "body_text": [
+          [
+            "CASO-2026-001",
+            "https://medinovacuu.github.io/orion/encuesta#aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          ]
+        ]
+      }
+    }
+  ]
+}

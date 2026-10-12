@@ -22,7 +22,7 @@ let reviewWrites=0; let movementWrites=0; let allowApproval=true; let failEvents
 await context.route('**/rest/v1/**',async route=>{
  const url=new URL(route.request().url());
  let data=[];
- if(['/ticket_staff_coverage','/ticket_equipment_owners'].some(path=>url.pathname.endsWith(path)) && route.request().method()==='POST') {routingWrites.push(route.request().postDataJSON()); data=null;}
+ if(['/ticket_staff_coverage','/ticket_equipment_owners','/ticket_government_team'].some(path=>url.pathname.endsWith(path)) && route.request().method()==='POST') {routingWrites.push(route.request().postDataJSON()); data=null;}
  if(url.pathname.endsWith('/rpc/route_pending_support_tickets')) data=2;
  if(url.pathname.endsWith('/rpc/is_admin')) data=allowControl;
  if(url.pathname.endsWith('/rpc/get_ticket_control_events')) {data=events; bulkReads++;}
@@ -58,6 +58,10 @@ try {
  await page.getByRole('button',{name:'Guardar responsable habitual',exact:true}).waitFor();
  await page.getByText('Configuración guardada.',{exact:true}).waitFor();
  assert.equal(routingWrites[1].assigned_to,'ana');
+ await page.getByText('Se salta a quien hoy está ocupado',{exact:false}).waitFor();
+ await page.getByRole('button',{name:'Agregar al equipo de gobierno',exact:true}).click();
+ await page.getByText('Configuración guardada.',{exact:true}).waitFor();
+ assert.deepEqual(routingWrites[2],{user_id:'ana'});
  await page.getByRole('button',{name:'Distribuir casos sin asignación',exact:true}).click();
  await page.getByText('2 casos pendientes asignados.',{exact:false}).waitFor();
  await page.getByText('Reglas de asignación y cobertura territorial',{exact:true}).click();

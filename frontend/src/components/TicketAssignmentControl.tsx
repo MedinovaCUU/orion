@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { supabase } from '../supabaseClient';
 import type { CaseTicketRecord } from './TicketCaseDetail';
+import { priorityLabels } from './serviceKpiModel';
 
 type StaffOption = { id: string; nombre_completo: string | null };
 export default function TicketAssignmentControl({ ticket, onChanged }: { ticket: CaseTicketRecord; onChanged: () => void }) {
@@ -10,6 +11,9 @@ export default function TicketAssignmentControl({ ticket, onChanged }: { ticket:
   const [ready, setReady] = useState(false);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
+  const [priority, setPriority] = useState(ticket.prioridad || '');
+  const [savedPriority, setSavedPriority] = useState(ticket.prioridad || '');
+  useEffect(() => { setPriority(ticket.prioridad || ''); setSavedPriority(ticket.prioridad || ''); }, [ticket.id, ticket.prioridad]);
   useEffect(() => {
     let active = true;
     void (async () => {
@@ -38,10 +42,22 @@ export default function TicketAssignmentControl({ ticket, onChanged }: { ticket:
     } catch (cause) { setError((cause as Error).message || 'No se pudo guardar la asignación.'); }
     finally { setBusy(false); }
   };
+  const savePriority = async () => {
+    setBusy(true); setError('');
+    try {
+      const result = await supabase.rpc('set_ticket_priority', { p_ticket_id: ticket.id, p_priority: priority || null });
+      if (result.error) throw result.error;
+      setSavedPriority(priority);
+      onChanged();
+    } catch (cause) { setError((cause as Error).message || 'No se pudo guardar la prioridad.'); }
+    finally { setBusy(false); }
+  };
   return <div className="tc-assignment">
     <label>Responsable del caso<select aria-label="Responsable del caso" disabled={!ready || busy || ticket.estado === 'cerrado'} value={selected} onChange={event => setSelected(event.target.value)}><option value="">Sin asignar</option>{staff.map(person => <option key={person.id} value={person.id}>{person.nombre_completo || person.id}</option>)}</select></label>
     {ticket.estado !== 'cerrado' && <button type="button" disabled={!ready || busy || selected === assigned} onClick={() => void save()}>{busy ? 'Guardando…' : 'Guardar asignación'}</button>}
-    <small>Las alarmas de Falcon se dirigen al responsable asignado. La asignación queda registrada en la bitácora.</small>
+    <label>Prioridad del caso<select aria-label="Prioridad del caso" disabled={busy || ticket.estado === 'cerrado'} value={priority} onChange={event => setPriority(event.target.value)}><option value="">Sin definir</option>{['critica', 'alta', 'media', 'baja'].map(value => <option key={value} value={value}>{priorityLabels[value]}</option>)}</select></label>
+    {ticket.estado !== 'cerrado' && <button type="button" disabled={busy || priority === savedPriority} onClick={() => void savePriority()}>Guardar prioridad</button>}
+    <small>Las alarmas de Falcon se dirigen al responsable asignado. La asignación y la prioridad quedan registradas en la bitácora; la prioridad define la regla de plazo que aplica al caso.</small>
     {error && <p role="alert">{error}</p>}
   </div>;
 }

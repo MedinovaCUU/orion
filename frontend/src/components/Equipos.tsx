@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { supabase } from '../supabaseClient';
 import jsPDF from 'jspdf';
+import { registerBrandPdfFonts } from '../config/brandFonts';
 import { splitServiceCatalog, type ServiceCatalogRow } from './serviceCatalog';
 import { createSupremoLaunchSession } from './supremoApi';
 import { getSupremoShowroomPreset, normalizeSerialLookup } from './supremoPresets';
@@ -15,6 +16,8 @@ import {
   type EquipmentTrainingExamDefinition,
 } from './equipmentTrainingExams';
 import { Loader } from './OrionLoader';
+import { ServiceHistoryCard } from './ServiceHistoryCard';
+import { summarizeHistory } from './serviceHistoryRecord';
 
 interface SupremoDraftState {
   enabled: boolean;
@@ -1434,61 +1437,11 @@ export default function Equipos() {
                   <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem' }}>Este equipo no tiene actas ni historial de servicio registrado.</p>
                 ) : (
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                    <p style={{ margin: 0, fontSize: '0.82rem', color: 'var(--text-secondary)' }}>
+                      {summarizeHistory(equipoServicios)}
+                    </p>
                     {equipoServicios.map(serv => (
-                      <div
-                        key={serv.id}
-                        style={{
-                          background:
-                            'radial-gradient(circle at top right, rgba(var(--clinical-rgb), 0.08), transparent 28%), linear-gradient(180deg, rgba(255, 255, 255, 0.94), rgba(245, 248, 251, 0.82))',
-                          padding: '1rem',
-                          borderRadius: '18px',
-                          border: '1px solid var(--surface-outline)',
-                          borderLeft: '4px solid var(--primary-color)',
-                          boxShadow: 'var(--surface-shadow)',
-                        }}
-                      >
-                        <div style={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', gap: '0.5rem', marginBottom: '0.5rem' }}>
-                          <strong style={{ fontSize: '0.95rem' }}>
-                            <span style={{ color: 'var(--primary-color)', marginRight: '0.5rem' }}>
-                              {serv.ticket_id ? `# TKT-${serv.ticket_id.substring(0, 8).toUpperCase()}` : (serv.id_legacy ? `# LEG-${serv.id_legacy}` : '# SRV-IND')}
-                            </span>
-                            | {serv.fecha_servicio || new Date(serv.creado_en).toLocaleDateString()}
-                          </strong>
-                          <span style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>Ingeniero Asignado: {serv.profiles?.nombre_completo || 'Sistema Histórico (Extendido)'}</span>
-                        </div>
-                        <p style={{ margin: '0.5rem 0', fontWeight: '500', fontSize: '0.9rem' }}>Motivo / Asunto: <span style={{ color: 'var(--text-secondary)', fontWeight: 'normal' }}>{serv.motivo}</span></p>
-
-                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: '1rem', marginTop: '1rem' }}>
-                          <div>
-                            <span style={{ fontSize: '0.8rem', color: 'var(--error-color)', display: 'block', fontWeight: 'bold' }}>Avería [CDA: {serv.cda}]</span>
-                            <span style={{ fontSize: '0.85rem' }}>{serv.averias_catalogo ? serv.averias_catalogo.detalle_averia : 'Avería de Texto Libre'}</span>
-                          </div>
-                          <div>
-                            <span style={{ fontSize: '0.8rem', color: 'var(--success-color)', display: 'block', fontWeight: 'bold' }}>Solución [CDS: {serv.cds}]</span>
-                            <span style={{ fontSize: '0.85rem' }}>{serv.soluciones_catalogo ? serv.soluciones_catalogo.detalle_solucion : 'Solución de Texto Libre'}</span>
-                          </div>
-                        </div>
-
-                        {serv.servicios_refacciones && serv.servicios_refacciones.length > 0 && (
-                          <div
-                            style={{
-                              marginTop: '1rem',
-                              padding: '0.85rem 1rem',
-                              borderRadius: '14px',
-                              border: '1px solid rgba(124, 136, 149, 0.14)',
-                              background:
-                                'linear-gradient(180deg, rgba(255, 255, 255, 0.92), rgba(244, 247, 250, 0.78))',
-                            }}
-                          >
-                            <strong style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', display: 'block', marginBottom: '0.45rem' }}>Refacciones Utilizadas:</strong>
-                            <ul style={{ margin: 0, paddingLeft: '1.2rem', fontSize: '0.82rem', color: 'var(--text-primary)', lineHeight: 1.6 }}>
-                              {serv.servicios_refacciones.map((sr: any, idx: number) => (
-                                <li key={idx}><strong>[{sr.refacciones_catalogo?.codigo_refaccion}]</strong> x{sr.cantidad} - {sr.refacciones_catalogo?.descripcion}</li>
-                              ))}
-                            </ul>
-                          </div>
-                        )}
-                      </div>
+                      <ServiceHistoryCard key={serv.id} serv={serv} />
                     ))}
                   </div>
                 )}
@@ -2216,6 +2169,7 @@ export default function Equipos() {
                 className="button-primary"
                 onClick={async () => {
                   const doc = new jsPDF();
+                  await registerBrandPdfFonts(doc);
                   doc.text("ACTA DE TERMINACION DE SERVICIO Y RETIRO DE EQUIPO", 20, 20);
                   doc.text(`Fecha: ${new Date().toLocaleDateString()}`, 20, 30);
                   doc.text(`Cliente: ${selectedEquipo.clientes?.razon_social || 'Desconocido'}`, 20, 40);

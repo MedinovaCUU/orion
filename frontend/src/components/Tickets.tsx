@@ -33,6 +33,8 @@ import {
 } from './servicesPlanning';
 import './Tickets.css';
 import { Loader } from './OrionLoader';
+import { historyServiceTypes, priorityLabels } from './serviceKpiModel';
+import { registerBrandPdfFonts } from '../config/brandFonts';
 
 interface TicketRecord {
   id: string;
@@ -46,6 +48,8 @@ interface TicketRecord {
   numero_serie_equipo?: string | null;
   nombre_cliente_guest?: string | null;
   telefono_cliente_guest?: string | null;
+  prioridad?: string | null;
+  reabre_ticket_id?: string | null;
 }
 
 interface TicketFeedback {
@@ -199,6 +203,14 @@ const resolveTicketPhoneLabel = (ticket: TicketRecord, equipmentCatalog: Equipme
   }
 
   return resolveTicketEquipment(ticket, equipmentCatalog)?.clientes?.telefono || 'N/D';
+};
+
+const serialKey = (value: string | null | undefined) => (value || '').replace(/\s+/g, '').toUpperCase();
+// The diagnosis button that saves the record is its result; history rows keep it for the indicators.
+const diagnosisResults: Record<string, string> = { cerrado: 'resuelto', pendiente_piezas: 'pendiente_piezas', en_observacion: 'en_observacion' };
+const plannedServiceType = (description: string | null | undefined) => {
+  const type = extractPlaneacionMeta(description)?.service_type || '';
+  return type in historyServiceTypes ? type : '';
 };
 
 const formatSupportStatus = (status: string) =>
@@ -358,6 +370,8 @@ export default function Tickets({ subPermissions = ['crear', 'seguimiento', 'dia
   const [tipoSoporte, setTipoSoporte] = useState<'Ingeniero' | 'Químico' | null>(null);
   const [nombreContacto, setNombreContacto] = useState('');
   const [telefonoContacto, setTelefonoContacto] = useState('');
+  const [prioridad, setPrioridad] = useState('');
+  const [reabreTicketId, setReabreTicketId] = useState('');
   const [ocrBusy, setOcrBusy] = useState(false);
   const [ocrProgress, setOcrProgress] = useState(0);
   const [ocrStatus, setOcrStatus] = useState('');
@@ -378,6 +392,7 @@ export default function Tickets({ subPermissions = ['crear', 'seguimiento', 'dia
       cda: '',
       cds: '',
       comentarios: '',
+      tipo_servicio: '',
       refaccionesUsadas: [] as { codigo: string, cant: number }[]
   });
   const [travelPlannerOpen, setTravelPlannerOpen] = useState(false);
@@ -486,6 +501,8 @@ export default function Tickets({ subPermissions = ['crear', 'seguimiento', 'dia
     setNombreContacto('');
     setTelefonoContacto('');
     setTipoSoporte(null);
+    setPrioridad('');
+    setReabreTicketId('');
     setDraftReportCreatedAt(null);
   };
 
@@ -520,6 +537,8 @@ export default function Tickets({ subPermissions = ['crear', 'seguimiento', 'dia
       numero_serie_equipo: draft.numeroSerie || null,
       nombre_cliente_guest: draft.nombreContacto || null,
       telefono_cliente_guest: draft.telefonoContacto || null,
+      prioridad: prioridad || null,
+      reabre_ticket_id: reabreTicketId || null,
       ...(draft.reportCreatedAt ? { creado_en: draft.reportCreatedAt } : {}),
     };
 
@@ -645,7 +664,9 @@ export default function Tickets({ subPermissions = ['crear', 'seguimiento', 'dia
           cda: parsedCda,
           cds: parsedCds,
           motivo: cerrarData.comentarios || selectedTicket.asunto,
-          tecnico_id: user?.id
+          tecnico_id: user?.id,
+          tipo_servicio: cerrarData.tipo_servicio || null,
+          resultado: diagnosisResults[estadoAAsignar] || null
       }).select('id').single();
 
       if (servErr) window.alert(`El estado se guardó, pero el historial de servicio falló: ${servErr.message}`);
@@ -669,6 +690,7 @@ export default function Tickets({ subPermissions = ['crear', 'seguimiento', 'dia
   const generarPDFTicket = async () => {
       const { default: jsPDF } = await import('jspdf');
       const doc = new jsPDF();
+      await registerBrandPdfFonts(doc);
       doc.setFontSize(16);
       doc.text("ACTA DE REPORTE Y DIAGNOSTICO DE SERVICIO", 20, 20);
       doc.setFontSize(11);
@@ -697,6 +719,12 @@ export default function Tickets({ subPermissions = ['crear', 'seguimiento', 'dia
   };
 
   const plannedTickets = tickets.filter((ticket): ticket is PendingServiceTicket => Boolean(extractPlaneacionMeta(ticket.descripcion)));
+  // A recurrence is a new case linked to the closed one, never a reopened ticket.
+  const reopenCandidates = useMemo(() => {
+    const key = serialKey(numeroSerie);
+    return key ? tickets.filter((ticket) => ticket.estado === 'cerrado' && serialKey(ticket.numero_serie_equipo) === key && !extractPlaneacionMeta(ticket.descripcion)).slice(0, 20) : [];
+  }, [numeroSerie, tickets]);
+  useEffect(() => { if (reabreTicketId && !reopenCandidates.some((ticket) => ticket.id === reabreTicketId)) setReabreTicketId(''); }, [reabreTicketId, reopenCandidates]);
   const ticketRenderItems = useMemo<TicketRenderItem[]>(
     () =>
       tickets.map((ticket) => {
@@ -771,6 +799,23 @@ export default function Tickets({ subPermissions = ['crear', 'seguimiento', 'dia
               </div>
           </div>
 
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '1.5rem' }}>
+              <div>
+                <label htmlFor="ticket-priority" style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', display: 'block', marginBottom: '0.5rem' }}>Prioridad</label>
+                <select id="ticket-priority" className="input-field" value={prioridad} onChange={(e) => setPrioridad(e.target.value)}>
+                  <option value="">Sin definir</option>
+                  {['critica', 'alta', 'media', 'baja'].map((value) => <option key={value} value={value}>{priorityLabels[value]}</option>)}
+                </select>
+              </div>
+              <div>
+                <label htmlFor="ticket-reopen" style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', display: 'block', marginBottom: '0.5rem' }}>¿Reabre un caso cerrado de este equipo?</label>
+                <select id="ticket-reopen" className="input-field" value={reabreTicketId} disabled={!reopenCandidates.length} onChange={(e) => setReabreTicketId(e.target.value)}>
+                  <option value="">{reopenCandidates.length ? 'No, es un caso nuevo' : 'Sin casos cerrados de esta serie'}</option>
+                  {reopenCandidates.map((ticket) => <option key={ticket.id} value={ticket.id}>{formatCaseNumber(ticket)} · {new Date(ticket.creado_en).toLocaleDateString('es-MX')} · {ticket.asunto.slice(0, 60)}</option>)}
+                </select>
+              </div>
+          </div>
+
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem' }}>
               <div>
                 <label style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', display: 'block', marginBottom: '0.5rem' }}>Nombre de Contacto Directo</label>
@@ -837,7 +882,7 @@ export default function Tickets({ subPermissions = ['crear', 'seguimiento', 'dia
       {canViewTickets && canViewControl && <div className="tickets-view-switch"><button type="button" className={`button-primary${controlView ? '' : ' inactive'}`} aria-pressed={controlView} onClick={() => setControlView(true)}>Centro de control</button><button type="button" className={`button-primary${controlView ? ' inactive' : ''}`} aria-pressed={!controlView} onClick={() => setControlView(false)}>Vista operativa</button></div>}
       {canViewTickets && canViewControl && controlView && <TicketControlCenter entries={ticketRenderItems} loading={loading} canWrite={canDiagnoseTickets} onChanged={fetchTickets} onDiagnose={ticket => {
         setSelectedTicket(ticket);
-        setCerrarData({ no_serie: ticket.numero_serie_equipo || '', cda: '', cds: '', comentarios: '', refaccionesUsadas: [] });
+        setCerrarData({ no_serie: ticket.numero_serie_equipo || '', cda: '', cds: '', comentarios: '', tipo_servicio: plannedServiceType(ticket.descripcion), refaccionesUsadas: [] });
         setCerrarModalOpen(true);
       }} />}
       {canViewTickets && (!canViewControl || !controlView) ? <div className="card" style={{ background: 'var(--bg-secondary)', border: 'none' }}>
@@ -975,7 +1020,7 @@ export default function Tickets({ subPermissions = ['crear', 'seguimiento', 'dia
                              onClick={() => {
                                  setSelectedTicket(ticket);
                                  setCerrarData({
-                                     no_serie: ticket.numero_serie_equipo || '', cda: '', cds: '', comentarios: '', refaccionesUsadas: []
+                                     no_serie: ticket.numero_serie_equipo || '', cda: '', cds: '', comentarios: '', tipo_servicio: plannedServiceType(ticket.descripcion), refaccionesUsadas: []
                                  });
                                  setCerrarModalOpen(true);
                              }}
@@ -1032,6 +1077,14 @@ export default function Tickets({ subPermissions = ['crear', 'seguimiento', 'dia
                             onChange={(e) => setCerrarData({...cerrarData, no_serie: e.target.value})} 
                             required placeholder="Debe coincidir con la BD"
                         />
+                    </div>
+
+                    <div>
+                        <label htmlFor="diagnosis-service-type" style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', display: 'block', marginBottom: '0.5rem' }}>Tipo de servicio realizado *</label>
+                        <select id="diagnosis-service-type" className="input-field" required value={cerrarData.tipo_servicio} onChange={(e) => setCerrarData({ ...cerrarData, tipo_servicio: e.target.value })}>
+                            <option value="" disabled>Selecciona el tipo de servicio</option>
+                            {Object.entries(historyServiceTypes).map(([value, label]) => <option key={value} value={value}>{label}</option>)}
+                        </select>
                     </div>
 
                     <div>
@@ -1164,7 +1217,7 @@ export default function Tickets({ subPermissions = ['crear', 'seguimiento', 'dia
                         <button 
                             type="button" className="button-primary" 
                             style={{ background: 'rgba(255, 150, 0, 0.2)', color: '#ffb74d', borderColor: '#ffb74d' }} 
-                            disabled={!cerrarData.no_serie || submitting} 
+                            disabled={!cerrarData.no_serie || !cerrarData.tipo_servicio || submitting} 
                             onClick={() => handleCerrarTicket('pendiente_piezas')}
                         >
                             Pausar (Faltan Piezas)
@@ -1173,7 +1226,7 @@ export default function Tickets({ subPermissions = ['crear', 'seguimiento', 'dia
                         <button 
                             type="button" className="button-primary" 
                             style={{ background: 'rgba(255, 150, 0, 0.2)', color: '#ffb74d', borderColor: '#ffb74d' }} 
-                            disabled={!cerrarData.no_serie || submitting} 
+                            disabled={!cerrarData.no_serie || !cerrarData.tipo_servicio || submitting} 
                             onClick={() => handleCerrarTicket('en_observacion')}
                         >
                             Pausar (En Observación)
@@ -1181,7 +1234,7 @@ export default function Tickets({ subPermissions = ['crear', 'seguimiento', 'dia
 
                         <button 
                             type="button" className="button-primary" 
-                            disabled={!cerrarData.no_serie || !cerrarData.cda || !cerrarData.cds || submitting} 
+                             disabled={!cerrarData.no_serie || !cerrarData.tipo_servicio || !cerrarData.cda || !cerrarData.cds || submitting} 
                             onClick={() => handleCerrarTicket('cerrado')}
                         >
                             {submitting ? 'Archivando base de datos...' : 'Finalizar y Archivar Servicio'}

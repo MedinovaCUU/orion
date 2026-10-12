@@ -7,7 +7,11 @@ import type { EquipmentSummary } from './servicesPlanning';
 import { formatCaseNumber } from './ticketCaseUtils';
 import { closureReasons, eventAuthor, formatDuration, slaLabels, summarizeControl, ticketControlFacts, type TicketServiceEvent } from './ticketControlModel';
 import useTicketServiceEvents from './useTicketServiceEvents';
+import ServiceKpiCenter from './ServiceKpiCenter';
+import type { KpiView } from './serviceKpiModel';
 import './TicketControlCenter.css';
+import './ServiceKpiCenter.css';
+import { applyBrandFontToWorkbook, BRAND_FONT_STACK, brandFontFaceCss, waitForBrandFonts } from '../config/brandFonts';
 
 export interface ControlEntry {
   ticket: CaseTicketRecord; resolvedEquipment: EquipmentSummary | null;
@@ -21,6 +25,13 @@ const localDay = (value?: string) => {
   return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
 };
 const PAGE_SIZE = 15;
+type ControlSection = 'casos' | KpiView;
+const SECTIONS: Array<[ControlSection, string, string]> = [
+  ['casos', 'Control de casos', 'Expedientes, cierres y revisión'],
+  ['general', 'Resumen general', 'Cumplimiento, carga y calidad'],
+  ['quimica', 'Químicos', 'Capacitaciones, visitas y llamadas'],
+  ['ingenieria', 'Ingenieros', 'Preventivos, correctivos y piezas'],
+];
 
 interface TicketControlCenterProps {
   entries: ControlEntry[]; canWrite: boolean; loading: boolean; onChanged: () => void; onDiagnose: (ticket: CaseTicketRecord) => void;
@@ -59,6 +70,15 @@ function AdminTicketControlCenter({ entries, canWrite, loading, onChanged, onDia
   const [expanded, setExpanded] = useState<string | null>(null);
   const [exporting, setExporting] = useState(false);
   const [exportError, setExportError] = useState('');
+  const [section, setSection] = useState<ControlSection>('casos');
+  const [visited, setVisited] = useState<Set<ControlSection>>(() => new Set(['casos']));
+  const openSection = (next: ControlSection) => { setSection(next); setVisited(current => current.has(next) ? current : new Set([...current, next])); };
+  // A KPI record opens its ticket here: every filter that could hide it is cleared.
+  const openTicket = ({ id, folio }: { id: string; folio: string }) => {
+    setOnlyUnassigned(false); setView('todos'); setScope('todos'); setOwner('todos'); setSla('todos'); setReview('todos'); setOutcome('todos');
+    setFrom(''); setTo(''); setDateField('apertura'); setSort('reciente'); setSearch(folio); setPage(1); setExpanded(id); openSection('casos');
+    window.setTimeout(() => document.getElementById(`tc-case-${id}`)?.scrollIntoView({ behavior: 'smooth', block: 'center' }), 80);
+  };
   const dataReady = loaded && !loading && !error;
   const rows = useMemo(() => {
     const byTicket = new Map<string, TicketServiceEvent[]>();
@@ -127,6 +147,7 @@ function AdminTicketControlCenter({ entries, canWrite, loading, onChanged, onDia
       const info = book.addWorksheet('Criterios');
       info.addRows([['Generado', new Date().toLocaleString('es-MX')], ['Casos exportados', filtered.length], ['Vista', view], ['Ámbito', scope], ['Búsqueda', search], ['Autor', owners.find(([id]) => id === owner)?.[1] || 'Todos'], ['Plazo', sla === 'todos' ? 'Todos' : slaLabels[sla as keyof typeof slaLabels]], ['Revisión', review], ['Resultado', outcome], ['Periodo', `${dateField}: ${from || 'sin inicio'} a ${to || 'sin fin'}`], ['SLA', '48 horas corridas desde apertura; por vencer desde las 40 h.'], ['Cumplimiento técnico', 'Solo solucionados con fecha verificable. Justificados excluidos del denominador.'], ['Autor', 'Autor del cierre en cerrados; autor de primera respuesta en abiertos. No equivale a asignación.'], ['Históricos', 'Sin inferir fechas ni clasificaciones.']]);
       info.getColumn(1).width = 27; info.getColumn(2).width = 110;
+      applyBrandFontToWorkbook(book);
       const buffer = await book.xlsx.writeBuffer();
       const url = URL.createObjectURL(new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }));
       const anchor = document.createElement('a'); anchor.href = url; anchor.download = `ORION_control_tickets_${localDay(new Date().toISOString())}.xlsx`; anchor.click();
@@ -141,7 +162,7 @@ function AdminTicketControlCenter({ entries, canWrite, loading, onChanged, onDia
     if (!popup) { setExportError('Permite la ventana de impresión para generar el reporte.'); return; }
     popup.document.title = 'ORION · Reporte de control de tickets';
     const style = popup.document.createElement('style');
-    style.textContent = '@page{size:A4 landscape;margin:12mm}body{font:10px Arial;color:#163641}h1{font-size:22px}table{border-collapse:collapse;width:100%}th,td{padding:7px;border:1px solid #cbd5dc;text-align:left;vertical-align:top;overflow-wrap:anywhere}th{background:#e9f0f3}tr{break-inside:avoid}thead{display:table-header-group}small{color:#486570}';
+    style.textContent = brandFontFaceCss() + '@page{size:A4 landscape;margin:12mm}body{font:10px ' + BRAND_FONT_STACK + ';color:#163641}h1{font-size:22px}table{border-collapse:collapse;width:100%}th,td{padding:7px;border:1px solid #cbd5dc;text-align:left;vertical-align:top;overflow-wrap:anywhere}th{background:#e9f0f3}tr{break-inside:avoid}thead{display:table-header-group}small{color:#486570}';
     popup.document.head.append(style);
     const add = (tag: string, text: string, parent: HTMLElement = popup.document.body) => { const element = popup.document.createElement(tag); element.textContent = text; parent.append(element); return element; };
     add('h1', 'ORION · Control de tickets');
@@ -160,11 +181,15 @@ function AdminTicketControlCenter({ entries, canWrite, loading, onChanged, onDia
       ].forEach(value => add('td', value, tr));
     }
     add('p', '48 horas corridas desde apertura. Los cierres administrativos no son resoluciones técnicas. No se infieren fechas históricas.');
-    popup.focus(); popup.print();
+    // Print once Alliance has loaded in the new window; after the timeout it prints with the fallback font.
+    void waitForBrandFonts(popup.document).then(() => { popup.focus(); popup.print(); });
   };
 
   return <section className="tc-center" aria-label="Centro de control de tickets">
     <header className="tc-header"><div><span className="tc-eyebrow">ORION / SERVICIO</span><h2>Control de tickets</h2><p>Cada cierre, su evidencia. Cada demora, su contexto.</p></div><div className="tc-header-actions"><span className="tc-live">{dataReady ? 'Trazabilidad disponible' : 'Consultando registros'}</span><button type="button" onClick={onChanged} disabled={loading}>Actualizar</button></div></header>
+    <nav className="tc-sections" aria-label="Secciones del centro de control">{SECTIONS.map(([key, label, hint]) => <button type="button" key={key} aria-pressed={section === key} onClick={() => openSection(key)}><strong>{label}</strong><small>{hint}</small></button>)}</nav>
+    {(['general', 'quimica', 'ingenieria'] as KpiView[]).map(kpiView => visited.has(kpiView) && <div key={kpiView} hidden={section !== kpiView}><ServiceKpiCenter view={kpiView} onOpenTicket={openTicket} /></div>)}
+    <div hidden={section !== 'casos'}>
     <TicketRoutingRules onChanged={onChanged} />
     <label className="tc-unassigned"><input type="checkbox" checked={onlyUnassigned} onChange={event => { setOnlyUnassigned(event.target.checked); setView('todos'); setPage(1); }} /> Solo casos abiertos sin responsable</label>
 
@@ -191,7 +216,7 @@ function AdminTicketControlCenter({ entries, canWrite, loading, onChanged, onDia
     {(error || exportError || invalidDates) && <p role="alert" className="tc-error">{invalidDates ? 'La fecha inicial debe ser anterior o igual a la final.' : error || exportError}</p>}
     {!dataReady ? <div className="tc-empty">{error ? 'No se muestran indicadores parciales. Actualiza para volver a consultar.' : 'Reuniendo casos, tiempos y aprobaciones…'}</div> : filtered.length === 0 ? <div className="tc-empty"><strong>No hay casos con estos filtros</strong><p>Amplía el periodo o limpia los filtros para consultar más expedientes.</p><button type="button" onClick={reset}>Limpiar filtros</button></div> : <>
       <div className="tc-table-scroll"><table className="tc-table"><thead><tr><th>Caso / equipo</th><th>Cliente / ubicación</th><th>Resultado / autor</th><th>Apertura / cierre</th><th>Respuesta / duración</th><th>Plazo de servicio</th><th>Revisión</th><th><span className="tc-sr-only">Acciones</span></th></tr></thead><tbody>
-        {visible.map(row => <Fragment key={row.ticket.id}><tr className={expanded === row.ticket.id ? 'is-selected' : ''}>
+        {visible.map(row => <Fragment key={row.ticket.id}><tr id={`tc-case-${row.ticket.id}`} className={expanded === row.ticket.id ? 'is-selected' : ''}>
           <td><strong className="tc-folio">{formatCaseNumber(row.ticket)}</strong><span>{row.resolvedEquipment?.modelo || 'Equipo sin modelo'}</span><small>Serie {row.ticket.numero_serie_equipo || 'sin registro'}</small></td>
           <td><strong>{row.ticketClientLabel}</strong><span>{row.locationLabel || 'Ubicación sin registro'}</span><small>{row.ticketPhoneLabel}</small></td>
           <td><strong>{row.outcome}</strong><span>{row.owner}</span><small>{row.closed ? 'Autor del cierre' : 'Autor de primera respuesta'}</small></td>
@@ -205,6 +230,7 @@ function AdminTicketControlCenter({ entries, canWrite, loading, onChanged, onDia
       <div className="tc-pagination"><span>Mostrando {(currentPage - 1) * PAGE_SIZE + 1}–{Math.min(currentPage * PAGE_SIZE, filtered.length)} de {filtered.length} · Las exportaciones incluyen todos los resultados</span><div><button type="button" disabled={currentPage === 1} onClick={() => setPage(currentPage - 1)}>Anterior</button><span>{currentPage} / {pages}</span><button type="button" disabled={currentPage === pages} onClick={() => setPage(currentPage + 1)}>Siguiente</button></div></div>
     </>}
     <details className="tc-team"><summary>Desempeño del personal <span>Sobre los filtros actuales</span></summary><p>En cerrados se agrupa por quien registró el cierre; en abiertos, por quien respondió primero. No representa una asignación de responsabilidad.</p><div className="tc-table-scroll"><table className="tc-table"><thead><tr><th>Personal</th><th>Casos</th><th>Solucionados</th><th>Cumplimiento técnico</th><th>Fuera de plazo</th><th>Justificados</th><th>Por revisar</th></tr></thead><tbody>{dataReady && staff.map(person => <tr key={person.id}><td><strong>{person.name}</strong></td><td>{person.summary.total}</td><td>{person.summary.solved}</td><td>{person.summary.compliance === null ? 'Sin base evaluable' : `${person.summary.compliance.toFixed(0)}% (${person.summary.eligible} casos)`}</td><td>{person.summary.late}</td><td>{person.summary.justified}</td><td>{person.summary.reviewPending}</td></tr>)}</tbody></table></div></details>
-    <footer className="tc-method"><strong>Criterio de control</strong><p>48 horas corridas desde apertura; alerta desde las 40 h. Cumplimiento técnico = soluciones dentro de plazo / soluciones evaluables, excluyendo demoras justificadas. Los cierres administrativos e históricos sin clasificación no cuentan como soluciones. Primera respuesta promedio: {dataReady ? formatDuration(summary.averageResponse) : '—'}.</p></footer>
+    <footer className="tc-method"><strong>Criterio de control</strong><p>48 horas corridas desde apertura; alerta desde las 40 h. Cumplimiento técnico = soluciones dentro de plazo / soluciones evaluables, excluyendo demoras justificadas. Los cierres administrativos e históricos sin clasificación no cuentan como soluciones. Primera respuesta promedio: {dataReady ? formatDuration(summary.averageResponse) : '—'}. Los indicadores del personal (Resumen general, Químicos e Ingenieros) aplican las reglas de plazo configuradas por canal, región, especialidad y prioridad.</p></footer>
+    </div>
   </section>;
 }
