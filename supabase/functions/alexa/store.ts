@@ -6,16 +6,18 @@ type Row = Record<string, any>;
 
 // ── Linking ──────────────────────────────────────────────────────────────────
 export async function linkedUser(alexaUserId: string) {
+  // reviewer: Amazon's certification account (public.alexa_reviewers, never staff) — it hears demo data only.
   const rows = await sql`
-    select l.user_id, l.notify, p.nombre_completo, p.rol::text as rol, u.email
+    select l.user_id, l.notify, p.nombre_completo, coalesce(p.rol::text, 'cliente') as rol, u.email,
+      (coalesce(p.rol::text, 'cliente') not in ('admin', 'tecnico') and exists(select 1 from public.alexa_reviewers r where r.email = lower(u.email))) as reviewer
     from public.alexa_links l
-    join public.profiles p on p.id = l.user_id
+    left join public.profiles p on p.id = l.user_id
     join auth.users u on u.id = l.user_id
     where l.alexa_user_id = ${alexaUserId}`;
   const r = rows[0] as Row | undefined;
   if (!r) return null;
   sql`update public.alexa_links set last_seen_at = now() where alexa_user_id = ${alexaUserId}`.catch(() => undefined);
-  return { id: r.user_id as string, email: (r.email as string | null) ?? null, fullName: (r.nombre_completo as string | null) ?? "", role: r.rol as "admin" | "tecnico" | "cliente", notify: Boolean(r.notify) };
+  return { id: r.user_id as string, email: (r.email as string | null) ?? null, fullName: (r.nombre_completo as string | null) ?? "", role: r.rol as "admin" | "tecnico" | "cliente", notify: Boolean(r.notify), reviewer: Boolean(r.reviewer) };
 }
 
 /** 6-digit code valid for 10 minutes; one live code per device. */

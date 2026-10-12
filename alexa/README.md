@@ -72,6 +72,8 @@ Pruebas:
 supabase/functions/alexa/test/setup-db.sh               # Postgres desechable con todas las migraciones (puerto 54399)
 deno test -A --no-lock --node-modules-dir=none supabase/functions/alexa/test/e2e.test.ts
 deno test -A --no-lock --node-modules-dir=none supabase/functions/alexa/test/cases.test.ts
+deno test -A --no-lock --node-modules-dir=none supabase/functions/alexa/test/demo.test.ts      # cuenta de revisión de Amazon
+deno run -A --no-lock --node-modules-dir=none supabase/functions/alexa/test/reviewer-transcript.ts   # lo que oye el revisor
 deno test -A --no-lock --node-modules-dir=none supabase/functions/alexa-notify/notify.test.ts
 deno test -A --no-lock --node-modules-dir=none supabase/functions/alexa/verify.test.ts
 deno run -A --no-lock --node-modules-dir=none supabase/functions/alexa/test/transcript.ts   # escuchar una conversación de ejemplo
@@ -96,8 +98,37 @@ deno run -A --no-lock --node-modules-dir=none alexa/guide/examples.ts      # →
 node alexa/guide/build.mjs                                                 # → guide.html + Orion_Guia_de_Voz.pdf (Chrome)
 ```
 
-## Pendiente para publicar (certificación)
+## Certificación y cuenta de revisión de Amazon
 
-- Política de privacidad y términos en `skill.json`.
-- Una cuenta de revisión de Orion con datos de ejemplo, descrita en `testingInstructions`.
-- Pasar `ALEXA_STAGE` a `live`.
+Amazon retiró Alexa for Business, así que ya no existen las skills privadas. Orion se publica como skill pública solo en México, pero sin vincular una cuenta de Orion no da acceso a nada.
+
+**Cuenta de revisión** (`revision.alexa@biosystems.com.mx`, migración `20261012060000_alexa_reviewer.sql`):
+
+- Base de datos:
+  - Es un perfil `cliente` listado en `public.alexa_reviewers`. Un correo de personal (admin/técnico) en esa lista nunca cuenta como revisor.
+  - Una política RESTRICTIVA `alexa_reviewer_sin_datos` en cada tabla pública con RLS le oculta todas las filas, salvo su propio perfil. Así, aunque inicie sesión, Orion web y la API no le muestran nada.
+  - Puede reclamar un código de Alexa (`claim_alexa_code`).
+  - Si una tabla es de otro dueño, la migración lo avisa con un NOTICE y no la cubre.
+- Web: `Dashboard.tsx` le muestra solo la pestaña Alexa (RPC `is_alexa_reviewer`).
+- Alexa:
+  - `store.linkedUser` marca `reviewer`, y el turno corre con `DEMO_TX` (`demo.ts`) en vez de una transacción: nunca se abre la base.
+  - `data.ts` contesta con la historia de ejemplo: cuatro analizadores ficticios, seis casos, bitácora, planeación, controles BPL (`demoBpl.js`, copia del fixture del frontend) y el catálogo DRI incluido en el motor.
+  - Las escrituras se aceptan por voz pero no se guardan ni se envían. Alexa dice qué haría Orion con una cuenta real.
+  - El notificador le genera los mismos avisos desde los datos de ejemplo, una vez al día (`demo:<fecha>:…`).
+- Lo que la cuenta no ve: tablas con RLS apagado, vistas `security definer` y tablas creadas después de la migración (vuelve a correr el bloque `do $$` si se agregan).
+
+**Ficha:**
+
+- `testingInstructions` en `skill.json`: vinculación, frases que funcionan con los datos de ejemplo y avisos. La contraseña la escribe el dueño en la consola de Amazon. No sobrescribas esas instrucciones sin conservar lo que tenga la consola.
+- Política de privacidad y términos: `frontend/public/legal/alexa-privacidad.html` y `alexa-terminos.html`, publicados con la web en `https://medinovacuu.github.io/orion/legal/…`.
+
+**Orden para enviar:**
+
+1. `supabase db push`, que incluye la migración del revisor.
+2. Desplegar `alexa` y `alexa-notify`.
+3. Publicar la web.
+4. El dueño crea el usuario en Supabase Auth (correo de arriba, contraseña, confirmado) y pone usuario y contraseña en la consola, en *Testing instructions*.
+5. `ask smapi update-skill-manifest` + `submit-skill-validation`.
+6. `submit-skill-for-certification`.
+
+**Al publicarse:** pasar `ALEXA_STAGE` a `live` para que los avisos lleguen a la versión pública.

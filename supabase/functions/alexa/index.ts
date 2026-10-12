@@ -6,6 +6,7 @@ import { ASSETS } from "./assets.generated.ts";
 import { aplDocument, aplVersionFor, datasource, setAssetBase, type Visual } from "./apl.ts";
 import { build, fitResponse, page, say, slotText, type Ctx, type Reply, type Slots } from "./alexa.ts";
 import { asUser } from "./db.ts";
+import { DEMO_TX } from "./demo.ts";
 import * as C from "./cases.ts";
 import * as H from "./handlers.ts";
 import * as D from "./data.ts";
@@ -281,9 +282,12 @@ async function handle(body: any) {
   if (!alexaUser) return say("No pude identificar este dispositivo.", { end: true });
   const user = await S.linkedUser(alexaUser);
   if (!user) return fitResponse(linkReply(await S.newLinkCode(alexaUser), apl, aplVersion));
-  if (user.role === "cliente") return say("Tu cuenta de Orion es de cliente. Por ahora la voz de Orion es para el equipo de servicio de Biosystems.", { end: true });
+  if (user.role === "cliente" && !user.reviewer) return say("Tu cuenta de Orion es de cliente. Por ahora la voz de Orion es para el equipo de servicio de Biosystems.", { end: true });
 
-  const viewer: H.Viewer = { id: user.id, email: user.email, name: firstName(user.fullName), role: user.role };
+  // Amazon's reviewer works like an engineer of the service team, on demo data: no transaction ever opens for it.
+  const viewer: H.Viewer = user.reviewer
+    ? { id: user.id, email: user.email, name: firstName(user.fullName) || "Revisión", role: "tecnico", demo: true }
+    : { id: user.id, email: user.email, name: firstName(user.fullName), role: user.role };
   const turn: H.Turn = {
     body,
     intent,
@@ -292,7 +296,7 @@ async function handle(body: any) {
     viewer,
     alexaUser,
     apl,
-    run: (fn) => asUser({ id: viewer.id, email: viewer.email }, fn),
+    run: viewer.demo ? (fn) => fn(DEMO_TX) : (fn) => asUser({ id: viewer.id, email: viewer.email }, fn),
     started: Date.now(),
   };
   const reply = await route(turn);
@@ -313,7 +317,7 @@ async function handle(body: any) {
   // One line per turn (intent, filled slot names, role, start of the reply) so a misheard request can be traced in
   // the function logs. No slot values: they can carry dictated text.
   const filled = Object.entries((req.intent?.slots ?? {}) as Record<string, { value?: string }>).filter(([, v]) => v?.value).map(([k]) => k);
-  console.log(`turn ${intent}${filled.length ? ` [${filled.join(",")}]` : ""} ${user.role} → ${reply.text.replace(/<[^>]+>/g, "").slice(0, 70)}`);
+  console.log(`turn ${intent}${filled.length ? ` [${filled.join(",")}]` : ""} ${viewer.demo ? "revisor" : user.role} → ${reply.text.replace(/<[^>]+>/g, "").slice(0, 70)}`);
   return build(reply, apl, messageVisual(intent), aplVersion);
 }
 

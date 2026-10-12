@@ -5,6 +5,7 @@ import type postgres from "npm:postgres@3.4.9";
 import * as E from "./engine.bundle.js";
 import { unaccent } from "./speech.ts";
 import { alarmSpeech } from "./voice.ts";
+import * as Demo from "./demo.ts";
 
 type Tx = postgres.TransactionSql<Record<string, never>>;
 type Row = Record<string, any>;
@@ -28,7 +29,7 @@ export interface Equipment {
 }
 
 export async function activeEquipment(tx: Tx): Promise<Equipment[]> {
-  const rows = await tx`
+  const rows = Demo.isDemoTx(tx) ? Demo.demoEquipmentRows() : await tx`
     select e.numero_serie, e.modelo, c.razon_social, coalesce(nullif(e.ciudad, ''), e.municipio) as ciudad, e.estado, e.pais, e.direccion
     from public.equipos e left join public.clientes c on c.id = e.cliente_id
     where e.fecha_fin is null and e.numero_serie is not null and btrim(e.numero_serie) <> ''`;
@@ -97,7 +98,9 @@ const describeAlarm = (code: string | null, description: string | null, section:
 
 export async function equipmentStates(tx: Tx, serials?: string[]): Promise<Map<string, EquipmentState>> {
   const filter = serials?.length ? serials.map(normSerial) : null;
-  const rows = filter
+  const rows = Demo.isDemoTx(tx)
+    ? Demo.demoStateRows(filter)
+    : filter
     ? await tx`select s.*, i.updated_at as insumos_at from public.estado_errores_equipo_actual s
         left join public.estado_insumos_equipo_actual i on upper(regexp_replace(i.numero_serie, '\\s', '', 'g')) = upper(regexp_replace(s.numero_serie, '\\s', '', 'g'))
         where upper(regexp_replace(s.numero_serie, '\\s', '', 'g')) = any(${filter})`
@@ -125,7 +128,7 @@ export async function equipmentStates(tx: Tx, serials?: string[]): Promise<Map<s
 
 export interface AlarmEvent extends ActiveError { serial: string; type: string | null; at: string | null }
 export async function recentAlarms(tx: Tx, serial: string, days = 14, limit = 30): Promise<AlarmEvent[]> {
-  const rows = await tx`
+  const rows = Demo.isDemoTx(tx) ? Demo.demoAlarmRows(normSerial(serial), days).slice(0, limit) : await tx`
     select numero_serie, codigo_error, descripcion_error, seccion_error, tipo_mensaje, coalesce(detected_at, created_at) as at
     from public.monitoreo_errores_equipos
     where upper(regexp_replace(numero_serie, '\\s', '', 'g')) = ${normSerial(serial)}
@@ -221,6 +224,7 @@ type TicketScope = "mine" | "all" | "serial" | "id";
 interface TicketQuery { scope: TicketScope; serial?: string; id?: string; includeClosed?: boolean; limit?: number; suffix?: string }
 
 async function ticketRows(tx: Tx, q: TicketQuery) {
+  if (Demo.isDemoTx(tx)) return Demo.demoTicketRows({ ...q, serial: q.serial ? normSerial(q.serial) : undefined });
   const s = q.serial ? normSerial(q.serial) : "";
   const suffix = (q.suffix ?? "").replace(/\D/g, "");
   const id = q.id ?? "00000000-0000-0000-0000-000000000000";
@@ -312,7 +316,7 @@ export async function serialHistory(tx: Tx, serial: string, limit = 12, suffix?:
 }
 /** Closures since a moment (planning excluded): the person's own, or the whole team's for `scope: "all"`. */
 export async function closedStats(tx: Tx, sinceIso: string, scope: "mine" | "all"): Promise<{ n: number; solved: number; reason: string | null }> {
-  const [r] = await tx`
+  const [r] = Demo.isDemoTx(tx) ? [Demo.demoClosedStats(sinceIso)] : await tx`
     select count(*)::int as n, count(*) filter (where ev.closure_reason = 'solucionado')::int as solved, min(ev.closure_reason) as reason
     from public.ticket_service_events ev
     join public.tickets t on t.id = ev.ticket_id
@@ -326,7 +330,7 @@ export async function closedStats(tx: Tx, sinceIso: string, scope: "mine" | "all
 export async function caseReceivers(tx: Tx): Promise<Array<{ id: string; name: string; team: "quimica" | "ingenieria" | null }>> {
   // Team from the profile's employee type: the same reading as public.service_staff_team, which the ranking uses but
   // is not executable by signed-in users (20261011020000 revokes it), so it is spelled out here.
-  const rows = await tx`
+  const rows = Demo.isDemoTx(tx) ? Demo.DEMO_PEOPLE : await tx`
     select p.id, p.nombre_completo,
       case when public.ticket_routing_key(p.employee_type) like '%quim%' then 'quimica'
            when public.ticket_routing_key(p.employee_type) like '%ingen%' then 'ingenieria' end as team
@@ -365,7 +369,7 @@ function spokenReason(reason: string, tk: TicketInfo): string {
  * este equipo, pero hoy tiene una visita programada").
  */
 export async function assignmentCandidates(tx: Tx, tk: TicketInfo): Promise<{ ranked: AssignCandidate[]; skipped: string | null }> {
-  const rows = (await tx`select * from public.get_ticket_assignment_suggestions(${tk.id}::uuid)`) as Row[];
+  const rows = (Demo.isDemoTx(tx) ? Demo.demoSuggestionRows(tk.id) : await tx`select * from public.get_ticket_assignment_suggestions(${tk.id}::uuid)`) as Row[];
   const people = rows.map((r): AssignCandidate & { continuity: string | null } => ({
     id: r.user_id, name: String(r.full_name ?? "").trim(), team: tk.area, open: Number(r.open_cases ?? 0),
     busy: r.busy_reason ?? null, reason: spokenReason(String(r.reason ?? ""), tk), continuity: r.continuity ?? null,
@@ -378,6 +382,7 @@ export async function assignmentCandidates(tx: Tx, tk: TicketInfo): Promise<{ ra
 
 /** Can this person approve delays beyond 48 h (administration or authorised management)? */
 export async function canApproveDelay(tx: Tx): Promise<boolean> {
+  if (Demo.isDemoTx(tx)) return false;
   const [r] = await tx`select public.can_approve_ticket_delay() as ok`;
   return Boolean((r as Row | undefined)?.ok);
 }
@@ -385,14 +390,17 @@ export async function canApproveDelay(tx: Tx): Promise<boolean> {
 // ── Writes: the same RPCs Orion web uses, as the person (RLS and the RPC checks decide) ──
 /** A case-log movement (avance, llamada, visita, pieza, escalamiento, nota, diagnóstico), first response, closure or delay approval. */
 export async function registerMovement(tx: Tx, m: { ticketId: string; action: string; detail: string; state?: string | null; reason?: string | null }) {
+  if (Demo.isDemoTx(tx)) return; // the reviewer's demo: accepted, not saved
   // Voice never makes an entry visible to the client: that stays a deliberate choice in Orion web.
   await tx`select public.register_ticket_movement(${m.ticketId}::uuid, ${m.action}, ${m.detail.slice(0, 3900)}, ${m.state ?? null}, false, ${m.reason ?? null})`;
 }
 export async function assignTicket(tx: Tx, ticketId: string, personId: string) {
+  if (Demo.isDemoTx(tx)) return;
   await tx`select public.assign_support_ticket(${ticketId}::uuid, ${personId}::uuid)`;
 }
 /** Moves a case to the other support area: the subject tag Orion reads the area from, plus a note in the case log. */
 export async function changeTicketArea(tx: Tx, ticketId: string, to: "quimica" | "ingenieria", note: string) {
+  if (Demo.isDemoTx(tx)) return;
   const tag = to === "quimica" ? "[Soporte Químico]" : "[Soporte Ingeniero]";
   await tx`
     update public.tickets
@@ -402,6 +410,7 @@ export async function changeTicketArea(tx: Tx, ticketId: string, to: "quimica" |
 }
 /** Opens a support case exactly like Orion web's form; returns the case number and who received it (auto-routing). */
 export async function createTicket(tx: Tx, userId: string, c: { subject: string; description: string; serial: string | null }) {
+  if (Demo.isDemoTx(tx)) return Demo.demoNewCase();
   // Like Orion web: the id is chosen here and the insert returns nothing, because RETURNING would be checked against
   // the read boundary (can_view_ticket) before the new row is visible to it.
   const id = crypto.randomUUID();
@@ -413,7 +422,7 @@ export const slaRank = (t: TicketInfo) => ({ breached: 0, critical: 1, warning: 
 
 /** Latest case-log lines (bitácora) of a ticket the person can see. */
 export async function ticketLog(tx: Tx, ticketId: string, limit = 5) {
-  const rows = await tx`
+  const rows = Demo.isDemoTx(tx) ? Demo.demoLogRows(ticketId, limit) : await tx`
     select b.tipo, b.detalle, b.estado_resultante::text as estado, b.creado_en, p.nombre_completo
     from public.ticket_bitacora b left join public.profiles p on p.id = b.creado_por
     where b.ticket_id = ${ticketId} order by b.creado_en desc limit ${limit}`;
@@ -463,7 +472,7 @@ function planMeta(description: string | null): Row {
 
 /** The person's planned services (lead or companion), open, with their dates. */
 export async function myPlanning(tx: Tx): Promise<PlanItem[]> {
-  const rows = (await tx`
+  const rows = (Demo.isDemoTx(tx) ? Demo.demoPlanRows() : await tx`
     select t.id, t.numero_caso, t.asunto, t.descripcion, t.estado::text as estado, t.numero_serie_equipo, t.creado_en
     from public.tickets t
     where t.estado <> 'cerrado' and position(${PLANNING_MARK} in coalesce(t.descripcion, '')) > 0
@@ -508,7 +517,7 @@ export async function fleet(tx: Tx): Promise<FleetSummary> {
   const [equipment, states, qc] = await Promise.all([
     activeEquipment(tx),
     equipmentStates(tx),
-    tx`select effective_equipment_serial as serial, test_name, max(occurred_at) as at
+    Demo.isDemoTx(tx) ? Promise.resolve(Demo.demoRejectedControls()) : tx`select effective_equipment_serial as serial, test_name, max(occurred_at) as at
        from public.ba400_bpl_events
        where bpl_stage = 'quality_control' and bpl_status = 'rejected' and occurred_at > now() - interval '24 hours'
        group by 1, 2 order by 3 desc limit 50`.catch(() => [] as Row[]),
@@ -530,6 +539,7 @@ export async function fleet(tx: Tx): Promise<FleetSummary> {
 
 // ── BPL: blanks, calibrations, controls ──────────────────────────────────────
 export async function bplRows(tx: Tx, serial: string, days = 30, limit = 600): Promise<Row[]> {
+  if (Demo.isDemoTx(tx)) return Demo.demoBplRows(normSerial(serial)).filter((r) => r.event_type !== "bpl_reaction_curve").slice(0, limit);
   return ((await tx`
     select * from public.ba400_bpl_events
     where event_type <> 'bpl_reaction_curve' and effective_equipment_serial = any(${serialCandidates(serial)})
@@ -577,7 +587,7 @@ export function bplStatus(serial: string, rows: Row[], test?: string | null): { 
 
 /** Latest reaction curve of a test (only screen-abs-v2 rows may be plotted), replicates deduplicated. */
 export async function reactionCurve(tx: Tx, serial: string, test?: string | null) {
-  const rows = (await tx`
+  const rows = (Demo.isDemoTx(tx) ? Demo.demoCurveRows(normSerial(serial), test) : await tx`
     select test_name, occurred_at, detected_at, sample_class, payload->'reaction_curve' as rc
     from public.ba400_bpl_events
     where event_type = 'bpl_reaction_curve' and effective_equipment_serial = any(${serialCandidates(serial)})
@@ -608,6 +618,8 @@ export async function reactionCurve(tx: Tx, serial: string, test?: string | null
 // ── DRI context (what "Aplicar todo lo detectado" loads on the web) ──────────
 let catalogCache: { at: number; catalog: unknown } | null = null;
 export async function driCatalog(tx: Tx): Promise<unknown> {
+  // The reviewer's demo uses the catalog bundled with the engine (einfo.bio IFU knowledge, no Biosystems data).
+  if (Demo.isDemoTx(tx)) return E.seedCatalog();
   if (catalogCache && Date.now() - catalogCache.at < 10 * 60_000) return catalogCache.catalog;
   const safe = (p: Promise<Row[]>) => p.catch(() => [] as Row[]);
   const [reagents, factors, links, catalogRows, aliasRows] = await Promise.all([
@@ -623,7 +635,8 @@ export async function driCatalog(tx: Tx): Promise<unknown> {
 }
 
 export async function monitoringContext(tx: Tx, serial: string, equipment: Equipment | null) {
-  const [states, alarms] = await Promise.all([
+  const demo = Demo.isDemoTx(tx) ? Demo.demoMonitoring(normSerial(serial)) : null;
+  const [states, alarms] = demo ? [demo.state ? [demo.state] : [], demo.errors] : await Promise.all([
     tx`select * from public.estado_errores_equipo_actual where upper(regexp_replace(numero_serie, '\\s', '', 'g')) = ${normSerial(serial)} order by updated_at desc limit 1`,
     tx`select id, numero_serie, modelo, codigo_error, descripcion_error, seccion_error, tipo_mensaje, detected_at, created_at, monitor_name, machine_name
        from public.monitoreo_errores_equipos where upper(regexp_replace(numero_serie, '\\s', '', 'g')) = ${normSerial(serial)}

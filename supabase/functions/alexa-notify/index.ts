@@ -7,6 +7,7 @@
 // reads them; "enterado" acknowledges. Critical alerts unacknowledged for 30 minutes are marked escalated for the
 // Orion web panel.
 import { asUser, svc as sql } from "../alexa/db.ts";
+import { DEMO_TX } from "../alexa/demo.ts";
 import * as D from "../alexa/data.ts";
 import { hypothesisCause } from "../alexa/voice.ts";
 import { duracion, sayTest, shortClient, shortSerial, spokenModel } from "../alexa/speech.ts";
@@ -34,8 +35,10 @@ function slaBucket(t: D.TicketInfo): string | null {
 }
 
 /** Everything worth telling one person right now (pure reads, as that person). */
-export async function alertsFor(user: { id: string; email: string | null; role: string }): Promise<AlertDraft[]> {
-  return await asUser({ id: user.id, email: user.email }, async (tx) => {
+export async function alertsFor(user: { id: string; email: string | null; role: string; demo?: boolean }): Promise<AlertDraft[]> {
+  // Amazon's reviewer gets the same alerts computed from the demo story (alexa/demo.ts), never from Orion.
+  const run = <T>(fn: (tx: any) => Promise<T>) => (user.demo ? fn(DEMO_TX) : asUser({ id: user.id, email: user.email }, fn));
+  return await run(async (tx) => {
     const out: AlertDraft[] = [];
     const [mine, plan, equipment] = await Promise.all([D.openTickets(tx, "mine"), D.myPlanning(tx), D.activeEquipment(tx)]);
     const byS = new Map(equipment.map((e) => [e.serial, e]));
@@ -164,16 +167,22 @@ const quiet = (h: number, from: number, to: number) => (from > to ? h >= from ||
 export async function runNotifier(opts: { send?: typeof ring; hour?: number } = {}) {
   const send = opts.send ?? ring;
   const links = (await sql`
-    select l.alexa_user_id, l.user_id, l.quiet_from, l.quiet_to, l.last_notified_at, p.rol::text as rol, u.email
-    from public.alexa_links l join public.profiles p on p.id = l.user_id join auth.users u on u.id = l.user_id
-    where l.notify and p.rol in ('admin', 'tecnico')`) as Row[];
+    select l.alexa_user_id, l.user_id, l.quiet_from, l.quiet_to, l.last_notified_at, coalesce(p.rol::text, 'cliente') as rol, u.email,
+      (coalesce(p.rol::text, 'cliente') not in ('admin', 'tecnico') and exists(select 1 from public.alexa_reviewers r where r.email = lower(u.email))) as reviewer
+    from public.alexa_links l left join public.profiles p on p.id = l.user_id join auth.users u on u.id = l.user_id
+    where l.notify and (p.rol in ('admin', 'tecnico') or exists(select 1 from public.alexa_reviewers r where r.email = lower(u.email)))`) as Row[];
   const byUser = new Map<string, Row[]>();
   for (const l of links) byUser.set(l.user_id, [...(byUser.get(l.user_id) ?? []), l]);
   const hour = opts.hour ?? localHour();
   const summary = { users: byUser.size, fresh: 0, rung: 0, errors: 0 };
   for (const [userId, devices] of byUser) {
     try {
-      const drafts = [...(await alertsFor({ id: userId, email: devices[0]!.email, role: devices[0]!.rol })), ...(await followUps(userId))];
+      const demo = Boolean(devices[0]!.reviewer);
+      // The reviewer's demo alerts repeat once a day, so a later review session still gets a notification to check.
+      const day = new Date().toLocaleDateString("en-CA", { timeZone: TZ });
+      const drafts = demo
+        ? (await alertsFor({ id: userId, email: devices[0]!.email, role: "tecnico", demo })).map((d) => ({ ...d, dedupe: `demo:${day}:${d.dedupe}`, ticketId: null }))
+        : [...(await alertsFor({ id: userId, email: devices[0]!.email, role: devices[0]!.rol })), ...(await followUps(userId))];
       const s = await store(userId, drafts);
       summary.fresh += s.fresh;
       if (!s.fresh) continue;

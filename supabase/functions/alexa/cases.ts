@@ -246,7 +246,7 @@ export async function historialEquipo(t: Turn): Promise<Reply> {
   const line = (x: D.TicketInfo) => `${cuando(x.createdAt, false)}, «${esc(x.subject.slice(0, 70))}»: ${x.status === "cerrado" ? `cerrado${x.closureReason ? ` como ${REASON_SPOKEN[x.closureReason] ?? x.closureReason}` : ""}` : H.STATUS_TICKET[x.status] ?? x.status}`;
   const intro = `${cap(H.equipName(e))} tiene ${list.length === 1 ? "un caso" : `${list.length} casos`} en su historial${open.length ? `, ${open.length === 1 ? "uno abierto" : `${open.length} abiertos`}` : ", ninguno abierto"}.`;
   return {
-    text: `${intro} ${list.slice(0, 3).map((x, i) => (i ? line(x) : cap(line(x)))).join('. <break time="300ms"/> ')}. ${anyMore()}`,
+    text: `${intro} ${list.slice(0, 3).map((x) => cap(line(x))).join('. <break time="300ms"/> ')}. ${anyMore()}`,
     ctx: { ...t.ctx, serial: e.serial, ticketIds: open.map((x) => x.id).slice(0, 10), ticketId: open.length === 1 ? open[0]!.id : undefined },
     visual: { layout: "list", kicker: "Historial de casos", title: H.screenName(e), subtitle: intro.replace(/<[^>]+>/g, ""), offset: 0, rest: Math.max(0, list.length - 4), items: list.slice(0, 4).map((x): VRow => ({ text: `${x.createdAt.slice(0, 10)} · ${x.subject.slice(0, 60)} · ${x.status === "cerrado" ? "cerrado" : H.STATUS_TICKET[x.status] ?? x.status}`, tone: x.status === "cerrado" ? "mute" : "hud" })) },
   };
@@ -504,16 +504,30 @@ export async function answerWrite(t: Turn, answer: "si" | "no" | "borrador" | "c
   return execute(t, pw, cleared);
 }
 
+/** Drafts wait in Orion web's Alexa tab; the reviewer's demo account keeps nothing. */
+const saveAction = (t: Turn, kind: "ticket" | "refaccion" | "bitacora", summary: string, payload: Record<string, unknown>) =>
+  t.viewer.demo ? Promise.resolve(null) : S.createAction(t.viewer.id, kind, summary, payload);
+const DEMO_NOT_SAVED = "En esta cuenta de demostración no se guarda.";
+/** What a confirmed write would have done, for the reviewer's demo account (nothing is saved or sent). */
+function demoDone(pw: PendingWrite): string {
+  const would =
+    pw.kind === "cierre" ? `el caso quedaría cerrado como ${REASON_SPOKEN[pw.motivo!]}${pw.phone ? ", y el cliente recibiría el WhatsApp de cierre y la encuesta de satisfacción" : ""}`
+      : pw.kind === "respuesta" && pw.whatsapp ? `quedaría registrada la primera respuesta${pw.phone ? ", y el cliente recibiría el WhatsApp de confirmación" : ""}`
+        : pw.kind === "justificacion" ? "quedaría aprobada la demora con tu justificación"
+          : `quedaría en la bitácora del caso${pw.estado ? `, y el caso pasaría a ${STATE_SPOKEN[pw.estado]}` : ""}`;
+  return `Listo. Como es una cuenta de demostración, no se guardó ni se envió nada; con una cuenta de Orion, ${would}.`;
+}
+
 async function saveDraft(t: Turn, pw: PendingWrite, ctx: Ctx): Promise<Reply> {
-  const where = "Puedes revisarlo y aprobarlo en Orion web, en la pestaña Alexa.";
+  const where = t.viewer.demo ? "Como es una cuenta de demostración, no se guardó; con una cuenta de Orion lo revisarías en la pestaña Alexa." : "Puedes revisarlo y aprobarlo en Orion web, en la pestaña Alexa.";
   if (pw.kind === "asignacion") return { text: "Las asignaciones no se guardan como borrador. Di «sí» para asignarlo o «no» para dejarlo.", ctx: t.ctx };
   if (pw.kind === "ticket") {
     const tkt = pw.ticket!;
-    await S.createAction(t.viewer.id, "ticket", `Ticket ${tkt.area === "quimica" ? "químico" : "de ingeniería"} · ${pw.screen} · ${tkt.motivo}`, { serial: tkt.serial, area: tkt.area, motivo: tkt.motivo, descripcion: tkt.descripcion });
+    await saveAction(t, "ticket", `Ticket ${tkt.area === "quimica" ? "químico" : "de ingeniería"} · ${pw.screen} · ${tkt.motivo}`, { serial: tkt.serial, area: tkt.area, motivo: tkt.motivo, descripcion: tkt.descripcion });
     return { text: `Listo, dejé el caso como borrador. ${where} ${anyMore()}`, ctx };
   }
   const what = pw.kind === "cierre" ? `Cierre (${REASON_SPOKEN[pw.motivo!]})` : pw.kind === "respuesta" ? "Respuesta al cliente" : pw.kind === "justificacion" ? "Demora aprobada" : `${cap(LOG_TYPE[pw.tipo!] ?? "movimiento")}${pw.estado ? ` → ${STATE_SPOKEN[pw.estado]}` : ""}`;
-  await S.createAction(t.viewer.id, "bitacora", `${what} · ${pw.screen}`, {
+  await saveAction(t, "bitacora", `${what} · ${pw.screen}`, {
     ticketId: pw.ticketId, tipo: pw.tipo ?? "avance", detalle: `${pw.detalle ?? `Cambio de estado a ${STATE_SPOKEN[pw.estado ?? ""] ?? pw.estado}.`}${VIA_VOICE}`, estado: pw.estado ?? null, motivo: pw.motivo ?? null,
   });
   return { text: `Listo, lo dejé como borrador. ${where} ${anyMore()}`, ctx };
@@ -535,7 +549,7 @@ async function execute(t: Turn, pw: PendingWrite, ctx: Ctx): Promise<Reply> {
       const out = await t.run((tx) => D.createTicket(tx, t.viewer.id, { subject: `[Soporte ${tkt.area === "quimica" ? "Químico" : "Ingeniero"}] ${tkt.motivo}`, description: tkt.descripcion, serial: tkt.serial }));
       const folio = out.folio ? ` con el número <say-as interpret-as="characters">${esc(out.folio)}</say-as>` : "";
       const to = out.receiver ? ` Quedó asignado a ${esc(out.receiver.split(/\s+/).slice(0, 2).join(" "))}.` : "";
-      return { text: `Listo, abrí el caso${folio}.${to} ¿Quieres agregarle un avance?`, ctx: { ...ctx, ticketId: out.id, ticketIds: [out.id], offer: { intent: "DictarIntent" } }, visual: { layout: "message", kicker: "Caso nuevo", title: out.folio ? `Caso ${out.folio}` : "Caso creado", body: `${pw.screen} · ${tkt.motivo}${out.receiver ? `\nAsignado a ${out.receiver}` : ""}` } };
+      return { text: `Listo, abrí el caso${folio}.${to}${t.viewer.demo ? ` ${DEMO_NOT_SAVED}` : ""} ¿Quieres agregarle un avance?`, ctx: { ...ctx, ticketId: out.id, ticketIds: [out.id], offer: { intent: "DictarIntent" } }, visual: { layout: "message", kicker: "Caso nuevo", title: out.folio ? `Caso ${out.folio}` : "Caso creado", body: `${pw.screen} · ${tkt.motivo}${out.receiver ? `\nAsignado a ${out.receiver}` : ""}` } };
     }
     if (pw.kind === "asignacion") {
       const who = pw.persona!.id === t.viewer.id ? "ti" : esc(pw.persona!.name);
@@ -546,7 +560,7 @@ async function execute(t: Turn, pw: PendingWrite, ctx: Ctx): Promise<Reply> {
         }
         await D.assignTicket(tx, pw.ticketId!, pw.persona!.id);
       });
-      const done = `Listo, ${pw.label} quedó asignado a ${who}${pw.areaChange ? ` y su atención pasó a ${AREA_CASE[pw.areaChange.to]}` : ""}.`;
+      const done = `Listo, ${pw.label} quedó asignado a ${who}${pw.areaChange ? ` y su atención pasó a ${AREA_CASE[pw.areaChange.to]}` : ""}.${t.viewer.demo ? ` ${DEMO_NOT_SAVED}` : ""}`;
       return ctx.assignQueue ? nextToAssign(t, ctx, done) : { text: `${done} ${anyMore()}`, ctx };
     }
     const detail = pw.detalle ? `${pw.detalle}${VIA_VOICE}` : `Cambio de estado a ${STATE_SPOKEN[pw.estado ?? ""] ?? pw.estado}${VIA_VOICE}.`;
@@ -557,7 +571,9 @@ async function execute(t: Turn, pw: PendingWrite, ctx: Ctx): Promise<Reply> {
           : pw.kind === "justificacion" ? "Listo, quedó aprobada la demora con tu justificación."
             : !pw.detalle && pw.estado ? `Listo, ${pw.label} quedó ${STATE_SPOKEN[pw.estado]}.`
               : `Listo, guardé ${MOVE_SAVED[pw.tipo!] ?? "el movimiento"} en la bitácora${pw.estado ? ` y el caso quedó ${STATE_SPOKEN[pw.estado]}` : ""}.`;
-    return { text: `${done} ${anyMore()}`, ctx: { ...ctx, ticketId: pw.ticketId } };
+    // The reviewer's demo saves and sends nothing: say what Orion would do instead of claiming it was done.
+    const said = t.viewer.demo ? demoDone(pw) : done;
+    return { text: `${said} ${anyMore()}`, ctx: { ...ctx, ticketId: pw.ticketId } };
   } catch (e) {
     console.warn("case write failed", pw.kind, friendly(e));
     return { text: `No pude guardarlo: ${esc(friendly(e))}. Si quieres, di «borrador» para dejarlo en Orion web.`, ctx: { ...ctx, pendingWrite: { ...pw, step: "confirm", whatsapp: false } } };
@@ -574,8 +590,8 @@ export async function refaccion(t: Turn): Promise<Reply> {
   const name = m ? pieza.split(/\s+/).slice(1).join(" ") : pieza;
   const all = t.ctx.serial ? await t.run((tx) => D.activeEquipment(tx)) : [];
   const e = all.find((x) => x.serial === t.ctx.serial);
-  await S.createAction(t.viewer.id, "refaccion", `${qty} × ${name}${e ? ` · ${H.plainName(e)}` : ""}`, { pieza: name, cantidad: qty, serial: t.ctx.serial ?? null, modelo: e?.model ?? null, cliente: e?.client ?? null, ticketId: t.ctx.ticketId ?? null });
-  return { text: `Dejé como borrador la solicitud de ${qty === 1 ? "una pieza:" : `${qty}`} ${esc(name)}${e ? `, para ${H.equipName(e, false)}` : ""}. Confírmala en Orion, en la sección Alexa. ${anyMore()}`, ctx: t.ctx };
+  await saveAction(t, "refaccion", `${qty} × ${name}${e ? ` · ${H.plainName(e)}` : ""}`, { pieza: name, cantidad: qty, serial: t.ctx.serial ?? null, modelo: e?.model ?? null, cliente: e?.client ?? null, ticketId: t.ctx.ticketId ?? null });
+  return { text: `Dejé como borrador la solicitud de ${qty === 1 ? "una pieza:" : `${qty}`} ${esc(name)}${e ? `, para ${H.equipName(e, false)}` : ""}. ${t.viewer.demo ? DEMO_NOT_SAVED : "Confírmala en Orion, en la sección Alexa."} ${anyMore()}`, ctx: t.ctx };
 }
 
 // ── Dictation (several «anota …» lines → one movement) ───────────────────────

@@ -72,7 +72,8 @@ export interface Reply {
   ctx: Ctx;
   end?: boolean;
   reprompt?: string;
-  card?: { title: string; text: string };
+  /** A Simple card, or the Alexa app's permission card (AskForPermissionsConsent) for the given scopes. */
+  card?: { title: string; text: string } | { permissions: string[] };
   visual?: Visual;
   directives?: unknown[];
   /** No Echo Show screen for this reply (the opening, so Alexa+'s own announcement is never cut). */
@@ -112,7 +113,7 @@ export function build(r: Reply, apl: boolean, fallbackVisual: (text: string) => 
     response: {
       outputSpeech: { type: "SSML", ssml: `<speak>${r.text}</speak>` },
       ...(r.end ? {} : { reprompt: { outputSpeech: { type: "SSML", ssml: `<speak>${brandSpeech(r.reprompt ?? "¿Algo más?")}</speak>` } } }),
-      ...(r.card ? { card: { type: "Simple", title: r.card.title, content: r.card.text } } : {}),
+      ...(r.card ? { card: "permissions" in r.card ? { type: "AskForPermissionsConsent", permissions: r.card.permissions } : { type: "Simple", title: r.card.title, content: r.card.text } } : {}),
       ...(directives.length ? { directives: directives as Array<{ type?: string }> } : {}),
       shouldEndSession: !!r.end,
     },

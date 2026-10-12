@@ -15,6 +15,8 @@ export interface Viewer {
   email: string | null;
   name: string;
   role: "admin" | "tecnico" | "cliente";
+  /** Amazon's certification reviewer (public.alexa_reviewers): demo data only (demo.ts), nothing is saved. */
+  demo?: boolean;
 }
 export interface Turn {
   body: any;
@@ -632,7 +634,8 @@ async function runDiagnosis(t: Turn, e: D.Equipment, failed: string[], correct: 
     return elicit({ ...t.ctx, serial: e.serial, diag: { ...diag, asked: "failed" } }, "DiagnosticoIntent", "pa", `${fromSources ? "En los controles del equipo no veo pruebas rechazadas." : ""} ¿Qué pruebas te están saliendo fuera de control?`.trim(), { serie: e.serial });
   }
   const r = d.result!;
-  const caseId = await S.saveVoiceCase(t.viewer.id, { serial: e.serial, model: e.model, failed: d.failed, correct: d.correct, sources: d.applied, result: r, existingId: t.ctx.diag?.serial === e.serial ? t.ctx.diag.caseId : undefined }).catch(() => undefined);
+  // The reviewer's demo diagnosis is not kept (administrators review voice diagnoses in Orion web).
+  const caseId = t.viewer.demo ? undefined : await S.saveVoiceCase(t.viewer.id, { serial: e.serial, model: e.model, failed: d.failed, correct: d.correct, sources: d.applied, result: r, existingId: t.ctx.diag?.serial === e.serial ? t.ctx.diag.caseId : undefined }).catch(() => undefined);
   const askCorrect = !d.correct.length && !t.ctx.diag?.asked;
   const text = `${diagnosisSpeech(e, d)} ${askCorrect ? "Si me dices qué pruebas salen bien, puedo afinar el diagnóstico." : "¿Quieres que te guíe para verificarlo?"}`;
   const top = r.hypotheses.slice(0, 4).map((h) => ({ key: h.key, title: h.title, score: h.score }));
@@ -765,9 +768,9 @@ export function pasoMover(t: Turn, delta: number): Reply {
 
 // ── Case outcome (learning loop) ─────────────────────────────────────────────
 export async function resultadoCaso(t: Turn, outcome: "resuelto" | "no_resuelto" | "parcial", note?: string): Promise<Reply> {
-  const caseRow = t.ctx.diag?.caseId ? { id: t.ctx.diag.caseId } : await S.latestOpenCase(t.viewer.id);
+  const caseRow = t.viewer.demo ? (t.ctx.diag ? { id: "" } : null) : t.ctx.diag?.caseId ? { id: t.ctx.diag.caseId } : await S.latestOpenCase(t.viewer.id);
   if (!caseRow) return { text: "No tengo un diagnóstico de voz pendiente de resultado. ¿Qué más revisamos?", ctx: t.ctx };
-  await S.setOutcome(caseRow.id, outcome, note ?? null, t.ctx.proc?.hypKey ?? t.ctx.diag?.top?.[0]?.key ?? null);
+  if (caseRow.id) await S.setOutcome(caseRow.id, outcome, note ?? null, t.ctx.proc?.hypKey ?? t.ctx.diag?.top?.[0]?.key ?? null);
   const text = outcome === "resuelto"
     ? `Excelente, lo registro como resuelto${note ? `: ${esc(note)}` : ""}. Con esto el DRI aprende para el siguiente caso. ¿Quieres dictar una nota para el caso?`
     : outcome === "parcial"
@@ -789,9 +792,15 @@ export async function acuse(t: Turn): Promise<Reply> {
   const n = await S.ackAll(t.viewer.id);
   return { text: n ? `Listo, ${n === 1 ? "aviso confirmado" : `${n} avisos confirmados`}. ${anyMore()}` : "No había avisos por confirmar.", ctx: { ...t.ctx, offer: undefined } };
 }
+export const NOTIFY_SCOPE = "alexa::devices:all:notifications:write";
 export async function avisosConfig(t: Turn, on: boolean): Promise<Reply> {
   await S.setNotify(t.alexaUser, on);
-  return { text: on ? "Avisos activados: te aviso en silencio de alarmas fatales, controles rechazados y casos por vencer, fuera de tu horario de descanso. Recuerda permitir las notificaciones de Orion en la app de Alexa." : "Avisos desactivados para este dispositivo.", ctx: t.ctx };
+  // Until the person allows Orion's notifications, the Alexa app shows a card that asks for that permission.
+  const granted = t.body?.context?.System?.user?.permissions?.scopes?.[NOTIFY_SCOPE]?.status === "GRANTED";
+  if (on && !granted) {
+    return { text: "Avisos activados: te aviso en silencio de alarmas fatales, controles rechazados y casos por vencer, fuera de tu horario de descanso. Te dejé una tarjeta en la app de Alexa para que permitas las notificaciones de Orion.", ctx: t.ctx, card: { permissions: [NOTIFY_SCOPE] } };
+  }
+  return { text: on ? "Avisos activados: te aviso en silencio de alarmas fatales, controles rechazados y casos por vencer, fuera de tu horario de descanso." : "Avisos desactivados para este dispositivo.", ctx: t.ctx };
 }
 
 // ── Free-form questions (Claude + Orion tools) ───────────────────────────────

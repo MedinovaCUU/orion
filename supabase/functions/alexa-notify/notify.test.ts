@@ -7,6 +7,26 @@ Deno.env.set("SUPABASE_DB_URL", DB_URL);
 const { runNotifier } = await import("./index.ts");
 const { sql } = await import("../alexa/db.ts");
 
+Deno.test("notifier: Amazon's reviewer gets the demo story's alerts once a day, never Orion's", async () => {
+  await seed();
+  const reviewer = { id: "a0000000-0000-4000-8000-0000000000ff", email: "revision.alexa@biosystems.com.mx", device: "amzn1.ask.account.TEST-REVISOR" };
+  await sql`insert into auth.users (id, email, aud, role, instance_id) values (${reviewer.id}, ${reviewer.email}, 'authenticated', 'authenticated', '00000000-0000-0000-0000-000000000000') on conflict (id) do nothing`;
+  await sql`insert into public.profiles (id, nombre_completo, rol) values (${reviewer.id}, 'Revisión Alexa', 'cliente') on conflict (id) do update set rol = 'cliente'`;
+  await sql`insert into public.alexa_reviewers (email) values (${reviewer.email}) on conflict do nothing`;
+  await sql`delete from public.alexa_alerts`;
+  await sql`insert into public.alexa_links (alexa_user_id, user_id, notify) values (${reviewer.device}, ${reviewer.id}, true)`;
+  const rung: string[] = [];
+  await runNotifier({ send: async (device) => (rung.push(device), true), hour: 11 });
+  const alerts = (await sql`select dedupe_key, speech, ticket_id from public.alexa_alerts where user_id = ${reviewer.id}`) as Array<{ dedupe_key: string; speech: string; ticket_id: string | null }>;
+  const day = new Date().toLocaleDateString("en-CA", { timeZone: "America/Mexico_City" });
+  assert(alerts.length >= 2, JSON.stringify(alerts));
+  assert(alerts.every((a) => a.dedupe_key.startsWith(`demo:${day}:`) && a.ticket_id === null), JSON.stringify(alerts));
+  assert(alerts.some((a) => /Hospital Demo Centro|demo centro/i.test(a.speech)), JSON.stringify(alerts));
+  assert(alerts.every((a) => !/Falcon Monterrey|Angeles|falcon monterrey|angeles/i.test(a.speech)), JSON.stringify(alerts));
+  assert(rung.includes(reviewer.device));
+  await sql`delete from public.alexa_links where user_id = ${reviewer.id}`;
+});
+
 Deno.test("notifier: SLA thresholds, fatal alarm on my equipment, follow-up, dedupe, quiet hours", async () => {
   await seed();
   await sql`delete from public.alexa_alerts`;

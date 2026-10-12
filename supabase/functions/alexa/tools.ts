@@ -144,7 +144,7 @@ export function buildTools(t: Turn): AgentTool[] {
       run: async (i) => {
         const e = await resolveSerial(t, str(i.equipment));
         const area = i.area === "quimica" ? "quimica" : "ingenieria";
-        const id = await S.createAction(t.viewer.id, "ticket", `Ticket ${area} · ${e.serial} · ${String(i.reason)}`, { serial: e.serial, area, motivo: String(i.reason), cliente: e.client, descripcion: `${String(i.reason)}\nCanal: Alexa (Orion)${e.client ? `\nCliente/Institución: ${e.client}` : ""}${e.city ? `\nLocalidad: ${e.city}` : ""}` });
+        const id = t.viewer.demo ? null : await S.createAction(t.viewer.id, "ticket", `Ticket ${area} · ${e.serial} · ${String(i.reason)}`, { serial: e.serial, area, motivo: String(i.reason), cliente: e.client, descripcion: `${String(i.reason)}\nCanal: Alexa (Orion)${e.client ? `\nCliente/Institución: ${e.client}` : ""}${e.city ? `\nLocalidad: ${e.city}` : ""}` });
         return { draftId: id, status: "pendiente de confirmar en Orion web (sección Alexa)" };
       },
     },
@@ -154,7 +154,7 @@ export function buildTools(t: Turn): AgentTool[] {
       input_schema: obj({ part: { type: "string" }, quantity: { type: "integer", minimum: 1, maximum: 50 }, equipment: S_SERIAL }, ["part"]),
       run: async (i) => {
         const e = str(i.equipment) ? await resolveSerial(t, str(i.equipment)) : null;
-        const id = await S.createAction(t.viewer.id, "refaccion", `${Number(i.quantity ?? 1)} × ${String(i.part)}${e ? ` · ${e.serial}` : ""}`, { pieza: String(i.part), cantidad: Number(i.quantity ?? 1), serial: e?.serial ?? null, modelo: e?.model ?? null, cliente: e?.client ?? null });
+        const id = t.viewer.demo ? null : await S.createAction(t.viewer.id, "refaccion", `${Number(i.quantity ?? 1)} × ${String(i.part)}${e ? ` · ${e.serial}` : ""}`, { pieza: String(i.part), cantidad: Number(i.quantity ?? 1), serial: e?.serial ?? null, modelo: e?.model ?? null, cliente: e?.client ?? null });
         return { draftId: id, status: "pendiente de confirmar en Orion web (sección Alexa)" };
       },
     },

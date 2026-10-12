@@ -171,6 +171,8 @@ export default function Dashboard({ session, initialTab }: DashboardProps) {
   const [activeTab, setActiveTab] = useState<DashboardTabKey>(initialTab ?? DEFAULT_DASHBOARD_TAB);
   const [authReady, setAuthReady] = useState(false);
   const [userRole, setUserRole] = useState<string | null>(null);
+  // Amazon's certification account for the Alexa skill (public.alexa_reviewers): it only links a device.
+  const [isAlexaReviewer, setIsAlexaReviewer] = useState(false);
   const [advisoryUnreadCount, setAdvisoryUnreadCount] = useState(0);
   const [credentialOpen, setCredentialOpen] = useState(false);
   const [isActionMenuOpen, setIsActionMenuOpen] = useState(false);
@@ -192,7 +194,7 @@ export default function Dashboard({ session, initialTab }: DashboardProps) {
     DASHBOARD_TAB_KEYS.includes(module as DashboardTabKey),
   ) as DashboardTabKey[];
   // Alexa is personal (device link, own drafts), so every staff member gets it; RLS bounds what it shows.
-  const allowedTabs: DashboardTabKey[] = [
+  const allowedTabs: DashboardTabKey[] = isAlexaReviewer ? ['alexa'] : [
     ...new Set([
       ...baseAllowedTabs,
       ...(isStaffRole(userRole) ? (['alexa'] as DashboardTabKey[]) : []),
@@ -279,11 +281,22 @@ export default function Dashboard({ session, initialTab }: DashboardProps) {
     }
 
     async function fetchRoleAndUnread() {
-      const [{ data, error }, { data: permissionData, error: permissionError }] = await Promise.all([
+      const [{ data, error }, { data: permissionData, error: permissionError }, { data: reviewerData }] = await Promise.all([
         supabase.from('profiles').select('id, nombre_completo, rol, telefono, territorio, employee_type, employee_number, puesto, credential_photo_path, credential_metadata, creado_en').eq('id', userId).maybeSingle(),
         supabase.from('user_module_permissions').select('modules, sub_permissions, can_receive_tickets, can_view_restricted_tutorials').eq('user_id', userId).maybeSingle(),
+        supabase.rpc('is_alexa_reviewer'),
       ]);
       if (!mounted) {
+        return;
+      }
+
+      if (reviewerData === true) {
+        setIsAlexaReviewer(true);
+        setViewerProfile(data as EmployeeCredentialProfile | null);
+        setUserRole(data?.rol ?? null);
+        setUserAccess({ ...DEFAULT_USER_ACCESS, modules: [] });
+        setAdvisoryUnreadCount(0);
+        setAuthReady(true);
         return;
       }
 
