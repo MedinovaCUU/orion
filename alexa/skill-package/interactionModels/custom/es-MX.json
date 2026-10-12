@@ -1,0 +1,3804 @@
+{
+  "interactionModel": {
+    "languageModel": {
+      "invocationName": "servicio orión",
+      "intents": [
+        {
+          "name": "AMAZON.CancelIntent",
+          "samples": [
+            "cancela",
+            "olvídalo"
+          ]
+        },
+        {
+          "name": "AMAZON.HelpIntent",
+          "samples": [
+            "qué puedes hacer",
+            "qué sabes hacer",
+            "cómo funciona",
+            "qué te puedo preguntar"
+          ]
+        },
+        {
+          "name": "AMAZON.StopIntent",
+          "samples": [
+            "adiós",
+            "ya es todo orion",
+            "gracias orion",
+            "sal"
+          ]
+        },
+        {
+          "name": "AMAZON.NavigateHomeIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.FallbackIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.YesIntent",
+          "samples": [
+            "sí",
+            "sí por favor",
+            "dale",
+            "claro",
+            "adelante",
+            "va",
+            "órale",
+            "sí salió",
+            "salió bien",
+            "sí salió bien",
+            "correcto"
+          ]
+        },
+        {
+          "name": "AMAZON.NoIntent",
+          "samples": [
+            "no",
+            "no gracias",
+            "no salió",
+            "salió mal",
+            "no salió bien",
+            "falló",
+            "ninguna"
+          ]
+        },
+        {
+          "name": "AMAZON.NextIntent",
+          "samples": [
+            "siguiente",
+            "siguiente paso",
+            "continúa",
+            "sigue",
+            "listo siguiente",
+            "ya"
+          ]
+        },
+        {
+          "name": "AMAZON.PreviousIntent",
+          "samples": [
+            "anterior",
+            "paso anterior",
+            "regresa"
+          ]
+        },
+        {
+          "name": "AMAZON.RepeatIntent",
+          "samples": [
+            "repite",
+            "repítelo",
+            "otra vez",
+            "no escuché"
+          ]
+        },
+        {
+          "name": "AMAZON.StartOverIntent",
+          "samples": [
+            "empieza de nuevo",
+            "desde el principio"
+          ]
+        },
+        {
+          "name": "ResumenIntent",
+          "samples": [
+            "cómo vamos",
+            "cómo va todo",
+            "dame el resumen",
+            "resumen",
+            "resumen del día",
+            "cómo está la flota",
+            "cómo están los equipos",
+            "estado de la flota",
+            "qué está pasando",
+            "qué es lo urgente",
+            "cómo está todo",
+            "dame el panorama",
+            "resumen ejecutivo"
+          ]
+        },
+        {
+          "name": "MiDiaIntent",
+          "slots": [
+            {
+              "name": "cuando",
+              "type": "AMAZON.DATE"
+            }
+          ],
+          "samples": [
+            "qué tengo hoy",
+            "qué tengo {cuando}",
+            "mi agenda",
+            "mi agenda de {cuando}",
+            "qué servicios tengo",
+            "qué servicios tengo {cuando}",
+            "mi día",
+            "cómo está mi día",
+            "qué hay en mi agenda",
+            "a dónde voy hoy",
+            "a dónde voy {cuando}",
+            "qué tengo planeado",
+            "qué tengo planeado {cuando}",
+            "mi semana"
+          ]
+        },
+        {
+          "name": "MisTicketsIntent",
+          "samples": [
+            "mis tickets",
+            "mis casos",
+            "mis reportes",
+            "qué tickets tengo",
+            "qué casos tengo",
+            "qué reportes tengo",
+            "cuáles son mis casos",
+            "cuáles son los reportes",
+            "mis casos abiertos",
+            "mis reportes abiertos",
+            "lee mis casos",
+            "léeme mis casos",
+            "léeme los reportes",
+            "qué casos tengo abiertos",
+            "tickets abiertos",
+            "casos abiertos",
+            "reportes abiertos",
+            "mis tickets abiertos",
+            "repíteme los casos",
+            "repíteme los reportes",
+            "repite los casos",
+            "repite los reportes",
+            "léeme otra vez los casos",
+            "dime los demás",
+            "dime los otros casos",
+            "cuáles son los demás",
+            "lista de reportes",
+            "qué otros casos hay"
+          ]
+        },
+        {
+          "name": "SlaIntent",
+          "samples": [
+            "qué casos están en riesgo",
+            "qué tickets están en riesgo",
+            "qué reportes están en riesgo",
+            "qué reportes están vencidos",
+            "reportes en riesgo",
+            "reportes vencidos",
+            "cuáles reportes se vencen",
+            "qué se vence",
+            "qué se vence hoy",
+            "qué casos se vencen",
+            "cómo va el SLA",
+            "cómo van los SLA",
+            "qué casos están por vencer",
+            "qué tickets están vencidos",
+            "casos vencidos",
+            "cuáles están en riesgo",
+            "casos en riesgo"
+          ]
+        },
+        {
+          "name": "TicketDetalleIntent",
+          "slots": [
+            {
+              "name": "ordinal",
+              "type": "ORDINAL"
+            },
+            {
+              "name": "serie",
+              "type": "AMAZON.NUMBER",
+              "samples": [
+                "{serie}",
+                "el {serie}",
+                "la {serie}",
+                "terminación {serie}",
+                "el que termina en {serie}",
+                "serie {serie}"
+              ]
+            },
+            {
+              "name": "equipo",
+              "type": "EQUIPO_REF",
+              "samples": [
+                "el de {equipo}",
+                "el equipo de {equipo}",
+                "{equipo}",
+                "el de la {equipo}"
+              ]
+            }
+          ],
+          "samples": [
+            "el {ordinal}",
+            "la {ordinal}",
+            "detalle del {ordinal}",
+            "abre el {ordinal}",
+            "dime el {ordinal}",
+            "el caso {ordinal}",
+            "el {ordinal} caso",
+            "el reporte {ordinal}",
+            "el {ordinal} reporte",
+            "el ticket del {serie}",
+            "cómo va el ticket del {serie}",
+            "cómo va el caso del {serie}",
+            "el caso del {serie}",
+            "el reporte del {serie}",
+            "cómo va el reporte del {serie}",
+            "cómo vamos con el reporte del {serie}",
+            "estatus del reporte del {serie}",
+            "cómo va el reporte de {equipo}",
+            "cómo va el caso de {equipo}",
+            "el reporte de {equipo}",
+            "el caso de {equipo}",
+            "detalle del caso",
+            "detalle del ticket",
+            "detalle del reporte",
+            "cómo va el reporte",
+            "cómo vamos con el reporte",
+            "cómo vamos con ese reporte",
+            "cómo va ese reporte",
+            "cómo va el caso",
+            "cómo vamos con el caso",
+            "cómo va ese caso",
+            "cómo va el ticket",
+            "cómo vamos con el ticket",
+            "y el reporte",
+            "y ese reporte",
+            "y ese caso",
+            "qué pasa con el reporte",
+            "qué pasó con el reporte",
+            "qué pasa con ese caso",
+            "qué pasa con ese reporte",
+            "estatus del reporte",
+            "estado del reporte",
+            "estatus del caso",
+            "estatus del ticket",
+            "dime del reporte",
+            "dime más del reporte",
+            "dime más de ese caso",
+            "el reporte que está en riesgo",
+            "el caso que está en riesgo",
+            "el reporte vencido",
+            "el caso vencido",
+            "cómo va el reporte vencido",
+            "quién tiene el reporte",
+            "quién tiene ese caso",
+            "a quién está asignado el reporte"
+          ]
+        },
+        {
+          "name": "CasosFiltroIntent",
+          "slots": [
+            {
+              "name": "condicion",
+              "type": "CASO_FILTRO"
+            },
+            {
+              "name": "filtro",
+              "type": "EQUIPO_REF"
+            }
+          ],
+          "samples": [
+            "casos {condicion}",
+            "reportes {condicion}",
+            "tickets {condicion}",
+            "qué casos están {condicion}",
+            "qué reportes están {condicion}",
+            "qué tickets están {condicion}",
+            "cuáles casos están {condicion}",
+            "casos que están {condicion}",
+            "qué casos hay {condicion}",
+            "mis casos {condicion}",
+            "mis reportes {condicion}",
+            "léeme los casos {condicion}",
+            "casos de {filtro}",
+            "reportes de {filtro}",
+            "tickets de {filtro}",
+            "qué casos tiene {filtro}",
+            "qué casos hay de {filtro}",
+            "qué reportes hay de {filtro}",
+            "casos en {filtro}",
+            "reportes en {filtro}",
+            "casos {condicion} de {filtro}",
+            "reportes {condicion} de {filtro}",
+            "qué casos {condicion} hay de {filtro}",
+            "casos que tiene {filtro}"
+          ]
+        },
+        {
+          "name": "ContarCasosIntent",
+          "slots": [
+            {
+              "name": "condicion",
+              "type": "CASO_FILTRO"
+            },
+            {
+              "name": "filtro",
+              "type": "EQUIPO_REF"
+            }
+          ],
+          "samples": [
+            "cuántos casos tengo",
+            "cuántos reportes tengo",
+            "cuántos tickets tengo",
+            "cuántos casos hay",
+            "cuántos reportes hay",
+            "cuántos casos abiertos hay",
+            "cuántos casos abiertos tengo",
+            "cuántos casos tengo {condicion}",
+            "cuántos casos {condicion} tengo",
+            "cuántos casos {condicion} hay",
+            "cuántos casos hay {condicion}",
+            "cuántos casos están {condicion}",
+            "cuántos reportes {condicion} hay",
+            "cuántos reportes tengo {condicion}",
+            "cuántos casos de {filtro} hay",
+            "cuántos casos tiene {filtro}",
+            "cuántos casos hay de {filtro}"
+          ]
+        },
+        {
+          "name": "CasoDescripcionIntent",
+          "slots": [
+            {
+              "name": "ordinal",
+              "type": "ORDINAL"
+            },
+            {
+              "name": "serie",
+              "type": "AMAZON.NUMBER",
+              "samples": [
+                "{serie}",
+                "el {serie}",
+                "la {serie}",
+                "terminación {serie}",
+                "el que termina en {serie}",
+                "serie {serie}"
+              ]
+            },
+            {
+              "name": "equipo",
+              "type": "EQUIPO_REF",
+              "samples": [
+                "el de {equipo}",
+                "el equipo de {equipo}",
+                "{equipo}",
+                "el de la {equipo}"
+              ]
+            }
+          ],
+          "samples": [
+            "de qué se trata el caso",
+            "de qué se trata el reporte",
+            "de qué se trata",
+            "qué reportó el cliente",
+            "qué dice el reporte",
+            "qué reportaron",
+            "cuál es la falla del caso",
+            "cuál es el problema del caso",
+            "qué falla reportaron",
+            "de qué se trata el caso del {serie}",
+            "qué reportó el cliente del {serie}",
+            "qué dice el reporte del {serie}",
+            "descripción del caso",
+            "léeme el reporte",
+            "léeme la descripción",
+            "de qué se trata el {ordinal}"
+          ]
+        },
+        {
+          "name": "CasoContactoIntent",
+          "slots": [
+            {
+              "name": "ordinal",
+              "type": "ORDINAL"
+            },
+            {
+              "name": "serie",
+              "type": "AMAZON.NUMBER",
+              "samples": [
+                "{serie}",
+                "el {serie}",
+                "la {serie}",
+                "terminación {serie}",
+                "el que termina en {serie}",
+                "serie {serie}"
+              ]
+            },
+            {
+              "name": "equipo",
+              "type": "EQUIPO_REF",
+              "samples": [
+                "el de {equipo}",
+                "el equipo de {equipo}",
+                "{equipo}",
+                "el de la {equipo}"
+              ]
+            }
+          ],
+          "samples": [
+            "quién reportó el caso",
+            "quién lo reportó",
+            "quién reportó",
+            "quién es el contacto",
+            "dame el contacto",
+            "contacto del cliente",
+            "teléfono del cliente",
+            "cuál es el teléfono del cliente",
+            "dame el teléfono",
+            "a quién le llamo",
+            "con quién hablo",
+            "correo del cliente",
+            "quién reportó el caso del {serie}",
+            "contacto del caso del {serie}",
+            "teléfono del cliente del {serie}"
+          ]
+        },
+        {
+          "name": "CasoBitacoraIntent",
+          "slots": [
+            {
+              "name": "ordinal",
+              "type": "ORDINAL"
+            },
+            {
+              "name": "serie",
+              "type": "AMAZON.NUMBER",
+              "samples": [
+                "{serie}",
+                "el {serie}",
+                "la {serie}",
+                "terminación {serie}",
+                "el que termina en {serie}",
+                "serie {serie}"
+              ]
+            },
+            {
+              "name": "equipo",
+              "type": "EQUIPO_REF",
+              "samples": [
+                "el de {equipo}",
+                "el equipo de {equipo}",
+                "{equipo}",
+                "el de la {equipo}"
+              ]
+            }
+          ],
+          "samples": [
+            "léeme la bitácora",
+            "qué dice la bitácora",
+            "bitácora del caso",
+            "qué se ha hecho en el caso",
+            "qué se ha hecho",
+            "historial del caso",
+            "qué movimientos tiene el caso",
+            "últimos movimientos",
+            "qué avances tiene",
+            "qué avances tiene el caso",
+            "bitácora del {serie}",
+            "qué se ha hecho en el caso del {serie}",
+            "qué avances tiene el caso del {serie}",
+            "léeme la bitácora del {ordinal}"
+          ]
+        },
+        {
+          "name": "HistorialEquipoIntent",
+          "slots": [
+            {
+              "name": "serie",
+              "type": "AMAZON.NUMBER",
+              "samples": [
+                "{serie}",
+                "el {serie}",
+                "la {serie}",
+                "terminación {serie}",
+                "el que termina en {serie}",
+                "serie {serie}"
+              ]
+            },
+            {
+              "name": "equipo",
+              "type": "EQUIPO_REF",
+              "samples": [
+                "el de {equipo}",
+                "el equipo de {equipo}",
+                "{equipo}",
+                "el de la {equipo}"
+              ]
+            }
+          ],
+          "samples": [
+            "historial del {serie}",
+            "historial de casos del {serie}",
+            "qué casos ha tenido el {serie}",
+            "casos anteriores del {serie}",
+            "historial del equipo {serie}",
+            "qué reportes ha tenido el {serie}",
+            "qué casos ha tenido el equipo de {equipo}",
+            "historial de {equipo}",
+            "historial de casos de {equipo}",
+            "qué fallas ha tenido el {serie}",
+            "historial del equipo",
+            "qué casos ha tenido este equipo",
+            "historial de casos"
+          ]
+        },
+        {
+          "name": "MisCierresIntent",
+          "slots": [
+            {
+              "name": "cuando",
+              "type": "AMAZON.DATE"
+            }
+          ],
+          "samples": [
+            "cuántos casos cerré",
+            "cuántos casos cerré {cuando}",
+            "cuántos casos he cerrado",
+            "cuántos reportes cerré",
+            "cuántos reportes cerré {cuando}",
+            "qué casos cerré",
+            "qué casos cerré {cuando}",
+            "mis cierres",
+            "mis cierres de {cuando}",
+            "cuántos casos se cerraron",
+            "cuántos casos se cerraron {cuando}",
+            "cuántos cierres llevo",
+            "cómo voy con los cierres"
+          ]
+        },
+        {
+          "name": "MisBorradoresIntent",
+          "samples": [
+            "qué borradores tengo",
+            "mis borradores",
+            "tengo borradores",
+            "qué tengo por aprobar",
+            "qué falta por aprobar",
+            "borradores pendientes",
+            "qué dejé en borrador"
+          ]
+        },
+        {
+          "name": "AvanceIntent",
+          "slots": [
+            {
+              "name": "texto",
+              "type": "AMAZON.SearchQuery"
+            }
+          ],
+          "samples": [
+            "agrega un avance {texto}",
+            "registra un avance {texto}",
+            "avance {texto}",
+            "agrega al caso {texto}",
+            "registra en el caso {texto}",
+            "agrega a la bitácora {texto}",
+            "registra en la bitácora {texto}",
+            "pon en la bitácora {texto}",
+            "agrega un avance",
+            "registra un avance",
+            "quiero agregar un avance",
+            "agrega un avance al caso"
+          ]
+        },
+        {
+          "name": "LlamadaIntent",
+          "slots": [
+            {
+              "name": "texto",
+              "type": "AMAZON.SearchQuery"
+            }
+          ],
+          "samples": [
+            "registra una llamada {texto}",
+            "agrega una llamada {texto}",
+            "llamé al cliente {texto}",
+            "hablé con el cliente {texto}",
+            "registra que llamé al cliente {texto}",
+            "registra que hablé con el cliente {texto}",
+            "registra una llamada",
+            "agrega una llamada"
+          ]
+        },
+        {
+          "name": "VisitaIntent",
+          "slots": [
+            {
+              "name": "texto",
+              "type": "AMAZON.SearchQuery"
+            }
+          ],
+          "samples": [
+            "registra una visita {texto}",
+            "agrega una visita {texto}",
+            "visité al cliente {texto}",
+            "fui con el cliente {texto}",
+            "registra que fui con el cliente {texto}",
+            "registra una visita",
+            "agrega una visita"
+          ]
+        },
+        {
+          "name": "DiagnosticoCasoIntent",
+          "slots": [
+            {
+              "name": "texto",
+              "type": "AMAZON.SearchQuery"
+            }
+          ],
+          "samples": [
+            "registra el diagnóstico {texto}",
+            "agrega un diagnóstico {texto}",
+            "el diagnóstico del caso es {texto}",
+            "registra un diagnóstico {texto}",
+            "registra el diagnóstico",
+            "agrega un diagnóstico al caso"
+          ]
+        },
+        {
+          "name": "PiezaCasoIntent",
+          "slots": [
+            {
+              "name": "texto",
+              "type": "AMAZON.SearchQuery"
+            }
+          ],
+          "samples": [
+            "registra una pieza {texto}",
+            "registra un cambio de pieza {texto}",
+            "cambié la pieza {texto}",
+            "agrega una pieza {texto}",
+            "registra la refacción {texto}",
+            "se instaló la refacción {texto}",
+            "registra una pieza",
+            "registra un cambio de pieza"
+          ]
+        },
+        {
+          "name": "EscalamientoIntent",
+          "slots": [
+            {
+              "name": "texto",
+              "type": "AMAZON.SearchQuery"
+            }
+          ],
+          "samples": [
+            "escala el caso {texto}",
+            "escala el reporte {texto}",
+            "registra un escalamiento {texto}",
+            "escalamiento {texto}",
+            "escálalo {texto}",
+            "escala el caso",
+            "registra un escalamiento"
+          ]
+        },
+        {
+          "name": "NotaInternaIntent",
+          "slots": [
+            {
+              "name": "texto",
+              "type": "AMAZON.SearchQuery"
+            }
+          ],
+          "samples": [
+            "agrega una nota interna {texto}",
+            "nota interna {texto}",
+            "registra una nota interna {texto}",
+            "deja una nota interna {texto}",
+            "agrega una nota interna",
+            "nota interna"
+          ]
+        },
+        {
+          "name": "EstadoCasoIntent",
+          "slots": [
+            {
+              "name": "estado",
+              "type": "ESTADO_CASO",
+              "samples": [
+                "{estado}",
+                "a {estado}",
+                "en {estado}",
+                "como {estado}"
+              ]
+            },
+            {
+              "name": "serie",
+              "type": "AMAZON.NUMBER",
+              "samples": [
+                "{serie}",
+                "el {serie}",
+                "la {serie}",
+                "terminación {serie}",
+                "el que termina en {serie}",
+                "serie {serie}"
+              ]
+            }
+          ],
+          "samples": [
+            "pasa el caso a {estado}",
+            "pásalo a {estado}",
+            "ponlo en {estado}",
+            "ponlo como {estado}",
+            "pon el caso en {estado}",
+            "pon el caso como {estado}",
+            "cambia el estado a {estado}",
+            "cambia el caso a {estado}",
+            "márcalo como {estado}",
+            "marca el caso como {estado}",
+            "déjalo en {estado}",
+            "pasa el reporte a {estado}",
+            "el caso está {estado}",
+            "el caso queda {estado}",
+            "pasa el caso del {serie} a {estado}"
+          ]
+        },
+        {
+          "name": "RespuestaClienteIntent",
+          "slots": [
+            {
+              "name": "texto",
+              "type": "AMAZON.SearchQuery"
+            }
+          ],
+          "samples": [
+            "registra la respuesta al cliente {texto}",
+            "respuesta al cliente {texto}",
+            "le respondí al cliente {texto}",
+            "ya le respondí al cliente {texto}",
+            "le contesté al cliente {texto}",
+            "registra que le respondí al cliente {texto}",
+            "primera respuesta {texto}",
+            "registra la primera respuesta {texto}",
+            "registra la respuesta al cliente",
+            "registra la primera respuesta",
+            "ya le respondí al cliente"
+          ]
+        },
+        {
+          "name": "CerrarCasoIntent",
+          "slots": [
+            {
+              "name": "razon",
+              "type": "MOTIVO_CIERRE",
+              "samples": [
+                "{razon}",
+                "como {razon}",
+                "quedó {razon}",
+                "por {razon}",
+                "ciérralo como {razon}"
+              ]
+            },
+            {
+              "name": "serie",
+              "type": "AMAZON.NUMBER",
+              "samples": [
+                "{serie}",
+                "el {serie}",
+                "la {serie}",
+                "terminación {serie}",
+                "el que termina en {serie}",
+                "serie {serie}"
+              ]
+            }
+          ],
+          "samples": [
+            "cierra el caso",
+            "cierra el reporte",
+            "cierra el ticket",
+            "cierra este caso",
+            "cierra ese caso",
+            "cierra el caso como {razon}",
+            "cierra el caso por {razon}",
+            "cierra el reporte como {razon}",
+            "ciérralo como {razon}",
+            "da por cerrado el caso",
+            "quiero cerrar el caso",
+            "cerrar el caso",
+            "cierra el caso del {serie}",
+            "cierra el caso del {serie} como {razon}",
+            "ciérralo"
+          ]
+        },
+        {
+          "name": "AsignarCasoIntent",
+          "slots": [
+            {
+              "name": "persona",
+              "type": "PERSONA",
+              "samples": [
+                "{persona}",
+                "a {persona}",
+                "asígnaselo a {persona}"
+              ]
+            },
+            {
+              "name": "serie",
+              "type": "AMAZON.NUMBER",
+              "samples": [
+                "{serie}",
+                "el {serie}",
+                "la {serie}",
+                "terminación {serie}",
+                "el que termina en {serie}",
+                "serie {serie}"
+              ]
+            },
+            {
+              "name": "ordinal",
+              "type": "ORDINAL"
+            }
+          ],
+          "samples": [
+            "{persona}",
+            "a {persona}",
+            "{persona} por favor",
+            "a {persona} por favor",
+            "que sea {persona}",
+            "con {persona}",
+            "se lo asignas a {persona}",
+            "asigna el {ordinal} a {persona}",
+            "asígnale el {ordinal} a {persona}",
+            "el {ordinal} asígnaselo a {persona}",
+            "dáselo a {persona}",
+            "mejor a {persona}",
+            "mejor asígnaselo a {persona}",
+            "asigna el caso a {persona}",
+            "asígnale el caso a {persona}",
+            "asígnaselo a {persona}",
+            "asígnalo a {persona}",
+            "pásale el caso a {persona}",
+            "reasigna el caso a {persona}",
+            "asigna el reporte a {persona}",
+            "que lo atienda {persona}",
+            "asigna el caso del {serie} a {persona}",
+            "asigna el caso",
+            "asigna el ticket a {persona}",
+            "asígnale el ticket a {persona}",
+            "pásale el ticket a {persona}",
+            "asígnale el reporte a {persona}",
+            "asigna el ticket del {serie} a {persona}",
+            "asigna el reporte del {serie} a {persona}",
+            "que lo vea {persona}",
+            "que se lo lleve {persona}",
+            "asígnale este caso a {persona}",
+            "que le asigne el caso a {persona}",
+            "le asigne el caso a {persona}"
+          ]
+        },
+        {
+          "name": "TomarCasoIntent",
+          "slots": [
+            {
+              "name": "ordinal",
+              "type": "ORDINAL"
+            },
+            {
+              "name": "serie",
+              "type": "AMAZON.NUMBER",
+              "samples": [
+                "{serie}",
+                "el {serie}",
+                "la {serie}",
+                "terminación {serie}",
+                "el que termina en {serie}",
+                "serie {serie}"
+              ]
+            },
+            {
+              "name": "equipo",
+              "type": "EQUIPO_REF",
+              "samples": [
+                "el de {equipo}",
+                "el equipo de {equipo}",
+                "{equipo}",
+                "el de la {equipo}"
+              ]
+            }
+          ],
+          "samples": [
+            "asígnamelo",
+            "asígnamelo a mí",
+            "me lo asigno",
+            "yo lo tomo",
+            "tomo el caso",
+            "asígname el caso",
+            "yo lo atiendo",
+            "asígname el reporte",
+            "asígname el ticket",
+            "asígname este caso",
+            "asígname ese caso",
+            "asígname este ticket",
+            "asígname ese ticket",
+            "asígname un ticket",
+            "asígname un caso",
+            "ponlo a mi nombre",
+            "pónmelo a mí",
+            "yo me encargo",
+            "yo me hago cargo",
+            "me lo quedo",
+            "quiero ese caso",
+            "tomo ese reporte",
+            "asígname el caso del {serie}",
+            "asígname el reporte del {serie}",
+            "asígname el ticket del {serie}",
+            "asígname el caso de {equipo}",
+            "asígname el {ordinal}",
+            "asígname el {ordinal} caso",
+            "que me asigne el caso",
+            "que me asigne el ticket",
+            "que me asigne el reporte",
+            "me asigne el caso",
+            "me asigne el ticket",
+            "me asigne el caso del {serie}"
+          ]
+        },
+        {
+          "name": "JustificarDemoraIntent",
+          "slots": [
+            {
+              "name": "texto",
+              "type": "AMAZON.SearchQuery"
+            }
+          ],
+          "samples": [
+            "aprueba la demora {texto}",
+            "justifica la demora {texto}",
+            "aprueba el retraso {texto}",
+            "la demora fue por {texto}",
+            "justificación de la demora {texto}",
+            "aprueba la demora",
+            "justifica la demora"
+          ]
+        },
+        {
+          "name": "DetalleIntent",
+          "slots": [
+            {
+              "name": "texto",
+              "type": "AMAZON.SearchQuery"
+            }
+          ],
+          "samples": [
+            "detalle {texto}",
+            "el detalle es {texto}",
+            "solución {texto}",
+            "lo que se hizo fue {texto}",
+            "se hizo {texto}",
+            "se cerró porque {texto}",
+            "le dije {texto}",
+            "le expliqué {texto}",
+            "la justificación es {texto}"
+          ]
+        },
+        {
+          "name": "BorradorIntent",
+          "samples": [
+            "borrador",
+            "guárdalo como borrador",
+            "déjalo como borrador",
+            "como borrador",
+            "en borrador",
+            "mejor como borrador",
+            "déjalo en borrador",
+            "guárdalo en borradores",
+            "mándalo a borrador"
+          ]
+        },
+        {
+          "name": "ConfirmoIntent",
+          "samples": [
+            "confirmo",
+            "sí confirmo",
+            "lo confirmo",
+            "confirmo el cierre",
+            "confirmo el envío",
+            "confírmalo",
+            "envíalo",
+            "confirmado"
+          ]
+        },
+        {
+          "name": "EquipoIntent",
+          "slots": [
+            {
+              "name": "serie",
+              "type": "AMAZON.NUMBER",
+              "samples": [
+                "{serie}",
+                "el {serie}",
+                "la {serie}",
+                "terminación {serie}",
+                "el que termina en {serie}",
+                "serie {serie}"
+              ]
+            },
+            {
+              "name": "equipo",
+              "type": "EQUIPO_REF",
+              "samples": [
+                "el de {equipo}",
+                "el equipo de {equipo}",
+                "{equipo}",
+                "el de la {equipo}"
+              ]
+            }
+          ],
+          "samples": [
+            "cómo está el {serie}",
+            "cómo está el equipo {serie}",
+            "cómo está el equipo de {equipo}",
+            "cómo está el de {equipo}",
+            "estado del {serie}",
+            "estado del equipo {serie}",
+            "revisa el {serie}",
+            "revisa el equipo de {equipo}",
+            "qué tiene el {serie}",
+            "qué le pasa al {serie}",
+            "cómo va el {serie}",
+            "cómo está el analizador de {equipo}",
+            "cómo está el que termina en {serie}",
+            "revisa el equipo",
+            "cómo está el equipo",
+            "estado del equipo de {equipo}"
+          ]
+        },
+        {
+          "name": "SerieIntent",
+          "slots": [
+            {
+              "name": "serie",
+              "type": "AMAZON.NUMBER",
+              "samples": [
+                "{serie}",
+                "el {serie}",
+                "la {serie}",
+                "terminación {serie}",
+                "el que termina en {serie}",
+                "serie {serie}"
+              ]
+            },
+            {
+              "name": "equipo",
+              "type": "EQUIPO_REF",
+              "samples": [
+                "el de {equipo}",
+                "el equipo de {equipo}",
+                "{equipo}",
+                "el de la {equipo}"
+              ]
+            }
+          ],
+          "samples": [
+            "{serie}",
+            "el {serie}",
+            "terminación {serie}",
+            "la terminación {serie}",
+            "serie {serie}",
+            "el que termina en {serie}",
+            "termina en {serie}",
+            "el de {equipo}",
+            "el equipo de {equipo}"
+          ]
+        },
+        {
+          "name": "AlarmasIntent",
+          "slots": [
+            {
+              "name": "serie",
+              "type": "AMAZON.NUMBER",
+              "samples": [
+                "{serie}",
+                "el {serie}",
+                "la {serie}",
+                "terminación {serie}",
+                "el que termina en {serie}",
+                "serie {serie}"
+              ]
+            },
+            {
+              "name": "equipo",
+              "type": "EQUIPO_REF",
+              "samples": [
+                "el de {equipo}",
+                "el equipo de {equipo}",
+                "{equipo}",
+                "el de la {equipo}"
+              ]
+            }
+          ],
+          "samples": [
+            "qué alarmas tiene el {serie}",
+            "qué alarmas tiene",
+            "qué alarmas hay",
+            "alarmas del {serie}",
+            "alarmas de {equipo}",
+            "qué equipos tienen alarma",
+            "qué equipos están en fatal",
+            "qué equipos están en alarma fatal",
+            "historial de alarmas del {serie}",
+            "qué alarmas tuvo el {serie}",
+            "qué alarmas ha tenido",
+            "historial de alarmas",
+            "qué alarmas tiene el equipo de {equipo}"
+          ]
+        },
+        {
+          "name": "AlarmaInfoIntent",
+          "slots": [
+            {
+              "name": "codigo",
+              "type": "AMAZON.NUMBER",
+              "samples": [
+                "{codigo}",
+                "la {codigo}",
+                "el {codigo}",
+                "alarma {codigo}"
+              ]
+            }
+          ],
+          "samples": [
+            "qué significa la alarma {codigo}",
+            "qué es la alarma {codigo}",
+            "qué es el error {codigo}",
+            "qué significa el error {codigo}",
+            "alarma {codigo}",
+            "error {codigo}",
+            "explícame la alarma {codigo}",
+            "dónde está la alarma {codigo}",
+            "qué significa el código {codigo}"
+          ]
+        },
+        {
+          "name": "ControlesIntent",
+          "slots": [
+            {
+              "name": "serie",
+              "type": "AMAZON.NUMBER",
+              "samples": [
+                "{serie}",
+                "el {serie}",
+                "la {serie}",
+                "terminación {serie}",
+                "el que termina en {serie}",
+                "serie {serie}"
+              ]
+            },
+            {
+              "name": "equipo",
+              "type": "EQUIPO_REF",
+              "samples": [
+                "el de {equipo}",
+                "el equipo de {equipo}",
+                "{equipo}",
+                "el de la {equipo}"
+              ]
+            },
+            {
+              "name": "prueba",
+              "type": "PRUEBA",
+              "samples": [
+                "{prueba}",
+                "de {prueba}",
+                "la de {prueba}"
+              ]
+            }
+          ],
+          "samples": [
+            "pasaron los controles",
+            "pasaron los controles del {serie}",
+            "cómo salieron los controles",
+            "cómo salieron los controles del {serie}",
+            "cómo están los controles",
+            "cómo están los controles del {serie}",
+            "cómo salió el control de {prueba}",
+            "cómo está el control de {prueba}",
+            "controles del {serie}",
+            "controles de {prueba}",
+            "cómo salió el control de {prueba} en el {serie}",
+            "pasó el control",
+            "hay controles rechazados",
+            "cómo salieron los controles de {equipo}"
+          ]
+        },
+        {
+          "name": "CalibracionIntent",
+          "slots": [
+            {
+              "name": "serie",
+              "type": "AMAZON.NUMBER",
+              "samples": [
+                "{serie}",
+                "el {serie}",
+                "la {serie}",
+                "terminación {serie}",
+                "el que termina en {serie}",
+                "serie {serie}"
+              ]
+            },
+            {
+              "name": "prueba",
+              "type": "PRUEBA",
+              "samples": [
+                "{prueba}",
+                "de {prueba}",
+                "la de {prueba}"
+              ]
+            }
+          ],
+          "samples": [
+            "cómo quedó la calibración de {prueba}",
+            "cuándo se calibró {prueba}",
+            "cuándo fue la última calibración de {prueba}",
+            "última calibración de {prueba}",
+            "calibración de {prueba} en el {serie}",
+            "cómo están las calibraciones",
+            "cómo quedó la calibración",
+            "cuándo calibraron {prueba}",
+            "cómo están las calibraciones del {serie}"
+          ]
+        },
+        {
+          "name": "CurvaIntent",
+          "slots": [
+            {
+              "name": "serie",
+              "type": "AMAZON.NUMBER",
+              "samples": [
+                "{serie}",
+                "el {serie}",
+                "la {serie}",
+                "terminación {serie}",
+                "el que termina en {serie}",
+                "serie {serie}"
+              ]
+            },
+            {
+              "name": "prueba",
+              "type": "PRUEBA",
+              "samples": [
+                "{prueba}",
+                "de {prueba}",
+                "la de {prueba}"
+              ]
+            }
+          ],
+          "samples": [
+            "muéstrame la curva de {prueba}",
+            "muéstrame la curva de reacción de {prueba}",
+            "curva de reacción de {prueba}",
+            "cómo se ve la curva de {prueba}",
+            "enséñame la curva de {prueba}",
+            "curva de {prueba} del {serie}",
+            "muéstrame la curva",
+            "la curva de reacción",
+            "muéstrame la curva de reacción"
+          ]
+        },
+        {
+          "name": "IfuIntent",
+          "slots": [
+            {
+              "name": "prueba",
+              "type": "PRUEBA",
+              "samples": [
+                "{prueba}",
+                "de {prueba}",
+                "la de {prueba}"
+              ]
+            },
+            {
+              "name": "dato",
+              "type": "IFU_DATO"
+            }
+          ],
+          "samples": [
+            "cuál es la {dato} de {prueba}",
+            "cuál es el {dato} de {prueba}",
+            "qué {dato} tiene {prueba}",
+            "{dato} de {prueba}",
+            "dime la {dato} de {prueba}",
+            "dime el {dato} de {prueba}",
+            "qué dice la IFU de {prueba} sobre {dato}",
+            "según la IFU cuál es la {dato} de {prueba}"
+          ]
+        },
+        {
+          "name": "EstabilidadIntent",
+          "slots": [
+            {
+              "name": "prueba",
+              "type": "PRUEBA",
+              "samples": [
+                "{prueba}",
+                "de {prueba}",
+                "la de {prueba}"
+              ]
+            }
+          ],
+          "samples": [
+            "cuánto dura {prueba} a bordo",
+            "cuánto dura abierto {prueba}",
+            "estabilidad a bordo de {prueba}",
+            "cuánto aguanta {prueba} en el equipo",
+            "cuántos días dura {prueba} abierto"
+          ]
+        },
+        {
+          "name": "InterferenciasIntent",
+          "slots": [
+            {
+              "name": "prueba",
+              "type": "PRUEBA",
+              "samples": [
+                "{prueba}",
+                "de {prueba}",
+                "la de {prueba}"
+              ]
+            }
+          ],
+          "samples": [
+            "qué interfiere con {prueba}",
+            "qué interferencias tiene {prueba}",
+            "interferencias de {prueba}",
+            "la hemólisis afecta {prueba}",
+            "la bilirrubina afecta {prueba}",
+            "la lipemia afecta {prueba}"
+          ]
+        },
+        {
+          "name": "LoteIntent",
+          "slots": [
+            {
+              "name": "lote",
+              "type": "AMAZON.NUMBER"
+            },
+            {
+              "name": "prueba",
+              "type": "PRUEBA",
+              "samples": [
+                "{prueba}",
+                "de {prueba}",
+                "la de {prueba}"
+              ]
+            }
+          ],
+          "samples": [
+            "está vigente el lote {lote} de {prueba}",
+            "cuándo caduca el lote {lote} de {prueba}",
+            "qué lotes de {prueba} hay",
+            "lotes de {prueba}",
+            "caducidad de {prueba}",
+            "cuándo caduca {prueba}",
+            "el lote {lote} de {prueba}",
+            "qué lotes de {prueba} están documentados",
+            "lote {lote} de {prueba}"
+          ]
+        },
+        {
+          "name": "DiagnosticoIntent",
+          "slots": [
+            {
+              "name": "serie",
+              "type": "AMAZON.NUMBER",
+              "samples": [
+                "{serie}",
+                "el {serie}",
+                "la {serie}",
+                "terminación {serie}",
+                "el que termina en {serie}",
+                "serie {serie}"
+              ]
+            },
+            {
+              "name": "equipo",
+              "type": "EQUIPO_REF",
+              "samples": [
+                "el de {equipo}",
+                "el equipo de {equipo}",
+                "{equipo}",
+                "el de la {equipo}"
+              ]
+            },
+            {
+              "name": "pa",
+              "type": "PRUEBA",
+              "samples": [
+                "{pa}",
+                "{pa} y {pb}",
+                "{pa} {pb} y {pc}",
+                "falla {pa}",
+                "fallan {pa} y {pb}",
+                "sale fuera {pa}",
+                "{pa} sale fuera",
+                "{pa} y {pb} salen fuera"
+              ]
+            },
+            {
+              "name": "pb",
+              "type": "PRUEBA"
+            },
+            {
+              "name": "pc",
+              "type": "PRUEBA"
+            }
+          ],
+          "samples": [
+            "diagnostica el {serie}",
+            "diagnostica el equipo {serie}",
+            "diagnostica el equipo de {equipo}",
+            "haz un diagnóstico del {serie}",
+            "ayúdame con un diagnóstico",
+            "quiero diagnosticar",
+            "diagnóstico",
+            "diagnostica",
+            "diagnostica el equipo",
+            "el {serie} tiene {pa} fuera de control",
+            "en el {serie} sale fuera {pa}",
+            "en el {serie} falla {pa}",
+            "en el {serie} fallan {pa} y {pb}",
+            "{pa} sale fuera",
+            "{pa} y {pb} salen fuera",
+            "{pa} {pb} y {pc} salen fuera",
+            "falla {pa}",
+            "fallan {pa} y {pb}",
+            "{pa} está fuera de control",
+            "{pa} y {pb} están fuera de control",
+            "diagnostica el {serie} {pa} fuera",
+            "diagnostica el {serie} con {pa} fuera",
+            "por qué falla {pa}",
+            "por qué falla {pa} en el {serie}",
+            "por qué sale fuera {pa}",
+            "tengo {pa} fuera de control",
+            "tengo {pa} y {pb} fuera de control"
+          ]
+        },
+        {
+          "name": "PruebasFueraIntent",
+          "slots": [
+            {
+              "name": "pa",
+              "type": "PRUEBA"
+            },
+            {
+              "name": "pb",
+              "type": "PRUEBA"
+            },
+            {
+              "name": "pc",
+              "type": "PRUEBA"
+            }
+          ],
+          "samples": [
+            "también falla {pa}",
+            "también sale fuera {pa}",
+            "también {pa} sale fuera",
+            "también fallan {pa} y {pb}",
+            "agrega {pa} como fallida",
+            "también {pa} está fuera"
+          ]
+        },
+        {
+          "name": "PruebasBienIntent",
+          "slots": [
+            {
+              "name": "pa",
+              "type": "PRUEBA"
+            },
+            {
+              "name": "pb",
+              "type": "PRUEBA"
+            },
+            {
+              "name": "pc",
+              "type": "PRUEBA"
+            }
+          ],
+          "samples": [
+            "{pa} sale bien",
+            "{pa} y {pb} salen bien",
+            "{pa} {pb} y {pc} salen bien",
+            "salen bien {pa} y {pb}",
+            "salen bien {pa} {pb} y {pc}",
+            "sale bien {pa}",
+            "{pa} está bien",
+            "{pa} y {pb} están bien",
+            "{pa} {pb} y {pc} están bien",
+            "bien {pa} {pb} y {pc}",
+            "las que salen bien son {pa} {pb} y {pc}",
+            "las demás salen bien",
+            "ninguna sale bien",
+            "todas las demás están bien"
+          ]
+        },
+        {
+          "name": "PorQueIntent",
+          "samples": [
+            "por qué",
+            "por qué crees eso",
+            "explícame",
+            "por qué esa hipótesis",
+            "en qué te basas",
+            "por qué dices eso",
+            "cuál es la evidencia",
+            "explícame el diagnóstico",
+            "por qué lo descartas"
+          ]
+        },
+        {
+          "name": "OtrasHipotesisIntent",
+          "samples": [
+            "qué más podría ser",
+            "qué otra cosa puede ser",
+            "cuál es la segunda opción",
+            "otras hipótesis",
+            "qué otras causas hay",
+            "y si no es eso",
+            "qué otras opciones hay"
+          ]
+        },
+        {
+          "name": "GuiaIntent",
+          "slots": [
+            {
+              "name": "ordinal",
+              "type": "ORDINAL"
+            }
+          ],
+          "samples": [
+            "guíame",
+            "guíame en la verificación",
+            "guíame en la {ordinal}",
+            "guíame con la {ordinal}",
+            "guíame con la {ordinal} hipótesis",
+            "cómo lo verifico",
+            "qué reviso",
+            "qué hago",
+            "qué pasos sigo",
+            "dame los pasos",
+            "cómo lo compruebo",
+            "empieza la verificación",
+            "verifica la {ordinal}",
+            "paso a paso"
+          ]
+        },
+        {
+          "name": "ResueltoIntent",
+          "samples": [
+            "ya quedó",
+            "se resolvió",
+            "quedó resuelto",
+            "ya funciona",
+            "ya se arregló",
+            "ya está bien",
+            "listo quedó",
+            "ya salen bien los controles",
+            "sí se resolvió",
+            "ya pasó el control"
+          ]
+        },
+        {
+          "name": "NoResueltoIntent",
+          "samples": [
+            "no se resolvió",
+            "sigue fallando",
+            "sigue igual",
+            "no quedó",
+            "no funcionó",
+            "todavía falla",
+            "sigue fuera de control",
+            "no se arregló"
+          ]
+        },
+        {
+          "name": "ParcialIntent",
+          "samples": [
+            "se resolvió a medias",
+            "quedó a medias",
+            "mejoró pero no del todo",
+            "se resolvió en parte",
+            "mejoró un poco"
+          ]
+        },
+        {
+          "name": "ComoSeResolvioIntent",
+          "slots": [
+            {
+              "name": "accion",
+              "type": "AMAZON.SearchQuery"
+            }
+          ],
+          "samples": [
+            "lo resolví {accion}",
+            "lo arreglé {accion}",
+            "se arregló {accion}",
+            "la solución fue {accion}",
+            "se solucionó {accion}",
+            "quedó resuelto {accion}"
+          ]
+        },
+        {
+          "name": "AvisosIntent",
+          "samples": [
+            "qué avisos tengo",
+            "tengo avisos",
+            "qué alertas tengo",
+            "mis avisos",
+            "mis alertas",
+            "lee mis avisos",
+            "léeme los avisos",
+            "qué hay de nuevo",
+            "avisos",
+            "alertas"
+          ]
+        },
+        {
+          "name": "AcuseIntent",
+          "samples": [
+            "enterado",
+            "de acuerdo lo atiendo",
+            "acuso recibo",
+            "recibido",
+            "lo atiendo",
+            "entendido",
+            "ya lo vi",
+            "enterada"
+          ]
+        },
+        {
+          "name": "ActivarAvisosIntent",
+          "samples": [
+            "activa los avisos",
+            "activa las alertas",
+            "avísame",
+            "activa las notificaciones",
+            "quiero recibir avisos"
+          ]
+        },
+        {
+          "name": "DesactivarAvisosIntent",
+          "samples": [
+            "desactiva los avisos",
+            "desactiva las alertas",
+            "ya no me avises",
+            "apaga los avisos",
+            "desactiva las notificaciones"
+          ]
+        },
+        {
+          "name": "AbrirTicketIntent",
+          "slots": [
+            {
+              "name": "motivo",
+              "type": "AMAZON.SearchQuery"
+            }
+          ],
+          "samples": [
+            "abre un ticket {motivo}",
+            "abre un ticket por {motivo}",
+            "abre un ticket para {motivo}",
+            "levanta un ticket {motivo}",
+            "levanta un caso {motivo}",
+            "abre un caso {motivo}",
+            "crea un ticket {motivo}",
+            "reporta {motivo}",
+            "abre un ticket de {motivo}"
+          ]
+        },
+        {
+          "name": "RefaccionIntent",
+          "slots": [
+            {
+              "name": "pieza",
+              "type": "AMAZON.SearchQuery"
+            }
+          ],
+          "samples": [
+            "pide {pieza}",
+            "solicita {pieza}",
+            "pide una refacción {pieza}",
+            "solicita la refacción {pieza}",
+            "necesito la refacción {pieza}",
+            "pide la pieza {pieza}",
+            "ordena {pieza}"
+          ]
+        },
+        {
+          "name": "DictarIntent",
+          "samples": [
+            "dicta una nota",
+            "quiero dictar",
+            "dictar nota",
+            "agrega una nota al caso",
+            "agrega una nota al ticket",
+            "dicta el reporte",
+            "quiero dictar el reporte",
+            "nota de servicio",
+            "dictado",
+            "quiero dictar una nota"
+          ]
+        },
+        {
+          "name": "AnotaIntent",
+          "slots": [
+            {
+              "name": "texto",
+              "type": "AMAZON.SearchQuery"
+            }
+          ],
+          "samples": [
+            "anota {texto}",
+            "agrega {texto}",
+            "escribe {texto}",
+            "nota {texto}",
+            "apunta {texto}"
+          ]
+        },
+        {
+          "name": "FinDictadoIntent",
+          "samples": [
+            "es todo",
+            "terminé",
+            "listo es todo",
+            "fin del dictado",
+            "ya terminé",
+            "eso es todo",
+            "guarda la nota"
+          ]
+        },
+        {
+          "name": "PreguntaIntent",
+          "slots": [
+            {
+              "name": "consulta",
+              "type": "AMAZON.SearchQuery"
+            }
+          ],
+          "samples": [
+            "pregunta {consulta}",
+            "pregúntale {consulta}",
+            "orion {consulta}"
+          ]
+        },
+        {
+          "name": "QueEncontrasteIntent",
+          "samples": [
+            "qué encontraste",
+            "ya tienes la respuesta",
+            "y entonces",
+            "dime qué encontraste",
+            "ya terminaste",
+            "cuál fue el resultado",
+            "qué resultó",
+            "ya está"
+          ]
+        },
+        {
+          "name": "VincularIntent",
+          "samples": [
+            "vincula este dispositivo",
+            "con qué cuenta estoy",
+            "quién está vinculado",
+            "vincular cuenta",
+            "a quién pertenece este dispositivo"
+          ]
+        }
+      ],
+      "types": [
+        {
+          "name": "PRUEBA",
+          "values": [
+            {
+              "id": "GLUCOSE",
+              "name": {
+                "value": "glucosa",
+                "synonyms": [
+                  "glucose",
+                  "glu",
+                  "glucemia"
+                ]
+              }
+            },
+            {
+              "id": "CHOLESTEROL",
+              "name": {
+                "value": "colesterol",
+                "synonyms": [
+                  "colesterol total",
+                  "chol",
+                  "cholesterol"
+                ]
+              }
+            },
+            {
+              "id": "TRIGLYCERIDES",
+              "name": {
+                "value": "triglicéridos",
+                "synonyms": [
+                  "trigliceridos",
+                  "trig",
+                  "tg",
+                  "triglycerides"
+                ]
+              }
+            },
+            {
+              "id": "HDL_CHOLESTEROL",
+              "name": {
+                "value": "colesterol h d l",
+                "synonyms": [
+                  "hdl",
+                  "colesterol hdl",
+                  "hdl colesterol",
+                  "hdl directo"
+                ]
+              }
+            },
+            {
+              "id": "LDL_CHOLESTEROL",
+              "name": {
+                "value": "colesterol l d l",
+                "synonyms": [
+                  "ldl",
+                  "colesterol ldl",
+                  "ldl directo"
+                ]
+              }
+            },
+            {
+              "id": "UREA",
+              "name": {
+                "value": "urea",
+                "synonyms": [
+                  "bun",
+                  "nitrogeno ureico"
+                ]
+              }
+            },
+            {
+              "id": "CREATININE",
+              "name": {
+                "value": "creatinina",
+                "synonyms": [
+                  "crea",
+                  "creatinine"
+                ]
+              }
+            },
+            {
+              "id": "URIC_ACID",
+              "name": {
+                "value": "ácido úrico",
+                "synonyms": [
+                  "acido urico",
+                  "urico"
+                ]
+              }
+            },
+            {
+              "id": "ALT_GPT",
+              "name": {
+                "value": "a l t",
+                "synonyms": [
+                  "alt",
+                  "gpt",
+                  "tgp",
+                  "alanina aminotransferasa",
+                  "alt gpt"
+                ]
+              }
+            },
+            {
+              "id": "AST_GOT",
+              "name": {
+                "value": "a s t",
+                "synonyms": [
+                  "ast",
+                  "got",
+                  "tgo",
+                  "aspartato aminotransferasa",
+                  "ast got"
+                ]
+              }
+            },
+            {
+              "id": "ALKALINE_PHOSPHATASE",
+              "name": {
+                "value": "fosfatasa alcalina",
+                "synonyms": [
+                  "alp",
+                  "fa"
+                ]
+              }
+            },
+            {
+              "id": "GAMMA_GT",
+              "name": {
+                "value": "gamma g t",
+                "synonyms": [
+                  "ggt",
+                  "gamma gt",
+                  "gamma glutamil transferasa"
+                ]
+              }
+            },
+            {
+              "id": "BILIRUBIN_TOTAL",
+              "name": {
+                "value": "bilirrubina total",
+                "synonyms": [
+                  "bilirrubina",
+                  "bt"
+                ]
+              }
+            },
+            {
+              "id": "BILIRUBIN_DIRECT",
+              "name": {
+                "value": "bilirrubina directa",
+                "synonyms": [
+                  "bd"
+                ]
+              }
+            },
+            {
+              "id": "PROTEIN_TOTAL",
+              "name": {
+                "value": "proteínas totales",
+                "synonyms": [
+                  "proteinas totales",
+                  "proteina total",
+                  "proteínas",
+                  "proteinas"
+                ]
+              }
+            },
+            {
+              "id": "ALBUMIN",
+              "name": {
+                "value": "albúmina",
+                "synonyms": [
+                  "albumina",
+                  "alb"
+                ]
+              }
+            },
+            {
+              "id": "ALBUMIN_MAU",
+              "name": {
+                "value": "microalbúmina",
+                "synonyms": [
+                  "microalbumina",
+                  "mau"
+                ]
+              }
+            },
+            {
+              "id": "CALCIUM",
+              "name": {
+                "value": "calcio",
+                "synonyms": [
+                  "ca"
+                ]
+              }
+            },
+            {
+              "id": "PHOSPHORUS",
+              "name": {
+                "value": "fósforo",
+                "synonyms": [
+                  "fosforo"
+                ]
+              }
+            },
+            {
+              "id": "MAGNESIUM",
+              "name": {
+                "value": "magnesio",
+                "synonyms": [
+                  "mg"
+                ]
+              }
+            },
+            {
+              "id": "IRON",
+              "name": {
+                "value": "hierro",
+                "synonyms": [
+                  "fe"
+                ]
+              }
+            },
+            {
+              "id": "AMYLASE",
+              "name": {
+                "value": "amilasa",
+                "synonyms": []
+              }
+            },
+            {
+              "id": "LIPASE",
+              "name": {
+                "value": "lipasa",
+                "synonyms": []
+              }
+            },
+            {
+              "id": "CK_MB",
+              "name": {
+                "value": "c k m b",
+                "synonyms": [
+                  "ck mb",
+                  "ckmb",
+                  "cpk mb"
+                ]
+              }
+            },
+            {
+              "id": "CK",
+              "name": {
+                "value": "c k",
+                "synonyms": [
+                  "ck",
+                  "cpk",
+                  "creatin cinasa",
+                  "creatina quinasa"
+                ]
+              }
+            },
+            {
+              "id": "LDH",
+              "name": {
+                "value": "l d h",
+                "synonyms": [
+                  "ldh",
+                  "deshidrogenasa lactica",
+                  "deshidrogenasa láctica"
+                ]
+              }
+            },
+            {
+              "id": "CRP",
+              "name": {
+                "value": "proteína c reactiva",
+                "synonyms": [
+                  "pcr",
+                  "proteina c reactiva"
+                ]
+              }
+            },
+            {
+              "id": "HBA1C",
+              "name": {
+                "value": "hemoglobina glicosilada",
+                "synonyms": [
+                  "hba1c",
+                  "glicada",
+                  "a1c"
+                ]
+              }
+            },
+            {
+              "id": "SODIUM",
+              "name": {
+                "value": "sodio",
+                "synonyms": [
+                  "na"
+                ]
+              }
+            },
+            {
+              "id": "POTASSIUM",
+              "name": {
+                "value": "potasio",
+                "synonyms": [
+                  "k"
+                ]
+              }
+            },
+            {
+              "id": "CHLORIDE",
+              "name": {
+                "value": "cloro",
+                "synonyms": [
+                  "cloruro",
+                  "cl"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "ORDINAL",
+          "values": [
+            {
+              "id": "1",
+              "name": {
+                "value": "primero",
+                "synonyms": [
+                  "primer",
+                  "primera",
+                  "número uno"
+                ]
+              }
+            },
+            {
+              "id": "2",
+              "name": {
+                "value": "segundo",
+                "synonyms": [
+                  "segunda",
+                  "número dos"
+                ]
+              }
+            },
+            {
+              "id": "3",
+              "name": {
+                "value": "tercero",
+                "synonyms": [
+                  "tercer",
+                  "tercera",
+                  "número tres"
+                ]
+              }
+            },
+            {
+              "id": "4",
+              "name": {
+                "value": "cuarto",
+                "synonyms": [
+                  "cuarta"
+                ]
+              }
+            },
+            {
+              "id": "5",
+              "name": {
+                "value": "quinto",
+                "synonyms": [
+                  "quinta"
+                ]
+              }
+            },
+            {
+              "id": "6",
+              "name": {
+                "value": "sexto",
+                "synonyms": [
+                  "sexta"
+                ]
+              }
+            },
+            {
+              "id": "7",
+              "name": {
+                "value": "séptimo",
+                "synonyms": [
+                  "séptima"
+                ]
+              }
+            },
+            {
+              "id": "8",
+              "name": {
+                "value": "octavo",
+                "synonyms": [
+                  "octava"
+                ]
+              }
+            },
+            {
+              "id": "9",
+              "name": {
+                "value": "noveno",
+                "synonyms": [
+                  "novena"
+                ]
+              }
+            },
+            {
+              "id": "10",
+              "name": {
+                "value": "décimo",
+                "synonyms": [
+                  "décima"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "IFU_DATO",
+          "values": [
+            {
+              "id": "estabilidad",
+              "name": {
+                "value": "estabilidad",
+                "synonyms": [
+                  "estabilidad a bordo",
+                  "duración a bordo",
+                  "vida a bordo",
+                  "estabilidad abierto"
+                ]
+              }
+            },
+            {
+              "id": "interferencias",
+              "name": {
+                "value": "interferencias",
+                "synonyms": [
+                  "interferencia",
+                  "interferentes",
+                  "qué interfiere"
+                ]
+              }
+            },
+            {
+              "id": "linealidad",
+              "name": {
+                "value": "linealidad",
+                "synonyms": [
+                  "rango lineal",
+                  "límite de linealidad",
+                  "rango de medición"
+                ]
+              }
+            },
+            {
+              "id": "deteccion",
+              "name": {
+                "value": "límite de detección",
+                "synonyms": [
+                  "detección",
+                  "sensibilidad",
+                  "límite de cuantificación",
+                  "LOD"
+                ]
+              }
+            },
+            {
+              "id": "precision",
+              "name": {
+                "value": "precisión",
+                "synonyms": [
+                  "coeficiente de variación",
+                  "CV",
+                  "repetibilidad",
+                  "reproducibilidad"
+                ]
+              }
+            },
+            {
+              "id": "blanco",
+              "name": {
+                "value": "blanco",
+                "synonyms": [
+                  "blanco de reactivo",
+                  "absorbancia del blanco",
+                  "límite del blanco"
+                ]
+              }
+            },
+            {
+              "id": "caducidad",
+              "name": {
+                "value": "caducidad",
+                "synonyms": [
+                  "vencimiento",
+                  "fecha de caducidad",
+                  "lotes"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "CASO_FILTRO",
+          "values": [
+            {
+              "id": "abiertos",
+              "name": {
+                "value": "abiertos",
+                "synonyms": [
+                  "abiertas",
+                  "activos"
+                ]
+              }
+            },
+            {
+              "id": "en_progreso",
+              "name": {
+                "value": "en progreso",
+                "synonyms": [
+                  "en proceso",
+                  "en curso",
+                  "trabajándose",
+                  "trabajandose"
+                ]
+              }
+            },
+            {
+              "id": "pendiente_piezas",
+              "name": {
+                "value": "pendientes por piezas",
+                "synonyms": [
+                  "pendiente por piezas",
+                  "pendientes de piezas",
+                  "esperando piezas",
+                  "esperando refacción",
+                  "en espera de piezas",
+                  "pendientes de refacción",
+                  "esperando refacciones",
+                  "esperando refaccion",
+                  "pendientes de refaccion"
+                ]
+              }
+            },
+            {
+              "id": "en_observacion",
+              "name": {
+                "value": "en observación",
+                "synonyms": [
+                  "en monitoreo",
+                  "en seguimiento",
+                  "observación",
+                  "en observacion",
+                  "observacion"
+                ]
+              }
+            },
+            {
+              "id": "sin_respuesta",
+              "name": {
+                "value": "sin respuesta",
+                "synonyms": [
+                  "sin primera respuesta",
+                  "sin contestar",
+                  "sin respuesta al cliente",
+                  "sin responder"
+                ]
+              }
+            },
+            {
+              "id": "sin_asignar",
+              "name": {
+                "value": "sin asignar",
+                "synonyms": [
+                  "sin responsable",
+                  "sin dueño",
+                  "no asignados",
+                  "sin dueno"
+                ]
+              }
+            },
+            {
+              "id": "vencidos",
+              "name": {
+                "value": "vencidos",
+                "synonyms": [
+                  "vencidas",
+                  "fuera de plazo",
+                  "atrasados"
+                ]
+              }
+            },
+            {
+              "id": "por_vencer",
+              "name": {
+                "value": "por vencer",
+                "synonyms": [
+                  "en riesgo",
+                  "por vencerse",
+                  "a punto de vencer"
+                ]
+              }
+            },
+            {
+              "id": "nuevos",
+              "name": {
+                "value": "nuevos",
+                "synonyms": [
+                  "nuevas",
+                  "de hoy",
+                  "que entraron hoy",
+                  "recientes"
+                ]
+              }
+            },
+            {
+              "id": "cerrados",
+              "name": {
+                "value": "cerrados",
+                "synonyms": [
+                  "cerradas",
+                  "resueltos",
+                  "terminados"
+                ]
+              }
+            },
+            {
+              "id": "falcon",
+              "name": {
+                "value": "de falcon",
+                "synonyms": [
+                  "falcon"
+                ]
+              }
+            },
+            {
+              "id": "quimica",
+              "name": {
+                "value": "de química",
+                "synonyms": [
+                  "químicos",
+                  "de soporte químico",
+                  "química",
+                  "de quimica",
+                  "quimicos",
+                  "de soporte quimico",
+                  "quimica"
+                ]
+              }
+            },
+            {
+              "id": "ingenieria",
+              "name": {
+                "value": "de ingeniería",
+                "synonyms": [
+                  "de soporte de ingeniería",
+                  "ingeniería",
+                  "de ingenieria",
+                  "de soporte de ingenieria",
+                  "ingenieria"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "ESTADO_CASO",
+          "values": [
+            {
+              "id": "en_progreso",
+              "name": {
+                "value": "en progreso",
+                "synonyms": [
+                  "en proceso",
+                  "en curso",
+                  "trabajando"
+                ]
+              }
+            },
+            {
+              "id": "pendiente_piezas",
+              "name": {
+                "value": "pendiente por piezas",
+                "synonyms": [
+                  "pendiente de piezas",
+                  "esperando piezas",
+                  "en espera de piezas",
+                  "pendiente de refacción",
+                  "esperando refacción",
+                  "pendiente de refaccion",
+                  "esperando refaccion"
+                ]
+              }
+            },
+            {
+              "id": "en_observacion",
+              "name": {
+                "value": "en observación",
+                "synonyms": [
+                  "observación",
+                  "en monitoreo",
+                  "en seguimiento",
+                  "en observacion",
+                  "observacion"
+                ]
+              }
+            },
+            {
+              "id": "abierto",
+              "name": {
+                "value": "abierto",
+                "synonyms": [
+                  "abierta"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "MOTIVO_CIERRE",
+          "values": [
+            {
+              "id": "solucionado",
+              "name": {
+                "value": "solucionado",
+                "synonyms": [
+                  "resuelto",
+                  "solucionada",
+                  "resuelta",
+                  "arreglado",
+                  "quedó resuelto",
+                  "quedo resuelto"
+                ]
+              }
+            },
+            {
+              "id": "visita_programada",
+              "name": {
+                "value": "visita programada",
+                "synonyms": [
+                  "con visita programada",
+                  "se programó visita",
+                  "se programó una visita",
+                  "se programo visita",
+                  "se programo una visita"
+                ]
+              }
+            },
+            {
+              "id": "sin_respuesta",
+              "name": {
+                "value": "sin respuesta del cliente",
+                "synonyms": [
+                  "sin respuesta",
+                  "el cliente no contestó",
+                  "no contestó el cliente",
+                  "el cliente no contesto",
+                  "no contesto el cliente"
+                ]
+              }
+            },
+            {
+              "id": "administrativo",
+              "name": {
+                "value": "administrativo",
+                "synonyms": [
+                  "cierre administrativo",
+                  "otro motivo",
+                  "duplicado"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "PERSONA",
+          "values": [
+            {
+              "id": "p0",
+              "name": {
+                "value": "juan"
+              }
+            },
+            {
+              "id": "p1",
+              "name": {
+                "value": "josé"
+              }
+            },
+            {
+              "id": "p2",
+              "name": {
+                "value": "luis"
+              }
+            },
+            {
+              "id": "p3",
+              "name": {
+                "value": "carlos"
+              }
+            },
+            {
+              "id": "p4",
+              "name": {
+                "value": "ricardo"
+              }
+            },
+            {
+              "id": "p5",
+              "name": {
+                "value": "miguel"
+              }
+            },
+            {
+              "id": "p6",
+              "name": {
+                "value": "jorge"
+              }
+            },
+            {
+              "id": "p7",
+              "name": {
+                "value": "alejandro"
+              }
+            },
+            {
+              "id": "p8",
+              "name": {
+                "value": "fernando"
+              }
+            },
+            {
+              "id": "p9",
+              "name": {
+                "value": "roberto"
+              }
+            },
+            {
+              "id": "p10",
+              "name": {
+                "value": "maría"
+              }
+            },
+            {
+              "id": "p11",
+              "name": {
+                "value": "ana"
+              }
+            },
+            {
+              "id": "p12",
+              "name": {
+                "value": "laura"
+              }
+            },
+            {
+              "id": "p13",
+              "name": {
+                "value": "patricia"
+              }
+            },
+            {
+              "id": "p14",
+              "name": {
+                "value": "gabriela"
+              }
+            },
+            {
+              "id": "p15",
+              "name": {
+                "value": "daniel"
+              }
+            },
+            {
+              "id": "p16",
+              "name": {
+                "value": "eduardo"
+              }
+            },
+            {
+              "id": "p17",
+              "name": {
+                "value": "francisco"
+              }
+            },
+            {
+              "id": "p18",
+              "name": {
+                "value": "javier"
+              }
+            },
+            {
+              "id": "p19",
+              "name": {
+                "value": "raúl"
+              }
+            },
+            {
+              "id": "p20",
+              "name": {
+                "value": "juan pérez"
+              }
+            },
+            {
+              "id": "p21",
+              "name": {
+                "value": "olivia"
+              }
+            },
+            {
+              "id": "p22",
+              "name": {
+                "value": "ricardo montañez"
+              }
+            },
+            {
+              "id": "p23",
+              "name": {
+                "value": "ricardo vilchis"
+              }
+            },
+            {
+              "id": "p24",
+              "name": {
+                "value": "montañez"
+              }
+            },
+            {
+              "id": "p25",
+              "name": {
+                "value": "vilchis"
+              }
+            }
+          ]
+        },
+        {
+          "name": "EQUIPO_REF",
+          "values": [
+            {
+              "id": "s0",
+              "name": {
+                "value": "falcon"
+              }
+            },
+            {
+              "id": "s1",
+              "name": {
+                "value": "monterrey"
+              }
+            },
+            {
+              "id": "s2",
+              "name": {
+                "value": "guadalajara"
+              }
+            },
+            {
+              "id": "s3",
+              "name": {
+                "value": "ciudad de méxico"
+              }
+            },
+            {
+              "id": "s4",
+              "name": {
+                "value": "puebla"
+              }
+            },
+            {
+              "id": "s5",
+              "name": {
+                "value": "querétaro"
+              }
+            },
+            {
+              "id": "s6",
+              "name": {
+                "value": "hospital"
+              }
+            },
+            {
+              "id": "s7",
+              "name": {
+                "value": "laboratorio"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "dialog": {
+      "intents": [
+        {
+          "name": "TicketDetalleIntent",
+          "delegationStrategy": "SKILL_RESPONSE",
+          "confirmationRequired": false,
+          "prompts": {},
+          "slots": [
+            {
+              "name": "ordinal",
+              "type": "ORDINAL",
+              "elicitationRequired": false,
+              "confirmationRequired": false,
+              "prompts": {}
+            },
+            {
+              "name": "serie",
+              "type": "AMAZON.NUMBER",
+              "elicitationRequired": false,
+              "confirmationRequired": false,
+              "prompts": {
+                "elicitation": "Elicit.Slot.TicketDetalleIntent.serie"
+              }
+            },
+            {
+              "name": "equipo",
+              "type": "EQUIPO_REF",
+              "elicitationRequired": false,
+              "confirmationRequired": false,
+              "prompts": {}
+            }
+          ]
+        },
+        {
+          "name": "CasoDescripcionIntent",
+          "delegationStrategy": "SKILL_RESPONSE",
+          "confirmationRequired": false,
+          "prompts": {},
+          "slots": [
+            {
+              "name": "ordinal",
+              "type": "ORDINAL",
+              "elicitationRequired": false,
+              "confirmationRequired": false,
+              "prompts": {}
+            },
+            {
+              "name": "serie",
+              "type": "AMAZON.NUMBER",
+              "elicitationRequired": false,
+              "confirmationRequired": false,
+              "prompts": {
+                "elicitation": "Elicit.Slot.CasoDescripcionIntent.serie"
+              }
+            },
+            {
+              "name": "equipo",
+              "type": "EQUIPO_REF",
+              "elicitationRequired": false,
+              "confirmationRequired": false,
+              "prompts": {}
+            }
+          ]
+        },
+        {
+          "name": "CasoContactoIntent",
+          "delegationStrategy": "SKILL_RESPONSE",
+          "confirmationRequired": false,
+          "prompts": {},
+          "slots": [
+            {
+              "name": "ordinal",
+              "type": "ORDINAL",
+              "elicitationRequired": false,
+              "confirmationRequired": false,
+              "prompts": {}
+            },
+            {
+              "name": "serie",
+              "type": "AMAZON.NUMBER",
+              "elicitationRequired": false,
+              "confirmationRequired": false,
+              "prompts": {
+                "elicitation": "Elicit.Slot.CasoContactoIntent.serie"
+              }
+            },
+            {
+              "name": "equipo",
+              "type": "EQUIPO_REF",
+              "elicitationRequired": false,
+              "confirmationRequired": false,
+              "prompts": {}
+            }
+          ]
+        },
+        {
+          "name": "CasoBitacoraIntent",
+          "delegationStrategy": "SKILL_RESPONSE",
+          "confirmationRequired": false,
+          "prompts": {},
+          "slots": [
+            {
+              "name": "ordinal",
+              "type": "ORDINAL",
+              "elicitationRequired": false,
+              "confirmationRequired": false,
+              "prompts": {}
+            },
+            {
+              "name": "serie",
+              "type": "AMAZON.NUMBER",
+              "elicitationRequired": false,
+              "confirmationRequired": false,
+              "prompts": {
+                "elicitation": "Elicit.Slot.CasoBitacoraIntent.serie"
+              }
+            },
+            {
+              "name": "equipo",
+              "type": "EQUIPO_REF",
+              "elicitationRequired": false,
+              "confirmationRequired": false,
+              "prompts": {}
+            }
+          ]
+        },
+        {
+          "name": "HistorialEquipoIntent",
+          "delegationStrategy": "SKILL_RESPONSE",
+          "confirmationRequired": false,
+          "prompts": {},
+          "slots": [
+            {
+              "name": "serie",
+              "type": "AMAZON.NUMBER",
+              "elicitationRequired": false,
+              "confirmationRequired": false,
+              "prompts": {
+                "elicitation": "Elicit.Slot.HistorialEquipoIntent.serie"
+              }
+            },
+            {
+              "name": "equipo",
+              "type": "EQUIPO_REF",
+              "elicitationRequired": false,
+              "confirmationRequired": false,
+              "prompts": {}
+            }
+          ]
+        },
+        {
+          "name": "EstadoCasoIntent",
+          "delegationStrategy": "SKILL_RESPONSE",
+          "confirmationRequired": false,
+          "prompts": {},
+          "slots": [
+            {
+              "name": "estado",
+              "type": "ESTADO_CASO",
+              "elicitationRequired": false,
+              "confirmationRequired": false,
+              "prompts": {}
+            },
+            {
+              "name": "serie",
+              "type": "AMAZON.NUMBER",
+              "elicitationRequired": false,
+              "confirmationRequired": false,
+              "prompts": {
+                "elicitation": "Elicit.Slot.EstadoCasoIntent.serie"
+              }
+            }
+          ]
+        },
+        {
+          "name": "CerrarCasoIntent",
+          "delegationStrategy": "SKILL_RESPONSE",
+          "confirmationRequired": false,
+          "prompts": {},
+          "slots": [
+            {
+              "name": "razon",
+              "type": "MOTIVO_CIERRE",
+              "elicitationRequired": false,
+              "confirmationRequired": false,
+              "prompts": {
+                "elicitation": "Elicit.Slot.CerrarCasoIntent.razon"
+              }
+            },
+            {
+              "name": "serie",
+              "type": "AMAZON.NUMBER",
+              "elicitationRequired": false,
+              "confirmationRequired": false,
+              "prompts": {
+                "elicitation": "Elicit.Slot.CerrarCasoIntent.serie"
+              }
+            }
+          ]
+        },
+        {
+          "name": "AsignarCasoIntent",
+          "delegationStrategy": "SKILL_RESPONSE",
+          "confirmationRequired": false,
+          "prompts": {},
+          "slots": [
+            {
+              "name": "persona",
+              "type": "PERSONA",
+              "elicitationRequired": false,
+              "confirmationRequired": false,
+              "prompts": {
+                "elicitation": "Elicit.Slot.AsignarCasoIntent.persona"
+              }
+            },
+            {
+              "name": "serie",
+              "type": "AMAZON.NUMBER",
+              "elicitationRequired": false,
+              "confirmationRequired": false,
+              "prompts": {
+                "elicitation": "Elicit.Slot.AsignarCasoIntent.serie"
+              }
+            },
+            {
+              "name": "ordinal",
+              "type": "ORDINAL",
+              "elicitationRequired": false,
+              "confirmationRequired": false,
+              "prompts": {}
+            }
+          ]
+        },
+        {
+          "name": "TomarCasoIntent",
+          "delegationStrategy": "SKILL_RESPONSE",
+          "confirmationRequired": false,
+          "prompts": {},
+          "slots": [
+            {
+              "name": "ordinal",
+              "type": "ORDINAL",
+              "elicitationRequired": false,
+              "confirmationRequired": false,
+              "prompts": {}
+            },
+            {
+              "name": "serie",
+              "type": "AMAZON.NUMBER",
+              "elicitationRequired": false,
+              "confirmationRequired": false,
+              "prompts": {
+                "elicitation": "Elicit.Slot.TomarCasoIntent.serie"
+              }
+            },
+            {
+              "name": "equipo",
+              "type": "EQUIPO_REF",
+              "elicitationRequired": false,
+              "confirmationRequired": false,
+              "prompts": {}
+            }
+          ]
+        },
+        {
+          "name": "EquipoIntent",
+          "delegationStrategy": "SKILL_RESPONSE",
+          "confirmationRequired": false,
+          "prompts": {},
+          "slots": [
+            {
+              "name": "serie",
+              "type": "AMAZON.NUMBER",
+              "elicitationRequired": false,
+              "confirmationRequired": false,
+              "prompts": {
+                "elicitation": "Elicit.Slot.EquipoIntent.serie"
+              }
+            },
+            {
+              "name": "equipo",
+              "type": "EQUIPO_REF",
+              "elicitationRequired": false,
+              "confirmationRequired": false,
+              "prompts": {}
+            }
+          ]
+        },
+        {
+          "name": "SerieIntent",
+          "delegationStrategy": "SKILL_RESPONSE",
+          "confirmationRequired": false,
+          "prompts": {},
+          "slots": [
+            {
+              "name": "serie",
+              "type": "AMAZON.NUMBER",
+              "elicitationRequired": false,
+              "confirmationRequired": false,
+              "prompts": {
+                "elicitation": "Elicit.Slot.SerieIntent.serie"
+              }
+            },
+            {
+              "name": "equipo",
+              "type": "EQUIPO_REF",
+              "elicitationRequired": false,
+              "confirmationRequired": false,
+              "prompts": {}
+            }
+          ]
+        },
+        {
+          "name": "AlarmasIntent",
+          "delegationStrategy": "SKILL_RESPONSE",
+          "confirmationRequired": false,
+          "prompts": {},
+          "slots": [
+            {
+              "name": "serie",
+              "type": "AMAZON.NUMBER",
+              "elicitationRequired": false,
+              "confirmationRequired": false,
+              "prompts": {
+                "elicitation": "Elicit.Slot.AlarmasIntent.serie"
+              }
+            },
+            {
+              "name": "equipo",
+              "type": "EQUIPO_REF",
+              "elicitationRequired": false,
+              "confirmationRequired": false,
+              "prompts": {}
+            }
+          ]
+        },
+        {
+          "name": "AlarmaInfoIntent",
+          "delegationStrategy": "SKILL_RESPONSE",
+          "confirmationRequired": false,
+          "prompts": {},
+          "slots": [
+            {
+              "name": "codigo",
+              "type": "AMAZON.NUMBER",
+              "elicitationRequired": false,
+              "confirmationRequired": false,
+              "prompts": {
+                "elicitation": "Elicit.Slot.AlarmaInfoIntent.codigo"
+              }
+            }
+          ]
+        },
+        {
+          "name": "ControlesIntent",
+          "delegationStrategy": "SKILL_RESPONSE",
+          "confirmationRequired": false,
+          "prompts": {},
+          "slots": [
+            {
+              "name": "serie",
+              "type": "AMAZON.NUMBER",
+              "elicitationRequired": false,
+              "confirmationRequired": false,
+              "prompts": {
+                "elicitation": "Elicit.Slot.ControlesIntent.serie"
+              }
+            },
+            {
+              "name": "equipo",
+              "type": "EQUIPO_REF",
+              "elicitationRequired": false,
+              "confirmationRequired": false,
+              "prompts": {}
+            },
+            {
+              "name": "prueba",
+              "type": "PRUEBA",
+              "elicitationRequired": false,
+              "confirmationRequired": false,
+              "prompts": {
+                "elicitation": "Elicit.Slot.ControlesIntent.prueba"
+              }
+            }
+          ]
+        },
+        {
+          "name": "CalibracionIntent",
+          "delegationStrategy": "SKILL_RESPONSE",
+          "confirmationRequired": false,
+          "prompts": {},
+          "slots": [
+            {
+              "name": "serie",
+              "type": "AMAZON.NUMBER",
+              "elicitationRequired": false,
+              "confirmationRequired": false,
+              "prompts": {
+                "elicitation": "Elicit.Slot.CalibracionIntent.serie"
+              }
+            },
+            {
+              "name": "prueba",
+              "type": "PRUEBA",
+              "elicitationRequired": false,
+              "confirmationRequired": false,
+              "prompts": {
+                "elicitation": "Elicit.Slot.CalibracionIntent.prueba"
+              }
+            }
+          ]
+        },
+        {
+          "name": "CurvaIntent",
+          "delegationStrategy": "SKILL_RESPONSE",
+          "confirmationRequired": false,
+          "prompts": {},
+          "slots": [
+            {
+              "name": "serie",
+              "type": "AMAZON.NUMBER",
+              "elicitationRequired": false,
+              "confirmationRequired": false,
+              "prompts": {
+                "elicitation": "Elicit.Slot.CurvaIntent.serie"
+              }
+            },
+            {
+              "name": "prueba",
+              "type": "PRUEBA",
+              "elicitationRequired": false,
+              "confirmationRequired": false,
+              "prompts": {
+                "elicitation": "Elicit.Slot.CurvaIntent.prueba"
+              }
+            }
+          ]
+        },
+        {
+          "name": "IfuIntent",
+          "delegationStrategy": "SKILL_RESPONSE",
+          "confirmationRequired": false,
+          "prompts": {},
+          "slots": [
+            {
+              "name": "prueba",
+              "type": "PRUEBA",
+              "elicitationRequired": false,
+              "confirmationRequired": false,
+              "prompts": {
+                "elicitation": "Elicit.Slot.IfuIntent.prueba"
+              }
+            },
+            {
+              "name": "dato",
+              "type": "IFU_DATO",
+              "elicitationRequired": false,
+              "confirmationRequired": false,
+              "prompts": {}
+            }
+          ]
+        },
+        {
+          "name": "EstabilidadIntent",
+          "delegationStrategy": "SKILL_RESPONSE",
+          "confirmationRequired": false,
+          "prompts": {},
+          "slots": [
+            {
+              "name": "prueba",
+              "type": "PRUEBA",
+              "elicitationRequired": false,
+              "confirmationRequired": false,
+              "prompts": {
+                "elicitation": "Elicit.Slot.EstabilidadIntent.prueba"
+              }
+            }
+          ]
+        },
+        {
+          "name": "InterferenciasIntent",
+          "delegationStrategy": "SKILL_RESPONSE",
+          "confirmationRequired": false,
+          "prompts": {},
+          "slots": [
+            {
+              "name": "prueba",
+              "type": "PRUEBA",
+              "elicitationRequired": false,
+              "confirmationRequired": false,
+              "prompts": {
+                "elicitation": "Elicit.Slot.InterferenciasIntent.prueba"
+              }
+            }
+          ]
+        },
+        {
+          "name": "LoteIntent",
+          "delegationStrategy": "SKILL_RESPONSE",
+          "confirmationRequired": false,
+          "prompts": {},
+          "slots": [
+            {
+              "name": "lote",
+              "type": "AMAZON.NUMBER",
+              "elicitationRequired": false,
+              "confirmationRequired": false,
+              "prompts": {}
+            },
+            {
+              "name": "prueba",
+              "type": "PRUEBA",
+              "elicitationRequired": false,
+              "confirmationRequired": false,
+              "prompts": {
+                "elicitation": "Elicit.Slot.LoteIntent.prueba"
+              }
+            }
+          ]
+        },
+        {
+          "name": "DiagnosticoIntent",
+          "delegationStrategy": "SKILL_RESPONSE",
+          "confirmationRequired": false,
+          "prompts": {},
+          "slots": [
+            {
+              "name": "serie",
+              "type": "AMAZON.NUMBER",
+              "elicitationRequired": false,
+              "confirmationRequired": false,
+              "prompts": {
+                "elicitation": "Elicit.Slot.DiagnosticoIntent.serie"
+              }
+            },
+            {
+              "name": "equipo",
+              "type": "EQUIPO_REF",
+              "elicitationRequired": false,
+              "confirmationRequired": false,
+              "prompts": {}
+            },
+            {
+              "name": "pa",
+              "type": "PRUEBA",
+              "elicitationRequired": false,
+              "confirmationRequired": false,
+              "prompts": {
+                "elicitation": "Elicit.Slot.DiagnosticoIntent.pa"
+              }
+            },
+            {
+              "name": "pb",
+              "type": "PRUEBA",
+              "elicitationRequired": false,
+              "confirmationRequired": false,
+              "prompts": {}
+            },
+            {
+              "name": "pc",
+              "type": "PRUEBA",
+              "elicitationRequired": false,
+              "confirmationRequired": false,
+              "prompts": {}
+            }
+          ]
+        },
+        {
+          "name": "PruebasFueraIntent",
+          "delegationStrategy": "SKILL_RESPONSE",
+          "confirmationRequired": false,
+          "prompts": {},
+          "slots": [
+            {
+              "name": "pa",
+              "type": "PRUEBA",
+              "elicitationRequired": false,
+              "confirmationRequired": false,
+              "prompts": {
+                "elicitation": "Elicit.Slot.PruebasFueraIntent.pa"
+              }
+            },
+            {
+              "name": "pb",
+              "type": "PRUEBA",
+              "elicitationRequired": false,
+              "confirmationRequired": false,
+              "prompts": {}
+            },
+            {
+              "name": "pc",
+              "type": "PRUEBA",
+              "elicitationRequired": false,
+              "confirmationRequired": false,
+              "prompts": {}
+            }
+          ]
+        },
+        {
+          "name": "PruebasBienIntent",
+          "delegationStrategy": "SKILL_RESPONSE",
+          "confirmationRequired": false,
+          "prompts": {},
+          "slots": [
+            {
+              "name": "pa",
+              "type": "PRUEBA",
+              "elicitationRequired": false,
+              "confirmationRequired": false,
+              "prompts": {
+                "elicitation": "Elicit.Slot.PruebasBienIntent.pa"
+              }
+            },
+            {
+              "name": "pb",
+              "type": "PRUEBA",
+              "elicitationRequired": false,
+              "confirmationRequired": false,
+              "prompts": {}
+            },
+            {
+              "name": "pc",
+              "type": "PRUEBA",
+              "elicitationRequired": false,
+              "confirmationRequired": false,
+              "prompts": {}
+            }
+          ]
+        }
+      ],
+      "delegationStrategy": "SKILL_RESPONSE"
+    },
+    "prompts": [
+      {
+        "id": "Elicit.Slot.TicketDetalleIntent.serie",
+        "variations": [
+          {
+            "type": "PlainText",
+            "value": "¿De qué equipo? Dime la terminación de la serie."
+          },
+          {
+            "type": "PlainText",
+            "value": "¿Qué equipo? Por ejemplo: cero cuatro siete tres."
+          }
+        ]
+      },
+      {
+        "id": "Elicit.Slot.CasoDescripcionIntent.serie",
+        "variations": [
+          {
+            "type": "PlainText",
+            "value": "¿De qué equipo? Dime la terminación de la serie."
+          },
+          {
+            "type": "PlainText",
+            "value": "¿Qué equipo? Por ejemplo: cero cuatro siete tres."
+          }
+        ]
+      },
+      {
+        "id": "Elicit.Slot.CasoContactoIntent.serie",
+        "variations": [
+          {
+            "type": "PlainText",
+            "value": "¿De qué equipo? Dime la terminación de la serie."
+          },
+          {
+            "type": "PlainText",
+            "value": "¿Qué equipo? Por ejemplo: cero cuatro siete tres."
+          }
+        ]
+      },
+      {
+        "id": "Elicit.Slot.CasoBitacoraIntent.serie",
+        "variations": [
+          {
+            "type": "PlainText",
+            "value": "¿De qué equipo? Dime la terminación de la serie."
+          },
+          {
+            "type": "PlainText",
+            "value": "¿Qué equipo? Por ejemplo: cero cuatro siete tres."
+          }
+        ]
+      },
+      {
+        "id": "Elicit.Slot.HistorialEquipoIntent.serie",
+        "variations": [
+          {
+            "type": "PlainText",
+            "value": "¿De qué equipo? Dime la terminación de la serie."
+          },
+          {
+            "type": "PlainText",
+            "value": "¿Qué equipo? Por ejemplo: cero cuatro siete tres."
+          }
+        ]
+      },
+      {
+        "id": "Elicit.Slot.EstadoCasoIntent.serie",
+        "variations": [
+          {
+            "type": "PlainText",
+            "value": "¿De qué equipo? Dime la terminación de la serie."
+          },
+          {
+            "type": "PlainText",
+            "value": "¿Qué equipo? Por ejemplo: cero cuatro siete tres."
+          }
+        ]
+      },
+      {
+        "id": "Elicit.Slot.CerrarCasoIntent.razon",
+        "variations": [
+          {
+            "type": "PlainText",
+            "value": "¿Cómo lo cierro: solucionado, visita programada, sin respuesta del cliente, o cierre administrativo?"
+          }
+        ]
+      },
+      {
+        "id": "Elicit.Slot.CerrarCasoIntent.serie",
+        "variations": [
+          {
+            "type": "PlainText",
+            "value": "¿De qué equipo? Dime la terminación de la serie."
+          },
+          {
+            "type": "PlainText",
+            "value": "¿Qué equipo? Por ejemplo: cero cuatro siete tres."
+          }
+        ]
+      },
+      {
+        "id": "Elicit.Slot.AsignarCasoIntent.persona",
+        "variations": [
+          {
+            "type": "PlainText",
+            "value": "¿A quién se lo asigno?"
+          }
+        ]
+      },
+      {
+        "id": "Elicit.Slot.AsignarCasoIntent.serie",
+        "variations": [
+          {
+            "type": "PlainText",
+            "value": "¿De qué equipo? Dime la terminación de la serie."
+          },
+          {
+            "type": "PlainText",
+            "value": "¿Qué equipo? Por ejemplo: cero cuatro siete tres."
+          }
+        ]
+      },
+      {
+        "id": "Elicit.Slot.TomarCasoIntent.serie",
+        "variations": [
+          {
+            "type": "PlainText",
+            "value": "¿De qué equipo? Dime la terminación de la serie."
+          },
+          {
+            "type": "PlainText",
+            "value": "¿Qué equipo? Por ejemplo: cero cuatro siete tres."
+          }
+        ]
+      },
+      {
+        "id": "Elicit.Slot.EquipoIntent.serie",
+        "variations": [
+          {
+            "type": "PlainText",
+            "value": "¿De qué equipo? Dime la terminación de la serie."
+          },
+          {
+            "type": "PlainText",
+            "value": "¿Qué equipo? Por ejemplo: cero cuatro siete tres."
+          }
+        ]
+      },
+      {
+        "id": "Elicit.Slot.SerieIntent.serie",
+        "variations": [
+          {
+            "type": "PlainText",
+            "value": "¿De qué equipo? Dime la terminación de la serie."
+          },
+          {
+            "type": "PlainText",
+            "value": "¿Qué equipo? Por ejemplo: cero cuatro siete tres."
+          }
+        ]
+      },
+      {
+        "id": "Elicit.Slot.AlarmasIntent.serie",
+        "variations": [
+          {
+            "type": "PlainText",
+            "value": "¿De qué equipo? Dime la terminación de la serie."
+          },
+          {
+            "type": "PlainText",
+            "value": "¿Qué equipo? Por ejemplo: cero cuatro siete tres."
+          }
+        ]
+      },
+      {
+        "id": "Elicit.Slot.AlarmaInfoIntent.codigo",
+        "variations": [
+          {
+            "type": "PlainText",
+            "value": "¿Qué código de alarma?"
+          }
+        ]
+      },
+      {
+        "id": "Elicit.Slot.ControlesIntent.serie",
+        "variations": [
+          {
+            "type": "PlainText",
+            "value": "¿De qué equipo? Dime la terminación de la serie."
+          },
+          {
+            "type": "PlainText",
+            "value": "¿Qué equipo? Por ejemplo: cero cuatro siete tres."
+          }
+        ]
+      },
+      {
+        "id": "Elicit.Slot.ControlesIntent.prueba",
+        "variations": [
+          {
+            "type": "PlainText",
+            "value": "¿De qué prueba?"
+          },
+          {
+            "type": "PlainText",
+            "value": "¿Qué prueba?"
+          }
+        ]
+      },
+      {
+        "id": "Elicit.Slot.CalibracionIntent.serie",
+        "variations": [
+          {
+            "type": "PlainText",
+            "value": "¿De qué equipo? Dime la terminación de la serie."
+          },
+          {
+            "type": "PlainText",
+            "value": "¿Qué equipo? Por ejemplo: cero cuatro siete tres."
+          }
+        ]
+      },
+      {
+        "id": "Elicit.Slot.CalibracionIntent.prueba",
+        "variations": [
+          {
+            "type": "PlainText",
+            "value": "¿De qué prueba?"
+          },
+          {
+            "type": "PlainText",
+            "value": "¿Qué prueba?"
+          }
+        ]
+      },
+      {
+        "id": "Elicit.Slot.CurvaIntent.serie",
+        "variations": [
+          {
+            "type": "PlainText",
+            "value": "¿De qué equipo? Dime la terminación de la serie."
+          },
+          {
+            "type": "PlainText",
+            "value": "¿Qué equipo? Por ejemplo: cero cuatro siete tres."
+          }
+        ]
+      },
+      {
+        "id": "Elicit.Slot.CurvaIntent.prueba",
+        "variations": [
+          {
+            "type": "PlainText",
+            "value": "¿De qué prueba?"
+          },
+          {
+            "type": "PlainText",
+            "value": "¿Qué prueba?"
+          }
+        ]
+      },
+      {
+        "id": "Elicit.Slot.IfuIntent.prueba",
+        "variations": [
+          {
+            "type": "PlainText",
+            "value": "¿De qué prueba?"
+          },
+          {
+            "type": "PlainText",
+            "value": "¿Qué prueba?"
+          }
+        ]
+      },
+      {
+        "id": "Elicit.Slot.EstabilidadIntent.prueba",
+        "variations": [
+          {
+            "type": "PlainText",
+            "value": "¿De qué prueba?"
+          },
+          {
+            "type": "PlainText",
+            "value": "¿Qué prueba?"
+          }
+        ]
+      },
+      {
+        "id": "Elicit.Slot.InterferenciasIntent.prueba",
+        "variations": [
+          {
+            "type": "PlainText",
+            "value": "¿De qué prueba?"
+          },
+          {
+            "type": "PlainText",
+            "value": "¿Qué prueba?"
+          }
+        ]
+      },
+      {
+        "id": "Elicit.Slot.LoteIntent.prueba",
+        "variations": [
+          {
+            "type": "PlainText",
+            "value": "¿De qué prueba?"
+          },
+          {
+            "type": "PlainText",
+            "value": "¿Qué prueba?"
+          }
+        ]
+      },
+      {
+        "id": "Elicit.Slot.DiagnosticoIntent.serie",
+        "variations": [
+          {
+            "type": "PlainText",
+            "value": "¿De qué equipo? Dime la terminación de la serie."
+          },
+          {
+            "type": "PlainText",
+            "value": "¿Qué equipo? Por ejemplo: cero cuatro siete tres."
+          }
+        ]
+      },
+      {
+        "id": "Elicit.Slot.DiagnosticoIntent.pa",
+        "variations": [
+          {
+            "type": "PlainText",
+            "value": "¿Qué pruebas salen fuera de control?"
+          },
+          {
+            "type": "PlainText",
+            "value": "¿Qué prueba falla?"
+          }
+        ]
+      },
+      {
+        "id": "Elicit.Slot.PruebasFueraIntent.pa",
+        "variations": [
+          {
+            "type": "PlainText",
+            "value": "¿Qué pruebas salen fuera de control?"
+          },
+          {
+            "type": "PlainText",
+            "value": "¿Qué prueba falla?"
+          }
+        ]
+      },
+      {
+        "id": "Elicit.Slot.PruebasBienIntent.pa",
+        "variations": [
+          {
+            "type": "PlainText",
+            "value": "¿Qué pruebas salen fuera de control?"
+          },
+          {
+            "type": "PlainText",
+            "value": "¿Qué prueba falla?"
+          }
+        ]
+      }
+    ]
+  }
+}

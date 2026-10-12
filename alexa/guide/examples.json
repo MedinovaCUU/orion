@@ -1,0 +1,1787 @@
+{
+  "generatedAt": "2026-10-12T01:28:07.078Z",
+  "dialogs": {
+    "vincular": [
+      {
+        "user": "Alexa, abre servicio orión",
+        "orion": "Para proteger la información de Biosystems, primero vincula este dispositivo con tu cuenta de Orión. Entra a Orión, sección Alexa, y escribe el código 166338. Te lo repito: 166338. Vence en diez minutos.",
+        "screen": {
+          "layout": "code",
+          "kicker": "VINCULACIÓN",
+          "title": "Vincula este dispositivo",
+          "subtitle": "Abre Orion → Alexa y escribe este código. Vence en diez minutos.",
+          "hint": "medinovacuu.github.io/orion/alexa",
+          "date": "DOMINGO, 11 DE OCTUBRE",
+          "bg": "http://127.0.0.1:54321/functions/v1/alexa/assets/bg.jpg",
+          "logo": "http://127.0.0.1:54321/functions/v1/alexa/assets/orion.png",
+          "digits": [
+            "1",
+            "6",
+            "6",
+            "3",
+            "3",
+            "8"
+          ]
+        }
+      }
+    ],
+    "abrir": [
+      {
+        "user": "Alexa, abre servicio orión",
+        "orion": "Orión listo. ¿Qué revisamos?",
+        "screen": null
+      }
+    ],
+    "resumen": [
+      {
+        "user": "cómo vamos",
+        "orion": "Los 2 equipos en monitoreo están reportando. El BA400 terminación 9999 de Laboratorio Demo Norte, en Monterrey, está en alarma fatal. Alarma principal: error de posición inicial vertical del brazo de reactivo 1. En las últimas 24 horas se rechazó un control de glucosa. Hay 3 casos de soporte abiertos; 2 están en riesgo. El más urgente es el caso de Laboratorio Demo Norte, del BA400 terminación 9999, que ya venció hace 2 horas. ¿Quieres que revise ese equipo?",
+        "screen": {
+          "layout": "briefing",
+          "kicker": "CENTRO DE SERVICIO",
+          "title": "Ricardo, así va la flota",
+          "subtitle": "2 de 2 equipos reportando en las últimas 24 horas",
+          "hint": "",
+          "date": "DOMINGO, 11 DE OCTUBRE",
+          "bg": "http://127.0.0.1:54321/functions/v1/alexa/assets/bg.jpg",
+          "logo": "http://127.0.0.1:54321/functions/v1/alexa/assets/orion.png",
+          "tiles": [
+            {
+              "label": "EN LÍNEA",
+              "value": "2",
+              "hint": "de 2 monitoreados",
+              "tone": "hud",
+              "frac": 1,
+              "color": "#3fd2e4",
+              "arc": "M 50 10 A 40 40 0 1 1 49.99 10"
+            },
+            {
+              "label": "ALARMA FATAL",
+              "value": "1",
+              "hint": "BA400 ···9999",
+              "tone": "risk",
+              "frac": 0.5,
+              "color": "#ff6b7a",
+              "arc": "M 50 10 A 40 40 0 0 1 50.00 90.00"
+            },
+            {
+              "label": "CONTROLES RECHAZADOS",
+              "value": "1",
+              "hint": "últimas 24 horas",
+              "tone": "warn",
+              "frac": 0.1,
+              "color": "#f2b54a",
+              "arc": "M 50 10 A 40 40 0 0 1 73.51 17.64"
+            },
+            {
+              "label": "SLA EN RIESGO",
+              "value": "2",
+              "hint": "3 casos abiertos",
+              "tone": "warn",
+              "frac": 0.6666666666666666,
+              "color": "#f2b54a",
+              "arc": "M 50 10 A 40 40 0 1 1 15.36 70.00"
+            }
+          ],
+          "rows": [
+            {
+              "text": "BA400 ···9999 · Laboratorio Demo Norte · BR1 Vertical Home Error",
+              "tone": "risk",
+              "tag": "FATAL",
+              "color": "#ff6b7a"
+            },
+            {
+              "text": "Laboratorio Demo Norte · ···9999 · vencido",
+              "tone": "risk",
+              "tag": "QUÍMICA",
+              "color": "#ff6b7a"
+            },
+            {
+              "text": "Laboratorio Demo Centro · ···0473 · 4 h",
+              "tone": "warn",
+              "tag": "FALCON",
+              "color": "#f2b54a"
+            },
+            {
+              "text": "Control rechazado · GLUCOSE · ···9999",
+              "tone": "warn",
+              "tag": "BPL",
+              "color": "#f2b54a"
+            }
+          ]
+        }
+      }
+    ],
+    "casos": [
+      {
+        "user": "qué tengo hoy",
+        "orion": "Hoy tienes un servicio: preventivo al BA400 en Monterrey. Además tienes 2 casos abiertos; el más urgente es el caso de Laboratorio Demo Norte, del BA400 terminación 9999, que ya venció hace 2 horas. ¿Te leo tus casos?",
+        "screen": {
+          "layout": "list",
+          "kicker": "TU AGENDA",
+          "title": "Tu día · 11 de octubre",
+          "subtitle": "1 servicios planeados · 2 casos abiertos",
+          "hint": "",
+          "date": "DOMINGO, 11 DE OCTUBRE",
+          "bg": "http://127.0.0.1:54321/functions/v1/alexa/assets/bg.jpg",
+          "logo": "http://127.0.0.1:54321/functions/v1/alexa/assets/orion.png",
+          "rest": 0,
+          "items": [
+            {
+              "text": "PREVENTIVO · BA400 · MONTERREY",
+              "tone": "hud",
+              "tag": "PLAN",
+              "color": "#3fd2e4",
+              "n": "01"
+            },
+            {
+              "text": "Laboratorio Demo Norte · ···9999 · vencido",
+              "tone": "risk",
+              "tag": "QUÍMICA",
+              "color": "#ff6b7a",
+              "n": "02"
+            },
+            {
+              "text": "Laboratorio Demo Centro · ···0473 · 4 h",
+              "tone": "warn",
+              "tag": "FALCON",
+              "color": "#f2b54a",
+              "n": "03"
+            }
+          ]
+        }
+      },
+      {
+        "user": "sí",
+        "orion": "Tienes 2 casos abiertos. El primero es el caso de Laboratorio Demo Norte, del BA400 terminación 9999, que ya venció hace 2 horas. El segundo es el caso de Laboratorio Demo Centro, del BA400 terminación 0473, que vence en 4 horas; es de Falcon. Para el detalle di, por ejemplo, «el primero», o la terminación del equipo.",
+        "screen": {
+          "layout": "list",
+          "kicker": "CASOS",
+          "title": "Tus casos",
+          "subtitle": "Tienes 2 casos abiertos.",
+          "hint": "",
+          "date": "DOMINGO, 11 DE OCTUBRE",
+          "bg": "http://127.0.0.1:54321/functions/v1/alexa/assets/bg.jpg",
+          "logo": "http://127.0.0.1:54321/functions/v1/alexa/assets/orion.png",
+          "rest": 0,
+          "items": [
+            {
+              "text": "El primero es el caso de Laboratorio Demo Norte, del B A 400 terminación 9999, que ya venció hace 2 horas.",
+              "tone": "hud",
+              "tag": "",
+              "color": "#3fd2e4",
+              "n": "01"
+            },
+            {
+              "text": "El segundo es el caso de Laboratorio Demo Centro, del B A 400 terminación 0473, que vence en 4 horas; es de Falcon.",
+              "tone": "hud",
+              "tag": "",
+              "color": "#3fd2e4",
+              "n": "02"
+            }
+          ]
+        }
+      },
+      {
+        "user": "cómo vamos con el reporte",
+        "orion": "Hay 2 casos: el de Laboratorio Demo Norte, terminación 9999 y el de Laboratorio Demo Centro, terminación 0473. ¿De cuál equipo? Dime la terminación de la serie.",
+        "screen": null
+      },
+      {
+        "user": "cero cuatro siete tres",
+        "orion": "Es el caso de Laboratorio Demo Centro, del BA400 terminación 0473. El motivo: Equipo no enciende la lámpara. Se abrió ayer y su plazo de 24 horas vence en 4 horas; es de Falcon. Está abierto y está asignado a ti. Todavía no tiene primera respuesta al cliente. Todavía no tiene movimientos en la bitácora. ¿Quieres dictar una nota para este caso, o que te diga los demás? También puedes decir, por ejemplo, «agrega un avance» o «cierra el caso».",
+        "screen": {
+          "layout": "equipment",
+          "kicker": "CASO",
+          "title": "Laboratorio Demo Centro",
+          "subtitle": "Equipo no enciende la lámpara",
+          "hint": "",
+          "date": "DOMINGO, 11 DE OCTUBRE",
+          "bg": "http://127.0.0.1:54321/functions/v1/alexa/assets/bg.jpg",
+          "logo": "http://127.0.0.1:54321/functions/v1/alexa/assets/orion.png",
+          "label": "CASO 1O201T61",
+          "chip": {
+            "text": "4 H",
+            "color": "#f2b54a",
+            "wash": "rgba(242,181,74,0.11)"
+          },
+          "facts": [
+            {
+              "k": "ESTADO",
+              "v": "abierto",
+              "color": "#3fd2e4"
+            },
+            {
+              "k": "PLAZO",
+              "v": "24 h · Falcon CDMX",
+              "color": "#3fd2e4"
+            },
+            {
+              "k": "EQUIPO",
+              "v": "···0473",
+              "color": "#3fd2e4"
+            },
+            {
+              "k": "ASIGNADO",
+              "v": "A ti",
+              "color": "#3fd2e4"
+            }
+          ],
+          "rows": []
+        }
+      }
+    ],
+    "filtros": [
+      {
+        "user": "cuántos casos tengo",
+        "orion": "Tienes 2 casos abiertos; el más urgente es el caso de Laboratorio Demo Norte, del BA400 terminación 9999, que ya venció hace 2 horas. ¿Te los leo?",
+        "screen": {
+          "layout": "list",
+          "kicker": "CASOS",
+          "title": "Casos",
+          "subtitle": "Tienes 2 casos abiertos; el más urgente es el caso de Laboratorio Demo Norte, del B A 400 terminación 9999, que ya venció hace 2 horas.",
+          "hint": "",
+          "date": "DOMINGO, 11 DE OCTUBRE",
+          "bg": "http://127.0.0.1:54321/functions/v1/alexa/assets/bg.jpg",
+          "logo": "http://127.0.0.1:54321/functions/v1/alexa/assets/orion.png",
+          "rest": 0,
+          "items": [
+            {
+              "text": "Laboratorio Demo Norte · ···9999 · vencido",
+              "tone": "risk",
+              "tag": "",
+              "color": "#ff6b7a",
+              "n": "01"
+            },
+            {
+              "text": "Laboratorio Demo Centro · ···0473 · 4 h",
+              "tone": "warn",
+              "tag": "",
+              "color": "#f2b54a",
+              "n": "02"
+            }
+          ]
+        }
+      },
+      {
+        "user": "casos de Monterrey",
+        "orion": "Hay un caso de Monterrey. El caso de Laboratorio Demo Norte, del BA400 terminación 9999, que ya venció hace 2 horas. ¿Quieres el detalle?",
+        "screen": {
+          "layout": "list",
+          "kicker": "CASOS",
+          "title": "De Monterrey",
+          "subtitle": "Hay un caso de Monterrey.",
+          "hint": "",
+          "date": "DOMINGO, 11 DE OCTUBRE",
+          "bg": "http://127.0.0.1:54321/functions/v1/alexa/assets/bg.jpg",
+          "logo": "http://127.0.0.1:54321/functions/v1/alexa/assets/orion.png",
+          "rest": 0,
+          "items": [
+            {
+              "text": "El caso de Laboratorio Demo Norte, del B A 400 terminación 9999, que ya venció hace 2 horas.",
+              "tone": "hud",
+              "tag": "",
+              "color": "#3fd2e4",
+              "n": "01"
+            }
+          ]
+        }
+      },
+      {
+        "user": "casos sin respuesta",
+        "orion": "Tienes 2 casos sin primera respuesta al cliente. El primero es el caso de Laboratorio Demo Norte, del BA400 terminación 9999, que ya venció hace 2 horas. El segundo es el caso de Laboratorio Demo Centro, del BA400 terminación 0473, que vence en 4 horas; es de Falcon. Para el detalle di, por ejemplo, «el primero», o la terminación del equipo.",
+        "screen": {
+          "layout": "list",
+          "kicker": "CASOS",
+          "title": "Sin primera respuesta al cliente",
+          "subtitle": "Tienes 2 casos sin primera respuesta al cliente.",
+          "hint": "",
+          "date": "DOMINGO, 11 DE OCTUBRE",
+          "bg": "http://127.0.0.1:54321/functions/v1/alexa/assets/bg.jpg",
+          "logo": "http://127.0.0.1:54321/functions/v1/alexa/assets/orion.png",
+          "rest": 0,
+          "items": [
+            {
+              "text": "El primero es el caso de Laboratorio Demo Norte, del B A 400 terminación 9999, que ya venció hace 2 horas.",
+              "tone": "hud",
+              "tag": "",
+              "color": "#3fd2e4",
+              "n": "01"
+            },
+            {
+              "text": "El segundo es el caso de Laboratorio Demo Centro, del B A 400 terminación 0473, que vence en 4 horas; es de Falcon.",
+              "tone": "hud",
+              "tag": "",
+              "color": "#3fd2e4",
+              "n": "02"
+            }
+          ]
+        }
+      }
+    ],
+    "detalleCaso": [
+      {
+        "user": "de qué se trata el caso",
+        "orion": "En el caso de Laboratorio Demo Centro, terminación 0473, el reporte dice: «La lámpara no enciende desde el arranque de la mañana.». Lo reportó Dra. Laura Gómez. ¿Qué más revisamos?",
+        "screen": {
+          "layout": "message",
+          "kicker": "CASO 1O201T61",
+          "title": "Laboratorio Demo Centro ···0473",
+          "subtitle": "",
+          "hint": "",
+          "date": "DOMINGO, 11 DE OCTUBRE",
+          "bg": "http://127.0.0.1:54321/functions/v1/alexa/assets/bg.jpg",
+          "logo": "http://127.0.0.1:54321/functions/v1/alexa/assets/orion.png",
+          "body": "La lámpara no enciende desde el arranque de la mañana."
+        }
+      },
+      {
+        "user": "quién reportó el caso",
+        "orion": "El contacto del caso de Laboratorio Demo Centro, terminación 0473 es Dra. Laura Gómez, teléfono 5512345678. ¿Qué más revisamos?",
+        "screen": {
+          "layout": "equipment",
+          "kicker": "CONTACTO DEL CASO",
+          "title": "Dra. Laura Gómez",
+          "subtitle": "Laboratorio Demo Centro ···0473",
+          "hint": "",
+          "date": "DOMINGO, 11 DE OCTUBRE",
+          "bg": "http://127.0.0.1:54321/functions/v1/alexa/assets/bg.jpg",
+          "logo": "http://127.0.0.1:54321/functions/v1/alexa/assets/orion.png",
+          "label": "CASO 1O201T61",
+          "chip": {
+            "text": "SIN RESPUESTA",
+            "color": "#f2b54a",
+            "wash": "rgba(242,181,74,0.11)"
+          },
+          "facts": [
+            {
+              "k": "TELÉFONO",
+              "v": "5512345678",
+              "color": "#3fd2e4"
+            },
+            {
+              "k": "CORREO",
+              "v": "—",
+              "color": "#3fd2e4"
+            },
+            {
+              "k": "ESTADO",
+              "v": "abierto",
+              "color": "#3fd2e4"
+            },
+            {
+              "k": "PLAZO",
+              "v": "24 h",
+              "color": "#3fd2e4"
+            }
+          ],
+          "rows": []
+        }
+      }
+    ],
+    "avance": [
+      {
+        "user": "agrega un avance cambié la lámpara y pásalo a pendiente por piezas",
+        "orion": "Agrego al caso de Laboratorio Demo Centro, terminación 0473 un avance: «Cambié la lámpara.», y lo paso a pendiente por piezas. ¿Lo guardo? Di «sí», «no» o «borrador».",
+        "screen": {
+          "layout": "message",
+          "kicker": "BITÁCORA · POR CONFIRMAR",
+          "title": "Laboratorio Demo Centro ···0473",
+          "subtitle": "",
+          "hint": "Di «sí», «no» o «borrador»",
+          "date": "DOMINGO, 11 DE OCTUBRE",
+          "bg": "http://127.0.0.1:54321/functions/v1/alexa/assets/bg.jpg",
+          "logo": "http://127.0.0.1:54321/functions/v1/alexa/assets/orion.png",
+          "body": "Agrego al caso de Laboratorio Demo Centro, terminación 0473 un avance: «Cambié la lámpara.», y lo paso a pendiente por piezas."
+        }
+      },
+      {
+        "user": "sí",
+        "orion": "Listo, guardé el avance en la bitácora y el caso quedó pendiente por piezas. ¿Qué más revisamos?",
+        "screen": {
+          "layout": "message",
+          "kicker": "ORION",
+          "title": "Orion",
+          "subtitle": "",
+          "hint": "Di «ayuda» para saber todo lo que puedo hacer",
+          "date": "DOMINGO, 11 DE OCTUBRE",
+          "bg": "http://127.0.0.1:54321/functions/v1/alexa/assets/bg.jpg",
+          "logo": "http://127.0.0.1:54321/functions/v1/alexa/assets/orion.png",
+          "body": "Listo, guardé el avance en la bitácora y el caso quedó pendiente por piezas."
+        }
+      },
+      {
+        "user": "léeme la bitácora",
+        "orion": "Lo más reciente del caso de Laboratorio Demo Centro, terminación 0473: hoy a las 7:28 de la tarde, Juan: avance, cambié la lámpara. ¿Te ayudo con algo más?",
+        "screen": {
+          "layout": "list",
+          "kicker": "BITÁCORA",
+          "title": "Laboratorio Demo Centro ···0473",
+          "subtitle": "1 movimientos recientes",
+          "hint": "",
+          "date": "DOMINGO, 11 DE OCTUBRE",
+          "bg": "http://127.0.0.1:54321/functions/v1/alexa/assets/bg.jpg",
+          "logo": "http://127.0.0.1:54321/functions/v1/alexa/assets/orion.png",
+          "rest": 0,
+          "items": [
+            {
+              "text": "AVANCE · Cambié la lámpara. (registrado por voz con Alexa)",
+              "tone": "hud",
+              "tag": "",
+              "color": "#3fd2e4",
+              "n": "01"
+            }
+          ]
+        }
+      }
+    ],
+    "borrador": [
+      {
+        "user": "registra una llamada el cliente confirma que ya enciende",
+        "orion": "Agrego al caso de Laboratorio Demo Centro, terminación 0473 una llamada: «El cliente confirma que ya enciende.». ¿Lo guardo? Di «sí», «no» o «borrador».",
+        "screen": {
+          "layout": "message",
+          "kicker": "BITÁCORA · POR CONFIRMAR",
+          "title": "Laboratorio Demo Centro ···0473",
+          "subtitle": "",
+          "hint": "Di «sí», «no» o «borrador»",
+          "date": "DOMINGO, 11 DE OCTUBRE",
+          "bg": "http://127.0.0.1:54321/functions/v1/alexa/assets/bg.jpg",
+          "logo": "http://127.0.0.1:54321/functions/v1/alexa/assets/orion.png",
+          "body": "Agrego al caso de Laboratorio Demo Centro, terminación 0473 una llamada: «El cliente confirma que ya enciende.»."
+        }
+      },
+      {
+        "user": "borrador",
+        "orion": "Listo, lo dejé como borrador. Puedes revisarlo y aprobarlo en Orión web, en la pestaña Alexa. ¿Algo más?",
+        "screen": {
+          "layout": "message",
+          "kicker": "BORRADOR",
+          "title": "Guardado para revisar",
+          "subtitle": "",
+          "hint": "Di «ayuda» para saber todo lo que puedo hacer",
+          "date": "DOMINGO, 11 DE OCTUBRE",
+          "bg": "http://127.0.0.1:54321/functions/v1/alexa/assets/bg.jpg",
+          "logo": "http://127.0.0.1:54321/functions/v1/alexa/assets/orion.png",
+          "body": "Listo, lo dejé como borrador. Puedes revisarlo y aprobarlo en Orion web, en la pestaña Alexa."
+        }
+      }
+    ],
+    "respuesta": [
+      {
+        "user": "registra la respuesta al cliente le expliqué que mañana vamos a primera hora",
+        "orion": "Registro la primera respuesta al cliente en el caso de Laboratorio Demo Centro, terminación 0473: «Le expliqué que mañana vamos a primera hora.». Al registrarla, Orión le envía un WhatsApp al cliente. ¿La registro? Di «sí», «no» o «borrador».",
+        "screen": {
+          "layout": "message",
+          "kicker": "RESPUESTA AL CLIENTE · POR CONFIRMAR",
+          "title": "Laboratorio Demo Centro ···0473",
+          "subtitle": "",
+          "hint": "Di «sí», «no» o «borrador»",
+          "date": "DOMINGO, 11 DE OCTUBRE",
+          "bg": "http://127.0.0.1:54321/functions/v1/alexa/assets/bg.jpg",
+          "logo": "http://127.0.0.1:54321/functions/v1/alexa/assets/orion.png",
+          "body": "Registro la primera respuesta al cliente en el caso de Laboratorio Demo Centro, terminación 0473: «Le expliqué que mañana vamos a primera hora.». Al registrarla, Orion le envía un WhatsApp al cliente."
+        }
+      },
+      {
+        "user": "sí",
+        "orion": "Último paso. Al registrarla sale el WhatsApp al cliente. Para registrar la primera respuesta, di «confirmo». Si prefieres, di «borrador» o «no».",
+        "screen": {
+          "layout": "message",
+          "kicker": "RESPUESTA AL CLIENTE · POR CONFIRMAR",
+          "title": "Laboratorio Demo Centro ···0473",
+          "subtitle": "",
+          "hint": "Di «confirmo» para continuar",
+          "date": "DOMINGO, 11 DE OCTUBRE",
+          "bg": "http://127.0.0.1:54321/functions/v1/alexa/assets/bg.jpg",
+          "logo": "http://127.0.0.1:54321/functions/v1/alexa/assets/orion.png",
+          "body": "Último paso. Al registrarla sale el WhatsApp al cliente. Para registrar la primera respuesta, di «confirmo». Si prefieres, di «borrador» o «no»."
+        }
+      },
+      {
+        "user": "confirmo",
+        "orion": "Listo, quedó registrada la primera respuesta. El cliente recibirá el WhatsApp de confirmación. ¿Qué más revisamos?",
+        "screen": {
+          "layout": "message",
+          "kicker": "CASO",
+          "title": "Confirmado",
+          "subtitle": "",
+          "hint": "Di «ayuda» para saber todo lo que puedo hacer",
+          "date": "DOMINGO, 11 DE OCTUBRE",
+          "bg": "http://127.0.0.1:54321/functions/v1/alexa/assets/bg.jpg",
+          "logo": "http://127.0.0.1:54321/functions/v1/alexa/assets/orion.png",
+          "body": "Listo, quedó registrada la primera respuesta. El cliente recibirá el WhatsApp de confirmación."
+        }
+      }
+    ],
+    "cerrar": [
+      {
+        "user": "cierra el caso",
+        "orion": "¿Cómo cierro el caso de Laboratorio Demo Centro, terminación 0473: solucionado, visita programada, sin respuesta del cliente, o cierre administrativo?",
+        "screen": null
+      },
+      {
+        "user": "solucionado",
+        "orion": "¿Qué se hizo? Dímelo empezando con «solución». Por ejemplo: solución cambié la lámpara y calibré glucosa.",
+        "screen": {
+          "layout": "message",
+          "kicker": "CIERRE DEL CASO",
+          "title": "Laboratorio Demo Centro ···0473",
+          "subtitle": "",
+          "hint": "Empieza con «detalle» o «solución»",
+          "date": "DOMINGO, 11 DE OCTUBRE",
+          "bg": "http://127.0.0.1:54321/functions/v1/alexa/assets/bg.jpg",
+          "logo": "http://127.0.0.1:54321/functions/v1/alexa/assets/orion.png",
+          "body": "¿Qué se hizo? Dímelo empezando con solución. Por ejemplo: solución cambié la lámpara y calibré glucosa."
+        }
+      },
+      {
+        "user": "solución cambié la lámpara y calibré glucosa",
+        "orion": "Cierro el caso de Laboratorio Demo Centro, terminación 0473 como solucionado: «Cambié la lámpara y calibré glucosa.». Al cerrarlo, el cliente recibe un WhatsApp con el cierre y la encuesta de satisfacción. ¿Lo cierro? Di «sí», «no» o «borrador».",
+        "screen": {
+          "layout": "message",
+          "kicker": "CIERRE DEL CASO · POR CONFIRMAR",
+          "title": "Laboratorio Demo Centro ···0473",
+          "subtitle": "",
+          "hint": "Di «sí», «no» o «borrador»",
+          "date": "DOMINGO, 11 DE OCTUBRE",
+          "bg": "http://127.0.0.1:54321/functions/v1/alexa/assets/bg.jpg",
+          "logo": "http://127.0.0.1:54321/functions/v1/alexa/assets/orion.png",
+          "body": "Cierro el caso de Laboratorio Demo Centro, terminación 0473 como solucionado: «Cambié la lámpara y calibré glucosa.». Al cerrarlo, el cliente recibe un WhatsApp con el cierre y la encuesta de satisfacción."
+        }
+      },
+      {
+        "user": "sí",
+        "orion": "Último paso. Al cerrarlo sale el WhatsApp al cliente. Para cerrar el caso de Laboratorio Demo Centro, terminación 0473, di «confirmo». Si prefieres, di «borrador» o «no».",
+        "screen": {
+          "layout": "message",
+          "kicker": "CIERRE DEL CASO · POR CONFIRMAR",
+          "title": "Laboratorio Demo Centro ···0473",
+          "subtitle": "",
+          "hint": "Di «confirmo» para continuar",
+          "date": "DOMINGO, 11 DE OCTUBRE",
+          "bg": "http://127.0.0.1:54321/functions/v1/alexa/assets/bg.jpg",
+          "logo": "http://127.0.0.1:54321/functions/v1/alexa/assets/orion.png",
+          "body": "Último paso. Al cerrarlo sale el WhatsApp al cliente. Para cerrar el caso de Laboratorio Demo Centro, terminación 0473, di «confirmo». Si prefieres, di «borrador» o «no»."
+        }
+      },
+      {
+        "user": "confirmo",
+        "orion": "Listo, cerré el caso de Laboratorio Demo Centro, terminación 0473 como solucionado. El cliente recibirá el WhatsApp de cierre y la encuesta de satisfacción. ¿Algo más?",
+        "screen": {
+          "layout": "message",
+          "kicker": "CASO",
+          "title": "Confirmado",
+          "subtitle": "",
+          "hint": "Di «ayuda» para saber todo lo que puedo hacer",
+          "date": "DOMINGO, 11 DE OCTUBRE",
+          "bg": "http://127.0.0.1:54321/functions/v1/alexa/assets/bg.jpg",
+          "logo": "http://127.0.0.1:54321/functions/v1/alexa/assets/orion.png",
+          "body": "Listo, cerré el caso de Laboratorio Demo Centro, terminación 0473 como solucionado. El cliente recibirá el WhatsApp de cierre y la encuesta de satisfacción."
+        }
+      }
+    ],
+    "historial": [
+      {
+        "user": "historial del cero cuatro siete tres",
+        "orion": "El BA400 terminación 0473 de Laboratorio Demo Centro, en Ciudad de México tiene un caso en su historial, ninguno abierto. Ayer, «Equipo no enciende la lámpara»: cerrado como solucionado. ¿Algo más?",
+        "screen": {
+          "layout": "list",
+          "kicker": "HISTORIAL DE CASOS",
+          "title": "BA400 ···0473",
+          "subtitle": "El B A 400 terminación 0473 de Laboratorio Demo Centro, en Ciudad de México tiene un caso en su historial, ninguno abierto.",
+          "hint": "",
+          "date": "DOMINGO, 11 DE OCTUBRE",
+          "bg": "http://127.0.0.1:54321/functions/v1/alexa/assets/bg.jpg",
+          "logo": "http://127.0.0.1:54321/functions/v1/alexa/assets/orion.png",
+          "rest": 0,
+          "items": [
+            {
+              "text": "2026-10-11 · Equipo no enciende la lámpara · cerrado",
+              "tone": "mute",
+              "tag": "",
+              "color": "#4f6070",
+              "n": "01"
+            }
+          ]
+        }
+      },
+      {
+        "user": "cuántos casos cerré esta semana",
+        "orion": "Esta semana cerraste un caso, solucionado. ¿Te ayudo con algo más?",
+        "screen": {
+          "layout": "message",
+          "kicker": "ORION",
+          "title": "Orion",
+          "subtitle": "",
+          "hint": "Di «ayuda» para saber todo lo que puedo hacer",
+          "date": "DOMINGO, 11 DE OCTUBRE",
+          "bg": "http://127.0.0.1:54321/functions/v1/alexa/assets/bg.jpg",
+          "logo": "http://127.0.0.1:54321/functions/v1/alexa/assets/orion.png",
+          "body": "Esta semana cerraste un caso, solucionado."
+        }
+      }
+    ],
+    "adminVer": [
+      {
+        "user": "casos sin asignar",
+        "orion": "Hay 2 casos sin asignar. Empecemos por el más urgente: el caso de Laboratorio Demo Norte, del BA400 terminación 9999, que ya venció hace 2 horas, de soporte químico. Te sugiero a Ricardo Ruiz, que no tiene casos abiertos. ¿Se lo asigno? Si prefieres a alguien más, dime su nombre; también pueden atenderlo Juan Pérez.",
+        "screen": null
+      },
+      {
+        "user": "sí",
+        "orion": "Listo, el caso de Laboratorio Demo Norte, terminación 9999 quedó asignado a Ricardo Ruiz. El siguiente sin asignar es el caso «Ruido en el brazo de muestra», que vence en 45 horas, de soporte de ingeniería. Te sugiero tomarlo tú, porque no tienes casos abiertos. ¿Te lo asigno? Si prefieres a alguien más, dime su nombre.",
+        "screen": null
+      },
+      {
+        "user": "Ricardo Ruiz",
+        "orion": "Un momento: el caso «Ruido en el brazo de muestra» es de soporte de ingeniería, y Ricardo Ruiz es del área de química. Si se lo asigno, la atención del caso pasa a soporte químico. ¿Confirmas el cambio de perfil de atención?",
+        "screen": {
+          "layout": "message",
+          "kicker": "ASIGNACIÓN · CAMBIO DE ÁREA",
+          "title": "Ruido en el brazo de muestra",
+          "subtitle": "",
+          "hint": "Di «sí» o «no»",
+          "date": "DOMINGO, 11 DE OCTUBRE",
+          "bg": "http://127.0.0.1:54321/functions/v1/alexa/assets/bg.jpg",
+          "logo": "http://127.0.0.1:54321/functions/v1/alexa/assets/orion.png",
+          "body": "Un momento: el caso «Ruido en el brazo de muestra» es de soporte de ingeniería, y Ricardo Ruiz es del área de química. Si se lo asigno, la atención del caso pasa a soporte químico. ¿Confirmas el cambio de perfil de atención?"
+        }
+      },
+      {
+        "user": "sí",
+        "orion": "Listo, el caso «Ruido en el brazo de muestra» quedó asignado a Ricardo Ruiz y su atención pasó a soporte químico. Era el último de la lista. ¿Te ayudo con algo más?",
+        "screen": {
+          "layout": "message",
+          "kicker": "ORION",
+          "title": "Orion",
+          "subtitle": "",
+          "hint": "Di «ayuda» para saber todo lo que puedo hacer",
+          "date": "DOMINGO, 11 DE OCTUBRE",
+          "bg": "http://127.0.0.1:54321/functions/v1/alexa/assets/bg.jpg",
+          "logo": "http://127.0.0.1:54321/functions/v1/alexa/assets/orion.png",
+          "body": "Listo, el caso «Ruido en el brazo de muestra» quedó asignado a Ricardo Ruiz y su atención pasó a soporte químico. Era el último de la lista."
+        }
+      }
+    ],
+    "asignar": [
+      {
+        "user": "asigna el caso a Juan",
+        "orion": "Asigno el caso de Laboratorio Demo Norte, terminación 9999 a Juan Pérez, del área de química. ¿Lo confirmo? Di «sí» o «no».",
+        "screen": {
+          "layout": "message",
+          "kicker": "ASIGNACIÓN · POR CONFIRMAR",
+          "title": "Laboratorio Demo Norte ···9999",
+          "subtitle": "",
+          "hint": "Di «sí» o «no»",
+          "date": "DOMINGO, 11 DE OCTUBRE",
+          "bg": "http://127.0.0.1:54321/functions/v1/alexa/assets/bg.jpg",
+          "logo": "http://127.0.0.1:54321/functions/v1/alexa/assets/orion.png",
+          "body": "Asigno el caso de Laboratorio Demo Norte, terminación 9999 a Juan Pérez, del área de química."
+        }
+      },
+      {
+        "user": "sí",
+        "orion": "Listo, el caso de Laboratorio Demo Norte, terminación 9999 quedó asignado a Juan Pérez. ¿Algo más?",
+        "screen": {
+          "layout": "message",
+          "kicker": "ORION",
+          "title": "Orion",
+          "subtitle": "",
+          "hint": "Di «ayuda» para saber todo lo que puedo hacer",
+          "date": "DOMINGO, 11 DE OCTUBRE",
+          "bg": "http://127.0.0.1:54321/functions/v1/alexa/assets/bg.jpg",
+          "logo": "http://127.0.0.1:54321/functions/v1/alexa/assets/orion.png",
+          "body": "Listo, el caso de Laboratorio Demo Norte, terminación 9999 quedó asignado a Juan Pérez."
+        }
+      }
+    ],
+    "equipo": [
+      {
+        "user": "cómo está el nueve nueve nueve nueve",
+        "orion": "El BA400 terminación 9999 de Laboratorio Demo Norte, en Monterrey, está en alarma fatal desde hoy a las 5:28 de la tarde. Alarma principal: error de posición inicial vertical del brazo de reactivo 1. Tuvo 3 alarmas en las últimas 24 horas. El control de glucosa nivel 1 se rechazó: dio 140 cuando la media es 100, unas 8 desviaciones estándar arriba. El otro control de la semana salió bien. Tiene un caso abierto que ya venció hace 2 horas. ¿Quieres que lo diagnostique?",
+        "screen": {
+          "layout": "equipment",
+          "kicker": "EQUIPO",
+          "title": "BA400 ···9999",
+          "subtitle": "Laboratorio Demo Norte · Monterrey",
+          "hint": "",
+          "date": "DOMINGO, 11 DE OCTUBRE",
+          "bg": "http://127.0.0.1:54321/functions/v1/alexa/assets/bg.jpg",
+          "logo": "http://127.0.0.1:54321/functions/v1/alexa/assets/orion.png",
+          "label": "SERIE 834009999",
+          "chip": {
+            "text": "FATAL",
+            "color": "#ff6b7a",
+            "wash": "rgba(255,107,122,0.12)"
+          },
+          "facts": [
+            {
+              "k": "ÚLTIMO EVENTO",
+              "v": "hoy a las 7:16 de la tarde",
+              "tone": "hud",
+              "color": "#3fd2e4"
+            },
+            {
+              "k": "ALARMAS 24 H",
+              "v": "3",
+              "tone": "warn",
+              "color": "#f2b54a"
+            },
+            {
+              "k": "CONTROLES 7 D",
+              "v": "1 ok · 1 rech.",
+              "tone": "risk",
+              "color": "#ff6b7a"
+            },
+            {
+              "k": "CASOS",
+              "v": "1",
+              "tone": "warn",
+              "color": "#f2b54a"
+            }
+          ],
+          "rows": [
+            {
+              "text": "100 BR1 Vertical Home Error · Brazo R1 · Ubicación 3D definida",
+              "tone": "risk",
+              "tag": "ALARMA",
+              "color": "#ff6b7a"
+            },
+            {
+              "text": "GLUCOSE · 1_3s",
+              "tone": "risk",
+              "tag": "CONTROL",
+              "color": "#ff6b7a"
+            }
+          ]
+        }
+      }
+    ],
+    "alarmas": [
+      {
+        "user": "qué alarmas tiene el nueve nueve nueve nueve",
+        "orion": "En los últimos 14 días, el BA400 terminación 9999 tuvo 4 alarmas: Error de posición inicial vertical del brazo de reactivo 1: 3 veces, la última hoy a las 6:28 de la tarde. Temperatura fuera de rango en el refrigerador de reactivos: una vez, la última hoy a las 2:28 de la tarde. ¿Te ayudo con algo más?",
+        "screen": {
+          "layout": "list",
+          "kicker": "ALARMAS",
+          "title": "BA400 ···9999 · 14 días",
+          "subtitle": "4 eventos · 2 códigos",
+          "hint": "",
+          "date": "DOMINGO, 11 DE OCTUBRE",
+          "bg": "http://127.0.0.1:54321/functions/v1/alexa/assets/bg.jpg",
+          "logo": "http://127.0.0.1:54321/functions/v1/alexa/assets/orion.png",
+          "rest": 0,
+          "items": [
+            {
+              "text": "Error de posición inicial vertical del brazo de reactivo 1: 3 veces, la última hoy a las 6:28 de la tarde.",
+              "tone": "warn",
+              "tag": "",
+              "color": "#f2b54a",
+              "n": "01"
+            },
+            {
+              "text": "Temperatura fuera de rango en el refrigerador de reactivos: una vez, la última hoy a las 2:28 de la tarde.",
+              "tone": "warn",
+              "tag": "",
+              "color": "#f2b54a",
+              "n": "02"
+            }
+          ]
+        }
+      },
+      {
+        "user": "qué significa la alarma doscientos tres",
+        "orion": "La alarma 203 significa colisión en el brazo de reactivo 1. Es fatal: detiene el trabajo del equipo. En este equipo no ha aparecido en 30 días. ¿Te ayudo con algo más?",
+        "screen": {
+          "layout": "equipment",
+          "kicker": "CATÁLOGO DE ALARMAS",
+          "title": "DR1 Collision Detected",
+          "subtitle": "Brazo R1",
+          "hint": "",
+          "date": "DOMINGO, 11 DE OCTUBRE",
+          "bg": "http://127.0.0.1:54321/functions/v1/alexa/assets/bg.jpg",
+          "logo": "http://127.0.0.1:54321/functions/v1/alexa/assets/orion.png",
+          "label": "ALARMA 203",
+          "chip": {
+            "text": "FATAL",
+            "color": "#ff6b7a",
+            "wash": "rgba(255,107,122,0.12)"
+          },
+          "facts": [
+            {
+              "k": "ALCANCE",
+              "v": "component",
+              "color": "#3fd2e4"
+            },
+            {
+              "k": "ÚLTIMOS 30 DÍAS",
+              "v": "0",
+              "color": "#3fd2e4"
+            }
+          ],
+          "rows": [
+            {
+              "text": "Referencia del conjunto; no confirma una pieza averiada.",
+              "tone": "hud",
+              "tag": "",
+              "color": "#3fd2e4"
+            }
+          ]
+        }
+      }
+    ],
+    "controles": [
+      {
+        "user": "pasaron los controles del nueve nueve nueve nueve",
+        "orion": "En los últimos 30 días hubo controles de 3 pruebas. El control de glucosa nivel 1 se rechazó hoy a las 4:28 de la tarde: dio 140 cuando la media es 100, unas 8 desviaciones estándar arriba. Los demás salieron bien. ¿Quieres que lo diagnostique?",
+        "screen": {
+          "layout": "list",
+          "kicker": "CONTROLES · BPL",
+          "title": "BA400 ···9999 · controles",
+          "subtitle": "3 pruebas · 1 rechazadas",
+          "hint": "",
+          "date": "DOMINGO, 11 DE OCTUBRE",
+          "bg": "http://127.0.0.1:54321/functions/v1/alexa/assets/bg.jpg",
+          "logo": "http://127.0.0.1:54321/functions/v1/alexa/assets/orion.png",
+          "rest": 0,
+          "items": [
+            {
+              "text": "GLUCOSE · 140 mg/dL · 1_3s",
+              "tone": "risk",
+              "tag": "",
+              "color": "#ff6b7a",
+              "n": "01"
+            },
+            {
+              "text": "CHOLESTEROL · 180 ",
+              "tone": "ok",
+              "tag": "",
+              "color": "#7fe0b5",
+              "n": "02"
+            },
+            {
+              "text": "ALT-GPT · 42 ",
+              "tone": "ok",
+              "tag": "",
+              "color": "#7fe0b5",
+              "n": "03"
+            }
+          ]
+        }
+      },
+      {
+        "user": "cuándo se calibró glucosa",
+        "orion": "La última calibración de glucosa fue hoy a las 2:28 de la tarde y quedó aceptada, con correlación 0.9995 y error relativo 1.2 por ciento. Se usó el calibrador cal bio, lote C77. ¿Te ayudo con algo más?",
+        "screen": {
+          "layout": "equipment",
+          "kicker": "CALIBRACIÓN · BPL",
+          "title": "GLUCOSE",
+          "subtitle": "BA400 ···9999",
+          "hint": "",
+          "date": "DOMINGO, 11 DE OCTUBRE",
+          "bg": "http://127.0.0.1:54321/functions/v1/alexa/assets/bg.jpg",
+          "logo": "http://127.0.0.1:54321/functions/v1/alexa/assets/orion.png",
+          "label": "SERIE 834009999",
+          "chip": {
+            "text": "ACEPTADA",
+            "color": "#7fe0b5",
+            "wash": "rgba(127,224,181,0.10)"
+          },
+          "facts": [
+            {
+              "k": "FECHA",
+              "v": "hoy a las 2:28 de la tarde",
+              "color": "#3fd2e4"
+            },
+            {
+              "k": "FACTOR",
+              "v": "sin dato",
+              "color": "#3fd2e4"
+            },
+            {
+              "k": "CORRELACIÓN",
+              "v": "0.9995",
+              "color": "#3fd2e4"
+            },
+            {
+              "k": "CALIBRADOR",
+              "v": "CAL BIO · C-77",
+              "color": "#3fd2e4"
+            }
+          ],
+          "rows": []
+        }
+      },
+      {
+        "user": "muéstrame la curva de reacción de glucosa",
+        "orion": "Te muestro la curva de reacción de glucosa, control, hoy a las 4:28 de la tarde: 3 réplicas, absorbancia final 0.539, 0.525 y 0.547; diferencia entre réplicas 0.022. ¿Qué más revisamos?",
+        "screen": {
+          "layout": "chart",
+          "kicker": "CURVA DE REACCIÓN",
+          "title": "GLUCOSE · BA400 ···9999",
+          "subtitle": "hoy a las 4:28 de la tarde",
+          "hint": "",
+          "date": "DOMINGO, 11 DE OCTUBRE",
+          "bg": "http://127.0.0.1:54321/functions/v1/alexa/assets/bg.jpg",
+          "logo": "http://127.0.0.1:54321/functions/v1/alexa/assets/orion.png",
+          "p1": "M 4.0 182.0 L 14.1 160.6 L 24.1 142.3 L 34.2 125.4 L 44.2 112.2 L 54.3 99.1 L 64.3 89.3 L 74.4 79.8 L 84.4 72.5 L 94.5 65.4 L 104.5 59.7 L 114.6 53.9 L 124.6 49.1 L 134.7 45.2 L 144.7 42.7 L 154.8 39.4 L 164.8 36.4 L 174.9 35.0 L 184.9 33.1 L 195.0 30.8 L 205.0 29.7 L 215.1 28.8 L 225.1 27.1 L 235.2 26.5 L 245.2 25.2 L 255.3 24.5 L 265.3 24.8 L 275.4 23.4 L 285.4 23.9 L 295.5 22.9 L 305.5 23.1 L 315.6 22.7 L 325.6 22.0 L 335.7 22.0 L 345.7 21.5 L 355.8 21.7 L 365.8 21.1 L 375.9 21.0 L 385.9 21.3 L 396.0 21.1",
+          "c1": "#3fd2e4",
+          "p2": "M 4.0 182.8 L 14.1 161.6 L 24.1 144.2 L 34.2 128.3 L 44.2 114.8 L 54.3 103.5 L 64.3 92.8 L 74.4 83.8 L 84.4 76.6 L 94.5 69.9 L 104.5 64.1 L 114.6 58.6 L 124.6 54.8 L 134.7 50.5 L 144.7 47.7 L 154.8 45.0 L 164.8 43.0 L 174.9 40.5 L 184.9 38.1 L 195.0 37.0 L 205.0 35.6 L 215.1 34.3 L 225.1 33.1 L 235.2 32.7 L 245.2 32.0 L 255.3 30.8 L 265.3 30.9 L 275.4 30.3 L 285.4 29.5 L 295.5 29.6 L 305.5 28.5 L 315.6 28.1 L 325.6 27.9 L 335.7 27.8 L 345.7 27.9 L 355.8 27.3 L 365.8 27.5 L 375.9 27.8 L 385.9 27.9 L 396.0 27.8",
+          "c2": "#7fe0b5",
+          "p3": "M 4.0 182.7 L 14.1 160.8 L 24.1 141.2 L 34.2 124.8 L 44.2 110.7 L 54.3 97.9 L 64.3 87.3 L 74.4 77.4 L 84.4 70.1 L 94.5 62.5 L 104.5 56.3 L 114.6 50.9 L 124.6 46.8 L 134.7 42.7 L 144.7 39.3 L 154.8 35.8 L 164.8 33.8 L 174.9 31.4 L 184.9 29.4 L 195.0 28.1 L 205.0 26.6 L 215.1 24.6 L 225.1 24.5 L 235.2 23.3 L 245.2 22.8 L 255.3 21.8 L 265.3 20.4 L 275.4 20.3 L 285.4 19.9 L 295.5 19.4 L 305.5 19.5 L 315.6 18.7 L 325.6 18.6 L 335.7 18.0 L 345.7 17.9 L 355.8 18.3 L 365.8 18.4 L 375.9 17.4 L 385.9 17.5 L 396.0 17.2",
+          "c3": "#f2b54a",
+          "p4": "",
+          "c4": "#3fd2e4",
+          "grid": "M 0 50 L 400 50 M 0 100 L 400 100 M 0 150 L 400 150",
+          "xLabel": "CICLO",
+          "yLabel": "ABS 1",
+          "legend": [
+            {
+              "label": "Réplica 1",
+              "color": "#3fd2e4"
+            },
+            {
+              "label": "Réplica 2",
+              "color": "#7fe0b5"
+            },
+            {
+              "label": "Réplica 3",
+              "color": "#f2b54a"
+            }
+          ],
+          "facts": [
+            {
+              "k": "RÉPLICA 1",
+              "v": "Abs final 0.539",
+              "color": "#3fd2e4"
+            },
+            {
+              "k": "RÉPLICA 2",
+              "v": "Abs final 0.525",
+              "color": "#3fd2e4"
+            },
+            {
+              "k": "RÉPLICA 3",
+              "v": "Abs final 0.547",
+              "color": "#3fd2e4"
+            }
+          ]
+        }
+      }
+    ],
+    "diagnostico": [
+      {
+        "user": "cómo está el nueve nueve nueve nueve",
+        "orion": "El BA400 terminación 9999 de Laboratorio Demo Norte, en Monterrey, está en alarma fatal desde hoy a las 5:28 de la tarde. Alarma principal: error de posición inicial vertical del brazo de reactivo 1. Tuvo 3 alarmas en las últimas 24 horas. El control de glucosa nivel 1 se rechazó: dio 140 cuando la media es 100, unas 8 desviaciones estándar arriba. El otro control de la semana salió bien. Tiene un caso abierto que ya venció hace 2 horas. ¿Quieres que lo diagnostique?",
+        "screen": {
+          "layout": "equipment",
+          "kicker": "EQUIPO",
+          "title": "BA400 ···9999",
+          "subtitle": "Laboratorio Demo Norte · Monterrey",
+          "hint": "",
+          "date": "DOMINGO, 11 DE OCTUBRE",
+          "bg": "http://127.0.0.1:54321/functions/v1/alexa/assets/bg.jpg",
+          "logo": "http://127.0.0.1:54321/functions/v1/alexa/assets/orion.png",
+          "label": "SERIE 834009999",
+          "chip": {
+            "text": "FATAL",
+            "color": "#ff6b7a",
+            "wash": "rgba(255,107,122,0.12)"
+          },
+          "facts": [
+            {
+              "k": "ÚLTIMO EVENTO",
+              "v": "hoy a las 7:16 de la tarde",
+              "tone": "hud",
+              "color": "#3fd2e4"
+            },
+            {
+              "k": "ALARMAS 24 H",
+              "v": "3",
+              "tone": "warn",
+              "color": "#f2b54a"
+            },
+            {
+              "k": "CONTROLES 7 D",
+              "v": "1 ok · 1 rech.",
+              "tone": "risk",
+              "color": "#ff6b7a"
+            },
+            {
+              "k": "CASOS",
+              "v": "1",
+              "tone": "warn",
+              "color": "#f2b54a"
+            }
+          ],
+          "rows": [
+            {
+              "text": "100 BR1 Vertical Home Error · Brazo R1 · Ubicación 3D definida",
+              "tone": "risk",
+              "tag": "ALARMA",
+              "color": "#ff6b7a"
+            },
+            {
+              "text": "GLUCOSE · 1_3s",
+              "tone": "risk",
+              "tag": "CONTROL",
+              "color": "#ff6b7a"
+            }
+          ]
+        }
+      },
+      {
+        "user": "sí",
+        "orion": "Revisé las alarmas y los controles del equipo: falla glucosa, y ALT y urea salen bien. Lo más probable, con 60 por ciento de certeza, es un problema del control, del calibrador o de la preparación de la muestra. La segunda opción, con 56 por ciento, es un problema óptico o de fotometría. Para distinguirlas, corre ácido úrico: comparte el filtro de 505 nanómetros con glucosa; si sale bien, eso pierde peso, y si falla, gana peso. ¿Quieres que te guíe para verificarlo?",
+        "screen": {
+          "layout": "diagnosis",
+          "kicker": "DIAGNÓSTICO DIFERENCIAL · DRI",
+          "title": "BA400 ···9999 · hipótesis",
+          "subtitle": "Fallan: Glucosa · Bien: Alanina aminotransferasa, Urea UV",
+          "hint": "Di «guíame» para verificar paso a paso, o «por qué»",
+          "date": "DOMINGO, 11 DE OCTUBRE",
+          "bg": "http://127.0.0.1:54321/functions/v1/alexa/assets/bg.jpg",
+          "logo": "http://127.0.0.1:54321/functions/v1/alexa/assets/orion.png",
+          "bars": [
+            {
+              "label": "Sospecha de control / calibrador / error preanalítico",
+              "detail": "Preanalítica · QC rechazado con blanco y calibración aceptados en GLUCOSE: la desviación apunta a control, lote o preanalítica. (+22)",
+              "frac": 0.6,
+              "tone": "warn",
+              "value": "60%",
+              "n": "01",
+              "color": "#f2b54a",
+              "width": "60%"
+            },
+            {
+              "label": "Sospecha óptica / fotometría",
+              "detail": "Sistema óptico · 100% de fallidas comparten Filtro/longitud 505 nm. (+26)",
+              "frac": 0.56,
+              "tone": "hud",
+              "value": "56%",
+              "n": "02",
+              "color": "#3fd2e4",
+              "width": "56%"
+            },
+            {
+              "label": "Sospecha de termostatización / estabilidad de reactivo",
+              "detail": "Rotor de reacción · Las técnicas endpoint correctas contrastan contra cinéticas sensibles. (+12)",
+              "frac": 0.4,
+              "tone": "hud",
+              "value": "40%",
+              "n": "03",
+              "color": "#3fd2e4",
+              "width": "40%"
+            },
+            {
+              "label": "Sospecha de pipeteo / fluídica / dilución",
+              "detail": "Sistema fluídico · Reglas Westgard de error aleatorio (1_3s) en el monitor BPL. (+8)",
+              "frac": 0.36,
+              "tone": "hud",
+              "value": "36%",
+              "n": "04",
+              "color": "#3fd2e4",
+              "width": "36%"
+            }
+          ],
+          "note": {
+            "text": "",
+            "color": "#6f8191"
+          }
+        }
+      },
+      {
+        "user": "colesterol, triglicéridos y ácido úrico salen bien",
+        "orion": "Revisé las alarmas y los controles del equipo: falla glucosa, y otras 5 pruebas salen bien. Lo más probable, con 85 por ciento de certeza, es un problema del control, del calibrador o de la preparación de la muestra. El filtro de 505 nanómetros pierde peso, porque colesterol, triglicéridos y ácido úrico también lo usan y salen bien; no lo descarto hasta correr la utilidad Photometry y la línea base. Lo primero: revisa cómo se preparó el control y si cambió de lote o de frasco cuando empezó la falla. ¿Quieres que te guíe para verificarlo?",
+        "screen": {
+          "layout": "diagnosis",
+          "kicker": "DIAGNÓSTICO DIFERENCIAL · DRI",
+          "title": "BA400 ···9999 · hipótesis",
+          "subtitle": "Fallan: Glucosa · Bien: Alanina aminotransferasa, Urea UV, Colesterol, Triglicéridos, Ácido úrico",
+          "hint": "Di «guíame» para verificar paso a paso, o «por qué»",
+          "date": "DOMINGO, 11 DE OCTUBRE",
+          "bg": "http://127.0.0.1:54321/functions/v1/alexa/assets/bg.jpg",
+          "logo": "http://127.0.0.1:54321/functions/v1/alexa/assets/orion.png",
+          "bars": [
+            {
+              "label": "Sospecha de control / calibrador / error preanalítico",
+              "detail": "Preanalítica · El factor técnico dominante (Punto final) también lo comparten las pruebas correctas: el contraste apunta a control, lote o preanalítica antes que al hardware. (+22)",
+              "frac": 0.85,
+              "tone": "risk",
+              "value": "85%",
+              "n": "01",
+              "color": "#ff6b7a",
+              "width": "85%"
+            },
+            {
+              "label": "Sospecha de termostatización / estabilidad de reactivo",
+              "detail": "Rotor de reacción · Las técnicas endpoint correctas contrastan contra cinéticas sensibles. (+12)",
+              "frac": 0.4,
+              "tone": "hud",
+              "value": "40%",
+              "n": "02",
+              "color": "#3fd2e4",
+              "width": "40%"
+            },
+            {
+              "label": "Sospecha de pipeteo / fluídica / dilución",
+              "detail": "Sistema fluídico · Reglas Westgard de error aleatorio (1_3s) en el monitor BPL. (+8)",
+              "frac": 0.36,
+              "tone": "hud",
+              "value": "36%",
+              "n": "03",
+              "color": "#3fd2e4",
+              "width": "36%"
+            },
+            {
+              "label": "Sospecha óptica / fotometría",
+              "detail": "Sistema óptico · 1 de 1 fallidas usan Filtro/longitud 505 nm. (+26)",
+              "frac": 0.08,
+              "tone": "hud",
+              "value": "8%",
+              "n": "04",
+              "color": "#3fd2e4",
+              "width": "8%"
+            }
+          ],
+          "note": {
+            "text": "Menos probable por contraste, sin descartar: Filtro/longitud 505 nm (Colesterol, Triglicéridos, Ácido úrico salen bien)",
+            "color": "#3fd2e4"
+          }
+        }
+      },
+      {
+        "user": "por qué",
+        "orion": "Me inclino por un problema del control, del calibrador o de la preparación de la muestra por esto: lo técnico que tienen en común, la lectura de punto final, también lo usan las pruebas que salen bien y el control de glucosa se rechazó aunque el blanco y la calibración salieron bien. El filtro de 505 nanómetros pierde peso, porque colesterol, triglicéridos y ácido úrico también lo usan y salen bien; no lo descarto hasta correr la utilidad Photometry y la línea base. Para afinarlo necesitaría comparar el control contra su hoja de datos. ¿Quieres que te guíe para verificarlo?",
+        "screen": {
+          "layout": "message",
+          "kicker": "DIAGNÓSTICO",
+          "title": "Por qué",
+          "subtitle": "",
+          "hint": "Di «ayuda» para saber todo lo que puedo hacer",
+          "date": "DOMINGO, 11 DE OCTUBRE",
+          "bg": "http://127.0.0.1:54321/functions/v1/alexa/assets/bg.jpg",
+          "logo": "http://127.0.0.1:54321/functions/v1/alexa/assets/orion.png",
+          "body": "Me inclino por un problema del control, del calibrador o de la preparación de la muestra por esto: lo técnico que tienen en común, la lectura de punto final, también lo usan las pruebas que salen bien y el control de glucosa se rechazó aunque el blanco y la calibración salieron bien. El filtro de 505 nanómetros pierde peso, porque colesterol, triglicéridos y ácido úrico también lo usan y salen bien; no lo descarto hasta correr la utilidad Photometry y la línea base. Para afinarlo necesitaría comparar el control contra su hoja de datos. ¿Quieres que te guíe para verificarlo?"
+        }
+      }
+    ],
+    "guia": [
+      {
+        "user": "guíame",
+        "orion": "Vamos a verificar si es el control, el calibrador o la preparación. Son 4 pasos; cuando te pregunte algo, contéstame sí o no. Paso 1. Revisa cómo se preparó el control y si cambió de lote o de frasco cuando empezó la falla. ¿Hubo algún cambio de lote, de frasco o de preparación en ese momento?",
+        "screen": {
+          "layout": "procedure",
+          "kicker": "VERIFICACIÓN GUIADA",
+          "title": "¿Es el control, el calibrador o la preparación",
+          "subtitle": "",
+          "hint": "Responde «sí» o «no»",
+          "date": "DOMINGO, 11 DE OCTUBRE",
+          "bg": "http://127.0.0.1:54321/functions/v1/alexa/assets/bg.jpg",
+          "logo": "http://127.0.0.1:54321/functions/v1/alexa/assets/orion.png",
+          "step": "PASO 1 DE 4",
+          "body": "Revisa cómo se preparó el control y si cambió de lote o de frasco cuando empezó la falla.",
+          "caution": "¿Hubo algún cambio de lote, de frasco o de preparación en ese momento?",
+          "dots": [
+            {
+              "color": "#3fd2e4"
+            },
+            {
+              "color": "rgba(167,182,196,0.22)"
+            },
+            {
+              "color": "rgba(167,182,196,0.22)"
+            },
+            {
+              "color": "rgba(167,182,196,0.22)"
+            }
+          ]
+        }
+      },
+      {
+        "user": "sí",
+        "orion": "Entonces lo más probable es el control o el calibrador: prepara un control nuevo, revisa caducidad y almacenamiento, y vuelve a correrlo. Paso 2. Revisa el lote, la preparación, la caducidad y el almacenamiento del control y del calibrador. Cuando lo tengas, di «siguiente».",
+        "screen": {
+          "layout": "procedure",
+          "kicker": "VERIFICACIÓN GUIADA",
+          "title": "¿Es el control, el calibrador o la preparación",
+          "subtitle": "",
+          "hint": "«Siguiente» · «Repite» · «Anterior»",
+          "date": "DOMINGO, 11 DE OCTUBRE",
+          "bg": "http://127.0.0.1:54321/functions/v1/alexa/assets/bg.jpg",
+          "logo": "http://127.0.0.1:54321/functions/v1/alexa/assets/orion.png",
+          "step": "PASO 2 DE 4",
+          "body": "Revisa el lote, la preparación, la caducidad y el almacenamiento del control y del calibrador.",
+          "caution": "",
+          "dots": [
+            {
+              "color": "#3fd2e4"
+            },
+            {
+              "color": "#3fd2e4"
+            },
+            {
+              "color": "rgba(167,182,196,0.22)"
+            },
+            {
+              "color": "rgba(167,182,196,0.22)"
+            }
+          ]
+        }
+      },
+      {
+        "user": "siguiente",
+        "orion": "Paso 3. Verifica que la calibración activa y la técnica configurada sean las correctas. Cuando lo tengas, di «siguiente».",
+        "screen": {
+          "layout": "procedure",
+          "kicker": "VERIFICACIÓN GUIADA",
+          "title": "¿Es el control, el calibrador o la preparación",
+          "subtitle": "",
+          "hint": "«Siguiente» · «Repite» · «Anterior»",
+          "date": "DOMINGO, 11 DE OCTUBRE",
+          "bg": "http://127.0.0.1:54321/functions/v1/alexa/assets/bg.jpg",
+          "logo": "http://127.0.0.1:54321/functions/v1/alexa/assets/orion.png",
+          "step": "PASO 3 DE 4",
+          "body": "Verifica que la calibración activa y la técnica configurada sean las correctas.",
+          "caution": "",
+          "dots": [
+            {
+              "color": "#3fd2e4"
+            },
+            {
+              "color": "#3fd2e4"
+            },
+            {
+              "color": "#3fd2e4"
+            },
+            {
+              "color": "rgba(167,182,196,0.22)"
+            }
+          ]
+        }
+      }
+    ],
+    "cierre": [
+      {
+        "user": "ya quedó",
+        "orion": "Excelente, lo registro como resuelto. Con esto el DRI aprende para el siguiente caso. ¿Quieres dictar una nota para el caso?",
+        "screen": {
+          "layout": "message",
+          "kicker": "APRENDIZAJE",
+          "title": "Caso registrado",
+          "subtitle": "",
+          "hint": "Di «ayuda» para saber todo lo que puedo hacer",
+          "date": "DOMINGO, 11 DE OCTUBRE",
+          "bg": "http://127.0.0.1:54321/functions/v1/alexa/assets/bg.jpg",
+          "logo": "http://127.0.0.1:54321/functions/v1/alexa/assets/orion.png",
+          "body": "Excelente, lo registro como resuelto. Con esto el DRI aprende para el siguiente caso. ¿Quieres dictar una nota para el caso?"
+        }
+      }
+    ],
+    "inserto": [
+      {
+        "user": "cuánto dura colesterol a bordo",
+        "orion": "Según el inserto, colesterol abierto es estable a bordo 60 días, es decir, 2 meses, en el compartimento refrigerado del analizador. ¿Qué más revisamos?",
+        "screen": {
+          "layout": "equipment",
+          "kicker": "IFU · EINFO.BIO",
+          "title": "COLESTEROL",
+          "subtitle": "Componente 00002 · caduca 29 de agosto",
+          "hint": "",
+          "date": "DOMINGO, 11 DE OCTUBRE",
+          "bg": "http://127.0.0.1:54321/functions/v1/alexa/assets/bg.jpg",
+          "logo": "http://127.0.0.1:54321/functions/v1/alexa/assets/orion.png",
+          "label": "21505 · LOTE 0001707",
+          "chip": {
+            "text": "VIGENTE",
+            "color": "#7fe0b5",
+            "wash": "rgba(127,224,181,0.10)"
+          },
+          "facts": [
+            {
+              "k": "A BORDO",
+              "v": "60 días",
+              "color": "#3fd2e4"
+            },
+            {
+              "k": "LINEALIDAD",
+              "v": "1000 mg/dL",
+              "color": "#3fd2e4"
+            },
+            {
+              "k": "BLANCO MÁX.",
+              "v": "0.2",
+              "color": "#3fd2e4"
+            },
+            {
+              "k": "FILTRO",
+              "v": "505 nm",
+              "color": "#3fd2e4"
+            }
+          ],
+          "rows": []
+        }
+      },
+      {
+        "user": "qué interfiere con glucosa",
+        "orion": "Según el inserto de glucosa: hemólisis (hemoglobina) no interfiere por debajo de 300 miligramos por decilitro, bilirrubina no interfiere por debajo de 10 miligramos por decilitro, lipemia (triglicéridos) no interfiere por debajo de 125 miligramos por decilitro y ácido ascórbico no interfiere por debajo de 25 miligramos por decilitro. ¿Te ayudo con algo más?",
+        "screen": {
+          "layout": "equipment",
+          "kicker": "IFU · EINFO.BIO",
+          "title": "GLUCOSA",
+          "subtitle": "Componente 00005 · caduca 19 de marzo",
+          "hint": "",
+          "date": "DOMINGO, 11 DE OCTUBRE",
+          "bg": "http://127.0.0.1:54321/functions/v1/alexa/assets/bg.jpg",
+          "logo": "http://127.0.0.1:54321/functions/v1/alexa/assets/orion.png",
+          "label": "21503 · LOTE 0001935",
+          "chip": {
+            "text": "VIGENTE",
+            "color": "#7fe0b5",
+            "wash": "rgba(127,224,181,0.10)"
+          },
+          "facts": [
+            {
+              "k": "A BORDO",
+              "v": "60 días",
+              "color": "#3fd2e4"
+            },
+            {
+              "k": "LINEALIDAD",
+              "v": "500 mg/dL",
+              "color": "#3fd2e4"
+            },
+            {
+              "k": "BLANCO MÁX.",
+              "v": "0.15",
+              "color": "#3fd2e4"
+            },
+            {
+              "k": "FILTRO",
+              "v": "505 nm",
+              "color": "#3fd2e4"
+            }
+          ],
+          "rows": []
+        }
+      },
+      {
+        "user": "qué lotes de glucosa hay",
+        "orion": "De glucosa tengo documentados el lote 0001935, que caduca el 19 de marzo de 2028, el lote 0000555, que caduca el 24 de octubre de 2027 y el lote 57945, que caduca el 28 de febrero de 2027. ¿Qué más revisamos?",
+        "screen": {
+          "layout": "equipment",
+          "kicker": "IFU · EINFO.BIO",
+          "title": "GLUCOSA",
+          "subtitle": "Componente 00005 · caduca 19 de marzo",
+          "hint": "",
+          "date": "DOMINGO, 11 DE OCTUBRE",
+          "bg": "http://127.0.0.1:54321/functions/v1/alexa/assets/bg.jpg",
+          "logo": "http://127.0.0.1:54321/functions/v1/alexa/assets/orion.png",
+          "label": "21503 · LOTE 0001935",
+          "chip": {
+            "text": "VIGENTE",
+            "color": "#7fe0b5",
+            "wash": "rgba(127,224,181,0.10)"
+          },
+          "facts": [
+            {
+              "k": "A BORDO",
+              "v": "60 días",
+              "color": "#3fd2e4"
+            },
+            {
+              "k": "LINEALIDAD",
+              "v": "500 mg/dL",
+              "color": "#3fd2e4"
+            },
+            {
+              "k": "BLANCO MÁX.",
+              "v": "0.15",
+              "color": "#3fd2e4"
+            },
+            {
+              "k": "FILTRO",
+              "v": "505 nm",
+              "color": "#3fd2e4"
+            }
+          ],
+          "rows": []
+        }
+      }
+    ],
+    "borradores": [
+      {
+        "user": "cómo está el cero cuatro siete tres",
+        "orion": "El BA400 terminación 0473 de Laboratorio Demo Centro, en Ciudad de México, está operando sin alarmas. ¿Qué más revisamos?",
+        "screen": {
+          "layout": "equipment",
+          "kicker": "EQUIPO",
+          "title": "BA400 ···0473",
+          "subtitle": "Laboratorio Demo Centro · Ciudad de México",
+          "hint": "",
+          "date": "DOMINGO, 11 DE OCTUBRE",
+          "bg": "http://127.0.0.1:54321/functions/v1/alexa/assets/bg.jpg",
+          "logo": "http://127.0.0.1:54321/functions/v1/alexa/assets/orion.png",
+          "label": "SERIE 834000473",
+          "chip": {
+            "text": "OPERANDO",
+            "color": "#7fe0b5",
+            "wash": "rgba(127,224,181,0.10)"
+          },
+          "facts": [
+            {
+              "k": "ÚLTIMO EVENTO",
+              "v": "hoy a las 6:28 de la tarde",
+              "tone": "hud",
+              "color": "#3fd2e4"
+            },
+            {
+              "k": "ALARMAS 24 H",
+              "v": "0",
+              "tone": "ok",
+              "color": "#7fe0b5"
+            },
+            {
+              "k": "CONTROLES 7 D",
+              "v": "sin BPL",
+              "tone": "ok",
+              "color": "#7fe0b5"
+            },
+            {
+              "k": "CASOS",
+              "v": "0",
+              "tone": "ok",
+              "color": "#7fe0b5"
+            }
+          ],
+          "rows": []
+        }
+      },
+      {
+        "user": "abre un ticket por alarma de temperatura del rotor",
+        "orion": "Abro un caso de ingeniería para el BA400 terminación 0473 de Laboratorio Demo Centro, en Ciudad de México: «Alarma de temperatura del rotor». ¿Lo creo? Di «sí», «no» o «borrador».",
+        "screen": {
+          "layout": "message",
+          "kicker": "CASO NUEVO · POR CONFIRMAR",
+          "title": "BA400 ···0473 · Laboratorio Demo Centro",
+          "subtitle": "",
+          "hint": "Di «sí», «no» o «borrador»",
+          "date": "DOMINGO, 11 DE OCTUBRE",
+          "bg": "http://127.0.0.1:54321/functions/v1/alexa/assets/bg.jpg",
+          "logo": "http://127.0.0.1:54321/functions/v1/alexa/assets/orion.png",
+          "body": "Abro un caso de ingeniería para el B A 400 terminación 0473 de Laboratorio Demo Centro, en Ciudad de México: «Alarma de temperatura del rotor»."
+        }
+      },
+      {
+        "user": "sí",
+        "orion": "Listo, abrí el caso con el número 1O201T65. ¿Quieres agregarle un avance?",
+        "screen": {
+          "layout": "message",
+          "kicker": "CASO NUEVO",
+          "title": "Caso 1O201T65",
+          "subtitle": "",
+          "hint": "",
+          "date": "DOMINGO, 11 DE OCTUBRE",
+          "bg": "http://127.0.0.1:54321/functions/v1/alexa/assets/bg.jpg",
+          "logo": "http://127.0.0.1:54321/functions/v1/alexa/assets/orion.png",
+          "body": "BA400 ···0473 · Laboratorio Demo Centro · Alarma de temperatura del rotor"
+        }
+      },
+      {
+        "user": "pide dos lámparas halógenas",
+        "orion": "Dejé como borrador la solicitud de 2 lámparas halógenas, para el BA400 terminación 0473. Confírmala en Orión, en la sección Alexa. ¿Qué más revisamos?",
+        "screen": {
+          "layout": "message",
+          "kicker": "BORRADOR",
+          "title": "Refacción por confirmar",
+          "subtitle": "",
+          "hint": "Di «ayuda» para saber todo lo que puedo hacer",
+          "date": "DOMINGO, 11 DE OCTUBRE",
+          "bg": "http://127.0.0.1:54321/functions/v1/alexa/assets/bg.jpg",
+          "logo": "http://127.0.0.1:54321/functions/v1/alexa/assets/orion.png",
+          "body": "Dejé como borrador la solicitud de 2 lámparas halógenas, para el B A 400 terminación 0473. Confírmala en Orion, en la sección Alexa."
+        }
+      },
+      {
+        "user": "qué borradores tengo",
+        "orion": "Tienes 2 borradores por revisar en Orión web, en la pestaña Alexa: 2 lámparas halógenas, BA400 terminación 0473, Laboratorio Demo Centro y Llamada, Laboratorio Demo Centro terminación 0473. ¿Te ayudo con algo más?",
+        "screen": {
+          "layout": "list",
+          "kicker": "BORRADORES",
+          "title": "Por aprobar en Orion web",
+          "subtitle": "Pestaña Alexa",
+          "hint": "",
+          "date": "DOMINGO, 11 DE OCTUBRE",
+          "bg": "http://127.0.0.1:54321/functions/v1/alexa/assets/bg.jpg",
+          "logo": "http://127.0.0.1:54321/functions/v1/alexa/assets/orion.png",
+          "rest": 0,
+          "items": [
+            {
+              "text": "2 × lámparas halógenas · BA400 ···0473 · Laboratorio Demo Centro",
+              "tone": "warn",
+              "tag": "",
+              "color": "#f2b54a",
+              "n": "01"
+            },
+            {
+              "text": "Llamada · Laboratorio Demo Centro ···0473",
+              "tone": "warn",
+              "tag": "",
+              "color": "#f2b54a",
+              "n": "02"
+            }
+          ]
+        }
+      }
+    ],
+    "dictado": [
+      {
+        "user": "mis casos",
+        "orion": "Tienes 2 casos abiertos. El primero es el caso de Laboratorio Demo Norte, del BA400 terminación 9999, que ya venció hace 2 horas. El segundo es el caso de Laboratorio Demo Centro, del BA400 terminación 0473, que vence en 48 horas. Para el detalle di, por ejemplo, «el primero», o la terminación del equipo.",
+        "screen": {
+          "layout": "list",
+          "kicker": "CASOS",
+          "title": "Tus casos",
+          "subtitle": "Tienes 2 casos abiertos.",
+          "hint": "",
+          "date": "DOMINGO, 11 DE OCTUBRE",
+          "bg": "http://127.0.0.1:54321/functions/v1/alexa/assets/bg.jpg",
+          "logo": "http://127.0.0.1:54321/functions/v1/alexa/assets/orion.png",
+          "rest": 0,
+          "items": [
+            {
+              "text": "El primero es el caso de Laboratorio Demo Norte, del B A 400 terminación 9999, que ya venció hace 2 horas.",
+              "tone": "hud",
+              "tag": "",
+              "color": "#3fd2e4",
+              "n": "01"
+            },
+            {
+              "text": "El segundo es el caso de Laboratorio Demo Centro, del B A 400 terminación 0473, que vence en 48 horas.",
+              "tone": "hud",
+              "tag": "",
+              "color": "#3fd2e4",
+              "n": "02"
+            }
+          ]
+        }
+      },
+      {
+        "user": "el segundo",
+        "orion": "Es el caso de Laboratorio Demo Centro, del BA400 terminación 0473. El motivo: Alarma de temperatura del rotor. Se abrió hoy y su plazo de 48 horas vence en 48 horas. Está abierto. Todavía no tiene primera respuesta al cliente. Todavía no tiene movimientos en la bitácora. ¿Quieres dictar una nota para este caso, o que te diga los demás? También puedes decir, por ejemplo, «agrega un avance» o «cierra el caso».",
+        "screen": {
+          "layout": "equipment",
+          "kicker": "CASO",
+          "title": "Laboratorio Demo Centro",
+          "subtitle": "Alarma de temperatura del rotor",
+          "hint": "",
+          "date": "DOMINGO, 11 DE OCTUBRE",
+          "bg": "http://127.0.0.1:54321/functions/v1/alexa/assets/bg.jpg",
+          "logo": "http://127.0.0.1:54321/functions/v1/alexa/assets/orion.png",
+          "label": "CASO 1O201T65",
+          "chip": {
+            "text": "48 H",
+            "color": "#3fd2e4",
+            "wash": "rgba(63,210,228,0.10)"
+          },
+          "facts": [
+            {
+              "k": "ESTADO",
+              "v": "abierto",
+              "color": "#3fd2e4"
+            },
+            {
+              "k": "PLAZO",
+              "v": "48 h",
+              "color": "#3fd2e4"
+            },
+            {
+              "k": "EQUIPO",
+              "v": "···0473",
+              "color": "#3fd2e4"
+            },
+            {
+              "k": "ASIGNADO",
+              "v": "—",
+              "color": "#3fd2e4"
+            }
+          ],
+          "rows": []
+        }
+      },
+      {
+        "user": "sí",
+        "orion": "Dictado para el caso de Laboratorio Demo Centro, terminación 0473. Di «anota» y lo que hiciste; puedes hacerlo varias veces. Cuando termines, di «es todo».",
+        "screen": {
+          "layout": "message",
+          "kicker": "DICTADO",
+          "title": "Laboratorio Demo Centro ···0473",
+          "subtitle": "",
+          "hint": "",
+          "date": "DOMINGO, 11 DE OCTUBRE",
+          "bg": "http://127.0.0.1:54321/functions/v1/alexa/assets/bg.jpg",
+          "logo": "http://127.0.0.1:54321/functions/v1/alexa/assets/orion.png",
+          "body": "Di «anota…» con lo que hiciste. «Es todo» para terminar."
+        }
+      },
+      {
+        "user": "anota cambié la lámpara y calibré glucosa",
+        "orion": "Anotado. ¿Algo más? Di «anota» otra vez, o «es todo».",
+        "screen": {
+          "layout": "list",
+          "kicker": "DICTADO",
+          "title": "Laboratorio Demo Centro ···0473",
+          "subtitle": "1 notas",
+          "hint": "",
+          "date": "DOMINGO, 11 DE OCTUBRE",
+          "bg": "http://127.0.0.1:54321/functions/v1/alexa/assets/bg.jpg",
+          "logo": "http://127.0.0.1:54321/functions/v1/alexa/assets/orion.png",
+          "rest": 0,
+          "items": [
+            {
+              "text": "cambié la lámpara y calibré glucosa",
+              "tone": "hud",
+              "tag": "",
+              "color": "#3fd2e4",
+              "n": "01"
+            }
+          ]
+        }
+      },
+      {
+        "user": "es todo",
+        "orion": "Tengo la nota de una línea. Agrego al caso de Laboratorio Demo Centro, terminación 0473 un avance: «Cambié la lámpara y calibré glucosa.». ¿Lo guardo? Di «sí», «no» o «borrador».",
+        "screen": {
+          "layout": "message",
+          "kicker": "BITÁCORA · POR CONFIRMAR",
+          "title": "Laboratorio Demo Centro ···0473",
+          "subtitle": "",
+          "hint": "Di «sí», «no» o «borrador»",
+          "date": "DOMINGO, 11 DE OCTUBRE",
+          "bg": "http://127.0.0.1:54321/functions/v1/alexa/assets/bg.jpg",
+          "logo": "http://127.0.0.1:54321/functions/v1/alexa/assets/orion.png",
+          "body": "Agrego al caso de Laboratorio Demo Centro, terminación 0473 un avance: «Cambié la lámpara y calibré glucosa.»."
+        }
+      },
+      {
+        "user": "sí",
+        "orion": "Listo, guardé el avance en la bitácora. ¿Te ayudo con algo más?",
+        "screen": {
+          "layout": "message",
+          "kicker": "ORION",
+          "title": "Orion",
+          "subtitle": "",
+          "hint": "Di «ayuda» para saber todo lo que puedo hacer",
+          "date": "DOMINGO, 11 DE OCTUBRE",
+          "bg": "http://127.0.0.1:54321/functions/v1/alexa/assets/bg.jpg",
+          "logo": "http://127.0.0.1:54321/functions/v1/alexa/assets/orion.png",
+          "body": "Listo, guardé el avance en la bitácora."
+        }
+      }
+    ],
+    "avisos": [
+      {
+        "user": "qué avisos tengo",
+        "orion": "Tienes un aviso: El caso de Falcon del Laboratorio Demo Centro vence en 4 horas. Di «enterado» para confirmarlo.",
+        "screen": {
+          "layout": "list",
+          "kicker": "AVISOS",
+          "title": "Avisos de Orion",
+          "subtitle": "Di «enterado» para confirmar que los atiendes",
+          "hint": "",
+          "date": "DOMINGO, 11 DE OCTUBRE",
+          "bg": "http://127.0.0.1:54321/functions/v1/alexa/assets/bg.jpg",
+          "logo": "http://127.0.0.1:54321/functions/v1/alexa/assets/orion.png",
+          "rest": 0,
+          "items": [
+            {
+              "text": "El caso de Falcon del Laboratorio Demo Centro vence en 4 horas.",
+              "tone": "risk",
+              "tag": "",
+              "color": "#ff6b7a",
+              "n": "01"
+            }
+          ]
+        }
+      },
+      {
+        "user": "enterado",
+        "orion": "Listo, aviso confirmado. ¿Te ayudo con algo más?",
+        "screen": {
+          "layout": "message",
+          "kicker": "AVISOS",
+          "title": "Confirmados",
+          "subtitle": "",
+          "hint": "Di «ayuda» para saber todo lo que puedo hacer",
+          "date": "DOMINGO, 11 DE OCTUBRE",
+          "bg": "http://127.0.0.1:54321/functions/v1/alexa/assets/bg.jpg",
+          "logo": "http://127.0.0.1:54321/functions/v1/alexa/assets/orion.png",
+          "body": "Listo, aviso confirmado."
+        }
+      },
+      {
+        "user": "activa los avisos",
+        "orion": "Avisos activados: te aviso en silencio de alarmas fatales, controles rechazados y casos por vencer, fuera de tu horario de descanso. Recuerda permitir las notificaciones de Orión en la app de Alexa.",
+        "screen": {
+          "layout": "message",
+          "kicker": "ORION",
+          "title": "Orion",
+          "subtitle": "",
+          "hint": "Di «ayuda» para saber todo lo que puedo hacer",
+          "date": "DOMINGO, 11 DE OCTUBRE",
+          "bg": "http://127.0.0.1:54321/functions/v1/alexa/assets/bg.jpg",
+          "logo": "http://127.0.0.1:54321/functions/v1/alexa/assets/orion.png",
+          "body": "Avisos activados: te aviso en silencio de alarmas fatales, controles rechazados y casos por vencer, fuera de tu horario de descanso. Recuerda permitir las notificaciones de Orion en la app de Alexa."
+        }
+      }
+    ],
+    "ayuda": [
+      {
+        "user": "ayuda",
+        "orion": "Puedo decirte cómo va la flota y tu día. Con tus casos: te los leo y los filtro, por ejemplo «casos pendientes por piezas» o «casos de Monterrey»; te digo de qué se tratan, su bitácora y el contacto, y registro avances, llamadas, visitas, cambios de estado, la primera respuesta y el cierre, siempre preguntándote antes de guardar. De un equipo te digo su estado, alarmas, controles, calibraciones y su historial de casos, y si algo falla lo diagnostico con el motor DRI y te guío para verificarlo. También consulto el inserto de los reactivos. Prueba: mis casos, o cómo está el cero cuatro siete tres.",
+        "screen": {
+          "layout": "list",
+          "kicker": "AYUDA",
+          "title": "Lo que puedo hacer",
+          "subtitle": "Di la frase tal cual o algo parecido",
+          "hint": "",
+          "date": "DOMINGO, 11 DE OCTUBRE",
+          "bg": "http://127.0.0.1:54321/functions/v1/alexa/assets/bg.jpg",
+          "logo": "http://127.0.0.1:54321/functions/v1/alexa/assets/orion.png",
+          "rest": 0,
+          "items": [
+            {
+              "text": "«Cómo vamos» · «Qué tengo hoy» · «Qué casos están en riesgo»",
+              "tone": "hud",
+              "tag": "",
+              "color": "#3fd2e4",
+              "n": "01"
+            },
+            {
+              "text": "«Cómo está el 0473» · «Pasaron los controles» · «Muéstrame la curva de glucosa»",
+              "tone": "hud",
+              "tag": "",
+              "color": "#3fd2e4",
+              "n": "02"
+            },
+            {
+              "text": "«Diagnostica el 0473: glucosa fuera, colesterol bien» · «Guíame»",
+              "tone": "warn",
+              "tag": "",
+              "color": "#f2b54a",
+              "n": "03"
+            },
+            {
+              "text": "«Estabilidad a bordo de colesterol» · «Abre un ticket…» · «Pregunta…»",
+              "tone": "hud",
+              "tag": "",
+              "color": "#3fd2e4",
+              "n": "04"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

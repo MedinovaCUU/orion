@@ -125,6 +125,10 @@ function AuthenticatedApp() {
               element={session ? <Dashboard session={session} initialTab="dri" /> : <Navigate to="/login" replace />}
             />
             <Route
+              path="/alexa"
+              element={session ? <Dashboard session={session} initialTab="alexa" /> : <Navigate to="/login" replace />}
+            />
+            <Route
               path="/dri-preview"
               element={import.meta.env.DEV ? <DriPreviewPage /> : <Navigate to="/" replace />}
             />

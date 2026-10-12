@@ -27,6 +27,7 @@ const PNO = lazy(() => import('./PNO'));
 const EquipmentMonitoring = lazy(() => import('../modules/equipment-monitoring/EquipmentMonitoring'));
 const DriPage = lazy(() => import('../modules/dri/DriPage'));
 const PermissionsAdmin = lazy(() => import('./PermissionsAdmin'));
+const AlexaPanel = lazy(() => import('./AlexaPanel'));
 const DEFAULT_DASHBOARD_TAB: DashboardTabKey = 'tickets';
 
 type DashboardTabKey =
@@ -41,6 +42,7 @@ type DashboardTabKey =
   | 'equipos'
   | 'monitoreo'
   | 'dri'
+  | 'alexa'
   | 'permisos';
 
 type DashboardTone = 'clinical' | 'environmental' | 'environmental-blue' | 'veterinary' | 'bioprocess' | 'food';
@@ -64,6 +66,7 @@ const DASHBOARD_TAB_KEYS: DashboardTabKey[] = [
   'equipos',
   'monitoreo',
   'dri',
+  'alexa',
   'permisos',
 ];
 
@@ -141,6 +144,7 @@ const DashboardTabIcon = ({ name }: { name: DashboardTabKey }) => {
     pno: 'M7 3h7l4 4v14H7zM14 3v5h5M10 12h5M10 15h5',
     equipos: '',
     dri: '',
+    alexa: 'M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18zM8.5 9.5v5M12 7.5v9M15.5 9.5v5',
     permisos: 'M6 5v14M12 5v14M18 5v14M4 9h4M10 15h4M16 11h4',
   };
   return (
@@ -184,12 +188,17 @@ export default function Dashboard({ session, initialTab }: DashboardProps) {
 
   const isStaffRole = (role: string | null) => role === 'admin' || role === 'tecnico';
   const canManagePermissions = canManageUserPermissions(session?.user?.id, session?.user?.email);
-  const baseAllowedTabs: DashboardTabKey[] = userAccess.modules.filter(
-    (module): module is DashboardTabKey => DASHBOARD_TAB_KEYS.includes(module as DashboardTabKey),
-  );
-  const allowedTabs: DashboardTabKey[] = canManagePermissions
-    ? [...new Set([...baseAllowedTabs, 'permisos' as DashboardTabKey])]
-    : baseAllowedTabs;
+  const baseAllowedTabs = userAccess.modules.filter((module) =>
+    DASHBOARD_TAB_KEYS.includes(module as DashboardTabKey),
+  ) as DashboardTabKey[];
+  // Alexa is personal (device link, own drafts), so every staff member gets it; RLS bounds what it shows.
+  const allowedTabs: DashboardTabKey[] = [
+    ...new Set([
+      ...baseAllowedTabs,
+      ...(isStaffRole(userRole) ? (['alexa'] as DashboardTabKey[]) : []),
+      ...(canManagePermissions ? (['permisos'] as DashboardTabKey[]) : []),
+    ]),
+  ];
   const canAccessTab = (tab: DashboardTabKey) => allowedTabs.includes(tab);
   const welcomeLabel = viewerProfile?.nombre_completo?.trim() || session?.user?.email?.trim() || 'usuario';
   const navigationItems: DashboardNavigationItem[] = [
@@ -204,6 +213,7 @@ export default function Dashboard({ session, initialTab }: DashboardProps) {
     { key: 'pno', label: 'PNO', tone: 'veterinary' },
     { key: 'equipos', label: 'Equipos', tone: 'food' },
     { key: 'dri', label: 'DRI', tone: 'environmental-blue' },
+    { key: 'alexa', label: 'Alexa', tone: 'veterinary' },
     { key: 'permisos', label: 'Permisos', tone: 'clinical' },
   ];
   const visibleNavigationItems = navigationItems.filter((item) => canAccessTab(item.key));
@@ -495,6 +505,7 @@ export default function Dashboard({ session, initialTab }: DashboardProps) {
           {activeTab === 'pno' && canAccessTab('pno') && <PNO subPermissions={getModuleSubPermissions(userAccess, 'pno')} />}
           {activeTab === 'equipos' && canAccessTab('equipos') && <Equipos />}
           {activeTab === 'dri' && canAccessTab('dri') && <DriPage subPermissions={getModuleSubPermissions(userAccess, 'dri')} />}
+          {activeTab === 'alexa' && canAccessTab('alexa') && <AlexaPanel isAdmin={userRole === 'admin'} />}
           {activeTab === 'permisos' && canAccessTab('permisos') && canManagePermissions && <PermissionsAdmin />}
         </Suspense>
       </div>

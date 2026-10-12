@@ -1,0 +1,61 @@
+{
+  "manifest": {
+    "apis": {
+      "custom": {
+        "endpoint": {
+          "uri": "https://mzgrifkunevgestihlmh.supabase.co/functions/v1/alexa",
+          "sslCertificateType": "Wildcard"
+        },
+        "interfaces": [
+          {
+            "type": "ALEXA_PRESENTATION_APL",
+            "supportedViewports": [
+              { "mode": "HUB", "shape": "RECTANGLE", "minWidth": 960, "maxWidth": 2560, "minHeight": 480, "maxHeight": 1600 },
+              { "mode": "HUB", "shape": "RECTANGLE", "minWidth": 480, "maxWidth": 960, "minHeight": 480, "maxHeight": 600 }
+            ]
+          }
+        ]
+      }
+    },
+    "manifestVersion": "1.0",
+    "privacyAndCompliance": {
+      "allowsPurchases": false,
+      "containsAds": false,
+      "isChildDirected": false,
+      "isExportCompliant": true,
+      "usesPersonalInfo": false,
+      "shoppingKit": { "isAmazonAssociatesOnAlexaEnabled": false, "isShoppingActionsEnabled": false }
+    },
+    "publishingInformation": {
+      "automaticDistribution": { "isActive": false },
+      "category": "BUSINESS_AND_FINANCE",
+      "distributionCountries": ["MX"],
+      "distributionMode": "PUBLIC",
+      "isAvailableWorldwide": false,
+      "locales": {
+        "es-MX": {
+          "name": "Orion",
+          "summary": "Servicio técnico de Biosystems por voz: flota, casos, controles y diagnóstico DRI.",
+          "description": "Orion es el asistente de servicio técnico de Biosystems (Medinova) para los analizadores BA400, BA200 y A15. Con la voz, y con las manos libres frente al equipo, sabes cómo va la flota, qué tienes en tu agenda, qué casos están por vencer y qué le pasa a un analizador.\n\nQué puedes pedir\n• Resumen: equipos en línea y en alarma fatal, controles rechazados y casos con SLA en riesgo (Falcon CDMX 24 h).\n• Tu día: servicios planeados y casos asignados, el más urgente primero.\n• Un equipo: estado, alarmas con su ubicación en el BA400, controles con reglas de Westgard, calibraciones y la curva de reacción en Echo Show.\n• Diagnóstico diferencial: el mismo motor DRI de Orion cruza Monitoreo, BPL y el SAT del equipo con lo que le dices («glucosa fuera, colesterol bien»), descarta causas por contraste (por ejemplo el filtro de 505 nm) y te guía paso a paso en la verificación.\n• IFU y lotes: estabilidad a bordo, interferencias, linealidad, blanco y caducidad por lote.\n• Borradores: tickets, refacciones y notas de servicio dictadas que confirmas en Orion web.\n• Preguntas abiertas: empieza con «pregunta».\n\nAvisos\nSi los activas, Orion deja un aviso silencioso cuando un caso tuyo está por vencer, un equipo tuyo entra en alarma fatal o un control se rechaza; al día siguiente de un diagnóstico pregunta si se resolvió.\n\nRequisitos\nUso interno de Biosystems: el dispositivo se vincula una sola vez con una cuenta de Orion (ingeniería, química o administración) con un código de 6 dígitos que Alexa dicta y se confirma en Orion web. Alexa solo responde con lo que esa cuenta puede ver en Orion.",
+          "examplePhrases": [
+            "Alexa, abre servicio orión",
+            "Alexa, pregúntale a servicio orión cómo vamos",
+            "Alexa, pregúntale a servicio orión qué tengo hoy"
+          ],
+          "keywords": ["orion", "biosystems", "medinova", "servicio técnico", "BA400", "diagnóstico", "controles", "tickets"],
+          "smallIconUri": "https://mzgrifkunevgestihlmh.supabase.co/functions/v1/alexa/assets/icon-108.png",
+          "largeIconUri": "https://mzgrifkunevgestihlmh.supabase.co/functions/v1/alexa/assets/icon-512.png"
+        }
+      },
+      "testingInstructions": "Skill de uso interno de Biosystems. Antes de enviar a certificación: crear una cuenta de revisión de Orion con datos de ejemplo y describirla aquí."
+    },
+    "permissions": [{ "name": "alexa::devices:all:notifications:write" }],
+    "events": {
+      "publications": [{ "eventName": "AMAZON.MessageAlert.Activated" }],
+      "endpoint": {
+        "uri": "https://mzgrifkunevgestihlmh.supabase.co/functions/v1/alexa",
+        "sslCertificateType": "Wildcard"
+      }
+    }
+  }
+}

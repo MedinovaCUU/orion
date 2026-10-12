@@ -410,3 +410,10 @@ verify_jwt = false
 
 [functions.ticket-whatsapp-dispatch]
 verify_jwt = false
+
+# Alexa skill "Orion": Amazon signs every request (verified in the function); the notifier checks x-cron-secret.
+[functions.alexa]
+verify_jwt = false
+
+[functions.alexa-notify]
+verify_jwt = false
