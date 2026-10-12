@@ -4,6 +4,7 @@ import { getValidatedSession, supabase } from './supabaseClient';
 import OrionSplashScreen, { OrionSplashGate } from './components/OrionSplash';
 import { useSplashVisible } from './components/splashVisibleContext';
 import BrandLockup from './components/BrandLockup';
+import { Loader, OrionLoadingVeil } from './components/OrionLoader';
 
 const SurveyPage = lazy(() => import('./components/satisfaction/SurveyPage'));
 const Login = lazy(() => import('./components/Login'));
@@ -38,8 +39,13 @@ const previewParam = (() => {
 const splashPreview = previewParam === 'splash';
 
 const ModuleLoaderPreview = () => (
-  <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '1.5rem' }}>
+  <div style={{ minHeight: '100vh', display: 'grid', gap: '1.5rem', alignContent: 'center', justifyItems: 'center', padding: '1.5rem' }}>
     <BrandLockup variant="loading" eyebrow="BioSystems" title="Abriendo panel" subtitle="Cargando el módulo seleccionado." />
+    <div className="card" style={{ width: 'min(100%, 56rem)', display: 'grid', gap: '1rem' }}>
+      <h3>Bandeja de Casos de Soporte</h3>
+      <Loader label="Cargando tickets…" />
+      <Loader size="sm" label="Cargando trazabilidad…" />
+    </div>
   </div>
 );
 
@@ -143,8 +149,11 @@ function AuthenticatedApp() {
 export default function App() {
   // Public survey entry must not wait for an expired or unavailable account session.
   const surveyPath = `${routerBasename === '/' ? '' : routerBasename}/encuesta`;
-  if (window.location.pathname.replace(/\/$/, '') === surveyPath) {
-    return <Suspense fallback={<AppLoadingFallback />}><SurveyPage /></Suspense>;
-  }
-  return <AuthenticatedApp />;
+  const isSurvey = window.location.pathname.replace(/\/$/, '') === surveyPath;
+  return (
+    <>
+      {isSurvey ? <Suspense fallback={<AppLoadingFallback />}><SurveyPage /></Suspense> : <AuthenticatedApp />}
+      <OrionLoadingVeil />
+    </>
+  );
 }

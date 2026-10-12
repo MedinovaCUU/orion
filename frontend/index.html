@@ -11,10 +11,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="preload" href="%BASE_URL%fonts/alliance/AllianceNo2-Regular.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="preload" href="%BASE_URL%fonts/alliance/AllianceNo2-SemiBold.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="%BASE_URL%orion-brand/orion-logo-still.webp?v9" as="image" type="image/webp" />
     <title>Orion | BioSystems</title>
+    <style>
+      /* Arranque: fondo de la app y contenido oculto hasta que llegue la hoja de estilos (OrionSplash.css lo muestra). */
+      .orion-splash--boot { position: fixed; inset: 0; background: #eef3f7; }
+      .orion-splash--boot > * { visibility: hidden; }
+    </style>
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root"><div class="orion-splash orion-splash--boot" role="status" aria-live="polite">
+      <!-- Copia estática de OrionSplashScreen + OrionLoader (src/components): el cargador se ve desde el primer cuadro,
+           antes de que llegue el JavaScript, y React lo reemplaza sin cortes. Cámbialos juntos. -->
+      <span class="orion-splash__pedestal orion-stage__pedestal"><span aria-hidden="true" class="orion-loader orion-splash__logo"><span class="orion-loader__halo"></span><span class="orion-loader__shadow"></span><span class="orion-loader__body"><img src="%BASE_URL%orion-brand/orion-logo-still.webp?v9" alt="" draggable="false" /></span></span></span>
+      <img class="orion-splash__wordmark" src="%BASE_URL%orion-brand/orion-wordmark.webp?v9" alt="Orion by Medinova" draggable="false" />
+      <div class="orion-splash__brand"><img class="orion-splash__biosystems" src="%BASE_URL%bios-brand/BioS_Logo_300dpi.png" alt="BioSystems" draggable="false" /><span class="orion-splash__eyebrow">Centro operativo</span></div>
+      <div class="orion-splash__progress"></div>
+      <div class="orion-splash__status">Cargando módulos, perfil y contexto de servicio.</div>
+    </div></div>
+    <script>
+      // Ancla la flotación del logo del arranque al reloj de la página, igual que syncClock en OrionLoader.tsx.
+      (function () {
+        var logo = document.querySelector('#root .orion-loader');
+        if (logo && logo.getAnimations) logo.getAnimations({ subtree: true }).forEach(function (a) { a.startTime = 0; });
+      })();
+    </script>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

@@ -285,9 +285,7 @@ function TestsSection({
       )}
 
       {loadingRows ? (
-        <div className="equipment-monitor__empty-state">
-          <Loader label="Cargando detalle de pruebas…" />
-        </div>
+        <Loader size="sm" label="Cargando detalle de pruebas…" />
       ) : rowsError ? (
         <div className="equipment-monitor__empty-state">{rowsError}</div>
       ) : reagentRows.length ? (

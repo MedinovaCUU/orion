@@ -62,7 +62,7 @@ export default function Ba400Canvas({ view, onPick, onReady }: {
   return <>
     <div ref={hostRef} className="ba400-canvas" data-testid="ba400-canvas" data-state={phase} />
     {phase === 'loading' || phase === 'preparing' ? <div className="ba400-loading" role="status">
-      <OrionLoader size={84} />
+      <OrionLoader size={104} />
       <strong>{phase === 'preparing' ? `Preparando ${modelInfo.partCount} componentes` : 'Cargando el BA400'}</strong>
       <progress max={100} value={progress} aria-label="Descarga del modelo BA400" />
       <span>{phase === 'preparing' ? 'Creando la escena 3D…' : `${Math.round(progress)} % · ${(modelInfo.bytes / 1048576).toFixed(1)} MiB`}</span>

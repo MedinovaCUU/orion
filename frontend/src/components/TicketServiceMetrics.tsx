@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { supabase } from '../supabaseClient';
+import { Loader } from './OrionLoader';
 import { activityMotiveLabels, activityResultLabels } from './serviceKpiModel';
 import type { CaseTicketRecord } from './TicketCaseDetail';
 import useTicketServiceEvents from './useTicketServiceEvents';
@@ -82,7 +83,7 @@ export default function TicketServiceMetrics({ ticket, canWrite = false, onChang
   };
   return <div className="ticket-case__quick-log tc-movement">
     <strong>Seguimiento del caso</strong>
-    {!loaded && !loadError && <p role="status">Cargando trazabilidad…</p>}
+    {!loaded && !loadError && <Loader size="sm" label="Cargando trazabilidad…" />}
     {loaded && <>
       <div className="tc-detail-facts">
         <div><small>Primera respuesta</small><strong>{formatDuration(facts.responseHours)}</strong><span>{facts.response ? new Date(facts.response.occurred_at).toLocaleString('es-MX') : 'Sin registrar'}</span><span>{eventAuthor(facts.response)}</span></div>

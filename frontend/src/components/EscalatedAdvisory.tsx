@@ -42,7 +42,7 @@ import {
   type AdvisoryThreadRole,
   type AdvisoryWaitingOn,
 } from './escalatedAdvisoryThread';
-import { Loader } from './OrionLoader';
+import { InlineLoader, PanelLoader } from './OrionLoader';
 
 type AdvisoryArea = 'ingenieria' | 'quimica';
 type AdvisoryStatus = 'solicitada' | 'en_revision' | 'asesorada' | 'cerrada';
@@ -2940,7 +2940,7 @@ export default function EscalatedAdvisory({
         </div>
 
         {loading ? (
-          <Loader block label="Cargando asesorías escaladas…" />
+          <PanelLoader title="Cargando asesorías escaladas…" />
         ) : filteredAdvisories.length === 0 ? (
           <p style={{ color: 'var(--text-secondary)' }}>Todavía no hay asesorías escaladas registradas para {activeAreaLabel.toLowerCase()}.</p>
         ) : (
@@ -3434,7 +3434,7 @@ export default function EscalatedAdvisory({
                   onClick={() => void exportMetrics('excel')}
                   disabled={exportingMetrics !== null || metricsScopeAdvisories.length === 0}
                 >
-                  {exportingMetrics === 'excel' ? <Loader size={20} label="Generando Excel…" /> : 'Descargar Excel'}
+                  {exportingMetrics === 'excel' ? <InlineLoader label="Generando Excel…" /> : 'Descargar Excel'}
                 </button>
                 <button
                   type="button"
@@ -3442,7 +3442,7 @@ export default function EscalatedAdvisory({
                   onClick={() => void exportMetrics('pdf')}
                   disabled={exportingMetrics !== null || metricsScopeAdvisories.length === 0}
                 >
-                  {exportingMetrics === 'pdf' ? <Loader size={20} label="Generando PDF…" /> : 'Descargar PDF'}
+                  {exportingMetrics === 'pdf' ? <InlineLoader label="Generando PDF…" /> : 'Descargar PDF'}
                 </button>
               </div>
             </div>

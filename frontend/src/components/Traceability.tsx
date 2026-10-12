@@ -2,6 +2,7 @@ import type { CSSProperties, MouseEvent as ReactMouseEvent } from 'react';
 import { useEffect, useId, useMemo, useRef, useState } from 'react';
 import { supabase } from '../supabaseClient';
 import TrackingSection from './TrackingSection';
+import { useBlockingLoad } from './orionLoadingVeil';
 import './Traceability.css';
 
 type TraceabilitySource = 'structured' | 'payload' | 'demo';
@@ -1588,6 +1589,7 @@ export default function Traceability({ subPermissions }: TraceabilityProps) {
   const solarPanelRef = useRef<HTMLDivElement | null>(null);
   const [records, setRecords] = useState<TraceabilityRecord[]>([]);
   const [loading, setLoading] = useState(true);
+  useBlockingLoad(loading && (canViewSparePartEvents || canViewAnalytics), 'Construyendo trazabilidad…');
   const [error, setError] = useState('');
   const [notice, setNotice] = useState('');
   const [source, setSource] = useState<TraceabilitySource>('structured');

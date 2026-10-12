@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState, type ReactNode, type RefObject } from 'react';
 import type * as echarts from 'echarts/core';
+import { Loader } from './OrionLoader';
 import { fetchAllKpiRecords } from './serviceKpiApi';
 import {
   bucketLabel, chartsFor, formatCount, num, SERIES_COLORS, STATUS_DANGER, type Drill, type KpiSummary, type KpiView,
@@ -369,7 +370,7 @@ export default function ServiceKpiTimeLab({ view, summary, filters, revision, on
   return <div ref={root} className="kpi-lab" aria-label="Análisis de cumplimiento y tiempos">
     <EvolutionPanel view={view} summary={summary} onDrill={onDrill} />
     {error && <p role="alert" className="tc-error">No se pudieron cargar los tickets del análisis: {error}</p>}
-    {loading && !points.length && <div className="kpi-lab-loading" role="status">Cargando los tickets del periodo para el análisis…</div>}
+    {loading && !points.length && <Loader label="Cargando los tickets del periodo para el análisis…" />}
     {!loading && !error && !points.length && <div className="kpi-lab-loading">Sin tickets en el periodo con estos filtros.</div>}
     {points.length > 0 && <>
       {insights.length > 0 && <dl className="kpi-lab-insights">{insights.map(([label, value, detail]) => <div key={label}><dt>{label}</dt><dd>{value}</dd><span>{detail}</span></div>)}</dl>}

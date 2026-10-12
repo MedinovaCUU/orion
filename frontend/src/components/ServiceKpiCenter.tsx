@@ -1,4 +1,5 @@
 import { Fragment, lazy, Suspense, useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
+import { Loader } from './OrionLoader';
 import ServiceKpiChart from './ServiceKpiChart';
 import ServiceKpiRecords from './ServiceKpiRecords';
 import ServiceSlaPolicies from './ServiceSlaPolicies';
@@ -171,7 +172,7 @@ export default function ServiceKpiCenter({ view, onOpenTicket }: { view: KpiView
   const granularity = summary?.period.granularity || filters.granularity;
   const chart = (id: string) => { const spec = charts.find(item => item.id === id); return spec ? <ServiceKpiChart key={id} spec={spec} rows={series} granularity={granularity} onDrill={openDrill} /> : null; };
   const t = (dataset: Drill['dataset'], match: Record<string, unknown>, title: string, definition?: string): Drill => ({ dataset, match, title, definition });
-  const lab = summary && <Suspense key="lab" fallback={<div className="kpi-lab-loading" role="status">Cargando el análisis de tiempos…</div>}>
+  const lab = summary && <Suspense key="lab" fallback={<Loader label="Cargando el análisis de tiempos…" />}>
     <ServiceKpiTimeLab view={view} summary={summary} filters={rpcFilters} revision={revision} onDrill={openDrill} onOpenTicket={onOpenTicket} />
   </Suspense>;
 

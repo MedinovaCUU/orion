@@ -1,28 +1,30 @@
 import { useCallback, useEffect, useState, type ReactNode } from 'react';
 import { ORION_INTRO_MS, OrionLoader } from './OrionLoader';
+import { ORION_BRAND_ASSETS } from './orionBrandAssets';
 import { markIntroSeen, prefersReducedMotion, wantsIntro } from './orionMotion';
 import { SplashVisibleContext } from './splashVisibleContext';
 import './OrionSplash.css';
 
-const BASE = `${import.meta.env.BASE_URL || '/'}`.replace(/\/?$/, '/');
-const ASSETS = {
-  wordmark: `${BASE}orion-brand/orion-wordmark.webp?v7`,
-  biosystems: `${BASE}bios-brand/BioS_Logo_300dpi.png`,
-};
+/** Hay un arranque estático de `index.html` en pantalla: React lo reemplaza sin repetir la entrada (se ve continuo). */
+const bootOnScreen = () => typeof document !== 'undefined' && document.querySelector('.orion-splash--boot') !== null;
 
 /**
- * Pantalla completa de carga: logo animado, wordmark 3D, BioSystems y línea de progreso.
+ * Pantalla completa de carga: el logo animado flotando sobre su piso de luz, wordmark 3D, BioSystems y línea de progreso.
  * Con `intro` el logo reproduce la animación completa de bienvenida y el wordmark espera a que el ojo encuentre al usuario.
+ * `index.html` trae una copia estática de este marcado (sin bienvenida) para que el cargador se vea desde el primer cuadro.
  */
 export function OrionSplashScreen({ status, leaving = false, intro = false, onIntroDone }: { status?: string; leaving?: boolean; intro?: boolean; onIntroDone?: (completed: boolean) => void }) {
-  const late = intro ? ORION_INTRO_MS * 0.55 : 0; // el ojo fija la mirada hacia el segundo 4
+  const [continued] = useState(bootOnScreen);
+  const late = intro && !continued ? ORION_INTRO_MS * 0.55 : 0; // el ojo fija la mirada hacia el segundo 4
   const delayed = (base: number) => (late ? { animationDelay: `${(late + base) / 1000}s` } : undefined);
   return (
-    <div className={`orion-splash${leaving ? ' orion-splash--leaving' : ''}`} role="status" aria-live="polite">
-      <OrionLoader className="orion-splash__logo" intro={intro} onIntroEnd={onIntroDone} />
-      <img className="orion-splash__wordmark" style={delayed(0)} src={ASSETS.wordmark} alt="Orion by Medinova" draggable={false} />
+    <div className={`orion-splash${continued ? ' orion-splash--continued' : ''}${leaving ? ' orion-splash--leaving' : ''}`} role="status" aria-live="polite">
+      <span className="orion-splash__pedestal orion-stage__pedestal">
+        <OrionLoader className="orion-splash__logo" intro={intro} onIntroEnd={onIntroDone} />
+      </span>
+      <img className="orion-splash__wordmark" style={delayed(0)} src={ORION_BRAND_ASSETS.wordmark} alt="Orion by Medinova" draggable={false} />
       <div className="orion-splash__brand" style={delayed(150)}>
-        <img className="orion-splash__biosystems" src={ASSETS.biosystems} alt="BioSystems" draggable={false} />
+        <img className="orion-splash__biosystems" src={ORION_BRAND_ASSETS.biosystems} alt="BioSystems" draggable={false} />
         <span className="orion-splash__eyebrow">Centro operativo</span>
       </div>
       <div className="orion-splash__progress" style={delayed(300)} />

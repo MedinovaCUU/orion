@@ -3,7 +3,7 @@ import { useDeferredValue, useEffect, useMemo, useRef, useState } from 'react';
 import { supabase } from '../supabaseClient';
 import type { ProfileSummary } from './servicesPlanning';
 import './Inventario.css';
-import { OrionLoader } from './OrionLoader';
+import { PanelLoader } from './OrionLoader';
 
 type BannerTone = 'error' | 'success' | 'info';
 type UnknownCodeDecision = 'pending' | 'catalog' | 'count-only';
@@ -802,13 +802,7 @@ export default function Inventario({ subPermissions = ['captura', 'historial'] }
 
   if (loading) {
     return (
-      <div className="inventory-loading">
-        <OrionLoader size={110} />
-        <div>
-          <strong>Cargando mesa de inventario</strong>
-          <p>Perfil, catálogo maestro y conteos recientes.</p>
-        </div>
-      </div>
+      <PanelLoader title="Cargando mesa de inventario" subtitle="Perfil, catálogo maestro y conteos recientes." />
     );
   }
 

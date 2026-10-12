@@ -9,7 +9,7 @@ import {
   sendSparePartRequestEmail,
 } from './sparePartsEmailApi';
 import './Refacciones.css';
-import { OrionLoader } from './OrionLoader';
+import { PanelLoader } from './OrionLoader';
 
 type RequestPriority = 'baja' | 'media' | 'alta' | 'critica';
 type DestinationMode = 'sitio' | 'ingeniero' | 'almacen';
@@ -955,13 +955,7 @@ export default function Refacciones({ subPermissions }: RefaccionesProps) {
 
   if (loading) {
     return (
-      <div className="spare-parts-loading">
-        <OrionLoader size={110} />
-        <div>
-          <strong>Cargando mesa de refacciones</strong>
-          <p>Perfil, catálogo, equipos y solicitudes recientes.</p>
-        </div>
-      </div>
+      <PanelLoader title="Cargando mesa de refacciones" subtitle="Perfil, catálogo, equipos y solicitudes recientes." />
     );
   }
 

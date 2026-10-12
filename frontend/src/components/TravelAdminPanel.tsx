@@ -194,7 +194,7 @@ export default function TravelAdminPanel({ refreshKey }: TravelAdminPanelProps) 
       </div>
 
       {loading ? (
-        <Loader block label="Cargando solicitudes de viaje…" />
+        <Loader label="Cargando solicitudes de viaje…" />
       ) : filteredRequests.length === 0 ? (
         <div className="travel-banner">No hay solicitudes de viaje que coincidan con los filtros actuales.</div>
       ) : (

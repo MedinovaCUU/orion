@@ -9,7 +9,7 @@ import {
   isStructuredTutorial,
 } from '../data/tutorialCatalog';
 import './Tutoriales.css';
-import { Loader } from './OrionLoader';
+import { PanelLoader } from './OrionLoader';
 
 const IMPORTANCE_LABELS: Record<TutorialImportance, string> = {
   basico: 'Básico',
@@ -76,7 +76,7 @@ export default function Tutoriales({ allowedImportance = ['basico'] }: { allowed
         </div>
 
         {loading ? (
-          <Loader block label="Cargando tutoriales…" />
+          <PanelLoader title="Cargando tutoriales…" />
         ) : tutoriales.length === 0 ? (
           <p style={{ color: 'var(--text-secondary)' }}>Aún no hay tutoriales disponibles.</p>
         ) : (

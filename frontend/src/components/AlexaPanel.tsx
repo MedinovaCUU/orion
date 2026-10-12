@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import { supabase } from '../supabaseClient';
-import { Loader } from './OrionLoader';
+import { PanelLoader } from './OrionLoader';
 import './AlexaPanel.css';
 
 /**
@@ -268,7 +268,7 @@ export default function AlexaPanel({ isAdmin }: { isAdmin: boolean }) {
     URL.revokeObjectURL(url);
   };
 
-  if (loading) return <Loader block label="Cargando Alexa" />;
+  if (loading) return <PanelLoader title="Cargando Alexa" />;
   const pending = actions.filter((a) => a.status === 'pendiente' || a.status === 'error');
   const decided = actions.filter((a) => a.status === 'aplicada' || a.status === 'descartada').slice(0, 8);
   const myCases = cases.filter((vc) => vc.user_id === userId);

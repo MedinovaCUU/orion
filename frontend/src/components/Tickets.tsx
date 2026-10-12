@@ -32,7 +32,7 @@ import {
   type ProfileSummary,
 } from './servicesPlanning';
 import './Tickets.css';
-import { Loader } from './OrionLoader';
+import { PanelLoader } from './OrionLoader';
 import { historyServiceTypes, priorityLabels } from './serviceKpiModel';
 import { registerBrandPdfFonts } from '../config/brandFonts';
 
@@ -879,7 +879,7 @@ export default function Tickets({ subPermissions = ['crear', 'seguimiento', 'dia
         </form>
       </div></details> : null}
 
-      {canViewTickets && canViewControl && <div className="tickets-view-switch"><button type="button" className={`button-primary${controlView ? '' : ' inactive'}`} aria-pressed={controlView} onClick={() => setControlView(true)}>Centro de control</button><button type="button" className={`button-primary${controlView ? ' inactive' : ''}`} aria-pressed={!controlView} onClick={() => setControlView(false)}>Vista operativa</button></div>}
+      {canViewTickets && canViewControl && <div className="tickets-view-switch"><button type="button" className={`button-primary${controlView ? ' inactive' : ''}`} aria-pressed={!controlView} onClick={() => setControlView(false)}>Vista operativa</button><button type="button" className={`button-primary${controlView ? '' : ' inactive'}`} aria-pressed={controlView} onClick={() => setControlView(true)}>Centro de control</button></div>}
       {canViewTickets && canViewControl && controlView && <TicketControlCenter entries={ticketRenderItems} loading={loading} canWrite={canDiagnoseTickets} onChanged={fetchTickets} onDiagnose={ticket => {
         setSelectedTicket(ticket);
         setCerrarData({ no_serie: ticket.numero_serie_equipo || '', cda: '', cds: '', comentarios: '', tipo_servicio: plannedServiceType(ticket.descripcion), refaccionesUsadas: [] });
@@ -890,7 +890,7 @@ export default function Tickets({ subPermissions = ['crear', 'seguimiento', 'dia
         {!canViewControl && <p className="tickets-scope-note" style={{ color: 'var(--text-secondary)', fontSize: '0.85rem', margin: '-0.5rem 0 1rem' }}>Solo se muestran los casos asignados a ti o en los que apareces como responsable en la planeación.</p>}
       <label>Mostrar casos <select className="input-field" value={caseFilter} onChange={event => setCaseFilter(event.target.value)}><option value="abiertos">Abiertos</option><option value="cerrados">Cerrados</option><option value="todos">Todos</option></select></label>
       {loading ? (
-        <Loader block label="Cargando tickets…" />
+        <PanelLoader title="Cargando tickets…" />
       ) : tickets.length === 0 ? (
         <p style={{ color: 'var(--text-secondary)' }}>{canViewControl ? 'No hay tickets aún.' : 'No tienes casos asignados por ahora.'}</p>
       ) : (

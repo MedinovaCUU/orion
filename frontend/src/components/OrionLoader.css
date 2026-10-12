@@ -1,101 +1,434 @@
-/* Loader Orion: el logo animado (loop renderizado en Blender) para cargas de módulos y documentos. */
+/*
+ * Cargador Orion: el logo animado (render Blender) flotando en 3D sobre un escenario de vidrio esmerilado.
+ * Solo se animan transform y opacity, así que el movimiento corre en el compositor y no se traba mientras React trabaja.
+ */
+
+/* ---------- Logo ---------- */
+
 .orion-loader {
+  /* Tamaño: `--emblem-size` del contenedor (escenario, splash) o del propio logo (prop `size`). */
+  --logo-s: var(--emblem-size, 128px);
+  /* El loop lleva aire alrededor del logo (~61 % del encuadre, halo desvanecido antes del borde): se escala para que el
+     logo llene ~80 % de la caja y el halo desborde. La bienvenida tiene más aire (~49 %). */
+  --logo-media-scale: 1.31;
   position: relative;
   display: inline-block;
-  aspect-ratio: 1 / 1;
   flex-shrink: 0;
-  user-select: none;
+  width: var(--logo-s);
+  height: var(--logo-s);
   vertical-align: middle;
+  pointer-events: none;
+  user-select: none;
+  perspective: calc(var(--logo-s) * 3);
+  perspective-origin: 50% 40%;
 }
 
-/* Los medios llevan aire alrededor del logo (61 % del encuadre, con el halo desvaneciéndose antes del borde);
-   se escalan para que el logo llene la caja y el halo desborde. */
-.orion-loader > img,
-.orion-loader > video {
+.orion-loader--intro .orion-loader__body > video {
+  --logo-media-scale: 1.64;
+}
+
+.orion-loader__halo,
+.orion-loader__shadow,
+.orion-loader__body {
+  position: absolute;
+}
+
+/* Brillo perla con un toque del rubí, que respira con la flotación. */
+.orion-loader__halo {
+  inset: -24%;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(255, 255, 255, 0.92) 0 26%,
+    rgba(255, 242, 244, 0.55) 40%,
+    rgba(var(--brand-red-rgb, 243, 39, 53), 0.07) 52%,
+    rgba(var(--brand-red-rgb, 243, 39, 53), 0) 70%
+  );
+  animation: orion-logo-glow 4.8s ease-in-out infinite;
+}
+
+/* Sombra de contacto: se encoge y aclara cuando el logo sube hacia el usuario. */
+.orion-loader__shadow {
+  left: 16%;
+  right: 16%;
+  top: 98%;
+  height: 13%;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(23, 32, 43, 0.3), rgba(23, 32, 43, 0.1) 60%, rgba(23, 32, 43, 0) 100%);
+  animation: orion-logo-shadow 4.8s ease-in-out infinite;
+}
+
+/* El logo sube hacia el usuario y se inclina apenas, como si saliera de la pantalla. */
+.orion-loader__body {
+  inset: 0;
+  transform-style: preserve-3d;
+  animation: orion-logo-float 4.8s ease-in-out infinite;
+}
+
+.orion-loader__body > img,
+.orion-loader__body > video {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
   object-fit: contain;
-  transform: scale(1.64);
+  transform: scale(var(--logo-media-scale));
   transform-origin: center;
+  filter: drop-shadow(0 calc(var(--logo-s) * 0.07) calc(var(--logo-s) * 0.09) rgba(23, 32, 43, 0.2));
   pointer-events: none;
   -webkit-user-drag: none;
 }
 
 /* Sin formato con transparencia: vídeo opaco sobre blanco, con los bordes desvanecidos para que no se vea el recuadro. */
-.orion-loader--opaque > img,
-.orion-loader--opaque > video {
-  -webkit-mask-image: radial-gradient(circle at center, #000 0 52%, transparent 70%);
-  mask-image: radial-gradient(circle at center, #000 0 52%, transparent 70%);
+.orion-loader--opaque .orion-loader__body > img,
+.orion-loader--opaque .orion-loader__body > video {
+  filter: none;
+  -webkit-mask-image: radial-gradient(circle at center, #000 0 50%, transparent 68%);
+  mask-image: radial-gradient(circle at center, #000 0 50%, transparent 68%);
 }
 
-/* Inline: logo pequeño + texto, válido dentro de párrafos y botones. */
-.orion-inline-loader {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.6rem;
-  color: var(--text-secondary, #5d6674);
-  font-size: 0.92rem;
-  line-height: 1.3;
+@keyframes orion-logo-float {
+  0%, 100% { transform: translate3d(0, 3%, 0) rotateX(7deg) rotateY(-8deg); }
+  50% { transform: translate3d(0, -5%, calc(var(--logo-s) * 0.24)) rotateX(-4deg) rotateY(8deg); }
 }
 
-.orion-inline-loader--block {
-  display: flex;
-  padding: 0.75rem 0;
+@keyframes orion-logo-shadow {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(0.72); opacity: 0.5; }
 }
 
-/* Bloque centrado para la carga de un módulo completo. */
-.orion-panel-loader {
+@keyframes orion-logo-glow {
+  0%, 100% { transform: scale(0.95); opacity: 0.8; }
+  50% { transform: scale(1.06); opacity: 1; }
+}
+
+/* ---------- Escenario de carga ---------- */
+
+.orion-stage {
+  --emblem-size: clamp(120px, 30vw, 148px);
+  position: relative;
+  isolation: isolate;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 0.9rem;
-  min-height: 14rem;
-  padding: 2rem 1.5rem;
-  text-align: center;
+  gap: 1.5rem;
+  width: 100%;
+  min-height: clamp(17rem, 42vh, 24rem);
+  padding: 2.5rem 1.25rem 1.9rem;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.85);
+  border-radius: 22px;
+  background: linear-gradient(165deg, rgba(255, 255, 255, 0.72), rgba(234, 241, 246, 0.58));
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.95),
+    inset 0 -34px 64px -34px rgba(104, 116, 133, 0.22),
+    0 24px 50px -30px rgba(23, 32, 43, 0.3);
+  -webkit-backdrop-filter: blur(18px) saturate(1.25);
+  backdrop-filter: blur(18px) saturate(1.25);
   color: var(--text-primary, #17202b);
+  text-align: center;
+  animation: orion-stage-in 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
-.orion-panel-loader .orion-loader {
-  width: clamp(104px, 18vw, 150px);
-  filter: drop-shadow(0 14px 26px rgba(23, 32, 43, 0.14));
+/* Fondo desenfocado que deriva despacio: da profundidad aunque detrás no haya contenido. */
+.orion-stage::before {
+  content: '';
+  position: absolute;
+  inset: -35%;
+  z-index: -1;
+  background:
+    radial-gradient(closest-side at 50% 42%, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0) 62%),
+    radial-gradient(closest-side at 26% 34%, rgba(var(--environmental-blue-rgb, 99, 174, 254), 0.2), rgba(var(--environmental-blue-rgb, 99, 174, 254), 0)),
+    radial-gradient(closest-side at 76% 62%, rgba(var(--brand-red-rgb, 243, 39, 53), 0.09), rgba(var(--brand-red-rgb, 243, 39, 53), 0)),
+    radial-gradient(closest-side at 62% 20%, rgba(186, 204, 222, 0.42), rgba(186, 204, 222, 0));
+  filter: blur(28px);
+  animation: orion-stage-drift 16s ease-in-out infinite alternate;
 }
 
-.orion-panel-loader--brand .orion-loader {
-  width: clamp(130px, 22vw, 200px);
+.orion-stage__pedestal {
+  position: relative;
+  display: grid;
+  place-items: center;
+  /* Deja sitio al piso de luz, que baja un poco por debajo del logo. */
+  margin-bottom: calc(var(--emblem-size, 128px) * 0.14);
 }
 
-.orion-panel-loader__wordmark {
-  width: clamp(150px, 24vw, 220px);
-  margin-top: 0.2rem;
-  user-select: none;
+/* Piso de luz bajo el logo: una elipse de vidrio con borde brillante, en perspectiva. */
+.orion-stage__pedestal::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 100%;
+  z-index: -1;
+  width: calc(var(--emblem-size, 128px) * 1.7);
+  height: calc(var(--emblem-size, 128px) * 0.42);
+  margin: calc(var(--emblem-size, 128px) * -0.2) 0 0 calc(var(--emblem-size, 128px) * -0.85);
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(255, 255, 255, 0.85), rgba(255, 255, 255, 0.35) 62%, rgba(255, 255, 255, 0) 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.9),
+    inset 0 -6px 14px rgba(104, 116, 133, 0.12);
 }
 
-.orion-panel-loader__biosystems {
-  width: 104px;
-  margin-top: 0.4rem;
-  user-select: none;
+.orion-stage__copy {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+  max-width: 34rem;
 }
 
-.orion-panel-loader__eyebrow {
-  font-size: 0.66rem;
-  font-weight: 700;
+.orion-stage__eyebrow {
+  font-size: 0.7rem;
+  font-weight: 600;
   letter-spacing: 0.26em;
   text-transform: uppercase;
-  color: rgba(var(--brand-red-rgb, 243, 39, 53), 0.72);
+  color: rgba(var(--brand-red-rgb, 243, 39, 53), 0.78);
 }
 
-.orion-panel-loader__title {
+.orion-stage__title {
   font-family: var(--font-heading, inherit);
-  font-size: 1.1rem;
-  line-height: 1.2;
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.3;
 }
 
-.orion-panel-loader__subtitle {
-  max-width: 34rem;
-  font-size: 0.9rem;
+.orion-stage__subtitle {
+  font-size: 0.88rem;
   line-height: 1.5;
   color: var(--text-secondary, #5d6674);
+}
+
+.orion-stage__progress {
+  position: relative;
+  display: block;
+  width: 9rem;
+  height: 2px;
+  margin-top: 0.6rem;
+  overflow: hidden;
+  border-radius: 999px;
+  background: rgba(23, 32, 43, 0.08);
+}
+
+.orion-stage__progress::after {
+  content: '';
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 34%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, rgba(var(--brand-red-rgb, 243, 39, 53), 0.12), var(--brand-red, #f32735));
+  box-shadow: 0 0 10px rgba(var(--brand-red-rgb, 243, 39, 53), 0.5);
+  animation: orion-stage-sweep 1.5s ease-in-out infinite;
+}
+
+.orion-stage__wordmark {
+  width: clamp(150px, 24vw, 210px);
+  margin-top: -0.2rem;
+  user-select: none;
+}
+
+.orion-stage__biosystems {
+  width: 96px;
+  user-select: none;
+  opacity: 0.85;
+}
+
+.orion-stage--sm {
+  --emblem-size: 104px;
+  gap: 1.15rem;
+  min-height: 13.5rem;
+  padding: 1.9rem 1rem 1.4rem;
+  border-radius: 18px;
+}
+
+.orion-stage--sm .orion-stage__title {
+  font-size: 0.92rem;
+}
+
+.orion-stage--lg {
+  --emblem-size: clamp(140px, 32vw, 184px);
+  gap: 1.7rem;
+  min-height: clamp(20rem, 54vh, 32rem);
+}
+
+@keyframes orion-stage-in {
+  from { opacity: 0; transform: translateY(8px) scale(0.985); }
+  to { opacity: 1; transform: none; }
+}
+
+@keyframes orion-stage-drift {
+  from { transform: translate3d(-4%, -3%, 0) rotate(0deg); }
+  to { transform: translate3d(4%, 3%, 0) rotate(14deg); }
+}
+
+@keyframes orion-stage-sweep {
+  from { transform: translateX(-100%); }
+  to { transform: translateX(400%); }
+}
+
+/* ---------- Velo de carga de página ---------- */
+
+/* Desenfoque a pantalla completa mientras la página trae su contenido; por debajo del splash (1000) y de los modales.
+   El logo crece con la pantalla (≈355 px en 1920×1000) y se apoya en luz, sin plataforma. */
+.orion-veil {
+  --emblem-size: clamp(190px, min(30vw, 36vh), 360px);
+  position: fixed;
+  inset: 0;
+  z-index: 980;
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: calc(var(--emblem-size) * 0.2);
+  padding: 1.5rem;
+  background:
+    radial-gradient(ellipse 60% 55% at 50% 46%, rgba(255, 255, 255, 0.86), rgba(255, 255, 255, 0.42) 55%, rgba(255, 255, 255, 0) 100%),
+    rgba(234, 240, 246, 0.56);
+  -webkit-backdrop-filter: blur(28px) saturate(1.15);
+  backdrop-filter: blur(28px) saturate(1.15);
+  color: var(--text-primary, #17202b);
+  text-align: center;
+  cursor: progress;
+  animation: orion-veil-in 0.26s ease-out both;
+}
+
+/* Luz ambiental que deriva despacio a escala de pantalla: azul y un toque del rubí, muy difusos. */
+.orion-veil::before {
+  content: '';
+  position: absolute;
+  inset: -20%;
+  z-index: -1;
+  background:
+    radial-gradient(closest-side at 28% 36%, rgba(var(--environmental-blue-rgb, 99, 174, 254), 0.12), rgba(var(--environmental-blue-rgb, 99, 174, 254), 0)),
+    radial-gradient(closest-side at 74% 60%, rgba(var(--brand-red-rgb, 243, 39, 53), 0.06), rgba(var(--brand-red-rgb, 243, 39, 53), 0));
+  filter: blur(48px);
+  animation: orion-stage-drift 16s ease-in-out infinite alternate;
+}
+
+.orion-veil--leaving {
+  pointer-events: none;
+  animation: orion-veil-out 0.38s ease-in both;
+}
+
+.orion-veil__stage {
+  position: relative;
+  display: grid;
+  place-items: center;
+  animation: orion-veil-rise 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* Charco de luz bajo el logo, sin bordes: sustituye a la plataforma del escenario. */
+.orion-veil__stage::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 100%;
+  z-index: -1;
+  width: calc(var(--emblem-size) * 1.6);
+  height: calc(var(--emblem-size) * 0.34);
+  transform: translate(-50%, -62%);
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.55) 45%, rgba(255, 255, 255, 0) 100%);
+}
+
+/* Halo perla, amplio y suave; sin el tinte rosado del escenario pequeño, que a este tamaño se ve como un aro. */
+.orion-veil .orion-loader__halo {
+  inset: -34%;
+  background: radial-gradient(
+    circle,
+    rgba(255, 255, 255, 0.9) 0 26%,
+    rgba(255, 255, 255, 0.55) 42%,
+    rgba(255, 255, 255, 0.18) 56%,
+    rgba(255, 255, 255, 0) 70%
+  );
+}
+
+.orion-veil .orion-loader__shadow {
+  left: 22%;
+  right: 22%;
+  height: 9%;
+  background: radial-gradient(closest-side, rgba(23, 32, 43, 0.22), rgba(23, 32, 43, 0.07) 60%, rgba(23, 32, 43, 0) 100%);
+}
+
+.orion-veil__copy {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  animation: orion-veil-rise 0.6s 0.08s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.orion-veil__label {
+  font-family: var(--font-heading, inherit);
+  font-size: clamp(0.95rem, 0.6vw + 0.7rem, 1.08rem);
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: #3f4855;
+}
+
+.orion-veil__progress {
+  width: clamp(9rem, 12vw, 13rem);
+  height: 3px;
+  margin-top: 0;
+  background: rgba(23, 32, 43, 0.07);
+}
+
+/* Lo que deja la vista en su sitio mientras el velo la cubre: conserva la altura del panel para que nada salte. */
+.orion-veil-placeholder {
+  width: 100%;
+  min-height: clamp(20rem, 54vh, 32rem);
+}
+
+@keyframes orion-veil-in {
+  from { opacity: 0; }
+}
+
+@keyframes orion-veil-out {
+  to { opacity: 0; }
+}
+
+@keyframes orion-veil-rise {
+  from { opacity: 0; transform: translateY(10px) scale(0.96); }
+}
+
+/* ---------- Dentro de botones y líneas de estado ---------- */
+
+.orion-inline-loader {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.3rem;
+  line-height: 1.3;
+}
+
+.orion-inline-loader__progress {
+  width: 100%;
+  min-width: 5rem;
+  margin-top: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .orion-loader__halo,
+  .orion-loader__shadow,
+  .orion-loader__body,
+  .orion-stage,
+  .orion-stage::before,
+  .orion-stage__progress::after,
+  .orion-veil,
+  .orion-veil::before,
+  .orion-veil__stage,
+  .orion-veil__copy {
+    animation: none;
+  }
+
+  .orion-veil--leaving {
+    opacity: 0;
+  }
+
+  .orion-loader__body {
+    transform: rotateX(5deg) rotateY(-6deg);
+  }
 }
