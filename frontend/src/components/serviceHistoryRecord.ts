@@ -152,14 +152,3 @@ export const summarizeHistory = (rows: ServiceHistoryRow[]): string => {
 // conservan los saltos que empiezan una oración, una lista o un párrafo.
 export const reflowText = (value: string): string =>
   value.replace(/([^.:;!?\n])\n(?=[a-záéíóúüñ0-9(*"])/g, '$1 ').replace(/[ \t]{2,}/g, ' ').trim();
-
-// A field service inferred to answer one or more tickets (same serial, visit within 15 days).
-export interface ServiceTicketLink { ticketId: string; folio: string | null; days: number; confidence: 'segura' | 'probable' }
-export const ticketLinkSummary = (links: ServiceTicketLink[] | null | undefined): string | null => {
-  if (!links?.length) return null;
-  const sorted = [...links].sort((a, b) => a.days - b.days);
-  const tickets = sorted.map(link => `${link.folio || 'ticket'} (${link.days === 0 ? 'el mismo día' : `${link.days} ${link.days === 1 ? 'día' : 'días'} después`})`);
-  const confidence = sorted.some(link => link.confidence === 'segura') ? 'liga segura' : 'liga probable';
-  return `${tickets.length === 1 ? 'Atiende el ticket' : 'Atiende los tickets'} ${tickets.join(', ')} · ${confidence}, estimada por serie y fecha`;
-};
-

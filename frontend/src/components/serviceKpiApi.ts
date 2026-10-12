@@ -28,13 +28,6 @@ export async function fetchKpiRecords(query: RecordsQuery, offset: number, limit
   return data as { total: number; rows: KpiRecord[] };
 }
 
-// Ticket → visit links of the period: inferred from the Biosisa history (segura/probable) or captured in Orion (registrada).
-export async function fetchVisitLinks(filters: RpcFilters) {
-  const { data, error } = await supabase.rpc('get_service_kpi_visit_links', { p_filters: filters });
-  if (error) throw new Error(message(error, 'No fue posible consultar las visitas ligadas a tickets.'));
-  return (data || []) as KpiRecord[];
-}
-
 // Exports page through the same RPC as the table, so the file holds exactly the filtered rows.
 export async function fetchAllKpiRecords(query: RecordsQuery) {
   const rows: KpiRecord[] = [];

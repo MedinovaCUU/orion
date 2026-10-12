@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import {
   formatDuration, historyFacts, historyRecordKind, historyRecordRef, historyTypeLabel,
-  reflowText, scheduleSummary, summarizeHistory, trainingTopics, ticketLinkSummary,
+  reflowText, scheduleSummary, summarizeHistory, trainingTopics,
 } from '../src/components/serviceHistoryRecord.ts';
 
 const service = { id: 'a', id_legacy: 2700, origen: 'biosisa_servicio', tipo_servicio: 'instalacion', fecha_servicio: '2026-10-07', fecha_fin: '2026-10-07', hora_inicio: '12:00:00', hora_fin: '16:00:00', duracion_min: 240, datos_origen: { cliente_biosisa: 'ESCOBEDO ZAMORA JOSE ALFREDO' } };
@@ -47,8 +47,4 @@ assert.equal(summarizeHistory([service]), '1 servicio');
 assert.equal(reflowText('Se corrobora que la programación sea\ncorrecta y se realizan pruebas'), 'Se corrobora que la programación sea correcta y se realizan pruebas');
 assert.equal(reflowText('Limpieza general.\nCambio de lámpara.'), 'Limpieza general.\nCambio de lámpara.', 'sentence breaks stay');
 assert.equal(reflowText('Se realiza:\n-Limpieza\n-Ajustes'), 'Se realiza:\n-Limpieza\n-Ajustes', 'list items stay on their own line');
-assert.equal(ticketLinkSummary(null), null);
-assert.equal(ticketLinkSummary([{ ticketId: 't1', folio: 'BIO-2304', days: 2, confidence: 'segura' }]), 'Atiende el ticket BIO-2304 (2 días después) · liga segura, estimada por serie y fecha');
-assert.equal(ticketLinkSummary([{ ticketId: 't2', folio: 'BIO-2310', days: 1, confidence: 'probable' }, { ticketId: 't3', folio: null, days: 0, confidence: 'probable' }]),
-  'Atiende los tickets ticket (el mismo día), BIO-2310 (1 día después) · liga probable, estimada por serie y fecha');
 console.log('service history record: ok');

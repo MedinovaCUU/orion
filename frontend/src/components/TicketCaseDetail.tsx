@@ -9,8 +9,6 @@ import {
 import { formatCaseNumber } from './ticketCaseUtils';
 import { Loader } from './OrionLoader';
 import { activityMotiveLabels, activityResultLabels, historyServiceTypes } from './serviceKpiModel';
-import { fetchServiceTicketLinks } from './serviceLinksApi';
-import { ticketLinkSummary, type ServiceTicketLink } from './serviceHistoryRecord';
 
 export interface CaseTicketRecord {
   id: string;
@@ -136,7 +134,6 @@ export default function TicketCaseDetail({ ticket, equipment, canWrite, onChange
   const [logs, setLogs] = useState<CaseLogRow[]>([]);
   const [equipmentTickets, setEquipmentTickets] = useState<CaseTicketRecord[]>([]);
   const [services, setServices] = useState<ServiceHistoryRow[]>([]);
-  const [serviceLinks, setServiceLinks] = useState<Map<string, ServiceTicketLink[]>>(new Map());
   const [sapReports, setSapReports] = useState<SapServiceReportRow[]>([]);
   const [loading, setLoading] = useState(true);
   const [feedback, setFeedback] = useState('');
@@ -181,8 +178,6 @@ export default function TicketCaseDetail({ ticket, equipment, canWrite, onChange
     setServices((serviceResult.data || []) as ServiceHistoryRow[]);
     setSapReports((sapReportResult.data || []) as SapServiceReportRow[]);
     setLoading(false);
-    // Inferred ticket for each Biosisa visit (optional: the timeline renders without it).
-    setServiceLinks(await fetchServiceTicketLinks(((serviceResult.data || []) as ServiceHistoryRow[]).map((row) => row.id)));
   }, [serial, ticket.id]);
 
   useEffect(() => {
@@ -237,18 +232,16 @@ export default function TicketCaseDetail({ ticket, equipment, canWrite, onChange
       tone: 'activity' as const,
     }));
     const serviceEntries = services.map((row) => {
-      const links = serviceLinks.get(row.id) || [];
-      const own = links.find((link) => link.ticketId === ticket.id);
       const parts = (row.servicios_refacciones || [])
         .map((part) => `${part.refacciones_catalogo?.codigo_refaccion || 'Refacción'} ×${part.cantidad}`)
         .join(', ');
       return {
         id: `service-${row.id}`,
         timestamp: row.creado_en || row.fecha_servicio || '',
-        eyebrow: `${own ? 'Visita de este ticket' : 'Servicio realizado'}${row.tipo_servicio ? ` · ${historyServiceTypes[row.tipo_servicio] || row.tipo_servicio}` : ''}`,
+        eyebrow: row.tipo_servicio ? `Servicio realizado · ${historyServiceTypes[row.tipo_servicio] || row.tipo_servicio}` : 'Servicio realizado',
         title: row.motivo || 'Intervención registrada',
         detail: [row.cda ? `Avería ${row.cda}` : '', row.cds ? `Solución ${row.cds}` : '', parts].filter(Boolean).join(' · ') || 'Acta de servicio ligada al equipo.',
-        meta: [row.profiles?.nombre_completo || 'Historial maestro', row.resultado ? `Resultado: ${activityResultLabels[row.resultado] || row.resultado}` : '', ticketLinkSummary(links) || ''].filter(Boolean).join(' · '),
+        meta: [row.profiles?.nombre_completo || 'Historial maestro', row.resultado ? `Resultado: ${activityResultLabels[row.resultado] || row.resultado}` : ''].filter(Boolean).join(' · '),
         tone: 'service' as const,
       };
     });
@@ -296,7 +289,7 @@ export default function TicketCaseDetail({ ticket, equipment, canWrite, onChange
     return [...ticketEntries, ...logEntries, ...serviceEntries, ...sapEntries].sort(
       (left, right) => new Date(right.timestamp).getTime() - new Date(left.timestamp).getTime(),
     );
-  }, [equipmentTickets, logs, sapReports, services, serviceLinks, ticket.id]);
+  }, [equipmentTickets, logs, sapReports, services]);
 
   const openSapDocument = async (path: string) => {
     setFeedback('Generando acceso seguro al PDF…');
