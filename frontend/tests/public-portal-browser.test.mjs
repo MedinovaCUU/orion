@@ -90,7 +90,7 @@ try {
 
   // Real equipment not registered yet: blocked until the customer confirms the serial, then sent and acknowledged.
   submitReply = {status: 'creado', numero_caso: '1O223T62', modelo: 'A25', registrado: false};
-  await serial.fill('8310151004');
+  await serial.fill('831019999');
   await page.getByText('No encontramos ese número de serie entre los equipos registrados').waitFor();
   const confirm = page.getByLabel('Revisé la etiqueta y el número es correcto; mi equipo no aparece registrado.');
   await page.getByRole('button', {name: 'Crear Ticket'}).click();

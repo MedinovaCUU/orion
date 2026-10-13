@@ -34,7 +34,8 @@ export const serialIssue = (key: string): SerialIssue | null => {
   if (!key) return 'vacio';
   if (key.includes('8435287')) return 'producto';
   if (/^[0-9]{4,5}$/.test(key)) return 'incompleto';
-  if (key.length < 6 || key.length > 24 || !/[0-9]{3}/.test(key)) return 'formato';
+  // Analyzer serials: 5 digits + 0-3 letters + 4 digits (834001902, 83105C1526, 83400ISE1234).
+  if (!/^[0-9]{5}[A-Z]{0,3}[0-9]{4}$/.test(key)) return 'formato';
   if (/^(.)\1+$/.test(key) || key.startsWith('000') || /(012345|123456|234567|345678|456789|543210|654321|765432|876543|987654)/.test(key)) return 'formato';
   return null;
 };
@@ -57,7 +58,7 @@ export const serialStatusMessage = (status: SerialStatus, family?: string | null
     case 'incompleto':
       return 'Parece que falta el inicio del número. En un A15 con etiqueta anterior (REF 83105 y SN de 5 números que empieza con 0), escribe 83105C y los últimos 4 números: REF 83105 y SN 04321 se escriben 83105C4321.';
     case 'formato':
-      return 'Ese dato no corresponde a un número de serie. Por favor ingresa el número de serie correcto del equipo.';
+      return 'Ese dato no corresponde a un número de serie. El número de serie tiene 5 números, de 0 a 3 letras y 4 números finales (por ejemplo 83400 y 4 números, o 83105C y 4 números). Por favor ingresa el número de serie correcto del equipo.';
     case 'no_encontrado':
       return `No encontramos ese número de serie entre los equipos ${family ? `${family} ` : ''}registrados. Revísalo con la ayuda de abajo; si es correcto, confírmalo para enviar tu reporte.`;
     case 'limite':

@@ -483,3 +483,4 @@
   letter-spacing: normal; text-transform: none;
 }
 .serial-confirm input { margin-top: 0.15rem; width: 1.05rem; height: 1.05rem; flex: none; accent-color: var(--primary-color); }
+.serial-help__lead { margin: 0; color: var(--text-secondary); font-size: 0.86rem; line-height: 1.55; }

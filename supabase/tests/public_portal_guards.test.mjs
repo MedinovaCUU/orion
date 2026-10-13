@@ -36,7 +36,7 @@ insert into equipos values
  ('5','EU-2270780','IMLD','MEXICO',null,now()),
  ('6','F050',null,'MEXICO',null,now());
 `);
-for (const file of ['20261003010000_ticket_whatsapp_automation.sql', '20261003020000_ticket_whatsapp_equipment_country.sql', '20261013010000_public_portal_guards.sql', '20261013030000_public_portal_a15_cooler_serials.sql', '20261013040000_public_portal_unregistered_serials.sql']) {
+for (const file of ['20261003010000_ticket_whatsapp_automation.sql', '20261003020000_ticket_whatsapp_equipment_country.sql', '20261013010000_public_portal_guards.sql', '20261013030000_public_portal_a15_cooler_serials.sql', '20261013040000_public_portal_unregistered_serials.sql', '20261013050000_public_portal_serial_structure.sql']) {
   await db.exec(await migration(file));
 }
 console.log('PASS: migration applies on top of the WhatsApp outbox migrations');
@@ -55,7 +55,9 @@ await db.exec('set role anon');
 assert.equal((await check('9')).status, 'formato');
 assert.equal((await check('hola mundo')).status, 'formato');
 assert.equal((await check('f050')).status, 'ok', 'a registered serial is valid even if it looks odd');
-for (const junk of ['000000', '0000004397', '123456', '1234567899999', '5555555', '1111111111']) {
+assert.equal((await check('8310507965')).status, 'ok', 'registered in the old 10-digit form: still found');
+assert.equal((await check('83400ISE9999')).status, 'no_encontrado', '5 digits + 3 letters + 4 digits is a plausible serial');
+for (const junk of ['000000', '0000004397', '123456', '1234567899999', '5555555', '1111111111', '8310151004', '83109986', '0893808', '83400ABCD1234', '00000C1234']) {
   assert.equal((await check(junk)).status, 'formato', `${junk} is not a serial`);
 }
 assert.equal((await check('(01)08435287131055')).status, 'producto');
@@ -72,7 +74,7 @@ assert.equal((await check('831057965')).status, 'no_encontrado');
 console.log('PASS: serial check (format, product code, old label, unknown, separators, SN prefix, model family, A15 cooler forms)');
 
 // 2. Unknown serial: rejected, nothing created, attempt logged.
-let r = await submit('Ingeniero', '83109986', 'María López', '6141234567', 'El equipo no enciende desde ayer');
+let r = await submit('Ingeniero', '834005555', 'María López', '6141234567', 'El equipo no enciende desde ayer');
 assert.equal(r.status, 'serie'); assert.equal(r.motivo, 'no_encontrado');
 await db.exec('reset role');
 assert.equal(await count('tickets'), 0);
@@ -82,25 +84,28 @@ let ticket, outbox;
 
 // 2b. A plausible serial that is not registered: rejected unless the customer confirms it.
 assert.equal(r.confirmable, true);
-r = await submit('Ingeniero', '83109986', 'María López', '6141234567', 'El equipo no enciende desde ayer', false);
+r = await submit('Ingeniero', '834005555', 'María López', '6141234567', 'El equipo no enciende desde ayer', false);
 assert.equal(r.status, 'serie'); assert.equal(r.confirmable, true);
+r = await submit('Ingeniero', '8310151004', 'María López', '6141234567', 'El equipo no enciende desde ayer', true);
+assert.equal(r.motivo, 'formato', '5 + 5 digits does not exist: it cannot be confirmed');
+assert.equal(r.status, 'serie'); assert.equal(r.confirmable, false);
 r = await submit('Ingeniero', '9', 'María López', '6141234567', 'El equipo no enciende desde ayer', true);
 assert.equal(r.status, 'serie'); assert.equal(r.motivo, 'formato'); assert.equal(r.confirmable, false, 'a non-serial cannot be confirmed');
 r = await submit('Ingeniero', '123456', 'María López', '6141234567', 'El equipo no enciende desde ayer', true);
 assert.equal(r.motivo, 'formato');
-r = await submit('Químico', 'sn 8310-151004', 'Rosa Díaz', '6143217654', 'El A25 marca error de cubetas', true);
+r = await submit('Químico', 'sn 83101-9999', 'Rosa Díaz', '6143217654', 'El A25 marca error de cubetas', true);
 assert.equal(r.status, 'creado'); assert.equal(r.registrado, false);
 const unregistered = r.numero_caso;
 await db.exec('reset role');
 ticket = await one('select * from tickets where numero_caso=$1', [unregistered]);
-assert.equal(ticket.asunto, 'Soporte Químico: Reporte en equipo no registrado 8310151004');
-assert.equal(ticket.numero_serie_equipo, '8310151004');
+assert.equal(ticket.asunto, 'Soporte Químico: Reporte en equipo no registrado 831019999');
+assert.equal(ticket.numero_serie_equipo, '831019999');
 assert.match((await one("select detalle from ticket_bitacora where ticket_id=$1 and tipo='nota' and visible_cliente=false", [ticket.id])).detalle,
-  /^Equipo no registrado: el cliente confirmó desde el portal que la serie 8310151004 es correcta/);
+  /^Equipo no registrado: el cliente confirmó desde el portal que la serie 831019999 es correcta/);
 outbox = await one('select * from ticket_whatsapp_outbox where ticket_id=$1', [ticket.id]);
 assert.equal(outbox.recipient, '+526143217654', 'no equipment country: WhatsApp still goes out with +52');
 await db.exec('set role anon');
-r = await submit('Químico', '8310151004', 'Luis Mora', '6145556677', 'Seguimos con el error de cubetas', true);
+r = await submit('Químico', '831019999', 'Luis Mora', '6145556677', 'Seguimos con el error de cubetas', true);
 assert.equal(r.status, 'agrupado'); assert.equal(r.numero_caso, unregistered); assert.equal(r.registrado, false);
 await db.exec('reset role');
 assert.match((await one("select detalle from ticket_bitacora where ticket_id=$1 and detalle like 'Reporte adicional%'", [ticket.id])).detalle, /serie no registrada, confirmada por el cliente/);

@@ -10,6 +10,10 @@ export default function PublicSerialHelp({ initialTab }: { initialTab: SerialHel
 
   return (
     <section className="serial-help" aria-label="Dónde encontrar el número de serie">
+      <p className="serial-help__lead">
+        El número de serie tiene <b>5 números</b>, de <b>0 a 3 letras</b> y <b>4 números finales</b>.
+        Por ejemplo: <code>83400</code> + 4 números, <code>83105C</code> + 4 números o <code>83400ISE</code> + 4 números.
+      </p>
       <div className="serial-help__tabs" role="tablist" aria-label="Modelo del equipo">
         <button type="button" role="tab" aria-selected={tab === 'ba'} className={tab === 'ba' ? 'is-active' : ''} onClick={() => setTab('ba')}>
           BA400 · BA200
