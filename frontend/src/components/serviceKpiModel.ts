@@ -23,6 +23,7 @@ export interface StaffRow {
   pending_by_priority: Record<string, number>; pending_by_type: Record<string, number>; resolution_median: number | null;
   trainings: number; trainings_done: number; visits: number; calls: number; call_minutes: number | null;
   preventive_programmed: number; preventive_done: number; corrective: number; surveys: number; satisfaction_avg: number | null;
+  attire?: { num: number; den: number; pct: number | null };
 }
 export interface SlaPolicy {
   id: string; name: string; channel: string | null; region: string | null; area: string | null; priority: string | null;
@@ -36,6 +37,7 @@ export interface KpiSummary {
 export interface Drill { dataset: KpiDataset; match: Record<string, unknown>; title: string; definition?: string }
 export type KpiRecord = Record<string, unknown>;
 
+export const attireLabels: Record<string, string> = { both: 'Bata y gafete', coat: 'Solo bata', badge: 'Solo gafete', none: 'Ni bata ni gafete', no_visit: 'No hubo visita en sitio' };
 export const teamLabels: Record<string, string> = { quimica: 'Químicos', ingenieria: 'Ingenieros', otro: 'Otro personal', sin_clasificar: 'Sin clasificar' };
 export const viewLabels: Record<KpiView, string> = { general: 'Resumen general', quimica: 'Químicos', ingenieria: 'Ingenieros' };
 export const kindLabels: Record<string, string> = {
@@ -107,6 +109,7 @@ export const definitions: Record<string, KpiDefinition> = {
   parts: { label: 'Piezas utilizadas', formula: 'Suma de cantidades de refacciones del historial de servicio y de materiales tipo refacción de los reportes.', source: 'servicios_refacciones y service_report_materials.', dateField: 'Fecha del servicio.', denominator: 'No aplica: es una suma.' },
   parts_cost: { label: 'Costo de piezas', formula: 'Σ precio × cantidad, solo en líneas con precio registrado.', source: 'Precio del material en el reporte de servicio.', dateField: 'Fecha del servicio.', denominator: 'Líneas con precio; el resto se muestra como “sin costo registrado”.' },
   csat: { label: 'Satisfacción del cliente', formula: 'Encuestas con calificación 4 o 5 ÷ encuestas respondidas × 100.', source: 'Encuestas de satisfacción respondidas (sin invitaciones de prueba).', dateField: 'Fecha de respuesta.', denominator: 'Encuestas respondidas en el periodo.' },
+  attire: { label: 'Bata y gafete en visitas', formula: 'Encuestas en que el cliente vio al personal con bata de laboratorio y gafete ÷ encuestas con visita en sitio que respondieron la pregunta × 100.', source: 'Pregunta de presentación de la encuesta de satisfacción (sin invitaciones de prueba).', dateField: 'Fecha de respuesta.', denominator: 'Respuestas «bata y gafete», «solo bata», «solo gafete» o «ni bata ni gafete».', note: '«No hubo visita en sitio» y las encuestas respondidas antes de existir la pregunta quedan fuera; también se informa por separado el porcentaje con bata y con gafete.' },
   workload: { label: 'Balance de carga', formula: 'Por colaborador: tickets asignados con actividad en el periodo, abiertos y vencidos al corte, cerrados y fuera de plazo, más su mezcla de prioridad y actividades.', source: 'Responsable vigente (ticket_assignments) y participantes de actividades.', dateField: 'Apertura, cierre o corte, según la columna.', denominator: 'No es un ranking: se ordena alfabéticamente y muestra tipo, prioridad y carga.', note: 'Cada ticket se atribuye una vez al responsable vigente; las reasignaciones quedan en el historial. Una actividad con varios participantes cuenta una vez para el equipo y una vez para cada participante.' },
 };
 
@@ -279,6 +282,12 @@ const csatCard = ratioCard('csat', 'Satisfacción del cliente', 'csat', 'csat', 
   better: 'up', tone: 'good', numLabel: 'con 4 o 5', denLabel: 'encuestas respondidas', drill: drill('surveys', { in_period: true }, 'Encuestas respondidas', 'csat'),
   extra: m => num(m.satisfaction_avg) === null ? '' : `promedio ${decimal.format(num(m.satisfaction_avg)!)} / 5`,
 });
+const attireCard = ratioCard('attire', 'Bata y gafete en visitas', 'attire', 'attire', {
+  better: 'up', tone: 'good', numLabel: 'con bata y gafete', denLabel: 'visitas evaluadas por el cliente', drill: drill('surveys', { in_period: true }, 'Encuestas respondidas', 'attire'),
+  extra: m => ratioOf(m.attire_coat).pct === null ? '' : `con bata ${formatPct(ratioOf(m.attire_coat).pct)} · con gafete ${formatPct(ratioOf(m.attire_badge).pct)}`,
+});
+// Survey cards stay hidden until a customer has answered at least one survey.
+export const surveyCardIds = ['csat', 'attire'];
 const trainingCards: CardSpec[] = [
   countCard('trainings', 'Capacitaciones', 'trainings', 'trainings', { drill: drill('activities', { in_period: true, training_kind: 'capacitacion' }, 'Capacitaciones', 'trainings') }),
   countCard('retrainings', 'Recapacitaciones', 'trainings', 'retrainings', { drill: drill('activities', { in_period: true, training_kind: 'recapacitacion' }, 'Recapacitaciones', 'trainings') }),
@@ -339,7 +348,7 @@ export const sectionsFor = (view: KpiView): CardSection[] => {
     { id: 'capacitaciones', title: 'Capacitaciones y recapacitaciones', subtitle: 'Programadas en planeación y ejecutadas', cards: trainingCards },
     { id: 'visitas', title: 'Visitas y servicios telefónicos', subtitle: 'Motivo, avería, solución y resultado', cards: [...visitCards, ...callCards] },
     { id: 'tickets', title: 'Tickets', subtitle: 'Apertura, cierre, tiempos y plazo comprometido', cards: ticketCards(' · químicos') },
-    { id: 'calidad', title: 'Calidad del servicio', subtitle: 'Reaperturas, primera visita, reincidencia y satisfacción', cards: [...qualityCards, csatCard] },
+    { id: 'calidad', title: 'Calidad del servicio', subtitle: 'Reaperturas, primera visita, reincidencia y satisfacción', cards: [...qualityCards, csatCard, attireCard] },
   ];
   if (view === 'ingenieria') return [
     { id: 'preventivos', title: 'Mantenimientos preventivos', subtitle: 'Programado contra realizado por mes', cards: preventiveCards },
@@ -347,11 +356,11 @@ export const sectionsFor = (view: KpiView): CardSection[] => {
     { id: 'piezas', title: 'Piezas utilizadas', subtitle: 'Separadas por tipo de mantenimiento', cards: partCards },
     { id: 'telefono', title: 'Servicios telefónicos', subtitle: 'Duración, motivo y resultado', cards: callCards },
     { id: 'tickets', title: 'Tickets', subtitle: 'Apertura, cierre, tiempos y plazo comprometido', cards: ticketCards(' · ingenieros') },
-    { id: 'calidad', title: 'Calidad del servicio', subtitle: 'Reaperturas, primera visita, reincidencia y satisfacción', cards: [...qualityCards, csatCard] },
+    { id: 'calidad', title: 'Calidad del servicio', subtitle: 'Reaperturas, primera visita, reincidencia y satisfacción', cards: [...qualityCards, csatCard, attireCard] },
   ];
   return [
     { id: 'tickets', title: 'Cumplimiento y tiempos', subtitle: 'Todos los tickets de soporte', cards: ticketCards('') },
-    { id: 'calidad', title: 'Calidad del servicio', subtitle: 'Reaperturas, primera visita, reincidencia y satisfacción', cards: [...qualityCards, csatCard] },
+    { id: 'calidad', title: 'Calidad del servicio', subtitle: 'Reaperturas, primera visita, reincidencia y satisfacción', cards: [...qualityCards, csatCard, attireCard] },
     { id: 'actividad', title: 'Actividad de campo', subtitle: 'Preventivos, correctivos, visitas, llamadas y capacitaciones', cards: [
       preventiveCards[1], correctiveCards[1], ...visitCards, callCards[0], countCard('trainings_total', 'Capacitaciones y recapacitaciones', 'trainings', 'trainings_total', {
         drill: drill('activities', { in_period: true, counts_training: true }, 'Capacitaciones y recapacitaciones', 'trainings'),
@@ -529,6 +538,7 @@ export const recordColumns: Record<KpiDataset, RecordColumn[]> = {
     { key: 'speed', label: 'Rapidez', sort: 'speed', text: r => `${text(r, 'speed')} / 5`, raw: r => numeric(r, 'speed') },
     { key: 'clarity', label: 'Claridad', sort: 'clarity', text: r => r.clarity === null ? 'Sin dato' : `${r.clarity} / 5`, raw: r => numeric(r, 'clarity') },
     { key: 'resolution', label: 'Resolución', sort: 'resolution', text: r => ({ total: 'Total', partial: 'Parcial', unresolved: 'No resuelto' } as Record<string, string>)[String(r.resolution)] || 'Sin dato' },
+    { key: 'attire', label: 'Bata y gafete', sort: 'attire', text: r => attireLabels[String(r.attire)] || 'Sin dato' },
     { key: 'comment', label: 'Comentario', text: r => text(r, 'comment', 'Sin comentario') },
   ],
 };

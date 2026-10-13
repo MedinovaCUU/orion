@@ -12,8 +12,8 @@ import { applyBrandFontToWorkbook } from '../config/brandFonts';
 import { fetchKpiOptions, fetchKpiSummary, type KpiOptions } from './serviceKpiApi';
 import {
   activityMotiveLabels, activityResultLabels, ageBuckets, bucketLabel, chartsFor, defaultFilters, definitions, describeFilters, formatCount, formatDate,
-  formatDateTime, formatHours, formatMoney, isoDay, kindLabels, labelOf, num, presetLabels, presetRange, priorityLabels, sectionsFor,
-  qualityLabels, serviceTypeLabels, statusLabels, teamLabels, toRpcFilters, viewLabels, type CardSpec, type Drill, type KpiFilters, type KpiSummary,
+  formatDateTime, formatHours, formatMoney, formatPct, isoDay, kindLabels, labelOf, num, presetLabels, presetRange, priorityLabels, sectionsFor,
+  qualityLabels, serviceTypeLabels, statusLabels, surveyCardIds, teamLabels, toRpcFilters, viewLabels, type CardSpec, type Drill, type KpiFilters, type KpiSummary,
   type KpiView, type PeriodPreset, type StaffRow,
 } from './serviceKpiModel';
 
@@ -113,7 +113,7 @@ function StaffTable({ rows, view, onDrill, help, onHelp }: { rows: StaffRow[]; v
         <td>{cell(person.calls, activities({ is_call: true }, 'Llamadas'))}{num(person.call_minutes) !== null && <small>{formatCount(person.call_minutes)} min</small>}</td>
         {view !== 'quimica' && <td>{cell(person.preventive_done, activities({ is_planned: true, kind: 'preventivo', plan_status: 'realizado' }, 'Preventivos realizados'))}<small>de {person.preventive_programmed} programados</small></td>}
         {view !== 'quimica' && <td>{cell(person.corrective, activities({ is_visit: true, kinds: ['correctivo'] }, 'Correctivos'))}</td>}
-        <td>{person.surveys ? `${person.satisfaction_avg} / 5 (${person.surveys})` : <small>Sin encuestas</small>}</td>
+        <td>{person.surveys ? `${person.satisfaction_avg} / 5 (${person.surveys})` : <small>Sin encuestas</small>}{person.attire?.den ? <small>Bata y gafete {formatPct(person.attire.pct)} · {person.attire.num} de {person.attire.den}</small> : null}</td>
       </tr>;
     })}</tbody></table></div>}
   </div>;
@@ -262,7 +262,7 @@ export default function ServiceKpiCenter({ view, onOpenTicket }: { view: KpiView
       cards.columns = [{ header: 'Sección', key: 's', width: 28 }, { header: 'Indicador', key: 'i', width: 32 }, { header: 'Valor', key: 'v', width: 16 }, { header: 'Detalle', key: 'd', width: 60 },
         { header: 'Periodo anterior', key: 'p', width: 18 }, { header: 'Comparación', key: 'c', width: 40 }, { header: 'Fórmula', key: 'f', width: 70 }, { header: 'Denominador', key: 'n', width: 70 }];
       for (const section of sections) for (const spec of section.cards) {
-        if (spec.id === 'csat' && !showSurveys) continue;
+        if (surveyCardIds.includes(spec.id) && !showSurveys) continue;
         const value = spec.read(summary.current); const before = spec.read(summary.previous); const definition = definitions[spec.definition];
         cards.addRow({ s: section.title, i: spec.label, v: value.value, d: value.detail, p: before.value, c: spec.compare(summary.current, summary.previous)?.text || '', f: definition?.formula, n: definition?.denominator });
       }
@@ -276,8 +276,8 @@ export default function ServiceKpiCenter({ view, onOpenTicket }: { view: KpiView
       staff.columns = [['name', 'Colaborador'], ['team', 'Equipo'], ['tickets_relevant', 'Tickets asignados'], ['pending_at_cut', 'Abiertos al corte'], ['overdue_at_cut', 'Vencidos'], ['tickets_closed', 'Cerrados'],
         ['sla_evaluable', 'Cierres evaluables'], ['sla_late', 'Fuera de plazo'], ['resolution_median', 'Resolución mediana (h)'], ['trainings', 'Capacitaciones'], ['trainings_done', 'Capacitaciones realizadas'],
         ['visits', 'Visitas'], ['calls', 'Llamadas'], ['call_minutes', 'Minutos de llamada'], ['preventive_programmed', 'Preventivos programados'], ['preventive_done', 'Preventivos realizados'],
-        ['corrective', 'Correctivos'], ['surveys', 'Encuestas'], ['satisfaction_avg', 'Satisfacción promedio']].map(([key, header]) => ({ key, header, width: 18 }));
-      for (const person of summary.breakdowns.staff) staff.addRow({ ...person, name: shownName(person.name), team: teamLabels[person.team] || person.team });
+        ['corrective', 'Correctivos'], ['surveys', 'Encuestas'], ['satisfaction_avg', 'Satisfacción promedio'], ['attire_pct', 'Bata y gafete (%)']].map(([key, header]) => ({ key, header, width: 18 }));
+      for (const person of summary.breakdowns.staff) staff.addRow({ ...person, name: shownName(person.name), team: teamLabels[person.team] || person.team, attire_pct: person.attire?.pct ?? null });
       style(staff);
       const quality = book.addWorksheet('Calidad de datos');
       quality.addRows([['Concepto', 'Registros'], ...qualityLabels.map(([key, label]) => [label, num(summary.quality[key]) ?? 0])]);
@@ -345,7 +345,7 @@ export default function ServiceKpiCenter({ view, onOpenTicket }: { view: KpiView
       {totals === 0 && <div className="kpi-banner"><strong>Sin registros en el periodo con estos filtros.</strong> Los indicadores muestran cero actividad; amplía el periodo o limpia los filtros.</div>}
       {sections.map(section => <section key={section.id} className="kpi-section" aria-labelledby={`kpi-${view}-${section.id}`}>
         <header><h3 id={`kpi-${view}-${section.id}`}>{section.title}</h3><span>{section.subtitle}</span></header>
-        <div className="kpi-cards">{section.cards.filter(spec => spec.id !== 'csat' || showSurveys).map(spec =>
+        <div className="kpi-cards">{section.cards.filter(spec => !surveyCardIds.includes(spec.id) || showSurveys).map(spec =>
           <KpiCard key={spec.id} spec={spec} summary={summary} help={help === `${section.id}:${spec.id}`} onHelp={() => toggleHelp(`${section.id}:${spec.id}`)} onDrill={openDrill} />)}</div>
         {(extras[section.id] || []).map((node, index) => <Fragment key={index}>{node}</Fragment>)}
       </section>)}

@@ -65,7 +65,8 @@ for (const name of ['20260924010000_ticket_service_metrics.sql', '20260924020000
   '20261001020000_ticket_satisfaction_test_invitations.sql', '20261009010000_ticket_visibility_boundary.sql', '20261011020000_service_staff_kpis.sql',
   '20261011030000_service_staff_kpis_performance.sql', '20261012010000_servicios_historial_detalle_biosisa.sql',
   '20261012020000_kpi_tickets_historicos_biosisa.sql', '20261012030000_kpi_rendimiento_historicos.sql',
-  '20261012040000_kpi_tickets_biosisa_evaluados.sql', '20261012050000_ticket_service_links.sql']) {
+  '20261012040000_kpi_tickets_biosisa_evaluados.sql', '20261012050000_ticket_service_links.sql',
+  '20261013140000_ticket_satisfaction_attire.sql', '20261013140100_kpi_survey_attire.sql']) {
   await db.exec(await migration(name));
 }
 console.log('PASS: migration applies on top of the ticket, routing, satisfaction and visibility migrations');
@@ -441,5 +442,39 @@ assert.deepEqual(linkRows.map(row => [row.folio, row.confianza, row.dias, row.re
 ], 'one row per linked ticket of the period, with correctives on the same equipment within the recurrence window');
 await db.exec('reset role');
 console.log('PASS: ticket → visit links: confidence rules, preventive and phone exclusions, 7/15-day windows, shared visits, idempotent rebuild, visibility and KPI rows');
+
+// ── Survey: staff presentation (lab coat and badge) ───────────────────────────────────────
+// March 2026 holds its own surveys so January's numbers stay as above; February is its previous period.
+await db.exec(`
+insert into ticket_satisfaction(ticket_id, specialist_id, specialist_name, area, case_number, answered_at, satisfaction, speed, resolution, improvement, attire) values
+ ('${T(2)}','${P.e1}','Alfredo Acevedo','ingenieria','OR-0002','2026-03-03T16:00:00Z',5,5,'total','none','both'),
+ ('${T(5)}','${P.e1}','Alfredo Acevedo','ingenieria','OR-0005','2026-03-04T16:00:00Z',4,4,'total','none','none'),
+ ('${T(3)}','${P.e2}','Diego Garcia','ingenieria','OR-0003','2026-03-05T16:00:00Z',4,3,'partial','followup','coat'),
+ ('${T(4)}','${P.e2}','Diego Garcia','ingenieria','OR-0004','2026-03-06T16:00:00Z',3,3,'total','speed','no_visit'),
+ ('${T(6)}','${P.q2}','Martha Carbajal','quimica','OR-0006','2026-03-07T16:00:00Z',5,5,'total','none',null),
+ ('${T(7)}','${P.q1}','Ivonne Jaramillo','quimica','OR-0007','2026-02-10T16:00:00Z',5,5,'total','none','both');
+`);
+const MAR = { from: '2026-03-01', to: '2026-03-31', granularity: 'month' };
+const march = await summary(MAR);
+assert.equal(march.current.surveys, 5);
+assert.deepEqual(march.current.attire, { num: 1, den: 3, pct: 33.3 }, 'coat and badge over in-person answers; no visit and unanswered stay out');
+assert.deepEqual(march.current.attire_coat, { num: 2, den: 3, pct: 66.7 });
+assert.deepEqual(march.current.attire_badge, { num: 1, den: 3, pct: 33.3 });
+assert.equal(march.current.attire_no_visit, 1);
+assert.deepEqual(march.previous.attire, { num: 1, den: 1, pct: 100 }, 'the previous period is computed the same way');
+const presented = id => march.breakdowns.staff.find(row => row.id === id).attire;
+assert.deepEqual(presented(P.e1), { num: 1, den: 2, pct: 50 });
+assert.deepEqual(presented(P.e2), { num: 0, den: 1, pct: 0 });
+assert.deepEqual(presented(P.q2), { num: 0, den: 0, pct: null }, 'a survey without the question is "no data", never a failure');
+assert.deepEqual((await summary({ ...MAR, team: 'quimica' })).current.attire, { num: 0, den: 0, pct: null });
+const marchSurveys = await records('surveys', { in_period: true }, MAR);
+assert.equal(marchSurveys.total, 5);
+assert.deepEqual(marchSurveys.rows.map(row => row.attire).sort(), ['both', 'coat', 'no_visit', 'none', null].sort());
+assert.equal((await records('surveys', { in_period: true, attire: 'both' }, MAR)).total, 1, 'records filter by the answer');
+assert.equal(c.attire.den, 0, 'January surveys predate the question');
+await db.exec('set role authenticated');
+await assert.rejects(db.query("select service_kpi_attire_ratios('{}')"), /permission denied/);
+await db.exec('reset role');
+console.log('PASS: survey presentation (coat and badge): current/previous ratios, no-visit and unanswered excluded, per person, team filter, records');
 
 await db.close();

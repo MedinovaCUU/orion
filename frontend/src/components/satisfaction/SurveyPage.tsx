@@ -1,6 +1,6 @@
 import { useEffect, useState, type FormEvent, type ReactNode } from 'react';
 import { publicSurveyClient as supabase } from './publicSurveyClient';
-import { improvements } from './model';
+import { attireOptions, improvements } from './model';
 import { ORION_BRAND_ASSETS } from '../orionBrandAssets';
 import './surveyPage.css';
 
@@ -11,7 +11,7 @@ const BIOSYSTEMS_WORDMARK = `${BASE}bios-brand/BioS_wordmark_red.png`;
 const INVALID_LINK = 'Este enlace no es válido o ya venció.';
 const LOAD_FAILED = 'No pudimos cargar la encuesta. Intenta de nuevo.';
 /** Campos que cuentan para el avance (el comentario es opcional). */
-const QUESTIONS = ['satisfaction', 'speed', 'resolution', 'clarity', 'improvement'] as const;
+const QUESTIONS = ['satisfaction', 'speed', 'resolution', 'clarity', 'attire', 'improvement'] as const;
 const COMMENT_MAX = 1000;
 
 function Question({ n, title, children }: { n: number; title: string; children: ReactNode }) {
@@ -112,6 +112,7 @@ export default function SurveyPage({ onReady }: { onReady?: () => void } = {}) {
         p_resolution: f.get('resolution'),
         p_clarity: f.get('clarity') === 'na' ? null : Number(f.get('clarity')),
         p_improvement: f.get('improvement'),
+        p_attire: f.get('attire'),
         p_comment: f.get('comment'),
       });
       if (error) throw error;
@@ -206,7 +207,12 @@ export default function SurveyPage({ onReady }: { onReady?: () => void } = {}) {
                 <Option name="clarity" value="na" label="No aplica" required={false} />
               </div>
             </Question>
-            <Question n={5} title="¿Qué es lo principal que deberíamos mejorar en nuestro servicio?">
+            <Question n={5} title="Si lo visitamos en sitio, ¿nuestro personal se presentó con bata de laboratorio y gafete de identificación?">
+              <div className="svp__options">
+                {Object.entries(attireOptions).map(([value, label]) => <Option key={value} name="attire" value={value} label={label} />)}
+              </div>
+            </Question>
+            <Question n={6} title="¿Qué es lo principal que deberíamos mejorar en nuestro servicio?">
               <div className="svp__options">
                 {Object.entries(improvements).map(([value, label]) => <Option key={value} name="improvement" value={value} label={label} />)}
               </div>
