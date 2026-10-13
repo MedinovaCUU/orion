@@ -216,7 +216,7 @@ export default function ServicePlanningPage({
   );
   const monthOptions = useMemo(() => buildMonthOptions(services, weekendGuards.months), [services, weekendGuards.months]);
   const initialMonth = monthOptions.find((option) => option.value === currentMonthKey)?.value || monthOptions[0]?.value || currentMonthKey;
-  const [section, setSection] = useState<ServicePlanningSection>('tablero');
+  const [section, setSection] = useState<ServicePlanningSection>('resumen');
   const [filters, setFilters] = useState(() => createDefaultFilters(initialMonth));
   const [selectedService, setSelectedService] = useState<PlannedService | null>(null);
   const [showComposer, setShowComposer] = useState(false);
