@@ -18,18 +18,19 @@
       .orion-splash--boot { position: fixed; inset: 0; background: #eef3f7; }
       .orion-splash--boot > * { visibility: hidden; }
     </style>
-    <script type="module" crossorigin src="/orion/assets/index-Q5QqZshm.js"></script>
+    <script type="module" crossorigin src="/orion/assets/index-DDRCCaKU.js"></script>
     <link rel="modulepreload" crossorigin href="/orion/assets/chunk-zsgVPwQN.js">
     <link rel="modulepreload" crossorigin href="/orion/assets/preload-helper-CGjTCMxk.js">
     <link rel="modulepreload" crossorigin href="/orion/assets/dist-xkPquGez.js">
     <link rel="modulepreload" crossorigin href="/orion/assets/react-Bh9R920o.js">
     <link rel="modulepreload" crossorigin href="/orion/assets/react-dom-BXf5Lmz-.js">
-    <link rel="modulepreload" crossorigin href="/orion/assets/jsx-runtime-B3ZNNtyT.js">
+    <link rel="modulepreload" crossorigin href="/orion/assets/jsx-runtime-yAb-PW9i.js">
     <link rel="modulepreload" crossorigin href="/orion/assets/scheduler-CVr8Hrg8.js">
-    <link rel="modulepreload" crossorigin href="/orion/assets/orionLoadingVeil-DPXaDn8Z.js">
-    <link rel="modulepreload" crossorigin href="/orion/assets/OrionLoader-BUUkWp34.js">
+    <link rel="modulepreload" crossorigin href="/orion/assets/orionBrandAssets-BqWokvA2.js">
+    <link rel="modulepreload" crossorigin href="/orion/assets/orionLoadingVeil-By2oRhfn.js">
+    <link rel="modulepreload" crossorigin href="/orion/assets/OrionLoader-CRsvUXba.js">
     <link rel="stylesheet" crossorigin href="/orion/assets/OrionLoader-CxuyzVGH.css">
-    <link rel="stylesheet" crossorigin href="/orion/assets/index-DkWmHUMv.css">
+    <link rel="stylesheet" crossorigin href="/orion/assets/index-BFArhuht.css">
   </head>
   <body>
     <div id="root"><div class="orion-splash orion-splash--boot" role="status" aria-live="polite">
@@ -43,7 +44,12 @@
     </div></div>
     <script>
       // Ancla la flotación del logo del arranque al reloj de la página, igual que syncClock en OrionLoader.tsx.
+      // En la encuesta (la abre un cliente) usa los mismos textos que SurveyEntry en App.tsx.
       (function () {
+        if (/\/encuesta\/?$/.test(location.pathname)) {
+          document.querySelector('#root .orion-splash__status').textContent = 'Preparando tu encuesta…';
+          document.querySelector('#root .orion-splash__eyebrow').textContent = 'Experiencia de servicio';
+        }
         var logo = document.querySelector('#root .orion-loader');
         if (logo && logo.getAnimations) logo.getAnimations({ subtree: true }).forEach(function (a) { a.startTime = 0; });
       })();
