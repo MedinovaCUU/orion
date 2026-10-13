@@ -1,14 +1,14 @@
-// Apache ECharts, tree-shaken to the pieces the time lab uses, with the control center's ink and hairlines.
+// Apache ECharts, tree-shaken to the pieces the time and parts labs use, with the control center's ink and hairlines.
 import { useEffect, useRef } from 'react';
 import * as echarts from 'echarts/core';
-import { BarChart, HeatmapChart, LineChart, ScatterChart } from 'echarts/charts';
+import { BarChart, HeatmapChart, LineChart, SankeyChart, ScatterChart, TreemapChart } from 'echarts/charts';
 import {
   AriaComponent, BrushComponent, DataZoomComponent, GridComponent, LegendComponent, MarkAreaComponent, MarkLineComponent, MarkPointComponent,
   TooltipComponent, VisualMapComponent,
 } from 'echarts/components';
 import { CanvasRenderer } from 'echarts/renderers';
 
-echarts.use([BarChart, HeatmapChart, LineChart, ScatterChart, AriaComponent, BrushComponent, DataZoomComponent, GridComponent,
+echarts.use([BarChart, HeatmapChart, LineChart, SankeyChart, ScatterChart, TreemapChart, AriaComponent, BrushComponent, DataZoomComponent, GridComponent,
   LegendComponent, MarkAreaComponent, MarkLineComponent, MarkPointComponent, TooltipComponent, VisualMapComponent, CanvasRenderer]);
 
 export { echarts };

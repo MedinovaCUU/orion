@@ -211,3 +211,17 @@
  .kpi-lab-panel { padding:12px 10px 8px; }
 }
 @media(max-width:420px) { .kpi-cards { grid-template-columns:minmax(0,1fr); } }
+
+/* Parts lab (Apache ECharts): services and parts by type, month, sector and platform. */
+.kpi-parts-bar { display:flex; flex-wrap:wrap; align-items:flex-end; gap:10px 14px; padding:12px 14px; border:1px solid var(--tc-line); border-radius:12px; background:#fbfcfd; }
+.kpi-parts-bar .kpi-export { margin-left:auto; }
+.tc-center label.kpi-parts-platform { flex-direction:row; align-items:center; gap:8px; font-size:11px; }
+.tc-center label.kpi-parts-platform select { min-width:150px; }
+.kpi-parts-usage { margin-top:8px; }
+.tc-table.kpi-parts-matrix th, .tc-table.kpi-parts-matrix td { padding:6px 8px; text-align:center; min-width:38px; font-size:10.5px; }
+.tc-table.kpi-parts-matrix td:first-child, .tc-table.kpi-parts-matrix th:first-child { text-align:left; min-width:96px; }
+.tc-table.kpi-parts-matrix tfoot td { border-top:1px solid #cddce2; background:#f6fafb; }
+.kpi-parts-method { padding:10px 14px; border:1px solid var(--tc-line); border-radius:12px; background:#fbfcfd; font-size:11px; color:#486570; }
+.kpi-parts-method summary { cursor:pointer; font-weight:700; color:var(--tc-ink); }
+.kpi-parts-method ul { margin:8px 0 0; padding-left:18px; display:grid; gap:5px; line-height:1.55; }
+@media(max-width:700px) { .kpi-parts-bar .kpi-export { margin-left:0; } .tc-center label.kpi-parts-platform select { min-width:0; flex:1; } }

@@ -1,5 +1,6 @@
 import { supabase } from '../supabaseClient';
 import type { KpiDataset, KpiRecord, KpiSummary, SlaPolicy } from './serviceKpiModel';
+import type { PartsLabData } from './partsAnalytics';
 
 type RpcFilters = Record<string, string | number>;
 const message = (error: { message?: string } | null, fallback: string) => error?.message || fallback;
@@ -11,6 +12,14 @@ export async function fetchKpiSummary(filters: RpcFilters) {
   const { data, error } = await supabase.rpc('get_service_kpi_summary', { p_filters: filters });
   if (error) throw new Error(message(error, 'No fue posible calcular los indicadores.'));
   return data as KpiSummary;
+}
+
+export async function fetchPartsLab(filters: RpcFilters) {
+  const { data, error } = await supabase.rpc('get_service_parts_lab', { p_filters: filters });
+  if (error) throw new Error(message(error, 'No fue posible cargar el análisis de refacciones.'));
+  const lab = data as PartsLabData | null;
+  if (!lab?.period || !Array.isArray(lab.services) || !Array.isArray(lab.lines)) throw new Error('El servidor no devolvió el análisis de refacciones.');
+  return lab;
 }
 
 export async function fetchKpiOptions() {

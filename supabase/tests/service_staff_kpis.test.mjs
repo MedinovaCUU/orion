@@ -66,7 +66,7 @@ for (const name of ['20260924010000_ticket_service_metrics.sql', '20260924020000
   '20261011030000_service_staff_kpis_performance.sql', '20261012010000_servicios_historial_detalle_biosisa.sql',
   '20261012020000_kpi_tickets_historicos_biosisa.sql', '20261012030000_kpi_rendimiento_historicos.sql',
   '20261012040000_kpi_tickets_biosisa_evaluados.sql', '20261012050000_ticket_service_links.sql',
-  '20261013140000_ticket_satisfaction_attire.sql', '20261013140100_kpi_survey_attire.sql']) {
+  '20261013140000_ticket_satisfaction_attire.sql', '20261013140100_kpi_survey_attire.sql', '20261013160000_service_parts_lab.sql', '20261013160100_service_parts_lab_service_model.sql']) {
   await db.exec(await migration(name));
 }
 console.log('PASS: migration applies on top of the ticket, routing, satisfaction and visibility migrations');
@@ -476,5 +476,51 @@ await db.exec('set role authenticated');
 await assert.rejects(db.query("select service_kpi_attire_ratios('{}')"), /permission denied/);
 await db.exec('reset role');
 console.log('PASS: survey presentation (coat and badge): current/previous ratios, no-visit and unanswered excluded, per person, team filter, records');
+
+// ── Parts lab: services and parts by type, month, sector and platform ─────────────────────
+// May 2026 holds its own records. Calls and trainings are not field services; each record counts once.
+const H = n => id('5', n);
+await db.exec(`
+alter table refacciones_catalogo add column if not exists desc_breve text;
+alter table service_reports add column if not exists equipment_name text, add column if not exists client_name text;
+insert into refacciones_catalogo(codigo_refaccion, equipo, nombre, descripcion) values ('LA10429','A15','Lámpara halógena 6V/10W','Lámpara') on conflict do nothing;
+insert into servicios_historial(id, id_legacy, no_serie, motivo, tipo_servicio, tecnico_id, fecha_servicio, origen, datos_origen) values
+ ('${H(1)}',501,'SER-P1','MANTTO PREVENTIVO','preventivo','${P.e1}','2026-05-04','biosisa_servicio','{"sector":"Gobierno","modelo":"BA400 con Módulo ISE"}'),
+ ('${H(2)}',502,'SER-P2','MANTTO PREVENTIVO','preventivo','${P.e1}','2026-05-05','biosisa_servicio','{"sector":"Particular","modelo":"A-15"}'),
+ ('${H(3)}',503,'SER-P2','MANTTO CORRECTIVO','correctivo','${P.e2}','2026-05-06','biosisa_servicio','{"modelo":"A-15"}'),
+ ('${H(4)}',504,'SER-P2','MANTTO CORRECTIVO','correctivo','${P.e2}','2026-05-06','biosisa_servicio','{"sector":"Particular","modelo":"A-15"}'),
+ ('${H(5)}',505,'SER-P3','LLAMADA','correctivo','${P.e2}','2026-05-07','biosisa_llamada','{"sector":"Gobierno"}'),
+ ('${H(6)}',506,'SER-P3','CAPACITACION','capacitacion','${P.q1}','2026-05-08','biosisa_capacitacion','{"sector":"Gobierno"}'),
+ ('${H(8)}',508,'SER-A','MANTTO PREVENTIVO','preventivo','${P.e1}','2026-05-12','biosisa_servicio','{"sector":"Gobierno","modelo":"A15C"}'),
+ ('${H(7)}',507,'SER-P4','RETIRO DE EQUIPO','retiro','${P.e1}','2026-05-09','biosisa_servicio','{"sector":"Gobierno","modelo":"Destiladora"}');
+insert into servicios_refacciones(servicio_id, codigo_refaccion, cantidad) values
+ ('${H(1)}','AC11527',2),('${H(1)}','LA10429',1),('${H(2)}','LA10429',1),('${H(3)}','LA10429',3),('${H(5)}','LA10429',9);
+insert into service_reports(id, report_type, status, engineer_id, service_type, equipment_serial, service_date, report_reference) values
+ ('${id('6', 1)}','servicio','registrado','${P.e1}','correctivo','SER-A','2026-05-10','REP-1'),
+ ('${id('6', 2)}','servicio','borrador','${P.e1}','correctivo','SER-A','2026-05-11','REP-2');
+insert into service_report_materials(service_report_id, material_kind, quantity, product_name, reference_code) values
+ ('${id('6', 1)}','refaccion',2,'Sello de jeringa','REF-3'),('${id('6', 1)}','reactivo',5,'Reactivo','R-1'),('${id('6', 2)}','refaccion',1,'Borrador','REF-1');
+`);
+const MAY = { from: '2026-05-01', to: '2026-05-31' };
+const lab = async (filters = MAY) => { await as('admin'); return (await one('select get_service_parts_lab($1) as l', [filters])).l; };
+const may = await lab();
+const byRef = Object.fromEntries(may.services.map(row => [row.ref, row]));
+assert.deepEqual(may.services.map(row => row.ref).sort(), ['REP-1', 'Servicio 501', 'Servicio 502', 'Servicio 503', 'Servicio 504', 'Servicio 507', 'Servicio 508'],
+  'calls, trainings and drafts are not field services; records on the same day stay separate');
+const labRow = n => byRef[`Servicio 50${n}`];
+assert.deepEqual([labRow(1).platform, labRow(2).platform, labRow(7).platform, byRef['REP-1'].platform], ['BA400', 'A15', 'Destilador', 'BA400'], 'models are normalized; the service record model wins, then the equipment catalog');
+assert.deepEqual([labRow(1).sector, labRow(3).sector, labRow(3).sector_inferred, labRow(4).sector_inferred], ['gobierno', 'particular', true, false], 'a record without sector takes the last known one of its serial');
+assert.deepEqual([labRow(1).parts, labRow(2).parts, labRow(3).parts, labRow(4).parts, byRef['REP-1'].parts], [3, 1, 3, 0, 2], 'only parts (not reagents) are counted');
+assert.equal(may.lines.length, 5); assert.equal(may.codes.LA10429, 'Lámpara halógena 6V/10W'); assert.equal(may.codes['REF-3'], 'Sello', 'the catalog name wins over the report text');
+assert.equal(labRow(1).people, 'Alfredo Acevedo');
+assert.equal(labRow(8).platform, 'A15C', 'SER-A is a BA400 in the catalog, but this record says A15C');
+assert.deepEqual((await lab({ ...MAY, platform: 'BA400' })).services.map(row => row.ref).sort(), ['REP-1', 'Servicio 501'], 'the dashboard platform filter uses the same normalization');
+assert.equal((await lab({ ...MAY, service_type: 'correctivo' })).services.length, 3);
+assert.equal((await lab({ ...MAY, platform: 'A15C' })).services.length, 1);
+assert.equal((await lab({ ...MAY, person: P.e2 })).services.length, 2);
+await as('e1');
+await assert.rejects(db.query('select get_service_parts_lab($1)', [MAY]), /exclusivos para administradores/);
+await db.exec('reset role');
+console.log('PASS: parts lab: field services only, separate records, sector inference by serial, platform normalization, parts vs reagents, filters, admin only');
 
 await db.close();

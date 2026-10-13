@@ -244,3 +244,30 @@ un Supremo válido; cambiar un ID existente sigue haciéndose en Equipos). ~1.3 
 **Pruebas.**
 - `PGLITE_MODULE=<ruta>/@electric-sql/pglite/dist/index.js node supabase/tests/supremo_visit_metric.test.mjs`
 - Página aislada con servidor simulado: `tests/fixtures/supremo-metric.html` (Vite, base `/orion/`).
+
+## Refacciones (20261013160000, 20261013160100)
+
+Sección «Refacciones» en Resumen general e Ingenieros (sustituye las tablas de piezas por plataforma y
+más utilizadas). `get_service_parts_lab(filtros del tablero)` devuelve cada **servicio de campo** del
+periodo (historial importado o capturado y reportes de servicio; sin capacitaciones, servicios telefónicos,
+borradores ni pruebas; registros del mismo día **no** se fusionan, igual que la hoja de control) con tipo,
+sector, plataforma, cliente, técnico y piezas, más sus líneas de refacción (solo `material_kind =
+'refaccion'`) y el nombre de cada código. El navegador agrega todo (`partsAnalytics.ts`), así sector y
+plataforma de la sección responden sin volver al servidor.
+
+- **Sector**: `datos_origen.sector` del registro; si falta, el último conocido de la misma serie (inferido).
+- **Plataforma**: `service_platform_family` normaliza el modelo del registro (después el del catálogo de
+  equipos): «BA400 con Módulo ISE» → BA400, «A-15» → A15, «Destiladora» → Destilador, ósmosis aparte.
+- **Indicadores**: servicios por mes (tipo o sector), % con refacciones por tipo, piezas por servicio con
+  refacción (piezas ÷ servicios con refacciones), Pareto con la zona del 80 %, flujo plataforma → tipo →
+  refacción, refacción × mes, árbol plataforma → código y plataforma × mes con Gobierno/Particular.
+- **Excel**: mismas hojas que el control manual (Preventivos, Correctivos, Tot. Sector, Pzas. por tipo) más
+  uso de refacciones, la lista de servicios y criterios.
+
+**Conciliación con la hoja de control (ene–sep 2026).** Servicios por tipo y sector coinciden dentro de
+±5 % (Correctivo 123/97 contra 119/91; Preventivo 65/149 contra 61/144). El uso de refacciones no: Orion
+cuenta toda refacción registrada en el reporte (preventivos con refacción 165 de 214, 292 piezas), la hoja
+cuenta 25 de 205 y 42 piezas. Pendiente que el dueño confirme qué criterio usa la hoja.
+
+**Pruebas.** `npm run test:kpi:parts`; bloque «Parts lab» de `service_staff_kpis.test.mjs`;
+`npm run test:kpi:browser`; página aislada `tests/fixtures/service-parts-lab.html` (datos sintéticos).

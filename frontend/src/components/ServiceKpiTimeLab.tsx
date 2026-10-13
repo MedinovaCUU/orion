@@ -1,5 +1,4 @@
-import { useEffect, useMemo, useRef, useState, type ReactNode, type RefObject } from 'react';
-import type * as echarts from 'echarts/core';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { Loader } from './OrionLoader';
 import { fetchAllKpiRecords } from './serviceKpiApi';
 import { hidePointPerson } from '../config/presentationPrivacy';
@@ -10,7 +9,8 @@ import {
   arrivalMatrix, closingHistogram, complianceBy, curveMedian, dimensions, formatSpan, HISTOGRAM_OUTCOMES, HOUR_BINS, kaplanMeier, lateShare,
   FLOOR_HOURS, outcomeColors, outcomeLabels, resolvedBy, TIME_TICKS, toLog, toPoints, WEEKDAYS, wilson, type DimensionKey, type Outcome, type TicketPoint,
 } from './kpiAnalytics';
-import { axisLabel, axisLine, downloadChart, INK, MUTED, splitLine, tooltipBase, useEChart, type ChartHandlers, type ChartOption } from './kpiEcharts';
+import { axisLabel, axisLine, INK, MUTED, splitLine, tooltipBase, type ChartHandlers, type ChartOption } from './kpiEcharts';
+import { ChartPanel, Segmented } from './KpiLabPanels';
 
 type Filters = Record<string, string | number>;
 interface Selection { title: string; points: TicketPoint[] }
@@ -33,29 +33,6 @@ const timeAxis = (maxHours: number) => {
   return { type: 'value', min: toLog(FLOOR_HOURS), max, splitLine: { ...splitLine, show: true }, axisTick: { customValues: ticks }, axisLine: { ...axisLine, onZero: false },
     axisLabel: { ...axisLabel, customValues: ticks, formatter: (value: number) => formatSpan(10 ** value) } };
 };
-
-function Segmented<T extends string>({ label, value, options, onChange }: { label: string; value: T; options: Array<[T, string]>; onChange: (value: T) => void }) {
-  return <div className="kpi-lab-seg" role="group" aria-label={label}>
-    {options.map(([key, text]) => <button key={key} type="button" aria-pressed={value === key} onClick={() => onChange(key)}>{text}</button>)}
-  </div>;
-}
-
-function ChartPanel({ title, note, option, handlers, height = 290, file, wide, controls, footer, label }: {
-  title: string; note?: ReactNode; option: ChartOption | null; handlers?: ChartHandlers; height?: number; file: string; wide?: boolean;
-  controls?: (chart: RefObject<echarts.ECharts | null>) => ReactNode; footer?: ReactNode; label: string;
-}) {
-  const { ref, chart } = useEChart(option, handlers);
-  return <figure className={`kpi-lab-panel${wide ? ' is-wide' : ''}`}>
-    <figcaption>
-      <div><strong>{title}</strong>{note && <span>{note}</span>}</div>
-      <div className="kpi-lab-tools">{controls?.(chart)}
-        <button type="button" className="kpi-lab-png" onClick={() => downloadChart(chart.current, file)} aria-label={`Descargar «${title}» como imagen`} title="Descargar imagen">PNG</button>
-      </div>
-    </figcaption>
-    <div ref={ref} className="kpi-lab-canvas" style={{ height }} role="img" aria-label={label} />
-    {footer}
-  </figure>;
-}
 
 function EvolutionPanel({ view, summary, onDrill }: { view: KpiView; summary: KpiSummary; onDrill: (drill: Drill) => void }) {
   const rows = summary.series;

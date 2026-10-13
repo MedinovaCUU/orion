@@ -22,3 +22,6 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Local exports of production data for fixtures (never commit)
+*.local.json

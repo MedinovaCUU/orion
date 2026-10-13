@@ -353,7 +353,7 @@ export const sectionsFor = (view: KpiView): CardSection[] => {
   if (view === 'ingenieria') return [
     { id: 'preventivos', title: 'Mantenimientos preventivos', subtitle: 'Programado contra realizado por mes', cards: preventiveCards },
     { id: 'correctivos', title: 'Correctivos y visitas', subtitle: 'Participación en el total mensual de mantenimientos', cards: [...correctiveCards, ...visitCards] },
-    { id: 'piezas', title: 'Piezas utilizadas', subtitle: 'Separadas por tipo de mantenimiento', cards: partCards },
+    { id: 'piezas', title: 'Refacciones', subtitle: 'Uso por tipo de servicio, mes, sector y plataforma', cards: partCards },
     { id: 'telefono', title: 'Servicios telefónicos', subtitle: 'Duración, motivo y resultado', cards: callCards },
     { id: 'tickets', title: 'Tickets', subtitle: 'Apertura, cierre, tiempos y plazo comprometido', cards: ticketCards(' · ingenieros') },
     { id: 'calidad', title: 'Calidad del servicio', subtitle: 'Reaperturas, primera visita, reincidencia y satisfacción', cards: [...qualityCards, csatCard, attireCard] },
@@ -361,6 +361,7 @@ export const sectionsFor = (view: KpiView): CardSection[] => {
   return [
     { id: 'tickets', title: 'Cumplimiento y tiempos', subtitle: 'Todos los tickets de soporte', cards: ticketCards('') },
     { id: 'calidad', title: 'Calidad del servicio', subtitle: 'Reaperturas, primera visita, reincidencia y satisfacción', cards: [...qualityCards, csatCard, attireCard] },
+    { id: 'refacciones', title: 'Refacciones', subtitle: 'Uso por tipo de servicio, mes, sector y plataforma', cards: partCards },
     { id: 'actividad', title: 'Actividad de campo', subtitle: 'Preventivos, correctivos, visitas, llamadas y capacitaciones', cards: [
       preventiveCards[1], correctiveCards[1], ...visitCards, callCards[0], countCard('trainings_total', 'Capacitaciones y recapacitaciones', 'trainings', 'trainings_total', {
         drill: drill('activities', { in_period: true, counts_training: true }, 'Capacitaciones y recapacitaciones', 'trainings'),

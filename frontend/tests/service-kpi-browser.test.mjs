@@ -122,7 +122,7 @@ const browser = await chromium.launch({ channel: 'chrome', headless: true });
 const context = await browser.newContext({ viewport: { width: 1500, height: 1100 }, acceptDownloads: true });
 const page = await context.newPage();
 const errors = []; page.on('pageerror', error => errors.push(error.message));
-const summaryRequests = []; const recordRequests = []; const labRequests = []; const movements = []; const priorities = []; const supremoRequests = [];
+const summaryRequests = []; const recordRequests = []; const labRequests = []; const movements = []; const priorities = []; const supremoRequests = []; const partsRequests = [];
 // Supremo on in-person visits: a fixed evaluation (the server rules are covered by supabase/tests/supremo_visit_metric.test.mjs).
 const supremoVisit = (n, outcome, reason, detail) => ({ visit_id: `visita:${n}`, visit_date: `2026-10-0${n}`, deadline: `2026-10-0${n + 3}`, serial: `SER-${n}`, serial_key: `SER-${n}`,
   platform: 'BA400', client: 'Hospital Norte', sources: 'Reporte de servicio', kinds: ['correctivo'], ticket_id: null, folio: null, participant_ids: ['p'], participant_names: 'Persona de prueba',
@@ -157,6 +157,14 @@ await context.route('**/rest/v1/**', async route => {
     data = { total: rows.length, rows: rows.slice(body.p_offset, body.p_offset + body.p_limit).map(({ search_text, ...row }) => row) };
   }
   if (url.pathname.endsWith('/rpc/get_supremo_metric')) { supremoRequests.push(body.p_filters); data = supremoFor(body.p_filters); }
+  if (url.pathname.endsWith('/rpc/get_service_parts_lab')) {
+    partsRequests.push(body.p_filters);
+    const svc = (n, day, kind, platform, sector, parts) => ({ id: `hist:${n}`, source: 'Historial de servicio', day, kind, ticket_id: null, folio: null, ref: `Servicio ${n}`,
+      serial: `SER-${n}`, platform, client: 'Hospital Norte', sector, sector_inferred: false, people: 'Persona de prueba', parts });
+    data = { period: { from: body.p_filters.from, to: body.p_filters.to, timezone: 'America/Chihuahua' },
+      services: [svc(1, body.p_filters.to, 'preventivo', 'A15', 'gobierno', 2), svc(2, body.p_filters.to, 'correctivo', 'BA400', 'particular', 1), svc(3, body.p_filters.to, 'correctivo', 'BA400', 'gobierno', 0)],
+      lines: [['hist:1', 'LA10429', 2], ['hist:2', 'AC11527', 1]], codes: { LA10429: 'Lámpara halógena 6V/10W' } };
+  }
   if (url.pathname.endsWith('/rpc/register_ticket_movement')) { movements.push(body); data = null; }
   if (url.pathname.endsWith('/rpc/set_ticket_priority')) { priorities.push(body); data = null; }
   if (url.pathname.endsWith('/catalogo_servicio')) data = [{ catalog_kind: 'averia', catalog_code: 'AL08', catalog_detail: 'Lámpara' }, { catalog_kind: 'solucion', catalog_code: 'SL02', catalog_detail: 'Cambio de lámpara' }];
@@ -180,17 +188,17 @@ try {
   assert.equal(await cardValue('Cierres fuera del plazo'), `${metrics({}).late_rate.pct} %`);
   assert.equal(await page.locator('.kpi-card small', { hasText: 'Satisfacción del cliente' }).count(), 0, 'satisfaction is hidden until a survey is answered');
   // Time lab (ECharts): loads the period's tickets once and draws every analysis from them.
-  await page.locator('.kpi-lab-insights').waitFor();
+  await page.locator('.kpi-lab:not(.kpi-parts) .kpi-lab-insights').waitFor();
   assert.deepEqual(labRequests.at(-1).p_match, { relevant: true });
   assert.equal(labRequests.at(-1).p_dataset, 'tickets');
-  const insights = await page.locator('.kpi-lab-insights').innerText();
+  const insights = await page.locator('.kpi-lab:not(.kpi-parts) .kpi-lab-insights').innerText();
   for (const label of ['Cerrados antes de 24 h', 'Cerrados antes de 48 h', 'Mediana de cierre', 'Cumplimiento del plazo']) assert.ok(insights.includes(label), label);
   for (const title of ['Evolución: volumen y cierres fuera del plazo', 'Mapa de cierres', 'Curva de cierre', 'Distribución del tiempo de cierre', 'Cuándo llegan los tickets', 'Cumplimiento del plazo por grupo'])
     await page.locator('.kpi-lab-panel figcaption strong', { hasText: title }).first().waitFor();
-  await page.waitForFunction(() => [...document.querySelectorAll('.kpi-lab-canvas')].filter(el => el.querySelector('canvas')).length >= 6);
+  await page.waitForFunction(() => [...document.querySelectorAll('.kpi-lab:not(.kpi-parts) .kpi-lab-canvas')].filter(el => el.querySelector('canvas')).length >= 6);
   await page.locator('.kpi-lab-panel', { hasText: 'Cumplimiento del plazo por grupo' }).getByRole('button', { name: 'Equipo', exact: true }).click();
   assert.equal(await page.locator('.kpi-lab-panel', { hasText: 'Cumplimiento del plazo por grupo' }).getByRole('button', { name: 'Equipo', exact: true }).getAttribute('aria-pressed'), 'true');
-  await page.locator('.kpi-lab').screenshot({ path: shot('time-lab.png') });
+  await page.locator('.kpi-lab:not(.kpi-parts)').first().screenshot({ path: shot('time-lab.png') });
   // Supremo on in-person visits: same filters as the summary, cards filter the visits table.
   const supremo = page.locator('.kpi-supremo:visible');
   await supremo.locator('.kpi-card small', { hasText: /^Cumplimiento$/ }).waitFor();
@@ -201,6 +209,16 @@ try {
   await supremo.getByRole('group', { name: 'Filtrar por resultado' }).getByRole('button', { name: 'Todas' }).click();
   assert.equal(await supremo.locator('.kpi-supremo-visits tbody tr').count(), 3);
   assert.equal(await supremo.locator('.kpi-supremo-visits').getByRole('button', { name: 'Justificar' }).count(), 2, 'negative and pending visits can be justified');
+  // Parts lab: loads when scrolled into view, with the dashboard filters, and summarizes the services.
+  await page.locator('.kpi-parts:visible').scrollIntoViewIfNeeded();
+  await page.locator('.kpi-parts:visible .kpi-lab-insights').waitFor();
+  assert.deepEqual(partsRequests.at(-1), summaryRequests.at(-1), 'the parts lab uses the dashboard filters');
+  const partsInsights = await page.locator('.kpi-parts:visible .kpi-lab-insights').innerText();
+  for (const text of ['Servicios de campo', '3', 'Con refacciones', '66.7 %', 'LA10429']) assert.ok(partsInsights.includes(text), text);
+  await page.waitForFunction(() => document.querySelectorAll('.kpi-parts .kpi-lab-canvas canvas').length >= 7);
+  await page.locator('.kpi-parts:visible').getByRole('group', { name: 'Sector' }).getByRole('button', { name: 'Gobierno' }).click();
+  assert.ok((await page.locator('.kpi-parts:visible .kpi-lab-insights').innerText()).includes('50 %'), 'the sector filter recomputes in the browser');
+  await page.locator('.kpi-parts:visible').screenshot({ path: shot('refacciones.png') });
   // PowerPoint deck of the general summary, built in the browser from the same summary and tickets.
   const deckDownload = page.waitForEvent('download', { timeout: 60000 });
   await visible.getByRole('button', { name: 'Presentación PowerPoint' }).click();

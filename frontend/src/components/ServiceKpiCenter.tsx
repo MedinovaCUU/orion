@@ -8,11 +8,12 @@ import PrivateName from './PrivateName';
 import { shownName } from '../config/presentationPrivacy';
 // ECharts only loads with the time lab, so the rest of the control center stays light.
 const ServiceKpiTimeLab = lazy(() => import('./ServiceKpiTimeLab'));
+const ServicePartsLab = lazy(() => import('./ServicePartsLab'));
 import { applyBrandFontToWorkbook } from '../config/brandFonts';
 import { fetchKpiOptions, fetchKpiSummary, type KpiOptions } from './serviceKpiApi';
 import {
   activityMotiveLabels, activityResultLabels, ageBuckets, bucketLabel, chartsFor, defaultFilters, definitions, describeFilters, formatCount, formatDate,
-  formatDateTime, formatHours, formatMoney, formatPct, isoDay, kindLabels, labelOf, num, presetLabels, presetRange, priorityLabels, sectionsFor,
+  formatDateTime, formatHours, formatPct, isoDay, kindLabels, labelOf, num, presetLabels, presetRange, priorityLabels, sectionsFor,
   qualityLabels, serviceTypeLabels, statusLabels, surveyCardIds, teamLabels, toRpcFilters, viewLabels, type CardSpec, type Drill, type KpiFilters, type KpiSummary,
   type KpiView, type PeriodPreset, type StaffRow,
 } from './serviceKpiModel';
@@ -179,6 +180,10 @@ export default function ServiceKpiCenter({ view, onOpenTicket }: { view: KpiView
     <ServiceKpiTimeLab view={view} summary={summary} filters={rpcFilters} revision={revision} onDrill={openDrill} onOpenTicket={onOpenTicket} />
   </Suspense>;
 
+  const partsLab = <Suspense key="parts" fallback={<Loader label="Cargando el análisis de refacciones…" />}>
+    <ServicePartsLab filters={rpcFilters} revision={revision} onOpenTicket={onOpenTicket} />
+  </Suspense>;
+
   const tables = {
     aging: <MiniTable key="aging" title="Antigüedad de pendientes al corte" definition="pending" help={help === 'aging'} onHelp={() => toggleHelp('aging')}
       columns={[['Antigüedad', row => String(row.bucket)], ['Pendientes', row => formatCount(row.total)], ['Vencidos', row => formatCount(row.overdue)],
@@ -227,14 +232,6 @@ export default function ServiceKpiCenter({ view, onOpenTicket }: { view: KpiView
     correctiveBySerial: <MiniTable key="cserial" title="Correctivos por equipo (15 principales)" columns={[['Serie', row => String(row.label)], ['Plataforma', row => String(row.platform || 'Sin plataforma')], ['Cliente', row => String(row.client || 'Sin cliente identificado')], ['Correctivos', row => formatCount(row.n)]]}
       rows={breakdowns.corrective_by_serial || []} empty="Sin correctivos en el periodo." onDrill={openDrill}
       drill={row => t('activities', { in_period: true, is_visit: true, kinds: ['correctivo'], serial: real(row.label, NONE.serial) }, `Correctivos · serie ${row.label}`, 'corrective')} />,
-    partsByPlatform: <MiniTable key="pplat" title="Piezas por plataforma y tipo de mantenimiento" definition="parts_cost" help={help === 'parts_by'} onHelp={() => toggleHelp('parts_by')}
-      columns={[['Plataforma', row => String(row.platform)], ['Mantenimiento', row => labelOf(kindLabels, row.kind)], ['Líneas', row => formatCount(row.lines)], ['Piezas', row => formatCount(row.qty)],
-        ['Costo', row => num(row.cost_lines) ? `${formatMoney(row.cost)} (${row.cost_lines} de ${row.lines} con precio)` : 'Sin costo registrado']]}
-      rows={breakdowns.parts_by_platform || []} empty="Sin piezas en el periodo." onDrill={openDrill}
-      drill={row => t('parts', { in_period: true, platform: real(row.platform, NONE.platform), maintenance_kind: row.kind }, `Piezas · ${row.platform} · ${labelOf(kindLabels, row.kind)}`, 'parts')} />,
-    partsTop: <MiniTable key="ptop" title="Piezas más utilizadas" columns={[['Código', row => String(row.code)], ['Descripción', row => String(row.description || 'Sin descripción')], ['Total', row => formatCount(row.qty)], ['En preventivos', row => formatCount(row.preventive)], ['En correctivos', row => formatCount(row.corrective)]]}
-      rows={breakdowns.parts_top || []} empty="Sin piezas en el periodo." onDrill={openDrill}
-      drill={row => t('parts', { in_period: true, code: row.code === 'Sin código' ? null : row.code }, `Pieza ${row.code}`, 'parts')} />,
   };
   const extras: Record<string, ReactNode[]> = view === 'quimica' ? {
     capacitaciones: [chart('trainings'), <div key="tt" className="kpi-mini-grid">{tables.trainingsByClient}{tables.trainingsByPlatform}</div>],
@@ -243,12 +240,13 @@ export default function ServiceKpiCenter({ view, onOpenTicket }: { view: KpiView
   } : view === 'ingenieria' ? {
     preventivos: [chart('preventive')],
     correctivos: [chart('maintenance'), <div key="cc" className="kpi-mini-grid">{tables.correctiveByPlatform}{tables.correctiveByClient}{tables.correctiveBySerial}{tables.visitsByResult}{tables.failures}{tables.effectiveness}</div>],
-    piezas: [<div key="pp" className="kpi-mini-grid">{tables.partsByPlatform}{tables.partsTop}</div>],
+    piezas: [partsLab],
     telefono: [<div key="tl" className="kpi-mini-grid">{tables.callsByReason}{tables.callsByResult}</div>],
     tickets: [lab, <div key="ta" className="kpi-mini-grid">{tables.aging}{tables.resolution}</div>],
   } : {
     tickets: [lab, <div key="ta" className="kpi-mini-grid">{tables.aging}{tables.resolution}</div>],
     calidad: [<div key="ef" className="kpi-mini-grid">{tables.effectiveness}{tables.failures}</div>],
+    refacciones: [partsLab],
     actividad: [<div key="ac" className="kpi-chart-grid">{chart('maintenance')}{chart('field')}</div>],
   };
   const exportIndicators = async () => {
