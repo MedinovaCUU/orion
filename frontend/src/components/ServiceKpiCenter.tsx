@@ -59,22 +59,31 @@ function KpiCard({ spec, summary, help, onHelp, onDrill }: { spec: CardSpec; sum
   </article>;
 }
 
-function MiniTable({ title, definition, columns, rows, empty, drill, onDrill, help, onHelp }: {
+function MiniTable({ title, definition, columns, rows, empty, drill, onDrill, help, onHelp, collapsed }: {
   title: string; definition?: string; columns: Array<[string, (row: Row) => ReactNode]>; rows: Row[]; empty: string;
   drill?: (row: Row) => Drill | null; onDrill: (drill: Drill) => void; help?: boolean; onHelp?: () => void;
+  /** Starts folded with this note (for example, how many rows it holds) next to the title. */
+  collapsed?: string;
 }) {
+  const helpButton = definition && onHelp ? <HelpButton id={definition} open={Boolean(help)} onToggle={onHelp} /> : null;
+  const body = rows.length === 0 ? <p className="kpi-mini-empty">{empty}</p> : <div className="tc-table-scroll"><table className="tc-table kpi-mini-table">
+    <thead><tr>{columns.map(([label]) => <th key={label}>{label}</th>)}</tr></thead>
+    <tbody>{rows.map((row, index) => {
+      const target = drill?.(row) || null;
+      return <tr key={index} className={target ? 'is-clickable' : ''} tabIndex={target ? 0 : undefined}
+        onClick={() => target && onDrill(target)} onKeyDown={event => { if (target && event.key === 'Enter') onDrill(target); }}>
+        {columns.map(([label, render]) => <td key={label}>{render(row)}</td>)}
+      </tr>;
+    })}</tbody>
+  </table></div>;
+  // The help button sits in the summary: its click must not fold or unfold the table.
+  if (collapsed !== undefined) return <details className="kpi-mini kpi-mini--fold">
+    <summary><h4>{title}<small className="kpi-mini-note">{collapsed}</small>{helpButton && <span className="kpi-mini-help" onClick={event => event.preventDefault()}>{helpButton}</span>}</h4></summary>
+    {body}
+  </details>;
   return <div className="kpi-mini">
-    <h4>{title}{definition && onHelp && <HelpButton id={definition} open={Boolean(help)} onToggle={onHelp} />}</h4>
-    {rows.length === 0 ? <p className="kpi-mini-empty">{empty}</p> : <div className="tc-table-scroll"><table className="tc-table kpi-mini-table">
-      <thead><tr>{columns.map(([label]) => <th key={label}>{label}</th>)}</tr></thead>
-      <tbody>{rows.map((row, index) => {
-        const target = drill?.(row) || null;
-        return <tr key={index} className={target ? 'is-clickable' : ''} tabIndex={target ? 0 : undefined}
-          onClick={() => target && onDrill(target)} onKeyDown={event => { if (target && event.key === 'Enter') onDrill(target); }}>
-          {columns.map(([label, render]) => <td key={label}>{render(row)}</td>)}
-        </tr>;
-      })}</tbody>
-    </table></div>}
+    <h4>{title}{helpButton}</h4>
+    {body}
   </div>;
 }
 
@@ -196,12 +205,14 @@ export default function ServiceKpiCenter({ view, onOpenTicket }: { view: KpiView
       rows={breakdowns.resolution_by || []} empty="Sin cierres solucionados en el periodo."
       drill={row => t('tickets', { closed_in_period: true, closure_class: 'solucionado', service_type: row.service_type, priority: row.priority }, `Resolución · ${labelOf(serviceTypeLabels, row.service_type)} · ${labelOf(priorityLabels, row.priority)}`, 'resolution')} onDrill={openDrill} />,
     effectiveness: <MiniTable key="effectiveness" title="Efectividad de soluciones por código de avería" definition="effectiveness" help={help === 'effectiveness'} onHelp={() => toggleHelp('effectiveness')}
+      collapsed={(breakdowns.failure_solution || []).length ? `${formatCount((breakdowns.failure_solution || []).length)} combinaciones de avería y solución` : 'Sin averías con código'}
       columns={[['Avería', row => `${row.failure}${row.failure_label ? ` · ${row.failure_label}` : ''}`], ['Solución aplicada', row => row.solution === 'sin_solucion' ? 'Sin solución registrada' : `${row.solution}${row.solution_label ? ` · ${row.solution_label}` : ''}`],
         ['Eventos', row => formatCount(row.n)], ['Evaluables', row => formatCount(row.evaluable)], ['Reincidencias', row => formatCount(row.recurred)],
         ['Efectividad', row => row.effectiveness === null ? 'No aplica' : <>{`${row.effectiveness} %`}{row.small_sample ? <small className="kpi-flag">Muestra pequeña</small> : null}</>]]}
       rows={breakdowns.failure_solution || []} empty="Sin averías con código registrado en el periodo."
       drill={row => t('failures', row.solution === 'sin_solucion' ? { in_period: true, failure_code: row.failure } : { in_period: true, failure_code: row.failure, solution_codes: [row.solution] }, `Averías ${row.failure} · solución ${row.solution === 'sin_solucion' ? 'sin registrar' : row.solution}`, 'effectiveness')} onDrill={openDrill} />,
     failures: <MiniTable key="failures" title="Averías más frecuentes" definition="recurrence_rate" help={help === 'failures_top'} onHelp={() => toggleHelp('failures_top')}
+      collapsed={(breakdowns.failures_top || []).length ? `${formatCount((breakdowns.failures_top || []).length)} códigos de avería` : 'Sin códigos de avería'}
       columns={[['Código', row => String(row.code)], ['Avería', row => String(row.label || 'Sin descripción')], ['Eventos', row => formatCount(row.n)]]}
       rows={breakdowns.failures_top || []} empty="Sin códigos de avería registrados en el periodo."
       drill={row => t('failures', { in_period: true, failure_code: row.code }, `Eventos de avería ${row.code}`, 'recurrence_rate')} onDrill={openDrill} />,
