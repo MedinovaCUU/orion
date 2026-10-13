@@ -417,3 +417,7 @@ verify_jwt = false
 
 [functions.alexa-notify]
 verify_jwt = false
+
+# Meta calls it without a Supabase JWT; the handler verifies X-Hub-Signature-256 with WHATSAPP_APP_SECRET.
+[functions.whatsapp-webhook]
+verify_jwt = false

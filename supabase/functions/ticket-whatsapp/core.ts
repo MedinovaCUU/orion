@@ -60,3 +60,21 @@ export function metaErrorMessage(code: number | undefined): string {
   };
   return messages[code || 0] || `Meta rechazó el envío${code ? ` (código ${code})` : ''}. Revisa la cuenta en WhatsApp Manager.`;
 }
+
+// Free text is allowed while the customer's last message is younger than 24 h (Meta's service window).
+export const REPLY_WINDOW_MS = 24 * 60 * 60 * 1000;
+export function withinReplyWindow(lastInboundAt: string | null | undefined, now = Date.now()): boolean {
+  const at = lastInboundAt ? Date.parse(lastInboundAt) : NaN;
+  return Number.isFinite(at) && now - at < REPLY_WINDOW_MS && at <= now + 5 * 60 * 1000;
+}
+/** Same key as public.whatsapp_phone_key: the last ten digits. */
+export function phoneKey(phone: string): string { const digits = phone.replace(/\D/g, ''); return digits.slice(-10); }
+export interface ReplyInput { requestId: string; conversationId: string; text: string }
+export function validateReply(raw: Record<string, unknown>): ReplyInput {
+  const uuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+  if (typeof raw.requestId !== 'string' || !uuid.test(raw.requestId)) throw new InputError('Identificador de envío inválido.');
+  if (typeof raw.conversationId !== 'string' || !uuid.test(raw.conversationId)) throw new InputError('Conversación inválida.');
+  const text = typeof raw.text === 'string' ? raw.text.trim() : '';
+  if (text.length < 1 || text.length > 4096) throw new InputError('Escribe entre 1 y 4096 caracteres.');
+  return { requestId: raw.requestId, conversationId: raw.conversationId, text };
+}

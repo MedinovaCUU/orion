@@ -3,6 +3,8 @@ import SatisfactionDashboard from './satisfaction/SatisfactionDashboard';
 import { canOpenTicketControl } from './ticketAlertAccess';
 import { EMPTY_TICKET_VIEWER, filterTicketsForViewer, viewerSeesAllTickets, type TicketViewer } from './ticketVisibility';
 import TicketControlCenter from './TicketControlCenter';
+import WhatsAppInbox from './WhatsAppInbox';
+import useWhatsAppUnread from './useWhatsAppUnread';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { supabase } from '../supabaseClient';
@@ -361,8 +363,10 @@ export default function Tickets({ subPermissions = ['crear', 'seguimiento', 'dia
   const tickets = useMemo(() => filterTicketsForViewer(loadedTickets, viewer), [loadedTickets, viewer]);
   const [loading, setLoading] = useState(true);
   const [caseFilter, setCaseFilter] = useState('abiertos');
-  const [controlView, setControlView] = useState(false);
+  const [ticketView, setTicketView] = useState<'operativa' | 'control' | 'whatsapp'>('operativa');
+  const controlView = ticketView === 'control';
   const canViewControl = canOpenTicketControl(viewer.role);
+  const whatsAppUnread = useWhatsAppUnread(canViewTickets && canViewControl);
   const [asunto, setAsunto] = useState('');
   const [descripcion, setDescripcion] = useState('');
   const [submitting, setSubmitting] = useState(false);
@@ -879,13 +883,26 @@ export default function Tickets({ subPermissions = ['crear', 'seguimiento', 'dia
         </form>
       </div></details> : null}
 
-      {canViewTickets && canViewControl && <div className="tickets-view-switch"><button type="button" className={`button-primary${controlView ? ' inactive' : ''}`} aria-pressed={!controlView} onClick={() => setControlView(false)}>Vista operativa</button><button type="button" className={`button-primary${controlView ? '' : ' inactive'}`} aria-pressed={controlView} onClick={() => setControlView(true)}>Centro de control</button></div>}
+      {canViewTickets && canViewControl && <div className="tickets-view-switch">
+        {([['operativa', 'Vista operativa'], ['control', 'Centro de control'], ['whatsapp', 'WhatsApp']] as const).map(([view, label]) => (
+          <button key={view} type="button" className={`button-primary${ticketView === view ? '' : ' inactive'}`} aria-pressed={ticketView === view} onClick={() => setTicketView(view)}>
+            {label}
+            {view === 'whatsapp' && whatsAppUnread > 0 && <span className="tickets-view-switch__badge" aria-label={`${whatsAppUnread} sin leer`}>{whatsAppUnread}</span>}
+          </button>
+        ))}
+      </div>}
+      {canViewTickets && canViewControl && ticketView === 'whatsapp' && <WhatsAppInbox onOpenTicket={ticketId => {
+        setTicketView('operativa');
+        setCaseFilter('todos');
+        setExpandedCaseId(ticketId);
+        window.setTimeout(() => document.getElementById(`ticket-card-${ticketId}`)?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 150);
+      }} />}
       {canViewTickets && canViewControl && controlView && <TicketControlCenter entries={ticketRenderItems} loading={loading} canWrite={canDiagnoseTickets} onChanged={fetchTickets} onDiagnose={ticket => {
         setSelectedTicket(ticket);
         setCerrarData({ no_serie: ticket.numero_serie_equipo || '', cda: '', cds: '', comentarios: '', tipo_servicio: plannedServiceType(ticket.descripcion), refaccionesUsadas: [] });
         setCerrarModalOpen(true);
       }} />}
-      {canViewTickets && (!canViewControl || !controlView) ? <div className="card" style={{ background: 'var(--bg-secondary)', border: 'none' }}>
+      {canViewTickets && (!canViewControl || ticketView === 'operativa') ? <div className="card" style={{ background: 'var(--bg-secondary)', border: 'none' }}>
         <h3 style={{ marginBottom: '1rem' }}>Bandeja de Casos de Soporte</h3>
         {!canViewControl && <p className="tickets-scope-note" style={{ color: 'var(--text-secondary)', fontSize: '0.85rem', margin: '-0.5rem 0 1rem' }}>Solo se muestran los casos asignados a ti o en los que apareces como responsable en la planeación.</p>}
       <label>Mostrar casos <select className="input-field" value={caseFilter} onChange={event => setCaseFilter(event.target.value)}><option value="abiertos">Abiertos</option><option value="cerrados">Cerrados</option><option value="todos">Todos</option></select></label>
@@ -900,7 +917,7 @@ export default function Tickets({ subPermissions = ['crear', 'seguimiento', 'dia
               const ticketSlaTone = displayFalconSla ? getFalconSlaTone(displayFalconSla.severity) : null;
 
               return (
-                <li key={ticket.id} className={`tickets-list-card${isPlanningTicket ? ' tickets-list-card--planning' : ''}`}>
+                <li key={ticket.id} id={`ticket-card-${ticket.id}`} className={`tickets-list-card${isPlanningTicket ? ' tickets-list-card--planning' : ''}`}>
                   <div className="tickets-list-card__header">
                     <div className="tickets-list-card__copy">
                       <div className="tickets-list-card__case-line">

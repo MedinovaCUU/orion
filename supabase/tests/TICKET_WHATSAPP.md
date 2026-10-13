@@ -58,3 +58,25 @@ La interfaz conserva las acciones del ticket y coloca Pulso del servicio debajo 
 ### Portal público (13 de octubre de 2026)
 Excepción a «no presupone México»: el portal público solo acepta celulares mexicanos de 10 dígitos, así que en tickets del portal (sin usuario, asunto «Soporte …: Reporte en equipo …») con equipo sin país, ticket_whatsapp_country guarda el destinatario como +52 y el mensaje sale. Los tickets internos conservan la regla anterior. El teléfono del ticket se queda como se capturó. Además, el portal solo acepta series registradas en equipos (migración 20261013010000), así que el país sale del equipo en casi todos los casos.
 Prueba: PGLITE_MODULE=… node supabase/tests/public_portal_guards.test.mjs.
+
+## Bandeja de entrada (13 de octubre de 2026)
+Antes, lo que los clientes escribían al número de Orion solo quedaba en el log de `whatsapp-webhook` (función publicada sin código en el repo) y se perdía. Ahora:
+
+- `whatsapp-webhook` (código en el repo, `verify_jwt = false`) verifica `X-Hub-Signature-256` con `WHATSAPP_APP_SECRET` (admite varias claves separadas por comas, una por app de Meta). Sin esa clave responde 503 y Meta reintenta durante días; firma inválida = 401. Guarda cada mensaje con `record_whatsapp_inbound` (idempotente por id de Meta) y los estados de entrega con `record_whatsapp_status` (solo avanzan: enviado → entregado → leído, o fallido). Fotos, audio, video y documentos se copian al bucket privado `whatsapp-media` (máx. 25 MB). El log solo registra conteos, nunca teléfonos ni texto. Solo guarda mensajes de los números de la empresa (`TICKET_WA_PHONE_NUMBER_ID`, `WHATSAPP_PHONE_NUMBER_ID`); el ejemplo del botón «Probar» de Meta usa un número ficticio y se ignora (sirve para comprobar la firma: 200 = clave correcta, 401 = incorrecta).
+- Migración `20261013060000_whatsapp_inbox.sql` (renombrada desde 050000, que chocó con `public_portal_serial_structure`; la versión fallida se revirtió completa): `whatsapp_conversations` (una por número que recibe y número del cliente), `whatsapp_inbound_messages`, `whatsapp_opt_outs`, columnas `delivery_*` en los envíos, RPC `whatsapp_inbox`, `whatsapp_thread`, `whatsapp_unread_count`, `mark_whatsapp_conversation_read`, `link_whatsapp_conversation`. Solo administración lee (RLS y RPC); solo el webhook escribe. Las conversaciones entran a Realtime.
+- Mismo número = últimos 10 dígitos (`whatsapp_phone_key`): +52…, 52…, 521… y 10 dígitos coinciden.
+- Ticket de la conversación: si el cliente responde a un aviso, el ticket de ese aviso; si no, se conserva el ligado mientras siga abierto; si no, el ticket abierto más reciente con ese teléfono; si no, el último ticket notificado a ese número. Administración puede cambiarlo desde la bandeja.
+- BAJA/STOP (la palabra sola) registra la baja: los avisos automáticos pendientes y nuevos quedan `skipped` y `ticket-whatsapp` rechaza plantillas a ese número. ALTA la quita (no reenvía lo omitido). Contestar dentro de la ventana de 24 h sigue permitido.
+- Tickets → WhatsApp (solo administración, con contador de no leídos): conversaciones, hilo con avisos automáticos y su estado de entrega, archivos, ticket ligado y respuesta. `ticket-whatsapp` acción `reply` valida en el servidor la ventana de 24 h y que la conversación sea del número de tickets; reutiliza la reserva idempotente por `requestId`. Mensajes a otros números de la empresa se muestran sin opción de contestar.
+- Recepción: la acción `config` muestra a qué URL manda Meta los mensajes del número (`subscribed_apps`) y `connect_inbound` la apunta a `whatsapp-webhook` (`override_callback_uri` + `WHATSAPP_WEBHOOK_VERIFY_TOKEN`). Requiere que la app de Meta tenga activado el campo `messages` del webhook.
+
+Orden de despliegue: `WHATSAPP_APP_SECRET` → `supabase db push` → `supabase functions deploy whatsapp-webhook ticket-whatsapp` → publicar el frontend → «Conectar a Orion» en la bandeja.
+
+Pruebas (sin Deno: `run-deno-test.mjs` carga los `.test.ts` con Node 24):
+```
+PGLITE_MODULE=$PWD/supabase/_local_archive/whatsapp-tests/node_modules/@electric-sql/pglite/dist/index.js node supabase/tests/whatsapp_inbox.test.mjs
+node supabase/tests/tools/run-deno-test.mjs supabase/functions/whatsapp-webhook/handler.test.ts
+node supabase/tests/tools/run-deno-test.mjs supabase/functions/ticket-whatsapp/handler.test.ts
+node frontend/tests/whatsapp-inbox-model.test.mjs
+```
+Interfaz aislada con datos simulados: `/orion/tests/fixtures/whatsapp-inbox.html` (configuración `orion-whatsapp`, puerto 5216).
