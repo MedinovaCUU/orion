@@ -433,3 +433,45 @@
     margin-bottom: 1.25rem;
   }
 }
+
+/* Public portal: serial validation, help and bot trap */
+.input-field.is-invalid { border-color: rgba(var(--brand-red-rgb), 0.5); box-shadow: 0 0 0 3px rgba(var(--brand-red-rgb), 0.08); }
+.input-field.is-valid { border-color: rgba(var(--success-rgb), 0.45); }
+.serial-status:empty { display: none; }
+.serial-status { font-size: 0.84rem; line-height: 1.5; }
+.serial-status__checking { color: var(--text-tertiary); }
+.serial-status__ok { color: #257556; font-weight: 700; }
+.serial-status__error { color: #8a2a35; }
+
+.serial-help-toggle {
+  align-self: flex-start; padding: 0; border: none; background: none; cursor: pointer;
+  color: var(--primary-color); font: inherit; font-size: 0.86rem; font-weight: 700;
+  text-decoration: underline; text-underline-offset: 3px;
+}
+
+.serial-help {
+  display: grid; gap: 0.85rem; padding: 0.9rem;
+  border: 1px solid var(--surface-outline); border-radius: 18px; background: rgba(255, 255, 255, 0.6);
+}
+.serial-help__tabs {
+  justify-self: start; display: inline-flex; gap: 0.25rem; padding: 0.25rem;
+  border-radius: 999px; background: rgba(var(--clinical-rgb), 0.08);
+}
+.serial-help__tabs button {
+  padding: 0.4rem 0.95rem; border: none; border-radius: 999px; background: transparent; cursor: pointer;
+  color: var(--text-secondary); font: inherit; font-size: 0.82rem; font-weight: 700;
+}
+.serial-help__tabs button.is-active { background: #fff; color: var(--text-primary); box-shadow: 0 1px 4px rgba(15, 23, 42, 0.1); }
+.serial-help__panel { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 0.85rem; }
+.serial-help figure { margin: 0; display: grid; gap: 0.5rem; align-content: start; }
+.serial-help img { width: 100%; height: auto; border: 1px solid var(--surface-outline); border-radius: 12px; background: #fff; }
+.serial-help figcaption { color: var(--text-secondary); font-size: 0.84rem; line-height: 1.55; }
+.serial-help figcaption strong { display: block; margin-bottom: 0.15rem; color: var(--text-primary); }
+.serial-help code {
+  padding: 0.05rem 0.35rem; border-radius: 6px; background: rgba(var(--clinical-rgb), 0.1);
+  color: var(--text-primary); font-family: inherit; font-weight: 700;
+}
+.serial-help__note { margin: 0; color: var(--text-tertiary); font-size: 0.8rem; line-height: 1.5; }
+
+.public-ticket-form-error { margin-bottom: 0; }
+.public-ticket-trap { position: absolute; left: -10000px; width: 1px; height: 1px; overflow: hidden; }

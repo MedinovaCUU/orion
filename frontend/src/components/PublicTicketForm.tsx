@@ -1,8 +1,23 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { supabase } from '../supabaseClient';
 import { useNavigate } from 'react-router-dom';
 import './Login.css';
 import BrandLockup from './BrandLockup';
+import PublicSerialHelp from './PublicSerialHelp';
+import {
+  DESCRIPTION_MAX,
+  descriptionIssue,
+  nameIssue,
+  phoneDigits,
+  phoneIssue,
+  serialFamily,
+  serialIssue,
+  serialKey,
+  serialStatusMessage,
+  type SerialCheckResult,
+  type SerialStatus,
+  type SubmitResult,
+} from './publicPortal';
 
 interface PublicCaseTimelineEntry {
   tipo: string;
@@ -26,9 +41,13 @@ export default function PublicTicketForm() {
   const [nombre, setNombre] = useState('');
   const [celular, setCelular] = useState('');
   const [descripcion, setDescripcion] = useState('');
+  const [trap, setTrap] = useState('');
+  const [serialTouched, setSerialTouched] = useState(false);
+  const [serialCheck, setSerialCheck] = useState<{ key: string; result: SerialCheckResult } | null>(null);
+  const [serialHelpChoice, setSerialHelpChoice] = useState<boolean | null>(null);
+  const serialInput = useRef<HTMLInputElement>(null);
   const [loading, setLoading] = useState(false);
-  const [success, setSuccess] = useState(false);
-  const [createdCaseNumber, setCreatedCaseNumber] = useState('');
+  const [result, setResult] = useState<SubmitResult | null>(null);
   const [errorMsg, setErrorMsg] = useState('');
   const [trackingOpen, setTrackingOpen] = useState(false);
   const [trackingCase, setTrackingCase] = useState('');
@@ -58,42 +77,100 @@ export default function PublicTicketForm() {
     },
   ];
 
+  const serialKeyValue = serialKey(numeroSerie);
+  const serialFormatIssue = serialIssue(serialKeyValue);
+  const serialChecked = serialCheck?.key === serialKeyValue ? serialCheck.result : null;
+  // Format problems show once the customer leaves the field; a plausible serial is looked up while typing.
+  const serialState: { status: SerialStatus | 'idle' | 'checking'; modelo?: string | null; serie?: string | null } =
+    !serialKeyValue ? { status: 'idle' }
+      : serialFormatIssue ? (serialTouched ? { status: serialFormatIssue, modelo: serialFamily(serialKeyValue) } : { status: 'idle' })
+        : serialChecked ?? { status: 'checking' };
+  const serialError = serialState.status !== 'idle' && serialState.status !== 'checking' && serialState.status !== 'ok'
+    ? serialStatusMessage(serialState.status, serialState.modelo)
+    : '';
+  const serialHelpOpen = serialHelpChoice ?? (serialTouched && Boolean(serialError));
+  const serialHelpTab = serialFamily(serialKeyValue) === 'A15' ? 'a15' : 'ba';
+
+  useEffect(() => {
+    if (!serialKeyValue || serialFormatIssue || serialCheck?.key === serialKeyValue) return;
+    let current = true;
+    const timer = window.setTimeout(async () => {
+      const { data, error } = await supabase.rpc('check_public_equipment_serial', { p_serial: numeroSerie });
+      // A failed lookup never blocks the form: the database checks the serial again on submit.
+      if (current) setSerialCheck({ key: serialKeyValue, result: error || !data ? { status: 'idle' as SerialStatus } : (data as SerialCheckResult) });
+    }, 600);
+    return () => {
+      current = false;
+      window.clearTimeout(timer);
+    };
+  }, [numeroSerie, serialKeyValue, serialFormatIssue, serialCheck]);
+
+  const rejectSerial = (status: SerialStatus, modelo?: string | null) => {
+    setSerialTouched(true);
+    if (!serialIssue(serialKeyValue)) setSerialCheck({ key: serialKeyValue, result: { status, modelo } });
+    setSerialHelpChoice(true);
+    setErrorMsg(serialStatusMessage(status, modelo));
+    serialInput.current?.focus();
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!tipoSoporte) {
-        setErrorMsg('Por favor selecciona el tipo de soporte que requieres.');
-        return;
-    }
-    
-    const trimmedNombre = nombre.trim();
-    const trimmedSerie = numeroSerie.trim();
-    const trimmedCelular = celular.trim();
-    const trimmedDescripcion = descripcion.trim();
-
-    if (!trimmedNombre) {
-        setErrorMsg('Por favor captura el nombre del contacto.');
-        return;
-    }
-    
-    setLoading(true);
     setErrorMsg('');
-    
-    const { data, error } = await supabase.rpc('create_public_support_case', {
-      p_support_type: tipoSoporte,
-      p_serial: trimmedSerie,
-      p_contact_name: trimmedNombre,
-      p_phone: trimmedCelular,
-      p_description: trimmedDescripcion,
-    });
-
-    if (error) {
-        setErrorMsg('Error al enviar el ticket: ' + error.message);
-    } else {
-        const resultRow = Array.isArray(data) ? data[0] : data;
-        setCreatedCaseNumber(resultRow?.numero_caso || 'Caso registrado');
-        setSuccess(true);
+    if (trap) {
+      // Only automated submissions fill the hidden field: acknowledge without creating anything.
+      setResult({ status: 'creado', numero_caso: null });
+      return;
     }
+    if (!tipoSoporte) {
+      setErrorMsg('Por favor selecciona el tipo de soporte que requieres.');
+      return;
+    }
+    if (serialFormatIssue) {
+      rejectSerial(serialFormatIssue, serialFamily(serialKeyValue));
+      return;
+    }
+    if (serialState.status === 'no_encontrado') {
+      rejectSerial('no_encontrado', serialState.modelo);
+      return;
+    }
+    const fieldIssue = nameIssue(nombre) || phoneIssue(celular) || descriptionIssue(descripcion);
+    if (fieldIssue) {
+      setErrorMsg(fieldIssue);
+      return;
+    }
+
+    setLoading(true);
+    const { data, error } = await supabase.rpc('submit_public_support_case', {
+      p_support_type: tipoSoporte,
+      p_serial: numeroSerie.trim(),
+      p_contact_name: nombre.trim(),
+      p_phone: celular,
+      p_description: descripcion.trim(),
+    });
     setLoading(false);
+
+    const outcome = data as SubmitResult | null;
+    if (error || !outcome) {
+      setErrorMsg('No fue posible enviar el reporte en este momento. Inténtalo de nuevo en unos minutos.');
+    } else if (outcome.status === 'creado' || outcome.status === 'agrupado') {
+      setResult(outcome);
+    } else if (outcome.status === 'serie') {
+      rejectSerial(outcome.motivo || 'no_encontrado', outcome.modelo);
+    } else {
+      setErrorMsg(outcome.mensaje || 'Revisa los datos del reporte.');
+    }
+  };
+
+  const resetForm = () => {
+    setResult(null);
+    setNumeroSerie('');
+    setSerialTouched(false);
+    setSerialHelpChoice(null);
+    setNombre('');
+    setCelular('');
+    setDescripcion('');
+    setTipoSoporte(null);
+    setErrorMsg('');
   };
 
   const handleTracking = async (event: React.FormEvent) => {
@@ -103,10 +180,10 @@ export default function PublicTicketForm() {
     setTrackingResult(null);
     const { data, error } = await supabase.rpc('track_public_support_case', {
       p_case_number: trackingCase.trim(),
-      p_phone: trackingPhone.trim(),
+      p_phone: trackingPhone,
     });
     if (error) {
-      setTrackingError('No fue posible consultar el caso en este momento.');
+      setTrackingError(/Demasiadas consultas/.test(error.message) ? error.message : 'No fue posible consultar el caso en este momento.');
     } else if (!data) {
       setTrackingError('No encontramos un caso con ese folio y teléfono. Revisa ambos datos.');
     } else {
@@ -123,44 +200,41 @@ export default function PublicTicketForm() {
     cerrado: 'Cerrado',
   })[status] || status;
 
-  if (success) {
+  if (result) {
+      const grouped = result.status === 'agrupado';
       return (
           <div className="login-container login-container--public">
               <div className="card login-card login-card--public public-ticket-success-card">
                   <BrandLockup
                       variant="public"
                       eyebrow="BioSystems"
-                      title="Ticket registrado"
+                      title={grouped ? 'Reporte agregado' : 'Ticket registrado'}
                       subtitle="Tu solicitud ya quedó dentro del flujo operativo de Orion."
                   />
                   <div className="public-ticket-success-copy">
-                    <span className="public-ticket-success-tag">Flujo activo</span>
-                    <h2 className="login-title">Ticket enviado exitosamente</h2>
+                    <span className="public-ticket-success-tag">{grouped ? 'Caso en curso' : 'Flujo activo'}</span>
+                    <h2 className="login-title">{grouped ? 'Lo sumamos al caso abierto' : 'Ticket enviado exitosamente'}</h2>
                     <p className="login-subtitle">
-                      Recibimos la información del equipo y la descripción del problema.
+                      {grouped
+                        ? result.repetido
+                          ? 'Ya habíamos recibido este mismo reporte, así que no lo duplicamos.'
+                          : 'Este equipo ya tenía un caso abierto del mismo tipo de soporte. Para no duplicarlo, agregamos tu descripción como nota y el responsable ya la tiene.'
+                        : 'Recibimos la información del equipo y la descripción del problema.'}
                     </p>
                     <div className="public-ticket-case-number">
-                      <span>Tu número de caso</span>
-                      <strong>{createdCaseNumber}</strong>
-                      <small>Guárdalo junto con el teléfono registrado para consultar cada avance.</small>
+                      <span>{grouped ? 'Número del caso abierto' : 'Tu número de caso'}</span>
+                      <strong>{result.numero_caso || 'Caso registrado'}</strong>
+                      <small>
+                        {grouped
+                          ? 'Los avances se consultan con este número y el celular con el que se abrió el caso.'
+                          : 'Guárdalo junto con el teléfono registrado para consultar cada avance.'}
+                      </small>
                     </div>
                     <p className="public-ticket-success-note">
                       Un ingeniero o químico se pondrá en contacto contigo muy pronto al número registrado.
                     </p>
                   </div>
-                  <button 
-                      className="button-primary" 
-                      type="button"
-                      onClick={() => {
-                          setSuccess(false);
-                          setNumeroSerie('');
-                          setNombre('');
-                          setCelular('');
-                          setDescripcion('');
-                          setTipoSoporte(null);
-                          setCreatedCaseNumber('');
-                      }}
-                  >
+                  <button className="button-primary" type="button" onClick={resetForm}>
                       Enviar otro ticket
                   </button>
               </div>
@@ -185,7 +259,6 @@ export default function PublicTicketForm() {
           title="Portal de soporte Orion"
         />
 
-        {errorMsg && <div className="error-alert">{errorMsg}</div>}
 
         <button
           type="button"
@@ -206,7 +279,7 @@ export default function PublicTicketForm() {
               </div>
               <div className="form-group">
                 <label>Teléfono registrado</label>
-                <input className="input-field" type="tel" value={trackingPhone} onChange={(event) => setTrackingPhone(event.target.value)} pattern="[0-9]{10}" placeholder="10 dígitos" required />
+                <input className="input-field" type="tel" inputMode="numeric" autoComplete="tel-national" value={trackingPhone} onChange={(event) => setTrackingPhone(phoneDigits(event.target.value))} pattern="[0-9]{10}" placeholder="10 dígitos" required />
               </div>
             </div>
             <button className="button-primary" type="submit" disabled={trackingLoading}>{trackingLoading ? 'Consultando…' : 'Consultar caso'}</button>
@@ -232,7 +305,13 @@ export default function PublicTicketForm() {
           </form>
         ) : null}
 
-        <form onSubmit={handleSubmit} className="login-form">
+        <form onSubmit={handleSubmit} className="login-form" noValidate>
+          <div className="public-ticket-trap" aria-hidden="true">
+            <label>
+              Sitio web
+              <input type="text" name="sitio_web" tabIndex={-1} autoComplete="off" value={trap} onChange={(event) => setTrap(event.target.value)} />
+            </label>
+          </div>
           <div className="form-group">
             <label>Tipo de soporte requerido *</label>
             <div className="support-choice-grid">
@@ -256,25 +335,54 @@ export default function PublicTicketForm() {
           </div>
 
           <div className="form-group">
-            <label>N° Serie del equipo *</label>
-            <input 
-              type="text" 
-              className="input-field" 
+            <label htmlFor="public-ticket-serial">N° Serie del equipo *</label>
+            <input
+              id="public-ticket-serial"
+              ref={serialInput}
+              type="text"
+              className={`input-field${serialError ? ' is-invalid' : ''}${serialState.status === 'ok' ? ' is-valid' : ''}`}
               value={numeroSerie}
               onChange={(e) => setNumeroSerie(e.target.value)}
-              placeholder="Ej. 831015648"
-              required 
+              onBlur={() => setSerialTouched(true)}
+              placeholder="Ej. 83400 y 4 números"
+              maxLength={40}
+              autoComplete="off"
+              spellCheck={false}
+              aria-invalid={Boolean(serialError)}
+              aria-describedby="public-ticket-serial-status"
+              required
             />
+            <div id="public-ticket-serial-status" className="serial-status" aria-live="polite">
+              {serialState.status === 'checking' ? <span className="serial-status__checking">Buscando el equipo…</span> : null}
+              {serialState.status === 'ok' ? (
+                <span className="serial-status__ok">
+                  ✓ Equipo registrado{serialState.modelo ? `: ${serialState.modelo}` : ''}{serialState.serie ? ` · ${serialState.serie}` : ''}
+                </span>
+              ) : null}
+              {serialError ? <span className="serial-status__error">{serialError}</span> : null}
+            </div>
+            <button
+              type="button"
+              className="serial-help-toggle"
+              aria-expanded={serialHelpOpen}
+              onClick={() => setSerialHelpChoice(!serialHelpOpen)}
+            >
+              {serialHelpOpen ? 'Ocultar ayuda' : '¿Dónde encuentro el número de serie?'}
+            </button>
+            {serialHelpOpen ? <PublicSerialHelp key={serialHelpTab} initialTab={serialHelpTab} /> : null}
           </div>
 
           <div className="form-group">
-            <label>Nombre del Contacto *</label>
-            <input 
+            <label htmlFor="public-ticket-name">Nombre del Contacto *</label>
+            <input
+              id="public-ticket-name"
               type="text" 
               className="input-field" 
               value={nombre}
               onChange={(e) => setNombre(e.target.value)}
               placeholder="Ej. María López"
+              maxLength={120}
+              autoComplete="name"
               required
             />
             <small className="form-group-note">
@@ -283,29 +391,36 @@ export default function PublicTicketForm() {
           </div>
 
           <div className="form-group">
-            <label>Celular (10 dígitos) *</label>
-            <input 
-              type="tel" 
-              className="input-field" 
+            <label htmlFor="public-ticket-phone">Celular (10 dígitos) *</label>
+            <input
+              id="public-ticket-phone"
+              type="tel"
+              inputMode="numeric"
+              autoComplete="tel-national"
+              className="input-field"
               value={celular}
-              onChange={(e) => setCelular(e.target.value)}
+              onChange={(e) => setCelular(phoneDigits(e.target.value))}
               placeholder="Ej. 5551234567"
-              pattern="[0-9]{10}"
-              required 
+              pattern="[2-9][0-9]{9}"
+              required
             />
           </div>
 
           <div className="form-group">
-            <label>Descripción detallada del problema *</label>
-            <textarea 
+            <label htmlFor="public-ticket-description">Descripción detallada del problema *</label>
+            <textarea
+              id="public-ticket-description"
               className="input-field public-ticket-textarea" 
               value={descripcion}
               onChange={(e) => setDescripcion(e.target.value)}
+              maxLength={DESCRIPTION_MAX}
               placeholder="Describe todos los detalles sobre el fallo o mensaje de error que reporta el equipo..."
               required 
             />
           </div>
           
+          {errorMsg ? <div className="error-alert public-ticket-form-error" role="alert">{errorMsg}</div> : null}
+
           <div className="public-ticket-footer">
             <button type="submit" className="button-primary login-btn" disabled={loading}>
             {loading ? 'Procesando...' : 'Crear Ticket'}

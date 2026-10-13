@@ -54,3 +54,7 @@ Pruebas: node supabase/tests/ticket_whatsapp_automation.test.mjs y deno test --a
 El trigger ticket_whatsapp_country copia equipos.pais mediante la serie normalizada del ticket. El worker usa libphonenumber-js 1.13.14 para interpretar números nacionales según ese país y validar destinos internacionales explícitos. No presupone México cuando falta el país. Acepta +52, 52, el prefijo móvil mexicano antiguo +521 y diez dígitos nacionales, con espacios, paréntesis o guiones. Una entrada internacional explícita prevalece sobre el país del equipo. Extensiones, números inválidos y país ausente con teléfono nacional quedan sin enviar.
 
 La interfaz conserva las acciones del ticket y coloca Pulso del servicio debajo de la operación. El panel de encuestas ya no incluye controles manuales de WhatsApp. Prueba adicional: deno test --node-modules-dir=auto --allow-env supabase/functions/ticket-whatsapp-dispatch/phone.test.ts.
+
+### Portal público (13 de octubre de 2026)
+Excepción a «no presupone México»: el portal público solo acepta celulares mexicanos de 10 dígitos, así que en tickets del portal (sin usuario, asunto «Soporte …: Reporte en equipo …») con equipo sin país, ticket_whatsapp_country guarda el destinatario como +52 y el mensaje sale. Los tickets internos conservan la regla anterior. El teléfono del ticket se queda como se capturó. Además, el portal solo acepta series registradas en equipos (migración 20261013010000), así que el país sale del equipo en casi todos los casos.
+Prueba: PGLITE_MODULE=… node supabase/tests/public_portal_guards.test.mjs.
