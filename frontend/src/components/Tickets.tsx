@@ -3,6 +3,8 @@ import SatisfactionDashboard from './satisfaction/SatisfactionDashboard';
 import { canOpenTicketControl } from './ticketAlertAccess';
 import { EMPTY_TICKET_VIEWER, filterTicketsForViewer, viewerSeesAllTickets, type TicketViewer } from './ticketVisibility';
 import TicketControlCenter from './TicketControlCenter';
+import TicketArchiveSearch, { type ArchiveFocus, type ArchiveTicketDescription } from './TicketArchiveSearch';
+import { TICKET_INBOX_DAYS, inboxSince, isMissingRpc, unpackArchiveRows, type ArchiveRow } from './ticketArchive';
 import WhatsAppInbox from './WhatsAppInbox';
 import useWhatsAppUnread from './useWhatsAppUnread';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
@@ -208,6 +210,25 @@ const resolveTicketPhoneLabel = (ticket: TicketRecord, equipmentCatalog: Equipme
 };
 
 const serialKey = (value: string | null | undefined) => (value || '').replace(/\s+/g, '').toUpperCase();
+type TicketPage = { data: unknown[] | null; error: { code?: string; message: string } | null };
+const loadAllPages = async (fetchPage: (offset: number) => PromiseLike<TicketPage>) => {
+  const rows: TicketRecord[] = [];
+  for (let offset = 0; ; offset += 1000) {
+    const page = await fetchPage(offset);
+    if (page.error) return { rows, error: page.error };
+    rows.push(...(page.data || []) as TicketRecord[]);
+    if ((page.data?.length || 0) < 1000) return { rows, error: null };
+  }
+};
+// The inbox downloads only its working set; p_since null is the whole history (control center).
+// Until migration 20261013070000 is applied, the table read keeps the previous full download.
+const loadTicketRange = async (since: string | null) => {
+  const result = await loadAllPages((offset) => supabase.rpc('get_ticket_inbox', { p_since: since })
+    .order('creado_en', { ascending: false }).order('id').range(offset, offset + 999));
+  if (!isMissingRpc(result.error)) return result;
+  return loadAllPages((offset) => supabase.from('tickets').select('*')
+    .order('creado_en', { ascending: false }).order('id').range(offset, offset + 999));
+};
 // The diagnosis button that saves the record is its result; history rows keep it for the indicators.
 const diagnosisResults: Record<string, string> = { cerrado: 'resuelto', pendiente_piezas: 'pendiente_piezas', en_observacion: 'en_observacion' };
 const plannedServiceType = (description: string | null | undefined) => {
@@ -260,6 +281,21 @@ const getTicketNotificationModel = (ticket: TicketRecord) => {
     cleanDescription,
     detailLines,
     planningSummaryItems: meta ? getPlanningSummaryItems(meta) : [],
+  };
+};
+
+const buildTicketRenderItem = (ticket: TicketRecord, equipmentCatalog: EquipmentSummary[]): TicketRenderItem => {
+  const notification = getTicketNotificationModel(ticket);
+  const resolvedEquipment = resolveTicketEquipment(ticket, equipmentCatalog);
+  return {
+    ticket,
+    notification,
+    isPlanningTicket: Boolean(notification.meta),
+    resolvedEquipment,
+    ticketClientLabel: resolveTicketClientLabel(ticket, equipmentCatalog),
+    ticketPhoneLabel: resolveTicketPhoneLabel(ticket, equipmentCatalog),
+    locationLabel: formatLocationLine(ticket, resolvedEquipment),
+    staticFalconSla: getFalconTicketSla(ticket, resolvedEquipment),
   };
 };
 
@@ -358,6 +394,8 @@ export default function Tickets({ subPermissions = ['crear', 'seguimiento', 'dia
   const canViewTickets = subPermissions.includes('seguimiento');
   const canDiagnoseTickets = subPermissions.includes('diagnostico');
   const [loadedTickets, setLoadedTickets] = useState<TicketRecord[]>([]);
+  // Whole history, downloaded only while the control center is open.
+  const [historyTickets, setHistoryTickets] = useState<TicketRecord[] | null>(null);
   const [viewer, setViewer] = useState<TicketViewer>(EMPTY_TICKET_VIEWER);
   // The inbox only keeps the viewer's own cases; administrators keep the full list.
   const tickets = useMemo(() => filterTicketsForViewer(loadedTickets, viewer), [loadedTickets, viewer]);
@@ -365,6 +403,11 @@ export default function Tickets({ subPermissions = ['crear', 'seguimiento', 'dia
   const [caseFilter, setCaseFilter] = useState('abiertos');
   const [ticketView, setTicketView] = useState<'operativa' | 'control' | 'whatsapp'>('operativa');
   const controlView = ticketView === 'control';
+  const ticketViewRef = useRef(ticketView);
+  ticketViewRef.current = ticketView;
+  const [archiveFocus, setArchiveFocus] = useState<ArchiveFocus | null>(null);
+  const [archiveRefreshKey, setArchiveRefreshKey] = useState(0);
+  const [serialClosedCases, setSerialClosedCases] = useState<TicketRecord[]>([]);
   const canViewControl = canOpenTicketControl(viewer.role);
   const whatsAppUnread = useWhatsAppUnread(canViewTickets && canViewControl);
   const [asunto, setAsunto] = useState('');
@@ -445,15 +488,7 @@ export default function Tickets({ subPermissions = ['crear', 'seguimiento', 'dia
         }
       }
       setViewer({ userId: user.id, role, fullName: profile?.nombre_completo || null, assignedTicketIds });
-      const data: TicketRecord[] = [];
-      let error: { message: string } | null = null;
-      for (let offset = 0; ; offset += 1000) {
-        const page = await supabase.from('tickets').select('*')
-          .order('creado_en', { ascending: false }).order('id').range(offset, offset + 999);
-        if (page.error) { error = page.error; break; }
-        data.push(...(page.data || []) as TicketRecord[]);
-        if ((page.data?.length || 0) < 1000) break;
-      }
+      const { rows: data, error } = await loadTicketRange(inboxSince());
       if (error) setLoadedTickets([]);
       if (error) setTicketFeedback({ tone: 'error', message: `No se pudieron cargar los casos: ${error.message}` });
       
@@ -467,6 +502,13 @@ export default function Tickets({ subPermissions = ['crear', 'seguimiento', 'dia
     }
     setLoading(false);
   };
+
+  const fetchHistory = async () => {
+    const { rows, error } = await loadTicketRange(null);
+    if (error) setTicketFeedback({ tone: 'error', message: `No se pudo cargar el historial: ${error.message}` });
+    else setHistoryTickets(rows);
+  };
+  const refreshAll = () => { void fetchTickets(); if (ticketViewRef.current === 'control') void fetchHistory(); };
 
   const fetchCatalogs = async () => {
     const [{ data: eqs }, { data: catalogRows }, { data: refs }, { data: profiles }] = await Promise.all([
@@ -491,12 +533,14 @@ export default function Tickets({ subPermissions = ['crear', 'seguimiento', 'dia
   useEffect(() => {
     fetchTickets();
     fetchCatalogs();
-    const refresh = () => { void fetchTickets(); };
+    const refresh = () => { void fetchTickets(); if (ticketViewRef.current === 'control') void fetchHistory(); };
     const timer = window.setInterval(refresh, 30000);
     window.addEventListener('focus', refresh);
     window.addEventListener('ticket-assignment-changed', refresh);
     return () => { window.clearInterval(timer); window.removeEventListener('focus', refresh); window.removeEventListener('ticket-assignment-changed', refresh); };
   }, []);
+
+  useEffect(() => { if (controlView) void fetchHistory(); }, [controlView]);
 
   const resetTicketForm = () => {
     setAsunto('');
@@ -592,7 +636,7 @@ export default function Tickets({ subPermissions = ['crear', 'seguimiento', 'dia
         );
         resetTicketForm();
         setTicketFeedback({ tone: 'success', message: ticketCreationMessage(receipt) });
-        fetchTickets();
+        refreshAll();
       } catch (error) {
         const message =
           error instanceof Error && error.message.trim()
@@ -688,7 +732,8 @@ export default function Tickets({ subPermissions = ['crear', 'seguimiento', 'dia
 
       setSubmitting(false);
       setCerrarModalOpen(false);
-      fetchTickets();
+      setArchiveRefreshKey((key) => key + 1);
+      refreshAll();
   };
 
   const generarPDFTicket = async () => {
@@ -723,36 +768,61 @@ export default function Tickets({ subPermissions = ['crear', 'seguimiento', 'dia
   };
 
   const plannedTickets = tickets.filter((ticket): ticket is PendingServiceTicket => Boolean(extractPlaneacionMeta(ticket.descripcion)));
+  // Older closures of the serial live outside the working set: ask the archive for them.
+  useEffect(() => {
+    const serial = numeroSerie.trim();
+    if (serialKey(serial).length < 4) { setSerialClosedCases([]); return; }
+    let active = true;
+    const timer = window.setTimeout(async () => {
+      const { data, error } = await supabase.rpc('search_ticket_archive', { p_serial: serial, p_status: 'cerrados', p_scope: 'soporte', p_limit: 20, p_offset: 0 });
+      if (active) setSerialClosedCases(error ? [] : unpackArchiveRows(data as ArchiveRow<TicketRecord>[]).tickets);
+    }, 350);
+    return () => { active = false; window.clearTimeout(timer); };
+  }, [numeroSerie]);
   // A recurrence is a new case linked to the closed one, never a reopened ticket.
   const reopenCandidates = useMemo(() => {
     const key = serialKey(numeroSerie);
-    return key ? tickets.filter((ticket) => ticket.estado === 'cerrado' && serialKey(ticket.numero_serie_equipo) === key && !extractPlaneacionMeta(ticket.descripcion)).slice(0, 20) : [];
-  }, [numeroSerie, tickets]);
+    if (!key) return [];
+    const local = tickets.filter((ticket) => ticket.estado === 'cerrado' && serialKey(ticket.numero_serie_equipo) === key && !extractPlaneacionMeta(ticket.descripcion));
+    const archived = serialClosedCases.filter((ticket) => serialKey(ticket.numero_serie_equipo) === key);
+    return [...new Map([...local, ...archived].map((ticket) => [ticket.id, ticket])).values()]
+      .sort((a, b) => Date.parse(b.creado_en) - Date.parse(a.creado_en)).slice(0, 20);
+  }, [numeroSerie, tickets, serialClosedCases]);
   useEffect(() => { if (reabreTicketId && !reopenCandidates.some((ticket) => ticket.id === reabreTicketId)) setReabreTicketId(''); }, [reabreTicketId, reopenCandidates]);
-  const ticketRenderItems = useMemo<TicketRenderItem[]>(
-    () =>
-      tickets.map((ticket) => {
-        const notification = getTicketNotificationModel(ticket);
-        const isPlanningTicket = Boolean(notification.meta);
-        const resolvedEquipment = resolveTicketEquipment(ticket, equipmentCatalog);
-        const ticketClientLabel = resolveTicketClientLabel(ticket, equipmentCatalog);
-        const ticketPhoneLabel = resolveTicketPhoneLabel(ticket, equipmentCatalog);
-        const locationLabel = formatLocationLine(ticket, resolvedEquipment);
-        const staticFalconSla = getFalconTicketSla(ticket, resolvedEquipment);
-
-        return {
-          ticket,
-          notification,
-          isPlanningTicket,
-          resolvedEquipment,
-          ticketClientLabel,
-          ticketPhoneLabel,
-          locationLabel,
-          staticFalconSla,
-        };
-      }),
-    [equipmentCatalog, tickets],
+  const ticketRenderItems = useMemo(() => tickets.map((ticket) => buildTicketRenderItem(ticket, equipmentCatalog)), [equipmentCatalog, tickets]);
+  const historyRenderItems = useMemo(
+    () => (controlView && historyTickets ? filterTicketsForViewer(historyTickets, viewer).map((ticket) => buildTicketRenderItem(ticket, equipmentCatalog)) : []),
+    [controlView, equipmentCatalog, historyTickets, viewer],
   );
+  const describeArchiveTicket = (ticket: TicketRecord): ArchiveTicketDescription => {
+    const item = buildTicketRenderItem(ticket, equipmentCatalog);
+    return {
+      clientLabel: item.ticketClientLabel,
+      phoneLabel: item.ticketPhoneLabel,
+      equipment: item.resolvedEquipment,
+      isPlanning: item.isPlanningTicket,
+      detailLines: item.notification.detailLines,
+      statusLabel: formatSupportStatus(ticket.estado),
+    };
+  };
+  const openDiagnosis = (ticket: TicketRecord) => {
+    setSelectedTicket(ticket);
+    setCerrarData({ no_serie: ticket.numero_serie_equipo || '', cda: '', cds: '', comentarios: '', tipo_servicio: plannedServiceType(ticket.descripcion), refaccionesUsadas: [] });
+    setCerrarModalOpen(true);
+  };
+  // A case outside the working set opens from the archive instead of the inbox list.
+  const openCase = async (ticketId: string) => {
+    setTicketView('operativa');
+    const inInbox = tickets.find((ticket) => ticket.id === ticketId);
+    if (inInbox) {
+      setCaseFilter('todos');
+      setExpandedCaseId(ticketId);
+      window.setTimeout(() => document.getElementById(`ticket-card-${ticketId}`)?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 150);
+      return;
+    }
+    const { data } = await supabase.from('tickets').select('id, numero_caso').eq('id', ticketId).maybeSingle();
+    setArchiveFocus({ ticketId, query: data ? formatCaseNumber(data) : ticketId.slice(0, 6).toUpperCase(), nonce: Date.now() });
+  };
   const trackedFalconTickets = useMemo<TrackedFalconTicketEntry[]>(
     () =>
       ticketRenderItems
@@ -891,21 +961,28 @@ export default function Tickets({ subPermissions = ['crear', 'seguimiento', 'dia
           </button>
         ))}
       </div>}
-      {canViewTickets && canViewControl && ticketView === 'whatsapp' && <WhatsAppInbox onOpenTicket={ticketId => {
-        setTicketView('operativa');
-        setCaseFilter('todos');
-        setExpandedCaseId(ticketId);
-        window.setTimeout(() => document.getElementById(`ticket-card-${ticketId}`)?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 150);
-      }} />}
-      {canViewTickets && canViewControl && controlView && <TicketControlCenter entries={ticketRenderItems} loading={loading} canWrite={canDiagnoseTickets} onChanged={fetchTickets} onDiagnose={ticket => {
+      {canViewTickets && canViewControl && ticketView === 'whatsapp' && <WhatsAppInbox onOpenTicket={ticketId => { void openCase(ticketId); }} />}
+      {canViewTickets && canViewControl && controlView && <TicketControlCenter entries={historyRenderItems} loading={loading || !historyTickets} canWrite={canDiagnoseTickets} onChanged={refreshAll} onDiagnose={ticket => {
         setSelectedTicket(ticket);
         setCerrarData({ no_serie: ticket.numero_serie_equipo || '', cda: '', cds: '', comentarios: '', tipo_servicio: plannedServiceType(ticket.descripcion), refaccionesUsadas: [] });
         setCerrarModalOpen(true);
       }} />}
+      {canViewTickets && (!canViewControl || ticketView === 'operativa') && (
+        <TicketArchiveSearch<TicketRecord>
+          describe={describeArchiveTicket}
+          personal={!canViewControl}
+          canDiagnose={canDiagnoseTickets}
+          onDiagnose={openDiagnosis}
+          onChanged={refreshAll}
+          focus={archiveFocus}
+          refreshKey={archiveRefreshKey}
+        />
+      )}
       {canViewTickets && (!canViewControl || ticketView === 'operativa') ? <div className="card" style={{ background: 'var(--bg-secondary)', border: 'none' }}>
         <h3 style={{ marginBottom: '1rem' }}>Bandeja de Casos de Soporte</h3>
         {!canViewControl && <p className="tickets-scope-note" style={{ color: 'var(--text-secondary)', fontSize: '0.85rem', margin: '-0.5rem 0 1rem' }}>Solo se muestran los casos asignados a ti o en los que apareces como responsable en la planeación.</p>}
-      <label>Mostrar casos <select className="input-field" value={caseFilter} onChange={event => setCaseFilter(event.target.value)}><option value="abiertos">Abiertos</option><option value="cerrados">Cerrados</option><option value="todos">Todos</option></select></label>
+      <label>Mostrar casos <select className="input-field" value={caseFilter} onChange={event => setCaseFilter(event.target.value)}><option value="abiertos">Abiertos</option><option value="cerrados">Cerrados recientes ({TICKET_INBOX_DAYS} días)</option><option value="todos">Abiertos y cerrados recientes</option></select></label>
+      {caseFilter !== 'abiertos' && <p className="ticket-archive__inbox-note">Los cerrados que llevan más de {TICKET_INBOX_DAYS} días sin movimiento se consultan en «Historial de casos».</p>}
       {loading ? (
         <PanelLoader title="Cargando tickets…" />
       ) : tickets.length === 0 ? (
