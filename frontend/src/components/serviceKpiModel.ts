@@ -434,7 +434,7 @@ export const toRpcFilters = (view: KpiView, filters: KpiFilters) => {
 };
 
 // ── Records: columns shared by the table and both exports ─────────────────────────────────
-export interface RecordColumn { key: string; label: string; sort?: string; text: (row: KpiRecord) => string; raw?: (row: KpiRecord) => string | number | Date | null }
+export interface RecordColumn { key: string; label: string; sort?: string; text: (row: KpiRecord) => string; raw?: (row: KpiRecord) => string | number | Date | null; person?: boolean }
 const field = (row: KpiRecord, key: string) => row[key];
 const text = (row: KpiRecord, key: string, fallback = 'Sin dato') => {
   const value = row[key];
@@ -459,7 +459,7 @@ export const recordColumns: Record<KpiDataset, RecordColumn[]> = {
     { key: 'closed_at', label: 'Cierre', sort: 'closed_at', text: r => formatDateTime(field(r, 'closed_at')), raw: r => asDate(r, 'closed_at') },
     { key: 'estado', label: 'Estado', sort: 'estado', text: r => labelOf(statusLabels, r.estado) },
     { key: 'closure_class', label: 'Resultado del cierre', sort: 'closure_class', text: r => r.closure_class ? labelOf(closureLabels, r.closure_class) : 'En atención' },
-    { key: 'responsible_name', label: 'Responsable', sort: 'responsible_name', text: r => text(r, 'responsible_name', 'Sin responsable asignado') },
+    { key: 'responsible_name', label: 'Responsable', sort: 'responsible_name', person: true, text: r => text(r, 'responsible_name', 'Sin responsable asignado') },
     { key: 'team', label: 'Equipo', sort: 'team', text: r => labelOf(teamLabels, r.team) },
     { key: 'service_type', label: 'Tipo de servicio', sort: 'service_type', text: r => labelOf(serviceTypeLabels, r.service_type) },
     { key: 'priority', label: 'Prioridad', sort: 'priority', text: r => labelOf(priorityLabels, r.priority) },
@@ -480,7 +480,7 @@ export const recordColumns: Record<KpiDataset, RecordColumn[]> = {
     { key: 'category', label: 'Actividad', sort: 'category', text: r => r.category === 'programada' ? 'Programada' : r.category === 'llamada' ? 'Llamada' : 'Visita' },
     { key: 'kind', label: 'Tipo', sort: 'kind', text: r => list(r, 'kinds', kindLabels) },
     { key: 'plan_status', label: 'Estado / evidencia', sort: 'plan_status', text: r => r.plan_status ? `${labelOf(planStatusLabels, r.plan_status)}${r.evidence ? ` · ${r.evidence}` : ''}` : 'Registrada' },
-    { key: 'participants', label: 'Participantes', sort: 'participant_names', text: people },
+    { key: 'participants', label: 'Participantes', sort: 'participant_names', person: true, text: people },
     { key: 'client', label: 'Cliente', sort: 'client', text: r => text(r, 'client', 'Sin cliente identificado') },
     { key: 'platform', label: 'Plataforma', sort: 'platform', text: r => text(r, 'platform', 'Sin plataforma') },
     { key: 'serial', label: 'Serie', sort: 'serial', text: r => text(r, 'serial', 'Sin serie') },
@@ -501,7 +501,7 @@ export const recordColumns: Record<KpiDataset, RecordColumn[]> = {
     { key: 'client', label: 'Cliente', sort: 'client', text: r => text(r, 'client', 'Sin cliente identificado') },
     { key: 'next_date', label: 'Siguiente misma avería', sort: 'next_date', text: r => r.next_date ? `${formatDate(r.next_date)} (${r.days_to_next} d)` : 'Sin repetición', raw: r => asDate(r, 'next_date') },
     { key: 'recurred', label: 'Reincidencia', sort: 'recurred', text: r => !r.recurrence_evaluable ? 'En observación (ventana incompleta)' : r.recurred ? 'Reincidió' : 'Sin reincidencia' },
-    { key: 'participant_names', label: 'Participantes', sort: 'participant_names', text: r => text(r, 'participant_names', 'Sin participante identificado') },
+    { key: 'participant_names', label: 'Participantes', sort: 'participant_names', person: true, text: r => text(r, 'participant_names', 'Sin participante identificado') },
     { key: 'sources', label: 'Fuente', text: r => text(r, 'sources') },
     { key: 'folio', label: 'Ticket', sort: 'folio', text: r => text(r, 'folio', 'Sin ticket') },
   ],
@@ -515,7 +515,7 @@ export const recordColumns: Record<KpiDataset, RecordColumn[]> = {
     { key: 'serial', label: 'Serie', sort: 'serial', text: r => text(r, 'serial', 'Sin serie') },
     { key: 'client', label: 'Cliente', sort: 'client', text: r => text(r, 'client', 'Sin cliente identificado') },
     { key: 'record_ref', label: 'Mantenimiento asociado', sort: 'record_ref', text: r => text(r, 'record_ref') },
-    { key: 'participant_names', label: 'Personal', sort: 'participant_names', text: r => text(r, 'participant_names', 'Sin participante identificado') },
+    { key: 'participant_names', label: 'Personal', sort: 'participant_names', person: true, text: r => text(r, 'participant_names', 'Sin participante identificado') },
     { key: 'unit_cost', label: 'Costo unitario', sort: 'unit_cost', text: r => formatMoney(r.unit_cost), raw: r => numeric(r, 'unit_cost') },
     { key: 'line_cost', label: 'Costo total', sort: 'line_cost', text: r => formatMoney(r.line_cost), raw: r => numeric(r, 'line_cost') },
     { key: 'source', label: 'Fuente', sort: 'source', text: r => text(r, 'source') },
@@ -524,7 +524,7 @@ export const recordColumns: Record<KpiDataset, RecordColumn[]> = {
   surveys: [
     { key: 'answered_at', label: 'Respuesta', sort: 'answered_at', text: r => formatDateTime(r.answered_at), raw: r => asDate(r, 'answered_at') },
     { key: 'folio', label: 'Ticket', sort: 'folio', text: r => text(r, 'folio') },
-    { key: 'specialist_name', label: 'Especialista', sort: 'specialist_name', text: r => text(r, 'specialist_name', 'Sin especialista asignado') },
+    { key: 'specialist_name', label: 'Especialista', sort: 'specialist_name', person: true, text: r => text(r, 'specialist_name', 'Sin especialista asignado') },
     { key: 'satisfaction', label: 'Satisfacción', sort: 'satisfaction', text: r => `${text(r, 'satisfaction')} / 5`, raw: r => numeric(r, 'satisfaction') },
     { key: 'speed', label: 'Rapidez', sort: 'speed', text: r => `${text(r, 'speed')} / 5`, raw: r => numeric(r, 'speed') },
     { key: 'clarity', label: 'Claridad', sort: 'clarity', text: r => r.clarity === null ? 'Sin dato' : `${r.clarity} / 5`, raw: r => numeric(r, 'clarity') },

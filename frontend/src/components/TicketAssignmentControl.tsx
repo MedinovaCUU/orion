@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { shownName } from '../config/presentationPrivacy';
 import { supabase } from '../supabaseClient';
 import type { CaseTicketRecord } from './TicketCaseDetail';
 import { priorityLabels } from './serviceKpiModel';
@@ -53,7 +54,7 @@ export default function TicketAssignmentControl({ ticket, onChanged }: { ticket:
     finally { setBusy(false); }
   };
   return <div className="tc-assignment">
-    <label>Responsable del caso<select aria-label="Responsable del caso" disabled={!ready || busy || ticket.estado === 'cerrado'} value={selected} onChange={event => setSelected(event.target.value)}><option value="">Sin asignar</option>{staff.map(person => <option key={person.id} value={person.id}>{person.nombre_completo || person.id}</option>)}</select></label>
+    <label>Responsable del caso<select aria-label="Responsable del caso" disabled={!ready || busy || ticket.estado === 'cerrado'} value={selected} onChange={event => setSelected(event.target.value)}><option value="">Sin asignar</option>{staff.map(person => <option key={person.id} value={person.id}>{shownName(person.nombre_completo) || person.id}</option>)}</select></label>
     {ticket.estado !== 'cerrado' && <button type="button" disabled={!ready || busy || selected === assigned} onClick={() => void save()}>{busy ? 'Guardando…' : 'Guardar asignación'}</button>}
     <label>Prioridad del caso<select aria-label="Prioridad del caso" disabled={busy || ticket.estado === 'cerrado'} value={priority} onChange={event => setPriority(event.target.value)}><option value="">Sin definir</option>{['critica', 'alta', 'media', 'baja'].map(value => <option key={value} value={value}>{priorityLabels[value]}</option>)}</select></label>
     {ticket.estado !== 'cerrado' && <button type="button" disabled={busy || priority === savedPriority} onClick={() => void savePriority()}>Guardar prioridad</button>}

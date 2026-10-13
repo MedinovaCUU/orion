@@ -4,6 +4,7 @@ import {
   type SupremoExemption, type SupremoMetric, type SupremoOutcome,
 } from './supremoMetricApi';
 import { formatCount, formatDate, formatDateTime, teamLabels, type KpiView } from './serviceKpiModel';
+import PrivateName from './PrivateName';
 
 const outcomeLabels: Record<SupremoOutcome, string> = { positiva: 'Positiva', negativa: 'Negativa', pendiente: 'Pendiente', anulada: 'Anulada', sin_serie: 'Sin serie' };
 const outcomeBadge: Record<SupremoOutcome, string> = { positiva: 'dentro', negativa: 'vencido', pendiente: 'por_vencer', anulada: 'justificado', sin_serie: 'sin_dato' };
@@ -86,7 +87,7 @@ export default function ServiceSupremoMetric({ view, filters, revision, onOpenTi
       <label>Historial de Supremo desde<input readOnly value={formatDateTime(settings.history_since)} /></label>
       <label className="kpi-config-wide">{turningOff ? 'Motivo de la desactivación (obligatorio)' : 'Motivo o nota del cambio'}<input required={turningOff} minLength={turningOff ? 10 : undefined} maxLength={500}
         value={config.reason} onChange={event => setConfig({ ...config, reason: event.target.value })} /></label>
-      {settings.updated_by_name && <p className="kpi-config-wide">Último cambio: {formatDateTime(settings.updated_at)} por {settings.updated_by_name}{settings.reason ? ` · ${settings.reason}` : ''}</p>}
+      {settings.updated_by_name && <p className="kpi-config-wide">Último cambio: {formatDateTime(settings.updated_at)} por <PrivateName>{settings.updated_by_name}</PrivateName>{settings.reason ? ` · ${settings.reason}` : ''}</p>}
       <div className="kpi-config-actions kpi-config-wide"><button type="submit" className={turningOff ? 'kpi-danger' : undefined} disabled={busy}>{turningOff ? 'Desactivar métrica' : 'Guardar configuración'}</button></div>
     </form>
   </details>;
@@ -97,7 +98,7 @@ export default function ServiceSupremoMetric({ view, filters, revision, onOpenTi
       {loading && data && <span className="kpi-refreshing">Actualizando…</span>}</header>
     {error && <div role="alert" className="tc-error">{error} <button type="button" className="tc-text-button" onClick={() => setReload(value => value + 1)}>Reintentar</button></div>}
     {!data && !error && <div className="tc-empty">Calculando la métrica de Supremo…</div>}
-    {settings && !settings.active && <div className="kpi-banner"><strong>Métrica desactivada.</strong> {settings.updated_by_name ? `${settings.updated_by_name} la desactivó el ${formatDateTime(settings.updated_at)}` : 'Está desactivada'}{settings.reason ? `: ${settings.reason}` : ''}. No se muestra en ninguna vista ni en los reportes de servicio; el registro de Supremo de los equipos se sigue guardando.</div>}
+    {settings && !settings.active && <div className="kpi-banner"><strong>Métrica desactivada.</strong> {settings.updated_by_name ? <><PrivateName>{settings.updated_by_name}</PrivateName> la desactivó el {formatDateTime(settings.updated_at)}</> : 'Está desactivada'}{settings.reason ? `: ${settings.reason}` : ''}. No se muestra en ninguna vista ni en los reportes de servicio; el registro de Supremo de los equipos se sigue guardando.</div>}
     {settings?.active && totals && <>
       <div className="kpi-cards">
         {([
@@ -122,7 +123,7 @@ export default function ServiceSupremoMetric({ view, filters, revision, onOpenTi
           {people.length === 0 ? <p className="kpi-mini-empty">Sin visitas atribuidas a colaboradores con este filtro.</p> : <div className="tc-table-scroll"><table className="tc-table kpi-mini-table">
             <thead><tr><th>Colaborador</th>{view === 'general' && <th>Equipo</th>}<th>Positivas</th><th>Negativas</th><th>Pendientes</th><th>Anuladas</th><th>Cumplimiento</th></tr></thead>
             <tbody>{people.map(person => <tr key={person.id}>
-              <td><strong>{person.name}</strong></td>{view === 'general' && <td>{teamLabels[person.team || ''] || 'Sin clasificar'}</td>}
+              <td><strong><PrivateName>{person.name}</PrivateName></strong></td>{view === 'general' && <td>{teamLabels[person.team || ''] || 'Sin clasificar'}</td>}
               <td>{formatCount(person.positive)}</td><td>{person.negative ? <b className="kpi-supremo-neg">{formatCount(person.negative)}</b> : '0'}</td>
               <td>{formatCount(person.pending)}</td><td>{formatCount(person.voided)}</td>
               <td>{pct(person.compliance)}{person.compliance.den > 0 && <small>{person.compliance.num} de {person.compliance.den}</small>}</td>
@@ -157,11 +158,11 @@ export default function ServiceSupremoMetric({ view, filters, revision, onOpenTi
           <tbody>{visits.map(visit => <tr key={visit.visit_id}>
             <td>{formatDate(visit.visit_date)}{visit.outcome !== 'sin_serie' && visit.outcome !== 'anulada' && <small>Plazo hasta {formatDate(visit.deadline)}</small>}</td>
             <td><strong>{visit.serial || 'Sin serie'}</strong><small>{[visit.platform, visit.client].filter(Boolean).join(' · ') || (visit.in_catalog ? '' : 'Fuera del catálogo de equipos')}</small></td>
-            <td>{visit.participant_names || 'Sin colaborador identificado'}{visit.unmatched_names && <small>Sin perfil: {visit.unmatched_names}</small>}</td>
+            <td>{visit.participant_names ? <PrivateName>{visit.participant_names}</PrivateName> : 'Sin colaborador identificado'}{visit.unmatched_names && <small>Sin perfil: <PrivateName>{visit.unmatched_names}</PrivateName></small>}</td>
             <td>{visit.sources}{visit.ticket_id && visit.folio && <small><button type="button" className="tc-text-button" onClick={() => onOpenTicket({ id: visit.ticket_id!, folio: visit.folio! })}>{visit.folio}</button></small>}</td>
             <td><span className={`tc-badge tc-badge--${outcomeBadge[visit.outcome]}`}>{outcomeLabels[visit.outcome]}</span>
               <small>{visit.detail}{visit.supremo_id ? ` · ID ${formatSupremoId(visit.supremo_id)}` : ''}</small>
-              {visit.exemption_justification && <small title={visit.exemption_justification}>“{visit.exemption_justification}” — {visit.exemption_by || 'Administración'}, {formatDate(visit.exemption_at)}</small>}</td>
+              {visit.exemption_justification && <small title={visit.exemption_justification}>“{visit.exemption_justification}” — {visit.exemption_by ? <PrivateName>{visit.exemption_by}</PrivateName> : 'Administración'}, {formatDate(visit.exemption_at)}</small>}</td>
             <td>{visit.serial && (visit.outcome === 'negativa' || visit.outcome === 'pendiente') &&
               <button type="button" className="tc-open" disabled={busy} onClick={() => startJustify(visit.serial || '', true)}>Justificar</button>}</td>
           </tr>)}</tbody></table></div>}
@@ -176,8 +177,8 @@ export default function ServiceSupremoMetric({ view, filters, revision, onOpenTi
           <tbody>{exemptions.map(item => <tr key={item.id}>
             <td><strong>{item.serial}</strong><small>{[item.model, item.client].filter(Boolean).join(' · ')}</small></td>
             <td>{item.justification}</td>
-            <td>{item.created_by_name || 'Administración'}<small>{formatDateTime(item.created_at)}</small></td>
-            <td>{item.revoked_at ? <>Revocada<small>{formatDateTime(item.revoked_at)} · {item.revoked_by_name}: {item.revoke_reason}</small></> : 'Vigente'}</td>
+            <td>{item.created_by_name ? <PrivateName>{item.created_by_name}</PrivateName> : 'Administración'}<small>{formatDateTime(item.created_at)}</small></td>
+            <td>{item.revoked_at ? <>Revocada<small>{formatDateTime(item.revoked_at)} · <PrivateName>{item.revoked_by_name}</PrivateName>: {item.revoke_reason}</small></> : 'Vigente'}</td>
             <td>{!item.revoked_at && (revoking?.id === item.id
               ? <form className="kpi-supremo-revoke" onSubmit={event => { event.preventDefault(); void run(() => revokeSupremoExemption(item.id, revoking.text), `Justificación del equipo ${item.serial} revocada.`).then(saved => { if (saved) setRevoking(null); }); }}>
                 <input required minLength={5} maxLength={500} placeholder="Motivo de la revocación" value={revoking.text} onChange={event => setRevoking({ id: item.id, text: event.target.value })} aria-label="Motivo de la revocación" />

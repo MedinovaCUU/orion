@@ -619,3 +619,6 @@ textarea.input-field {
     border-radius: 16px;
   }
 }
+
+/* Presentation mode (src/config/presentationPrivacy.ts): people's names stay unreadable on screen. */
+.orion-private { filter: blur(6px); -webkit-user-select: none; user-select: none; }

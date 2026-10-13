@@ -4,6 +4,8 @@ import ServiceKpiChart from './ServiceKpiChart';
 import ServiceKpiRecords from './ServiceKpiRecords';
 import ServiceSlaPolicies from './ServiceSlaPolicies';
 import ServiceSupremoMetric from './ServiceSupremoMetric';
+import PrivateName from './PrivateName';
+import { shownName } from '../config/presentationPrivacy';
 // ECharts only loads with the time lab, so the rest of the control center stays light.
 const ServiceKpiTimeLab = lazy(() => import('./ServiceKpiTimeLab'));
 import { applyBrandFontToWorkbook } from '../config/brandFonts';
@@ -95,10 +97,10 @@ function StaffTable({ rows, view, onDrill, help, onHelp }: { rows: StaffRow[]; v
       {view !== 'ingenieria' && header('trainings', 'Capacitaciones')}{header('visits', 'Visitas')}{header('calls', 'Llamadas')}
       {view !== 'quimica' && header('preventive_done', 'Preventivos realizados')}{view !== 'quimica' && header('corrective', 'Correctivos')}{header('satisfaction_avg', 'Satisfacción')}
     </tr></thead><tbody>{sorted.map(person => {
-      const tickets = (match: Record<string, unknown>, title: string) => ({ dataset: 'tickets' as const, match: { responsible_id: person.id, ...match }, title: `${title} · ${person.name}`, definition: 'workload' });
-      const activities = (match: Record<string, unknown>, title: string) => ({ dataset: 'activities' as const, match: { participant_ids: [person.id], in_period: true, ...match }, title: `${title} · ${person.name}`, definition: 'workload' });
+      const tickets = (match: Record<string, unknown>, title: string) => ({ dataset: 'tickets' as const, match: { responsible_id: person.id, ...match }, title: `${title} · ${shownName(person.name)}`, definition: 'workload' });
+      const activities = (match: Record<string, unknown>, title: string) => ({ dataset: 'activities' as const, match: { participant_ids: [person.id], in_period: true, ...match }, title: `${title} · ${shownName(person.name)}`, definition: 'workload' });
       return <tr key={person.id}>
-        <td><strong>{person.name}</strong></td>{view === 'general' && <td>{teamLabels[person.team] || person.team}</td>}
+        <td><strong><PrivateName>{person.name}</PrivateName></strong></td>{view === 'general' && <td>{teamLabels[person.team] || person.team}</td>}
         <td>{cell(person.tickets_relevant, tickets({ relevant: true }, 'Tickets asignados'))}</td>
         <td>{cell(person.pending_at_cut, tickets({ pending_at_cut: true }, 'Abiertos al corte'))}</td>
         <td>{cell(person.overdue_at_cut, tickets({ overdue_at_cut: true }, 'Vencidos al corte'))}</td>
@@ -163,7 +165,7 @@ export default function ServiceKpiCenter({ view, onOpenTicket }: { view: KpiView
   const setPreset = (preset: PeriodPreset) => setFilters(current => ({ ...current, preset, ...(preset === 'personalizado' ? {} : presetRange(preset)) }));
   const reset = () => { const next = defaultFilters(view); setFilters(next); setTyped({ client: '', serial: '', recurrence_days: '' }); setDrill(null); };
   const people = (options?.people || []).filter(person => view === 'general' || person.team === view);
-  const criteria = describeFilters(view, filters, options?.people || []);
+  const criteria = describeFilters(view, filters, (options?.people || []).map(person => ({ ...person, name: shownName(person.name) })));
   const toggleHelp = (id: string) => setHelp(current => current === id ? null : id);
   const sections = sectionsFor(view);
   const charts = chartsFor(view);
@@ -275,7 +277,7 @@ export default function ServiceKpiCenter({ view, onOpenTicket }: { view: KpiView
         ['sla_evaluable', 'Cierres evaluables'], ['sla_late', 'Fuera de plazo'], ['resolution_median', 'Resolución mediana (h)'], ['trainings', 'Capacitaciones'], ['trainings_done', 'Capacitaciones realizadas'],
         ['visits', 'Visitas'], ['calls', 'Llamadas'], ['call_minutes', 'Minutos de llamada'], ['preventive_programmed', 'Preventivos programados'], ['preventive_done', 'Preventivos realizados'],
         ['corrective', 'Correctivos'], ['surveys', 'Encuestas'], ['satisfaction_avg', 'Satisfacción promedio']].map(([key, header]) => ({ key, header, width: 18 }));
-      for (const person of summary.breakdowns.staff) staff.addRow({ ...person, team: teamLabels[person.team] || person.team });
+      for (const person of summary.breakdowns.staff) staff.addRow({ ...person, name: shownName(person.name), team: teamLabels[person.team] || person.team });
       style(staff);
       const quality = book.addWorksheet('Calidad de datos');
       quality.addRows([['Concepto', 'Registros'], ...qualityLabels.map(([key, label]) => [label, num(summary.quality[key]) ?? 0])]);
@@ -315,7 +317,7 @@ export default function ServiceKpiCenter({ view, onOpenTicket }: { view: KpiView
       <label>Desde<input type="date" value={filters.from} max={filters.to} onChange={event => setFilters(current => ({ ...current, preset: 'personalizado', from: event.target.value }))} /></label>
       <label>Hasta<input type="date" value={filters.to} min={filters.from} onChange={event => setFilters(current => ({ ...current, preset: 'personalizado', to: event.target.value }))} /></label>
       <label>Agrupar por<select value={filters.granularity} onChange={event => set('granularity', event.target.value as KpiFilters['granularity'])}><option value="week">Semana</option><option value="month">Mes</option><option value="quarter">Trimestre</option></select></label>
-      <label>Colaborador<select value={filters.person} onChange={event => set('person', event.target.value)}><option value="">{view === 'quimica' ? 'Todo el equipo químico' : view === 'ingenieria' ? 'Todo el equipo de ingeniería' : 'Todo el personal'}</option>{people.map(person => <option key={person.id} value={person.id}>{person.name}{view === 'general' ? ` · ${teamLabels[person.team] || ''}` : ''}</option>)}</select></label>
+      <label>Colaborador<select value={filters.person} onChange={event => set('person', event.target.value)}><option value="">{view === 'quimica' ? 'Todo el equipo químico' : view === 'ingenieria' ? 'Todo el equipo de ingeniería' : 'Todo el personal'}</option>{people.map(person => <option key={person.id} value={person.id}>{shownName(person.name)}{view === 'general' ? ` · ${teamLabels[person.team] || ''}` : ''}</option>)}</select></label>
       <label>Cliente<input list={`kpi-clients-${view}`} value={typed.client} placeholder="Todos" onChange={event => setTyped(current => ({ ...current, client: event.target.value }))} /><datalist id={`kpi-clients-${view}`}>{(options?.clients || []).map(client => <option key={client} value={client} />)}</datalist></label>
       <label>Plataforma<select value={filters.platform} onChange={event => set('platform', event.target.value)}><option value="">Todas</option>{(options?.platforms || []).map(platform => <option key={platform} value={platform}>{platform}</option>)}</select></label>
       <label>Equipo / serie<input list={`kpi-serials-${view}`} value={typed.serial} placeholder="Todas" onChange={event => setTyped(current => ({ ...current, serial: event.target.value }))} /><datalist id={`kpi-serials-${view}`}>{(options?.serials || []).map(serial => <option key={serial} value={serial} />)}</datalist></label>

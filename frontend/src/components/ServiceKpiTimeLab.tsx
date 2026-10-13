@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState, type ReactNode, type RefObject } 
 import type * as echarts from 'echarts/core';
 import { Loader } from './OrionLoader';
 import { fetchAllKpiRecords } from './serviceKpiApi';
+import { hidePointPerson } from '../config/presentationPrivacy';
 import {
   bucketLabel, chartsFor, formatCount, num, SERIES_COLORS, STATUS_DANGER, type Drill, type KpiSummary, type KpiView,
 } from './serviceKpiModel';
@@ -147,7 +148,7 @@ export default function ServiceKpiTimeLab({ view, summary, filters, revision, on
     let active = true;
     const key = requestKey;
     fetchAllKpiRecords({ dataset: 'tickets', filters: JSON.parse(key.slice(0, key.lastIndexOf('|'))) as Filters, match: { relevant: true }, search: '', sort: 'opened_at', desc: false })
-      .then(result => { if (active) setState({ key, points: toPoints(result.rows) }); })
+      .then(result => { if (active) setState({ key, points: toPoints(result.rows).map(hidePointPerson) }); })
       .catch(cause => { if (active) setState(current => ({ key, points: current.points, error: (cause as Error).message })); });
     return () => { active = false; };
   }, [seen, requestKey]);

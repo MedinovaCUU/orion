@@ -5,6 +5,7 @@
 import PptxGenJS from 'pptxgenjs';
 import { BRAND_FONT_FAMILY, waitForBrandFonts } from '../config/brandFonts';
 import { fetchAllKpiRecords } from './serviceKpiApi';
+import { hidePointPerson, shownName } from '../config/presentationPrivacy';
 import {
   chartsFor, definitions, formatCount, formatDateTime, formatHours, num, qualityLabels, sectionsFor, teamLabels,
   type CardSpec, type KpiSummary,
@@ -54,7 +55,7 @@ export async function buildServiceDeck({ summary, filters, criteria, onProgress 
     waitForBrandFonts(document, 4000),
   ]);
   await Promise.all(['400', '500', '600'].map(weight => document.fonts.load(`${weight} 16px "${FONT}"`).catch(() => [])));
-  const points = toPoints(records.rows);
+  const points = toPoints(records.rows).map(hidePointPerson);
   const facts = deckFacts(summary, points);
   const cutAt = Date.parse(summary.period.cut_at);
   const period = periodLabel(summary);
@@ -230,7 +231,7 @@ export async function buildServiceDeck({ summary, filters, criteria, onProgress 
     const slide = pptx.addSlide({ masterName: 'BIOS_CONTENT' });
     header(slide, 'Balance de carga', page ? 'Balance de carga por colaborador (continuación)' : 'Balance de carga por colaborador');
     const rows = staff.slice(page * 12, page * 12 + 12).map(person => [
-      cell(person.name), cell(teamLabels[person.team] || person.team, { color: C.slate }),
+      cell(shownName(person.name)), cell(teamLabels[person.team] || person.team, { color: C.slate }),
       cell(formatCount(person.tickets_relevant), { align: 'right' }), cell(formatCount(person.tickets_closed), { align: 'right' }),
       // Red only when the person is clearly below the overall rate (same rule as the chart), never for any late case.
       cell(person.sla_evaluable ? `${formatCount(person.sla_late)} de ${formatCount(person.sla_evaluable)} (${Math.round(person.sla_late / person.sla_evaluable * 100)} %)` : '—',

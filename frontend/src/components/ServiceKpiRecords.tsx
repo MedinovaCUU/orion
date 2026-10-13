@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { applyBrandFontToWorkbook } from '../config/brandFonts';
+import PrivateName from './PrivateName';
 import { fetchAllKpiRecords, fetchKpiRecords, type RecordsQuery } from './serviceKpiApi';
 import { defaultSort, definitions, formatCount, isoDay, recordColumns, toCsv, type Drill, type KpiRecord } from './serviceKpiModel';
 
@@ -94,7 +95,7 @@ export default function ServiceKpiRecords({ drill, filters, criteria, onClose, o
         <th><span className="tc-sr-only">Ticket</span></th>
       </tr></thead><tbody>
         {data.rows.map(row => <tr key={String(row[rowId[drill.dataset]])}>
-          {columns.map(column => <td key={column.key}>{column.text(row)}</td>)}
+          {columns.map(column => <td key={column.key}>{column.person ? <PrivateName>{column.text(row)}</PrivateName> : column.text(row)}</td>)}
           <td>{row.ticket_id && row.folio ? <button type="button" className="tc-open" onClick={() => onOpenTicket({ id: String(row.ticket_id), folio: String(row.folio) })}>Abrir ticket</button> : <small>Sin ticket</small>}</td>
         </tr>)}
       </tbody></table></div>
