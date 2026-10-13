@@ -19,7 +19,7 @@ assert.equal(serialFamily('832002677'), 'BA200');
 assert.equal(serialFamily('83105C1526'), 'A15');
 assert.equal(serialFamily('EU2270780'), null);
 assert.match(serialStatusMessage('no_encontrado', 'BA400'), /equipos BA400 registrados.*número de serie correcto/);
-assert.match(serialStatusMessage('incompleto'), /REF 83105 y SN 01234 se escriben 8310501234/);
+assert.match(serialStatusMessage('incompleto'), /REF 83105 y SN 04321 se escriben 83105C4321/);
 console.log('PASS: serial keys, format issues, model family and messages');
 
 assert.equal(phoneDigits('+52 614 123 4567'), '6141234567');

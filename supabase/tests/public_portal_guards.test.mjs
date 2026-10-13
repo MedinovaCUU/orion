@@ -35,7 +35,7 @@ insert into equipos values
  ('4','832002677',null,null,null,now()),
  ('5','EU-2270780','IMLD','MEXICO',null,now());
 `);
-for (const file of ['20261003010000_ticket_whatsapp_automation.sql', '20261003020000_ticket_whatsapp_equipment_country.sql', '20261013010000_public_portal_guards.sql']) {
+for (const file of ['20261003010000_ticket_whatsapp_automation.sql', '20261003020000_ticket_whatsapp_equipment_country.sql', '20261013010000_public_portal_guards.sql', '20261013030000_public_portal_a15_cooler_serials.sql']) {
   await db.exec(await migration(file));
 }
 console.log('PASS: migration applies on top of the WhatsApp outbox migrations');
@@ -59,7 +59,11 @@ assert.deepEqual(await check('SN: 83400-1902'), { status: 'ok', serie: '83400190
 assert.deepEqual(await check('83105 c 1526'), { status: 'ok', serie: '83105C1526', modelo: 'A15' });
 assert.deepEqual(await check('eu 2270780'), { status: 'ok', serie: 'EU-2270780', modelo: 'IMLD' });
 assert.equal((await check('832002677')).modelo, 'BA200', 'model falls back to the serial family');
-console.log('PASS: serial check (format, product code, old label, unknown, separators, SN prefix, model family)');
+// A15 with cooler: 83105C + 4 digits and REF 83105 + SN 0xxxx are the same equipment; the 9-digit series is not.
+assert.deepEqual(await check('83105C7965'), { status: 'ok', serie: '8310507965', modelo: 'A15' });
+assert.deepEqual(await check('8310501526'), { status: 'ok', serie: '83105C1526', modelo: 'A15' });
+assert.equal((await check('831057965')).status, 'no_encontrado');
+console.log('PASS: serial check (format, product code, old label, unknown, separators, SN prefix, model family, A15 cooler forms)');
 
 // 2. Unknown serial: rejected, nothing created, attempt logged.
 let r = await submit('Ingeniero', '83109986', 'María López', '6141234567', 'El equipo no enciende desde ayer');
@@ -143,12 +147,16 @@ ticket = await one('select * from tickets where numero_caso=$1', [r.numero_caso]
 outbox = await one('select * from ticket_whatsapp_outbox where ticket_id=$1', [ticket.id]);
 assert.equal(ticket.telefono_cliente_guest, '6561234568', 'the stored phone stays as typed');
 assert.equal(outbox.recipient, '+526561234568'); assert.equal(outbox.status, 'queued'); assert.equal(outbox.equipment_country, null);
+await db.exec('set role anon');
+r = await submit('Ingeniero', '83105C7965', 'Pedro Sosa', '6562223344', 'Sigue sin encender la pantalla');
+assert.equal(r.status, 'agrupado'); assert.equal(r.numero_caso, ticket.numero_caso, 'both A15 forms join the same case');
+await db.exec('reset role');
 await db.exec(`insert into tickets(id, user_id, asunto, numero_serie_equipo, telefono_cliente_guest) values
  ('20000000-0000-4000-8000-000000000001', gen_random_uuid(), '[Soporte Ingeniero] Interno', '832002677', '6141112233')`);
 assert.equal((await one("select recipient from ticket_whatsapp_outbox where ticket_id='20000000-0000-4000-8000-000000000001'")).recipient, '6141112233',
   'internal tickets keep the original rule');
 await db.exec('set role anon');
-console.log('PASS: portal phones without an equipment country are sent with +52; internal tickets unchanged');
+console.log('PASS: portal phones without an equipment country are sent with +52; internal tickets unchanged; A15 forms grouped');
 
 // 9. Limits: 4 accepted reports per phone per hour, 20 attempts per connection per hour.
 await ip('10.0.0.3');

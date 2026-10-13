@@ -50,15 +50,15 @@ export default function PublicSerialHelp({ initialTab }: { initialTab: SerialHel
             <img src={asset('a15-etiqueta')} width={560} height={518} loading="lazy" alt="Etiqueta trasera del A15 con el número de serie junto a SN" />
             <figcaption>
               <strong>En la etiqueta de la parte trasera</strong>
-              Junto a «SN». Empieza con <code>83105</code>, por ejemplo <code>83105C</code> seguido de 4 números.
+              Junto a «SN». Empieza con <code>83105</code>; en equipos con nevera sigue una <code>C</code> y 4 números (<code>83105C</code> + 4 números).
             </figcaption>
           </figure>
           <figure>
             <img src={asset('a15-etiqueta-anterior')} width={560} height={589} loading="lazy" alt="Etiqueta anterior del A15 con REF 83105 y SN por separado" />
             <figcaption>
               <strong>Etiquetas anteriores</strong>
-              Si la etiqueta muestra <b>REF 83105</b> y un <b>SN</b> de 5 números por separado, escríbelos juntos:
-              REF 83105 y SN 01234 se escriben <code>8310501234</code>.
+              Si la etiqueta muestra <b>REF 83105</b> y un <b>SN</b> de 5 números que empieza con 0, cambia ese 0 por C
+              (la C indica que el equipo tiene nevera): REF 83105 y SN 04321 se escriben <code>83105C4321</code>.
             </figcaption>
           </figure>
         </div>

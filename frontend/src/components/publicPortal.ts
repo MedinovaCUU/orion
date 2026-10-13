@@ -52,7 +52,7 @@ export const serialStatusMessage = (status: SerialStatus, family?: string | null
     case 'producto':
       return 'Ese es el código del producto (el que empieza con (01)), no el número de serie. Usa el número que aparece junto a «SN».';
     case 'incompleto':
-      return 'Parece que falta el inicio del número. Si tu etiqueta muestra REF y SN por separado, escríbelos juntos: REF 83105 y SN 01234 se escriben 8310501234.';
+      return 'Parece que falta el inicio del número. En un A15 con etiqueta anterior (REF 83105 y SN de 5 números que empieza con 0), escribe 83105C y los últimos 4 números: REF 83105 y SN 04321 se escriben 83105C4321.';
     case 'formato':
       return 'Ese dato no corresponde a un número de serie. Por favor ingresa el número de serie correcto del equipo.';
     case 'no_encontrado':
