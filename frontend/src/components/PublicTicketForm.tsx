@@ -45,6 +45,7 @@ export default function PublicTicketForm() {
   const [serialTouched, setSerialTouched] = useState(false);
   const [serialCheck, setSerialCheck] = useState<{ key: string; result: SerialCheckResult } | null>(null);
   const [serialHelpChoice, setSerialHelpChoice] = useState<boolean | null>(null);
+  const [confirmedSerialKey, setConfirmedSerialKey] = useState<string | null>(null);
   const serialInput = useRef<HTMLInputElement>(null);
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<SubmitResult | null>(null);
@@ -80,19 +81,24 @@ export default function PublicTicketForm() {
   const serialKeyValue = serialKey(numeroSerie);
   const serialFormatIssue = serialIssue(serialKeyValue);
   const serialChecked = serialCheck?.key === serialKeyValue ? serialCheck.result : null;
-  // Format problems show once the customer leaves the field; a plausible serial is looked up while typing.
+  // A plausible serial is looked up while typing. An odd-looking one shows its problem once the customer leaves
+  // the field, and is still looked up then: a registered serial (e.g. F050) is always valid.
   const serialState: { status: SerialStatus | 'idle' | 'checking'; modelo?: string | null; serie?: string | null } =
     !serialKeyValue ? { status: 'idle' }
-      : serialFormatIssue ? (serialTouched ? { status: serialFormatIssue, modelo: serialFamily(serialKeyValue) } : { status: 'idle' })
-        : serialChecked ?? { status: 'checking' };
-  const serialError = serialState.status !== 'idle' && serialState.status !== 'checking' && serialState.status !== 'ok'
+      : serialChecked?.status === 'ok' ? serialChecked
+        : serialFormatIssue ? (serialTouched ? { status: serialFormatIssue, modelo: serialFamily(serialKeyValue) } : { status: 'idle' })
+          : serialChecked ?? { status: 'checking' };
+  // A plausible serial missing from Equipos can be sent once the customer confirms it (real equipment not yet registered).
+  const serialUnregistered = serialState.status === 'no_encontrado';
+  const serialConfirmed = serialUnregistered && confirmedSerialKey === serialKeyValue;
+  const serialError = serialState.status !== 'idle' && serialState.status !== 'checking' && serialState.status !== 'ok' && !serialConfirmed
     ? serialStatusMessage(serialState.status, serialState.modelo)
     : '';
   const serialHelpOpen = serialHelpChoice ?? (serialTouched && Boolean(serialError));
   const serialHelpTab = serialFamily(serialKeyValue) === 'A15' ? 'a15' : 'ba';
 
   useEffect(() => {
-    if (!serialKeyValue || serialFormatIssue || serialCheck?.key === serialKeyValue) return;
+    if (!serialKeyValue || (serialFormatIssue && !serialTouched) || serialCheck?.key === serialKeyValue) return;
     let current = true;
     const timer = window.setTimeout(async () => {
       const { data, error } = await supabase.rpc('check_public_equipment_serial', { p_serial: numeroSerie });
@@ -103,7 +109,7 @@ export default function PublicTicketForm() {
       current = false;
       window.clearTimeout(timer);
     };
-  }, [numeroSerie, serialKeyValue, serialFormatIssue, serialCheck]);
+  }, [numeroSerie, serialKeyValue, serialFormatIssue, serialTouched, serialCheck]);
 
   const rejectSerial = (status: SerialStatus, modelo?: string | null) => {
     setSerialTouched(true);
@@ -125,11 +131,11 @@ export default function PublicTicketForm() {
       setErrorMsg('Por favor selecciona el tipo de soporte que requieres.');
       return;
     }
-    if (serialFormatIssue) {
+    if (serialFormatIssue && serialState.status !== 'ok') {
       rejectSerial(serialFormatIssue, serialFamily(serialKeyValue));
       return;
     }
-    if (serialState.status === 'no_encontrado') {
+    if (serialUnregistered && !serialConfirmed) {
       rejectSerial('no_encontrado', serialState.modelo);
       return;
     }
@@ -146,6 +152,7 @@ export default function PublicTicketForm() {
       p_contact_name: nombre.trim(),
       p_phone: celular,
       p_description: descripcion.trim(),
+      p_confirm_unregistered: serialConfirmed,
     });
     setLoading(false);
 
@@ -166,6 +173,7 @@ export default function PublicTicketForm() {
     setNumeroSerie('');
     setSerialTouched(false);
     setSerialHelpChoice(null);
+    setConfirmedSerialKey(null);
     setNombre('');
     setCelular('');
     setDescripcion('');
@@ -230,6 +238,11 @@ export default function PublicTicketForm() {
                           : 'Guárdalo junto con el teléfono registrado para consultar cada avance.'}
                       </small>
                     </div>
+                    {result.registrado === false ? (
+                      <p className="public-ticket-success-note">
+                        Tu equipo todavía no aparece en nuestro registro; lo validaremos al atender tu caso.
+                      </p>
+                    ) : null}
                     <p className="public-ticket-success-note">
                       Un ingeniero o químico se pondrá en contacto contigo muy pronto al número registrado.
                     </p>
@@ -360,7 +373,20 @@ export default function PublicTicketForm() {
                 </span>
               ) : null}
               {serialError ? <span className="serial-status__error">{serialError}</span> : null}
+              {serialConfirmed ? (
+                <span className="serial-status__warn">Enviaremos tu reporte con esta serie; tu equipo aún no está en nuestro registro y lo validaremos al atenderte.</span>
+              ) : null}
             </div>
+            {serialUnregistered ? (
+              <label className="serial-confirm">
+                <input
+                  type="checkbox"
+                  checked={serialConfirmed}
+                  onChange={(event) => setConfirmedSerialKey(event.target.checked ? serialKeyValue : null)}
+                />
+                <span>Revisé la etiqueta y el número es correcto; mi equipo no aparece registrado.</span>
+              </label>
+            ) : null}
             <button
               type="button"
               className="serial-help-toggle"

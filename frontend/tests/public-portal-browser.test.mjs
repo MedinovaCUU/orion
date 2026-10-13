@@ -14,7 +14,9 @@ try {
     calls.push({name, body});
     let reply = null;
     if (name === 'check_public_equipment_serial') {
-      reply = body.p_serial.replace(/\D/g, '') === '834001902'
+      reply = body.p_serial === 'F050' ? {status: 'ok', serie: 'F050', modelo: 'IMLD'}
+        : ['9', '7'].includes(body.p_serial) ? {status: 'formato', serie: null, modelo: null}
+        : body.p_serial.replace(/\D/g, '') === '834001902'
         ? {status: 'ok', serie: '834001902', modelo: 'BA400'}
         : {status: 'no_encontrado', serie: null, modelo: body.p_serial.startsWith('83400') ? 'BA400' : null};
     } else if (name === 'submit_public_support_case') reply = submitReply;
@@ -40,7 +42,10 @@ try {
   await page.getByRole('tab', {name: 'A15'}).click();
   await page.getByText('Ayuda → Acerca de…').waitFor();
   assert.equal(await page.locator('.serial-help img').count(), 3);
-  assert.equal(calls.filter(c => c.name === 'check_public_equipment_serial').length, 0, 'invalid formats are not looked up');
+  // An odd-looking serial that is registered (e.g. F050) is accepted once the database confirms it.
+  await serial.fill('F050');
+  await page.getByText('Equipo registrado: IMLD · F050').waitFor();
+  assert.equal(await serial.getAttribute('aria-invalid'), 'false');
 
   // A plausible serial that is not registered, then the right one.
   await serial.fill('834005555');
@@ -59,7 +64,7 @@ try {
   await page.getByRole('heading', {name: 'Lo sumamos al caso abierto'}).waitFor();
   await page.getByText('1O222T64').waitFor();
   const submit = calls.find(c => c.name === 'submit_public_support_case');
-  assert.deepEqual(submit.body, {p_support_type: 'Ingeniero', p_serial: 'SN 83400-1902', p_contact_name: 'María López', p_phone: '6141234567', p_description: 'Marca error de lámpara al iniciar'});
+  assert.deepEqual(submit.body, {p_support_type: 'Ingeniero', p_serial: 'SN 83400-1902', p_contact_name: 'María López', p_phone: '6141234567', p_description: 'Marca error de lámpara al iniciar', p_confirm_unregistered: false});
 
   // Client-side checks stop obviously wrong data before calling the database.
   await page.getByRole('button', {name: 'Enviar otro ticket'}).click();
@@ -83,13 +88,35 @@ try {
   assert.equal(submits(), 2);
   assert.equal(await page.getByRole('heading', {name: /Ticket enviado|Lo sumamos/}).count(), 0);
 
+  // Real equipment not registered yet: blocked until the customer confirms the serial, then sent and acknowledged.
+  submitReply = {status: 'creado', numero_caso: '1O223T62', modelo: 'A25', registrado: false};
+  await serial.fill('8310151004');
+  await page.getByText('No encontramos ese número de serie entre los equipos registrados').waitFor();
+  const confirm = page.getByLabel('Revisé la etiqueta y el número es correcto; mi equipo no aparece registrado.');
+  await page.getByRole('button', {name: 'Crear Ticket'}).click();
+  await page.getByRole('alert').filter({hasText: 'si es correcto, confírmalo'}).waitFor();
+  assert.equal(submits(), 2, 'not sent before the confirmation');
+  await confirm.check();
+  await page.getByText('lo validaremos al atenderte').waitFor();
+  assert.equal(await serial.getAttribute('aria-invalid'), 'false');
+  await page.getByRole('button', {name: 'Crear Ticket'}).click();
+  await page.getByRole('heading', {name: 'Ticket enviado exitosamente'}).waitFor();
+  await page.getByText('Tu equipo todavía no aparece en nuestro registro').waitFor();
+  assert.equal(calls.filter(c => c.name === 'submit_public_support_case').at(-1).body.p_confirm_unregistered, true);
+  assert.equal(submits(), 3);
+  await page.getByRole('button', {name: 'Enviar otro ticket'}).click();
+  await page.getByRole('button', {name: /Química/}).click();
+  await serial.fill('834001902');
+  await page.getByText('Equipo registrado: BA400').waitFor();
+  assert.equal(await page.locator('.serial-confirm').count(), 0, 'no confirmation for a registered serial');
+
   // Bot trap: a filled hidden field never reaches the database.
   await page.locator('input[name=sitio_web]').fill('http://spam.example', {force: true});
   await page.getByRole('button', {name: 'Crear Ticket'}).click();
   await page.getByRole('heading', {name: 'Ticket enviado exitosamente'}).waitFor();
-  assert.equal(submits(), 2);
+  assert.equal(submits(), 3);
   assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth), true, 'no horizontal scroll at phone width');
-  console.log('PASS: format error with help photos, unknown and registered serial, grouped case, server serial rejection, client checks and bot trap');
+  console.log('PASS: format error with help photos, unknown and registered serial, grouped case, server serial rejection, client checks, unregistered serial confirmation and bot trap');
 } finally {
   await browser.close();
 }

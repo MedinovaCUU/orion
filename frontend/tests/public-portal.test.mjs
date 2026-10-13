@@ -13,12 +13,13 @@ assert.equal(serialIssue('HOLAMUNDO'), 'formato');
 assert.equal(serialIssue('0108435287131055'), 'producto');
 assert.equal(serialIssue('07965'), 'incompleto');
 assert.equal(serialIssue('834001902'), null);
+for (const junk of ['000000', '0000004397', '123456', '1234567899999', '5555555', '1111111111']) assert.equal(serialIssue(junk), 'formato', junk);
 assert.equal(serialIssue('A2000001'), null);
 assert.equal(serialFamily('834001902'), 'BA400');
 assert.equal(serialFamily('832002677'), 'BA200');
 assert.equal(serialFamily('83105C1526'), 'A15');
 assert.equal(serialFamily('EU2270780'), null);
-assert.match(serialStatusMessage('no_encontrado', 'BA400'), /equipos BA400 registrados.*número de serie correcto/);
+assert.match(serialStatusMessage('no_encontrado', 'BA400'), /equipos BA400 registrados.*si es correcto, confírmalo/);
 assert.match(serialStatusMessage('incompleto'), /REF 83105 y SN 04321 se escriben 83105C4321/);
 console.log('PASS: serial keys, format issues, model family and messages');
 

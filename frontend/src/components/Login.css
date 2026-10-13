@@ -475,3 +475,11 @@
 
 .public-ticket-form-error { margin-bottom: 0; }
 .public-ticket-trap { position: absolute; left: -10000px; width: 1px; height: 1px; overflow: hidden; }
+.serial-status__warn { color: #8a5a12; }
+.form-group label.serial-confirm {
+  display: flex; align-items: flex-start; gap: 0.55rem; padding: 0.7rem 0.85rem; cursor: pointer;
+  border: 1px solid rgba(var(--brand-red-rgb), 0.22); border-radius: 14px; background: rgba(var(--brand-red-rgb), 0.04);
+  color: var(--text-primary); font-size: 0.86rem; font-weight: 600; line-height: 1.45;
+  letter-spacing: normal; text-transform: none;
+}
+.serial-confirm input { margin-top: 0.15rem; width: 1.05rem; height: 1.05rem; flex: none; accent-color: var(--primary-color); }
