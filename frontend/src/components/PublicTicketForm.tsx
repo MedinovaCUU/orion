@@ -53,7 +53,7 @@ export default function PublicTicketForm() {
     {
       value: 'Químico',
       className: 'support-choice--applications',
-      title: 'Quimica 🧪',
+      title: 'Química 🧪',
       description: 'Programación, técnicas nuevas, reactivos, calibración, control de calidad, soporte funcional.',
     },
   ];
