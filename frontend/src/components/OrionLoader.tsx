@@ -69,6 +69,9 @@ function syncClock(root: Element | null) {
 
 type LoaderMode = 'still' | 'alpha' | 'opaque';
 
+/** Con `onCycle`: si el loop no ha empezado a moverse en este tiempo (red lenta), no se espera el ciclo para no bloquear. */
+const CYCLE_START_TIMEOUT_MS = 6000;
+
 /**
  * Logo Orion animado (render Blender: el ojo busca al usuario, los aros giran, los satélites orbitan), flotando en 3D
  * hacia el usuario sobre su sombra. `size` fija el ancho en px; si se omite, lo dimensiona `--emblem-size` del
@@ -77,13 +80,16 @@ type LoaderMode = 'still' | 'alpha' | 'opaque';
  *
  * `intro`: reproduce primero la animación completa de bienvenida (una vez) y al terminar continúa con el loop.
  * `onIntroEnd(completed)` avisa al terminar o al omitirla (recurso no listo a tiempo).
+ * `onCycle()` avisa una vez cuando el loop se ha visto completo (un ciclo entero reproducido); también si no puede
+ * animarse (movimiento reducido, error) o si no arranca en `CYCLE_START_TIMEOUT_MS`.
  * El marcado del arranque en `index.html` es una copia de este: cámbialos juntos.
  */
-export function OrionLoader({ size, className = '', intro = false, onIntroEnd }: {
+export function OrionLoader({ size, className = '', intro = false, onIntroEnd, onCycle }: {
   size?: number;
   className?: string;
   intro?: boolean;
   onIntroEnd?: (completed: boolean) => void;
+  onCycle?: () => void;
 }) {
   const alphaFormat = useMemo(detectAlphaFormat, []);
   const mode = useMemo<LoaderMode>(() => (prefersReducedMotion() ? 'still' : alphaFormat ? 'alpha' : 'opaque'), [alphaFormat]);
@@ -96,6 +102,24 @@ export function OrionLoader({ size, className = '', intro = false, onIntroEnd }:
   const rootRef = useRef<HTMLSpanElement | null>(null);
   const videoRef = useRef<HTMLVideoElement | null>(null);
   useLayoutEffect(() => syncClock(rootRef.current), []);
+
+  // Ciclo: segundos de loop reproducidos de verdad (no cuenta la espera ni la bienvenida).
+  const cycle = useRef({ played: 0, last: -1, fired: false });
+  const fireCycle = () => {
+    if (cycle.current.fired) return;
+    cycle.current.fired = true;
+    onCycle?.();
+  };
+  useEffect(() => {
+    if (!onCycle || motionReady) return;
+    if (resolved === 'still') {
+      fireCycle();
+      return;
+    }
+    const t = window.setTimeout(fireCycle, CYCLE_START_TIMEOUT_MS);
+    return () => window.clearTimeout(t);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [onCycle, resolved, motionReady]);
 
   const finishIntro = (completed: boolean) => {
     setIntroPlaying(false);
@@ -161,6 +185,14 @@ export function OrionLoader({ size, className = '', intro = false, onIntroEnd }:
             onPlaying={() => {
               setMotionReady(true);
               if (introPlaying) setIntroStarted(true);
+            }}
+            onTimeUpdate={(event) => {
+              if (!onCycle || introPlaying) return;
+              const video = event.currentTarget;
+              const c = cycle.current;
+              if (c.last >= 0) c.played += video.currentTime >= c.last ? video.currentTime - c.last : video.currentTime + video.duration - c.last;
+              c.last = video.currentTime;
+              if (c.played >= video.duration - 0.05) fireCycle();
             }}
             onEnded={introPlaying ? () => finishIntro(true) : undefined}
             onError={() => {

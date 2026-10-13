@@ -31,9 +31,10 @@
   animation: orion-stage-drift 18s ease-in-out infinite alternate;
 }
 
-/* Entrada de React sobre el arranque estático: ya estaba en pantalla, así que no se repite ninguna animación de entrada. */
+/* Entrada de React sobre el arranque estático: ya estaba en pantalla, así que no se repite ninguna animación de entrada.
+   Los hijos necesitan más especificidad que sus propias reglas de entrada (`.orion-splash__wordmark`…), que van después. */
 .orion-splash--continued,
-.orion-splash--continued > * {
+.orion-splash.orion-splash--continued > * {
   animation: none;
 }
 

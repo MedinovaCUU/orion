@@ -1,0 +1,616 @@
+/*
+ * Encuesta pública (la abre un cliente en su celular). Mismo fondo perla que el splash, para que el logo se desvanezca y
+ * aparezca la encuesta sin cambio de escena. Todo en Alliance No.2 (heredada de index.css), objetivos táctiles de al
+ * menos 48 px y rojo BioSystems oscuro (#bc2635) para que el texto blanco cumpla contraste AA. Sin cifras tabulares:
+ * en Alliance el cero tabular lleva diagonal y aquí hay folios y contadores que lee un cliente.
+ */
+
+.svp {
+  --svp-ink: #17202b;
+  --svp-muted: #5d6674;
+  --svp-soft: #818b98;
+  --svp-line: #dfe4ea;
+  --svp-field: #f6f8fa;
+  --svp-accent: #bc2635;
+  --svp-accent-deep: #9e1d2a;
+  --svp-accent-tint: #fff4f5;
+  position: relative;
+  isolation: isolate;
+  min-height: 100vh;
+  min-height: 100svh;
+  padding: max(18px, env(safe-area-inset-top)) 14px max(24px, env(safe-area-inset-bottom));
+  background: linear-gradient(180deg, #f7fafc 0%, var(--bg-color, #eaf1f6) 100%);
+  color: var(--svp-ink);
+  font-family: var(--font-body, inherit);
+  -webkit-text-size-adjust: 100%;
+}
+
+/* Fondo desenfocado con profundidad, el mismo del splash. */
+.svp::before {
+  content: '';
+  position: fixed;
+  inset: -20%;
+  z-index: -1;
+  background:
+    radial-gradient(closest-side at 50% 30%, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0) 70%),
+    radial-gradient(closest-side at 18% 24%, rgba(var(--environmental-blue-rgb, 99, 174, 254), 0.18), rgba(var(--environmental-blue-rgb, 99, 174, 254), 0)),
+    radial-gradient(closest-side at 84% 58%, rgba(var(--brand-red-rgb, 243, 39, 53), 0.08), rgba(var(--brand-red-rgb, 243, 39, 53), 0)),
+    radial-gradient(closest-side at 62% 12%, rgba(186, 204, 222, 0.42), rgba(186, 204, 222, 0));
+  filter: blur(40px);
+  pointer-events: none;
+}
+
+.svp__shell {
+  width: min(100%, 640px);
+  margin: 0 auto;
+}
+
+/* ---------- Marca ---------- */
+
+.svp__brand {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 4px 6px 18px;
+}
+
+.svp__orion {
+  height: 40px;
+  width: auto;
+  user-select: none;
+}
+
+.svp__biosystems {
+  height: 17px;
+  width: auto;
+  user-select: none;
+}
+
+/* ---------- Tarjeta ---------- */
+
+.svp__card {
+  padding: 26px 20px 24px;
+  border: 1px solid rgba(255, 255, 255, 0.92);
+  border-radius: 24px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(255, 255, 255, 0.88));
+  box-shadow:
+    inset 0 1px 0 #fff,
+    0 1px 2px rgba(23, 32, 43, 0.04),
+    0 28px 60px -34px rgba(23, 32, 43, 0.32);
+  animation: svp-rise 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.svp__eyebrow {
+  display: block;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--svp-accent);
+}
+
+.svp__title {
+  margin: 10px 0 0;
+  font-family: var(--font-heading, inherit);
+  font-size: clamp(27px, 7.4vw, 36px);
+  font-weight: 600;
+  line-height: 1.12;
+  letter-spacing: -0.015em;
+  color: var(--svp-ink);
+  text-wrap: balance;
+}
+
+.svp__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px 0;
+  margin: 14px 0 0;
+  padding: 0;
+  list-style: none;
+  font-size: 14px;
+  line-height: 1.45;
+  color: var(--svp-muted);
+}
+
+.svp__meta li {
+  white-space: nowrap;
+}
+
+/* El separador va al final de cada dato: si la línea se parte, nunca empieza con un punto. */
+.svp__meta li:not(:last-child)::after {
+  content: '·';
+  margin: 0 8px;
+  color: var(--svp-soft);
+}
+
+.svp__service {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1px;
+  margin: 20px 0 0;
+  overflow: hidden;
+  border: 1px solid var(--svp-line);
+  border-radius: 16px;
+  background: var(--svp-line);
+}
+
+.svp__service > div {
+  padding: 12px 14px;
+  background: var(--svp-field);
+}
+
+.svp__service dt {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--svp-soft);
+}
+
+.svp__service dd {
+  margin: 4px 0 0;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--svp-ink);
+  overflow-wrap: anywhere;
+}
+
+.svp__test {
+  margin: 12px 0 0;
+  padding: 10px 14px;
+  border-radius: 12px;
+  background: #fff7e8;
+  font-size: 13px;
+  line-height: 1.45;
+  color: #7a5310;
+}
+
+/* ---------- Avance (fijo arriba al desplazarse) ---------- */
+
+.svp__progress {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  display: grid;
+  gap: 8px;
+  margin: 22px -20px 0;
+  padding: 12px 20px;
+  border-bottom: 1px solid var(--svp-line);
+  background: rgba(255, 255, 255, 0.9);
+  -webkit-backdrop-filter: blur(14px) saturate(1.2);
+  backdrop-filter: blur(14px) saturate(1.2);
+}
+
+.svp__progress span {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--svp-muted);
+}
+
+.svp__progress i {
+  display: block;
+  height: 3px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--svp-accent-deep), var(--svp-accent));
+  transform-origin: left center;
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.svp__progress::after {
+  content: '';
+  position: absolute;
+  left: 20px;
+  right: 20px;
+  bottom: 12px;
+  z-index: -1;
+  height: 3px;
+  border-radius: 999px;
+  background: #e9edf1;
+}
+
+.svp__progress--done span {
+  color: var(--svp-accent);
+}
+
+/* ---------- Preguntas ---------- */
+
+.svp__questions {
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.svp__question {
+  min-width: 0;
+  margin: 0;
+  padding: 26px 0;
+  border: 0;
+  border-bottom: 1px solid var(--svp-line);
+}
+
+/* Leyenda flotante: así se comporta como un bloque normal y el padding del fieldset queda arriba, no debajo de ella. */
+.svp__question legend {
+  float: left;
+  width: 100%;
+  margin: 0 0 16px;
+  padding: 0;
+}
+
+.svp__question legend + * {
+  clear: both;
+}
+
+.svp__qnum {
+  display: block;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--svp-accent);
+}
+
+.svp__qtext {
+  display: block;
+  margin-top: 6px;
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1.38;
+  color: var(--svp-ink);
+  text-wrap: pretty;
+}
+
+.svp__rating {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.svp__rating label {
+  position: relative;
+  cursor: pointer;
+}
+
+.svp__rating input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.svp__rating span {
+  display: grid;
+  place-items: center;
+  height: 56px;
+  border: 1px solid #cfd6de;
+  border-radius: 14px;
+  background: #fff;
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--svp-ink);
+  box-shadow: 0 1px 2px rgba(23, 32, 43, 0.05);
+  transition: background 0.18s ease, border-color 0.18s ease, color 0.18s ease, transform 0.18s ease, box-shadow 0.18s ease;
+}
+
+.svp__rating input:checked + span {
+  border-color: transparent;
+  background: linear-gradient(180deg, #c92c3c, var(--svp-accent-deep));
+  color: #fff;
+  box-shadow: 0 12px 22px -12px rgba(158, 29, 42, 0.75);
+  transform: translateY(-1px);
+}
+
+.svp__rating input:focus-visible + span {
+  outline: 3px solid rgba(188, 38, 53, 0.35);
+  outline-offset: 2px;
+}
+
+.svp__scale {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: 10px;
+  font-size: 12px;
+  line-height: 1.3;
+  color: var(--svp-muted);
+}
+
+.svp__scale span:last-child {
+  text-align: right;
+}
+
+.svp__options {
+  display: grid;
+  gap: 8px;
+}
+
+.svp__rating + .svp__scale + .svp__options {
+  margin-top: 14px;
+}
+
+.svp__option {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 52px;
+  padding: 12px 16px;
+  border: 1px solid var(--svp-line);
+  border-radius: 14px;
+  background: var(--svp-field);
+  font-size: 16px;
+  line-height: 1.35;
+  color: var(--svp-ink);
+  cursor: pointer;
+  transition: background 0.18s ease, border-color 0.18s ease;
+}
+
+.svp__option:has(input:checked) {
+  border-color: rgba(188, 38, 53, 0.55);
+  background: var(--svp-accent-tint);
+}
+
+.svp__option input {
+  flex: none;
+  appearance: none;
+  -webkit-appearance: none;
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  margin: 0;
+  border: 1.5px solid #a9b2bd;
+  border-radius: 50%;
+  background: #fff;
+  cursor: pointer;
+  transition: border-color 0.18s ease, box-shadow 0.18s ease;
+}
+
+.svp__option input:checked {
+  border-color: var(--svp-accent);
+  box-shadow: inset 0 0 0 4px #fff, inset 0 0 0 11px var(--svp-accent);
+}
+
+.svp__option input:focus-visible {
+  outline: 3px solid rgba(188, 38, 53, 0.35);
+  outline-offset: 2px;
+}
+
+/* ---------- Comentario y envío ---------- */
+
+.svp__comment {
+  display: block;
+  padding-top: 24px;
+}
+
+.svp__comment-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--svp-ink);
+}
+
+.svp__comment-head em {
+  font-style: normal;
+  font-weight: 400;
+  color: var(--svp-muted);
+}
+
+.svp__count {
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--svp-soft);
+}
+
+.svp__comment textarea {
+  box-sizing: border-box;
+  display: block;
+  width: 100%;
+  min-height: 116px;
+  margin-top: 10px;
+  padding: 14px 16px;
+  border: 1px solid #cfd6de;
+  border-radius: 14px;
+  background: #fff;
+  color: var(--svp-ink);
+  font: inherit;
+  font-size: 16px; /* 16 px evita el zoom automático de iOS al enfocar */
+  line-height: 1.5;
+  resize: vertical;
+}
+
+.svp__comment textarea::placeholder {
+  color: #8a939e;
+}
+
+.svp__comment textarea:focus {
+  outline: none;
+  border-color: var(--svp-accent);
+  box-shadow: 0 0 0 4px rgba(188, 38, 53, 0.12);
+}
+
+.svp__alert {
+  margin: 18px 0 0;
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: var(--svp-accent-tint);
+  font-size: 14px;
+  line-height: 1.45;
+  color: var(--svp-accent-deep);
+}
+
+.svp__submit {
+  display: block;
+  width: 100%;
+  min-height: 56px;
+  margin-top: 22px;
+  border: 0;
+  border-radius: 16px;
+  background: linear-gradient(180deg, #c92c3c, var(--svp-accent-deep));
+  box-shadow: 0 16px 30px -18px rgba(158, 29, 42, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.18);
+  color: #fff;
+  font: inherit;
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  cursor: pointer;
+  transition: transform 0.18s ease, box-shadow 0.18s ease, opacity 0.18s ease;
+}
+
+.svp__submit:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+.svp__submit:disabled {
+  opacity: 0.65;
+  cursor: progress;
+}
+
+.svp__submit:focus-visible,
+.svp__secondary:focus-visible {
+  outline: 3px solid rgba(188, 38, 53, 0.35);
+  outline-offset: 3px;
+}
+
+.svp__fineprint {
+  margin: 14px 4px 0;
+  font-size: 12.5px;
+  line-height: 1.5;
+  text-align: center;
+  color: var(--svp-muted);
+}
+
+/* ---------- Gracias / enlace no válido ---------- */
+
+.svp__state {
+  display: grid;
+  justify-items: center;
+  gap: 10px;
+  padding: 30px 6px 10px;
+  text-align: center;
+}
+
+.svp__state-icon {
+  display: grid;
+  place-items: center;
+  width: 60px;
+  height: 60px;
+  margin-bottom: 6px;
+  border: 1px solid var(--svp-line);
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #fff, #eef2f6);
+  box-shadow: 0 14px 28px -18px rgba(23, 32, 43, 0.45);
+}
+
+.svp__state-icon svg {
+  width: 28px;
+  height: 28px;
+  fill: none;
+  stroke: var(--svp-ink);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.svp__state--error .svp__state-icon svg {
+  stroke: var(--svp-accent);
+  stroke-width: 2.4;
+}
+
+.svp__state h2 {
+  margin: 0;
+  font-size: 21px;
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--svp-ink);
+  text-wrap: balance;
+}
+
+.svp__state p {
+  max-width: 30rem;
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.55;
+  color: var(--svp-muted);
+}
+
+.svp__secondary {
+  min-height: 48px;
+  margin-top: 6px;
+  padding: 0 22px;
+  border: 1px solid #cfd6de;
+  border-radius: 14px;
+  background: #fff;
+  color: var(--svp-ink);
+  font: inherit;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.svp__footer {
+  margin-top: 22px;
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  text-align: center;
+  color: var(--svp-soft);
+}
+
+@keyframes svp-rise {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: none; }
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .svp__rating label:hover span { border-color: var(--svp-accent); }
+  .svp__option:hover { border-color: #c4ccd5; background: #fff; }
+  .svp__submit:hover:not(:disabled) { box-shadow: 0 18px 34px -16px rgba(158, 29, 42, 0.85), inset 0 1px 0 rgba(255, 255, 255, 0.18); }
+}
+
+@media (min-width: 560px) {
+  .svp {
+    padding-top: 40px;
+  }
+
+  .svp__card {
+    padding: 40px 44px 36px;
+    border-radius: 28px;
+  }
+
+  .svp__progress {
+    margin-inline: -44px;
+    padding-inline: 44px;
+  }
+
+  .svp__progress::after {
+    left: 44px;
+    right: 44px;
+  }
+
+  .svp__orion {
+    height: 46px;
+  }
+
+  .svp__biosystems {
+    height: 19px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .svp__card {
+    animation: none;
+  }
+
+  .svp *,
+  .svp *::before,
+  .svp *::after {
+    transition: none;
+  }
+}

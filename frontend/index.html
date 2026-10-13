@@ -31,7 +31,12 @@
     </div></div>
     <script>
       // Ancla la flotación del logo del arranque al reloj de la página, igual que syncClock en OrionLoader.tsx.
+      // En la encuesta (la abre un cliente) usa los mismos textos que SurveyEntry en App.tsx.
       (function () {
+        if (/\/encuesta\/?$/.test(location.pathname)) {
+          document.querySelector('#root .orion-splash__status').textContent = 'Preparando tu encuesta…';
+          document.querySelector('#root .orion-splash__eyebrow').textContent = 'Experiencia de servicio';
+        }
         var logo = document.querySelector('#root .orion-loader');
         if (logo && logo.getAnimations) logo.getAnimations({ subtree: true }).forEach(function (a) { a.startTime = 0; });
       })();

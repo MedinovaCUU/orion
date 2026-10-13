@@ -1,4 +1,4 @@
-import { Suspense, lazy, useEffect, useState } from 'react';
+import { Suspense, lazy, useCallback, useEffect, useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { getValidatedSession, supabase } from './supabaseClient';
 import OrionSplashScreen, { OrionSplashGate } from './components/OrionSplash';
@@ -146,13 +146,33 @@ function AuthenticatedApp() {
   );
 }
 
+/** Textos del splash de la encuesta (la ve un cliente, no el personal). `index.html` repite estos dos textos para el arranque. */
+const SURVEY_SPLASH_STATUS = 'Preparando tu encuesta…';
+const SURVEY_SPLASH_EYEBROW = 'Experiencia de servicio';
+
+/**
+ * Encuesta pública: el splash se queda mientras la encuesta consulta su enlace (se monta debajo) y hasta que el logo
+ * completó al menos un ciclo; luego se retira y aparecen las preguntas, sin un segundo cargador intermedio.
+ */
+function SurveyEntry() {
+  const [ready, setReady] = useState(false);
+  const markReady = useCallback(() => setReady(true), []);
+  return (
+    <OrionSplashGate ready={ready} status={SURVEY_SPLASH_STATUS} eyebrow={SURVEY_SPLASH_EYEBROW} mountEarly fullCycle allowIntro={false}>
+      <Suspense fallback={null}>
+        <SurveyPage onReady={markReady} />
+      </Suspense>
+    </OrionSplashGate>
+  );
+}
+
 export default function App() {
   // Public survey entry must not wait for an expired or unavailable account session.
   const surveyPath = `${routerBasename === '/' ? '' : routerBasename}/encuesta`;
   const isSurvey = window.location.pathname.replace(/\/$/, '') === surveyPath;
   return (
     <>
-      {isSurvey ? <Suspense fallback={<AppLoadingFallback />}><SurveyPage /></Suspense> : <AuthenticatedApp />}
+      {isSurvey ? <SurveyEntry /> : <AuthenticatedApp />}
       <OrionLoadingVeil />
     </>
   );
