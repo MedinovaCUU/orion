@@ -3213,6 +3213,7 @@ export default function EscalatedAdvisory({
                                 <strong>{message.actorName}</strong>
                                 <span>
                                   {getMessageRoleLabel(message.role)} · {formatDateTimeLabel(message.createdAt)}
+                                  {message.channel === 'whatsapp' ? ' · vía WhatsApp' : ''}
                                 </span>
                               </div>
                               <p>{message.body}</p>

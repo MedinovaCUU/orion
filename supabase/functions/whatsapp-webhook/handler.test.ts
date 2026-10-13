@@ -113,3 +113,49 @@ Deno.test('webhook: handshake, fail-closed signature, idempotent storage, media 
     assert((await post(payload, 'app-secret')).status === 500, 'storage errors must make Meta retry');
   } finally { globalThis.fetch = originalFetch; Deno.env.delete('WHATSAPP_APP_SECRET'); }
 });
+
+Deno.test('webhook: staff messages about an advisory go into its thread, files as evidence', async () => {
+  Deno.env.set('SUPABASE_URL', 'https://test.supabase.co');
+  Deno.env.set('SUPABASE_SERVICE_ROLE_KEY', 'test-service');
+  Deno.env.set('TICKET_WA_PHONE_NUMBER_ID', '123456');
+  Deno.env.set('TICKET_WA_ACCESS_TOKEN', 'ticket-token');
+  Deno.env.set('WHATSAPP_APP_SECRET', 'app-secret');
+  const originalFetch = globalThis.fetch;
+  const calls: Array<{ name: string; body: Record<string, unknown> }> = [];
+  const uploads: string[] = [];
+  const json = (body: unknown, status = 200) => new Response(JSON.stringify(body), { status, headers: { 'Content-Type': 'application/json' } });
+  globalThis.fetch = (async (source: RequestInfo | URL, options?: RequestInit) => {
+    const url = new URL(typeof source === 'string' ? source : source instanceof URL ? source.href : source.url);
+    if (url.pathname.startsWith('/rest/v1/rpc/')) {
+      const name = url.pathname.split('/').pop()!; const body = JSON.parse(String(options?.body));
+      calls.push({ name, body });
+      if (name === 'record_whatsapp_inbound') return json({ id: `row-${body.p_wa_message_id}`, conversation_id: 'conv-9', duplicate: false });
+      if (name === 'route_whatsapp_inbound_to_advisory') return json({ advisory_id: 'adv-1', pending: true, conversation_id: 'conv-9' });
+      if (name === 'append_advisory_whatsapp_message') return json('thread-msg');
+      return json(1);
+    }
+    if (url.hostname === 'graph.facebook.com') return json({ url: 'https://lookaside.example/file', mime_type: 'image/jpeg', file_size: 3 });
+    if (url.hostname === 'lookaside.example') return new Response(new Uint8Array([1, 2, 3]));
+    if (url.pathname.startsWith('/storage/v1/object/')) { uploads.push(url.pathname); return json({ Key: url.pathname }); }
+    if (url.pathname === '/rest/v1/whatsapp_inbound_messages') return json([]);
+    throw new Error(`Unexpected request: ${url.href}`);
+  }) as typeof fetch;
+  const payload = change({ messages: [
+    { from: '5216142220003', id: 'wamid.staff-text', timestamp: '1760000000', type: 'text', text: { body: 'Cambia el sello' } },
+    { from: '5216142220003', id: 'wamid.staff-photo', timestamp: '1760000001', type: 'image', image: { id: 'media-9', mime_type: 'image/jpeg', caption: 'Así quedó' } },
+  ] });
+  try {
+    const body = JSON.stringify(payload);
+    const response = await handleWhatsAppWebhook(new Request('https://test/w', { method: 'POST', headers: { 'X-Hub-Signature-256': await sign(body, 'app-secret') }, body }));
+    assert(response.status === 200);
+    const appends = calls.filter(call => call.name === 'append_advisory_whatsapp_message');
+    assert(appends.length === 2, `appends: ${appends.length}`);
+    assert(appends[0].body.p_inbound === 'row-wamid.staff-text' && appends[0].body.p_attachments === undefined, 'text goes in right away');
+    const photo = appends[1].body as { p_inbound: string; p_attachments: Array<{ kind: string; publicUrl: string; storagePath: string; mimeType: string }> };
+    assert(photo.p_inbound === 'row-wamid.staff-photo' && photo.p_attachments.length === 1, 'photo goes in with its evidence');
+    assert(photo.p_attachments[0].kind === 'photo' && photo.p_attachments[0].mimeType === 'image/jpeg');
+    assert(photo.p_attachments[0].storagePath.startsWith('advisories/adv-1/wa-row-wamid.staff-photo/'));
+    assert(photo.p_attachments[0].publicUrl === `https://test.supabase.co/storage/v1/object/public/documentos/${photo.p_attachments[0].storagePath}`);
+    assert(uploads.some(path => path.startsWith('/storage/v1/object/whatsapp-media/conv-9/')) && uploads.some(path => path.startsWith('/storage/v1/object/documentos/advisories/adv-1/')));
+  } finally { globalThis.fetch = originalFetch; Deno.env.delete('WHATSAPP_APP_SECRET'); }
+});

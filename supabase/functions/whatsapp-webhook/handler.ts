@@ -6,9 +6,25 @@ const env = (name: string) => Deno.env.get(name) || '';
 const reply = (status: number, body: string) => new Response(body, { status, headers: { 'Content-Type': 'text/plain; charset=utf-8' } });
 class MediaError extends Error {}
 
+const ADVISORY_KINDS: Record<string, string> = { image: 'photo', sticker: 'photo', video: 'video' };
+
+// Staff files in an advisory become evidence like the app's uploads (public «documentos», same path scheme).
+async function advisoryEvidence(db: SupabaseClient, advisoryId: string, messageId: string, message: InboundEvent, bytes: Uint8Array, mime: string) {
+  const name = (message.mediaFilename || `whatsapp-${messageId}.${mediaExtension(mime)}`).replace(/[^a-zA-Z0-9._-]+/g, '-');
+  const path = `advisories/${advisoryId}/wa-${messageId}/${Date.now()}-${name}`;
+  const { error } = await db.storage.from('documentos').upload(path, bytes, { contentType: mime, upsert: true });
+  if (error) return [];
+  return [{
+    id: crypto.randomUUID(), kind: ADVISORY_KINDS[message.kind] || 'report', fileName: message.mediaFilename || name, mimeType: mime,
+    size: bytes.byteLength, storagePath: path, publicUrl: `${env('SUPABASE_URL').replace(/\/+$/, '')}/storage/v1/object/public/documentos/${path}`,
+    uploadedAt: new Date().toISOString(), analysis: null,
+  }];
+}
+
 // Customers' files are copied to private storage right away: Meta's media ids expire after 30 days.
-async function storeMedia(db: SupabaseClient, messageId: string, conversationId: string, message: InboundEvent) {
+async function storeMedia(db: SupabaseClient, messageId: string, conversationId: string, message: InboundEvent, advisoryId: string | null) {
   let update: Record<string, string | null>;
+  let attachments: unknown[] = [];
   try {
     const token = message.businessPhoneId === env('TICKET_WA_PHONE_NUMBER_ID') ? env('TICKET_WA_ACCESS_TOKEN')
       : message.businessPhoneId === env('WHATSAPP_PHONE_NUMBER_ID') ? env('WHATSAPP_ACCESS_TOKEN') : '';
@@ -28,10 +44,13 @@ async function storeMedia(db: SupabaseClient, messageId: string, conversationId:
     const { error } = await db.storage.from('whatsapp-media').upload(path, bytes, { contentType: mime, upsert: true });
     if (error) throw new MediaError('No se pudo guardar el archivo en Orion.');
     update = { media_path: path, media_mime: mime, media_error: null };
+    if (advisoryId) attachments = await advisoryEvidence(db, advisoryId, messageId, message, bytes, mime);
   } catch (cause) {
     update = { media_error: cause instanceof MediaError ? cause.message : 'No se pudo descargar el archivo.' };
   }
   await db.from('whatsapp_inbound_messages').update(update).eq('id', messageId);
+  // Added to the thread only now, so the mirrored WhatsApp already carries the file.
+  if (advisoryId) await db.rpc('append_advisory_whatsapp_message', { p_inbound: messageId, p_attachments: attachments });
 }
 
 export async function handleWhatsAppWebhook(request: Request): Promise<Response> {
@@ -72,7 +91,17 @@ export async function handleWhatsAppWebhook(request: Request): Promise<Response>
     });
     // A non-200 makes Meta retry the whole delivery; rows already saved are skipped by their id.
     if (error) { console.error('[whatsapp-webhook] record_whatsapp_inbound', error.code); return reply(500, 'Storage unavailable'); }
-    if (message.mediaId && data && !data.duplicate) keepAlive(storeMedia(db, data.id, data.conversation_id, message));
+    if (!data?.id) continue;
+    // Staff writing about an advisory: the message also goes into that advisory's thread.
+    const routed = await db.rpc('route_whatsapp_inbound_to_advisory', { p_inbound: data.id });
+    if (routed.error) { console.error('[whatsapp-webhook] route_whatsapp_inbound_to_advisory', routed.error.code); return reply(500, 'Storage unavailable'); }
+    const advisoryId: string | null = routed.data?.pending ? routed.data.advisory_id : null;
+    const conversationId: string = data.conversation_id || routed.data?.conversation_id;
+    if (message.mediaId && (!data.duplicate || advisoryId) && conversationId) keepAlive(storeMedia(db, data.id, conversationId, message, advisoryId));
+    else if (advisoryId) {
+      const appended = await db.rpc('append_advisory_whatsapp_message', { p_inbound: data.id });
+      if (appended.error) { console.error('[whatsapp-webhook] append_advisory_whatsapp_message', appended.error.code); return reply(500, 'Storage unavailable'); }
+    }
   }
   for (const status of statuses) {
     const { error } = await db.rpc('record_whatsapp_status', { p_wa_message_id: status.waMessageId, p_status: status.status, p_at: status.at, p_error: status.error });

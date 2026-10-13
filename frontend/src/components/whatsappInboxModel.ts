@@ -6,14 +6,16 @@ export interface WhatsAppConversation {
   id: string; business_phone_id: string; is_ticket_line: boolean; phone: string; display_name: string | null;
   ticket_id: string | null; numero_caso: string | null; ticket_estado: string | null;
   last_inbound_at: string | null; last_message_at: string | null; last_preview: string | null; last_kind: string | null;
-  last_direction: 'in' | 'out' | null; unread: number; opted_out: boolean;
+  last_direction: 'in' | 'out' | null; unread: number; opted_out: boolean; is_staff?: boolean;
 }
 export interface WhatsAppThreadMessage {
-  id: string; direction: 'in' | 'out'; source: 'customer' | 'manual' | 'auto'; kind: string; body: string | null;
+  id: string; direction: 'in' | 'out'; source: 'customer' | 'manual' | 'auto' | 'advisory'; kind: string; body: string | null;
   extra: Record<string, unknown> | null; media_mime: string | null; media_filename: string | null; media_path: string | null;
   media_error: string | null; context_message_id: string | null; provider_message_id: string | null; ticket_id: string | null;
   at: string; status: string | null; delivery_status: DeliveryStatus | null; author: string | null;
   template: string | null; parameters: string[] | null; error_message: string | null;
+  /** Staff message routed into (or notice sent about) an escalated advisory. */
+  advisory_id?: string | null;
 }
 export interface WhatsAppThreadTicket { id: string; numero_caso: string | null; estado: string; asunto: string | null; creado_en: string | null }
 export interface WhatsAppThread {
@@ -53,6 +55,7 @@ const KIND_LABELS: Record<string, string> = {
   image: 'Foto', audio: 'Audio', video: 'Video', document: 'Documento', sticker: 'Sticker', location: 'Ubicación',
   contacts: 'Contacto', reaction: 'Reacción', button: 'Respuesta rápida', interactive: 'Respuesta rápida', order: 'Pedido',
   system: 'Aviso de WhatsApp', unsupported: 'Mensaje no compatible', contact: 'Invitación a conversar', closure: 'Aviso de cierre',
+  new_advisory: 'Aviso de nueva asesoría', message: 'Mensaje de asesoría',
 };
 export const kindLabel = (kind: string | null | undefined) => (kind && KIND_LABELS[kind]) || 'Mensaje';
 

@@ -57,20 +57,23 @@ function Bubble({ message, quoted, mediaUrl }: { message: WhatsAppThreadMessage;
     return <p className="wa-inbox__reaction">{message.body ? `Reaccionó ${message.body}` : 'Quitó su reacción'}{quoted ? ` a «${(quoted.body || automaticNotice(quoted.template, quoted.parameters).title).slice(0, 60)}»` : ''} · {timeLabel(message.at)}</p>;
   }
   const isAuto = message.source === 'auto';
+  const isAdvisory = message.source === 'advisory';
   const notice = isAuto ? automaticNotice(message.template, message.parameters) : null;
   const delivery = message.direction === 'out' ? deliveryLabel(message) : null;
   const hasMedia = ['image', 'sticker', 'audio', 'video', 'document'].includes(message.kind) && message.direction === 'in';
   const link = message.kind === 'location' ? mapsUrl(message.extra) : null;
   return (
-    <article className={`wa-inbox__bubble wa-inbox__bubble--${message.direction}${isAuto ? ' is-auto' : ''}`}>
+    <article className={`wa-inbox__bubble wa-inbox__bubble--${message.direction}${isAuto || isAdvisory ? ' is-auto' : ''}`}>
       {quoted && <blockquote>{quoted.body || (quoted.template ? automaticNotice(quoted.template, quoted.parameters).title : kindLabel(quoted.kind))}</blockquote>}
       {notice && <p className="wa-inbox__notice"><strong>Aviso automático · {notice.title}</strong><span>{notice.detail}</span></p>}
+      {isAdvisory && <p className="wa-inbox__notice"><strong>Asesoría · {kindLabel(message.kind)}</strong></p>}
       {message.source === 'manual' && message.kind !== 'text' && <p className="wa-inbox__notice"><strong>Plantilla · {kindLabel(message.kind)}</strong></p>}
       {hasMedia && <MediaContent message={message} url={mediaUrl} />}
       {message.kind === 'unsupported' && <p className="wa-inbox__media-note">WhatsApp no pudo mostrar este mensaje (por ejemplo, una encuesta o un mensaje temporal). Pídele al cliente que lo reenvíe como texto.</p>}
       {message.body && !isAuto && <p className="wa-inbox__text">{message.body}</p>}
       {link && <a className="wa-inbox__file" href={link} target="_blank" rel="noreferrer"><span aria-hidden="true">📍</span>Abrir en el mapa</a>}
       <footer>
+        {message.direction === 'in' && message.advisory_id && <span>Quedó en la asesoría</span>}
         {message.author && <span>{message.author}</span>}
         <time dateTime={message.at}>{timeLabel(message.at)}</time>
         {delivery && <span className={`wa-inbox__delivery is-${delivery.tone}`}>{delivery.label}</span>}
@@ -267,6 +270,7 @@ export default function WhatsAppInbox({ api = whatsappInboxApi, onOpenTicket }: 
                       <span className="wa-inbox__item-tags">
                         {item.numero_caso && <span className="wa-inbox__tag">{item.numero_caso}</span>}
                         {!item.is_ticket_line && <span className="wa-inbox__tag">Otro número</span>}
+                        {item.is_staff && <span className="wa-inbox__tag">Personal</span>}
                         {item.opted_out && <span className="wa-inbox__tag is-warn">BAJA</span>}
                         {item.unread > 0 && <span className="wa-inbox__unread" aria-label={`${item.unread} sin leer`}>{item.unread}</span>}
                       </span>

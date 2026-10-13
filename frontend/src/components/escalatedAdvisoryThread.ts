@@ -35,6 +35,8 @@ export interface AdvisoryThreadMessage {
   createdAt: string;
   attachments: AdvisoryAttachmentRecord[];
   statusSnapshot: AdvisoryStatus | null;
+  /** Set by the WhatsApp bridge for messages that arrived by WhatsApp. */
+  channel?: 'whatsapp';
 }
 
 export interface AdvisoryMetadata {
@@ -181,6 +183,7 @@ const sanitizeMessage = (value: unknown): AdvisoryThreadMessage | null => {
       value.statusSnapshot === 'cerrada'
         ? value.statusSnapshot
         : null,
+    ...(value.channel === 'whatsapp' ? { channel: 'whatsapp' as const } : {}),
   };
 };
 

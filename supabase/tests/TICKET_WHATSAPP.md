@@ -80,3 +80,21 @@ node supabase/tests/tools/run-deno-test.mjs supabase/functions/ticket-whatsapp/h
 node frontend/tests/whatsapp-inbox-model.test.mjs
 ```
 Interfaz aislada con datos simulados: `/orion/tests/fixtures/whatsapp-inbox.html` (configuración `orion-whatsapp`, puerto 5216).
+
+## Asesorías por WhatsApp (13 de octubre de 2026)
+Migración `20261013090000_advisory_whatsapp_bridge.sql` y función `advisory-whatsapp-dispatch`. Todo sale del número real de tickets (`TICKET_WA_*`); el celular de cada persona es `auth.users.phone` (los 20 de staff lo tienen). El envío viejo `send-advisory-whatsapp-notification` (número de prueba de Meta, `VITE_ENABLE_ADVISORY_WHATSAPP=false` en producción) queda sin uso.
+
+- **Asesoría nueva:** al insertar cada destinatario en `asesorias_escaladas_destinatarios` se encola un aviso para ese trainer (no para el propio solicitante; solo asesorías abiertas de los últimos 3 días).
+- **App → WhatsApp:** cada respuesta nueva del hilo (`metadata.thread`, `kind = reply`) se encola para el otro lado. Solicitante → los trainers que ya contestaron; si nadie ha contestado, todos los asignados. Trainer → solicitante. Nunca al autor; los mensajes `initial-consultation`, `legacy-trainer-response` y los de estado no se reenvían.
+- **WhatsApp → app:** si quien escribe al número de Orion es staff (teléfono en Auth), `route_whatsapp_inbound_to_advisory` elige la asesoría: primero la del aviso al que responde (contexto), si no la asesoría abierta más reciente donde participa. `append_advisory_whatsapp_message` la agrega al hilo una sola vez (`channel: 'whatsapp'`, rol según sea solicitante o trainer, contadores de no leídos) y eso dispara el reenvío al otro lado. Fotos, video, audio y documentos se copian a `documentos/advisories/<id>/wa-…` como evidencia antes de agregarse. Sin asesoría abierta, el mensaje se queda en la bandeja de WhatsApp como cualquier otro.
+- **Hilo sin pérdidas:** la app reescribe el hilo completo al guardar. El trigger `advisory_thread_keep_messages` conserva los mensajes que una pantalla vieja no tenía y los campos que no conoce (`channel`, adjuntos).
+- **Envío:** `advisory_whatsapp_outbox`; el trigger avisa al worker en cuanto se confirma la transacción (pg_net) y pg_cron lo revisa cada minuto. Dentro de las 24 h desde el último mensaje de esa persona se manda texto (y fotos/documentos como archivo); fuera, plantilla `orion_asesoria_nueva_v1` u `orion_asesoria_mensaje_v1` (UTILIDAD, es_MX, botón «Abrir en Orion»). El worker las da de alta en Meta la primera vez; mientras estén en revisión, los avisos fuera de ventana esperan (reintento cada 5 min, hasta 7 días). BAJA se respeta; sin celular válido queda `needs_phone`.
+- **Bandeja de WhatsApp:** los mensajes de staff que entraron a una asesoría no cuentan como no leídos; las conversaciones de staff llevan la etiqueta «Personal» y muestran los avisos de asesoría enviados.
+
+Pruebas:
+```
+PGLITE_MODULE=$PWD/supabase/_local_archive/whatsapp-tests/node_modules/@electric-sql/pglite/dist/index.js node supabase/tests/advisory_whatsapp_bridge.test.mjs
+node supabase/tests/tools/run-deno-test.mjs supabase/functions/advisory-whatsapp-dispatch/handler.test.ts
+node supabase/tests/tools/run-deno-test.mjs supabase/functions/whatsapp-webhook/handler.test.ts
+node frontend/tests/advisory-thread-channel.test.mjs
+```
