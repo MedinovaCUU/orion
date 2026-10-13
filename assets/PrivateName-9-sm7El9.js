@@ -1,0 +1,1 @@
+import{t as e}from"./jsx-runtime-yAb-PW9i.js";var t=e();function n({children:e}){return e?(0,t.jsx)(`span`,{className:`orion-private`,children:e}):(0,t.jsx)(t.Fragment,{children:e})}export{n as t};
