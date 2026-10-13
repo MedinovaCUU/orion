@@ -6,6 +6,7 @@ import { registerBrandPdfFonts } from '../config/brandFonts';
 import { splitServiceCatalog, type ServiceCatalogRow } from './serviceCatalog';
 import { createSupremoLaunchSession } from './supremoApi';
 import { getSupremoShowroomPreset, normalizeSerialLookup } from './supremoPresets';
+import { isValidSupremoId } from './supremoMetricApi';
 import { getPublicAssetUrl } from './publicAssetUrl';
 import {
   importEquipmentDraftFromDocument,
@@ -875,10 +876,10 @@ export default function Equipos() {
     const normalizedSupremoId = sanitizeSupremoId(supremoDraft.supremoId || preset?.supremoId || '');
     const normalizedAlias = (supremoDraft.supremoAlias || preset?.alias || '').trim();
 
-    if (supremoDraft.enabled && !normalizedSupremoId) {
+    if (supremoDraft.enabled && !isValidSupremoId(normalizedSupremoId)) {
       setSupremoFeedback({
         tone: 'error',
-        message: 'Define un Supremo ID valido antes de habilitar el acceso remoto.',
+        message: 'Define un Supremo ID valido (9 digitos) antes de habilitar el acceso remoto.',
       });
       return;
     }

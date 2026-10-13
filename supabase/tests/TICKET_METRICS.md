@@ -210,3 +210,37 @@ por fila en producción) y ~280 ms en lugar de ~935 ms por conjunto.
 - `npm run test:kpi:model` (estados cero / sin dato / no aplica, periodos, CSV).
 - `npm run test:kpi:browser` con Vite en el puerto 5200 (secciones, filtros, tarjeta → registros,
   paginación, orden, búsqueda, CSV/Excel completos, registro → ticket, captura, móvil). No usa datos reales.
+
+## Supremo en visitas presenciales (20261013020000)
+
+Cada visita presencial (la misma definición de «Visitas» del tablero: registros del mismo equipo y día
+son una visita) se compara con el registro de Supremo de su número de serie:
+
+- **Positiva**: el equipo ya tenía Supremo habilitado con un ID de 9 dígitos al iniciar el día de la
+  visita, o quedó registrado antes de cerrar el plazo (día de la visita + `grace_days`). Si otra persona
+  lo instaló antes, también es positiva.
+- **Pendiente**: el plazo sigue abierto y aún no hay Supremo válido. No entra al cumplimiento.
+- **Negativa**: al cerrar el plazo no había Supremo válido (sin registro, ID inválido, deshabilitado o
+  serie fuera del catálogo).
+- **Anulada**: un administrador justificó por escrito (≥ 20 caracteres) que el equipo no lleva Supremo.
+  No suma ni resta. Al revocar la justificación, las visitas hasta ese día siguen anuladas.
+- **Sin serie**: no se puede comparar; se muestra aparte.
+
+El resultado se lee de `equipment_supremo_history` (disparador en `equipos`), así una visita no cambia por
+movimientos posteriores a su plazo. Los equipos que ya tenían Supremo al aplicar la migración entran como
+`estado_inicial` (previo a todo). Cumplimiento = positivas / (positivas + negativas); una visita cuenta
+para cada participante.
+
+**Interruptor.** `supremo_metric_settings.active` (Configuración en el tablero, solo administradores;
+desactivar exige motivo). Apagada: `get_supremo_metric` devuelve solo la configuración y el reporte de
+servicio no muestra el aviso; el historial de Supremo se sigue guardando. `effective_from` no puede ser
+anterior al inicio del historial.
+
+**API.** Administración: `get_supremo_metric(filtros del tablero)`, `get_supremo_exemptions`,
+`set_supremo_metric_settings`, `justify_supremo_exemption`, `revoke_supremo_exemption`. Personal (reporte
+presencial): `get_equipment_supremo_status`, `register_equipment_supremo` (solo si el equipo no tiene ya
+un Supremo válido; cambiar un ID existente sigue haciéndose en Equipos). ~1.3 s para 6 meses en producción.
+
+**Pruebas.**
+- `PGLITE_MODULE=<ruta>/@electric-sql/pglite/dist/index.js node supabase/tests/supremo_visit_metric.test.mjs`
+- Página aislada con servidor simulado: `tests/fixtures/supremo-metric.html` (Vite, base `/orion/`).

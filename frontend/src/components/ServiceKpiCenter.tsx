@@ -3,6 +3,7 @@ import { Loader } from './OrionLoader';
 import ServiceKpiChart from './ServiceKpiChart';
 import ServiceKpiRecords from './ServiceKpiRecords';
 import ServiceSlaPolicies from './ServiceSlaPolicies';
+import ServiceSupremoMetric from './ServiceSupremoMetric';
 // ECharts only loads with the time lab, so the rest of the control center stays light.
 const ServiceKpiTimeLab = lazy(() => import('./ServiceKpiTimeLab'));
 import { applyBrandFontToWorkbook } from '../config/brandFonts';
@@ -349,6 +350,7 @@ export default function ServiceKpiCenter({ view, onOpenTicket }: { view: KpiView
       <section className="kpi-section" aria-label="Balance de carga">
         <StaffTable rows={summary.breakdowns.staff} view={view} onDrill={openDrill} help={help === 'workload'} onHelp={() => toggleHelp('workload')} />
       </section>
+      <ServiceSupremoMetric view={view} filters={rpcFilters} revision={revision} onOpenTicket={onOpenTicket} />
       <div ref={records} className="kpi-records-anchor">
         {drill && <ServiceKpiRecords key={JSON.stringify(drill)} drill={drill} filters={rpcFilters} criteria={criteria} onClose={() => setDrill(null)} onOpenTicket={onOpenTicket} />}
       </div>

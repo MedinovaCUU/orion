@@ -106,6 +106,53 @@
   padding-left: 1.15rem;
 }
 
+.service-report-supremo {
+  margin-top: 1rem;
+  padding: 0.9rem 1.05rem;
+  border-radius: 18px;
+  border: 1px solid rgba(124, 136, 149, 0.22);
+  background: rgba(255, 255, 255, 0.7);
+}
+
+.service-report-supremo.is-ok {
+  border-color: rgba(39, 138, 119, 0.35);
+  background: rgba(39, 138, 119, 0.07);
+}
+
+.service-report-supremo.is-warn {
+  border-color: rgba(198, 139, 50, 0.4);
+  background: rgba(198, 139, 50, 0.08);
+}
+
+.service-report-supremo strong {
+  display: block;
+  color: var(--text-primary);
+  font-size: 0.92rem;
+}
+
+.service-report-supremo p {
+  margin: 0.4rem 0 0;
+  color: var(--text-secondary);
+  font-size: 0.82rem;
+  line-height: 1.5;
+}
+
+.service-report-supremo__form {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.service-report-supremo__form .input-field {
+  flex: 1 1 200px;
+  max-width: 260px;
+}
+
+.service-report-supremo p.service-report-supremo__error {
+  color: #b34851;
+}
+
 .service-report-inline-actions {
   display: flex;
   align-items: center;

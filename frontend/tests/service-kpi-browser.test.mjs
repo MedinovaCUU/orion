@@ -122,7 +122,19 @@ const browser = await chromium.launch({ channel: 'chrome', headless: true });
 const context = await browser.newContext({ viewport: { width: 1500, height: 1100 }, acceptDownloads: true });
 const page = await context.newPage();
 const errors = []; page.on('pageerror', error => errors.push(error.message));
-const summaryRequests = []; const recordRequests = []; const labRequests = []; const movements = []; const priorities = [];
+const summaryRequests = []; const recordRequests = []; const labRequests = []; const movements = []; const priorities = []; const supremoRequests = [];
+// Supremo on in-person visits: a fixed evaluation (the server rules are covered by supabase/tests/supremo_visit_metric.test.mjs).
+const supremoVisit = (n, outcome, reason, detail) => ({ visit_id: `visita:${n}`, visit_date: `2026-10-0${n}`, deadline: `2026-10-0${n + 3}`, serial: `SER-${n}`, serial_key: `SER-${n}`,
+  platform: 'BA400', client: 'Hospital Norte', sources: 'Reporte de servicio', kinds: ['correctivo'], ticket_id: null, folio: null, participant_ids: ['p'], participant_names: 'Persona de prueba',
+  unmatched_names: null, outcome, reason, detail, in_catalog: true, equipment_id: `EQ-${n}`, supremo_id: outcome === 'positiva' ? '958113330' : null,
+  exemption_id: null, exemption_justification: null, exemption_by: null, exemption_at: null });
+const supremoFor = filters => ({
+  settings: { active: true, effective_from: '2026-10-01', grace_days: 3, history_since: '2026-10-01T18:00:00Z', reason: null, updated_at: '2026-10-01T18:00:00Z', updated_by_name: null, timezone: 'America/Chihuahua' },
+  totals: { visits: 3, positive: 1, already: 1, installed: 0, negative: 1, pending: 1, voided: 0, no_serial: 0 }, compliance: { num: 1, den: 2, pct: 50 },
+  people: [{ id: 'p', name: 'Persona de prueba', team: filters.team || 'ingenieria', positive: 1, negative: 1, pending: 1, voided: 0, compliance: { num: 1, den: 2, pct: 50 } }],
+  visits: [supremoVisit(1, 'negativa', 'sin_registro', 'Sin Supremo registrado'), supremoVisit(2, 'pendiente', 'sin_registro', 'Sin Supremo registrado'),
+    supremoVisit(3, 'positiva', 'ya_registrado', 'Supremo ya registrado antes de la visita')],
+});
 let failSummary = false; let allowControl = true;
 await context.route('**/rest/v1/**', async route => {
   const url = new URL(route.request().url());
@@ -144,6 +156,7 @@ await context.route('**/rest/v1/**', async route => {
     rows = rows.sort((left, right) => String(left[body.p_sort] ?? '').localeCompare(String(right[body.p_sort] ?? '')) * (body.p_desc ? -1 : 1));
     data = { total: rows.length, rows: rows.slice(body.p_offset, body.p_offset + body.p_limit).map(({ search_text, ...row }) => row) };
   }
+  if (url.pathname.endsWith('/rpc/get_supremo_metric')) { supremoRequests.push(body.p_filters); data = supremoFor(body.p_filters); }
   if (url.pathname.endsWith('/rpc/register_ticket_movement')) { movements.push(body); data = null; }
   if (url.pathname.endsWith('/rpc/set_ticket_priority')) { priorities.push(body); data = null; }
   if (url.pathname.endsWith('/catalogo_servicio')) data = [{ catalog_kind: 'averia', catalog_code: 'AL08', catalog_detail: 'Lámpara' }, { catalog_kind: 'solucion', catalog_code: 'SL02', catalog_detail: 'Cambio de lámpara' }];
@@ -178,6 +191,16 @@ try {
   await page.locator('.kpi-lab-panel', { hasText: 'Cumplimiento del plazo por grupo' }).getByRole('button', { name: 'Equipo', exact: true }).click();
   assert.equal(await page.locator('.kpi-lab-panel', { hasText: 'Cumplimiento del plazo por grupo' }).getByRole('button', { name: 'Equipo', exact: true }).getAttribute('aria-pressed'), 'true');
   await page.locator('.kpi-lab').screenshot({ path: shot('time-lab.png') });
+  // Supremo on in-person visits: same filters as the summary, cards filter the visits table.
+  const supremo = page.locator('.kpi-supremo:visible');
+  await supremo.locator('.kpi-card small', { hasText: /^Cumplimiento$/ }).waitFor();
+  assert.deepEqual(supremoRequests.at(-1), summaryRequests.at(-1), 'the Supremo metric uses the dashboard filters');
+  assert.equal((await supremo.locator('.kpi-card', { hasText: 'Cumplimiento' }).locator('.kpi-value').innerText()).trim(), '50 %');
+  await supremo.locator('.kpi-card', { hasText: 'Negativas' }).locator('.kpi-card-body').click();
+  assert.equal(await supremo.locator('.kpi-supremo-visits tbody tr').count(), 1);
+  await supremo.getByRole('group', { name: 'Filtrar por resultado' }).getByRole('button', { name: 'Todas' }).click();
+  assert.equal(await supremo.locator('.kpi-supremo-visits tbody tr').count(), 3);
+  assert.equal(await supremo.locator('.kpi-supremo-visits').getByRole('button', { name: 'Justificar' }).count(), 2, 'negative and pending visits can be justified');
   // PowerPoint deck of the general summary, built in the browser from the same summary and tickets.
   const deckDownload = page.waitForEvent('download', { timeout: 60000 });
   await visible.getByRole('button', { name: 'Presentación PowerPoint' }).click();
@@ -224,7 +247,7 @@ try {
   await page.getByRole('button', { name: 'Cerrar vista', exact: true }).waitFor();
   assert.equal(await page.getByRole('button', { name: /Control de casos/ }).getAttribute('aria-pressed'), 'true');
   assert.equal(await page.getByLabel('Buscar en el expediente').inputValue(), 'OR-0003');
-  console.log('PASS: general summary, card → records with equal totals, paging, server sort, search, CSV/Excel with every row, record → ticket');
+  console.log('PASS: general summary, card → records with equal totals, paging, server sort, search, CSV/Excel with every row, record → ticket, Supremo metric');
 
   // Capture: an open case records a call with duration, motive, result and catalog codes, and its priority.
   await page.getByLabel('Buscar en el expediente').fill('OR-0025');
@@ -305,11 +328,13 @@ try {
   await page.setViewportSize({ width: 1500, height: 1100 });
   console.log('PASS: tablet and mobile layouts keep the page within the viewport');
 
+  for (const team of ['quimica', 'ingenieria']) assert.ok(supremoRequests.some(filters => filters.team === team), `the ${team} view asks the Supremo metric for its own team`);
   allowControl = false;
-  const before = summaryRequests.length;
+  const before = summaryRequests.length; const supremoBefore = supremoRequests.length;
   await page.reload();
   await page.getByText('El centro de control es exclusivo para administradores.', { exact: true }).waitFor();
   assert.equal(summaryRequests.length, before, 'non-administrators never request staff indicators');
+  assert.equal(supremoRequests.length, supremoBefore, 'non-administrators never request the Supremo metric');
   assert.deepEqual(errors, []);
   console.log('PASS: administrators only, no page errors');
 } catch (error) {

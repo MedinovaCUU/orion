@@ -6,6 +6,7 @@ import './ServiceReportModal.css';
 import BrandLockup from './BrandLockup';
 import Gs1ScannerModal from './Gs1ScannerModal';
 import SignaturePad from './SignaturePad';
+import SupremoVisitCheck from './SupremoVisitCheck';
 import type { SolucionCatalogRow } from './serviceCatalog';
 import { extractServiceReportTicketFromImage } from './serviceReportTicketOcr';
 import {
@@ -1717,6 +1718,8 @@ export default function ServiceReportModal({
                   <p>{siteAddressAlert}</p>
                 </div>
               )}
+
+              {mode === 'servicio' && <SupremoVisitCheck serial={formData.equipmentSerial} />}
             </div>
 
             {hasSelectedSerial && (
