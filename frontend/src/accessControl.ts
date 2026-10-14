@@ -10,6 +10,7 @@ export const MODULE_KEYS = [
   'equipos',
   'monitoreo',
   'dri',
+  'confiabilidad',
   'permisos',
 ] as const;
 
@@ -99,6 +100,7 @@ export const MODULE_LABELS: Record<ModuleKey, string> = {
   equipos: 'Equipos',
   monitoreo: 'Monitoreo',
   dri: 'DRI',
+  confiabilidad: 'Confiabilidad',
   permisos: 'Permisos',
 };
 

@@ -202,8 +202,6 @@ export default function Dashboard({ session, initialTab }: DashboardProps) {
     ...new Set([
       ...baseAllowedTabs,
       ...(isStaffRole(userRole) ? (['alexa'] as DashboardTabKey[]) : []),
-      // Reliability intelligence is management analysis: admins only (get_reliability_lab enforces it too).
-      ...(userRole === 'admin' ? (['confiabilidad'] as DashboardTabKey[]) : []),
       ...(canManagePermissions ? (['permisos'] as DashboardTabKey[]) : []),
     ]),
   ];

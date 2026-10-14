@@ -40,13 +40,15 @@ interface EditableAccess {
 type AccessRole = 'cliente' | 'tecnico' | 'admin';
 
 const MANAGEABLE_MODULE_KEYS = MODULE_KEYS.filter((key) => key !== 'permisos');
+// Granted only by ticking its own box: «acceso completo» never includes it (owner's decision, 2026-10-13).
+const EXPLICIT_ONLY_MODULES: ModuleKey[] = ['confiabilidad'];
 const MODULES_WITH_SUBPERMISSIONS = Object.keys(MODULE_SUBPERMISSIONS) as ModuleWithSubpermissions[];
 const ALL_SUBPERMISSIONS = MODULES_WITH_SUBPERMISSIONS.reduce<EditableAccess['subPermissions']>((acc, module) => {
   acc[module] = [...MODULE_SUBPERMISSIONS[module]];
   return acc;
 }, {});
 const FULL_ACCESS_WITHOUT_PERMISSIONS: EditableAccess = {
-  modules: [...MANAGEABLE_MODULE_KEYS],
+  modules: MANAGEABLE_MODULE_KEYS.filter((key) => !EXPLICIT_ONLY_MODULES.includes(key)),
   canReceiveTickets: true,
   canViewRestrictedTutorials: true,
   subPermissions: ALL_SUBPERMISSIONS,
@@ -283,6 +285,7 @@ export default function PermissionsAdmin() {
                             <input type="checkbox" checked={access.modules.includes(key)} onChange={(event) => toggleModule(profile.id, key, event.target.checked)} />
                             <span>{MODULE_LABELS[key]}</span>
                           </label>
+                          {key === 'confiabilidad' ? <small className="permissions-admin__module-hint">Análisis de reacondicionamientos. Solo personal interno; «acceso completo» no lo incluye.</small> : null}
                           {hasSubPermissions && access.modules.includes(key) ? (
                             <div className="permissions-admin__submodules">
                               {(MODULE_SUBPERMISSIONS[key as ModuleWithSubpermissions] as readonly string[]).map((subKey) => (

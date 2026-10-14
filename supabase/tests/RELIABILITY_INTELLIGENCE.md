@@ -1,6 +1,9 @@
 # ORION | Reliability Intelligence — inteligencia de reacondicionamientos
 
-Pestaña **Confiabilidad** del panel (solo administradores). Evalúa cada reacondicionamiento con tasas ajustadas por
+Pestaña **Confiabilidad** del panel. Es un módulo de **Permisos** (casilla «Confiabilidad»): al iniciar solo lo tiene el
+propietario; «acceso completo» no lo incluye. El servidor exige personal interno (admin o técnico) con el módulo
+(`can_use_reliability_lab()`, migración `20261014010000`) para leer el laboratorio, la bitácora y las tablas de registro;
+autorizar o rechazar recomendaciones sigue siendo solo de administradores. Evalúa cada reacondicionamiento con tasas ajustadas por
 exposición, curvas de supervivencia, componentes que fallan después de la entrega y decisiones documentadas.
 
 ## Piezas
@@ -35,7 +38,7 @@ exposición, curvas de supervivencia, componentes que fallan después de la entr
 
 - `refurbishment_episodes` (alcance, liberación, presupuesto solicitado/aprobado + fuente), `refurbishment_component_decisions`
   (condición → recomendación → autorización → acción, riesgo residual), `refurbishment_acceptance_tests`, `reliability_failure_links`, `reliability_costs`.
-- RLS: lectura/escritura `is_staff()`; borrado solo `is_admin()`. Solo un administrador autoriza/rechaza/pospone (trigger); rechazo/aplazamiento exige motivo.
+- RLS: lectura/escritura `can_use_reliability_lab()` (personal con el módulo); borrado además `is_admin()`. Solo un administrador autoriza/rechaza/pospone (trigger); rechazo/aplazamiento exige motivo.
 - Autores (`created_by`, `updated_by`, `recommended_by`, `authorized_by`, `assessed_by`) los pone el servidor con `auth.uid()`.
 - Aprobar/reprobar una prueba exige especificación **y** documento de origen (no se inventan tolerancias).
 - Afirmar o descartar una relación falla↔decisión exige evidencia escrita; si no, queda «no determinada».

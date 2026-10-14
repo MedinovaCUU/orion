@@ -10,7 +10,7 @@ import { ComponentsView, DecisionView, DoseView, LifelineView, MethodView, Summa
 import './ReliabilityCenter.css';
 
 // ORION | Reliability Intelligence — evaluates each reconditioning with exposure-adjusted rates, survival curves and
-// documented decisions. Admin only (the RPC enforces it too).
+// documented decisions. Only users with the «confiabilidad» module (Permisos); the database enforces it too.
 type Section = 'resumen' | 'supervivencia' | 'piezas' | 'componentes' | 'vida' | 'registro' | 'decision' | 'metodo';
 const SECTIONS: Array<[Section, string, string]> = [
   ['resumen', 'Resumen ejecutivo', 'Veredictos e indicadores'], ['supervivencia', 'Supervivencia', 'Kaplan–Meier, Weibull, MCF'],
@@ -24,10 +24,10 @@ export default function ReliabilityCenter({ initialPayload }: { initialPayload?:
   useEffect(() => {
     if (initialPayload) return;
     let active = true;
-    void supabase.rpc('is_admin').then(({ data, error }) => { if (active) setAuthorized(!error && data === true); });
+    void supabase.rpc('can_use_reliability_lab').then(({ data, error }) => { if (active) setAuthorized(!error && data === true); });
     return () => { active = false; };
   }, [initialPayload]);
-  if (authorized !== true) return <p role="status" className="rel-gate">{authorized === null ? 'Verificando acceso…' : 'La inteligencia de reacondicionamientos es exclusiva para administradores.'}</p>;
+  if (authorized !== true) return <p role="status" className="rel-gate">{authorized === null ? 'Verificando acceso…' : 'Confiabilidad no está activado para tu usuario. Se activa en Permisos.'}</p>;
   return <ReliabilityLab initialPayload={initialPayload} />;
 }
 
