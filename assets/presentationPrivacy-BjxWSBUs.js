@@ -1,0 +1,1 @@
+var e=new Map,t=t=>{let n=t.trim().toLowerCase();return e.has(n)||e.set(n,`Colaborador ${e.size+1}`),e.get(n)},n=e=>e&&e.trim()?t(e):e,r=e=>e.responsible===`Sin responsable`?e:{...e,responsible:n(e.responsible)};export{n,r as t};
