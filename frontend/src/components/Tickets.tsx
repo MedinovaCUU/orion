@@ -13,7 +13,7 @@ import { supabase } from '../supabaseClient';
 import TravelPlannerModal from './TravelPlannerModal';
 import FalconSlaAlerts, { type FalconSlaAlertEntry } from './FalconSlaAlerts';
 import falconUploadIcon from '../assets/falcon-upload-icon.png';
-import { splitServiceCatalog, type AveriaCatalogRow, type ServiceCatalogRow, type SolucionCatalogRow } from './serviceCatalog';
+import { isGenericSolution, splitServiceCatalog, type AveriaCatalogRow, type ServiceCatalogRow, type SolucionCatalogRow } from './serviceCatalog';
 import { extractServiceReportTicketFromImage } from './serviceReportTicketOcr';
 import {
   buildTicketDraftFromOcr,
@@ -1206,6 +1206,7 @@ export default function Tickets({ subPermissions = ['crear', 'seguimiento', 'dia
                         const selectedAv = averias.find(a => a.cda === parsedCdaLocal);
                         
                         let solucionesCompatibles = (selectedAv && !overrideFilter) ? soluciones.filter(s => {
+                            if (isGenericSolution(s)) return true;
                             const groupAveria = selectedAv.cda ? selectedAv.cda.substring(0, 2) : '';
                             const groupSolucion = s.cds ? s.cds.substring(0, 2) : '';
 

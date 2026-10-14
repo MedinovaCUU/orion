@@ -7,7 +7,7 @@ import BrandLockup from './BrandLockup';
 import Gs1ScannerModal from './Gs1ScannerModal';
 import SignaturePad from './SignaturePad';
 import SupremoVisitCheck from './SupremoVisitCheck';
-import type { SolucionCatalogRow } from './serviceCatalog';
+import { isGenericSolution, type SolucionCatalogRow } from './serviceCatalog';
 import { extractServiceReportTicketFromImage } from './serviceReportTicketOcr';
 import {
   createEmptyServiceReportMaterialItem,
@@ -564,7 +564,7 @@ export default function ServiceReportModal({
     }
 
     const strictMatches = soluciones.filter((item) => item.cts?.trim() === diagnosticCategory);
-    return strictMatches.length > 0 ? strictMatches : soluciones;
+    return strictMatches.length > 0 ? [...strictMatches, ...soluciones.filter(isGenericSolution)] : soluciones;
   }, [selectedDiagnostic, soluciones]);
 
   const needsVersionFields = useMemo(() => shouldRequestVersions(formData), [formData]);

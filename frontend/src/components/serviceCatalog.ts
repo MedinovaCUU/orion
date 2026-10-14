@@ -22,6 +22,10 @@ export interface SolucionCatalogRow {
   cts: string;
 }
 
+// PO00 Limpieza / PO01 Revisión apply to any fault type, so type filters must keep them.
+export const isGenericSolution = (solution: Pick<SolucionCatalogRow, 'cds'>) =>
+  solution.cds?.trim().toUpperCase().startsWith('PO') ?? false;
+
 export const splitServiceCatalog = (rows: ServiceCatalogRow[]) => {
   const averias: AveriaCatalogRow[] = [];
   const soluciones: SolucionCatalogRow[] = [];
