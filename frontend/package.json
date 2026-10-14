@@ -33,7 +33,9 @@
     "test:kpi:deck": "node tests/kpi-deck-narrative.test.mjs",
     "test:kpi:browser": "node tests/service-kpi-browser.test.mjs",
     "test:history": "node tests/service-history-record.test.mjs",
-    "test:kpi:parts": "node tests/parts-analytics.test.mjs"
+    "test:kpi:parts": "node tests/parts-analytics.test.mjs",
+    "test:reliability:stats": "node tests/reliability-stats.test.mjs",
+    "test:reliability:analytics": "node tests/reliability-analytics.test.mjs"
   },
   "dependencies": {
     "@react-three/drei": "^10.7.7",

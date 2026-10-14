@@ -28,6 +28,7 @@ const EquipmentMonitoring = lazy(() => import('../modules/equipment-monitoring/E
 const DriPage = lazy(() => import('../modules/dri/DriPage'));
 const PermissionsAdmin = lazy(() => import('./PermissionsAdmin'));
 const AlexaPanel = lazy(() => import('./AlexaPanel'));
+const ReliabilityCenter = lazy(() => import('./ReliabilityCenter'));
 const DEFAULT_DASHBOARD_TAB: DashboardTabKey = 'tickets';
 
 type DashboardTabKey =
@@ -43,6 +44,7 @@ type DashboardTabKey =
   | 'monitoreo'
   | 'dri'
   | 'alexa'
+  | 'confiabilidad'
   | 'permisos';
 
 type DashboardTone = 'clinical' | 'environmental' | 'environmental-blue' | 'veterinary' | 'bioprocess' | 'food';
@@ -67,6 +69,7 @@ const DASHBOARD_TAB_KEYS: DashboardTabKey[] = [
   'monitoreo',
   'dri',
   'alexa',
+  'confiabilidad',
   'permisos',
 ];
 
@@ -145,6 +148,7 @@ const DashboardTabIcon = ({ name }: { name: DashboardTabKey }) => {
     equipos: '',
     dri: '',
     alexa: 'M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18zM8.5 9.5v5M12 7.5v9M15.5 9.5v5',
+    confiabilidad: 'M4 19V5M4 19h16M7 15l3-4 3 2 4-6M17 7h2v2',
     permisos: 'M6 5v14M12 5v14M18 5v14M4 9h4M10 15h4M16 11h4',
   };
   return (
@@ -198,6 +202,8 @@ export default function Dashboard({ session, initialTab }: DashboardProps) {
     ...new Set([
       ...baseAllowedTabs,
       ...(isStaffRole(userRole) ? (['alexa'] as DashboardTabKey[]) : []),
+      // Reliability intelligence is management analysis: admins only (get_reliability_lab enforces it too).
+      ...(userRole === 'admin' ? (['confiabilidad'] as DashboardTabKey[]) : []),
       ...(canManagePermissions ? (['permisos'] as DashboardTabKey[]) : []),
     ]),
   ];
@@ -216,6 +222,7 @@ export default function Dashboard({ session, initialTab }: DashboardProps) {
     { key: 'equipos', label: 'Equipos', tone: 'food' },
     { key: 'dri', label: 'DRI', tone: 'environmental-blue' },
     { key: 'alexa', label: 'Alexa', tone: 'veterinary' },
+    { key: 'confiabilidad', label: 'Confiabilidad', tone: 'clinical' },
     { key: 'permisos', label: 'Permisos', tone: 'clinical' },
   ];
   const visibleNavigationItems = navigationItems.filter((item) => canAccessTab(item.key));
@@ -519,6 +526,7 @@ export default function Dashboard({ session, initialTab }: DashboardProps) {
           {activeTab === 'equipos' && canAccessTab('equipos') && <Equipos />}
           {activeTab === 'dri' && canAccessTab('dri') && <DriPage subPermissions={getModuleSubPermissions(userAccess, 'dri')} />}
           {activeTab === 'alexa' && canAccessTab('alexa') && <AlexaPanel isAdmin={userRole === 'admin'} />}
+          {activeTab === 'confiabilidad' && canAccessTab('confiabilidad') && <ReliabilityCenter />}
           {activeTab === 'permisos' && canAccessTab('permisos') && canManagePermissions && <PermissionsAdmin />}
         </Suspense>
       </div>
