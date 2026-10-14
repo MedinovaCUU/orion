@@ -14,3 +14,15 @@ assert.equal(next.thread.find(message => message.id === 'wa-1').channel, 'whatsa
 assert.equal('channel' in next.thread.find(message => message.id === 'app-1'), false);
 assert.equal(getAdvisoryThreadMessages({ thread: [{ ...whatsapp, channel: 'sms' }] }, source)[1].channel, undefined);
 console.log('PASS: WhatsApp channel survives the app thread round trip; initial consultation still derived');
+
+// respondida_en comes back as «+00:00» while the thread keeps «.000Z»: the same reply must not be drawn twice.
+const answered = { ...source, legacyRespuestaTrainer: 'Cambia el sello', legacyRespondidaEn: '2026-10-13T10:05:00+00:00', legacyRespondidaPorNombre: 'Héctor' };
+const trainerReplies = metadata => getAdvisoryThreadMessages(metadata, answered).filter(message => message.role === 'trainer');
+assert.deepEqual(trainerReplies({ thread: [{ ...whatsapp, createdAt: '2026-10-13T10:05:00.000Z' }] }).map(message => message.id), ['wa-1']);
+// A copy saved earlier by that bug is hidden too (production advisory cbbda056, 2026-10-14).
+const stored = { id: 'legacy-trainer-response', kind: 'reply', role: 'trainer', actorId: 't1', actorName: 'Héctor', body: 'Cambia el sello', createdAt: '2026-10-13T10:05:00+00:00', attachments: [] };
+assert.deepEqual(trainerReplies({ thread: [whatsapp, stored] }).map(message => message.id), ['wa-1']);
+// A real legacy answer (no thread reply with that text) is still shown, once.
+assert.deepEqual(trainerReplies({ thread: [] }).map(message => message.id), ['legacy-trainer-response']);
+assert.deepEqual(trainerReplies({ thread: [stored] }).map(message => message.id), ['legacy-trainer-response']);
+console.log('PASS: the trainer reply copied into respuesta_trainer is not drawn twice; stored copies hidden; real legacy answers kept');

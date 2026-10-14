@@ -203,6 +203,8 @@ const sanitizeMetadata = (value: unknown): AdvisoryMetadata => {
   };
 };
 
+const LEGACY_TRAINER_ID = 'legacy-trainer-response';
+
 const buildInitialMessage = (source: AdvisoryThreadSource): AdvisoryThreadMessage => ({
   id: 'initial-consultation',
   kind: 'initial',
@@ -221,7 +223,7 @@ const buildLegacyTrainerMessage = (source: AdvisoryThreadSource): AdvisoryThread
   }
 
   return {
-    id: 'legacy-trainer-response',
+    id: LEGACY_TRAINER_ID,
     kind: 'reply',
     role: 'trainer',
     actorId: source.legacyRespondidaPorId || null,
@@ -233,9 +235,18 @@ const buildLegacyTrainerMessage = (source: AdvisoryThreadSource): AdvisoryThread
   };
 };
 
+const isTrainerReplyWithBody = (message: AdvisoryThreadMessage, body: string) =>
+  message.role === 'trainer' && message.id !== LEGACY_TRAINER_ID && message.body.trim() === body.trim();
+
 export const getAdvisoryThreadMessages = (metadataValue: unknown, source: AdvisoryThreadSource) => {
   const metadata = sanitizeMetadata(metadataValue);
-  const thread = [...(metadata.thread || [])].sort(compareMessages);
+  const sorted = [...(metadata.thread || [])].sort(compareMessages);
+  // respuesta_trainer mirrors the latest trainer reply. Its copy is only a legacy answer when no thread
+  // reply has that text: the database returns respondida_en as «…+00:00» while the thread keeps «….000Z»,
+  // so comparing timestamps as text duplicated every reply (and a later save stored the copy).
+  const thread = sorted.filter(
+    (message) => message.id !== LEGACY_TRAINER_ID || !sorted.some((other) => isTrainerReplyWithBody(other, message.body)),
+  );
 
   if (!thread.some((message) => message.kind === 'initial')) {
     thread.unshift(buildInitialMessage(source));
@@ -245,10 +256,7 @@ export const getAdvisoryThreadMessages = (metadataValue: unknown, source: Adviso
   if (
     legacyTrainerMessage &&
     !thread.some(
-      (message) =>
-        message.role === 'trainer' &&
-        message.body.trim() === legacyTrainerMessage.body.trim() &&
-        message.createdAt === legacyTrainerMessage.createdAt,
+      (message) => message.id === LEGACY_TRAINER_ID || isTrainerReplyWithBody(message, legacyTrainerMessage.body),
     )
   ) {
     thread.push(legacyTrainerMessage);

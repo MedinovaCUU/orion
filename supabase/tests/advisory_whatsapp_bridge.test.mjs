@@ -162,5 +162,23 @@ await db.exec(`reset role; reset request.jwt.claim.sub`);
 assert.ok(staffThread.messages.some(item => item.source === 'advisory' && item.kind === 'new_advisory' && item.body === 'El rotor no centra'));
 assert.ok(staffThread.messages.some(item => item.direction === 'in' && item.advisory_id === A));
 
+// 12) 20261014020000: a stored copy of the legacy answer that repeats a real reply is removed, and the
+// keep-messages trigger no longer protects derived entries (but still protects real messages).
+await db.query(`update asesorias_escaladas set metadata = jsonb_set(metadata, '{thread}', (metadata -> 'thread') || $2::jsonb) where id = $1`,
+  [A, JSON.stringify([{ id: 'legacy-trainer-response', kind: 'reply', role: 'trainer', actorId: T1, actorName: 'Héctor', body: 'Cambia el sello del rotor', createdAt: '2026-10-14T23:11:12+00:00', attachments: [] }])]);
+const queuedBefore = (await one('select count(*)::int as n from advisory_whatsapp_outbox')).n;
+await db.exec(await migration('20261014020000_advisory_thread_derived_messages.sql'));
+t = await thread(A);
+assert.equal(t.filter(item => item.id === 'legacy-trainer-response' && item.body === 'Cambia el sello del rotor').length, 0, 'stored duplicate removed');
+assert.ok(t.some(item => item.id === 'legacy-trainer-response' && item.body === 'viejo'), 'a legacy answer that repeats nothing stays');
+assert.ok(t.some(item => item.id === appended), 'the real WhatsApp reply stays');
+assert.equal((await one('select count(*)::int as n from advisory_whatsapp_outbox')).n, queuedBefore, 'cleanup queues nothing');
+await appSave(A, { id: 'initial-consultation', kind: 'initial', role: 'requester', actorId: REQ, body: 'El rotor no centra', createdAt: '2026-10-13T00:00:00.000Z', attachments: [] });
+const withoutDerived = (await thread(A)).filter(item => item.id !== 'initial-consultation' && item.id !== 'm5');
+await db.query(`update asesorias_escaladas set metadata = jsonb_set(metadata, '{thread}', $2::jsonb) where id = $1`, [A, JSON.stringify(withoutDerived)]);
+t = await thread(A);
+assert.equal(t.some(item => item.id === 'initial-consultation'), false, 'derived entry may be dropped');
+assert.ok(t.some(item => item.id === 'm5'), 'real message still protected');
+
 await db.close();
 console.log('PASS: new-advisory notices, mirror recipients (all trainers until one answers), legacy/system skipped, WhatsApp → thread (idempotent, role, service desk), stale-screen merge, context routing, customers not routed, delivery statuses, claim enrichment, access control, inbox unread and notices');
