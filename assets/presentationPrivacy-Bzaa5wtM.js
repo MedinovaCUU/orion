@@ -1,0 +1,1 @@
+var e=e=>e,t=t=>t.responsible===`Sin responsable`?t:{...t,responsible:e(t.responsible)};export{e as n,t};
