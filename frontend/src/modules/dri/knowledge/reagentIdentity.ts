@@ -385,7 +385,9 @@ export const reagentSelectionScore = (reagent: DriReagent) => {
   if (reagent.readMode) score += 20;
   if (reagent.reagentType) score += 20;
   if (reagent.reportedMethod) score += 20;
-  if (String(reagent.sourceStatus || '').toLowerCase().includes('ifu')) score += 10;
+  // «Pendiente IFU/programación» nombra el IFU pero dice que todavía no se revisó: solo suma un IFU ya analizado.
+  const sourceStatus = String(reagent.sourceStatus || '').toLowerCase();
+  if (sourceStatus.includes('ifu') && !sourceStatus.includes('pendiente')) score += 10;
   return score;
 };
 

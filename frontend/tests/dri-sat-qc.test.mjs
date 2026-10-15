@@ -116,6 +116,17 @@ try {
     assert.ok(waiting.notes.some((note) => /servicio de controles los extrae/.test(note)));
   });
 
+  check('a duplicate «Pendiente IFU» entry does not outrank the one whose IFU was analyzed', () => {
+    const catalog = enrich(orders.reversed);
+    const byId = new Map(catalog.reagents.map((reagent) => [reagent.id, reagent]));
+    assert.equal(byId.get('CREA_JAFFE').sourceStatus, 'Pendiente IFU/programación');
+    assert.ok(reagentSelectionScore(byId.get('CREATININA')) > reagentSelectionScore(byId.get('CREA_JAFFE')));
+    assert.ok(reagentSelectionScore(byId.get('BILIRRUBIN')) > reagentSelectionScore(byId.get('BIL_T')));
+    const visible = visibleIds(catalog);
+    assert.ok(visible.has('CREATININA') && !visible.has('CREA_JAFFE'));
+    assert.ok(visible.has('BILIRRUBIN') && !visible.has('BIL_T'));
+  });
+
   console.log(JSON.stringify({ checks: checks.length, passed: checks }, null, 2));
 } finally {
   await vite.close();
