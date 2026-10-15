@@ -11892,7 +11892,8 @@ const reagentSelectionScore = (reagent) => {
 	if (reagent.readMode) score += 20;
 	if (reagent.reagentType) score += 20;
 	if (reagent.reportedMethod) score += 20;
-	if (String(reagent.sourceStatus || "").toLowerCase().includes("ifu")) score += 10;
+	const sourceStatus = String(reagent.sourceStatus || "").toLowerCase();
+	if (sourceStatus.includes("ifu") && !sourceStatus.includes("pendiente")) score += 10;
 	return score;
 };
 const pickRepresentativeReagent = (reagents) => [...reagents].sort((left, right) => reagentSelectionScore(right) - reagentSelectionScore(left) || left.id.localeCompare(right.id))[0] || null;
