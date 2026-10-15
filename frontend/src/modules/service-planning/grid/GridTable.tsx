@@ -16,6 +16,8 @@ const WEEK_HEIGHT = 38;
 const HEADER_HEIGHT = 34;
 const ROW_HEAD_WIDTH = 48;
 const OVERSCAN = 10;
+// How the spare width is shared when the table is wider than its columns.
+const GROW: Record<string, number> = { locality: 3, observations: 4, companions: 1, engineer: 0.7, platform: 0.4, statuses: 0.6 };
 
 interface CellRef {
   rowKey: string;
@@ -49,7 +51,8 @@ interface GridTableProps {
   parseContext: ParseContext;
   focusRequest: { rowKey: string; nonce: number } | null;
   onToggleWeek: (weekStart: string) => void;
-  onColumnResize: (colId: string, width: number) => void;
+  /** null returns the column to its automatic width. */
+  onColumnResize: (colId: string, width: number | null) => void;
   onColumnMove: (colId: string, beforeColId: string | null) => void;
   onHeaderMenu: (colId: string, x: number, y: number) => void;
   onRowMenu: (request: GridMenuRequest) => void;
@@ -285,7 +288,7 @@ export default function GridTable({
   const [anchor, setAnchor] = useState<CellRef | null>(null);
   const [rowMode, setRowMode] = useState(false);
   const [editing, setEditing] = useState<{ rowKey: string; colId: string; initialText: string | null } | null>(null);
-  const [viewport, setViewport] = useState({ top: 0, height: 600 });
+  const [viewport, setViewport] = useState({ top: 0, height: 600, width: 0 });
   const [drag, setDrag] = useState<{ keys: string[]; overKey: string | null; position: 'before' | 'after' } | null>(null);
   const selecting = useRef(false);
 
@@ -304,17 +307,37 @@ export default function GridTable({
     return list;
   }, [rows]);
   const totalHeight = offsets[offsets.length - 1] || 0;
+  // Columns fill the available width: the extra space goes mostly to the text columns that get cut
+  // (place, notes), never to a column the user sized by hand.
+  const columnWidths = useMemo(() => {
+    const base = columns.map((column) => widths[column.id] || column.width);
+    const extra = viewport.width - ROW_HEAD_WIDTH - base.reduce((sum, width) => sum + width, 0);
+    if (extra <= 0) return base;
+    const weights = columns.map((column) => (widths[column.id] ? 0 : GROW[column.id] ?? (column.id.startsWith('custom:') ? 1 : 0)));
+    let total = weights.reduce((sum, weight) => sum + weight, 0);
+    if (!total) {
+      weights[weights.length - 1] = 1;
+      total = 1;
+    }
+    const shares = weights.map((weight) => Math.floor((extra * weight) / total));
+    // Rounding leftovers go to the column that grows the most, so the right edge meets the border.
+    const widest = weights.indexOf(Math.max(...weights));
+    shares[widest] += extra - shares.reduce((sum, share) => sum + share, 0);
+    return base.map((width, index) => width + shares[index]);
+  }, [columns, viewport.width, widths]);
+  const widthAt = (index: number) => columnWidths[index] ?? columns[index]?.width ?? 0;
+
   const pinOffsets = useMemo(() => {
     const list: number[] = [];
     let x = ROW_HEAD_WIDTH;
-    columns.forEach((column, index) => {
+    columnWidths.forEach((width, index) => {
       list.push(index < pinnedCount ? x : 0);
-      if (index < pinnedCount) x += widths[column.id] || column.width;
+      if (index < pinnedCount) x += width;
     });
     return list;
-  }, [columns, pinnedCount, widths]);
-  const template = useMemo(() => `${ROW_HEAD_WIDTH}px ${columns.map((column) => `${widths[column.id] || column.width}px`).join(' ')}`, [columns, widths]);
-  const totalWidth = useMemo(() => ROW_HEAD_WIDTH + columns.reduce((sum, column) => sum + (widths[column.id] || column.width), 0), [columns, widths]);
+  }, [columnWidths, pinnedCount]);
+  const template = useMemo(() => `${ROW_HEAD_WIDTH}px ${columnWidths.map((width) => `${width}px`).join(' ')}`, [columnWidths]);
+  const totalWidth = useMemo(() => ROW_HEAD_WIDTH + columnWidths.reduce((sum, width) => sum + width, 0), [columnWidths]);
 
   const visible = useMemo(() => {
     const top = Math.max(0, viewport.top - HEADER_HEIGHT);
@@ -334,7 +357,7 @@ export default function GridTable({
   useLayoutEffect(() => {
     const element = scrollRef.current;
     if (!element) return;
-    const update = () => setViewport({ top: element.scrollTop, height: element.clientHeight });
+    const update = () => setViewport({ top: element.scrollTop, height: element.clientHeight, width: element.clientWidth });
     update();
     let frame = 0;
     const onScroll = () => {
@@ -401,15 +424,15 @@ export default function GridTable({
       if (colId) {
         const index = colIndex.get(colId);
         if (index !== undefined && index >= pinnedCount) {
-          const pinnedWidth = pinOffsets[pinnedCount - 1] !== undefined && pinnedCount > 0 ? pinOffsets[pinnedCount - 1] + (widths[columns[pinnedCount - 1].id] || columns[pinnedCount - 1].width) : ROW_HEAD_WIDTH;
-          const left = ROW_HEAD_WIDTH + columns.slice(0, index).reduce((sum, column) => sum + (widths[column.id] || column.width), 0);
-          const right = left + (widths[columns[index].id] || columns[index].width);
+          const pinnedWidth = pinOffsets[pinnedCount - 1] !== undefined && pinnedCount > 0 ? pinOffsets[pinnedCount - 1] + columnWidths[pinnedCount - 1] : ROW_HEAD_WIDTH;
+          const left = ROW_HEAD_WIDTH + columnWidths.slice(0, index).reduce((sum, width) => sum + width, 0);
+          const right = left + columnWidths[index];
           if (left < element.scrollLeft + pinnedWidth) element.scrollLeft = left - pinnedWidth;
           else if (right > element.scrollLeft + element.clientWidth) element.scrollLeft = right - element.clientWidth + 4;
         }
       }
     },
-    [colIndex, columns, offsets, pinOffsets, pinnedCount, rows, widths],
+    [colIndex, columnWidths, offsets, pinOffsets, pinnedCount, rows],
   );
 
   const commitDraftIfLeaving = useCallback(
@@ -951,7 +974,7 @@ export default function GridTable({
     event.preventDefault();
     event.stopPropagation();
     const startX = event.clientX;
-    const startWidth = widths[column.id] || column.width;
+    const startWidth = widthAt(colIndex.get(column.id) ?? 0);
     const onMove = (moveEvent: MouseEvent) => onColumnResize(column.id, Math.max(56, Math.min(640, startWidth + moveEvent.clientX - startX)));
     const onUp = () => {
       window.removeEventListener('mousemove', onMove);
@@ -1146,7 +1169,7 @@ export default function GridTable({
               aria-label={`Ajustar ancho de ${column.label}`}
               onPointerDown={(event) => event.stopPropagation()}
               onMouseDown={(event) => startResize(event, column)}
-              onDoubleClick={() => onColumnResize(column.id, column.width)}
+              onDoubleClick={() => onColumnResize(column.id, null)}
             />
           </div>
         ))}

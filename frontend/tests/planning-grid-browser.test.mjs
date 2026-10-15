@@ -148,6 +148,20 @@ try {
   if (run('columns')) {
     const page = await open();
     const before = JSON.stringify(await rows(page));
+    // No wasted space: the columns fill the table's width, at any window size.
+    const fill = () => page.evaluate(() => {
+      const scroll = document.querySelector('.pgrid-scroll');
+      return { header: document.querySelector('.pgrid-header').getBoundingClientRect().width, client: scroll.clientWidth };
+    });
+    for (const width of [1500, 1900]) {
+      await page.setViewportSize({ width, height: 950 });
+      await page.waitForTimeout(150);
+      const { header: used, client } = await fill();
+      assert.ok(used >= client - 2, `no empty space at ${width}px (${used} of ${client})`);
+    }
+    await page.screenshot({ path: path.join(SHOTS, '5-fill-1900.png') });
+    await page.setViewportSize({ width: 1500, height: 950 });
+    await page.waitForTimeout(150);
     const header = page.locator('.pgrid-header__cell', { hasText: 'Plataforma' });
     const box = await header.boundingBox();
     const handle = header.locator('.pgrid-header__resize');

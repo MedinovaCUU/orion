@@ -622,7 +622,11 @@ export default function PlanningGrid(props: PlanningGridProps) {
                 return next;
               })
             }
-            onColumnResize={(id, width) => updateSettings({ columnWidths: { ...widths, [id]: Math.round(width) } })}
+            onColumnResize={(id, width) =>
+              updateSettings({
+                columnWidths: width === null ? Object.fromEntries(Object.entries(widths).filter(([key]) => key !== id)) : { ...widths, [id]: Math.round(width) },
+              })
+            }
             onColumnMove={(id, beforeId) => {
               const order = orderedColumns.map((column) => column.id).filter((entry) => entry !== id);
               const at = beforeId ? order.indexOf(beforeId) : order.length;
