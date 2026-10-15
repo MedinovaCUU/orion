@@ -2076,3 +2076,211 @@
   color: var(--text-primary);
   box-shadow: 0 1px 4px rgba(23, 32, 43, 0.12);
 }
+
+/* ----- approval flow ----- */
+.pgrid-banner--info {
+  border-color: rgba(var(--environmental-blue-rgb), 0.35);
+  background: rgba(var(--environmental-blue-rgb), 0.08);
+  color: var(--text-secondary);
+}
+
+.pgrid-cell.is-proposed {
+  background: rgba(var(--environmental-blue-rgb), 0.1);
+  box-shadow: inset 0 0 0 1px rgba(var(--environmental-blue-rgb), 0.55);
+  outline: 1px dashed rgba(var(--environmental-blue-rgb), 0.7);
+  outline-offset: -4px;
+}
+
+.pgrid-row--proposal .pgrid-cell,
+.pgrid-row--proposal .pgrid-rowhead {
+  background: repeating-linear-gradient(135deg, rgba(var(--environmental-blue-rgb), 0.07) 0 8px, rgba(var(--environmental-blue-rgb), 0.03) 8px 16px);
+}
+
+.pgrid-row--proposal .pgrid-text,
+.pgrid-row--proposal .pgrid-type {
+  color: var(--text-secondary);
+}
+
+.pgrid-row.is-delete-pending .pgrid-text,
+.pgrid-row.is-delete-pending .pgrid-type {
+  text-decoration: line-through;
+  color: var(--text-tertiary);
+}
+
+.pgrid-dot--proposed {
+  background: transparent;
+  box-shadow: 0 0 0 2px var(--environmental-blue);
+}
+
+.pgrid-approvals-chip {
+  min-height: 26px;
+  padding: 0.15rem 0.65rem;
+  border-radius: 999px;
+  border: 1px solid rgba(var(--environmental-blue-rgb), 0.45);
+  background: rgba(var(--environmental-blue-rgb), 0.1);
+  color: var(--text-primary);
+  font-size: 0.74rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.pgrid-approvals-chip.is-alert {
+  border-color: rgba(var(--brand-red-rgb), 0.35);
+  background: rgba(var(--brand-red-rgb), 0.1);
+  color: var(--brand-red-ink);
+}
+
+.pgrid-approvals__all {
+  margin: 0.6rem 0 0.2rem;
+  align-self: flex-start;
+}
+
+.pgrid-approvals__list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.pgrid-approvals__item {
+  padding: 0.65rem 0;
+  border-bottom: 1px solid var(--pgrid-line);
+  font-size: 0.8rem;
+}
+
+.pgrid-approvals__item header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.4rem 0.6rem;
+  padding: 0;
+  border: 0;
+}
+
+.pgrid-approvals__item time {
+  color: var(--pgrid-faint);
+  font-size: 0.72rem;
+}
+
+.pgrid-approvals__status {
+  margin-left: auto;
+  padding: 0.02rem 0.45rem;
+  border-radius: 999px;
+  font-size: 0.68rem;
+  font-weight: 700;
+  background: rgba(var(--environmental-blue-rgb), 0.14);
+}
+
+.pgrid-approvals__status.is-approved {
+  background: rgba(var(--food-rgb), 0.16);
+  color: #1f7f63;
+}
+
+.pgrid-approvals__status.is-rejected,
+.pgrid-approvals__status.is-failed {
+  background: rgba(var(--brand-red-rgb), 0.1);
+  color: var(--brand-red-ink);
+}
+
+.pgrid-approvals__status.is-cancelled {
+  background: rgba(124, 136, 149, 0.14);
+  color: var(--text-secondary);
+}
+
+.pgrid-approvals__target {
+  margin: 0.2rem 0 0.25rem;
+  color: var(--text-secondary);
+  font-size: 0.74rem;
+}
+
+.pgrid-approvals__lines {
+  margin: 0;
+  padding-left: 1rem;
+  display: grid;
+  gap: 0.1rem;
+}
+
+.pgrid-approvals__warn {
+  margin: 0.3rem 0 0;
+  color: #7a5212;
+  font-size: 0.74rem;
+}
+
+.pgrid-approvals__decision {
+  margin: 0.3rem 0 0;
+  color: var(--text-tertiary);
+  font-size: 0.74rem;
+}
+
+.pgrid-approvals__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.6rem;
+  margin-top: 0.45rem;
+}
+
+.pgrid-approvals__actions > span {
+  flex: 1;
+}
+
+.pgrid-approvals__reject {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.pgrid-approvals__reject input {
+  height: 28px;
+  min-width: 160px;
+  padding: 0 0.5rem;
+  border-radius: 8px;
+  border: 1px solid rgba(124, 136, 149, 0.28);
+  font: inherit;
+  font-size: 0.78rem;
+}
+
+.pgrid-approvals__toggle {
+  margin-top: 0.6rem;
+  align-self: flex-start;
+}
+
+.pgrid-cal__chip.is-proposed,
+.pgrid-cal__chip.is-proposal {
+  border-style: dashed;
+  border-left-style: solid;
+  background: rgba(var(--environmental-blue-rgb), 0.08);
+}
+
+.pgrid-cal__chip.is-proposal {
+  cursor: default;
+}
+
+.pgrid-cal__away.is-proposed,
+.pgrid-week__away.is-proposed {
+  outline: 1px dashed rgba(var(--environmental-blue-rgb), 0.8);
+  outline-offset: -1px;
+}
+
+.pgrid-cal__away.is-proposed-delete,
+.pgrid-week__away.is-proposed-delete {
+  text-decoration: line-through;
+}
+
+.pgrid-history__requests {
+  margin-top: 0.8rem;
+  padding-top: 0.6rem;
+  border-top: 1px solid var(--pgrid-line);
+}
+
+.pgrid-history__requests small {
+  color: var(--pgrid-faint);
+  font-size: 0.72rem;
+}
+
+.pgrid-approvals__lines li {
+  display: list-item;
+  padding: 0;
+  border: 0;
+  font-size: 0.78rem;
+}

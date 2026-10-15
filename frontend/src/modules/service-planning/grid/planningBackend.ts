@@ -1,4 +1,5 @@
 import type { AbsenceInput, PlanningAbsence } from './planningAbsences';
+import type { ApprovalContext, ChangeRequest, ChangeRequestStatus, NewChangeRequest } from './planningApprovals';
 import type { PlanningTicketRow, TicketWritePayload } from './planningRecord';
 
 // Everything the grid needs from storage. The Supabase implementation talks to the real tables; tests use an
@@ -70,7 +71,7 @@ export interface SavedViewConfig {
 
 export interface PlanningBackend {
   /** Versions are enforced by the database (false while its migration is not applied). */
-  readonly capabilities: { versioning: boolean; history: boolean; realtime: boolean; customColumns: boolean; sharedSettings: boolean; absences: boolean };
+  readonly capabilities: { versioning: boolean; history: boolean; realtime: boolean; customColumns: boolean; sharedSettings: boolean; absences: boolean; approvals: boolean };
   loadAll(): Promise<PlanningTicketRow[]>;
   loadByIds(ids: string[]): Promise<PlanningTicketRow[]>;
   update(id: string, expectedVersion: number | null, payload: TicketWritePayload): Promise<UpdateResult>;
@@ -85,6 +86,15 @@ export interface PlanningBackend {
   deleteAbsence(id: string): Promise<void>;
   /** Calls back when someone adds, changes or removes an absence. */
   subscribeAbsences(onChange: () => void): () => void;
+  /** Who approves planning changes and whether this user is one of them. */
+  loadApprovalContext(): Promise<ApprovalContext>;
+  /** Pending requests plus the ones decided in the last weeks (an approver sees everyone's, others their own). */
+  listRequests(): Promise<ChangeRequest[]>;
+  requestsForTicket(ticketId: string): Promise<ChangeRequest[]>;
+  /** Creates a request, or updates the user's own pending one when `id` is given. */
+  saveRequest(request: NewChangeRequest): Promise<ChangeRequest>;
+  reviewRequest(id: string, status: ChangeRequestStatus, options: { reviewedByName: string; note?: string; appliedResult?: Record<string, unknown> }): Promise<ChangeRequest>;
+  subscribeRequests(onChange: () => void): () => void;
   listCustomColumns(): Promise<CustomColumn[]>;
   saveCustomColumn(column: Omit<CustomColumn, 'id' | 'archivedAt'> & { id?: string }): Promise<CustomColumn>;
   archiveCustomColumn(id: string): Promise<void>;

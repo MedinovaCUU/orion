@@ -5,6 +5,7 @@ import { formatPlanningPersonName } from '../helpers/normalizeService';
 import AbsencePopover from './AbsencePopover';
 import CalendarEventPopover from './CalendarEventPopover';
 import { absenceTitle, ABSENCE_SHORT, overlaps, type AbsenceInput, type PlanningAbsence } from './planningAbsences';
+import type { ChangeRequest } from './planningApprovals';
 import { TYPE_LABELS, type OptionsSource } from './planningColumns';
 import { emptyValues, type PlanningField, type PlanningRecord, type PlanningValues } from './planningRecord';
 import { addDays, fromIsoDate, mondayOf, type PlanningWeek } from './planningWeeks';
@@ -43,6 +44,9 @@ interface CalendarProps {
   onOpenInTable: (id: string) => void;
   onNotify: (tone: 'info' | 'error', text: string) => void;
   absences: PlanningAbsence[];
+  /** New activities the user proposed (waiting for approval) and activities with a proposed change. */
+  proposals: Array<{ request: ChangeRequest; week: PlanningWeek; values: PlanningValues }>;
+  proposedIds: Set<string>;
   onSaveAbsence: (input: AbsenceInput & { id?: string }) => void;
   onDeleteAbsence: (id: string) => void;
 }
@@ -61,7 +65,7 @@ const changedFields = (before: PlanningValues, after: PlanningValues) => {
   return changes;
 };
 
-export default function PlanningCalendar({ month, weeks, items, today, canEdit, options, profiles, onCreate, onUpdate, onMoveToDay, onMoveToWeek, onDelete, onOpenInTable, onNotify, absences, onSaveAbsence, onDeleteAbsence }: CalendarProps) {
+export default function PlanningCalendar({ month, weeks, items, today, canEdit, options, profiles, onCreate, onUpdate, onMoveToDay, onMoveToWeek, onDelete, onOpenInTable, onNotify, absences, proposals, proposedIds, onSaveAbsence, onDeleteAbsence }: CalendarProps) {
   const [popover, setPopover] = useState<Popover | null>(null);
   const [selected, setSelected] = useState<string | null>(null);
   const [dragging, setDragging] = useState<string | null>(null);
@@ -73,15 +77,23 @@ export default function PlanningCalendar({ month, weeks, items, today, canEdit, 
         const days = Array.from({ length: 7 }, (_, offset) => addDays(mondayOf(week.start), offset));
         const byDay = new Map<string, Item[]>();
         const undated: Item[] = [];
+        const proposedByDay = new Map<string, typeof proposals>();
+        const proposedUndated: typeof proposals = [];
+        for (const proposal of proposals) {
+          if (proposal.week.start !== week.start) continue;
+          const day = proposal.values.scheduledDate;
+          if (day && days.includes(day)) proposedByDay.set(day, [...(proposedByDay.get(day) || []), proposal]);
+          else proposedUndated.push(proposal);
+        }
         for (const item of items) {
           if (item.record.week.start !== week.start) continue;
           const dates = activityDays(item.record, item.values).filter((date) => days.includes(date));
           if (!dates.length) undated.push(item);
           dates.forEach((date) => byDay.set(date, [...(byDay.get(date) || []), item]));
         }
-        return { week, days, byDay, undated };
+        return { week, days, byDay, undated, proposedByDay, proposedUndated };
       }),
-    [items, weeks],
+    [items, proposals, weeks],
   );
   const byId = useMemo(() => new Map(items.map((item) => [item.record.id, item])), [items]);
   const editing = popover?.mode === 'edit' ? byId.get(popover.id) || null : null;
@@ -150,6 +162,7 @@ export default function PlanningCalendar({ month, weeks, items, today, canEdit, 
           `pgrid-cal__chip--${TYPE_CLASS[values.serviceType] || ''}`,
           done ? 'is-done' : '',
           selected === record.id ? 'is-selected' : '',
+          proposedIds.has(record.id) ? 'is-proposed' : '',
           dragging === record.id ? 'is-dragging' : '',
         ].filter(Boolean).join(' ')}
         onClick={() => setSelected(record.id)}
@@ -179,6 +192,17 @@ export default function PlanningCalendar({ month, weeks, items, today, canEdit, 
     );
   };
 
+  const proposedChip = (proposal: { request: ChangeRequest; values: PlanningValues }, key: string) => (
+    <span
+      key={key}
+      className={`pgrid-cal__chip pgrid-cal__chip--${TYPE_CLASS[proposal.values.serviceType] || ''} is-proposal`}
+      title="Actividad nueva pendiente de aprobación"
+    >
+      <strong>{proposal.values.platform || TYPE_LABELS[proposal.values.serviceType]} · por aprobar</strong>
+      <span>{proposal.values.locality}</span>
+    </span>
+  );
+
   const ghost = (slot: string) =>
     popover?.mode === 'new' && popover.slot === slot ? (
       <span className="pgrid-cal__chip pgrid-cal__chip--ghost" aria-hidden="true">
@@ -194,7 +218,7 @@ export default function PlanningCalendar({ month, weeks, items, today, canEdit, 
           <span key={name} role="columnheader">{name}</span>
         ))}
       </div>
-      {lanes.map(({ week, days, byDay, undated }) => {
+      {lanes.map(({ week, days, byDay, undated, proposedByDay, proposedUndated }) => {
         const undatedSlot = `undated:${week.start}`;
         return (
           <div key={week.start} className="pgrid-cal__week" role="row">
@@ -211,6 +235,7 @@ export default function PlanningCalendar({ month, weeks, items, today, canEdit, 
               <div className="pgrid-cal__undated">
                 <small>{undated.length ? `Sin día (${undated.length})` : canEdit ? 'Sin día' : ''}</small>
                 {undated.map((item) => chip(item, `u-${item.record.id}`))}
+                {proposedUndated.map((proposal) => proposedChip(proposal, `pu-${proposal.request.id}`))}
                 {ghost(undatedSlot)}
               </div>
             </div>
@@ -237,7 +262,7 @@ export default function PlanningCalendar({ month, weeks, items, today, canEdit, 
                   <button
                     key={`${day}-${absence.id}`}
                     type="button"
-                    className={`pgrid-cal__away pgrid-cal__away--${absence.kind.toLowerCase()}`}
+                    className={`pgrid-cal__away pgrid-cal__away--${absence.kind.toLowerCase()} ${absence.proposal ? `is-proposed is-proposed-${absence.proposal}` : ''}`}
                     title={`${absenceTitle(absence)}${canEdit ? '\nDoble clic para ver o cambiar' : ''}`}
                     onDoubleClick={(event) => {
                       setSelected(null);
@@ -253,6 +278,7 @@ export default function PlanningCalendar({ month, weeks, items, today, canEdit, 
                   </button>
                 ))}
                 {(byDay.get(day) || []).map((item) => chip(item, `${day}-${item.record.id}`))}
+                {(proposedByDay.get(day) || []).map((proposal) => proposedChip(proposal, `p-${proposal.request.id}`))}
                 {ghost(day)}
               </div>
             ))}

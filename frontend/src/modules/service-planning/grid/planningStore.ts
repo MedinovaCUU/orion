@@ -1,5 +1,6 @@
 import type { PlanningBackend } from './planningBackend';
-import type { AbsenceInput, PlanningAbsence } from './planningAbsences';
+import { describeAbsenceInput, mergeUpdatePayload, notifiedApproverName, recordLabel, describeUpdate, describeInsert, toPatch, updatePayload, STATUS_TEXT, type ApprovalContext, type ChangeRequest, type UpdatePayload } from './planningApprovals';
+import { describeAbsence, type AbsenceInput, type PlanningAbsence } from './planningAbsences';
 import {
   applyPatchToValues,
   buildInsertPayload,
@@ -69,6 +70,8 @@ export interface PlanningSnapshot {
   remoteChangedIds: Set<string>;
   canUndo: boolean;
   absences: PlanningAbsence[];
+  approval: ApprovalContext;
+  requests: ChangeRequest[];
 }
 
 type UndoEntry =
@@ -96,6 +99,8 @@ export class PlanningStore {
     remoteChangedIds: new Set(),
     canUndo: false,
     absences: [],
+    approval: { enabled: false, isApprover: true, approvers: [] },
+    requests: [],
   };
   private listeners = new Set<() => void>();
   private timers = new Map<string, ReturnType<typeof setTimeout>>();
@@ -108,6 +113,9 @@ export class PlanningStore {
   private unsubscribeAbsences: (() => void) | null = null;
   private absenceTimer: ReturnType<typeof setTimeout> | null = null;
   private tempCounter = 0;
+  private unsubscribeRequests: (() => void) | null = null;
+  private requestTimer: ReturnType<typeof setTimeout> | null = null;
+  private requestsLoaded = false;
   private changeListeners = new Set<() => void>();
   readonly backend: PlanningBackend;
   private ctx: PlanningContext;
@@ -163,12 +171,223 @@ export class PlanningStore {
     }
     if (!this.unsubscribe) this.unsubscribe = this.backend.subscribe((ids) => this.queueRemote(ids));
     await this.loadAbsences();
+    await this.loadApprovals();
     if (!this.unsubscribeAbsences) {
       this.unsubscribeAbsences = this.backend.subscribeAbsences(() => {
         if (this.absenceTimer) clearTimeout(this.absenceTimer);
         this.absenceTimer = setTimeout(() => void this.loadAbsences(), 250);
       });
     }
+  }
+
+  // ----- change requests (approval flow) -----
+  /** Only approvers save directly; everyone else's changes become requests. */
+  get proposing() {
+    return this.snapshot.approval.enabled && !this.snapshot.approval.isApprover;
+  }
+
+  async loadApprovals() {
+    try {
+      const approval = await this.backend.loadApprovalContext();
+      this.set({ approval });
+      await this.loadRequests();
+    } catch {
+      // Without the approval tables everybody keeps editing as before.
+    }
+    if (!this.unsubscribeRequests) {
+      this.unsubscribeRequests = this.backend.subscribeRequests(() => {
+        if (this.requestTimer) clearTimeout(this.requestTimer);
+        this.requestTimer = setTimeout(() => void this.loadRequests(), 250);
+      });
+    }
+  }
+
+  async loadRequests() {
+    if (!this.snapshot.approval.enabled) return;
+    let requests: ChangeRequest[];
+    try {
+      requests = await this.backend.listRequests();
+    } catch {
+      return;
+    }
+    const previous = new Map(this.snapshot.requests.map((request) => [request.id, request]));
+    if (this.requestsLoaded) this.announceRequestChanges(previous, requests);
+    this.requestsLoaded = true;
+    this.set({ requests });
+    this.requestsChanged();
+  }
+
+  /** Lets the rest of the app (the tab badge) refresh its count. */
+  private requestsChanged() {
+    if (typeof window !== 'undefined') window.dispatchEvent(new Event('planning-requests-changed'));
+  }
+
+  private announceRequestChanges(previous: Map<string, ChangeRequest>, next: ChangeRequest[]) {
+    const me = this.ctx.actorId || null;
+    const myApprover = this.snapshot.approval.approvers.find((approver) => approver.userId === me);
+    for (const request of next) {
+      const before = previous.get(request.id);
+      const mine = (Boolean(me) && request.requestedBy === me) || request.requestedByName === this.ctx.actorName;
+      if (mine && before?.status === 'pending' && request.status !== 'pending' && request.status !== 'cancelled') {
+        const who = request.reviewedByName || 'Quien aprueba';
+        this.notify(request.status === 'approved' ? 'info' : 'error', `${who}: ${STATUS_TEXT[request.status].toLowerCase()} — ${request.summary}${request.reviewNote ? ` («${request.reviewNote}»)` : ''}`);
+      }
+      // Approvers who get notifications hear about new requests while they have the planning open.
+      if (!before && !mine && request.status === 'pending' && this.snapshot.approval.isApprover && myApprover?.notify) {
+        this.notify('info', `Nueva solicitud de ${request.requestedByName}: ${request.summary}`);
+      }
+    }
+  }
+
+  /** The current user's pending request of a kind on a ticket. */
+  private ownPending(kind: ChangeRequest['kind'], ticketId: string) {
+    return this.snapshot.requests.find((request) => request.kind === kind && request.ticketId === ticketId && request.status === 'pending' && (request.requestedBy === (this.ctx.actorId || null) || request.requestedByName === this.ctx.actorName));
+  }
+
+  private ownPendingUpdate(ticketId: string): UpdatePayload | null {
+    if (!this.proposing) return null;
+    const request = this.ownPending('update', ticketId);
+    return request ? updatePayload(request) : null;
+  }
+
+  isPendingDelete(ticketId: string) {
+    return this.proposing && Boolean(this.ownPending('delete', ticketId));
+  }
+
+  private upsertRequestLocally(request: ChangeRequest) {
+    this.set({ requests: [request, ...this.snapshot.requests.filter((entry) => entry.id !== request.id)] });
+    this.requestsChanged();
+  }
+
+  private async submitRequest(request: Parameters<PlanningBackend['saveRequest']>[0]) {
+    const first = !this.snapshot.requests.some((entry) => entry.status === 'pending' && entry.requestedByName === this.ctx.actorName);
+    const saved = await this.backend.saveRequest(request);
+    this.upsertRequestLocally(saved);
+    if (first) this.notify('info', `Tu cambio quedó pendiente de aprobación de ${notifiedApproverName(this.snapshot.approval)}.`);
+    return saved;
+  }
+
+  /** The requester withdraws a pending request. */
+  async cancelRequest(id: string) {
+    try {
+      const saved = await this.backend.reviewRequest(id, 'cancelled', { reviewedByName: this.ctx.actorName });
+      this.upsertRequestLocally(saved);
+    } catch (error) {
+      this.notify('error', error instanceof Error ? error.message : 'No se pudo cancelar la solicitud.');
+    }
+  }
+
+  /** Approver: applies the request on top of the current data, then records the decision. */
+  async approveRequest(request: ChangeRequest, note = '') {
+    let appliedResult: Record<string, unknown> = {};
+    const evidence = { last_request_id: request.id, last_request_by: request.requestedByName, last_request_approved_by: this.ctx.actorName };
+    try {
+      if (request.kind === 'update') {
+        if (!request.ticketId) throw new Error('La solicitud no indica la actividad.');
+        const version = await this.applyNow(request.ticketId, toPatch(updatePayload(request)), evidence);
+        appliedResult = { ticket_id: request.ticketId, version };
+      } else if (request.kind === 'insert') {
+        const payload = request.payload as { week: PlanningWeek; values: PlanningValues };
+        const ids = await this.insertValues([{ week: payload.week, values: payload.values, meta: { requested_by_name: request.requestedByName, approved_by_name: this.ctx.actorName, approved_request_id: request.id } }], [], { recordUndo: false });
+        if (!ids.length) throw new Error('No se pudo crear la actividad.');
+        appliedResult = { ticket_id: ids[0] };
+      } else if (request.kind === 'delete') {
+        if (!request.ticketId) throw new Error('La solicitud no indica la actividad.');
+        if (this.snapshot.records.has(request.ticketId)) {
+          const before = this.snapshot.records.size;
+          await this.remove([request.ticketId], { recordUndo: false });
+          if (this.snapshot.records.size === before) throw new Error('No se pudo eliminar.');
+        }
+        appliedResult = { ticket_id: request.ticketId, deleted: true };
+      } else if (request.kind === 'absence_insert' || request.kind === 'absence_update') {
+        const input = (request.payload as { input: AbsenceInput }).input;
+        const saved = await this.saveAbsence({ ...input, id: request.kind === 'absence_update' ? request.absenceId || undefined : undefined }, { recordUndo: false });
+        if (!saved) throw new Error('No se pudo guardar la ausencia.');
+        appliedResult = { absence_id: saved.id };
+      } else if (request.kind === 'absence_delete') {
+        if (request.absenceId) await this.deleteAbsence(request.absenceId, { recordUndo: false });
+        appliedResult = { absence_id: request.absenceId, deleted: true };
+      }
+    } catch (error) {
+      const message = error instanceof Error ? error.message : 'No se pudo aplicar.';
+      await this.decide(request, 'failed', message);
+      this.notify('error', `No se pudo aplicar la solicitud de ${request.requestedByName}: ${message}`);
+      return false;
+    }
+    await this.decide(request, 'approved', note, appliedResult);
+    return true;
+  }
+
+  async rejectRequest(request: ChangeRequest, note = '') {
+    await this.decide(request, 'rejected', note);
+  }
+
+  async retryRequest(request: ChangeRequest) {
+    await this.decide(request, 'pending', '');
+  }
+
+  private async decide(request: ChangeRequest, status: ChangeRequest['status'], note: string, appliedResult?: Record<string, unknown>) {
+    try {
+      const saved = await this.backend.reviewRequest(request.id, status, { reviewedByName: this.ctx.actorName, note, appliedResult });
+      this.upsertRequestLocally(saved);
+    } catch (error) {
+      this.notify('error', error instanceof Error ? `No se registró la decisión: ${error.message}` : 'No se registró la decisión.');
+    }
+  }
+
+  /** Saves a patch right away over the latest version (approvers applying a request). */
+  private async applyNow(id: string, patch: PlanningPatch, extraMeta: Record<string, unknown>) {
+    for (let attempt = 0; attempt < 2; attempt += 1) {
+      let record = this.snapshot.records.get(id);
+      if (!record || attempt > 0) {
+        const [row] = await this.backend.loadByIds([id]);
+        if (!row) throw new Error('La actividad ya no existe.');
+        record = this.toRecord(row);
+      }
+      const payload = buildUpdatePayload(record, patch, this.ctx, extraMeta);
+      const result = await this.backend.update(id, record.version, payload);
+      if (result.status === 'ok') {
+        const records = new Map(this.snapshot.records);
+        records.set(id, this.toRecord(result.row));
+        this.set({ records, lastSavedAt: new Date().toISOString() });
+        this.persisted();
+        return result.row.planning_version ?? null;
+      }
+      if (result.status !== 'conflict') throw new Error(result.status === 'deleted' ? 'La actividad ya no existe.' : result.message);
+    }
+    throw new Error('La actividad cambió mientras se aplicaba; intenta de nuevo.');
+  }
+
+  /** Proposed absences of the current user, to show them as "por aprobar". */
+  proposedAbsences(): Array<PlanningAbsence & { proposal: 'insert' | 'update' | 'delete'; requestId: string }> {
+    if (!this.proposing) return [];
+    const mine = this.snapshot.requests.filter((request) => request.status === 'pending' && request.kind.startsWith('absence_') && (request.requestedBy === (this.ctx.actorId || null) || request.requestedByName === this.ctx.actorName));
+    return mine.flatMap((request) => {
+      const input = (request.payload as { input?: AbsenceInput }).input;
+      const original = request.absenceId ? this.snapshot.absences.find((absence) => absence.id === request.absenceId) : null;
+      const base = original || null;
+      const shown = input && request.kind !== 'absence_delete' ? input : base;
+      if (!shown) return [];
+      return [{
+        id: `req:${request.id}`,
+        personId: shown.personId ?? null,
+        personName: shown.personName,
+        kind: shown.kind,
+        startDate: shown.startDate,
+        endDate: shown.endDate,
+        note: shown.note || '',
+        source: 'orion' as const,
+        sheetKey: null,
+        sheetSyncedAt: null,
+        orionEditedAt: null,
+        version: 0,
+        createdByName: request.requestedByName,
+        updatedByName: request.requestedByName,
+        updatedAt: request.updatedAt,
+        proposal: request.kind === 'absence_insert' ? 'insert' as const : request.kind === 'absence_update' ? 'update' as const : 'delete' as const,
+        requestId: request.id,
+      }];
+    });
   }
 
   // ----- absences (TXT, vacations…) -----
@@ -185,6 +404,25 @@ export class PlanningStore {
   }
 
   async saveAbsence(input: AbsenceInput & { id?: string }, options: { recordUndo?: boolean } = {}) {
+    if (this.proposing) {
+      const target = input.id ? this.snapshot.absences.find((absence) => absence.id === input.id) : null;
+      const { id: _ignored, ...plain } = input;
+      void _ignored;
+      try {
+        await this.submitRequest({
+          kind: target ? 'absence_update' : 'absence_insert',
+          absenceId: target?.id || null,
+          payload: { input: plain } as unknown as Record<string, unknown>,
+          baseVersion: target?.version ?? null,
+          summary: `${target ? 'Cambiar ausencia' : 'Nueva ausencia'}: ${describeAbsenceInput(plain)}`,
+          targetLabel: target ? describeAbsence(target) : describeAbsenceInput(plain),
+          requestedByName: this.ctx.actorName,
+        });
+      } catch (error) {
+        this.notify('error', error instanceof Error ? `No se envió a aprobación: ${error.message}` : 'No se envió a aprobación.');
+      }
+      return null;
+    }
     const previous = input.id ? this.snapshot.absences.find((absence) => absence.id === input.id) || null : null;
     this.tempCounter += 1;
     const optimistic: PlanningAbsence = {
@@ -228,6 +466,22 @@ export class PlanningStore {
   async deleteAbsence(id: string, options: { recordUndo?: boolean } = {}) {
     const previous = this.snapshot.absences.find((absence) => absence.id === id);
     if (!previous) return;
+    if (this.proposing) {
+      try {
+        await this.submitRequest({
+          kind: 'absence_delete',
+          absenceId: id,
+          payload: {},
+          baseVersion: previous.version,
+          summary: `Eliminar ausencia: ${describeAbsence(previous)}`,
+          targetLabel: describeAbsence(previous),
+          requestedByName: this.ctx.actorName,
+        });
+      } catch (error) {
+        this.notify('error', error instanceof Error ? `No se envió a aprobación: ${error.message}` : 'No se envió a aprobación.');
+      }
+      return;
+    }
     this.set({ absences: this.snapshot.absences.filter((absence) => absence.id !== id) });
     try {
       await this.backend.deleteAbsence(id);
@@ -244,6 +498,9 @@ export class PlanningStore {
     this.unsubscribe = null;
     this.unsubscribeAbsences?.();
     this.unsubscribeAbsences = null;
+    this.unsubscribeRequests?.();
+    this.unsubscribeRequests = null;
+    if (this.requestTimer) clearTimeout(this.requestTimer);
     if (this.absenceTimer) clearTimeout(this.absenceTimer);
     this.timers.forEach((timer) => clearTimeout(timer));
     if (this.remoteTimer) clearTimeout(this.remoteTimer);
@@ -313,14 +570,22 @@ export class PlanningStore {
   // ----- reading -----
   displayValues(record: PlanningRecord): PlanningValues {
     const state = this.snapshot.rowStates.get(record.id);
-    if (!state) return record.values;
-    return applyPatchToValues(record.values, { ...(state.inflight || {}), ...state.pending });
+    const proposal = this.ownPendingUpdate(record.id);
+    const base = proposal ? applyPatchToValues(record.values, proposal.fields) : record.values;
+    if (!state) return base;
+    return applyPatchToValues(base, { ...(state.inflight || {}), ...state.pending });
+  }
+
+  /** Fields the current user proposed and are waiting for approval. */
+  proposedFields(id: string): string[] {
+    const proposal = this.ownPendingUpdate(id);
+    return proposal ? [...Object.keys(proposal.fields), ...(proposal.week ? ['week'] : [])] : [];
   }
 
   /** The record as the user sees it: a pending move already shows the activity in its new week. */
   displayRecord(record: PlanningRecord): PlanningRecord {
     const state = this.snapshot.rowStates.get(record.id);
-    const week = state?.pending.week || state?.inflight?.week;
+    const week = state?.pending.week || state?.inflight?.week || this.ownPendingUpdate(record.id)?.week;
     return week && week.start !== record.week.start ? { ...record, week } : record;
   }
 
@@ -404,6 +669,30 @@ export class PlanningStore {
     if (!state || !record || state.inflight || state.status === 'conflict' || !Object.keys(state.pending).length) return;
     const inflight = state.pending;
     this.setRowState(id, { ...state, pending: {}, inflight, status: 'saving', error: undefined });
+    if (this.proposing) {
+      // Not saved: sent (or added to the user's pending request for this activity) for approval.
+      const existing = this.ownPending('update', id);
+      const merged = mergeUpdatePayload(existing ? updatePayload(existing) : { fields: {} }, inflight);
+      try {
+        await this.submitRequest({
+          id: existing?.id,
+          kind: 'update',
+          ticketId: id,
+          payload: merged as unknown as Record<string, unknown>,
+          baseVersion: record.version,
+          summary: describeUpdate(record.values, merged, record.week).join(' · ') || 'Cambio en la actividad',
+          targetLabel: recordLabel(record.values, record.week),
+          requestedByName: this.ctx.actorName,
+        });
+        const latest = this.snapshot.rowStates.get(id) || emptyRowState();
+        this.setRowState(id, { ...latest, inflight: null, base: {}, status: Object.keys(latest.pending).length ? 'pending' : 'idle', error: undefined });
+        if (Object.keys(latest.pending).length) void this.flush(id);
+      } catch (error) {
+        const latest = this.snapshot.rowStates.get(id) || emptyRowState();
+        this.setRowState(id, { ...latest, pending: { ...inflight, ...latest.pending }, inflight: null, status: 'error', error: `No se envió a aprobación: ${error instanceof Error ? error.message : 'sin conexión'}` });
+      }
+      return;
+    }
     const payload = buildUpdatePayload(record, inflight, this.ctx);
     const result = await this.backend.update(id, record.version, payload).catch((error: unknown) => ({
       status: 'error' as const,
@@ -570,6 +859,28 @@ export class PlanningStore {
   /** Inserts several activities at once (paste, duplicate, import). Drafts listed in draftIds are replaced. */
   async insertValues(items: Array<{ week: PlanningWeek; values: PlanningValues; order?: number; meta?: Record<string, unknown> }>, draftIds: string[] = [], options: { recordUndo?: boolean } = {}) {
     draftIds.forEach((id) => this.updateDraft(id, { status: 'saving', error: undefined }));
+    if (this.proposing) {
+      try {
+        const saved: string[] = [];
+        for (const item of items) {
+          const request = await this.submitRequest({
+            kind: 'insert',
+            payload: { week: item.week, values: item.values } as unknown as Record<string, unknown>,
+            summary: describeInsert({ week: item.week, values: item.values }).join(' · '),
+            targetLabel: recordLabel(item.values, item.week),
+            requestedByName: this.ctx.actorName,
+          });
+          saved.push(`req:${request.id}`);
+        }
+        this.set({ drafts: this.snapshot.drafts.filter((draft) => !draftIds.includes(draft.id)) });
+        return saved;
+      } catch (error) {
+        const message = `No se envió a aprobación: ${error instanceof Error ? error.message : 'sin conexión'}`;
+        if (draftIds.length) draftIds.forEach((id) => this.updateDraft(id, { status: 'error', error: message }));
+        else items.forEach((item) => this.addDraftInternal(item.week, item.values, message));
+        return [];
+      }
+    }
     const payloads = items.map((item) => buildInsertPayload(item.values, item.week, this.ctx, item.order, item.meta));
     try {
       const rows: PlanningTicketRow[] = [];
@@ -604,6 +915,25 @@ export class PlanningStore {
   async remove(ids: string[], options: { recordUndo?: boolean } = {}) {
     const records = ids.map((id) => this.snapshot.records.get(id)).filter((record): record is PlanningRecord => Boolean(record) && !record!.closed);
     if (!records.length) return;
+    if (this.proposing) {
+      for (const record of records) {
+        if (this.ownPending('delete', record.id)) continue;
+        try {
+          await this.submitRequest({
+            kind: 'delete',
+            ticketId: record.id,
+            payload: {},
+            baseVersion: record.version,
+            summary: `Eliminar ${recordLabel(record.values, record.week)}`,
+            targetLabel: recordLabel(record.values, record.week),
+            requestedByName: this.ctx.actorName,
+          });
+        } catch (error) {
+          this.notify('error', error instanceof Error ? `No se envió a aprobación: ${error.message}` : 'No se envió a aprobación.');
+        }
+      }
+      return;
+    }
     try {
       const removed = await this.backend.remove(records.map((record) => record.id));
       const next = new Map(this.snapshot.records);

@@ -253,7 +253,7 @@ export interface TicketWritePayload {
 }
 
 // Rebuilds the ticket columns from the stored ticket plus the patched fields only.
-export const buildUpdatePayload = (record: PlanningRecord, patch: PlanningPatch, ctx: PlanningContext): TicketWritePayload => {
+export const buildUpdatePayload = (record: PlanningRecord, patch: PlanningPatch, ctx: PlanningContext, extraMeta: Record<string, unknown> = {}): TicketWritePayload => {
   const now = ctx.now || new Date().toISOString();
   const values = applyPatchToValues(record.values, patch);
   const meta: Record<string, unknown> = { ...record.meta };
@@ -270,6 +270,7 @@ export const buildUpdatePayload = (record: PlanningRecord, patch: PlanningPatch,
   meta.orion_edited_at = now;
   meta.updated_by_name = ctx.actorName;
   meta.updated_at = now;
+  Object.assign(meta, extraMeta);
 
   const payload: TicketWritePayload = { descripcion: serializePlanningDescription(values.locality, values.observations, meta) };
   if (fields.some((field) => field === 'serviceType' || field === 'platform' || field === 'locality')) {

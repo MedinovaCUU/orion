@@ -9,6 +9,7 @@ import {
   type UpdateResult,
 } from './planningBackend';
 import type { AbsenceKind, PlanningAbsence } from './planningAbsences';
+import type { ApprovalContext, ChangeRequest } from './planningApprovals';
 import type { PlanningTicketRow, TicketWritePayload } from './planningRecord';
 
 const PAGE_SIZE = 1000;
@@ -74,6 +75,28 @@ export const toAbsence = (row: Record<string, unknown>): PlanningAbsence => ({
   updatedAt: (row.updated_at as string) ?? null,
 });
 
+const REQUEST_COLUMNS = 'id, kind, ticket_id, absence_id, payload, base_version, summary, target_label, status, requested_by, requested_by_name, requested_at, updated_at, reviewed_by_name, reviewed_at, review_note';
+const DECIDED_WINDOW_DAYS = 30;
+
+const toRequest = (row: Record<string, unknown>): ChangeRequest => ({
+  id: row.id as string,
+  kind: row.kind as ChangeRequest['kind'],
+  ticketId: (row.ticket_id as string) ?? null,
+  absenceId: (row.absence_id as string) ?? null,
+  payload: (row.payload as Record<string, unknown>) || {},
+  baseVersion: (row.base_version as number) ?? null,
+  summary: (row.summary as string) || '',
+  targetLabel: (row.target_label as string) || '',
+  status: row.status as ChangeRequest['status'],
+  requestedBy: (row.requested_by as string) ?? null,
+  requestedByName: (row.requested_by_name as string) || 'Alguien',
+  requestedAt: row.requested_at as string,
+  updatedAt: (row.updated_at as string) || (row.requested_at as string),
+  reviewedByName: (row.reviewed_by_name as string) ?? null,
+  reviewedAt: (row.reviewed_at as string) ?? null,
+  reviewNote: (row.review_note as string) ?? null,
+});
+
 const toColumn = (row: Record<string, unknown>): CustomColumn => ({
   id: row.id as string,
   key: row.key as string,
@@ -88,12 +111,13 @@ const toColumn = (row: Record<string, unknown>): CustomColumn => ({
 
 export const createSupabasePlanningBackend = async (userId: string | null): Promise<PlanningBackend> => {
   // Probe once which parts of the schema exist.
-  const [versionProbe, historyProbe, columnsProbe, settingsProbe, absencesProbe] = await Promise.all([
+  const [versionProbe, historyProbe, columnsProbe, settingsProbe, absencesProbe, requestsProbe] = await Promise.all([
     supabase.from('tickets').select('planning_version').limit(1),
     supabase.from('planning_changes').select('id').limit(1),
     supabase.from('planning_custom_columns').select('id').limit(1),
     supabase.from('planning_user_settings').select('user_id').limit(1),
     supabase.from('planning_absences').select('id').limit(1),
+    supabase.from('planning_change_requests').select('id').limit(1),
   ]);
   const capabilities = {
     versioning: !isMissingSchema(versionProbe.error),
@@ -102,6 +126,7 @@ export const createSupabasePlanningBackend = async (userId: string | null): Prom
     customColumns: !isMissingSchema(columnsProbe.error),
     sharedSettings: !isMissingSchema(settingsProbe.error),
     absences: !isMissingSchema(absencesProbe.error),
+    approvals: !isMissingSchema(requestsProbe.error),
   };
   const columns = capabilities.versioning ? `${PLANNING_COLUMNS}, planning_version` : PLANNING_COLUMNS;
 
@@ -240,6 +265,83 @@ export const createSupabasePlanningBackend = async (userId: string | null): Prom
       const channel = supabase
         .channel(`planning-absences-${Math.random().toString(36).slice(2)}`)
         .on('postgres_changes', { event: '*', schema: 'public', table: 'planning_absences' }, () => onChange())
+        .subscribe();
+      return () => {
+        void supabase.removeChannel(channel);
+      };
+    },
+
+    async loadApprovalContext(): Promise<ApprovalContext> {
+      if (!capabilities.approvals) return { enabled: false, isApprover: true, approvers: [] };
+      const [{ data: approvers, error }, { data: isApprover }] = await Promise.all([
+        supabase.from('planning_approvers').select('user_id, notify, profiles(nombre_completo)'),
+        supabase.rpc('is_planning_approver'),
+      ]);
+      if (error) return { enabled: false, isApprover: true, approvers: [] };
+      return {
+        enabled: true,
+        isApprover: isApprover === true,
+        approvers: (approvers || []).map((row) => {
+          const entry = row as unknown as { user_id: string; notify: boolean; profiles: { nombre_completo: string | null } | null };
+          return { userId: entry.user_id, notify: Boolean(entry.notify), name: entry.profiles?.nombre_completo || 'Aprobador' };
+        }),
+      };
+    },
+
+    async listRequests() {
+      if (!capabilities.approvals) return [];
+      const since = new Date(Date.now() - DECIDED_WINDOW_DAYS * 86400000).toISOString();
+      const { data, error } = await supabase
+        .from('planning_change_requests')
+        .select(REQUEST_COLUMNS)
+        .or(`status.eq.pending,updated_at.gte.${since}`)
+        .order('requested_at', { ascending: false })
+        .limit(500);
+      if (error) throw new Error(error.message);
+      return (data || []).map((row) => toRequest(row as Record<string, unknown>));
+    },
+
+    async requestsForTicket(ticketId: string) {
+      if (!capabilities.approvals) return [];
+      const { data, error } = await supabase.from('planning_change_requests').select(REQUEST_COLUMNS).eq('ticket_id', ticketId).order('requested_at', { ascending: false }).limit(100);
+      if (error) throw new Error(error.message);
+      return (data || []).map((row) => toRequest(row as Record<string, unknown>));
+    },
+
+    async saveRequest(request) {
+      const row = {
+        kind: request.kind,
+        ticket_id: request.ticketId ?? null,
+        absence_id: request.absenceId ?? null,
+        payload: request.payload,
+        base_version: request.baseVersion ?? null,
+        summary: request.summary.slice(0, 2000),
+        target_label: request.targetLabel,
+        requested_by_name: request.requestedByName,
+      };
+      const { data, error } = request.id
+        ? await supabase.from('planning_change_requests').update(row).eq('id', request.id).eq('status', 'pending').select(REQUEST_COLUMNS).single()
+        : await supabase.from('planning_change_requests').insert(row).select(REQUEST_COLUMNS).single();
+      if (error) throw new Error(error.message);
+      return toRequest(data as Record<string, unknown>);
+    },
+
+    async reviewRequest(id, status, options) {
+      const { data, error } = await supabase
+        .from('planning_change_requests')
+        .update({ status, reviewed_by_name: options.reviewedByName, review_note: options.note || null, applied_result: options.appliedResult || null })
+        .eq('id', id)
+        .select(REQUEST_COLUMNS)
+        .single();
+      if (error) throw new Error(error.message);
+      return toRequest(data as Record<string, unknown>);
+    },
+
+    subscribeRequests(onChange) {
+      if (!capabilities.approvals) return () => undefined;
+      const channel = supabase
+        .channel(`planning-requests-${Math.random().toString(36).slice(2)}`)
+        .on('postgres_changes', { event: '*', schema: 'public', table: 'planning_change_requests' }, () => onChange())
         .subscribe();
       return () => {
         void supabase.removeChannel(channel);

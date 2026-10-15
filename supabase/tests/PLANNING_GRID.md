@@ -102,3 +102,54 @@ Before the migration is applied PostgREST answers `PGRST205` (missing table). Te
 ```sh
 PGLITE_MODULE=<scratch>/node_modules/@electric-sql/pglite/dist/index.js node supabase/tests/planning_absences.test.mjs
 ```
+
+## Change requests (migration 20261015030000)
+
+Only the approvers edit the master table directly: Sofia Ceballos (the planner; approves and is notified) and
+Ricardo Montañez (the owner; approves, not notified). Anyone else's edit is filed as a request; an approver approves or
+rejects it and their browser applies it with the normal update path (`planning_version` / absence `version`), then
+records `approved` + `applied_result` or `failed` + `review_note`. Requests are the evidence trail (e-mails later).
+
+**Not enforced in the database:** planning tickets and absences can still be written directly by anyone the existing
+policies allow — service reports, trips, the SAP closure and the sheet sync write them. Routing non-approvers' edits
+through requests is the app's job.
+
+| Object | Purpose |
+| --- | --- |
+| `planning_approvers (user_id → profiles on delete cascade, notify, label, added_at)` | Who approves. SELECT for staff; no write policies or grants (managed by SQL). Seeded by exact `nombre_completo`: Sofia Ceballos (`notify` true, `planeación`), Ricardo Montañez (`notify` false, `dueño`). A name matching no profile, or more than one, is skipped silently; a re-run never overwrites an existing row (`on conflict do nothing`). |
+| `is_planning_approver()` | Stable, security definer: the JWT user is in `planning_approvers`. Execute for `authenticated` only. |
+| `planning_change_requests` | One row per proposed edit: `kind` ∈ `update`, `insert`, `delete`, `absence_insert`, `absence_update`, `absence_delete`; `ticket_id` / `absence_id` without FKs (survive deletes); `payload` (proposed values / new activity / absence input); `base_version`; `summary` (1–2000 chars after trim); `target_label`; requester, reviewer and `applied_result`. Indexed on `(status, requested_at desc)`, `(ticket_id)`, `(requested_by, status)`. Published to `supabase_realtime`. |
+
+Server-maintained (trigger `planning_change_requests_guard`, BEFORE INSERT/UPDATE; security definer only to read the
+signer's profile name):
+
+- Insert: `status = 'pending'`; `requested_by = auth.uid()` (a JWT-less service/SQL insert must send it);
+  `requested_at = updated_at = now()`; `reviewed_by`, `reviewed_by_name`, `reviewed_at`, `review_note`,
+  `applied_result` null. `requested_by_name` = the client's value if non-blank, else the profile's `nombre_completo`.
+- Every update: `id`, `kind`, `requested_by`, `requested_by_name`, `requested_at` are reset to the stored values.
+- Non-approver (in practice the requester on a pending row): may change `payload`, `summary`, `target_label`,
+  `base_version` and `status` pending → cancelled. Any other status change **raises** 42501 («Solo quien aprueba…»);
+  `ticket_id`, `absence_id`, `reviewed_*`, `review_note`, `applied_result` are **silently reset** (so sending them is
+  harmless).
+- Approver (or no JWT): every other column is writable; status transitions allowed: same status, pending → approved /
+  rejected / failed / cancelled, failed → pending (retry). Anything else **raises** 23514 («Cambio de estado no
+  permitido…»). When the status leaves pending: `reviewed_by = auth.uid()` (no JWT: the value sent), `reviewed_at =
+  now()`, `reviewed_by_name` = the client's value if non-blank, else that profile's name. Otherwise the three keep their
+  stored values (a retried request shows its last reviewer until it is decided again).
+- `updated_at = now()` only when something else really changed.
+
+Access: SELECT own requests (`requested_by = auth.uid()`) or all for approvers; INSERT for staff as themselves; UPDATE
+for approvers, or for the requester while `status = 'pending'` (WITH CHECK: pending or cancelled); no DELETE for
+anyone. Clients and other staff see nothing that is not theirs; anon has no grant.
+
+```ts
+supabase.rpc('is_planning_approver')                                   // true | false
+supabase.from('planning_change_requests').insert(row).select().single() // non-approver files a request
+supabase.from('planning_change_requests').update({ status: 'approved', reviewed_by_name, applied_result }).eq('id', id).select().single()
+```
+
+Before the migration is applied PostgREST answers `PGRST205` (missing tables) and `PGRST202` (missing RPC). Test:
+
+```sh
+PGLITE_MODULE=<scratch>/node_modules/@electric-sql/pglite/dist/index.js node supabase/tests/planning_change_requests.test.mjs
+```

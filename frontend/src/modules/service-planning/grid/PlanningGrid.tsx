@@ -5,6 +5,8 @@ import GridTable, { type GridMenuRequest } from './GridTable';
 import { ColumnsPanel, ConfirmDialog, ConflictRulesPanel, FilterPanel, Floating, MenuList, ViewsPanel, WeekPicker, type MenuItem } from './GridMenus';
 import { buildGridRows } from './gridRows';
 import AbsencePopover from './AbsencePopover';
+import ApprovalsPanel from './ApprovalsPanel';
+import { notifiedApproverName, type ApprovalContext, type ChangeRequest, type InsertPayload } from './planningApprovals';
 import HistoryPanel from './HistoryPanel';
 import { ABSENCE_SHORT, overlaps, type AbsenceInput, type PlanningAbsence } from './planningAbsences';
 import ImportDialog, { type ImportItem } from './ImportDialog';
@@ -85,7 +87,7 @@ export default function PlanningGrid(props: PlanningGridProps) {
     };
   }, [onPersisted, store]);
 
-  const emptySnapshot = useMemo(() => ({ loading: true, loadError: null, records: new Map(), rowStates: new Map(), drafts: [], lastSavedAt: null, notices: [], remoteChangedIds: new Set<string>(), canUndo: false, absences: [] }), []);
+  const emptySnapshot = useMemo(() => ({ loading: true, loadError: null, records: new Map(), rowStates: new Map(), drafts: [], lastSavedAt: null, notices: [], remoteChangedIds: new Set<string>(), canUndo: false, absences: [], approval: { enabled: false, isApprover: true, approvers: [] }, requests: [] }), []);
   const snapshot = useSyncExternalStore(store ? store.subscribe : () => () => undefined, store ? store.getSnapshot : () => emptySnapshot);
 
   // ----- preferences -----
@@ -186,6 +188,44 @@ export default function PlanningGrid(props: PlanningGridProps) {
 
   // ----- data -----
   const records = useMemo(() => Array.from(snapshot.records.values()) as PlanningRecord[], [snapshot.records]);
+  const absences = snapshot.absences as PlanningAbsence[];
+  // ----- approval flow -----
+  const approval = snapshot.approval as ApprovalContext;
+  const requests = snapshot.requests as ChangeRequest[];
+  const proposing = approval.enabled && !approval.isApprover;
+  const approverName = notifiedApproverName(approval);
+  const ownPending = useMemo(
+    () => requests.filter((request) => request.status === 'pending' && (request.requestedBy === currentUserId || request.requestedByName === ctx.actorName)),
+    [ctx.actorName, currentUserId, requests],
+  );
+  const proposals = useMemo(
+    () =>
+      proposing
+        ? ownPending.filter((request) => request.kind === 'insert').map((request) => ({ request, week: (request.payload as unknown as InsertPayload).week, values: (request.payload as unknown as InsertPayload).values }))
+        : [],
+    [ownPending, proposing],
+  );
+  const proposedFields = useMemo(() => {
+    const map = new Map<string, string>();
+    if (!store || !proposing) return map;
+    records.forEach((record) => {
+      const fields = store.proposedFields(record.id);
+      if (fields.length) map.set(record.id, fields.join(','));
+    });
+    return map;
+  }, [proposing, records, requests, store]); // eslint-disable-line react-hooks/exhaustive-deps
+  const pendingDeletes = useMemo(() => new Set(proposing ? ownPending.filter((request) => request.kind === 'delete' && request.ticketId).map((request) => request.ticketId as string) : []), [ownPending, proposing]);
+  const pendingForApprover = approval.enabled && approval.isApprover ? requests.filter((request) => request.status === 'pending').length : 0;
+  const [approvalsOpen, setApprovalsOpen] = useState(false);
+  // What the user sees: real absences, the ones they asked to change marked, and the ones they proposed.
+  const shownAbsences = useMemo(() => {
+    if (!proposing || !store) return absences;
+    const marks = new Map(ownPending.filter((request) => request.absenceId).map((request) => [request.absenceId as string, request.kind === 'absence_delete' ? 'delete' as const : 'update' as const]));
+    return [
+      ...absences.map((absence) => (marks.has(absence.id) ? { ...absence, proposal: marks.get(absence.id) } : absence)),
+      ...store.proposedAbsences().filter((absence) => absence.proposal === 'insert'),
+    ];
+  }, [absences, ownPending, proposing, store]);
   const allItems = useMemo(
     () => (store ? records.map((record) => ({ record: store.displayRecord(record), values: store.displayValues(record) })) : []),
     [records, snapshot.rowStates, store], // eslint-disable-line react-hooks/exhaustive-deps
@@ -194,23 +234,22 @@ export default function PlanningGrid(props: PlanningGridProps) {
   const scopeItems = useMemo(() => allItems.filter((item) => ranged || item.record.week.monthKey === month), [allItems, month, ranged]);
   const items = useMemo(() => scopeItems.filter((item) => matchesFilters(item.record, item.values, filters, currentUserName)), [currentUserName, filters, scopeItems]);
   const rows = useMemo(
-    () => buildGridRows({ month, dateFrom: filters.dateFrom, dateTo: filters.dateTo, items, drafts: snapshot.drafts, collapsed, today, showCapture: canEdit }),
-    [canEdit, collapsed, filters.dateFrom, filters.dateTo, items, month, snapshot.drafts, today],
+    () => buildGridRows({ month, dateFrom: filters.dateFrom, dateTo: filters.dateTo, items, drafts: snapshot.drafts, collapsed, today, showCapture: canEdit, proposals }),
+    [canEdit, collapsed, filters.dateFrom, filters.dateTo, items, month, proposals, snapshot.drafts, today],
   );
   const rules: ConflictRules = { ...DEFAULT_CONFLICT_RULES, ...(settings.conflictRules || {}) };
-  const absences = snapshot.absences as PlanningAbsence[];
   const scheduleConflicts = useMemo(() => findScheduleConflicts(allItems, rules, absences), [absences, allItems, rules.enabled, rules.includeCompanions, rules.sameLocalityIsConflict]); // eslint-disable-line react-hooks/exhaustive-deps
   const weekAbsences = useMemo(() => {
     const map = new Map<string, PlanningAbsence[]>();
     rows.forEach((row) => {
       if (row.kind !== 'week') return;
-      const inWeek = absences
+      const inWeek = shownAbsences
         .filter((absence) => overlaps(absence, row.week.start, row.week.end))
         .sort((left, right) => left.startDate.localeCompare(right.startDate) || left.personName.localeCompare(right.personName, 'es'));
       if (inWeek.length) map.set(row.week.start, inWeek);
     });
     return map;
-  }, [absences, rows]);
+  }, [rows, shownAbsences]);
   const [absenceCard, setAbsenceCard] = useState<{ anchor: DOMRect; week: PlanningWeek; absence?: PlanningAbsence } | null>(null);
   const optionsSource = useMemo(() => buildOptionsSource(records, profiles, equipments), [equipments, profiles, records]);
   const parseContext = useMemo(() => ({ profiles, referenceDate: `${month}-15` }), [month, profiles]);
@@ -407,7 +446,15 @@ export default function PlanningGrid(props: PlanningGridProps) {
       { label: `Mover a otra semana${many}…`, disabled: !canEdit || !ids.length, onSelect: () => setMovePicker({ ids, x: request.x, y: request.y, mode: 'move', week: record?.week || null }) },
       { label: `Copiar a otra semana${many}…`, disabled: !canEdit || !ids.length, onSelect: () => setMovePicker({ ids, x: request.x, y: request.y, mode: 'copy', week: record?.week || null }) },
       { separator: true, label: 's2' },
-      { label: 'Consultar historial', disabled: !record, onSelect: () => record && setHistoryId(record.id) },
+      {
+        label: 'Consultar historial',
+        disabled: !record,
+        onSelect: () => {
+          if (!record) return;
+          setApprovalsOpen(false);
+          setHistoryId(record.id);
+        },
+      },
       { label: `Eliminar actividad${many}`, danger: true, disabled: !canDelete || !ids.length, onSelect: () => setConfirmDelete(ids) },
     ];
   };
@@ -531,6 +578,19 @@ export default function PlanningGrid(props: PlanningGridProps) {
             <i aria-hidden="true" />
             {syncText}
           </span>
+          {approval.enabled && (pendingForApprover || (!approval.isApprover && requests.length)) ? (
+            <button
+              type="button"
+              className={`pgrid-approvals-chip ${pendingForApprover ? 'is-alert' : ''}`}
+              onClick={() => {
+                setHistoryId(null);
+                setApprovalsOpen((open) => !open);
+              }}
+              aria-expanded={approvalsOpen}
+            >
+              {approval.isApprover ? `${pendingForApprover} por aprobar` : `${ownPending.length} por aprobar · mis solicitudes`}
+            </button>
+          ) : null}
           {capabilities?.realtime ? <span className="pgrid-live" title="Los cambios de otros usuarios aparecen solos">En vivo</span> : null}
           {canEdit ? (
             <button type="button" className="pgrid-icon" onClick={() => void store?.undo()} disabled={!snapshot.canUndo} aria-label="Deshacer" title="Deshacer (⌘Z)">↶</button>
@@ -538,6 +598,11 @@ export default function PlanningGrid(props: PlanningGridProps) {
         </div>
       </div>
 
+      {proposing && canEdit ? (
+        <p className="pgrid-banner pgrid-banner--info">
+          Tus cambios en la planeación se envían a aprobación de {approverName}; se aplican cuando los aprueba. Lo pendiente se ve marcado en azul.
+        </p>
+      ) : null}
       {capabilities && !capabilities.versioning ? (
         <p className="pgrid-banner">La base de datos aún no tiene el control de versiones de la tabla maestra: los cambios se guardan, pero sin detectar ediciones simultáneas ni registrar historial.</p>
       ) : null}
@@ -574,7 +639,7 @@ export default function PlanningGrid(props: PlanningGridProps) {
         </ul>
       ) : null}
 
-      <div className={`pgrid-stage ${historyRecord ? 'has-side' : ''}`}>
+      <div className={`pgrid-stage ${historyRecord || approvalsOpen ? 'has-side' : ''}`}>
         {snapshot.loading && !records.length ? (
           <p className="pgrid-loading">Cargando planeación…</p>
         ) : layout === 'calendar' ? (
@@ -592,7 +657,9 @@ export default function PlanningGrid(props: PlanningGridProps) {
             onMoveToWeek={moveToWeek}
             onDelete={(id) => (canDelete ? setConfirmDelete([id]) : notify('info', 'Tu usuario no puede eliminar actividades.'))}
             onNotify={notify}
-            absences={absences}
+            absences={shownAbsences}
+            proposals={proposals}
+            proposedIds={new Set([...proposedFields.keys(), ...pendingDeletes])}
             onSaveAbsence={saveAbsence}
             onDeleteAbsence={deleteAbsence}
             onOpenInTable={(id) => {
@@ -638,6 +705,9 @@ export default function PlanningGrid(props: PlanningGridProps) {
             onSelectionChange={setSelectedIds}
             onNotify={notify}
             weekAbsences={weekAbsences}
+            proposedFields={proposedFields}
+            pendingDeletes={pendingDeletes}
+            approverName={approverName}
             onAbsenceCard={(request) => {
               if (!request.absence && !capabilities?.absences) {
                 notify('info', 'Las ausencias se activan con la actualización de base de datos pendiente.');
@@ -647,7 +717,27 @@ export default function PlanningGrid(props: PlanningGridProps) {
             }}
           />
         ) : null}
-        {historyRecord && backend ? <HistoryPanel key={historyRecord.id} backend={backend} record={historyRecord} customColumns={customColumns} onClose={() => setHistoryId(null)} /> : null}
+        {approvalsOpen && store ? (
+          <ApprovalsPanel
+            requests={approval.isApprover ? requests : requests.filter((request) => request.requestedBy === currentUserId || request.requestedByName === ctx.actorName)}
+            isApprover={approval.isApprover}
+            approverName={approverName}
+            recordFor={(ticketId) => (ticketId ? snapshot.records.get(ticketId) || null : null)}
+            onApprove={(request, note) => store.approveRequest(request, note)}
+            onReject={(request, note) => store.rejectRequest(request, note)}
+            onRetry={(request) => store.retryRequest(request)}
+            onCancel={(request) => store.cancelRequest(request.id)}
+            onShow={(request) => {
+              const record = request.ticketId ? snapshot.records.get(request.ticketId) : null;
+              if (!record) return;
+              setLayout('table');
+              if (record.week.monthKey !== month) onMonthChange(record.week.monthKey);
+              setTimeout(() => setFocusRequest({ rowKey: record.id, nonce: Date.now() }), 60);
+            }}
+            onClose={() => setApprovalsOpen(false)}
+          />
+        ) : null}
+        {!approvalsOpen && historyRecord && backend ? <HistoryPanel key={historyRecord.id} backend={backend} record={historyRecord} customColumns={customColumns} onClose={() => setHistoryId(null)} /> : null}
       </div>
 
       {selectedIds.length > 1 && canEdit ? (
@@ -799,14 +889,20 @@ export default function PlanningGrid(props: PlanningGridProps) {
       {confirmDelete ? (
         <ConfirmDialog
           title={confirmDelete.length > 1 ? `¿Eliminar ${confirmDelete.length} actividades?` : '¿Eliminar esta actividad?'}
-          body="Se quitan de la planeación para todos. El historial conserva el registro y puedes deshacerlo con ⌘Z mientras sigas en esta página."
-          confirmLabel="Eliminar"
+          body={
+            proposing
+              ? `Se enviará a aprobación de ${approverName}; la actividad sigue en la planeación hasta que la apruebe.`
+              : 'Se quitan de la planeación para todos. El historial conserva el registro y puedes deshacerlo con ⌘Z mientras sigas en esta página.'
+          }
+          confirmLabel={proposing ? 'Pedir eliminación' : 'Eliminar'}
           danger
           onCancel={() => setConfirmDelete(null)}
           onConfirm={() => {
             const ids = confirmDelete;
             setConfirmDelete(null);
-            void store?.remove(ids).then(() => notify('info', `${ids.length} actividad(es) eliminada(s). ⌘Z para deshacer.`));
+            void store?.remove(ids).then(() =>
+              notify('info', proposing ? `Eliminación pedida; espera la aprobación de ${approverName}.` : `${ids.length} actividad(es) eliminada(s). ⌘Z para deshacer.`),
+            );
           }}
         />
       ) : null}

@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { formatPlanningPersonName } from '../helpers/normalizeService';
 import { describeChange } from './historyText';
 import type { CustomColumn, PlanningBackend, PlanningChange } from './planningBackend';
+import { STATUS_TEXT, type ChangeRequest } from './planningApprovals';
 import type { PlanningRecord } from './planningRecord';
 
 const stamp = (iso: string) => {
@@ -12,12 +13,17 @@ const stamp = (iso: string) => {
 export default function HistoryPanel({ backend, record, customColumns, onClose }: { backend: PlanningBackend; record: PlanningRecord; customColumns: CustomColumn[]; onClose: () => void }) {
   const [changes, setChanges] = useState<PlanningChange[] | null>(null);
   const [error, setError] = useState('');
+  const [requests, setRequests] = useState<ChangeRequest[]>([]);
   useEffect(() => {
     let active = true;
     backend
       .history(record.id)
       .then((rows) => active && setChanges(rows))
       .catch((reason: unknown) => active && setError(reason instanceof Error ? reason.message : 'No se pudo leer el historial.'));
+    backend
+      .requestsForTicket(record.id)
+      .then((rows) => active && setRequests(rows))
+      .catch(() => undefined);
     return () => {
       active = false;
     };
@@ -56,6 +62,27 @@ export default function HistoryPanel({ backend, record, customColumns, onClose }
           ))}
         </ol>
       )}
+      {requests.length ? (
+        <section className="pgrid-history__requests">
+          <span className="planning-eyebrow">Solicitudes de cambio</span>
+          <ol>
+            {requests.map((request) => (
+              <li key={request.id}>
+                <time dateTime={request.requestedAt}>{stamp(request.requestedAt)}</time>
+                <span>
+                  {formatPlanningPersonName(request.requestedByName) || request.requestedByName} pidió: {request.summary}
+                </span>
+                <small>
+                  {STATUS_TEXT[request.status]}
+                  {request.reviewedByName ? ` por ${formatPlanningPersonName(request.reviewedByName) || request.reviewedByName}` : ''}
+                  {request.reviewedAt ? ` el ${stamp(request.reviewedAt)}` : ''}
+                  {request.reviewNote ? ` · «${request.reviewNote}»` : ''}
+                </small>
+              </li>
+            ))}
+          </ol>
+        </section>
+      ) : null}
     </aside>
   );
 }

@@ -178,6 +178,33 @@ export default function Dashboard({ session, initialTab }: DashboardProps) {
   // Amazon's certification account for the Alexa skill (public.alexa_reviewers): it only links a device.
   const [isAlexaReviewer, setIsAlexaReviewer] = useState(false);
   const [advisoryUnreadCount, setAdvisoryUnreadCount] = useState(0);
+  const [planningPendingCount, setPlanningPendingCount] = useState(0);
+
+  // Whoever approves planning changes (and wants notifications) sees how many wait, from any tab.
+  useEffect(() => {
+    const userId = session?.user?.id;
+    if (!userId) return;
+    let active = true;
+    const load = async () => {
+      const { data: me, error } = await supabase.from('planning_approvers').select('notify').eq('user_id', userId).maybeSingle();
+      if (!active) return;
+      if (error || !(me as { notify?: boolean } | null)?.notify) {
+        setPlanningPendingCount(0);
+        return;
+      }
+      const { count } = await supabase.from('planning_change_requests').select('id', { count: 'exact', head: true }).eq('status', 'pending');
+      if (active) setPlanningPendingCount(count || 0);
+    };
+    void load();
+    const timer = window.setInterval(() => void load(), 45000);
+    const refresh = () => void load();
+    window.addEventListener('planning-requests-changed', refresh);
+    return () => {
+      active = false;
+      window.clearInterval(timer);
+      window.removeEventListener('planning-requests-changed', refresh);
+    };
+  }, [session?.user?.id]);
   const [credentialOpen, setCredentialOpen] = useState(false);
   const [isActionMenuOpen, setIsActionMenuOpen] = useState(false);
   const [viewerProfile, setViewerProfile] = useState<EmployeeCredentialProfile | null>(null);
@@ -494,6 +521,9 @@ export default function Dashboard({ session, initialTab }: DashboardProps) {
               <span className="dashboard-nav__label">{item.label}</span>
               {item.showBadge && advisoryUnreadCount > 0 ? (
                 <span className="dashboard-nav__badge">{advisoryUnreadCount}</span>
+              ) : null}
+              {item.key === 'servicios' && planningPendingCount > 0 ? (
+                <span className="dashboard-nav__badge" title="Cambios de planeación por aprobar">{planningPendingCount}</span>
               ) : null}
             </button>
           );

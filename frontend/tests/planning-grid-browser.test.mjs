@@ -475,6 +475,99 @@ try {
     passed.push('ausencias (TXT, vacaciones): en tabla y calendario, doble clic para agregar/editar, avisos y en vivo');
   }
 
+  // 10d. Approval flow: only Sofía (and the owner) change the planning directly; anyone else's change is a
+  // request she approves or rejects. The table shows what is waiting; history keeps who asked and who decided.
+  if (run('approvals')) {
+    const requester = await open('?reset&actor=Otra%20Admin');
+    const requests = (page) => page.evaluate(() => window.__pgrid.requests());
+    const north = (page) => rowByText(page, 'Laboratorio Norte de Prueba');
+    await requester.locator('.pgrid-banner--info', { hasText: 'aprobación de Sofia Ceballos' }).waitFor();
+
+    // Two edits on the same activity: one request, nothing saved yet.
+    await north(requester).locator('.pgrid-cell').nth(4).click();
+    await requester.keyboard.type('Cambiar rotor completo');
+    await requester.keyboard.press('Enter');
+    await north(requester).locator('.pgrid-cell.is-proposed', { hasText: 'Cambiar rotor completo' }).waitFor();
+    await requester.locator('.pgrid-toast', { hasText: 'pendiente de aprobación de Sofia Ceballos' }).waitFor();
+    await north(requester).locator('.pgrid-cell').nth(1).click();
+    await requester.keyboard.type('A25');
+    await requester.keyboard.press('Enter');
+    await north(requester).locator('.pgrid-cell.is-proposed', { hasText: 'A25' }).waitFor();
+    await requester.waitForFunction(() => window.__pgrid.requests().length === 1 && Object.keys(window.__pgrid.requests()[0].payload.fields).length === 2);
+    assert.match((await rows(requester)).find((row) => localityOf(row) === 'Laboratorio Norte de Prueba').descripcion, /Observaciones: Falla de rotor\n/, 'not saved before approval');
+
+    // A new activity, a deletion and an absence: also requests.
+    await cell(requester, 'capture:2026-10-19', 0).click();
+    await requester.keyboard.type('prev');
+    await requester.keyboard.press('Tab');
+    await requester.keyboard.type('BA200');
+    await requester.keyboard.press('Tab');
+    await requester.keyboard.type('Clínica propuesta');
+    await requester.keyboard.press('Enter');
+    await requester.locator('.pgrid-row--proposal', { hasText: 'Clínica propuesta' }).waitFor();
+    await rowByText(requester, 'Unidad Médica de Prueba').locator('.pgrid-cell').nth(2).click({ button: 'right' });
+    await requester.getByRole('menuitem', { name: /Eliminar actividad/ }).click();
+    await requester.getByRole('alertdialog').getByRole('button', { name: 'Pedir eliminación' }).click();
+    await rowByText(requester, 'Unidad Médica de Prueba').and(requester.locator('.is-delete-pending')).waitFor();
+    await requester.locator('.pgrid-week', { hasText: '26 AL 30 OCTUBRE' }).getByRole('button', { name: '+ Ausencia' }).click();
+    await requester.keyboard.type('Alfredo Acevedo');
+    await requester.keyboard.press('Enter');
+    await requester.locator('.pgrid-week__away.is-proposed', { hasText: 'Alfredo Acevedo' }).waitFor();
+    await requester.waitForFunction(() => window.__pgrid.requests().length === 4);
+    assert.equal((await rows(requester)).length, 6, 'no activity created or deleted yet');
+    await requester.locator('.pgrid-approvals-chip', { hasText: '4 por aprobar' }).waitFor();
+    await requester.screenshot({ path: path.join(SHOTS, '10d-requester.png') });
+
+    // Sofía sees them, with what changes, and decides.
+    const sofia = await open('?actor=Sofia%20Ceballos');
+    await sofia.locator('.pgrid-approvals-chip.is-alert', { hasText: '4 por aprobar' }).click();
+    const panel = sofia.getByRole('complementary', { name: 'Solicitudes de cambio' });
+    await panel.getByText('Observaciones: Falla de rotor → Cambiar rotor completo').waitFor();
+    await sofia.screenshot({ path: path.join(SHOTS, '10d-approver.png') });
+    const item = (text) => panel.locator('.pgrid-approvals__item', { hasText: text });
+    await item('Cambiar rotor completo').getByRole('button', { name: 'Aprobar' }).click();
+    await item('Clínica propuesta').getByRole('button', { name: 'Rechazar' }).click();
+    await item('Clínica propuesta').getByLabel('Motivo del rechazo').fill('Ya está programada en noviembre');
+    await item('Clínica propuesta').getByRole('button', { name: 'Rechazar' }).click();
+    await item('Unidad Médica de Prueba').getByRole('button', { name: 'Aprobar' }).click();
+    await item('Alfredo Acevedo').getByRole('button', { name: 'Aprobar' }).click();
+    await sofia.waitForFunction(() => window.__pgrid.requests().every((request) => request.status !== 'pending'));
+    const decided = await requests(sofia);
+    assert.deepEqual(decided.map((request) => [request.kind, request.status]).sort(), [['absence_insert', 'approved'], ['delete', 'approved'], ['insert', 'rejected'], ['update', 'approved']]);
+    assert.ok(decided.every((request) => request.reviewedByName === 'Sofia Ceballos'));
+    const saved = (await rows(sofia)).find((row) => localityOf(row) === 'Laboratorio Norte de Prueba');
+    assert.match(saved.descripcion, /Observaciones: Cambiar rotor completo/);
+    assert.match(saved.asunto, / - A25 - /);
+    assert.equal(metaOf(saved).last_request_by, 'Otra Admin', 'evidence of who asked');
+    assert.ok(!(await rows(sofia)).some((row) => localityOf(row) === 'Unidad Médica de Prueba'), 'deletion applied');
+    assert.ok(!(await rows(sofia)).some((row) => localityOf(row) === 'Clínica propuesta'), 'rejected activity not created');
+    assert.ok((await sofia.evaluate(() => window.__pgrid.absences())).some((absence) => absence.personName === 'Alfredo Acevedo'));
+
+    // The requester is told, and the table shows the real data.
+    await requester.locator('.pgrid-toast', { hasText: 'rechazado' }).filter({ hasText: 'Ya está programada en noviembre' }).waitFor();
+    await requester.locator('.pgrid-row--proposal').waitFor({ state: 'detached' });
+    await north(requester).locator('.pgrid-cell', { hasText: 'Cambiar rotor completo' }).waitFor();
+    assert.equal(await north(requester).locator('.pgrid-cell.is-proposed').count(), 0);
+
+    // History keeps who asked and who decided.
+    await north(sofia).locator('.pgrid-cell').nth(2).click({ button: 'right' });
+    await sofia.getByRole('menuitem', { name: 'Consultar historial' }).click();
+    await sofia.locator('.pgrid-history__requests li', { hasText: 'Otra Admin pidió' }).filter({ hasText: 'Aprobado por Sofia Ceballos' }).waitFor();
+    await requester.close();
+    await sofia.close();
+
+    // The owner edits directly.
+    const owner = await open('');
+    assert.equal(await owner.locator('.pgrid-banner--info').count(), 0);
+    await rowByText(owner, 'Clínica Sur de Prueba').locator('.pgrid-cell').nth(4).click();
+    await owner.keyboard.type('Directo del dueño');
+    await owner.keyboard.press('Enter');
+    await synced(owner);
+    assert.ok((await rows(owner)).some((row) => /Directo del dueño/.test(row.descripcion)));
+    await owner.close();
+    passed.push('aprobación: otros proponen (editar, nueva, eliminar, ausencia), Sofía aprueba/rechaza, aviso y evidencia; el dueño edita directo');
+  }
+
   // 11. Excel: export the month and import it back (duplicates detected).
   if (run('excel')) {
     const page = await open();

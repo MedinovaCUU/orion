@@ -1,12 +1,19 @@
 import type { CustomColumn, GridSettings, PlanningBackend, PlanningChange, SavedView, UpdateResult } from '../../src/modules/service-planning/grid/planningBackend';
 import type { PlanningAbsence } from '../../src/modules/service-planning/grid/planningAbsences';
+import type { ChangeRequest } from '../../src/modules/service-planning/grid/planningApprovals';
 import type { PlanningTicketRow, TicketWritePayload } from '../../src/modules/service-planning/grid/planningRecord';
 
 // Test double of the planning tables: same contract as the Supabase backend (version check, history,
 // change notifications to other tabs), stored in localStorage so a reload keeps what was saved.
 
 const KEY = 'pgrid-memory';
-type Store = { rows: PlanningTicketRow[]; history: PlanningChange[]; columns: CustomColumn[]; settings: GridSettings; views: SavedView[]; seq: number; absences?: PlanningAbsence[] };
+type Store = { rows: PlanningTicketRow[]; history: PlanningChange[]; columns: CustomColumn[]; settings: GridSettings; views: SavedView[]; seq: number; absences?: PlanningAbsence[]; requests?: ChangeRequest[] };
+
+// Like the database seed: Sofía approves and is notified, the owner approves without notifications.
+const APPROVERS = [
+  { userId: 'p6', name: 'Sofia Ceballos', notify: true },
+  { userId: 'p1', name: 'Ricardo Montañez', notify: false },
+];
 
 const read = (): Store => {
   try {
@@ -53,6 +60,7 @@ export interface MemoryControls {
   externalEdit: (id: string, change: (row: PlanningTicketRow) => PlanningTicketRow, actorName?: string, notify?: boolean) => void;
   rows: () => PlanningTicketRow[];
   absences: () => PlanningAbsence[];
+  requests: () => ChangeRequest[];
 }
 
 export const resetMemoryStore = (rows: PlanningTicketRow[], absences: PlanningAbsence[] = []) => write({ rows, history: [], columns: [], settings: {}, views: [], seq: 0, absences });
@@ -61,11 +69,19 @@ export const createMemoryBackend = (actorName: string): { backend: PlanningBacke
   const channel = typeof BroadcastChannel !== 'undefined' ? new BroadcastChannel(KEY) : null;
   const listeners = new Set<(ids: string[]) => void>();
   const absenceListeners = new Set<() => void>();
+  const requestListeners = new Set<() => void>();
+  const isApprover = APPROVERS.some((approver) => approver.name === actorName);
   channel?.addEventListener('message', (event) => {
-    if (event.data === 'absences') absenceListeners.forEach((listener) => listener());
+    if (event.data === 'requests') requestListeners.forEach((listener) => listener());
+    else if (event.data === 'absences') absenceListeners.forEach((listener) => listener());
     else listeners.forEach((listener) => listener(event.data as string[]));
   });
   const announceAbsences = () => channel?.postMessage('absences');
+  const announceRequests = () => {
+    channel?.postMessage('requests');
+    requestListeners.forEach((listener) => listener());
+  };
+  const visible = (request: ChangeRequest) => isApprover || request.requestedBy === actorName;
   const announce = (ids: string[]) => channel?.postMessage(ids);
 
   const log = (store: Store, row: PlanningTicketRow, action: PlanningChange['action'], who: string, field: string | null = null, oldValue: string | null = null, newValue: string | null = null) => {
@@ -91,10 +107,11 @@ export const createMemoryBackend = (actorName: string): { backend: PlanningBacke
     },
     rows: () => read().rows,
     absences: () => read().absences || [],
+    requests: () => read().requests || [],
   };
 
   const backend: PlanningBackend = {
-    capabilities: { versioning: true, history: true, realtime: true, customColumns: true, sharedSettings: true, absences: true },
+    capabilities: { versioning: true, history: true, realtime: true, customColumns: true, sharedSettings: true, absences: true, approvals: !new URLSearchParams(location.search).has('noapprovals') },
     async loadAll() {
       await delay();
       return read().rows;
@@ -202,6 +219,60 @@ export const createMemoryBackend = (actorName: string): { backend: PlanningBacke
     subscribeAbsences(onChange) {
       absenceListeners.add(onChange);
       return () => absenceListeners.delete(onChange);
+    },
+    async loadApprovalContext() {
+      if (!backend.capabilities.approvals) return { enabled: false, isApprover: true, approvers: [] };
+      return { enabled: true, isApprover, approvers: APPROVERS };
+    },
+    async listRequests() {
+      await delay();
+      return (read().requests || []).filter(visible);
+    },
+    async requestsForTicket(ticketId) {
+      await delay();
+      return (read().requests || []).filter((request) => request.ticketId === ticketId && visible(request));
+    },
+    async saveRequest(request) {
+      await delay();
+      const store = read();
+      const list = store.requests || [];
+      const now = new Date().toISOString();
+      let saved: ChangeRequest;
+      if (request.id) {
+        const index = list.findIndex((entry) => entry.id === request.id && entry.status === 'pending' && entry.requestedBy === actorName);
+        if (index < 0) throw new Error('La solicitud ya no está pendiente.');
+        saved = { ...list[index], payload: request.payload, summary: request.summary, targetLabel: request.targetLabel, baseVersion: request.baseVersion ?? null, updatedAt: now };
+        list[index] = saved;
+      } else {
+        saved = {
+          id: crypto.randomUUID(), kind: request.kind, ticketId: request.ticketId ?? null, absenceId: request.absenceId ?? null, payload: request.payload,
+          baseVersion: request.baseVersion ?? null, summary: request.summary, targetLabel: request.targetLabel, status: 'pending', requestedBy: actorName,
+          requestedByName: request.requestedByName, requestedAt: now, updatedAt: now, reviewedByName: null, reviewedAt: null, reviewNote: null,
+        };
+        list.push(saved);
+      }
+      store.requests = list;
+      write(store);
+      announceRequests();
+      return saved;
+    },
+    async reviewRequest(id, status, options) {
+      await delay();
+      if (!isApprover && status !== 'cancelled') throw new Error('Solo quien aprueba la planeación puede decidir.');
+      const store = read();
+      const list = store.requests || [];
+      const index = list.findIndex((entry) => entry.id === id);
+      if (index < 0) throw new Error('No existe la solicitud.');
+      const now = new Date().toISOString();
+      list[index] = { ...list[index], status, reviewedByName: options.reviewedByName, reviewedAt: status === 'pending' ? null : now, reviewNote: options.note || null, updatedAt: now };
+      store.requests = list;
+      write(store);
+      announceRequests();
+      return list[index];
+    },
+    subscribeRequests(onChange) {
+      requestListeners.add(onChange);
+      return () => requestListeners.delete(onChange);
     },
     async listCustomColumns() {
       return read().columns;

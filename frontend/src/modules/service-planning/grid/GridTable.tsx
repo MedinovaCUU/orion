@@ -61,6 +61,10 @@ interface GridTableProps {
   /** Absences (TXT, vacations…) overlapping each week, keyed by the week's Monday. */
   weekAbsences: Map<string, PlanningAbsence[]>;
   onAbsenceCard: (request: { anchor: DOMRect; week: PlanningWeek; absence?: PlanningAbsence }) => void;
+  /** Changes the current user sent for approval: proposed fields per activity, and pending deletions. */
+  proposedFields: Map<string, string>;
+  pendingDeletes: Set<string>;
+  approverName: string;
 }
 
 const isEmptyValue = (value: FieldValue) => (Array.isArray(value) ? value.length === 0 : value === '');
@@ -94,6 +98,9 @@ interface RowViewProps {
   remote: boolean;
   scheduleConflicts: ScheduleConflict[] | undefined;
   dropMark: 'before' | 'after' | null;
+  proposed: string;
+  deletePending: boolean;
+  approverName: string;
   editor: React.ReactNode;
   onCellMouseDown: (event: ReactMouseEvent, rowKey: string, colIndex: number) => void;
   onCellMouseEnter: (rowKey: string, colIndex: number) => void;
@@ -119,6 +126,9 @@ const RowView = memo(function RowView({
   remote,
   scheduleConflicts,
   dropMark,
+  proposed,
+  deletePending,
+  approverName,
   editor,
   onCellMouseDown,
   onCellMouseEnter,
@@ -133,13 +143,17 @@ const RowView = memo(function RowView({
   const type = row.kind === 'capture' ? '' : TYPE_CLASS[row.values.serviceType] || '';
   const critical = row.kind !== 'capture' && (row.values.statuses.includes('critico') || row.values.priority === 'critica');
   const done = row.kind !== 'capture' && (closed || row.values.statuses.includes('realizado'));
-  const status = row.kind === 'draft' ? (row.draft.status === 'error' ? 'error' : row.draft.status === 'saving' ? 'saving' : 'draft') : rowState?.status || 'idle';
+  const proposedSet = new Set(proposed ? proposed.split(',') : []);
+  const awaiting = row.kind === 'proposal' || deletePending || proposedSet.size > 0;
+  const status = row.kind === 'draft' ? (row.draft.status === 'error' ? 'error' : row.draft.status === 'saving' ? 'saving' : 'draft') : rowState && rowState.status !== 'idle' ? rowState.status : awaiting ? 'proposed' : 'idle';
   const conflictFields = new Set((rowState?.conflicts || []).map((conflict) => conflict.field));
   const pendingFields = new Set([...Object.keys(rowState?.pending || {}), ...Object.keys(rowState?.inflight || {})]);
   const className = [
     'pgrid-row',
     isCapture ? 'pgrid-row--capture' : '',
     row.kind === 'draft' ? 'pgrid-row--draft' : '',
+    row.kind === 'proposal' ? 'pgrid-row--proposal' : '',
+    deletePending ? 'is-delete-pending' : '',
     type ? `pgrid-row--${type}` : '',
     critical ? 'is-critical' : '',
     done ? 'is-done' : '',
@@ -160,7 +174,13 @@ const RowView = memo(function RowView({
             ? 'Cambios pendientes'
             : status === 'draft'
               ? 'Nueva fila sin guardar'
-              : '';
+              : status === 'proposed'
+                ? row.kind === 'proposal'
+                  ? `Actividad nueva pendiente de aprobación de ${approverName}`
+                  : deletePending
+                    ? `Eliminación pendiente de aprobación de ${approverName}`
+                    : `Cambios pendientes de aprobación de ${approverName}`
+                : '';
 
   return (
     <div className={className} role="row" aria-rowindex={index + 2} data-row-key={row.key} style={{ top, height: ROW_HEIGHT }}>
@@ -194,6 +214,7 @@ const RowView = memo(function RowView({
         const field = column.field as PlanningField | null;
         const conflict = field ? conflictFields.has(field) : false;
         const pending = field ? pendingFields.has(field) : false;
+        const isProposed = (field && proposedSet.has(field)) || (column.id === 'scheduledDate' && proposedSet.has('week'));
         const missing = row.kind === 'draft' && column.required && field && isEmptyValue(getFieldValue({ values: row.values }, field));
         const scheduleWarning = column.id === 'engineer' && scheduleConflicts?.length;
         const style: CSSProperties | undefined = pinned ? { left: pinOffsets[colIndex] } : undefined;
@@ -214,6 +235,7 @@ const RowView = memo(function RowView({
               inRange && !active ? 'in-range' : '',
               conflict ? 'has-conflict' : '',
               pending ? 'is-pending' : '',
+              isProposed ? 'is-proposed' : '',
               missing ? 'is-missing' : '',
               scheduleWarning ? 'has-warning' : '',
             ]
@@ -281,6 +303,9 @@ export default function GridTable({
   onNotify,
   weekAbsences,
   onAbsenceCard,
+  proposedFields,
+  pendingDeletes,
+  approverName,
 }: GridTableProps) {
   const scrollRef = useRef<HTMLDivElement>(null);
   const cells = useRef(new Map<string, HTMLDivElement>());
@@ -483,7 +508,7 @@ export default function GridTable({
   const firstEditableCol = () => columns.find((column) => column.field)?.id || columns[0]?.id;
 
   const canEditCell = (row: DataRow | undefined, column: GridColumn | undefined) =>
-    Boolean(row && column && column.field && column.kind !== 'readonly' && canEdit && !(row.kind === 'record' && row.record.closed));
+    Boolean(row && column && column.field && column.kind !== 'readonly' && canEdit && row.kind !== 'proposal' && !(row.kind === 'record' && row.record.closed) && !(row.kind === 'record' && pendingDeletes.has(row.key)));
 
   const focusGrid = () => scrollRef.current?.focus({ preventScroll: true });
 
@@ -505,6 +530,8 @@ export default function GridTable({
     const column = columns[colIndex.get(colId) ?? -1];
     if (!canEditCell(row, column)) {
       if (row && column && column.field && !canEdit) onNotify('info', 'Tu usuario solo puede consultar la planeación.');
+      else if (row?.kind === 'proposal') onNotify('info', `Esta actividad nueva espera la aprobación de ${approverName}. Puedes cancelar la solicitud desde «Solicitudes».`);
+      else if (row?.kind === 'record' && pendingDeletes.has(row.key)) onNotify('info', `Pediste eliminar esta actividad; espera la decisión de ${approverName} o cancela la solicitud.`);
       else if (row?.kind === 'record' && row.record.closed) onNotify('info', 'Esta actividad ya está cerrada; no se modifica desde la planeación.');
       return;
     }
@@ -1065,7 +1092,7 @@ export default function GridTable({
               <button
                 key={absence.id}
                 type="button"
-                className={`pgrid-week__away pgrid-week__away--${absence.kind.toLowerCase()}`}
+                className={`pgrid-week__away pgrid-week__away--${absence.kind.toLowerCase()} ${absence.proposal ? `is-proposed is-proposed-${absence.proposal}` : ''}`}
                 title={`${absenceTitle(absence)}\nDoble clic para ver o cambiar`}
                 onDoubleClick={(event) => onAbsenceCard({ anchor: event.currentTarget.getBoundingClientRect(), week: row.week, absence })}
                 onKeyDown={(event) => {
@@ -1109,6 +1136,9 @@ export default function GridTable({
         remote={remoteChanged.has(row.key)}
         scheduleConflicts={conflicts.get(row.key)}
         dropMark={drag && drag.overKey === row.key ? drag.position : null}
+        proposed={proposedFields.get(row.key) || ''}
+        deletePending={pendingDeletes.has(row.key)}
+        approverName={approverName}
         editor={editingColumn ? editorFor(row, editingColumn) : null}
         onCellMouseDown={onCellMouseDown}
         onCellMouseEnter={onCellMouseEnter}

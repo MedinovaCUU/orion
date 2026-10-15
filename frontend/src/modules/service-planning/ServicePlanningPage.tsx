@@ -274,6 +274,12 @@ export default function ServicePlanningPage({
   }, [guardOverrides]);
 
   useEffect(() => {
+    const onSubmitted = (event: Event) => setPlanningSyncFeedback({ tone: 'success', message: String((event as CustomEvent<string>).detail) });
+    window.addEventListener('planning-request-submitted', onSubmitted);
+    return () => window.removeEventListener('planning-request-submitted', onSubmitted);
+  }, []);
+
+  useEffect(() => {
     if (section === 'guardias') {
       setShowFilters(false);
       setShowComposer(false);

@@ -15,6 +15,8 @@ const profiles: ProfileSummary[] = [
   { id: 'p3', nombre_completo: 'Diego Garcia Garcia', rol: 'tecnico', employee_type: 'Ingeniero', recibe_tickets: true },
   { id: 'p4', nombre_completo: 'Martha Carbajal', rol: 'tecnico', employee_type: 'Ingeniero', recibe_tickets: true },
   { id: 'p5', nombre_completo: 'Francisco Lopez', rol: 'tecnico', employee_type: 'Ingeniero', recibe_tickets: true },
+  { id: 'p6', nombre_completo: 'Sofia Ceballos', rol: 'admin', employee_type: 'Operativo', recibe_tickets: false },
+  { id: 'p7', nombre_completo: 'Otra Admin', rol: 'admin', employee_type: 'Operativo', recibe_tickets: false },
 ];
 const equipments = [
   { id: 'e1', numero_serie: '834000111', modelo: 'BA400', ciudad: 'Guadalajara', clientes: { id: 'c1', razon_social: 'Hospital Central de Prueba' } },
@@ -70,7 +72,7 @@ function App() {
         profiles={profiles}
         equipments={equipments}
         currentUserName={actor}
-        currentUserId="p1"
+        currentUserId={profiles.find((profile) => profile.nombre_completo === actor)?.id || 'p1'}
         canEdit={!params.has('readonly')}
         canDelete={!params.has('readonly')}
         canManageColumns

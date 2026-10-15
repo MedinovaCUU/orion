@@ -46,6 +46,8 @@ export interface PlanningAbsence {
   createdByName: string | null;
   updatedByName: string | null;
   updatedAt: string | null;
+  /** Shown only: a change the current user sent for approval. */
+  proposal?: 'insert' | 'update' | 'delete';
 }
 
 export type AbsenceInput = Pick<PlanningAbsence, 'personName' | 'kind' | 'startDate' | 'endDate' | 'note'> & { personId?: string | null };

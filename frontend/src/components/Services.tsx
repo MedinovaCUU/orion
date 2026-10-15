@@ -3,6 +3,8 @@ import { supabase } from '../supabaseClient';
 import ServicePlanningPage from '../modules/service-planning/ServicePlanningPage';
 import type { PlanningBackend } from '../modules/service-planning/grid/planningBackend';
 import { createSupabasePlanningBackend } from '../modules/service-planning/grid/supabasePlanningBackend';
+import { notifiedApproverName, type ApprovalContext, type NewChangeRequest } from '../modules/service-planning/grid/planningApprovals';
+import { requestFromDelete, requestFromQuickCreate, requestFromServiceUpdate } from '../modules/service-planning/grid/legacyRequests';
 import {
   buildPlannedServiceUpdate,
   buildQuickCreatePayload,
@@ -59,6 +61,7 @@ export default function Services({ subPermissions = ['planeacion', 'viajes', 're
   const fetchSequence = useRef(0);
   const [planningBackend, setPlanningBackend] = useState<PlanningBackend | null>(null);
   const [planningBackendError, setPlanningBackendError] = useState<string | null>(null);
+  const [approval, setApproval] = useState<ApprovalContext | null>(null);
 
   const fetchContext = async () => {
     // Keep mounted views and unsaved drafts during background refreshes. A failed request keeps the last
@@ -167,8 +170,11 @@ export default function Services({ subPermissions = ['planeacion', 'viajes', 're
     if (!canViewPlanning || loading) return;
     let active = true;
     createSupabasePlanningBackend(currentUserId)
-      .then((backend) => {
-        if (active) setPlanningBackend(backend);
+      .then(async (backend) => {
+        if (!active) return;
+        setPlanningBackend(backend);
+        const context = await backend.loadApprovalContext().catch(() => null);
+        if (active) setApproval(context);
       })
       .catch((error: unknown) => {
         if (active) setPlanningBackendError(error instanceof Error ? error.message : 'sin conexión');
@@ -194,7 +200,19 @@ export default function Services({ subPermissions = ['planeacion', 'viajes', 're
   );
   const canSyncPlanning = useMemo(() => canAccessPlanningSync(currentUserName), [currentUserName]);
 
+  // Only the planning approvers change Planeación directly; anyone else sends the change for approval.
+  const mustRequest = Boolean(planningBackend && approval?.enabled && !approval.isApprover);
+  const sendRequest = async (request: NewChangeRequest | null) => {
+    if (!planningBackend || !request) return;
+    await planningBackend.saveRequest(request);
+    window.dispatchEvent(new CustomEvent('planning-request-submitted', { detail: `Tu cambio quedó pendiente de aprobación de ${approval ? notifiedApproverName(approval) : 'quien aprueba la planeación'}.` }));
+  };
+
   const handleCreateService = async (draft: QuickCreateDraft) => {
+    if (mustRequest) {
+      await sendRequest(requestFromQuickCreate(draft, engineerProfiles, currentUserName || 'Operacion ORION'));
+      return;
+    }
     const payload = buildQuickCreatePayload(
       draft,
       engineerProfiles,
@@ -207,6 +225,12 @@ export default function Services({ subPermissions = ['planeacion', 'viajes', 're
   };
 
   const handleUpdateService = async (service: PlannedService, updates: ServiceDetailUpdate) => {
+    if (mustRequest) {
+      const ticket = pendingTickets.find((entry) => entry.id === service.id);
+      if (!ticket) throw new Error('No se encontró la actividad.');
+      await sendRequest(requestFromServiceUpdate(ticket, updates, engineerProfiles, equipmentCatalog, currentUserName || 'Operacion ORION'));
+      return;
+    }
     const payload = buildPlannedServiceUpdate(
       service,
       updates,
@@ -220,6 +244,11 @@ export default function Services({ subPermissions = ['planeacion', 'viajes', 're
 
   const handleDeleteService = async (service: PlannedService) => {
     if (!window.confirm(`¿Eliminar la actividad ${service.links.ticketId || service.locality}?`)) {
+      return;
+    }
+    if (mustRequest) {
+      const ticket = pendingTickets.find((entry) => entry.id === service.id);
+      if (ticket) await sendRequest(requestFromDelete(ticket, engineerProfiles, currentUserName || 'Operacion ORION'));
       return;
     }
 
