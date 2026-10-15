@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { supabase } from '../supabaseClient';
 import ServicePlanningPage from '../modules/service-planning/ServicePlanningPage';
 import {
@@ -53,84 +53,98 @@ export default function Services({ subPermissions = ['planeacion', 'viajes', 're
   const [serviceReportId, setServiceReportId] = useState<string | null>(null);
   const [serviceReportTicketId, setServiceReportTicketId] = useState<string | null>(null);
   const [travelRefreshKey, setTravelRefreshKey] = useState(0);
+  const [loadError, setLoadError] = useState<string | null>(null);
+  const fetchSequence = useRef(0);
 
   const fetchContext = async () => {
-    // Keep mounted views and unsaved drafts during background refreshes.
+    // Keep mounted views and unsaved drafts during background refreshes. A failed request keeps the last
+    // good data and is reported, so a network or session hiccup never looks like an empty planning.
+    const sequence = ++fetchSequence.current;
 
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
+    try {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
 
-    setCurrentUserId(user?.id || null);
+      const [profileResponse, pendingResponse, historyResponse, catalogResponse, equipmentResponse, engineersResponse, unitsResponse] =
+        await Promise.all([
+          user?.id ? supabase.from('profiles').select('id, nombre_completo, rol').eq('id', user.id).single() : Promise.resolve({ data: null, error: null }),
+          supabase
+            .from('tickets')
+            .select('id, user_id, asunto, descripcion, estado, creado_en, numero_serie_equipo, profiles:user_id(nombre_completo)')
+            .neq('estado', 'cerrado')
+            .order('creado_en', { ascending: false }),
+          supabase
+            .from('servicios_historial')
+            .select('id, ticket_id, id_legacy, no_serie, cda, cds, motivo, fecha_servicio, creado_en, profiles:tecnico_id(nombre_completo)')
+            .order('fecha_servicio', { ascending: false })
+            .order('creado_en', { ascending: false })
+            .limit(60),
+          supabase.from('catalogo_servicio').select('catalog_kind, catalog_code, catalog_type, catalog_detail, category_code'),
+          supabase.from('equipos').select('id, numero_serie, modelo, software, firmware, pais, estado, ciudad, municipio, colonia, direccion, codigo_postal, clientes(id, razon_social, persona_contacto, telefono)'),
+          supabase.from('profiles').select('id, nombre_completo, employee_number, employee_type, telefono, territorio, rol, recibe_tickets').order('nombre_completo'),
+          supabase.from('client_service_units').select('id, client_id, equipment_id, numero_serie, cliente, persona_contacto, unidad_negocio, analizador'),
+        ]);
 
-    const [profileResponse, pendingResponse, historyResponse, catalogResponse, equipmentResponse, engineersResponse, unitsResponse] =
-      await Promise.all([
-        user?.id ? supabase.from('profiles').select('id, nombre_completo, rol').eq('id', user.id).single() : Promise.resolve({ data: null, error: null }),
-        supabase
-          .from('tickets')
-          .select('id, user_id, asunto, descripcion, estado, creado_en, numero_serie_equipo, profiles:user_id(nombre_completo)')
-          .neq('estado', 'cerrado')
-          .order('creado_en', { ascending: false }),
-        supabase
-          .from('servicios_historial')
-          .select('id, ticket_id, id_legacy, no_serie, cda, cds, motivo, fecha_servicio, creado_en, profiles:tecnico_id(nombre_completo)')
-          .order('fecha_servicio', { ascending: false })
-          .order('creado_en', { ascending: false })
-          .limit(60),
-        supabase.from('catalogo_servicio').select('catalog_kind, catalog_code, catalog_type, catalog_detail, category_code'),
-        supabase.from('equipos').select('id, numero_serie, modelo, software, firmware, pais, estado, ciudad, municipio, colonia, direccion, codigo_postal, clientes(id, razon_social, persona_contacto, telefono)'),
-        supabase.from('profiles').select('id, nombre_completo, employee_number, employee_type, telefono, territorio, rol, recibe_tickets').order('nombre_completo'),
-        supabase.from('client_service_units').select('id, client_id, equipment_id, numero_serie, cliente, persona_contacto, unidad_negocio, analizador'),
-      ]);
+      // A slower, older refresh must not overwrite a newer one.
+      if (sequence !== fetchSequence.current) {
+        return;
+      }
 
-    if (profileResponse.data) {
-      setCurrentUserName(profileResponse.data.nombre_completo || user?.email || 'Operacion ORION');
-      setCurrentUserRole(profileResponse.data.rol || null);
-    } else {
-      setCurrentUserName(user?.email || 'Operacion ORION');
-      setCurrentUserRole(null);
+      setCurrentUserId(user?.id || null);
+
+      if (profileResponse.data) {
+        setCurrentUserName(profileResponse.data.nombre_completo || user?.email || 'Operacion ORION');
+        setCurrentUserRole(profileResponse.data.rol || null);
+      } else if (!profileResponse.error) {
+        setCurrentUserName(user?.email || 'Operacion ORION');
+        setCurrentUserRole(null);
+      }
+
+      if (!pendingResponse.error) {
+        setPendingTickets((pendingResponse.data || []) as PendingServiceTicket[]);
+      }
+
+      if (!historyResponse.error) {
+        setHistoricalRecords((historyResponse.data || []) as HistoricalServiceRecord[]);
+      }
+
+      if (!catalogResponse.error) {
+        const { averias, soluciones } = splitServiceCatalog((catalogResponse.data || []) as ServiceCatalogRow[]);
+        setAveriaCatalog(averias);
+        setSolucionCatalog(soluciones);
+      }
+
+      if (!equipmentResponse.error) {
+        setEquipmentCatalog((equipmentResponse.data || []) as EquipmentSummary[]);
+      }
+
+      if (!engineersResponse.error) {
+        setEngineerProfiles((engineersResponse.data || []) as ProfileSummary[]);
+      }
+
+      if (!unitsResponse.error) {
+        setClientServiceUnits((unitsResponse.data || []) as ClientServiceUnitSummary[]);
+      }
+
+      const failure = [pendingResponse, engineersResponse, equipmentResponse, historyResponse, catalogResponse, unitsResponse, profileResponse]
+        .map((response) => response.error)
+        .find(Boolean);
+      if (failure) {
+        console.error('No se pudo actualizar la planeación.', failure);
+      }
+      setLoadError(failure ? failure.message || 'error de conexión' : null);
+    } catch (error) {
+      if (sequence !== fetchSequence.current) {
+        return;
+      }
+      console.error('No se pudo actualizar la planeación.', error);
+      setLoadError(error instanceof Error ? error.message : 'error de conexión');
+    } finally {
+      if (sequence === fetchSequence.current) {
+        setLoading(false);
+      }
     }
-
-    if (pendingResponse.data) {
-      setPendingTickets(pendingResponse.data as PendingServiceTicket[]);
-    } else {
-      setPendingTickets([]);
-    }
-
-    if (historyResponse.data) {
-      setHistoricalRecords(historyResponse.data as HistoricalServiceRecord[]);
-    } else {
-      setHistoricalRecords([]);
-    }
-
-    if (catalogResponse.data) {
-      const { averias, soluciones } = splitServiceCatalog(catalogResponse.data as ServiceCatalogRow[]);
-      setAveriaCatalog(averias);
-      setSolucionCatalog(soluciones);
-    } else {
-      setAveriaCatalog([]);
-      setSolucionCatalog([]);
-    }
-
-    if (equipmentResponse.data) {
-      setEquipmentCatalog(equipmentResponse.data as EquipmentSummary[]);
-    } else {
-      setEquipmentCatalog([]);
-    }
-
-    if (engineersResponse.data) {
-      setEngineerProfiles(engineersResponse.data as ProfileSummary[]);
-    } else {
-      setEngineerProfiles([]);
-    }
-
-    if (unitsResponse.data) {
-      setClientServiceUnits(unitsResponse.data as ClientServiceUnitSummary[]);
-    } else {
-      setClientServiceUnits([]);
-    }
-
-    setLoading(false);
   };
 
   useEffect(() => {
@@ -250,6 +264,8 @@ export default function Services({ subPermissions = ['planeacion', 'viajes', 're
       <ServicePlanningPage
         services={plannedServices}
         loading={loading}
+        loadError={loadError}
+        onRetryLoad={() => void fetchContext()}
         userRole={currentUserRole}
         currentUserName={currentUserName}
         engineerOptions={engineerProfiles.map((profile) => profile.nombre_completo || '').filter(Boolean)}

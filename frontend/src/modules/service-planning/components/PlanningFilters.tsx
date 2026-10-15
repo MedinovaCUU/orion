@@ -1,5 +1,6 @@
 import type { ServicePlanningFilters, ServiceSource, ServiceStatus, ServiceType, WeekBucket } from '../types/servicePlanning.types';
 import { formatPlanningPersonName, SERVICE_TYPE_LABELS, STATUS_LABELS } from '../helpers/normalizeService';
+import { SOURCE_LABELS } from '../helpers/filters';
 
 interface PlanningFiltersProps {
   filters: ServicePlanningFilters;
@@ -12,13 +13,6 @@ interface PlanningFiltersProps {
   onChange: (next: Partial<ServicePlanningFilters>) => void;
   onReset: () => void;
 }
-
-const sourceLabels: Record<ServiceSource, string> = {
-  manual: 'Manual',
-  excel_import: 'Excel',
-  ticket: 'Ticket',
-  orion: 'Orion',
-};
 
 export default function PlanningFilters({
   filters,
@@ -145,7 +139,7 @@ export default function PlanningFilters({
           <span>Fuente</span>
           <select className="input-field" value={filters.source} onChange={(event) => onChange({ source: event.target.value as 'all' | ServiceSource })}>
             <option value="all">Todas</option>
-            {Object.entries(sourceLabels).map(([value, label]) => (
+            {Object.entries(SOURCE_LABELS).map(([value, label]) => (
               <option key={value} value={value}>
                 {label}
               </option>

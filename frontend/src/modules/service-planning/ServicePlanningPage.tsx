@@ -7,6 +7,7 @@ import {
   getFalconTicketSla,
 } from '../../components/ticketIntake';
 import FalconSlaAlerts, { type FalconSlaAlertEntry } from '../../components/FalconSlaAlerts';
+import ActiveFiltersBar from './components/ActiveFiltersBar';
 import AlertsPanel from './components/AlertsPanel';
 import EmptyState from './components/EmptyState';
 import EngineerLoadPanel from './components/EngineerLoadPanel';
@@ -23,7 +24,7 @@ import UpcomingServicesTable from './components/UpcomingServicesTable';
 import WeekendGuardsPanel from './components/WeekendGuardsPanel';
 import WeeklyBoard from './components/WeeklyBoard';
 import { calculateKpis, buildAlerts } from './helpers/calculateKpis';
-import { applyServiceFilters, buildFilterOptions, createDefaultFilters } from './helpers/filters';
+import { applyServiceFilters, buildFilterOptions, createDefaultFilters, describeActiveFilters } from './helpers/filters';
 import {
   buildMonthOptions,
   formatPlanningPersonName,
@@ -42,6 +43,7 @@ import {
 import type { ServicePlanningSyncSummary } from './helpers/servicePlanningSync';
 import { groupServicesByWeek } from './helpers/weekGrouping';
 import type {
+  AlertKey,
   PlannedService,
   QuickCreateDraft,
   ServiceDetailUpdate,
@@ -62,6 +64,8 @@ import { PanelLoader } from '../../components/OrionLoader';
 interface ServicePlanningPageProps {
   services: PlannedService[];
   loading: boolean;
+  loadError?: string | null;
+  onRetryLoad?: () => void;
   userRole: string | null;
   currentUserName: string;
   engineerOptions: string[];
@@ -177,6 +181,8 @@ function ReactiveTicketSlaPanel({
 export default function ServicePlanningPage({
   services,
   loading,
+  loadError = null,
+  onRetryLoad,
   userRole,
   currentUserName,
   engineerOptions,
@@ -270,7 +276,16 @@ export default function ServicePlanningPage({
   );
   const weekBuckets = useMemo(() => groupServicesByWeek(filteredServices), [filteredServices]);
   const kpis = useMemo(() => calculateKpis(filteredServices), [filteredServices]);
-  const alerts = useMemo(() => buildAlerts(filteredServices), [filteredServices]);
+  // Alert counts ignore the alert drill-down itself, so the panel keeps showing every pending group.
+  const alertScopedServices = useMemo(
+    () =>
+      filters.alert === 'all'
+        ? filteredServices
+        : applyServiceFilters(services, { ...filters, alert: 'all', search: deferredSearch }, currentUserName),
+    [currentUserName, deferredSearch, filteredServices, filters, services],
+  );
+  const alerts = useMemo(() => buildAlerts(alertScopedServices), [alertScopedServices]);
+  const activeFilterChips = useMemo(() => describeActiveFilters(filters), [filters]);
   const importPreview = useMemo(() => createMockImportPreview(filteredServices), [filteredServices]);
   const falconTrackedReactiveTickets = useMemo<TrackedReactiveTicketEntry[]>(
     () =>
@@ -313,31 +328,21 @@ export default function ServicePlanningPage({
     setShowComposer(false);
   };
 
-  const handleAlertSelect = (alertKey: string) => {
+  const handleAlertSelect = (alertKey: AlertKey) => {
     setSection('alertas');
-    if (alertKey === 'missing_day') {
-      setFilters((current) => ({ ...current, status: 'missing_day' }));
-      return;
+    setFilters((current) => ({ ...current, alert: current.alert === alertKey ? 'all' : alertKey }));
+  };
+
+  // The alert drill-down belongs to Alertas; leaving the section must not keep hiding services elsewhere.
+  const handleSectionChange = (next: ServicePlanningSection) => {
+    setSection(next);
+    if (next !== 'alertas') {
+      setFilters((current) => (current.alert === 'all' ? current : { ...current, alert: 'all' }));
     }
+  };
 
-    if (alertKey === 'missing_engineer') {
-      setFilters((current) => ({ ...current, status: 'sin_asignar' }));
-      return;
-    }
-
-    const statusMap: Record<string, string> = {
-      critical: 'critico',
-      payment: 'requiere_pago',
-      blocked: 'bloqueado',
-      completed: 'realizado',
-      missing_serial: 'all',
-    };
-
-    setFilters((current) => ({
-      ...current,
-      status: (statusMap[alertKey] || 'all') as typeof current.status,
-      search: alertKey === 'missing_serial' ? 'ns pendiente' : current.search,
-    }));
+  const handleRemoveFilter = (key: Exclude<keyof typeof filters, 'month'>) => {
+    setFilters((current) => ({ ...current, [key]: createDefaultFilters(current.month)[key] }));
   };
 
   const handleResetFilters = () => {
@@ -388,7 +393,7 @@ export default function ServicePlanningPage({
       <PlanningLegend />
       <div className="planning-summary-panels">
         <EngineerLoadPanel engineers={kpis.servicesByEngineer} />
-        <AlertsPanel alerts={alerts} onSelect={(alert) => handleAlertSelect(alert.key)} />
+        <AlertsPanel alerts={alerts} activeKey={filters.alert} onSelect={(alert) => handleAlertSelect(alert.key)} />
         <UpcomingServicesTable services={kpis.upcomingServices} onOpenService={setSelectedService} />
       </div>
     </div>
@@ -467,13 +472,37 @@ export default function ServicePlanningPage({
     </div>
   );
 
+  const showsEmptyState =
+    filteredServices.length === 0 && section !== 'reportes' && section !== 'configuracion' && section !== 'guardias' && section !== 'tablero';
+  const showsLoadFailure = Boolean(loadError) && services.length === 0 && showsEmptyState;
+
   const renderSection = () => {
     if (loading) {
       return <PanelLoader title="Cargando planeación" subtitle="Estamos recuperando tickets, modales relacionados y la capa de viajes." />;
     }
 
-    if (filteredServices.length === 0 && section !== 'reportes' && section !== 'configuracion' && section !== 'guardias' && section !== 'tablero') {
-      return <EmptyState title="Sin servicios para esta combinacion" description="Prueba otro mes, semana o limpia filtros para ampliar la ventana." />;
+    if (showsEmptyState) {
+      if (showsLoadFailure) {
+        return (
+          <EmptyState
+            title="No se pudo cargar la planeación"
+            description="Los servicios no llegaron del servidor. No significa que el mes esté vacío."
+            action={onRetryLoad ? <button type="button" className="button-primary" onClick={onRetryLoad}>Reintentar</button> : undefined}
+          />
+        );
+      }
+
+      if (activeFilterChips.length > 0 && monthScopedServices.length > 0) {
+        return (
+          <EmptyState
+            title="Ningún servicio coincide con los filtros"
+            description={`Este mes tiene ${monthScopedServices.length} ${monthScopedServices.length === 1 ? 'servicio' : 'servicios'}, pero los filtros activos los ocultan.`}
+            action={<button type="button" className="button-primary" onClick={handleResetFilters}>Limpiar filtros</button>}
+          />
+        );
+      }
+
+      return <EmptyState title="Sin servicios en este mes" description="Prueba otro mes o agrega una actividad nueva." />;
     }
 
     switch (section) {
@@ -500,7 +529,7 @@ export default function ServicePlanningPage({
       case 'alertas':
         return (
           <div className="planning-content-grid">
-            <AlertsPanel alerts={alerts} onSelect={(alert) => handleAlertSelect(alert.key)} />
+            <AlertsPanel alerts={alerts} activeKey={filters.alert} onSelect={(alert) => handleAlertSelect(alert.key)} />
             <UpcomingServicesTable services={kpis.upcomingServices} onOpenService={setSelectedService} />
           </div>
         );
@@ -535,7 +564,7 @@ export default function ServicePlanningPage({
       <PlanningFalconAlertsBridge contextLabel="Planeación" entries={falconTrackedReactiveTickets} />
       <PlanningSidebar
         active={section}
-        onChange={setSection}
+        onChange={handleSectionChange}
         alertsCount={alerts.reduce((total, alert) => total + alert.count, 0)}
         currentUserName={currentUserName}
         roleLabel={role}
@@ -567,7 +596,21 @@ export default function ServicePlanningPage({
           </div>
         ) : null}
 
+        {loadError && !showsLoadFailure && !loading ? (
+          <div className="travel-banner error planning-load-error" role="alert">
+            <span>
+              No se pudo actualizar la planeación: {loadError.replace(/\.$/, '')}.
+              {services.length ? ' Se muestran los últimos datos cargados.' : ''}
+            </span>
+            {onRetryLoad ? <button type="button" className="button-primary inactive" onClick={onRetryLoad}>Reintentar</button> : null}
+          </div>
+        ) : null}
+
         {section !== 'guardias' && section !== 'tablero' ? <KpiStrip kpis={kpis} /> : null}
+
+        {section !== 'guardias' && section !== 'tablero' && section !== 'reportes' && section !== 'configuracion' ? (
+          <ActiveFiltersBar chips={activeFilterChips} onRemove={handleRemoveFilter} onClear={handleResetFilters} />
+        ) : null}
 
         {showFilters && section !== 'guardias' ? (
           <PlanningFilters

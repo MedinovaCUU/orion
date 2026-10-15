@@ -1,5 +1,6 @@
 import { groupUpcomingServices } from './weekGrouping';
 import type {
+  AlertKey,
   AlertSummary,
   EngineerLoadSummary,
   PlannedService,
@@ -53,64 +54,69 @@ export const calculateEngineerLoad = (services: PlannedService[]): EngineerLoadS
     .sort((left, right) => right.total - left.total || right.critical - left.critical);
 };
 
-export const buildAlerts = (services: PlannedService[]): AlertSummary[] => [
+const ALERT_DEFINITIONS: Array<Omit<AlertSummary, 'count' | 'services'> & { matches: (service: PlannedService) => boolean }> = [
   {
     key: 'critical',
     title: 'Criticos / Falcon',
     description: 'Servicios que deben quedar al frente de la agenda.',
-    count: services.filter((service) => service.flags.isCritical).length,
     tone: 'critical',
-    services: services.filter((service) => service.flags.isCritical),
+    matches: (service) => service.flags.isCritical,
   },
   {
     key: 'payment',
     title: 'Requieren pago',
     description: 'Bloqueos administrativos antes de ejecutar.',
-    count: services.filter((service) => service.flags.requiresPayment).length,
     tone: 'warning',
-    services: services.filter((service) => service.flags.requiresPayment),
+    matches: (service) => service.flags.requiresPayment,
   },
   {
     key: 'blocked',
     title: 'Bloqueados',
     description: 'Casos detenidos por condición operativa.',
-    count: services.filter((service) => service.flags.isBlocked).length,
     tone: 'critical',
-    services: services.filter((service) => service.flags.isBlocked),
+    matches: (service) => service.flags.isBlocked,
   },
   {
     key: 'missing_day',
     title: 'Sin dia asignado',
     description: 'Servicios sin fecha o dia firme dentro de la semana.',
-    count: services.filter((service) => service.flags.missingScheduledDay).length,
     tone: 'neutral',
-    services: services.filter((service) => service.flags.missingScheduledDay),
+    matches: (service) => service.flags.missingScheduledDay,
   },
   {
     key: 'missing_engineer',
     title: 'Sin ingeniero',
     description: 'Asignaciones incompletas listas para coordinación.',
-    count: services.filter((service) => service.flags.missingEngineer).length,
     tone: 'neutral',
-    services: services.filter((service) => service.flags.missingEngineer),
+    matches: (service) => service.flags.missingEngineer,
   },
   {
     key: 'completed',
     title: 'Ya realizados',
     description: 'Servicios cerrados, visibles para control y trazabilidad.',
-    count: services.filter((service) => service.flags.isCompleted).length,
     tone: 'success',
-    services: services.filter((service) => service.flags.isCompleted),
+    matches: (service) => service.flags.isCompleted,
   },
   {
     key: 'missing_serial',
     title: 'NS pendiente',
     description: 'Registros con numero de serie faltante.',
-    count: services.filter((service) => service.flags.missingSerial).length,
     tone: 'warning',
-    services: services.filter((service) => service.flags.missingSerial),
+    matches: (service) => service.flags.missingSerial,
   },
 ];
+
+// The drill-down uses the same rule as the count, so "Ver detalle" never lands on an empty list.
+export const matchesAlert = (service: PlannedService, key: AlertKey) =>
+  ALERT_DEFINITIONS.find((definition) => definition.key === key)?.matches(service) ?? true;
+
+export const getAlertTitle = (key: AlertKey) => ALERT_DEFINITIONS.find((definition) => definition.key === key)?.title || key;
+
+export const buildAlerts = (services: PlannedService[]): AlertSummary[] =>
+  ALERT_DEFINITIONS.map(({ matches, ...definition }) => {
+    const matching = services.filter(matches);
+    return { ...definition, count: matching.length, services: matching };
+  });
 
 export const calculateKpis = (services: PlannedService[]): ServicePlanningKpis => {
   const servicesByEngineer = calculateEngineerLoad(services);

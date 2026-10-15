@@ -165,6 +165,8 @@ export interface ServicePlanningFilters {
   engineer: string;
   companion: string;
   status: 'all' | ServiceStatus | 'missing_day';
+  // Drill-down from "Alertas y pendientes": same rule as the alert's count.
+  alert: 'all' | AlertKey;
   locality: string;
   priority: 'all' | ServicePriority;
   source: 'all' | ServiceSource;
@@ -224,15 +226,17 @@ export interface EngineerLoadSummary {
   services: PlannedService[];
 }
 
+export type AlertKey =
+  | 'critical'
+  | 'payment'
+  | 'blocked'
+  | 'missing_day'
+  | 'missing_engineer'
+  | 'completed'
+  | 'missing_serial';
+
 export interface AlertSummary {
-  key:
-    | 'critical'
-    | 'payment'
-    | 'blocked'
-    | 'missing_day'
-    | 'missing_engineer'
-    | 'completed'
-    | 'missing_serial';
+  key: AlertKey;
   title: string;
   description: string;
   count: number;
