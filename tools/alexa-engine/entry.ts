@@ -29,7 +29,7 @@ import {
 } from '../../frontend/src/modules/dri/utils/sourcePatches';
 import { applyFormPatch } from '../../frontend/src/modules/dri/utils/contextSources';
 import { DRI_SUBSYSTEM_LABELS } from '../../frontend/src/modules/dri/knowledge/mechanicalSubsystems';
-import { buildBplSerialSummary, normalizeBplEvent, normalizeBplSerial, type BplEvent, type BplEventRow } from '../../frontend/src/modules/equipment-monitoring/bplEvents';
+import { buildBplSerialSummary, formatBplExecution, normalizeBplEvent, normalizeBplSerial, type BplEvent, type BplEventRow } from '../../frontend/src/modules/equipment-monitoring/bplEvents';
 import {
   BA400_ALARM_CATALOG,
   ba400AlarmLocationLabel,
@@ -58,6 +58,7 @@ export {
   classifyBa400Alarm,
   normalizeBa400AlarmCode,
   normalizeBplSerial,
+  formatBplExecution,
 };
 
 /** Seed catalog (same mapping as driData.ts fallbackCatalog), enriched with reagent identity + IFU context. */

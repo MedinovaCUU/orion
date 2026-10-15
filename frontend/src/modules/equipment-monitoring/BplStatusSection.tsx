@@ -13,9 +13,12 @@ import {
   BPL_STATUS_LABELS,
   BPL_TONE_LABELS,
   bplToneFromStatus,
+  describeBplBlankResult,
   formatBplDiagnosticStatus,
   formatBplEventTypeLabel,
+  formatBplExecution,
   summarizeBplEventMetrics,
+  type BplBlankResultLink,
   type BplEvent,
   type BplSerialSummary,
   type BplStage,
@@ -66,6 +69,44 @@ const resolveHeadlineEvent = (test: BplTestSnapshot): { stage: BplStage; event: 
     }
   });
   return best;
+};
+
+/**
+ * Blanco de reactivo más reciente de la prueba. El resultado sale del `bpl_analytical_result` BLANK de
+ * la misma ejecución; si el pipeteo aún no tiene resultado relacionado, se dice que está pendiente.
+ */
+const BlankResultNote = ({ link, headlineEvent }: { link: BplBlankResultLink; headlineEvent: BplEvent | null }) => {
+  if (link.state === 'pending') {
+    return (
+      <small
+        className="equipment-monitor__bpl-missing"
+        data-testid="bpl-blank-pending"
+        title={`Blanco pipeteado ${formatDateTime(link.observedAt)}; el monitor todavía no envía su resultado analítico.`}
+      >
+        {describeBplBlankResult(link)}
+      </small>
+    );
+  }
+  // Sin payload (corte global) el resultado existe pero su absorbancia llega con el detalle.
+  if (link.absorbance === null) return null;
+  // Si el titular de la tarjeta ya es este resultado, su absorbancia y límite ya están a la vista.
+  const inHeadline = Boolean(link.result && headlineEvent?.key === link.result.key);
+  const parts = [
+    inHeadline ? null : describeBplBlankResult(link),
+    inHeadline || link.withinLimit !== false ? null : 'fuera del límite',
+    formatBplExecution(link.execution),
+    link.replicates > 1 ? `${link.replicates} réplicas` : null,
+  ].filter(Boolean);
+  if (!parts.length) return null;
+  return (
+    <small
+      className={link.withinLimit === false ? 'equipment-monitor__bpl-missing' : undefined}
+      data-testid="bpl-blank-result"
+      title={link.result?.timestamp ? `Resultado analítico ${formatDateTime(link.result.timestamp)}` : undefined}
+    >
+      {parts.join(' · ')}
+    </small>
+  );
 };
 
 const stageTone = (summary: BplSerialSummary, stage: BplStage): BplTone => {
@@ -186,6 +227,12 @@ const BplStatusSection = memo(function BplStatusSection({ serial, overview, deta
             })}
           </div>
 
+          {summary.pendingBlankResults.length ? (
+            <p className="equipment-monitor__focus-location equipment-monitor__bpl-pending" data-tone="pending">
+              Resultado del blanco pendiente de recibir: {summary.pendingBlankResults.slice(0, 6).join(', ')}
+              {summary.pendingBlankResults.length > 6 ? ` y ${summary.pendingBlankResults.length - 6} más` : ''}.
+            </p>
+          ) : null}
           {summary.missingData.length ? (
             <p className="equipment-monitor__focus-location equipment-monitor__bpl-pending" data-tone="pending">
               Falta para cerrar aceptación: {summary.missingData.slice(0, 6).join(', ')}
@@ -235,6 +282,7 @@ const BplStatusSection = memo(function BplStatusSection({ serial, overview, deta
                     {metrics.length ? ` · ${metrics.join(' · ')}` : ''}
                   </p>
                   {lots.length ? <small>{lots.join(' · ')}</small> : null}
+                  {test.blankResult ? <BlankResultNote link={test.blankResult} headlineEvent={headline?.event || null} /> : null}
                   {test.missingData.length ? <small className="equipment-monitor__bpl-missing">Falta: {test.missingData.slice(0, 4).join(', ')}</small> : null}
                   {test.ruleIds.length ? <small>Reglas {test.ruleIds.slice(0, 4).join(', ')}</small> : null}
                   {latestCurve ? <ReactionSparkline group={latestCurve} onOpenGroup={openReactionGroup} /> : null}

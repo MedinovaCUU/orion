@@ -1,6 +1,7 @@
 import type { SatQcResult } from '../../sat-report/satReportTypes';
 import { toLocalIsoDate } from './lotDates';
 import {
+  BPL_BLANK_RESULT_PENDING_LABEL,
   formatBplNumber,
   summarizeBplEventMetrics,
   type BplEvent,
@@ -354,6 +355,7 @@ export const buildDriBplProjection = (summary: BplSerialSummary, catalog: DriCat
     ...failedTests.slice(0, 8).map(describeTest),
     summary.pendingTests.length ? `Pendientes de aceptación: ${summary.pendingTests.slice(0, 8).join(', ')}` : null,
     westgardRules.size ? `Reglas Westgard: ${Array.from(westgardRules).join(', ')}` : null,
+    summary.pendingBlankResults.length ? `${BPL_BLANK_RESULT_PENDING_LABEL}: ${summary.pendingBlankResults.slice(0, 8).join(', ')}` : null,
     summary.missingData.length ? `Falta para aceptar: ${summary.missingData.slice(0, 6).join(', ')}` : null,
     unmatchedTests.length ? `Sin reactivo DRI equivalente: ${unmatchedTests.join(', ')}` : null,
   ].filter((line): line is string => Boolean(line));

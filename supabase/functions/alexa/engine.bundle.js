@@ -29650,9 +29650,53 @@ const parseCalibrationDetail = (payload) => {
 		])
 	};
 };
+const databaseRecordOf = (payload) => toRecord(pickValue(payload, ["database_record", "db_record"], 0));
+const CURVE_CONTAINER_KEY = /curv|points|puntos/;
+const withoutCurveData = (record, depth = 2) => {
+	if (!record) return null;
+	const clean = {};
+	Object.entries(record).forEach(([key, value]) => {
+		const nested = toRecord(value);
+		if ((nested || Array.isArray(value)) && CURVE_CONTAINER_KEY.test(normalizeKey(key))) return;
+		clean[key] = nested && depth > 0 ? withoutCurveData(nested, depth - 1) : value;
+	});
+	return clean;
+};
+const parseLimitAssessment = (value) => {
+	const normalized = (value || "").trim().toLowerCase();
+	if (/^(within|inside|dentro)/.test(normalized)) return true;
+	if (/^(outside|above|below|over|under|exceed|fuera)/.test(normalized)) return false;
+	return null;
+};
+const parseExecutionRef = (payload, serial, testKey) => {
+	const record = databaseRecordOf(payload);
+	if (!record) return null;
+	const field = (candidates) => pickValue(record, candidates, 0);
+	const workSessionId = toText(field(["work_session_id"]));
+	const orderTestId = toText(field(["order_test_id"]));
+	const rerunNumber = toFiniteNumber(field(["rerun_number"]));
+	return {
+		key: workSessionId && orderTestId ? [
+			serial,
+			testKey,
+			workSessionId,
+			orderTestId,
+			rerunNumber ?? 1
+		].join("|") : null,
+		workSessionId,
+		orderTestId,
+		rerunNumber,
+		multipointNumber: toFiniteNumber(field(["multipoint_number"])),
+		orderTestStatus: toText(field(["order_test_status"]))?.toUpperCase() || null,
+		analyzerId: toText(field(["analyzer_id"]))
+	};
+};
 const parseBlankDetail = (payload, stage) => {
 	if (!payload) return null;
-	const absorbance = pickNumber(payload, [
+	const scope = withoutCurveData(payload);
+	const record = databaseRecordOf(scope);
+	const absorbance = pickNumber(record, ["absorbance_value"]) ?? pickNumber(scope, [
+		"absorbance_value",
 		"abs_value",
 		"absorbance",
 		"abs",
@@ -29663,14 +29707,15 @@ const parseBlankDetail = (payload, stage) => {
 		"value",
 		"absorbancia"
 	]);
-	const absorbanceLimit = pickNumber(payload, [
+	const absorbanceLimit = pickNumber(record, ["blank_absorbance_limit"]) ?? pickNumber(scope, [
 		"blank_absorbance_limit",
 		"absorbance_limit",
 		"abs_limit",
 		"limit",
 		"limite"
 	]);
-	const readingsSource = pickValue(payload, [
+	const assessed = parseLimitAssessment(pickText(scope, ["limit_assessment", "blank_limit_assessment"]));
+	const readingsSource = pickValue(scope, [
 		"readings",
 		"filters",
 		"channels",
@@ -29724,21 +29769,26 @@ const parseBlankDetail = (payload, stage) => {
 	});
 	return {
 		absorbance,
-		absorbanceInitial: pickNumber(payload, [
+		absorbanceInitial: pickNumber(scope, [
 			"abs_initial",
 			"initial_absorbance",
 			"absorbance_initial"
 		]),
-		absorbanceMainFilter: pickNumber(payload, ["abs_main_filter", "main_filter_absorbance"]),
-		workReagentAbsorbance: pickNumber(payload, [
+		absorbanceMainFilter: pickNumber(scope, [
+			"abs_main_filter",
+			"main_filter_absorbance",
+			"absorbance_main_filter"
+		]),
+		workReagentAbsorbance: pickNumber(scope, [
 			"abs_work_reagent",
 			"work_reagent_absorbance",
-			"reagent_absorbance"
+			"reagent_absorbance",
+			"absorbance_work_reagent"
 		]),
 		absorbanceLimit,
-		kineticBlankLimit: pickNumber(payload, ["kinetic_blank_limit", "kinetic_limit"]),
-		withinLimit: absorbance !== null && absorbanceLimit !== null ? Math.abs(absorbance) <= Math.abs(absorbanceLimit) : null,
-		filterLabel: pickText(payload, [
+		kineticBlankLimit: pickNumber(scope, ["kinetic_blank_limit", "kinetic_limit"]),
+		withinLimit: assessed ?? (absorbance !== null && absorbanceLimit !== null ? Math.abs(absorbance) <= Math.abs(absorbanceLimit) : null),
+		filterLabel: pickText(scope, [
 			"main_filter",
 			"filter",
 			"wavelength",
@@ -29746,7 +29796,7 @@ const parseBlankDetail = (payload, stage) => {
 			"filtro"
 		]),
 		readings,
-		alarms: pickList(payload, [
+		alarms: pickList(scope, [
 			"alarms",
 			"alarm_list",
 			"alarmas"
@@ -29794,43 +29844,47 @@ const parseConsumptionDetail = (payload) => {
 };
 const parseAnalyticalDetail = (payload) => {
 	if (!payload) return null;
+	const scope = withoutCurveData(payload);
 	const errors = [
-		pickText(payload, ["abs_error", "absorbance_error"]),
-		pickText(payload, ["conc_error", "concentration_error"]),
-		pickText(payload, ["calibration_error"])
+		pickText(scope, ["abs_error", "absorbance_error"]),
+		pickText(scope, ["conc_error", "concentration_error"]),
+		pickText(scope, ["calibration_error"])
 	].filter((item) => Boolean(item));
 	return {
-		absorbance: pickNumber(payload, [
+		absorbance: pickNumber(scope, [
+			"absorbance_value",
 			"abs_value",
 			"absorbance",
 			"abs"
 		]),
-		concentration: pickNumber(payload, [
+		concentration: pickNumber(scope, [
+			"concentration_value",
 			"conc_value",
 			"concentration",
 			"result_value",
 			"result",
 			"value"
 		]),
-		unit: pickText(payload, [
+		unit: pickText(scope, [
 			"measure_unit",
 			"unit",
 			"units"
 		]),
-		validationStatus: pickText(payload, [
+		validationStatus: pickText(scope, [
 			"validation_status",
 			"validationstatus",
 			"evaluation",
 			"status"
 		]),
-		accepted: pickBoolean(payload, [
+		accepted: pickBoolean(scope, [
 			"accepted_result_flag",
+			"accepted_result",
 			"accepted",
 			"is_accepted"
 		]),
-		calibratorFactor: pickNumber(payload, ["calibrator_factor", "factor"]),
+		calibratorFactor: pickNumber(scope, ["calibrator_factor", "factor"]),
 		errors,
-		alarms: pickList(payload, [
+		alarms: pickList(scope, [
 			"alarms",
 			"alarm_list",
 			"alarmas"
@@ -29859,6 +29913,7 @@ const normalizeBplEvent = (row) => {
 	const isQc = stage === "quality_control" && eventType !== "bpl_consumption_record";
 	const isCalibration = stage === "calibration" && eventType !== "bpl_consumption_record";
 	const isBlank = (stage === "reagent_blank" || stage === "instrument_photometry_blank") && eventType !== "bpl_consumption_record";
+	const testKey = normalizeBplTestKey(testName) || (stage === "instrument_photometry_blank" ? "INSTRUMENTO" : "SIN PRUEBA");
 	return {
 		key: [
 			serial,
@@ -29877,7 +29932,7 @@ const normalizeBplEvent = (row) => {
 		status,
 		diagnosticStatus: (row.diagnostic_status || "").trim() || null,
 		testName,
-		testKey: normalizeBplTestKey(testName) || (stage === "instrument_photometry_blank" ? "INSTRUMENTO" : "SIN PRUEBA"),
+		testKey,
 		sampleClass,
 		sampleType: (row.sample_type || "").trim() || null,
 		controlOrCalibratorName: (row.calibration_control_name || "").trim() || null,
@@ -29892,7 +29947,9 @@ const normalizeBplEvent = (row) => {
 		calibration: isCalibration ? parseCalibrationDetail(payload) : null,
 		blank: isBlank ? parseBlankDetail(payload, stage) : null,
 		consumption: eventType === "bpl_consumption_record" ? parseConsumptionDetail(payload) : null,
-		analytical: eventType === "bpl_analytical_result" ? parseAnalyticalDetail(payload) : null
+		analytical: eventType === "bpl_analytical_result" ? parseAnalyticalDetail(payload) : null,
+		execution: parseExecutionRef(payload, serial, testKey),
+		blankResult: null
 	};
 };
 const timestampValue = (event) => event.timestamp ? new Date(event.timestamp).getTime() : 0;
@@ -29946,8 +30003,112 @@ const bplToneFromStatus = (status) => {
 	return "none";
 };
 const isBplReactionCurveEvent = (event) => event.eventType === "bpl_reaction_curve";
+const isBlankSample = (event) => event.sampleClass === "BLANK" || !event.sampleClass && event.stage === "reagent_blank";
+const isBplBlankResultEvent = (event) => event.eventType === "bpl_analytical_result" && isBlankSample(event);
+const BLANK_RESULT_MISSING_CODES = new Set([
+	"blank_result_value",
+	"blank_acceptance_limit",
+	"blank_absorbance_limit"
+]);
+const isBlankResultCode = (code) => BLANK_RESULT_MISSING_CODES.has(code.trim().toLowerCase());
+const BPL_BLANK_RESULT_WINDOW_MS = 2700 * 1e3;
+const awaitsBlankResult = (event) => !isBplBlankResultEvent(event) && (event.eventType === "bpl_consumption_record" && isBlankSample(event) || event.missingData.some(isBlankResultCode));
+const buildBlankExecutions = (events) => {
+	const groups = /* @__PURE__ */ new Map();
+	events.forEach((event) => {
+		if (!isBplBlankResultEvent(event)) return;
+		if (event.execution?.analyzerId && normalizeBplSerial(event.execution.analyzerId) !== event.serial) return;
+		const key = event.execution?.key || `event|${event.key}`;
+		const bucket = groups.get(key) || [];
+		bucket.push(event);
+		groups.set(key, bucket);
+	});
+	const executions = /* @__PURE__ */ new Map();
+	groups.forEach((replicates, key) => {
+		const ordered = [...replicates].sort((left, right) => timestampValue(left) - timestampValue(right));
+		const closed = ordered.filter((event) => event.execution?.orderTestStatus === "CLOSED");
+		executions.set(key, {
+			testKey: ordered[0].testKey,
+			sampleType: ordered.find((event) => event.sampleType)?.sampleType || null,
+			workSessionId: ordered[0].execution?.workSessionId || null,
+			firstAt: timestampValue(ordered[0]),
+			replicates: new Set(ordered.map((event) => event.timestamp || event.key)).size,
+			final: closed.length > 0,
+			representative: closed.at(-1) || ordered[ordered.length - 1]
+		});
+	});
+	return executions;
+};
+const receivedBlankLink = (execution, observedAt) => {
+	const result = execution.representative;
+	return {
+		state: "received",
+		result,
+		execution: result.execution,
+		replicates: execution.replicates,
+		final: execution.final,
+		absorbance: result.blank?.absorbance ?? null,
+		limit: result.blank?.absorbanceLimit ?? null,
+		withinLimit: result.blank?.withinLimit ?? null,
+		observedAt
+	};
+};
+const pendingBlankLink = (observedAt) => ({
+	state: "pending",
+	result: null,
+	execution: null,
+	replicates: 0,
+	final: false,
+	absorbance: null,
+	limit: null,
+	withinLimit: null,
+	observedAt
+});
+const findBlankExecution = (event, executions) => {
+	const at = timestampValue(event);
+	if (!at) return null;
+	const forwardOnly = event.eventType === "bpl_consumption_record";
+	const session = event.execution?.workSessionId || null;
+	const sampleType = event.sampleType?.toUpperCase() || null;
+	let best = null;
+	let bestDistance = Number.POSITIVE_INFINITY;
+	for (const execution of executions) {
+		if (execution.testKey !== event.testKey) continue;
+		if (sampleType && execution.sampleType && execution.sampleType.toUpperCase() !== sampleType) continue;
+		const sameSession = Boolean(session && execution.workSessionId === session);
+		if (session && execution.workSessionId && !sameSession) continue;
+		const gap = execution.firstAt - at;
+		if (forwardOnly && gap < 0) continue;
+		const distance = Math.abs(gap);
+		if (!sameSession && distance > 27e5) continue;
+		if (distance < bestDistance) {
+			best = execution;
+			bestDistance = distance;
+		}
+	}
+	return best;
+};
+const reconcileBlankResults = (events) => {
+	const executions = buildBlankExecutions(events);
+	return events.map((event) => {
+		if (isBplBlankResultEvent(event)) {
+			const execution = executions.get(event.execution?.key || `event|${event.key}`);
+			return execution ? {
+				...event,
+				blankResult: receivedBlankLink(execution, event.timestamp)
+			} : event;
+		}
+		if (!awaitsBlankResult(event)) return event;
+		const execution = findBlankExecution(event, executions.values());
+		return {
+			...event,
+			missingData: event.missingData.filter((code) => !isBlankResultCode(code)),
+			blankResult: execution ? receivedBlankLink(execution, event.timestamp) : pendingBlankLink(event.timestamp)
+		};
+	});
+};
 const buildBplSerialSummary = (serial, events) => {
-	const sorted = events.filter((event) => !isBplReactionCurveEvent(event)).sort(compareBplEventsDesc);
+	const sorted = reconcileBlankResults(events.filter((event) => !isBplReactionCurveEvent(event))).sort(compareBplEventsDesc);
 	const byTest = /* @__PURE__ */ new Map();
 	sorted.forEach((event) => {
 		const bucket = byTest.get(event.testKey) || [];
@@ -29989,7 +30150,8 @@ const buildBplSerialSummary = (serial, events) => {
 			reagentBarcodes: unique(testEvents.flatMap((event) => [event.consumption?.reagentBarcode1, event.consumption?.reagentBarcode2])),
 			missingData: unique(testEvents.flatMap((event) => event.missingData)),
 			ruleIds: unique(testEvents.flatMap((event) => event.ruleIds)),
-			statusFlips
+			statusFlips,
+			blankResult: testEvents.find((event) => event.blankResult)?.blankResult || null
 		};
 	});
 	tests.sort((left, right) => {
@@ -30069,6 +30231,7 @@ const buildBplSerialSummary = (serial, events) => {
 		pendingTests,
 		acceptedTests,
 		missingData: unique(sorted.flatMap((event) => event.missingData)),
+		pendingBlankResults: tests.filter((test) => test.blankResult?.state === "pending").map((test) => test.testName),
 		calibrators: groupLots("calibration"),
 		controls: groupLots("quality_control"),
 		reagentBarcodes: latestByTimestamp(Array.from(barcodeMap.values())),
@@ -30079,8 +30242,25 @@ const formatBplNumber = (value, decimals = 2) => {
 	if (value === null || value === void 0 || !Number.isFinite(value)) return "N/D";
 	return new Intl.NumberFormat("es-MX", { maximumFractionDigits: decimals }).format(value);
 };
+const BPL_BLANK_RESULT_PENDING_LABEL = "Resultado del blanco pendiente de recibir";
+const formatBplExecution = (execution) => {
+	if (!execution?.workSessionId && !execution?.orderTestId) return null;
+	return [
+		execution.workSessionId ? `sesión ${execution.workSessionId}` : null,
+		execution.orderTestId ? `orden ${execution.orderTestId}` : null,
+		execution.rerunNumber !== null && execution.rerunNumber > 1 ? `repetición ${execution.rerunNumber}` : null
+	].filter(Boolean).join(" · ");
+};
+const describeBplBlankResult = (link) => {
+	if (link.state === "pending") return BPL_BLANK_RESULT_PENDING_LABEL;
+	if (link.absorbance === null) return "Resultado del blanco recibido";
+	const limit = link.limit !== null ? ` (límite ${formatBplNumber(link.limit, 4)})` : "";
+	const partial = !link.final && link.execution?.orderTestStatus ? " · media parcial" : "";
+	return `Resultado del blanco Abs ${formatBplNumber(link.absorbance, 4)}${limit}${partial}`;
+};
 const summarizeBplEventMetrics = (event) => {
 	const parts = [];
+	if (event.blankResult && !isBplBlankResultEvent(event)) parts.push(describeBplBlankResult(event.blankResult));
 	if (event.qc) {
 		if (event.qc.resultValue !== null) parts.push(`Resultado ${formatBplNumber(event.qc.resultValue, 3)}${event.qc.unit ? ` ${event.qc.unit}` : ""}`);
 		if (event.qc.minLimit !== null && event.qc.maxLimit !== null) parts.push(`Límites ${formatBplNumber(event.qc.minLimit, 3)} a ${formatBplNumber(event.qc.maxLimit, 3)}`);
@@ -30119,7 +30299,7 @@ const summarizeBplEventMetrics = (event) => {
 	}
 	if (event.analytical) {
 		if (event.analytical.concentration !== null) parts.push(`Conc ${formatBplNumber(event.analytical.concentration, 3)}${event.analytical.unit ? ` ${event.analytical.unit}` : ""}`);
-		if (event.analytical.absorbance !== null) parts.push(`Abs ${formatBplNumber(event.analytical.absorbance, 4)}`);
+		if (event.analytical.absorbance !== null && (event.blank?.absorbance ?? null) === null) parts.push(`Abs ${formatBplNumber(event.analytical.absorbance, 4)}`);
 		if (event.analytical.validationStatus) parts.push(`Validación ${event.analytical.validationStatus}`);
 		if (event.analytical.errors.length) parts.push(`Errores ${event.analytical.errors.join(", ")}`);
 	}
@@ -30362,6 +30542,7 @@ const buildDriBplProjection = (summary, catalog) => {
 		...failedTests.slice(0, 8).map(describeTest),
 		summary.pendingTests.length ? `Pendientes de aceptación: ${summary.pendingTests.slice(0, 8).join(", ")}` : null,
 		westgardRules.size ? `Reglas Westgard: ${Array.from(westgardRules).join(", ")}` : null,
+		summary.pendingBlankResults.length ? `${BPL_BLANK_RESULT_PENDING_LABEL}: ${summary.pendingBlankResults.slice(0, 8).join(", ")}` : null,
 		summary.missingData.length ? `Falta para aceptar: ${summary.missingData.slice(0, 6).join(", ")}` : null,
 		unmatchedTests.length ? `Sin reactivo DRI equivalente: ${unmatchedTests.join(", ")}` : null
 	].filter((line) => Boolean(line));
@@ -34651,4 +34832,4 @@ function lotFactsForTest(catalog, test) {
 }
 
 //#endregion
-export { BA400_ALARM_CATALOG, DRI_SUBSYSTEM_LABELS, ba400AlarmLocationLabel, bplSummaryFromRows, buildVoiceCase, catalogFromRows, classifyBa400Alarm, emptyForm, findLotFacts, getLotFactsByKey, getReagentDisplayName, inferEquipmentModel, inferEquipmentModelFromSerial, listLotFacts, lotFactsForTest, lotFactsGeneratedAt, normalizeBa400AlarmCode, normalizeBplSerial, pickRepresentativeReagent, qcResultFromRow, reagentSelectionKey, resolveReagentForTest, runDifferentialDiagnosisEngine, runVoiceDiagnosis, seedCatalog, withQuietDriLogging };
+export { BA400_ALARM_CATALOG, DRI_SUBSYSTEM_LABELS, ba400AlarmLocationLabel, bplSummaryFromRows, buildVoiceCase, catalogFromRows, classifyBa400Alarm, emptyForm, findLotFacts, formatBplExecution, getLotFactsByKey, getReagentDisplayName, inferEquipmentModel, inferEquipmentModelFromSerial, listLotFacts, lotFactsForTest, lotFactsGeneratedAt, normalizeBa400AlarmCode, normalizeBplSerial, pickRepresentativeReagent, qcResultFromRow, reagentSelectionKey, resolveReagentForTest, runDifferentialDiagnosisEngine, runVoiceDiagnosis, seedCatalog, withQuietDriLogging };

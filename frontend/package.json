@@ -22,6 +22,7 @@
     "ba400:catalog": "node tools/prepare-ba400-catalog.mjs",
     "test:bpl": "node tests/bpl-events.test.mjs",
     "test:bpl:curves": "node tests/bpl-reaction-curves.test.mjs",
+    "test:bpl:blank": "node tests/bpl-blank-results.test.mjs",
     "test:dri:sources": "node tests/dri-context-sources.test.mjs",
     "test:dri:fixtures": "DRI_FIXTURES_MIN=16 node tests/tools/dri-fixtures-report.cjs",
     "test:sat:parser": "node tests/sat-report-parser.test.mjs",

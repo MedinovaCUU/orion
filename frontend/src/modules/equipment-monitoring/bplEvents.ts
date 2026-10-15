@@ -152,6 +152,43 @@ export interface BplAnalyticalDetail {
   alarms: string[];
 }
 
+/**
+ * Ejecución del analizador a la que pertenece un resultado (`payload.database_record`, vista
+ * vwksResults): sesión de trabajo + orden de prueba + repetición. Cada réplica publica una fila
+ * con la media acumulada; la ejecución cierra con `order_test_status = CLOSED`.
+ */
+export interface BplExecutionRef {
+  /** serie|prueba|sesión|orden|repetición; null si la fila no trae sesión y orden. */
+  key: string | null;
+  workSessionId: string | null;
+  orderTestId: string | null;
+  rerunNumber: number | null;
+  multipointNumber: number | null;
+  orderTestStatus: string | null;
+  analyzerId: string | null;
+}
+
+/**
+ * Resultado del blanco de reactivo vinculado a la evidencia que lo espera. El consumo (y las curvas)
+ * solo documentan que el blanco se pipeteó: su `blank_result_value` faltante no significa que el
+ * resultado analítico falte. El valor sale únicamente del `bpl_analytical_result` BLANK de la misma
+ * serie, prueba y ejecución; nunca del último punto de una curva.
+ */
+export interface BplBlankResultLink {
+  state: 'received' | 'pending';
+  /** Réplica que representa la ejecución (la cerrada o, si aún no cierra, la más reciente). */
+  result: BplEvent | null;
+  execution: BplExecutionRef | null;
+  replicates: number;
+  /** La ejecución ya cerró (`CLOSED`): la absorbancia es la media final de las réplicas. */
+  final: boolean;
+  absorbance: number | null;
+  limit: number | null;
+  withinLimit: boolean | null;
+  /** Momento de la evidencia que motivó el vínculo (pipeteo o resultado). */
+  observedAt: string | null;
+}
+
 /** Evento normalizado: una fila de la tabla con payload interpretado por etapa. */
 export interface BplEvent {
   key: string;
@@ -179,6 +216,9 @@ export interface BplEvent {
   blank: BplBlankDetail | null;
   consumption: BplConsumptionDetail | null;
   analytical: BplAnalyticalDetail | null;
+  execution: BplExecutionRef | null;
+  /** Solo en el resumen por serie: resultado del blanco que corresponde a este pipeteo o curva. */
+  blankResult: BplBlankResultLink | null;
 }
 
 export interface BplStageCounts {
@@ -216,6 +256,8 @@ export interface BplTestSnapshot {
   ruleIds: string[];
   /** Transiciones aceptado↔rechazado dentro de la ventana; dos o más sugieren un patrón intermitente. */
   statusFlips: number;
+  /** Blanco de reactivo más reciente de la prueba: recibido con su ejecución o pendiente de recibir. */
+  blankResult: BplBlankResultLink | null;
 }
 
 export interface BplStageOverview {
@@ -241,6 +283,8 @@ export interface BplSerialSummary {
   pendingTests: string[];
   acceptedTests: string[];
   missingData: string[];
+  /** Pruebas cuyo último blanco se pipeteó pero su resultado analítico aún no llega. */
+  pendingBlankResults: string[];
   calibrators: Array<{ name: string | null; lot: string | null; lastAt: string | null; tests: string[] }>;
   controls: Array<{ name: string | null; lot: string | null; lastAt: string | null; tests: string[] }>;
   reagentBarcodes: Array<{ barcode: string; tests: string[]; lastAt: string | null }>;
@@ -528,11 +572,65 @@ const parseCalibrationDetail = (payload: Record<string, unknown> | null): BplCal
   };
 };
 
+/** Registro de la base Ax00 (vista vwksResults) que el monitor anida en `payload.database_record`. */
+const databaseRecordOf = (payload: Record<string, unknown> | null) => toRecord(pickValue(payload, ['database_record', 'db_record'], 0));
+
+const CURVE_CONTAINER_KEY = /curv|points|puntos/;
+
+/**
+ * Copia del payload sin curvas anidadas (de calibración o de reacción, con sus puntos): la lectura
+ * tolerante busca claves como `abs` en objetos hijos y no debe tomar un punto de curva como blanco.
+ */
+const withoutCurveData = (record: Record<string, unknown> | null, depth = 2): Record<string, unknown> | null => {
+  if (!record) return null;
+  const clean: Record<string, unknown> = {};
+  Object.entries(record).forEach(([key, value]) => {
+    const nested = toRecord(value);
+    if ((nested || Array.isArray(value)) && CURVE_CONTAINER_KEY.test(normalizeKey(key))) return;
+    clean[key] = nested && depth > 0 ? withoutCurveData(nested, depth - 1) : value;
+  });
+  return clean;
+};
+
+/** `limit_assessment` del monitor: conoce el sentido de la reacción, así que manda sobre el cálculo local. */
+const parseLimitAssessment = (value: string | null): boolean | null => {
+  const normalized = (value || '').trim().toLowerCase();
+  if (/^(within|inside|dentro)/.test(normalized)) return true;
+  if (/^(outside|above|below|over|under|exceed|fuera)/.test(normalized)) return false;
+  return null;
+};
+
+const parseExecutionRef = (payload: Record<string, unknown> | null, serial: string, testKey: string): BplExecutionRef | null => {
+  const record = databaseRecordOf(payload);
+  if (!record) return null;
+  const field = (candidates: string[]) => pickValue(record, candidates, 0);
+  const workSessionId = toText(field(['work_session_id']));
+  const orderTestId = toText(field(['order_test_id']));
+  const rerunNumber = toFiniteNumber(field(['rerun_number']));
+  return {
+    key: workSessionId && orderTestId ? [serial, testKey, workSessionId, orderTestId, rerunNumber ?? 1].join('|') : null,
+    workSessionId,
+    orderTestId,
+    rerunNumber,
+    multipointNumber: toFiniteNumber(field(['multipoint_number'])),
+    orderTestStatus: toText(field(['order_test_status']))?.toUpperCase() || null,
+    analyzerId: toText(field(['analyzer_id'])),
+  };
+};
+
 const parseBlankDetail = (payload: Record<string, unknown> | null, stage: BplStage | null): BplBlankDetail | null => {
   if (!payload) return null;
-  const absorbance = pickNumber(payload, ['abs_value', 'absorbance', 'abs', 'blank_absorbance', 'blank_abs', 'result_value', 'result', 'value', 'absorbancia']);
-  const absorbanceLimit = pickNumber(payload, ['blank_absorbance_limit', 'absorbance_limit', 'abs_limit', 'limit', 'limite']);
-  const readingsSource = pickValue(payload, ['readings', 'filters', 'channels', 'wavelengths', 'lecturas', 'filtros']);
+  // El resultado del blanco viene en database_record (absorbance_value / blank_absorbance_limit); el resto
+  // de claves cubre BLResults.res y formatos anteriores. Nunca se lee de una curva.
+  const scope = withoutCurveData(payload);
+  const record = databaseRecordOf(scope);
+  const absorbance =
+    pickNumber(record, ['absorbance_value']) ??
+    pickNumber(scope, ['absorbance_value', 'abs_value', 'absorbance', 'abs', 'blank_absorbance', 'blank_abs', 'result_value', 'result', 'value', 'absorbancia']);
+  const absorbanceLimit =
+    pickNumber(record, ['blank_absorbance_limit']) ?? pickNumber(scope, ['blank_absorbance_limit', 'absorbance_limit', 'abs_limit', 'limit', 'limite']);
+  const assessed = parseLimitAssessment(pickText(scope, ['limit_assessment', 'blank_limit_assessment']));
+  const readingsSource = pickValue(scope, ['readings', 'filters', 'channels', 'wavelengths', 'lecturas', 'filtros']);
   const readings: Array<{ label: string; value: number }> = [];
   if (Array.isArray(readingsSource)) {
     readingsSource.forEach((item, index) => {
@@ -562,15 +660,15 @@ const parseBlankDetail = (payload: Record<string, unknown> | null, stage: BplSta
   }
   return {
     absorbance,
-    absorbanceInitial: pickNumber(payload, ['abs_initial', 'initial_absorbance', 'absorbance_initial']),
-    absorbanceMainFilter: pickNumber(payload, ['abs_main_filter', 'main_filter_absorbance']),
-    workReagentAbsorbance: pickNumber(payload, ['abs_work_reagent', 'work_reagent_absorbance', 'reagent_absorbance']),
+    absorbanceInitial: pickNumber(scope, ['abs_initial', 'initial_absorbance', 'absorbance_initial']),
+    absorbanceMainFilter: pickNumber(scope, ['abs_main_filter', 'main_filter_absorbance', 'absorbance_main_filter']),
+    workReagentAbsorbance: pickNumber(scope, ['abs_work_reagent', 'work_reagent_absorbance', 'reagent_absorbance', 'absorbance_work_reagent']),
     absorbanceLimit,
-    kineticBlankLimit: pickNumber(payload, ['kinetic_blank_limit', 'kinetic_limit']),
-    withinLimit: absorbance !== null && absorbanceLimit !== null ? Math.abs(absorbance) <= Math.abs(absorbanceLimit) : null,
-    filterLabel: pickText(payload, ['main_filter', 'filter', 'wavelength', 'primary_wavelength', 'filtro']),
+    kineticBlankLimit: pickNumber(scope, ['kinetic_blank_limit', 'kinetic_limit']),
+    withinLimit: assessed ?? (absorbance !== null && absorbanceLimit !== null ? Math.abs(absorbance) <= Math.abs(absorbanceLimit) : null),
+    filterLabel: pickText(scope, ['main_filter', 'filter', 'wavelength', 'primary_wavelength', 'filtro']),
     readings,
-    alarms: pickList(payload, ['alarms', 'alarm_list', 'alarmas']),
+    alarms: pickList(scope, ['alarms', 'alarm_list', 'alarmas']),
   };
 };
 
@@ -588,20 +686,21 @@ const parseConsumptionDetail = (payload: Record<string, unknown> | null): BplCon
 
 const parseAnalyticalDetail = (payload: Record<string, unknown> | null): BplAnalyticalDetail | null => {
   if (!payload) return null;
+  const scope = withoutCurveData(payload);
   const errors = [
-    pickText(payload, ['abs_error', 'absorbance_error']),
-    pickText(payload, ['conc_error', 'concentration_error']),
-    pickText(payload, ['calibration_error']),
+    pickText(scope, ['abs_error', 'absorbance_error']),
+    pickText(scope, ['conc_error', 'concentration_error']),
+    pickText(scope, ['calibration_error']),
   ].filter((item): item is string => Boolean(item));
   return {
-    absorbance: pickNumber(payload, ['abs_value', 'absorbance', 'abs']),
-    concentration: pickNumber(payload, ['conc_value', 'concentration', 'result_value', 'result', 'value']),
-    unit: pickText(payload, ['measure_unit', 'unit', 'units']),
-    validationStatus: pickText(payload, ['validation_status', 'validationstatus', 'evaluation', 'status']),
-    accepted: pickBoolean(payload, ['accepted_result_flag', 'accepted', 'is_accepted']),
-    calibratorFactor: pickNumber(payload, ['calibrator_factor', 'factor']),
+    absorbance: pickNumber(scope, ['absorbance_value', 'abs_value', 'absorbance', 'abs']),
+    concentration: pickNumber(scope, ['concentration_value', 'conc_value', 'concentration', 'result_value', 'result', 'value']),
+    unit: pickText(scope, ['measure_unit', 'unit', 'units']),
+    validationStatus: pickText(scope, ['validation_status', 'validationstatus', 'evaluation', 'status']),
+    accepted: pickBoolean(scope, ['accepted_result_flag', 'accepted_result', 'accepted', 'is_accepted']),
+    calibratorFactor: pickNumber(scope, ['calibrator_factor', 'factor']),
     errors,
-    alarms: pickList(payload, ['alarms', 'alarm_list', 'alarmas']),
+    alarms: pickList(scope, ['alarms', 'alarm_list', 'alarmas']),
   };
 };
 
@@ -629,6 +728,7 @@ export const normalizeBplEvent = (row: BplEventRow): BplEvent | null => {
   const isQc = stage === 'quality_control' && eventType !== 'bpl_consumption_record';
   const isCalibration = stage === 'calibration' && eventType !== 'bpl_consumption_record';
   const isBlank = (stage === 'reagent_blank' || stage === 'instrument_photometry_blank') && eventType !== 'bpl_consumption_record';
+  const testKey = normalizeBplTestKey(testName) || (stage === 'instrument_photometry_blank' ? 'INSTRUMENTO' : 'SIN PRUEBA');
   return {
     key: [serial, eventType, occurredAt || detectedAt || '', normalizeBplTestKey(testName), sampleClass || '', lotNumber || '', id || ''].join('|'),
     id,
@@ -639,7 +739,7 @@ export const normalizeBplEvent = (row: BplEventRow): BplEvent | null => {
     status,
     diagnosticStatus: (row.diagnostic_status || '').trim() || null,
     testName,
-    testKey: normalizeBplTestKey(testName) || (stage === 'instrument_photometry_blank' ? 'INSTRUMENTO' : 'SIN PRUEBA'),
+    testKey,
     sampleClass,
     sampleType: (row.sample_type || '').trim() || null,
     controlOrCalibratorName: (row.calibration_control_name || '').trim() || null,
@@ -655,6 +755,8 @@ export const normalizeBplEvent = (row: BplEventRow): BplEvent | null => {
     blank: isBlank ? parseBlankDetail(payload, stage) : null,
     consumption: eventType === 'bpl_consumption_record' ? parseConsumptionDetail(payload) : null,
     analytical: eventType === 'bpl_analytical_result' ? parseAnalyticalDetail(payload) : null,
+    execution: parseExecutionRef(payload, serial, testKey),
+    blankResult: null,
   };
 };
 
@@ -719,8 +821,149 @@ export const bplToneFromStatus = (status: BplStatus | null): BplTone => {
 /** Las curvas de reacción son evidencia fotométrica, no estados BPL; se resumen aparte. */
 export const isBplReactionCurveEvent = (event: Pick<BplEvent, 'eventType'>) => event.eventType === 'bpl_reaction_curve';
 
+const isBlankSample = (event: Pick<BplEvent, 'sampleClass' | 'stage'>) =>
+  event.sampleClass === 'BLANK' || (!event.sampleClass && event.stage === 'reagent_blank');
+
+/** Única fuente del resultado del blanco de reactivo: el resultado analítico de una muestra BLANK. */
+export const isBplBlankResultEvent = (event: Pick<BplEvent, 'eventType' | 'sampleClass' | 'stage'>) =>
+  event.eventType === 'bpl_analytical_result' && isBlankSample(event);
+
+/** Códigos que el monitor pone en filas que no traen el resultado del blanco (consumo, curvas). */
+const BLANK_RESULT_MISSING_CODES = new Set(['blank_result_value', 'blank_acceptance_limit', 'blank_absorbance_limit']);
+const isBlankResultCode = (code: string) => BLANK_RESULT_MISSING_CODES.has(code.trim().toLowerCase());
+
+/**
+ * El BA400 publica el resultado del blanco 6–20 min después de pipetearlo (ALBUMIN-MAU 834001902:
+ * 12–20 min; PHOSPHORUS, GLUCOSE: 15 min). 45 min deja margen sin alcanzar la repetición siguiente.
+ */
+export const BPL_BLANK_RESULT_WINDOW_MS = 45 * 60 * 1000;
+
+/** Evidencia de un blanco que no trae su resultado: el pipeteo BLANK o una fila que declara que le falta. */
+const awaitsBlankResult = (event: BplEvent) =>
+  !isBplBlankResultEvent(event) &&
+  ((event.eventType === 'bpl_consumption_record' && isBlankSample(event)) || event.missingData.some(isBlankResultCode));
+
+interface BlankExecution {
+  testKey: string;
+  sampleType: string | null;
+  workSessionId: string | null;
+  firstAt: number;
+  replicates: number;
+  final: boolean;
+  representative: BplEvent;
+}
+
+/** Agrupa las réplicas de cada ejecución; sin sesión/orden (corte global sin payload) cada fila es su propia ejecución. */
+const buildBlankExecutions = (events: BplEvent[]) => {
+  const groups = new Map<string, BplEvent[]>();
+  events.forEach((event) => {
+    if (!isBplBlankResultEvent(event)) return;
+    // Un registro de otro analizador no puede cerrar el blanco de esta serie.
+    if (event.execution?.analyzerId && normalizeBplSerial(event.execution.analyzerId) !== event.serial) return;
+    const key = event.execution?.key || `event|${event.key}`;
+    const bucket = groups.get(key) || [];
+    bucket.push(event);
+    groups.set(key, bucket);
+  });
+  const executions = new Map<string, BlankExecution>();
+  groups.forEach((replicates, key) => {
+    const ordered = [...replicates].sort((left, right) => timestampValue(left) - timestampValue(right));
+    const closed = ordered.filter((event) => event.execution?.orderTestStatus === 'CLOSED');
+    executions.set(key, {
+      testKey: ordered[0].testKey,
+      sampleType: ordered.find((event) => event.sampleType)?.sampleType || null,
+      workSessionId: ordered[0].execution?.workSessionId || null,
+      firstAt: timestampValue(ordered[0]),
+      // El monitor puede republicar la misma réplica; cuentan los instantes distintos.
+      replicates: new Set(ordered.map((event) => event.timestamp || event.key)).size,
+      final: closed.length > 0,
+      representative: closed.at(-1) || ordered[ordered.length - 1],
+    });
+  });
+  return executions;
+};
+
+const receivedBlankLink = (execution: BlankExecution, observedAt: string | null): BplBlankResultLink => {
+  const result = execution.representative;
+  return {
+    state: 'received',
+    result,
+    execution: result.execution,
+    replicates: execution.replicates,
+    final: execution.final,
+    absorbance: result.blank?.absorbance ?? null,
+    limit: result.blank?.absorbanceLimit ?? null,
+    withinLimit: result.blank?.withinLimit ?? null,
+    observedAt,
+  };
+};
+
+const pendingBlankLink = (observedAt: string | null): BplBlankResultLink => ({
+  state: 'pending',
+  result: null,
+  execution: null,
+  replicates: 0,
+  final: false,
+  absorbance: null,
+  limit: null,
+  withinLimit: null,
+  observedAt,
+});
+
+/**
+ * Ejecución que corresponde a la evidencia: misma serie (el resumen ya es por serie), prueba y tipo de
+ * muestra. Un pipeteo solo puede cerrarse con una ejecución que empieza después y dentro de la ventana;
+ * una fila con sesión de trabajo solo se vincula con blancos de esa sesión.
+ */
+const findBlankExecution = (event: BplEvent, executions: Iterable<BlankExecution>) => {
+  const at = timestampValue(event);
+  if (!at) return null;
+  const forwardOnly = event.eventType === 'bpl_consumption_record';
+  const session = event.execution?.workSessionId || null;
+  const sampleType = event.sampleType?.toUpperCase() || null;
+  let best: BlankExecution | null = null;
+  let bestDistance = Number.POSITIVE_INFINITY;
+  for (const execution of executions) {
+    if (execution.testKey !== event.testKey) continue;
+    if (sampleType && execution.sampleType && execution.sampleType.toUpperCase() !== sampleType) continue;
+    const sameSession = Boolean(session && execution.workSessionId === session);
+    if (session && execution.workSessionId && !sameSession) continue;
+    const gap = execution.firstAt - at;
+    if (forwardOnly && gap < 0) continue;
+    const distance = Math.abs(gap);
+    if (!sameSession && distance > BPL_BLANK_RESULT_WINDOW_MS) continue;
+    if (distance < bestDistance) {
+      best = execution;
+      bestDistance = distance;
+    }
+  }
+  return best;
+};
+
+/**
+ * Vincula cada evidencia de blanco con su resultado analítico. Los códigos `blank_*` de un consumo o una
+ * curva solo dicen que esa fila no trae el resultado: se retiran y el estado real queda en `blankResult`
+ * (recibido con su ejecución, o pendiente de recibir si no hay resultado relacionado).
+ */
+const reconcileBlankResults = (events: BplEvent[]): BplEvent[] => {
+  const executions = buildBlankExecutions(events);
+  return events.map((event) => {
+    if (isBplBlankResultEvent(event)) {
+      const execution = executions.get(event.execution?.key || `event|${event.key}`);
+      return execution ? { ...event, blankResult: receivedBlankLink(execution, event.timestamp) } : event;
+    }
+    if (!awaitsBlankResult(event)) return event;
+    const execution = findBlankExecution(event, executions.values());
+    return {
+      ...event,
+      missingData: event.missingData.filter((code) => !isBlankResultCode(code)),
+      blankResult: execution ? receivedBlankLink(execution, event.timestamp) : pendingBlankLink(event.timestamp),
+    };
+  });
+};
+
 export const buildBplSerialSummary = (serial: string, events: BplEvent[]): BplSerialSummary => {
-  const sorted = events.filter((event) => !isBplReactionCurveEvent(event)).sort(compareBplEventsDesc);
+  const sorted = reconcileBlankResults(events.filter((event) => !isBplReactionCurveEvent(event))).sort(compareBplEventsDesc);
   const byTest = new Map<string, BplEvent[]>();
   sorted.forEach((event) => {
     const bucket = byTest.get(event.testKey) || [];
@@ -762,6 +1005,7 @@ export const buildBplSerialSummary = (serial: string, events: BplEvent[]): BplSe
       missingData: unique(testEvents.flatMap((event) => event.missingData)),
       ruleIds: unique(testEvents.flatMap((event) => event.ruleIds)),
       statusFlips,
+      blankResult: testEvents.find((event) => event.blankResult)?.blankResult || null,
     };
   });
 
@@ -838,6 +1082,7 @@ export const buildBplSerialSummary = (serial: string, events: BplEvent[]): BplSe
     pendingTests,
     acceptedTests,
     missingData: unique(sorted.flatMap((event) => event.missingData)),
+    pendingBlankResults: tests.filter((test) => test.blankResult?.state === 'pending').map((test) => test.testName),
     calibrators: groupLots('calibration'),
     controls: groupLots('quality_control'),
     reagentBarcodes: latestByTimestamp(Array.from(barcodeMap.values())),
@@ -897,9 +1142,34 @@ export const formatBplNumber = (value: number | null | undefined, decimals = 2) 
   return new Intl.NumberFormat('es-MX', { maximumFractionDigits: decimals }).format(value);
 };
 
+export const BPL_BLANK_RESULT_PENDING_LABEL = 'Resultado del blanco pendiente de recibir';
+
+/** «sesión 2026100901 · orden 100», con la repetición solo cuando no es la primera. */
+export const formatBplExecution = (execution: BplExecutionRef | null | undefined) => {
+  if (!execution?.workSessionId && !execution?.orderTestId) return null;
+  return [
+    execution.workSessionId ? `sesión ${execution.workSessionId}` : null,
+    execution.orderTestId ? `orden ${execution.orderTestId}` : null,
+    execution.rerunNumber !== null && execution.rerunNumber > 1 ? `repetición ${execution.rerunNumber}` : null,
+  ]
+    .filter(Boolean)
+    .join(' · ');
+};
+
+/** Frase del resultado del blanco vinculado: valor y límite del resultado analítico, o pendiente de recibir. */
+export const describeBplBlankResult = (link: BplBlankResultLink) => {
+  if (link.state === 'pending') return BPL_BLANK_RESULT_PENDING_LABEL;
+  if (link.absorbance === null) return 'Resultado del blanco recibido';
+  const limit = link.limit !== null ? ` (límite ${formatBplNumber(link.limit, 4)})` : '';
+  const partial = !link.final && link.execution?.orderTestStatus ? ' · media parcial' : '';
+  return `Resultado del blanco Abs ${formatBplNumber(link.absorbance, 4)}${limit}${partial}`;
+};
+
 /** Resumen corto de la evidencia de un evento para tarjetas y bitácoras. */
 export const summarizeBplEventMetrics = (event: BplEvent): string[] => {
   const parts: string[] = [];
+  // En un pipeteo o curva, lo primero es si el resultado analítico de ese blanco ya llegó.
+  if (event.blankResult && !isBplBlankResultEvent(event)) parts.push(describeBplBlankResult(event.blankResult));
   if (event.qc) {
     if (event.qc.resultValue !== null) parts.push(`Resultado ${formatBplNumber(event.qc.resultValue, 3)}${event.qc.unit ? ` ${event.qc.unit}` : ''}`);
     if (event.qc.minLimit !== null && event.qc.maxLimit !== null) parts.push(`Límites ${formatBplNumber(event.qc.minLimit, 3)} a ${formatBplNumber(event.qc.maxLimit, 3)}`);
@@ -938,7 +1208,8 @@ export const summarizeBplEventMetrics = (event: BplEvent): string[] => {
   }
   if (event.analytical) {
     if (event.analytical.concentration !== null) parts.push(`Conc ${formatBplNumber(event.analytical.concentration, 3)}${event.analytical.unit ? ` ${event.analytical.unit}` : ''}`);
-    if (event.analytical.absorbance !== null) parts.push(`Abs ${formatBplNumber(event.analytical.absorbance, 4)}`);
+    // En un blanco la absorbancia ya salió arriba con su límite.
+    if (event.analytical.absorbance !== null && (event.blank?.absorbance ?? null) === null) parts.push(`Abs ${formatBplNumber(event.analytical.absorbance, 4)}`);
     if (event.analytical.validationStatus) parts.push(`Validación ${event.analytical.validationStatus}`);
     if (event.analytical.errors.length) parts.push(`Errores ${event.analytical.errors.join(', ')}`);
   }

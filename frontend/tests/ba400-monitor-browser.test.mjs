@@ -99,13 +99,18 @@ try {
   assert.match(bplText, /Calibrador CAL BIO · C-77 · Control CONTROL LEVEL I · L-10/);
   assert.match(bplText, /CHOLESTEROL[\s\S]*Falta: control_lot/);
   assert.match(bplText, /Falta para cerrar aceptación: control_lot/);
+  // Blanco de reactivo: el pipeteo sin dato no es «Falta: blank_result_value»; se vincula al resultado o queda pendiente.
+  assert.doesNotMatch(bplText, /blank_result_value|blank_acceptance_limit/);
+  assert.match(await bplSection.locator('.equipment-monitor__bpl-test').filter({ hasText: 'GLUCOSE' }).locator('[data-testid="bpl-blank-result"]').innerText(), /^Resultado del blanco Abs 0\.012 \(límite 0\.1\)$/);
+  assert.equal(await bplSection.locator('.equipment-monitor__bpl-test').filter({ hasText: 'CHOLESTEROL' }).locator('[data-testid="bpl-blank-pending"]').innerText(), 'Resultado del blanco pendiente de recibir');
+  assert.match(bplText, /Resultado del blanco pendiente de recibir: CHOLESTEROL\./);
   assert.equal(await bplSection.locator('.equipment-monitor__bpl-tests .equipment-monitor__bpl-dot[data-tone="rejected"]').count(), 1);
   assert.equal(await bplSection.getByRole('link', { name: 'Diagnosticar en DRI' }).getAttribute('href'), `${origin}/orion/dashboard?tab=dri&serial=834001902&bpl=apply`);
   assert.match(await page.locator('.equipment-monitor__summary-card--bpl').innerText(), /BPL con rechazo\s*1/i);
   assert.equal(await page.locator('.equipment-priority__bpl[data-tone="rejected"]').count(), 1);
   assert.match(await page.locator('.equipment-priority__bpl[data-tone="rejected"]').innerText(), /BPL con rechazo · GLUCOSE/i);
   await bplSection.locator('.equipment-monitor__bpl-timeline summary').click();
-  assert.equal(await bplSection.locator('.equipment-monitor__bpl-timeline li').count(), 5, 'las curvas no entran en la cronología BPL');
+  assert.equal(await bplSection.locator('.equipment-monitor__bpl-timeline li').count(), 7, 'las curvas no entran en la cronología BPL');
   // Curvas de reacción: miniatura en la tarjeta, visor con réplicas, métricas, tooltip y tabla contraída.
   const glucoseCard = bplSection.locator('.equipment-monitor__bpl-test').filter({ hasText: 'GLUCOSE' });
   await glucoseCard.locator('[data-testid="reaction-sparkline"]').waitFor({ timeout: 30000 });

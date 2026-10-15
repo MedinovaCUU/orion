@@ -553,7 +553,8 @@ export interface BplTestStatus {
   lastAt: string | null;
   qc: { status: string | null; at: string | null; value: number | null; unit: string | null; mean: number | null; sd: number | null; z: number | null; rules: string[]; level: string | null; lot: string | null } | null;
   calibration: { status: string | null; at: string | null; factor: number | null; slope: number | null; correlation: number | null; relativeError: number | null; calibrator: string | null; lot: string | null } | null;
-  blank: { status: string | null; at: string | null; absorbance: number | null; limit: number | null } | null;
+  /** pending: the blank was pipetted but its analytical result has not arrived (never a curve point). */
+  blank: { status: string | null; at: string | null; absorbance: number | null; limit: number | null; execution: string | null; pending: boolean } | null;
   flips: number;
 }
 /** Per-test BPL picture (same summary Monitoreo shows), optionally for one test. */
@@ -567,7 +568,9 @@ export function bplStatus(serial: string, rows: Row[], test?: string | null): { 
       const st = (k: string) => t.stages?.[k] as Row | undefined;
       const qcEv = st("quality_control")?.latest as Row | undefined;
       const calEv = st("calibration")?.latest as Row | undefined;
-      const blEv = st("reagent_blank")?.latest as Row | undefined;
+      // The blank value only comes from the BLANK analytical result linked to the test's latest blank run.
+      const blLink = t.blankResult as Row | null | undefined;
+      const blEv = (blLink?.result ?? st("reagent_blank")?.latestEvaluated ?? st("reagent_blank")?.latest) as Row | undefined;
       return {
         test: t.testName,
         status: t.effectiveStatus,
@@ -578,7 +581,9 @@ export function bplStatus(serial: string, rows: Row[], test?: string | null): { 
         calibration: calEv
           ? { status: calEv.status, at: calEv.timestamp, factor: calEv.calibration?.factor ?? null, slope: calEv.calibration?.slope ?? null, correlation: calEv.calibration?.correlation ?? null, relativeError: calEv.calibration?.relativeError ?? null, calibrator: calEv.controlOrCalibratorName ?? null, lot: calEv.lotNumber ?? null }
           : null,
-        blank: blEv ? { status: blEv.status, at: blEv.timestamp, absorbance: blEv.blank?.absorbance ?? null, limit: blEv.blank?.absorbanceLimit ?? null } : null,
+        blank: blEv
+          ? { status: blEv.status, at: blEv.timestamp, absorbance: blEv.blank?.absorbance ?? null, limit: blEv.blank?.absorbanceLimit ?? null, execution: E.formatBplExecution(blEv.execution) ?? null, pending: blLink?.state === "pending" }
+          : null,
         flips: t.statusFlips ?? 0,
       };
     });
