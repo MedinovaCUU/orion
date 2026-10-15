@@ -40,7 +40,8 @@
     "test:planning:grid": "node tests/planning-grid-browser.test.mjs",
     "test:planning:grid-model": "node tests/planning-grid-model.test.mjs",
     "test:planning:sync-guard": "node tests/planning-sync-guard.test.mjs",
-    "test:planning:excel": "node tests/planning-excel.test.mjs"
+    "test:planning:excel": "node tests/planning-excel.test.mjs",
+    "test:kpi:causes": "node tests/late-causes.test.mjs"
   },
   "dependencies": {
     "@react-three/drei": "^10.7.7",

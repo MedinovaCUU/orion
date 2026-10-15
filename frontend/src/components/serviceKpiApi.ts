@@ -1,6 +1,7 @@
 import { supabase } from '../supabaseClient';
 import type { KpiDataset, KpiRecord, KpiSummary, SlaPolicy } from './serviceKpiModel';
 import type { PartsLabData } from './partsAnalytics';
+import type { LateInfo } from './lateCauses';
 
 type RpcFilters = Record<string, string | number>;
 const message = (error: { message?: string } | null, fallback: string) => error?.message || fallback;
@@ -20,6 +21,14 @@ export async function fetchPartsLab(filters: RpcFilters) {
   const lab = data as PartsLabData | null;
   if (!lab?.period || !Array.isArray(lab.services) || !Array.isArray(lab.lines)) throw new Error('El servidor no devolvió el análisis de refacciones.');
   return lab;
+}
+
+export async function fetchLateCauses(ticketIds: string[]) {
+  if (!ticketIds.length) return [] as LateInfo[];
+  const { data, error } = await supabase.rpc('get_ticket_late_causes', { p_ticket_ids: ticketIds });
+  if (error) throw new Error(message(error, 'No fue posible consultar las causas de los cierres fuera de plazo.'));
+  if (!Array.isArray(data)) throw new Error('El servidor no devolvió las causas de los cierres fuera de plazo.');
+  return data as LateInfo[];
 }
 
 export async function fetchKpiOptions() {

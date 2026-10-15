@@ -271,3 +271,17 @@ cuenta 25 de 205 y 42 piezas. Pendiente que el dueño confirme qué criterio usa
 
 **Pruebas.** `npm run test:kpi:parts`; bloque «Parts lab» de `service_staff_kpis.test.mjs`;
 `npm run test:kpi:browser`; página aislada `tests/fixtures/service-parts-lab.html` (datos sintéticos).
+
+## Causas de los cierres fuera de plazo (20261015040000)
+
+En el laboratorio de tiempos, el mapa «Cuándo llegan los tickets» en modo «% fuera» explica por qué quedaron
+fuera del plazo: en cada celda (tooltip) y para todo el periodo (lista bajo el mapa; clic → tickets con su
+causa). `get_ticket_late_causes(ids)` devuelve para los tickets fuera de plazo sus códigos de avería con la
+familia del catálogo (bitácora, historial ligado o por vínculo de visita, reportes; sin códigos AX
+administrativos), si estuvo en espera de piezas y el texto de la falla sin el pie de importación de Biosisa.
+`lateCauses.ts` asigna **una causa por ticket** (suman 100 %), en este orden: sin respuesta del usuario
+(cierre «sin_respuesta»), sin primera respuesta de soporte (solo tickets de Orion: Biosisa nunca la registró),
+espera de piezas, visita agendada, familia de la falla (código si existe; si no, palabras de la descripción,
+aproximado) y «sin falla identificada». May–oct 2026: 79 cierres fuera; 23 % técnicas y resultados, 15 %
+visita, 14 % fluídica, 10 % sin respuesta del usuario. Pruebas: `npm run test:kpi:causes` y el bloque «late
+causes» de `service_staff_kpis.test.mjs`.
