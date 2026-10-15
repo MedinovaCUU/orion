@@ -99,6 +99,24 @@ try {
   assert.equal(summary.stages.instrument_photometry_blank.testsAccepted, 1);
   assert.equal(summary.counts.consumption, 2);
   assert.deepEqual(summary.missingData, ['control_lot']);
+
+  // ALBUMIN-MAU (834001902, 9-oct-2026): the blank's consumption records lack the result; the later accepted
+  // result closes them. A newer run after the last result does show what it still needs.
+  const mau = (id, hour, overrides) => bpl.normalizeBplEvent(row({ id, occurred_at: `2026-10-09T${hour}Z`, test_name: 'ALBUMIN-MAU', ...overrides }));
+  const blankRun = [
+    mau(101, '20:10:37', { event_type: 'bpl_consumption_record', bpl_stage: 'reagent_blank', sample_class: 'BLANK', missing_data_for_acceptance: ['blank_result_value', 'blank_acceptance_limit'] }),
+    mau(102, '20:17:39', { event_type: 'bpl_consumption_record', bpl_stage: 'reagent_blank', sample_class: 'BLANK', missing_data_for_acceptance: ['blank_result_value', 'blank_acceptance_limit'] }),
+    mau(103, '20:30:42', { event_type: 'bpl_analytical_result', bpl_stage: 'reagent_blank', bpl_status: 'accepted', diagnostic_status: 'blank_accepted', sample_class: 'BLANK' }),
+    mau(104, '16:55:39', { event_type: 'bpl_consumption_record', bpl_stage: 'calibration', sample_class: 'CALIB', missing_data_for_acceptance: ['calibration_acceptance_status', 'calibration_curve'] }),
+    mau(105, '17:08:24', { event_type: 'bpl_analytical_result', bpl_stage: 'calibration', bpl_status: 'rejected', diagnostic_status: 'calibration_rejected', sample_class: 'CALIB' }),
+  ];
+  const mauTest = bpl.buildBplSerialSummary(serial, blankRun).tests.find((test) => test.testName === 'ALBUMIN-MAU');
+  assert.deepEqual(mauTest.missingData, [], 'results close the missing data of earlier consumption records of the same stage');
+  assert.equal(mauTest.stages.calibration.effectiveStatus, 'rejected');
+  const newer = [...blankRun, mau(106, '21:00:00', { event_type: 'bpl_consumption_record', bpl_stage: 'reagent_blank', sample_class: 'BLANK', missing_data_for_acceptance: ['blank_result_value'] })];
+  const mauNewer = bpl.buildBplSerialSummary(serial, newer);
+  assert.deepEqual(mauNewer.tests.find((test) => test.testName === 'ALBUMIN-MAU').missingData, ['blank_result_value'], 'a run after the last result is still missing its result');
+  assert.deepEqual(mauNewer.missingData, ['blank_result_value'], 'same rule in the serial summary');
   assert.equal(summary.calibrators[0].lot, 'C-90');
   assert.equal(summary.reagentBarcodes[0].barcode, 'RB-GLU-01');
   const index = bpl.buildBplSerialIndex(rows.map(({ payload, ...rest }) => rest));

@@ -705,6 +705,20 @@ const worstStatus = (statuses: Array<BplStatus | null | undefined>): BplStatus |
 
 const unique = (values: Array<string | null | undefined>) => Array.from(new Set(values.filter((value): value is string => Boolean(value))));
 
+/**
+ * Lo que falta solo cuenta mientras no haya un resultado posterior de la misma etapa del mismo análisis:
+ * los registros de consumo nunca traen el resultado, así que un resultado aceptado o rechazado más reciente
+ * cierra sus faltantes. Una corrida nueva, posterior al último resultado, sí muestra lo que le falta.
+ */
+const openMissingData = (events: BplEvent[]) => {
+  const lastEvaluated = new Map<string, number>();
+  const key = (event: BplEvent) => `${event.testKey}|${event.stage || ''}`;
+  events.forEach((event) => {
+    if (isEvaluated(event)) lastEvaluated.set(key(event), Math.max(lastEvaluated.get(key(event)) ?? -Infinity, timestampValue(event)));
+  });
+  return unique(events.filter((event) => timestampValue(event) > (lastEvaluated.get(key(event)) ?? -Infinity)).flatMap((event) => event.missingData));
+};
+
 const latestByTimestamp = <T extends { lastAt: string | null }>(items: T[]) =>
   [...items].sort((left, right) => (right.lastAt || '').localeCompare(left.lastAt || ''));
 
@@ -759,7 +773,7 @@ export const buildBplSerialSummary = (serial: string, events: BplEvent[]): BplSe
       controlName: latestControl?.controlOrCalibratorName || null,
       controlLot: latestControl?.lotNumber || null,
       reagentBarcodes: unique(testEvents.flatMap((event) => [event.consumption?.reagentBarcode1, event.consumption?.reagentBarcode2])),
-      missingData: unique(testEvents.flatMap((event) => event.missingData)),
+      missingData: openMissingData(testEvents),
       ruleIds: unique(testEvents.flatMap((event) => event.ruleIds)),
       statusFlips,
     };
@@ -837,7 +851,7 @@ export const buildBplSerialSummary = (serial: string, events: BplEvent[]): BplSe
     rejectedTests,
     pendingTests,
     acceptedTests,
-    missingData: unique(sorted.flatMap((event) => event.missingData)),
+    missingData: openMissingData(sorted),
     calibrators: groupLots('calibration'),
     controls: groupLots('quality_control'),
     reagentBarcodes: latestByTimestamp(Array.from(barcodeMap.values())),
