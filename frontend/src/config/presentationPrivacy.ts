@@ -1,6 +1,6 @@
-// Temporary presentation mode (owner, 2026-10-13): people's names in the service metrics are hidden while
-// the owner presents in public. Set HIDE_PEOPLE to false to show them again.
-export const HIDE_PEOPLE = true;
+// Presentation mode: when true, people's names in the service metrics are blurred (and replaced by
+// «Colaborador N» where a blur cannot reach) so the owner can present in public. Off since 2026-10-14.
+export const HIDE_PEOPLE = false;
 
 const aliases = new Map<string, string>();
 const aliasOf = (name: string) => {
