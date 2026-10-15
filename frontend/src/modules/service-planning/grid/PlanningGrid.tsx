@@ -10,9 +10,9 @@ import PlanningCalendar from './PlanningCalendar';
 import type { CustomColumn, GridSettings, PlanningBackend, SavedView } from './planningBackend';
 import { BASE_COLUMNS, buildOptionsSource, customColumnToGrid, DEFAULT_PINNED, TYPE_LABELS, type GridColumn } from './planningColumns';
 import { activeFilterCount, BUILT_IN_VIEWS, EMPTY_FILTERS, filtersFromView, isDone, matchesFilters, viewFromFilters, type GridFilters } from './planningFilters';
-import type { PlanningRecord, PlanningValues } from './planningRecord';
+import type { PlanningField, PlanningRecord, PlanningValues } from './planningRecord';
 import { PlanningStore } from './planningStore';
-import { monthKeyOf, monthTitle, shiftMonth, todayIso, weeksOfMonth, type PlanningWeek } from './planningWeeks';
+import { addDays, daysBetween, monthKeyOf, monthTitle, shiftMonth, todayIso, weekOfDate, weeksOfMonth, type PlanningWeek } from './planningWeeks';
 import { DEFAULT_CONFLICT_RULES, findScheduleConflicts, type ConflictRules } from './scheduleConflicts';
 import './planningGrid.css';
 
@@ -185,7 +185,7 @@ export default function PlanningGrid(props: PlanningGridProps) {
   // ----- data -----
   const records = useMemo(() => Array.from(snapshot.records.values()) as PlanningRecord[], [snapshot.records]);
   const allItems = useMemo(
-    () => (store ? records.map((record) => ({ record, values: store.displayValues(record) })) : []),
+    () => (store ? records.map((record) => ({ record: store.displayRecord(record), values: store.displayValues(record) })) : []),
     [records, snapshot.rowStates, store], // eslint-disable-line react-hooks/exhaustive-deps
   );
   const ranged = Boolean(filters.dateFrom || filters.dateTo);
@@ -301,6 +301,48 @@ export default function PlanningGrid(props: PlanningGridProps) {
     } catch (error) {
       notify('error', error instanceof Error ? `No se pudo exportar: ${error.message}` : 'No se pudo exportar.');
     }
+  };
+
+  // ----- calendar actions (same store as the table, so both views change together) -----
+  const visibleRecord = (id: string) => {
+    const record = store?.getSnapshot().records.get(id);
+    return store && record ? { record: store.displayRecord(record), values: store.displayValues(record) } : null;
+  };
+
+  const moveToDay = (id: string, day: string) => {
+    const current = visibleRecord(id);
+    if (!store || !current) return;
+    const { record, values } = current;
+    const target = weekOfDate(day);
+    if (record.week.start !== target.start) store.move([id], target);
+    // A several-day activity keeps its length.
+    const length = values.scheduledDate && values.scheduledEndDate ? daysBetween(values.scheduledDate, values.scheduledEndDate) : 0;
+    store.edit(id, 'scheduledDate', day);
+    if (length > 0) store.edit(id, 'scheduledEndDate', addDays(day, length));
+  };
+
+  const moveToWeek = (id: string, week: PlanningWeek) => {
+    const current = visibleRecord(id);
+    if (!store || !current) return;
+    if (current.record.week.start !== week.start) store.move([id], week);
+    store.edit(id, 'scheduledDate', '');
+    store.edit(id, 'scheduledEndDate', '');
+  };
+
+  const updateFromCalendar = (id: string, changes: Partial<Record<PlanningField, string | string[]>>) => {
+    if (!store) return;
+    const { scheduledDate, scheduledEndDate, ...rest } = changes;
+    if (typeof scheduledDate === 'string' && scheduledDate) moveToDay(id, scheduledDate);
+    else if (scheduledDate === '') store.edit(id, 'scheduledDate', '');
+    if (typeof scheduledEndDate === 'string') store.edit(id, 'scheduledEndDate', scheduledEndDate);
+    (Object.entries(rest) as Array<[PlanningField, string | string[]]>).forEach(([field, value]) => store.edit(id, field, value));
+  };
+
+  const createFromCalendar = async (week: PlanningWeek, values: PlanningValues) => {
+    if (!store) return null;
+    const [id] = await store.insertValues([{ week, values }]);
+    if (id) notify('info', `Agregada: ${values.locality}.`);
+    return id || null;
   };
 
   const importItems = async (importItemsList: ImportItem[]) => {
@@ -511,7 +553,16 @@ export default function PlanningGrid(props: PlanningGridProps) {
             weeks={weeksForCalendar}
             items={items}
             today={today}
-            onOpen={(id) => {
+            canEdit={canEdit}
+            options={optionsSource}
+            profiles={profiles}
+            onCreate={createFromCalendar}
+            onUpdate={updateFromCalendar}
+            onMoveToDay={moveToDay}
+            onMoveToWeek={moveToWeek}
+            onDelete={(id) => (canDelete ? setConfirmDelete([id]) : notify('info', 'Tu usuario no puede eliminar actividades.'))}
+            onNotify={notify}
+            onOpenInTable={(id) => {
               setLayout('table');
               setTimeout(() => setFocusRequest({ rowKey: id, nonce: Date.now() }), 30);
             }}
@@ -564,6 +615,9 @@ export default function PlanningGrid(props: PlanningGridProps) {
         </div>
       ) : null}
 
+      {layout === 'calendar' && canEdit ? (
+        <p className="pgrid-cal-hint">Doble clic en un día para agregar una actividad · doble clic en una actividad para verla o cambiarla · arrástrala a otro día para reprogramarla · los cambios aparecen al instante en la tabla</p>
+      ) : null}
       <p className="pgrid-help" hidden={layout !== 'table'}>
         Clic para seleccionar · escribe para reemplazar · Enter o doble clic para editar · Tab y flechas para moverte · ⌘C / ⌘V con Excel · ⌘D duplica · ⌘↵ inserta fila · ⌘Z deshace · arrastra ⠿ para mover entre semanas
       </p>

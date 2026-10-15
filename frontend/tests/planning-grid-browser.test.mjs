@@ -303,6 +303,92 @@ try {
     passed.push('búsqueda multi‑palabra, vistas guardadas y calendario');
   }
 
+  // 10b. Calendar like Apple Calendar: double-click to add, double-click to edit, drag to reschedule; the
+  // table shows every change because both views use the same records.
+  if (run('calendar')) {
+    const page = await open();
+    await page.getByRole('button', { name: 'Calendario', exact: true }).click();
+    const day = (iso) => page.locator(`.pgrid-cal__day[data-day="${iso}"]`);
+    const card = page.getByRole('dialog', { name: 'Nueva actividad' });
+    // Double-click on the free space of a cell (on an activity it opens that activity instead).
+    const dblclickFree = async (locator) => {
+      const box = await locator.boundingBox();
+      await locator.dblclick({ position: { x: 12, y: box.height - 6 } });
+    };
+
+    // An empty card closed by clicking elsewhere adds nothing; Escape cancels too.
+    const before = (await rows(page)).length;
+    await dblclickFree(day('2026-10-21'));
+    await card.waitFor();
+    await page.mouse.click(5, 5);
+    await card.waitFor({ state: 'detached' });
+    await dblclickFree(page.locator('.pgrid-cal__label', { hasText: '05 AL 09 OCTUBRE' }));
+    await card.getByText('sin día fijo').waitFor();
+    await page.keyboard.press('Escape');
+    await card.waitFor({ state: 'detached' });
+    assert.equal((await rows(page)).length, before, 'nothing created');
+
+    // Double-click a day, write, Enter.
+    await dblclickFree(day('2026-10-22'));
+    await card.waitFor();
+    assert.match(await card.innerText(), /Jueves 22 de octubre/i);
+    await page.screenshot({ path: path.join(SHOTS, '10b-calendar-new.png') });
+    await page.keyboard.type('Hospital del calendario');
+    await card.getByLabel('Servicio').selectOption('correctivo');
+    await card.getByLabel('Plataforma').fill('ba200');
+    await card.getByLabel('Ingeniero').fill('Martha Carbajal');
+    await card.getByLabel('Plataforma').press('Enter');
+    await card.waitFor({ state: 'detached' });
+    await day('2026-10-22').locator('.pgrid-cal__chip', { hasText: 'Hospital del calendario' }).waitFor();
+    await synced(page);
+    let created = (await rows(page)).find((row) => localityOf(row) === 'Hospital del calendario');
+    assert.equal(metaOf(created).scheduled_date, '2026-10-22');
+    assert.equal(metaOf(created).week_start, '2026-10-19');
+    assert.equal(metaOf(created).ingeniero_csv, 'Martha Carbajal');
+    assert.match(created.asunto, /CORRECTIVO - BA200 - Hospital del calendario/);
+
+    // It is already in the table, in its week.
+    await page.getByRole('button', { name: 'Tabla', exact: true }).click();
+    const tableRow = rowByText(page, 'Hospital del calendario');
+    await tableRow.waitFor();
+    assert.match(await tableRow.innerText(), /22\/10\/2026/);
+    await page.getByRole('button', { name: 'Calendario', exact: true }).click();
+
+    // Double-click the activity to change it; clicking elsewhere keeps the change.
+    await day('2026-10-22').locator('.pgrid-cal__chip', { hasText: 'Hospital del calendario' }).dblclick();
+    const editCard = page.getByRole('dialog', { name: 'Actividad', exact: true });
+    await editCard.waitFor();
+    await editCard.getByLabel('Observaciones').fill('Llevar rotor de repuesto');
+    await page.mouse.click(5, 5);
+    await editCard.waitFor({ state: 'detached' });
+    await synced(page);
+    created = (await rows(page)).find((row) => row.id === created.id);
+    assert.match(created.descripcion, /Observaciones: Llevar rotor de repuesto/);
+
+    // Drag to another day (next week) and then to the week's "sin día" lane.
+    await day('2026-10-22').locator('.pgrid-cal__chip', { hasText: 'Hospital del calendario' }).dragTo(day('2026-10-28'));
+    await day('2026-10-28').locator('.pgrid-cal__chip', { hasText: 'Hospital del calendario' }).waitFor();
+    await synced(page);
+    created = (await rows(page)).find((row) => row.id === created.id);
+    assert.equal(metaOf(created).scheduled_date, '2026-10-28');
+    assert.equal(metaOf(created).week_start, '2026-10-26', 'moved to the week of the new day');
+    await day('2026-10-28').locator('.pgrid-cal__chip', { hasText: 'Hospital del calendario' }).dragTo(page.locator('.pgrid-cal__label', { hasText: '12 AL 16 OCTUBRE' }));
+    await page.locator('.pgrid-cal__label', { hasText: '12 AL 16 OCTUBRE' }).locator('.pgrid-cal__chip', { hasText: 'Hospital del calendario' }).waitFor();
+    await synced(page);
+    created = (await rows(page)).find((row) => row.id === created.id);
+    assert.equal(metaOf(created).scheduled_date, null);
+    assert.equal(metaOf(created).week_start, '2026-10-12');
+    await page.close();
+
+    const readonly = await open('?readonly');
+    await readonly.getByRole('button', { name: 'Calendario', exact: true }).click();
+    await readonly.locator('.pgrid-cal__day[data-day="2026-10-22"]').dblclick({ position: { x: 12, y: 80 } });
+    await readonly.locator('.pgrid-toast', { hasText: 'solo puede consultar' }).waitFor();
+    assert.equal(await readonly.getByRole('dialog', { name: 'Nueva actividad' }).count(), 0);
+    await readonly.close();
+    passed.push('calendario tipo Apple: doble clic para agregar/editar, arrastrar de día y semana, sincronizado con la tabla');
+  }
+
   // 11. Excel: export the month and import it back (duplicates detected).
   if (run('excel')) {
     const page = await open();

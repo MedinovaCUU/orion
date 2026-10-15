@@ -231,6 +231,13 @@ export class PlanningStore {
     return applyPatchToValues(record.values, { ...(state.inflight || {}), ...state.pending });
   }
 
+  /** The record as the user sees it: a pending move already shows the activity in its new week. */
+  displayRecord(record: PlanningRecord): PlanningRecord {
+    const state = this.snapshot.rowStates.get(record.id);
+    const week = state?.pending.week || state?.inflight?.week;
+    return week && week.start !== record.week.start ? { ...record, week } : record;
+  }
+
   // ----- editing existing rows -----
   edit(id: string, field: PlanningField, value: FieldValue, options: { recordUndo?: boolean } = {}) {
     const draft = this.snapshot.drafts.find((entry) => entry.id === id);
@@ -254,9 +261,12 @@ export class PlanningStore {
 
   move(ids: string[], target: PlanningWeek) {
     ids.forEach((id) => {
-      const record = this.snapshot.records.get(id);
-      if (!record || record.closed || record.week.start === target.start) return;
-      const values = this.displayValues(record);
+      const stored = this.snapshot.records.get(id);
+      if (!stored || stored.closed) return;
+      // From where the user sees it now (a move not yet saved counts).
+      const record = this.displayRecord(stored);
+      if (record.week.start === target.start) return;
+      const values = this.displayValues(stored);
       const patch = movePatch({ ...record, values }, target);
       this.pushUndo({ kind: 'move', id, patch: movePatch({ ...record, week: target, values: applyPatchToValues(values, patch) }, record.week) });
       this.patch(id, patch);
