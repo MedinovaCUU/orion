@@ -135,7 +135,11 @@ try {
 
   const projection = evidence.buildDriBplProjection(summary, catalog);
   assert.deepEqual([...projection.failedReagentIds].sort(), ['GLU', 'MALB_U']);
-  assert.deepEqual(projection.correctReagentIds, ['ALT_GPT']);
+  // ALT has several catalog entries with the same identity (generic seed ALT_GPT and the BA-200/400 IFU entry
+  // ALANINA_AM); the projection must use the representative the DRI reagent list shows, whatever its id.
+  const altRepresentative = classifier.resolveReagentForTest(catalog, { testName: 'ALT-GPT' });
+  assert.equal(getReagentDisplayCode(altRepresentative), 'ALT');
+  assert.deepEqual(projection.correctReagentIds, [altRepresentative.id]);
   assert.equal(projection.suggestedEventType, 'control_high');
   assert.equal(projection.suggestedFailureDirection, 'high');
   assert.equal(projection.controlLot, 'L-10');
@@ -170,7 +174,7 @@ try {
   assert.equal(form.controlLot, 'MANUAL', 'no pisa capturas manuales');
   assert.equal(form.calibratorLot, 'C-90');
   assert.equal(form.eventType, 'control_high');
-  assert.deepEqual(form.correctReagentIds, ['ALT_GPT']);
+  assert.deepEqual(form.correctReagentIds, [altRepresentative.id]);
   assert.equal(form.observations.includes('[BPL:OLD]'), false);
   assert.match(form.observations, /^Nota previa\.\n\n\[BPL:834001902\]/);
   assert.equal(form.evidenceItems.length, 1);
