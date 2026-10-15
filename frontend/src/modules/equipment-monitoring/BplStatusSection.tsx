@@ -7,18 +7,20 @@ import type { BplReactionCurvesState } from './useBplReactionCurves';
 import './monitor.tokens.css';
 import './bplStatus.css';
 import {
+  BPL_LINKED_STAGES,
+  BPL_RESULT_PENDING_LABELS,
   BPL_STAGES,
   BPL_STAGE_LABELS,
   BPL_STAGE_SHORT_LABELS,
   BPL_STATUS_LABELS,
   BPL_TONE_LABELS,
   bplToneFromStatus,
-  describeBplBlankResult,
+  describeBplResultLink,
   formatBplDiagnosticStatus,
   formatBplEventTypeLabel,
   formatBplExecution,
   summarizeBplEventMetrics,
-  type BplBlankResultLink,
+  type BplResultLink,
   type BplEvent,
   type BplSerialSummary,
   type BplStage,
@@ -71,36 +73,45 @@ const resolveHeadlineEvent = (test: BplTestSnapshot): { stage: BplStage; event: 
   return best;
 };
 
+const PIPETTED_LABELS: Record<BplResultLink['stage'], string> = {
+  reagent_blank: 'Blanco pipeteado',
+  calibration: 'Calibrador pipeteado',
+  quality_control: 'Control pipeteado',
+};
+
 /**
- * Blanco de reactivo más reciente de la prueba. El resultado sale del `bpl_analytical_result` BLANK de
- * la misma ejecución; si el pipeteo aún no tiene resultado relacionado, se dice que está pendiente.
+ * Resultado vinculado más reciente de una etapa. El valor sale de la fila analítica de la misma ejecución;
+ * si el pipeteo aún no tiene resultado relacionado, se dice que está pendiente de recibir. Del blanco
+ * también se muestra el resultado recibido con su ejecución; calibración y control ya salen en el titular.
  */
-const BlankResultNote = ({ link, headlineEvent }: { link: BplBlankResultLink; headlineEvent: BplEvent | null }) => {
+const ResultLinkNote = ({ link, headlineEvent }: { link: BplResultLink; headlineEvent: BplEvent | null }) => {
   if (link.state === 'pending') {
     return (
       <small
         className="equipment-monitor__bpl-missing"
-        data-testid="bpl-blank-pending"
-        title={`Blanco pipeteado ${formatDateTime(link.observedAt)}; el monitor todavía no envía su resultado analítico.`}
+        data-testid="bpl-result-pending"
+        data-stage={link.stage}
+        title={`${PIPETTED_LABELS[link.stage]} ${formatDateTime(link.observedAt)}; el monitor todavía no envía su resultado analítico.`}
       >
-        {describeBplBlankResult(link)}
+        {describeBplResultLink(link)}
       </small>
     );
   }
+  const blank = link.result?.blank;
   // Sin payload (corte global) el resultado existe pero su absorbancia llega con el detalle.
-  if (link.absorbance === null) return null;
+  if (link.stage !== 'reagent_blank' || !blank || blank.absorbance === null) return null;
   // Si el titular de la tarjeta ya es este resultado, su absorbancia y límite ya están a la vista.
   const inHeadline = Boolean(link.result && headlineEvent?.key === link.result.key);
   const parts = [
-    inHeadline ? null : describeBplBlankResult(link),
-    inHeadline || link.withinLimit !== false ? null : 'fuera del límite',
+    inHeadline ? null : describeBplResultLink(link),
+    inHeadline || blank.withinLimit !== false ? null : 'fuera del límite',
     formatBplExecution(link.execution),
     link.replicates > 1 ? `${link.replicates} réplicas` : null,
   ].filter(Boolean);
   if (!parts.length) return null;
   return (
     <small
-      className={link.withinLimit === false ? 'equipment-monitor__bpl-missing' : undefined}
+      className={blank.withinLimit === false ? 'equipment-monitor__bpl-missing' : undefined}
       data-testid="bpl-blank-result"
       title={link.result?.timestamp ? `Resultado analítico ${formatDateTime(link.result.timestamp)}` : undefined}
     >
@@ -161,6 +172,16 @@ const BplStatusSection = memo(function BplStatusSection({ serial, overview, deta
   const visibleTests = summary ? (showAllTests ? summary.tests : summary.tests.slice(0, TEST_PAGE_SIZE)) : [];
   const hiddenTests = summary ? Math.max(summary.tests.length - visibleTests.length, 0) : 0;
   const driTarget = `/dashboard?tab=dri&serial=${encodeURIComponent(serial)}&bpl=apply`;
+  // Avisos de la serie en un solo párrafo: resultados pendientes de recibir y lo que falta en las filas de resultado.
+  const listNames = (names: string[]) => `${names.slice(0, 6).join(', ')}${names.length > 6 ? ` y ${names.length - 6} más` : ''}.`;
+  const pendingNotices = summary
+    ? [
+        ...BPL_LINKED_STAGES.filter((stage) => summary.pendingResults[stage].length).map(
+          (stage) => `${BPL_RESULT_PENDING_LABELS[stage]}: ${listNames(summary.pendingResults[stage])}`,
+        ),
+        summary.missingData.length ? `Falta para cerrar aceptación: ${listNames(summary.missingData)}` : null,
+      ].filter((notice): notice is string => Boolean(notice))
+    : [];
 
   return (
     <div className="equipment-monitor__focus-section equipment-monitor__focus-section--bpl" data-testid="bpl-section" data-tone={tone}>
@@ -227,16 +248,9 @@ const BplStatusSection = memo(function BplStatusSection({ serial, overview, deta
             })}
           </div>
 
-          {summary.pendingBlankResults.length ? (
-            <p className="equipment-monitor__focus-location equipment-monitor__bpl-pending" data-tone="pending">
-              Resultado del blanco pendiente de recibir: {summary.pendingBlankResults.slice(0, 6).join(', ')}
-              {summary.pendingBlankResults.length > 6 ? ` y ${summary.pendingBlankResults.length - 6} más` : ''}.
-            </p>
-          ) : null}
-          {summary.missingData.length ? (
-            <p className="equipment-monitor__focus-location equipment-monitor__bpl-pending" data-tone="pending">
-              Falta para cerrar aceptación: {summary.missingData.slice(0, 6).join(', ')}
-              {summary.missingData.length > 6 ? ` y ${summary.missingData.length - 6} más` : ''}.
+          {pendingNotices.length ? (
+            <p className="equipment-monitor__focus-location equipment-monitor__bpl-pending" data-tone="pending" data-testid="bpl-pending-notices">
+              {pendingNotices.join(' ')}
             </p>
           ) : null}
 
@@ -282,7 +296,9 @@ const BplStatusSection = memo(function BplStatusSection({ serial, overview, deta
                     {metrics.length ? ` · ${metrics.join(' · ')}` : ''}
                   </p>
                   {lots.length ? <small>{lots.join(' · ')}</small> : null}
-                  {test.blankResult ? <BlankResultNote link={test.blankResult} headlineEvent={headline?.event || null} /> : null}
+                  {test.links.map((link) => (
+                    <ResultLinkNote key={`${link.stage}|${link.materialKey || ''}`} link={link} headlineEvent={headline?.event || null} />
+                  ))}
                   {test.missingData.length ? <small className="equipment-monitor__bpl-missing">Falta: {test.missingData.slice(0, 4).join(', ')}</small> : null}
                   {test.ruleIds.length ? <small>Reglas {test.ruleIds.slice(0, 4).join(', ')}</small> : null}
                   {latestCurve ? <ReactionSparkline group={latestCurve} onOpenGroup={openReactionGroup} /> : null}

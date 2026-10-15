@@ -29186,6 +29186,11 @@ const BPL_STAGES = [
 	"calibration",
 	"quality_control"
 ];
+const BPL_LINKED_STAGES = [
+	"reagent_blank",
+	"calibration",
+	"quality_control"
+];
 const STATUS_RANK = {
 	rejected: 4,
 	pending: 3,
@@ -29421,6 +29426,7 @@ const parseQcDetail = (payload, row) => {
 		"low",
 		"minimo"
 	]) ?? pickNumber(payload, [
+		"control_min_concentration",
 		"min_concentration",
 		"min_limit",
 		"lower_limit",
@@ -29436,6 +29442,7 @@ const parseQcDetail = (payload, row) => {
 		"high",
 		"maximo"
 	]) ?? pickNumber(payload, [
+		"control_max_concentration",
 		"max_concentration",
 		"max_limit",
 		"upper_limit",
@@ -29668,13 +29675,21 @@ const parseLimitAssessment = (value) => {
 	if (/^(outside|above|below|over|under|exceed|fuera)/.test(normalized)) return false;
 	return null;
 };
-const parseExecutionRef = (payload, serial, testKey) => {
+const materialKeyOf = (name, lot) => {
+	const normalizedName = (name || "").trim().toUpperCase().replace(/\s+/g, " ");
+	const normalizedLot = (lot || "").trim().toUpperCase().replace(/^0+(?=\d)/, "");
+	return normalizedName || normalizedLot ? `${normalizedName}|${normalizedLot}` : null;
+};
+const materialLabelOf = (name, lot) => [name?.trim() || null, lot?.trim() ? `lote ${lot.trim()}` : null].filter(Boolean).join(" · ") || null;
+const parseExecutionRef = (payload, serial, testKey, row) => {
 	const record = databaseRecordOf(payload);
 	if (!record) return null;
 	const field = (candidates) => pickValue(record, candidates, 0);
 	const workSessionId = toText(field(["work_session_id"]));
 	const orderTestId = toText(field(["order_test_id"]));
 	const rerunNumber = toFiniteNumber(field(["rerun_number"]));
+	const runNumber = toFiniteNumber(field(["run_number"]));
+	const control = materialKeyOf(toText(field(["control_name"])) || row.calibration_control_name, toText(field(["control_lot_number"])) || row.calibration_control_lot_number);
 	return {
 		key: workSessionId && orderTestId ? [
 			serial,
@@ -29682,12 +29697,20 @@ const parseExecutionRef = (payload, serial, testKey) => {
 			workSessionId,
 			orderTestId,
 			rerunNumber ?? 1
+		].join("|") : runNumber !== null && control ? [
+			serial,
+			testKey,
+			"qc",
+			control,
+			toFiniteNumber(field(["runs_group_number"])) ?? 1,
+			runNumber
 		].join("|") : null,
 		workSessionId,
 		orderTestId,
 		rerunNumber,
 		multipointNumber: toFiniteNumber(field(["multipoint_number"])),
 		orderTestStatus: toText(field(["order_test_status"]))?.toUpperCase() || null,
+		runNumber,
 		analyzerId: toText(field(["analyzer_id"]))
 	};
 };
@@ -29948,8 +29971,8 @@ const normalizeBplEvent = (row) => {
 		blank: isBlank ? parseBlankDetail(payload, stage) : null,
 		consumption: eventType === "bpl_consumption_record" ? parseConsumptionDetail(payload) : null,
 		analytical: eventType === "bpl_analytical_result" ? parseAnalyticalDetail(payload) : null,
-		execution: parseExecutionRef(payload, serial, testKey),
-		blankResult: null
+		execution: parseExecutionRef(payload, serial, testKey, row),
+		links: {}
 	};
 };
 const timestampValue = (event) => event.timestamp ? new Date(event.timestamp).getTime() : 0;
@@ -30003,78 +30026,115 @@ const bplToneFromStatus = (status) => {
 	return "none";
 };
 const isBplReactionCurveEvent = (event) => event.eventType === "bpl_reaction_curve";
-const isBlankSample = (event) => event.sampleClass === "BLANK" || !event.sampleClass && event.stage === "reagent_blank";
-const isBplBlankResultEvent = (event) => event.eventType === "bpl_analytical_result" && isBlankSample(event);
-const BLANK_RESULT_MISSING_CODES = new Set([
-	"blank_result_value",
-	"blank_acceptance_limit",
-	"blank_absorbance_limit"
-]);
-const isBlankResultCode = (code) => BLANK_RESULT_MISSING_CODES.has(code.trim().toLowerCase());
-const BPL_BLANK_RESULT_WINDOW_MS = 2700 * 1e3;
-const awaitsBlankResult = (event) => !isBplBlankResultEvent(event) && (event.eventType === "bpl_consumption_record" && isBlankSample(event) || event.missingData.some(isBlankResultCode));
-const buildBlankExecutions = (events) => {
+const LINK_RULES = [
+	{
+		stage: "reagent_blank",
+		sampleClass: "BLANK",
+		resultTypes: ["bpl_analytical_result"],
+		codes: new Set([
+			"blank_result_value",
+			"blank_acceptance_limit",
+			"blank_absorbance_limit"
+		]),
+		matchMaterial: false
+	},
+	{
+		stage: "calibration",
+		sampleClass: "CALIB",
+		resultTypes: ["bpl_analytical_result", "bpl_calibration_curve"],
+		codes: new Set([
+			"calibration_acceptance_status",
+			"calibration_curve",
+			"calibration_result_value",
+			"calibrator_factor"
+		]),
+		matchMaterial: true
+	},
+	{
+		stage: "quality_control",
+		sampleClass: "CTRL",
+		resultTypes: ["bpl_quality_control_result"],
+		codes: new Set([
+			"control_result_value",
+			"control_limits",
+			"westgard_assessment"
+		]),
+		matchMaterial: true
+	}
+];
+const isOfRuleClass = (event, rule) => event.sampleClass === rule.sampleClass || !event.sampleClass && event.stage === rule.stage;
+const isRuleResult = (event, rule) => rule.resultTypes.includes(event.eventType) && isOfRuleClass(event, rule);
+const isRuleCode = (rule, code) => rule.codes.has(code.trim().toLowerCase());
+const BPL_RESULT_WINDOW_MS = 2700 * 1e3;
+const awaitsRuleResult = (event, rule) => !isRuleResult(event, rule) && (event.eventType === "bpl_consumption_record" && isOfRuleClass(event, rule) || event.missingData.some((code) => isRuleCode(rule, code)));
+const executionKeyOf = (event) => event.execution?.key || `event|${event.key}`;
+const detectedValue = (event) => event.detectedAt ? new Date(event.detectedAt).getTime() : 0;
+const buildLinkedExecutions = (events, rule) => {
 	const groups = /* @__PURE__ */ new Map();
 	events.forEach((event) => {
-		if (!isBplBlankResultEvent(event)) return;
+		if (!isRuleResult(event, rule)) return;
 		if (event.execution?.analyzerId && normalizeBplSerial(event.execution.analyzerId) !== event.serial) return;
-		const key = event.execution?.key || `event|${event.key}`;
+		const key = executionKeyOf(event);
 		const bucket = groups.get(key) || [];
 		bucket.push(event);
 		groups.set(key, bucket);
 	});
 	const executions = /* @__PURE__ */ new Map();
-	groups.forEach((replicates, key) => {
-		const ordered = [...replicates].sort((left, right) => timestampValue(left) - timestampValue(right));
+	groups.forEach((rows, key) => {
+		const ordered = [...rows].sort((left, right) => timestampValue(left) - timestampValue(right) || detectedValue(left) - detectedValue(right));
 		const closed = ordered.filter((event) => event.execution?.orderTestStatus === "CLOSED");
+		const representative = closed.at(-1) || ordered[ordered.length - 1];
 		executions.set(key, {
-			testKey: ordered[0].testKey,
+			testKey: representative.testKey,
 			sampleType: ordered.find((event) => event.sampleType)?.sampleType || null,
-			workSessionId: ordered[0].execution?.workSessionId || null,
+			materialKey: materialKeyOf(representative.controlOrCalibratorName, representative.lotNumber),
+			workSessionId: representative.execution?.workSessionId || null,
 			firstAt: timestampValue(ordered[0]),
 			replicates: new Set(ordered.map((event) => event.timestamp || event.key)).size,
 			final: closed.length > 0,
-			representative: closed.at(-1) || ordered[ordered.length - 1]
+			representative
 		});
 	});
 	return executions;
 };
-const receivedBlankLink = (execution, observedAt) => {
+const receivedLink = (rule, execution, observedAt) => {
 	const result = execution.representative;
 	return {
+		stage: rule.stage,
 		state: "received",
 		result,
 		execution: result.execution,
 		replicates: execution.replicates,
 		final: execution.final,
-		absorbance: result.blank?.absorbance ?? null,
-		limit: result.blank?.absorbanceLimit ?? null,
-		withinLimit: result.blank?.withinLimit ?? null,
+		material: rule.matchMaterial ? materialLabelOf(result.controlOrCalibratorName, result.lotNumber) : null,
+		materialKey: rule.matchMaterial ? execution.materialKey : null,
 		observedAt
 	};
 };
-const pendingBlankLink = (observedAt) => ({
+const pendingLink = (rule, event) => ({
+	stage: rule.stage,
 	state: "pending",
 	result: null,
 	execution: null,
 	replicates: 0,
 	final: false,
-	absorbance: null,
-	limit: null,
-	withinLimit: null,
-	observedAt
+	material: rule.matchMaterial ? materialLabelOf(event.controlOrCalibratorName, event.lotNumber) : null,
+	materialKey: rule.matchMaterial ? materialKeyOf(event.controlOrCalibratorName, event.lotNumber) : null,
+	observedAt: event.timestamp
 });
-const findBlankExecution = (event, executions) => {
+const findLinkedExecution = (event, executions, rule) => {
 	const at = timestampValue(event);
 	if (!at) return null;
 	const forwardOnly = event.eventType === "bpl_consumption_record";
 	const session = event.execution?.workSessionId || null;
 	const sampleType = event.sampleType?.toUpperCase() || null;
+	const material = rule.matchMaterial ? materialKeyOf(event.controlOrCalibratorName, event.lotNumber) : null;
 	let best = null;
 	let bestDistance = Number.POSITIVE_INFINITY;
 	for (const execution of executions) {
 		if (execution.testKey !== event.testKey) continue;
 		if (sampleType && execution.sampleType && execution.sampleType.toUpperCase() !== sampleType) continue;
+		if (material && execution.materialKey && execution.materialKey !== material) continue;
 		const sameSession = Boolean(session && execution.workSessionId === session);
 		if (session && execution.workSessionId && !sameSession) continue;
 		const gap = execution.firstAt - at;
@@ -30088,27 +30148,46 @@ const findBlankExecution = (event, executions) => {
 	}
 	return best;
 };
-const reconcileBlankResults = (events) => {
-	const executions = buildBlankExecutions(events);
+const reconcileLinkedResults = (events) => {
+	const executionsByRule = LINK_RULES.map((rule) => ({
+		rule,
+		executions: buildLinkedExecutions(events, rule)
+	}));
 	return events.map((event) => {
-		if (isBplBlankResultEvent(event)) {
-			const execution = executions.get(event.execution?.key || `event|${event.key}`);
-			return execution ? {
-				...event,
-				blankResult: receivedBlankLink(execution, event.timestamp)
-			} : event;
-		}
-		if (!awaitsBlankResult(event)) return event;
-		const execution = findBlankExecution(event, executions.values());
-		return {
+		const links = {};
+		let missingData = event.missingData;
+		executionsByRule.forEach(({ rule, executions }) => {
+			if (isRuleResult(event, rule)) {
+				const execution = executions.get(executionKeyOf(event));
+				if (execution) links[rule.stage] = receivedLink(rule, execution, event.timestamp);
+				return;
+			}
+			if (!awaitsRuleResult(event, rule)) return;
+			const execution = findLinkedExecution(event, executions.values(), rule);
+			links[rule.stage] = execution ? receivedLink(rule, execution, event.timestamp) : pendingLink(rule, event);
+			missingData = missingData.filter((code) => !isRuleCode(rule, code));
+		});
+		return Object.keys(links).length ? {
 			...event,
-			missingData: event.missingData.filter((code) => !isBlankResultCode(code)),
-			blankResult: execution ? receivedBlankLink(execution, event.timestamp) : pendingBlankLink(event.timestamp)
-		};
+			links,
+			missingData
+		} : event;
 	});
 };
+const latestLinksOf = (testEvents) => {
+	const slots = /* @__PURE__ */ new Map();
+	testEvents.forEach((event) => {
+		BPL_LINKED_STAGES.forEach((stage) => {
+			const link = event.links[stage];
+			if (!link) return;
+			const slot = stage === "quality_control" ? `${stage}|${link.materialKey || ""}` : stage;
+			if (!slots.has(slot)) slots.set(slot, link);
+		});
+	});
+	return Array.from(slots.values()).sort((left, right) => BPL_LINKED_STAGES.indexOf(left.stage) - BPL_LINKED_STAGES.indexOf(right.stage) || (left.material || "").localeCompare(right.material || ""));
+};
 const buildBplSerialSummary = (serial, events) => {
-	const sorted = reconcileBlankResults(events.filter((event) => !isBplReactionCurveEvent(event))).sort(compareBplEventsDesc);
+	const sorted = reconcileLinkedResults(events.filter((event) => !isBplReactionCurveEvent(event))).sort(compareBplEventsDesc);
 	const byTest = /* @__PURE__ */ new Map();
 	sorted.forEach((event) => {
 		const bucket = byTest.get(event.testKey) || [];
@@ -30135,6 +30214,7 @@ const buildBplSerialSummary = (serial, events) => {
 		});
 		const latestCalibration = testEvents.find((event) => event.stage === "calibration" && (event.controlOrCalibratorName || event.lotNumber));
 		const latestControl = testEvents.find((event) => event.stage === "quality_control" && (event.controlOrCalibratorName || event.lotNumber));
+		const links = latestLinksOf(testEvents);
 		return {
 			testKey,
 			testName: testEvents.find((event) => event.testName)?.testName || testKey,
@@ -30151,7 +30231,8 @@ const buildBplSerialSummary = (serial, events) => {
 			missingData: unique(testEvents.flatMap((event) => event.missingData)),
 			ruleIds: unique(testEvents.flatMap((event) => event.ruleIds)),
 			statusFlips,
-			blankResult: testEvents.find((event) => event.blankResult)?.blankResult || null
+			links,
+			blankResult: links.find((link) => link.stage === "reagent_blank") || null
 		};
 	});
 	tests.sort((left, right) => {
@@ -30231,7 +30312,10 @@ const buildBplSerialSummary = (serial, events) => {
 		pendingTests,
 		acceptedTests,
 		missingData: unique(sorted.flatMap((event) => event.missingData)),
-		pendingBlankResults: tests.filter((test) => test.blankResult?.state === "pending").map((test) => test.testName),
+		pendingResults: BPL_LINKED_STAGES.reduce((accumulator, stage) => {
+			accumulator[stage] = tests.flatMap((test) => test.links.filter((link) => link.stage === stage && link.state === "pending").map((link) => stage === "quality_control" && link.material ? `${test.testName} (${link.material})` : test.testName));
+			return accumulator;
+		}, {}),
 		calibrators: groupLots("calibration"),
 		controls: groupLots("quality_control"),
 		reagentBarcodes: latestByTimestamp(Array.from(barcodeMap.values())),
@@ -30242,25 +30326,52 @@ const formatBplNumber = (value, decimals = 2) => {
 	if (value === null || value === void 0 || !Number.isFinite(value)) return "N/D";
 	return new Intl.NumberFormat("es-MX", { maximumFractionDigits: decimals }).format(value);
 };
-const BPL_BLANK_RESULT_PENDING_LABEL = "Resultado del blanco pendiente de recibir";
+const BPL_RESULT_PENDING_LABELS = {
+	reagent_blank: "Resultado del blanco pendiente de recibir",
+	calibration: "Resultado de calibración pendiente de recibir",
+	quality_control: "Resultado de control pendiente de recibir"
+};
+const CALIBRATION_STATUS_LABELS = {
+	accepted: "Calibración aceptada",
+	rejected: "Calibración rechazada",
+	pending: "Calibración pendiente de aceptación",
+	evidence_observed: "Calibración recibida"
+};
 const formatBplExecution = (execution) => {
-	if (!execution?.workSessionId && !execution?.orderTestId) return null;
+	if (!execution) return null;
+	if (!execution.workSessionId && !execution.orderTestId) return execution.runNumber !== null ? `corrida ${execution.runNumber}` : null;
 	return [
 		execution.workSessionId ? `sesión ${execution.workSessionId}` : null,
 		execution.orderTestId ? `orden ${execution.orderTestId}` : null,
 		execution.rerunNumber !== null && execution.rerunNumber > 1 ? `repetición ${execution.rerunNumber}` : null
 	].filter(Boolean).join(" · ");
 };
-const describeBplBlankResult = (link) => {
-	if (link.state === "pending") return BPL_BLANK_RESULT_PENDING_LABEL;
-	if (link.absorbance === null) return "Resultado del blanco recibido";
-	const limit = link.limit !== null ? ` (límite ${formatBplNumber(link.limit, 4)})` : "";
-	const partial = !link.final && link.execution?.orderTestStatus ? " · media parcial" : "";
-	return `Resultado del blanco Abs ${formatBplNumber(link.absorbance, 4)}${limit}${partial}`;
+const describeBplResultLink = (link) => {
+	const material = link.material ? ` (${link.material})` : "";
+	if (link.state === "pending") return `${BPL_RESULT_PENDING_LABELS[link.stage]}${link.stage === "quality_control" ? material : ""}`;
+	const result = link.result;
+	if (link.stage === "reagent_blank") {
+		const blank = result?.blank;
+		if (!blank || blank.absorbance === null) return "Resultado del blanco recibido";
+		const limit = blank.absorbanceLimit !== null ? ` (límite ${formatBplNumber(blank.absorbanceLimit, 4)})` : "";
+		const partial = !link.final && link.execution?.orderTestStatus ? " · media parcial" : "";
+		return `Resultado del blanco Abs ${formatBplNumber(blank.absorbance, 4)}${limit}${partial}`;
+	}
+	if (link.stage === "calibration") {
+		if (!result?.hasPayload) return "Resultado de calibración recibido";
+		const factor = result.calibration?.factor ?? result.analytical?.calibratorFactor ?? null;
+		return `${CALIBRATION_STATUS_LABELS[result.status]}${factor !== null ? ` · factor ${formatBplNumber(factor, 4)}` : ""}`;
+	}
+	const qc = result?.qc;
+	if (!qc || qc.resultValue === null) return "Resultado de control recibido";
+	return `Resultado de control ${formatBplNumber(qc.resultValue, 3)}${qc.unit ? ` ${qc.unit}` : ""}${material}`;
 };
 const summarizeBplEventMetrics = (event) => {
 	const parts = [];
-	if (event.blankResult && !isBplBlankResultEvent(event)) parts.push(describeBplBlankResult(event.blankResult));
+	LINK_RULES.forEach((rule) => {
+		const link = event.links[rule.stage];
+		if (link && !isRuleResult(event, rule)) parts.push(describeBplResultLink(link));
+	});
 	if (event.qc) {
 		if (event.qc.resultValue !== null) parts.push(`Resultado ${formatBplNumber(event.qc.resultValue, 3)}${event.qc.unit ? ` ${event.qc.unit}` : ""}`);
 		if (event.qc.minLimit !== null && event.qc.maxLimit !== null) parts.push(`Límites ${formatBplNumber(event.qc.minLimit, 3)} a ${formatBplNumber(event.qc.maxLimit, 3)}`);
@@ -30542,7 +30653,7 @@ const buildDriBplProjection = (summary, catalog) => {
 		...failedTests.slice(0, 8).map(describeTest),
 		summary.pendingTests.length ? `Pendientes de aceptación: ${summary.pendingTests.slice(0, 8).join(", ")}` : null,
 		westgardRules.size ? `Reglas Westgard: ${Array.from(westgardRules).join(", ")}` : null,
-		summary.pendingBlankResults.length ? `${BPL_BLANK_RESULT_PENDING_LABEL}: ${summary.pendingBlankResults.slice(0, 8).join(", ")}` : null,
+		...BPL_LINKED_STAGES.map((stage) => summary.pendingResults[stage].length ? `${BPL_RESULT_PENDING_LABELS[stage]}: ${summary.pendingResults[stage].slice(0, 8).join(", ")}` : null),
 		summary.missingData.length ? `Falta para aceptar: ${summary.missingData.slice(0, 6).join(", ")}` : null,
 		unmatchedTests.length ? `Sin reactivo DRI equivalente: ${unmatchedTests.join(", ")}` : null
 	].filter((line) => Boolean(line));

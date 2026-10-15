@@ -551,9 +551,9 @@ export interface BplTestStatus {
   test: string;
   status: string | null;
   lastAt: string | null;
-  qc: { status: string | null; at: string | null; value: number | null; unit: string | null; mean: number | null; sd: number | null; z: number | null; rules: string[]; level: string | null; lot: string | null } | null;
-  calibration: { status: string | null; at: string | null; factor: number | null; slope: number | null; correlation: number | null; relativeError: number | null; calibrator: string | null; lot: string | null } | null;
-  /** pending: the blank was pipetted but its analytical result has not arrived (never a curve point). */
+  /** pending (all three): a control / calibrator / blank was pipetted but its analytical result has not arrived. */
+  qc: { status: string | null; at: string | null; value: number | null; unit: string | null; mean: number | null; sd: number | null; z: number | null; rules: string[]; level: string | null; lot: string | null; pending: boolean } | null;
+  calibration: { status: string | null; at: string | null; factor: number | null; slope: number | null; correlation: number | null; relativeError: number | null; calibrator: string | null; lot: string | null; execution: string | null; pending: boolean } | null;
   blank: { status: string | null; at: string | null; absorbance: number | null; limit: number | null; execution: string | null; pending: boolean } | null;
   flips: number;
 }
@@ -566,23 +566,31 @@ export function bplStatus(serial: string, rows: Row[], test?: string | null): { 
     .filter((t) => !want || unaccent(t.testName).replace(/[^a-z0-9]/g, "").includes(want) || want.includes(unaccent(t.testName).replace(/[^a-z0-9]/g, "")))
     .map((t) => {
       const st = (k: string) => t.stages?.[k] as Row | undefined;
-      const qcEv = st("quality_control")?.latest as Row | undefined;
-      const calEv = st("calibration")?.latest as Row | undefined;
-      // The blank value only comes from the BLANK analytical result linked to the test's latest blank run.
-      const blLink = t.blankResult as Row | null | undefined;
-      const blEv = (blLink?.result ?? st("reagent_blank")?.latestEvaluated ?? st("reagent_blank")?.latest) as Row | undefined;
+      // Values only come from the analytical row linked to the latest pipetting, never from a consumption or curve point.
+      const links = (t.links ?? []) as Row[];
+      const linked = (stage: string) => {
+        const ofStage = links.filter((l) => l.stage === stage);
+        const result = ofStage
+          .map((l) => l.result as Row | null)
+          .filter((r): r is Row => Boolean(r))
+          .sort((a, b) => String(b.timestamp ?? "").localeCompare(String(a.timestamp ?? "")))[0];
+        return { event: (result ?? st(stage)?.latestEvaluated ?? st(stage)?.latest) as Row | undefined, pending: ofStage.some((l) => l.state === "pending") };
+      };
+      const { event: qcEv, pending: qcPending } = linked("quality_control");
+      const { event: calEv, pending: calPending } = linked("calibration");
+      const { event: blEv, pending: blPending } = linked("reagent_blank");
       return {
         test: t.testName,
         status: t.effectiveStatus,
         lastAt: t.lastEventAt,
         qc: qcEv
-          ? { status: qcEv.status, at: qcEv.timestamp, value: qcEv.qc?.resultValue ?? null, unit: qcEv.qc?.unit ?? null, mean: qcEv.qc?.targetMean ?? null, sd: qcEv.qc?.targetSd ?? null, z: qcEv.qc?.zScore ?? null, rules: qcEv.qc?.westgardRules ?? [], level: qcEv.qc?.controlLevel ?? null, lot: qcEv.lotNumber ?? null }
+          ? { status: qcEv.status, at: qcEv.timestamp, value: qcEv.qc?.resultValue ?? null, unit: qcEv.qc?.unit ?? null, mean: qcEv.qc?.targetMean ?? null, sd: qcEv.qc?.targetSd ?? null, z: qcEv.qc?.zScore ?? null, rules: qcEv.qc?.westgardRules ?? [], level: qcEv.qc?.controlLevel ?? null, lot: qcEv.lotNumber ?? null, pending: qcPending }
           : null,
         calibration: calEv
-          ? { status: calEv.status, at: calEv.timestamp, factor: calEv.calibration?.factor ?? null, slope: calEv.calibration?.slope ?? null, correlation: calEv.calibration?.correlation ?? null, relativeError: calEv.calibration?.relativeError ?? null, calibrator: calEv.controlOrCalibratorName ?? null, lot: calEv.lotNumber ?? null }
+          ? { status: calEv.status, at: calEv.timestamp, factor: calEv.calibration?.factor ?? null, slope: calEv.calibration?.slope ?? null, correlation: calEv.calibration?.correlation ?? null, relativeError: calEv.calibration?.relativeError ?? null, calibrator: calEv.controlOrCalibratorName ?? null, lot: calEv.lotNumber ?? null, execution: E.formatBplExecution(calEv.execution) ?? null, pending: calPending }
           : null,
         blank: blEv
-          ? { status: blEv.status, at: blEv.timestamp, absorbance: blEv.blank?.absorbance ?? null, limit: blEv.blank?.absorbanceLimit ?? null, execution: E.formatBplExecution(blEv.execution) ?? null, pending: blLink?.state === "pending" }
+          ? { status: blEv.status, at: blEv.timestamp, absorbance: blEv.blank?.absorbance ?? null, limit: blEv.blank?.absorbanceLimit ?? null, execution: E.formatBplExecution(blEv.execution) ?? null, pending: blPending }
           : null,
         flips: t.statusFlips ?? 0,
       };
