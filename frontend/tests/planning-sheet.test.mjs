@@ -55,6 +55,34 @@ assert.deepEqual(tab.notes.map((note) => [note.kind, note.daysLabel, note.person
 
 assert.equal(parseSheetWeekLabel('31 AL 04 SEPTIEMBRE', 2026, 8)?.weekStart, '2026-08-31', 'week starting in the previous month');
 assert.equal(parseSheetWeekLabel('29 AL 02 ENERO', 2026, 0)?.weekStart, '2025-12-29', 'week starting in the previous year');
+// Titles that name both months: the week belongs to the month where it ends, across years too.
+const crossingLabel = (label, tabMonth) => {
+  const parsed = parseSheetWeekLabel(label, 2026, tabMonth);
+  return parsed && [parsed.weekLabel, parsed.weekStart, parsed.weekEnd, parsed.monthKey];
+};
+assert.deepEqual(crossingLabel('28 SEPT AL 2 OCT', 9), ['28 AL 02 OCTUBRE', '2026-09-28', '2026-10-02', '2026-10']);
+assert.deepEqual(crossingLabel('28 DE SEPTIEMBRE AL 02 DE OCTUBRE', 8), ['28 AL 02 OCTUBRE', '2026-09-28', '2026-10-02', '2026-10']);
+assert.deepEqual(crossingLabel('SEMANA DEL 12 AL 16 DE OCTUBRE', 9), ['12 AL 16 OCTUBRE', '2026-10-12', '2026-10-16', '2026-10']);
+assert.deepEqual(crossingLabel('28 DIC AL 1 ENE', 11), ['28 AL 01 ENERO', '2026-12-28', '2027-01-01', '2027-01']);
+assert.equal(parseSheetWeekLabel('28 SEPT AL 2 MARZO', 2026, 9), null, 'months that do not follow each other are not a week');
+const crossingTab = parsePlanningTab(
+  page([
+    td('28 SEPT AL 2 OCT', ' colspan="8"'),
+    header,
+    td('PREVENTIVO') + td('BA400') + td('HOSPITAL SINTETICO') + td('834000999') + td('') + td('ALFREDO') + td('') + td('MIE'),
+    td('05 AL 09 OCTUBRE', ' colspan="8"'),
+    header,
+    td('CORRECTIVO') + td('A15') + td('CLINICA SINTETICA') + td('NA') + td('') + td('GARCIA') + td('') + td(''),
+  ]),
+  { name: 'OCTUBRE', gid: '9' },
+  2026,
+);
+assert.deepEqual(crossingTab.weeks.map((entry) => entry.weekLabel), ['28 AL 02 OCTUBRE', '05 AL 09 OCTUBRE']);
+assert.deepEqual(crossingTab.activities.map((entry) => [entry.locality, entry.week.weekStart]), [
+  ['HOSPITAL SINTETICO', '2026-09-28'],
+  ['CLINICA SINTETICA', '2026-10-05'],
+], 'the crossing title is a week, not an activity of the previous week');
+
 const april = parsePlanningTab(page([td('20 AL 24 ABRIL', ' colspan="8"'), td('27 AL 01 ABRIL', ' colspan="8"')]), { name: 'ABRIL', gid: '1' }, 2026);
 assert.deepEqual(april.weeks.map((week) => week.weekLabel), ['20 AL 24 ABRIL', '27 AL 01 MAYO'], 'typo in the month follows the previous week');
 const week = parseSheetWeekLabel('12 AL 16 OCTUBRE', 2026, 9);

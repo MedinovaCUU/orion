@@ -280,10 +280,27 @@ const htmlCellGrid = (html: string, maxColumns: number): PlanningCellGrid => {
   };
 };
 
+// Week titles with a month on both sides ("28 SEPT AL 2 OCT") or leading words ("SEMANA DEL 12 AL 16 DE
+// OCTUBRE") become "28 AL 2 OCTUBRE" / "12 AL 16 DE OCTUBRE"; anything else comes back untouched. Shared by
+// the live sync and the Excel import so both place those weeks the same way.
+const CROSSING_WEEK = /^(\d{1,2})\s*(?:DE\s+)?([A-Z]{3,})\.?\s*(?:AL|A|-)\s*(\d{1,2})\s*(?:DE\s+)?([A-Z]{3,})\b\.?(?:\s*(?:DEL?\s+)?(\d{4}|\d{2})\b)?/;
+export const normalizeWeekLabel = (text: string) => {
+  const folded = foldText(text).replace(/^(?:SEMANA\s+(?:DEL?\s+)?|DEL?\s+)(?=\d)/, '');
+  const crossing = folded.match(CROSSING_WEEK);
+  if (crossing) {
+    const startMonth = monthFromWord(crossing[2]);
+    const endMonth = monthFromWord(crossing[4]);
+    if (startMonth !== null && endMonth !== null && (endMonth === startMonth || endMonth === (startMonth + 1) % 12)) {
+      return `${crossing[1]} AL ${crossing[3]} ${MONTH_NAMES[endMonth]}${crossing[5] ? ` ${crossing[5]}` : ''}`;
+    }
+  }
+  return folded !== foldText(text) && /^\d{1,2}\s*(?:AL|A|-)\s*\d{1,2}/.test(folded) ? folded : text;
+};
+
 const WEEK_LABEL_PATTERN = /^(\d{1,2})\s*(?:AL|A|-)\s*(\d{1,2})(?:\s+DE)?\s*([A-Z]*)(?:\s+(\d{2,4}))?/;
 
 export const parseSheetWeekLabel = (rawLabel: string, year: number, tabMonth: number | null, tab = '') => {
-  const folded = foldText(rawLabel);
+  const folded = foldText(normalizeWeekLabel(rawLabel));
   const match = folded.match(WEEK_LABEL_PATTERN);
   if (!match) return null;
 

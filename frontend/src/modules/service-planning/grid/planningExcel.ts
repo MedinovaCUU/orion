@@ -22,6 +22,7 @@ import {
   parsePlanningGrid,
   parseSheetDays,
   parseSheetWeekLabel,
+  normalizeWeekLabel,
   sheetSerial,
   sheetServiceType,
   sheetTabMonth,
@@ -157,21 +158,7 @@ const weekOfNumber = (text: string, year: number, tab: string) => {
   return weekOfDate(addIsoDays(firstMonday, (number - 1) * 7), tab);
 };
 
-// Week titles parsePlanningGrid does not read by itself: a month on both sides ("28 SEPT AL 2 OCT") and
-// leading words ("SEMANA DEL 12 AL 16 DE OCTUBRE"). Anything else comes back untouched.
-const CROSSING_WEEK = /^(\d{1,2})\s*(?:DE\s+)?([A-Z]{3,})\.?\s*(?:AL|A|-)\s*(\d{1,2})\s*(?:DE\s+)?([A-Z]{3,})\b\.?(?:\s*(?:DEL?\s+)?(\d{4}|\d{2})\b)?/;
-export const normalizeWeekLabel = (text: string) => {
-  const folded = foldText(text).replace(/^(?:SEMANA\s+(?:DEL?\s+)?|DEL?\s+)(?=\d)/, '');
-  const crossing = folded.match(CROSSING_WEEK);
-  if (crossing) {
-    const startMonth = monthNumber(crossing[2]);
-    const endMonth = monthNumber(crossing[4]);
-    if (startMonth !== null && endMonth !== null && (endMonth === startMonth || endMonth === (startMonth + 1) % 12)) {
-      return `${crossing[1]} AL ${crossing[3]} ${MONTH_NAMES[endMonth]}${crossing[5] ? ` ${crossing[5]}` : ''}`;
-    }
-  }
-  return folded !== foldText(text) && /^\d{1,2}\s*(?:AL|A|-)\s*\d{1,2}/.test(folded) ? folded : text;
-};
+export { normalizeWeekLabel };
 
 const readWeekLabel = (text: string, year: number, tabMonth: number | null, tab: string) =>
   text ? parseSheetWeekLabel(normalizeWeekLabel(text), year, tabMonth, tab) : null;
