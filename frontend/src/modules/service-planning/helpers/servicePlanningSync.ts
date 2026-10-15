@@ -2,6 +2,7 @@ import { supabase } from '../../../supabaseClient';
 import { extractPlaneacionMeta, type ProfileSummary } from '../../../components/servicesPlanning';
 import { buildPlanningSubject, normalizeText, serializePlanningDescription } from './normalizeService';
 import { foldText, type SheetActivity } from './planningSheet';
+import { buildRowKey, createPeopleResolver, looseKey } from './planningPeople';
 import { fetchPlanningSheet, planningSheetTabUrl, type PlanningSheetSnapshot } from './planningSheetSource';
 import type { ServiceType } from '../types/servicePlanning.types';
 
@@ -10,43 +11,6 @@ const PLANNING_TIME_ZONE = 'America/Ciudad_Juarez';
 const PAGE_SIZE = 1000;
 const CHUNK_SIZE = 20;
 const SHEET_CREATED_FROM = 'service_planning_sheet_sync';
-
-// How the workbook names people; anything else is matched against the staff profiles.
-const PERSON_ALIAS_MAP: Record<string, string> = {
-  ALFREDO: 'Alfredo Acevedo',
-  ANGEL: 'Luis Angel Perez',
-  BENJA: 'Benjamin Martinez',
-  BENJAMIN: 'Benjamin Martinez',
-  CARLOS: 'Carlos Muniz',
-  CHITALA: 'Miguel Chitala',
-  'D. GARCIA': 'Diego Garcia Garcia',
-  DIEGO: 'Diego Garcia Garcia',
-  'DIEGO G': 'Diego Garcia Garcia',
-  'DIEGO GARCIA': 'Diego Garcia Garcia',
-  EDUARDO: 'Eduardo Ignacio Bautista',
-  ERICK: 'Erick Duran',
-  FCO: 'Francisco',
-  FRANCISCO: 'Francisco',
-  GARCIA: 'Diego Garcia Garcia',
-  GUILLERMO: 'Guillermo Martinez',
-  GUILLRMO: 'Guillermo Martinez',
-  HECTOR: 'Hector Cortes',
-  IVONNE: 'Ivonne Jaramillo',
-  LALO: 'Eduardo Ignacio Bautista',
-  MARTHA: 'Martha Carbajal',
-  MEMO: 'Guillermo Martinez',
-  MONTANEZ: 'Ricardo Montanez',
-  NAVARRO: 'Diego Navarro',
-  OLIVIA: 'Olivia Angulo',
-  RICARDO: 'Ricardo Montanez',
-  'RICARDO M': 'Ricardo Montanez',
-  'RICARDO V': 'Ricardo Vilchis',
-  'RICARDO VILCHYS': 'Ricardo Vilchis',
-  VILCHIS: 'Ricardo Vilchis',
-};
-
-// Words that make a companion cell a note ("PAGADO", "SE CAMBIA A NOV") rather than a person.
-const NOTE_WORDS = /\b(PAGAD\w*|PENDIENTE|CAMBI\w*|RUTA|EQUIPOS?|SE|NOV\w*|DIAS?|PREVENTIVOS?|CANCELAD\w*|POSPUEST\w*|COMODATOS?|GARANTIA|CORRECTIVO|FALCON)\b|\d/;
 
 // Statuses Orion owns; the sheet never removes them.
 const ORION_STATUSES = new Set(['realizado', 'confirmado', 'programado']);
@@ -68,6 +32,8 @@ export type ServicePlanningSyncSummary = {
   updated: PlanningSyncChange[];
   removed: PlanningSyncChange[];
   flagged: PlanningSyncChange[];
+  /** Activities edited in Orion after the last sync: the sheet's version is reported, never applied silently. */
+  protectedRows: PlanningSyncChange[];
   unchanged: number;
   alreadyClosed: number;
   cancelledInSheet: number;
@@ -80,6 +46,8 @@ type RunPlanningSyncInput = {
   profiles: ProfileSummary[];
   dryRun?: boolean;
   snapshot?: PlanningSheetSnapshot;
+  /** Activities edited in Orion for which the user chose the sheet's version anyway. */
+  useSheetFor?: string[];
 };
 
 type ExistingPlanningRow = {
@@ -94,67 +62,7 @@ type ExistingPlanning = ExistingPlanningRow & { meta: Record<string, unknown>; k
 
 const cleanText = (value: string | null | undefined) => (value || '').replace(/\s+/g, ' ').trim();
 
-const titleCase = (value: string) =>
-  cleanText(value)
-    .toLowerCase()
-    .replace(/(^|\s)(\p{L})/gu, (_match, space: string, letter: string) => `${space}${letter.toUpperCase()}`);
-
 const todayInPlanningZone = () => new Date().toLocaleDateString('en-CA', { timeZone: PLANNING_TIME_ZONE });
-
-// One activity = same week, same subject (type, platform, locality) and same serial.
-// Punctuation is ignored so "H, GRAL IGUALA" and "H. GRAL IGUALA" are the same place.
-const buildRowKey = (weekLabel: string, subject: string | null | undefined, serial: string | null | undefined) =>
-  [foldText(weekLabel), foldText(subject || '').replace(/[^A-Z0-9]/g, ''), foldText(serial || '').replace(/[^A-Z0-9]/g, '')].join('|');
-
-const looseKey = (key: string) => key.split('|').slice(0, 2).join('|');
-
-const createPeopleResolver = (profiles: ProfileSummary[]) => {
-  const named = profiles.filter((profile) => cleanText(profile.nombre_completo));
-  const byName = new Map(named.map((profile) => [normalizeText(profile.nombre_completo || ''), profile]));
-  const byToken = new Map<string, ProfileSummary[]>();
-  for (const profile of named) {
-    for (const token of new Set(normalizeText(profile.nombre_completo || '').split(' '))) {
-      byToken.set(token, [...(byToken.get(token) || []), profile]);
-    }
-  }
-
-  const resolve = (raw: string) => {
-    const folded = foldText(raw);
-    if (!folded) return null;
-    const alias = PERSON_ALIAS_MAP[folded] || PERSON_ALIAS_MAP[cleanText(folded.replace(/\./g, ' '))];
-    const exact = byName.get(normalizeText(alias || raw));
-    if (exact) return exact.nombre_completo || null;
-    if (alias) return alias;
-    const tokenMatches = byToken.get(normalizeText(raw));
-    return tokenMatches?.length === 1 ? tokenMatches[0].nombre_completo || null : null;
-  };
-
-  return {
-    profileFor: (name: string) => byName.get(normalizeText(name)) || null,
-    engineers: (tokens: string[]) =>
-      Array.from(
-        new Set(
-          tokens
-            .filter((token) => !/^(PENDIENTE|NA|N\/A|POR DEFINIR)$/.test(foldText(token)))
-            .map((token) => resolve(token) || titleCase(token))
-            .filter(Boolean),
-        ),
-      ),
-    // Companion cells mix people and notes; unknown two- or three-word names are kept as external people.
-    companions: (tokens: string[]) => {
-      const people: string[] = [];
-      const notes: string[] = [];
-      for (const token of tokens) {
-        const person = resolve(token);
-        const folded = foldText(token);
-        if (person) people.push(person);
-        else if (!NOTE_WORDS.test(folded) && /^[A-Z]+(?: [A-Z]+){1,2}$/.test(folded)) people.push(titleCase(token));
-        else notes.push(cleanText(token));
-      }
-      return { people, notes };
-    },
-  };
-};
 
 const statusValuesFromSheet = (activity: SheetActivity, text: string, hasEngineer: boolean) => {
   const normalized = normalizeText(text);
@@ -211,6 +119,14 @@ const cameFromSheet = (meta: Record<string, unknown>) => {
   return Boolean(meta.source_row_key) || createdFrom.startsWith('service_planning_sync') || createdFrom === SHEET_CREATED_FROM || (batch !== '' && !batch.startsWith('manual-import'));
 };
 
+// Protected transition (owner, 2026-10-14): once someone edits an activity in Orion after the last sync,
+// Sincronizar no longer overwrites or deletes it; it lists what the sheet says so a person decides.
+const editedInOrion = (meta: Record<string, unknown>) => {
+  const edited = typeof meta.orion_edited_at === 'string' ? meta.orion_edited_at : '';
+  const synced = typeof meta.sheet_synced_at === 'string' ? meta.sheet_synced_at : '';
+  return Boolean(edited) && (!synced || edited > synced);
+};
+
 const describe = (row: { id?: string; asunto: string | null; numero_serie_equipo: string | null }, weekLabel: string, detail?: string): PlanningSyncChange => ({
   id: row.id,
   weekLabel,
@@ -234,6 +150,7 @@ export const syncServicePlanningFromSheet = async ({
   profiles,
   dryRun = false,
   snapshot: providedSnapshot,
+  useSheetFor = [],
 }: RunPlanningSyncInput): Promise<ServicePlanningSyncSummary> => {
   if (!canAccessPlanningSync(actorName)) {
     throw new Error('Tu perfil no tiene habilitada la sincronizacion de planeacion.');
@@ -270,6 +187,7 @@ export const syncServicePlanningFromSheet = async ({
     updated: [],
     removed: [],
     flagged: [],
+    protectedRows: [],
     unchanged: 0,
     alreadyClosed: 0,
     cancelledInSheet: 0,
@@ -281,6 +199,7 @@ export const syncServicePlanningFromSheet = async ({
   const updates: Array<{ row: ExistingPlanning; payload: Record<string, unknown>; change: PlanningSyncChange }> = [];
   const removals: Array<{ row: ExistingPlanning; reason: string }> = [];
   const consumed = new Set<string>();
+  const isProtected = (row: ExistingPlanning) => editedInOrion(row.meta) && !useSheetFor.includes(row.id);
 
   for (const activity of upcoming) {
     const asunto = buildPlanningSubject(activity.serviceType, activity.platform, activity.locality);
@@ -295,7 +214,10 @@ export const syncServicePlanningFromSheet = async ({
 
     if (activity.status === 'cancelado') {
       summary.cancelledInSheet += 1;
-      if (match && match.estado !== 'cerrado') removals.push({ row: match, reason: 'Cancelada en la planeación oficial' });
+      if (match && match.estado !== 'cerrado') {
+        if (isProtected(match)) summary.protectedRows.push(describe(match, activity.week.weekLabel, 'Cancelada en la hoja, pero se editó en Orion'));
+        else removals.push({ row: match, reason: 'Cancelada en la planeación oficial' });
+      }
       continue;
     }
 
@@ -396,6 +318,10 @@ export const syncServicePlanningFromSheet = async ({
         (previous.scheduled_day || null) !== (metadata.scheduled_day || null) ? 'días' : '',
         activity.status === 'pospuesto' ? 'pospuesta' : '',
       ].filter(Boolean);
+      if (isProtected(match)) {
+        summary.protectedRows.push(describe(match, activity.week.weekLabel, `Se editó en Orion; en la hoja cambió: ${changes.join(', ') || 'detalles'}`));
+        continue;
+      }
       updates.push({ row: match, payload, change: describe({ id: match.id, ...payload }, activity.week.weekLabel, changes.join(', ') || 'detalles') });
     } else {
       inserts.push({ ...payload, estado: 'abierto' });
@@ -410,6 +336,10 @@ export const syncServicePlanningFromSheet = async ({
     const weekEnd = typeof row.meta.week_end === 'string' ? row.meta.week_end : '';
     const weekLabel = typeof row.meta.fecha_tentativa === 'string' ? row.meta.fecha_tentativa : '';
     if (!weekEnd || weekEnd < today || !coveredWeeks.has(foldText(weekLabel))) continue;
+    if (isProtected(row)) {
+      summary.protectedRows.push(describe(row, weekLabel, 'Ya no está en la hoja, pero se editó en Orion'));
+      continue;
+    }
     removals.push({ row, reason: 'Ya no está en la planeación oficial' });
   }
 

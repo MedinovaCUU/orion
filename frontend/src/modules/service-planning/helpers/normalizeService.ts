@@ -788,6 +788,7 @@ export const mapPendingTicketToPlannedService = (
       importBatchId: typeof rawMeta.import_batch_id === 'string' ? rawMeta.import_batch_id : undefined,
       sourceFileName: typeof rawMeta.source_file_name === 'string' ? rawMeta.source_file_name : undefined,
       sourceRowKey: typeof rawMeta.source_row_key === 'string' ? rawMeta.source_row_key : undefined,
+      rawMeta,
       sheetMeta: Object.fromEntries(
         Object.entries(rawMeta).filter(([key]) => key.startsWith('sheet_') || key === 'source_sheet_url'),
       ),
@@ -900,7 +901,11 @@ export const buildPlannedServiceUpdate = (
     (profile) => normalizeText(profile.nombre_completo || '') === normalizeText(nextLeadEngineer),
   );
 
+  const rawMeta = service.trace.rawMeta || {};
+  const now = new Date().toISOString();
   const metadata = {
+    // Keys this form does not edit (custom columns, row order, end date, edit marks…) stay as they were.
+    ...rawMeta,
     ...(service.trace.sheetMeta || {}),
     fecha_tentativa: service.weekLabel,
     week_start: service.weekStart,
@@ -921,8 +926,11 @@ export const buildPlannedServiceUpdate = (
     created_by_name: service.trace.createdBy || undefined,
     updated_by_name: currentUserName,
     assigned_by_name: currentUserName,
-    created_from: 'service_planning_drawer',
-    updated_at: new Date().toISOString(),
+    created_from: typeof rawMeta.created_from === 'string' ? rawMeta.created_from : 'service_planning_drawer',
+    updated_at: now,
+    // Edited in Orion: the official-workbook sync no longer overwrites it (it reports the difference instead).
+    orion_edited_at: now,
+    orion_edited_fields: Array.from(new Set([...(Array.isArray(rawMeta.orion_edited_fields) ? (rawMeta.orion_edited_fields as string[]) : []), 'drawer'])),
     import_batch_id: service.trace.importBatchId || null,
     source_file_name: service.trace.sourceFileName || null,
     source_row_key: service.trace.sourceRowKey || null,

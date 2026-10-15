@@ -1,6 +1,8 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { supabase } from '../supabaseClient';
 import ServicePlanningPage from '../modules/service-planning/ServicePlanningPage';
+import type { PlanningBackend } from '../modules/service-planning/grid/planningBackend';
+import { createSupabasePlanningBackend } from '../modules/service-planning/grid/supabasePlanningBackend';
 import {
   buildPlannedServiceUpdate,
   buildQuickCreatePayload,
@@ -55,6 +57,8 @@ export default function Services({ subPermissions = ['planeacion', 'viajes', 're
   const [travelRefreshKey, setTravelRefreshKey] = useState(0);
   const [loadError, setLoadError] = useState<string | null>(null);
   const fetchSequence = useRef(0);
+  const [planningBackend, setPlanningBackend] = useState<PlanningBackend | null>(null);
+  const [planningBackendError, setPlanningBackendError] = useState<string | null>(null);
 
   const fetchContext = async () => {
     // Keep mounted views and unsaved drafts during background refreshes. A failed request keeps the last
@@ -158,6 +162,22 @@ export default function Services({ subPermissions = ['planeacion', 'viajes', 're
     return () => { window.removeEventListener('planning-wall-refresh', refresh); window.removeEventListener('ticket-assignment-changed', refresh); };
   }, []);
 
+  // The editable master table reads and saves through its own backend (versions, history, live updates).
+  useEffect(() => {
+    if (!canViewPlanning || loading) return;
+    let active = true;
+    createSupabasePlanningBackend(currentUserId)
+      .then((backend) => {
+        if (active) setPlanningBackend(backend);
+      })
+      .catch((error: unknown) => {
+        if (active) setPlanningBackendError(error instanceof Error ? error.message : 'sin conexión');
+      });
+    return () => {
+      active = false;
+    };
+  }, [canViewPlanning, currentUserId, loading]);
+
   const plannedTickets = useMemo(
     () => pendingTickets.filter((ticket) => extractPlaneacionMeta(ticket.descripcion) !== null),
     [pendingTickets],
@@ -207,12 +227,14 @@ export default function Services({ subPermissions = ['planeacion', 'viajes', 're
     await fetchContext();
   };
 
-  const handleSyncPlanning = async () => {
+  const handleSyncPlanning = async (options: { dryRun: boolean; useSheetFor?: string[] } = { dryRun: false }) => {
     const summary = await syncServicePlanningFromSheet({
       actorName: currentUserName || 'Operacion ORION',
       profiles: engineerProfiles,
+      dryRun: options.dryRun,
+      useSheetFor: options.useSheetFor,
     });
-    await fetchContext();
+    if (!options.dryRun) await fetchContext();
     return summary;
   };
 
@@ -266,6 +288,10 @@ export default function Services({ subPermissions = ['planeacion', 'viajes', 're
         loading={loading}
         loadError={loadError}
         onRetryLoad={() => void fetchContext()}
+        planningBackend={planningBackend}
+        planningBackendError={planningBackendError}
+        currentUserId={currentUserId}
+        onPlanningPersisted={() => void fetchContext()}
         userRole={currentUserRole}
         currentUserName={currentUserName}
         engineerOptions={engineerProfiles.map((profile) => profile.nombre_completo || '').filter(Boolean)}

@@ -31,15 +31,15 @@ try {
   assert.equal(await alertRow('ya realizados').isDisabled(), true);
 
   // Leaving Alertas drops the drill-down, so the other sections show the whole month again.
-  await sidebar('Tabla maestra').click();
+  await sidebar('Calendario').click();
   assert.equal(await chips.count(), 0);
-  assert.equal(await page.locator('table tbody tr').count(), 4);
+  assert.equal(await totalServices.innerText(), '4');
 
   // A filter left on with the panel closed stays visible and can be cleared from the empty state.
   await page.getByRole('button', { name: 'Filtros', exact: true }).click();
   await page.getByPlaceholder('Localidad, serie, plataforma, ingeniero o ticket').fill('zzz no existe');
   await page.getByRole('button', { name: 'Filtros', exact: true }).click();
-  await sidebar('Calendario').click();
+  await sidebar('Resumen').click();
   await chips.filter({ hasText: 'Búsqueda: «zzz no existe»' }).waitFor();
   await emptyState.getByText('Ningún servicio coincide con los filtros').waitFor();
   await emptyState.getByText('Este mes tiene 4 servicios').waitFor();

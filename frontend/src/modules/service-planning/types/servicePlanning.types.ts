@@ -99,6 +99,8 @@ export interface PlannedServiceTrace {
   sourceRowKey?: string;
   // Workbook details (sheet_* metadata) kept untouched through edits made in Orion.
   sheetMeta?: Record<string, unknown>;
+  /** Every planning metadata key as stored, so a save keeps the keys it does not edit. */
+  rawMeta?: Record<string, unknown>;
   createdBy?: string;
   updatedBy?: string;
   assignedBy?: string;

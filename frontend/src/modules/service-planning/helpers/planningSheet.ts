@@ -107,6 +107,17 @@ type Cell = {
 
 type GridCell = Cell & { originRow: number; originCol: number; rowNumber: number };
 
+// What the week walker needs from a worksheet, whatever its source (Google's HTML view or an .xlsx file).
+// Merged cells repeat on every row and column they cover, pointing at the row/column where they start.
+export type PlanningGridCell = { text: string; originRow: number; originCol: number; color: string | null };
+
+export type PlanningCellGrid = {
+  rowCount: number;
+  // Worksheet row number (1-based) of each grid row.
+  rowNumbers: number[];
+  at: (row: number, col: number) => PlanningGridCell | undefined;
+};
+
 const pad = (value: number) => `${value}`.padStart(2, '0');
 
 const toIsoDate = (date: Date) => `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`;
@@ -256,6 +267,19 @@ const parseGrid = (html: string, maxColumns: number) => {
   return { rowCount: rows.length, rowNumbers: rows.map((row) => row.rowNumber), at };
 };
 
+const htmlCellGrid = (html: string, maxColumns: number): PlanningCellGrid => {
+  const grid = parseGrid(html, maxColumns);
+  const styles = parseCellStyles(html);
+  return {
+    rowCount: grid.rowCount,
+    rowNumbers: grid.rowNumbers,
+    at: (row, col) => {
+      const cell = grid.at(row, col);
+      return cell && { text: cell.text, originRow: cell.originRow, originCol: cell.originCol, color: styles.get(cell.className)?.background || null };
+    },
+  };
+};
+
 const WEEK_LABEL_PATTERN = /^(\d{1,2})\s*(?:AL|A|-)\s*(\d{1,2})(?:\s+DE)?\s*([A-Z]*)(?:\s+(\d{2,4}))?/;
 
 export const parseSheetWeekLabel = (rawLabel: string, year: number, tabMonth: number | null, tab = '') => {
@@ -371,6 +395,12 @@ export const splitPeople = (value: string) =>
 
 const SERIAL_PATTERN = /^\d(?=(?:\D*\d){5})[0-9A-Z]{5,}$/;
 
+// The serial an NS cell holds, or '' when it says "NA", "PENDIENTE" or anything that is not a serial.
+export const sheetSerial = (serialText: string) => {
+  const folded = foldText(serialText).replace(/\s+/g, '');
+  return SERIAL_PATTERN.test(folded) ? folded : '';
+};
+
 export const sheetServiceType = (rawType: string, observations: string, locality: string): ServiceType => {
   const folded = foldText(rawType);
   if (/RECAPACIT/.test(folded)) return 'recapacitacion';
@@ -415,14 +445,15 @@ const DEFAULT_COLUMNS: ColumnMap = {
 
 const MAX_COLUMNS = 12;
 
-export const parsePlanningTab = (html: string, tab: SheetTab, year: number) => {
+export const parsePlanningTab = (html: string, tab: SheetTab, year: number) => parsePlanningGrid(htmlCellGrid(html, MAX_COLUMNS), tab, year);
+
+// Walks a month tab: week titles, (repeated) header rows, activity rows and the notes beside them.
+export const parsePlanningGrid = (grid: PlanningCellGrid, tab: SheetTab, year: number) => {
   const tabMonth = monthFromWord(tab.name);
-  const grid = parseGrid(html, MAX_COLUMNS);
   const weeks: SheetWeek[] = [];
   const activities: SheetActivity[] = [];
   const notes: SheetAvailabilityNote[] = [];
   const warnings: string[] = [];
-  const styles = parseCellStyles(html);
 
   let week: SheetWeek | null = null;
   let columns: ColumnMap = DEFAULT_COLUMNS;
@@ -486,8 +517,7 @@ export const parsePlanningTab = (html: string, tab: SheetTab, year: number) => {
     const observations = text(row, columns.observations);
     const companionsText = text(row, columns.companions);
     const daysText = text(row, columns.days);
-    const foldedSerial = foldText(serialText).replace(/\s+/g, '');
-    const serial = SERIAL_PATTERN.test(foldedSerial) ? foldedSerial : '';
+    const serial = sheetSerial(serialText);
     let rowNote = '';
 
     if (noteText) {
@@ -513,7 +543,7 @@ export const parsePlanningTab = (html: string, tab: SheetTab, year: number) => {
       daysText,
       scheduledDate: parseSheetDays(daysText, week),
       rowNote,
-      color: (localityCell && styles.get(localityCell.className)?.background) || null,
+      color: localityCell?.color || null,
       status: detectSheetStatus(daysText, companionsText, rowNote),
     });
   }

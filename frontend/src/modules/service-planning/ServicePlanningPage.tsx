@@ -14,12 +14,12 @@ import EngineerLoadPanel from './components/EngineerLoadPanel';
 import LivePlanningBoard from './components/LivePlanningBoard';
 import ImportPreviewPanel from './components/ImportPreviewPanel';
 import KpiStrip from './components/KpiStrip';
-import MasterServiceTable from './components/MasterServiceTable';
 import PlanningFilters from './components/PlanningFilters';
 import PlanningHeader from './components/PlanningHeader';
 import PlanningLegend from './components/PlanningLegend';
 import PlanningSidebar from './components/PlanningSidebar';
 import ServiceDetailDrawer from './components/ServiceDetailDrawer';
+import SyncPreviewDialog from './components/SyncPreviewDialog';
 import UpcomingServicesTable from './components/UpcomingServicesTable';
 import WeekendGuardsPanel from './components/WeekendGuardsPanel';
 import WeeklyBoard from './components/WeeklyBoard';
@@ -58,6 +58,8 @@ import type {
 } from '../../components/servicesPlanning';
 import useSecondTicker from '../../components/useSecondTicker';
 import usePlanningSheet from './helpers/usePlanningSheet';
+import PlanningGrid from './grid/PlanningGrid';
+import type { PlanningBackend } from './grid/planningBackend';
 import './servicePlanning.css';
 import { PanelLoader } from '../../components/OrionLoader';
 
@@ -83,7 +85,12 @@ interface ServicePlanningPageProps {
   canManageTravel?: boolean;
   canManageReports?: boolean;
   canSyncPlanning?: boolean;
-  onSyncPlanning?: () => Promise<ServicePlanningSyncSummary>;
+  onSyncPlanning?: (options: { dryRun: boolean; useSheetFor?: string[] }) => Promise<ServicePlanningSyncSummary>;
+  /** Storage for the editable master table (null while it connects). */
+  planningBackend?: PlanningBackend | null;
+  planningBackendError?: string | null;
+  currentUserId?: string | null;
+  onPlanningPersisted?: () => void;
 }
 
 interface TrackedReactiveTicketEntry {
@@ -201,6 +208,10 @@ export default function ServicePlanningPage({
   canManageReports = true,
   canSyncPlanning = false,
   onSyncPlanning,
+  planningBackend = null,
+  planningBackendError = null,
+  currentUserId = null,
+  onPlanningPersisted,
 }: ServicePlanningPageProps) {
   const role = resolveRole(userRole);
   const permissions = getPermissions(role);
@@ -220,7 +231,11 @@ export default function ServicePlanningPage({
     () => buildWeekendGuardSchedule(staffProfiles, guardOverrides, new Date(), officialGuards),
     [guardOverrides, officialGuards, staffProfiles],
   );
-  const monthOptions = useMemo(() => buildMonthOptions(services, weekendGuards.months), [services, weekendGuards.months]);
+  const [gridMonth, setGridMonth] = useState<string | null>(null);
+  const monthOptions = useMemo(
+    () => buildMonthOptions(services, gridMonth ? [...weekendGuards.months, gridMonth] : weekendGuards.months),
+    [gridMonth, services, weekendGuards.months],
+  );
   const initialMonth = monthOptions.find((option) => option.value === currentMonthKey)?.value || monthOptions[0]?.value || currentMonthKey;
   const [section, setSection] = useState<ServicePlanningSection>('resumen');
   const [filters, setFilters] = useState(() => createDefaultFilters(initialMonth));
@@ -230,6 +245,7 @@ export default function ServicePlanningPage({
   const [showFilters, setShowFilters] = useState(false);
   const [planningSyncBusy, setPlanningSyncBusy] = useState(false);
   const [planningSyncFeedback, setPlanningSyncFeedback] = useState<{ tone: 'success' | 'error'; message: string } | null>(null);
+  const [syncPreview, setSyncPreview] = useState<{ summary: ServicePlanningSyncSummary | null; error: string | null } | null>(null);
   const [composerDraft, setComposerDraft] = useState<QuickCreateDraft>(() => createInitialDraft(''));
   const deferredSearch = useDeferredValue(filters.search);
 
@@ -352,23 +368,34 @@ export default function ServicePlanningPage({
     setFilters(createDefaultFilters(filters.month));
   };
 
+  // Step 1: read the official sheet and show what would change (nothing is written yet).
   const handlePlanningSync = async () => {
     if (!onSyncPlanning || planningSyncBusy) {
       return;
     }
-
-    // The official workbook is the source of truth, so the sync runs without asking and reports what it did.
-    setPlanningSyncBusy(true);
     setPlanningSyncFeedback(null);
-
+    setSyncPreview({ summary: null, error: null });
     try {
-      const summary = await onSyncPlanning();
+      const summary = await onSyncPlanning({ dryRun: true });
+      setSyncPreview({ summary, error: null });
+    } catch (error) {
+      setSyncPreview({ summary: null, error: error instanceof Error ? error.message : 'No fue posible leer la hoja oficial.' });
+    }
+  };
+
+  // Step 2: apply it. Activities edited in Orion stay as they are unless the user chose the sheet's version.
+  const applyPlanningSync = async (useSheetFor: string[]) => {
+    if (!onSyncPlanning) return;
+    setPlanningSyncBusy(true);
+    try {
+      const summary = await onSyncPlanning({ dryRun: false, useSheetFor });
       const plural = (count: number, one: string, many: string) => `${count} ${count === 1 ? one : many}`;
       const changes = [
         summary.inserted.length ? plural(summary.inserted.length, 'nueva', 'nuevas') : '',
         summary.updated.length ? plural(summary.updated.length, 'actualizada', 'actualizadas') : '',
         summary.removed.length ? plural(summary.removed.length, 'retirada', 'retiradas') : '',
         summary.flagged.length ? `${plural(summary.flagged.length, 'marcada', 'marcadas')} para revisar (ya tenían viaje o reporte)` : '',
+        summary.protectedRows.length ? `${plural(summary.protectedRows.length, 'conservada', 'conservadas')} por edición en Orion` : '',
       ].filter(Boolean);
       const source = `hoja oficial (${summary.readTabs.join(', ').toLowerCase()})`;
       setPlanningSyncFeedback({
@@ -377,9 +404,10 @@ export default function ServicePlanningPage({
           ? `Planeación al día con la ${source}: ${changes.join(', ')}.`
           : `Planeación al día: Orion ya coincide con la ${source}. No hubo cambios.`,
       });
+      setSyncPreview(null);
     } catch (error) {
       const message = error instanceof Error ? error.message : 'No fue posible sincronizar la planeacion.';
-      setPlanningSyncFeedback({ tone: 'error', message });
+      setSyncPreview((current) => (current ? { ...current, error: message } : current));
     } finally {
       setPlanningSyncBusy(false);
     }
@@ -473,7 +501,7 @@ export default function ServicePlanningPage({
   );
 
   const showsEmptyState =
-    filteredServices.length === 0 && section !== 'reportes' && section !== 'configuracion' && section !== 'guardias' && section !== 'tablero';
+    filteredServices.length === 0 && section !== 'reportes' && section !== 'configuracion' && section !== 'guardias' && section !== 'tablero' && section !== 'tabla';
   const showsLoadFailure = Boolean(loadError) && services.length === 0 && showsEmptyState;
 
   const renderSection = () => {
@@ -512,7 +540,26 @@ export default function ServicePlanningPage({
       case 'calendario':
         return renderSummary();
       case 'tabla':
-        return <MasterServiceTable services={filteredServices} permissions={permissions} onOpenService={setSelectedService} />;
+        return (
+          <PlanningGrid
+            backend={planningBackend}
+            backendError={planningBackendError}
+            profiles={staffProfiles}
+            equipments={equipments}
+            currentUserName={currentUserName}
+            currentUserId={currentUserId}
+            canEdit={permissions.canEditAll}
+            canDelete={permissions.canDelete}
+            canManageColumns={role === 'admin'}
+            canImport={permissions.canImport}
+            month={filters.month}
+            onMonthChange={(month) => {
+              setGridMonth(month);
+              setFilters((current) => ({ ...current, month }));
+            }}
+            onPersisted={onPlanningPersisted}
+          />
+        );
       case 'guardias':
         return (
           <WeekendGuardsPanel
@@ -582,8 +629,8 @@ export default function ServicePlanningPage({
           canCreate={permissions.canCreate}
           canSync={canSyncPlanning}
           syncBusy={planningSyncBusy}
-          hideFiltersAction={section === 'guardias'}
-          hideCreateAction={section === 'guardias'}
+          hideFiltersAction={section === 'guardias' || section === 'tabla'}
+          hideCreateAction={section === 'guardias' || section === 'tabla'}
           onMonthChange={(month) => setFilters((current) => ({ ...current, month }))}
           onSync={() => void handlePlanningSync()}
           onToggleFilters={() => setShowFilters((current) => !current)}
@@ -606,13 +653,13 @@ export default function ServicePlanningPage({
           </div>
         ) : null}
 
-        {section !== 'guardias' && section !== 'tablero' ? <KpiStrip kpis={kpis} /> : null}
+        {section !== 'guardias' && section !== 'tablero' && section !== 'tabla' ? <KpiStrip kpis={kpis} /> : null}
 
-        {section !== 'guardias' && section !== 'tablero' && section !== 'reportes' && section !== 'configuracion' ? (
+        {section !== 'guardias' && section !== 'tablero' && section !== 'tabla' && section !== 'reportes' && section !== 'configuracion' ? (
           <ActiveFiltersBar chips={activeFilterChips} onRemove={handleRemoveFilter} onClear={handleResetFilters} />
         ) : null}
 
-        {showFilters && section !== 'guardias' ? (
+        {showFilters && section !== 'guardias' && section !== 'tabla' ? (
           <PlanningFilters
             filters={filters}
             monthOptions={monthOptions}
@@ -626,7 +673,7 @@ export default function ServicePlanningPage({
           />
         ) : null}
 
-        {showComposer ? (
+        {showComposer && section !== 'tabla' ? (
           <section className="planning-composer">
             <div className="planning-panel__header">
               <div>
@@ -721,6 +768,16 @@ export default function ServicePlanningPage({
 
         {renderSection()}
       </div>
+
+      {syncPreview ? (
+        <SyncPreviewDialog
+          preview={syncPreview.summary}
+          busy={planningSyncBusy}
+          error={syncPreview.error}
+          onApply={(useSheetFor) => void applyPlanningSync(useSheetFor)}
+          onClose={() => setSyncPreview(null)}
+        />
+      ) : null}
 
       <ServiceDetailDrawer
         service={selectedService}
