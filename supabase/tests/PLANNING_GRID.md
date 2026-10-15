@@ -69,3 +69,36 @@ PGLITE_MODULE=<scratch>/node_modules/@electric-sql/pglite/dist/index.js node sup
 The test rebuilds the production helpers, tickets policies, the closure/state/reopen triggers, Supabase's default
 grants and the Realtime publication, applies the migration twice (it is re-runnable) and checks versioning,
 every history field, authorship, the read boundary and the per-user tables.
+
+## Absences (migration 20261015020000)
+
+`public.planning_absences`: one row per person and inclusive date range (`start_date`..`end_date`, at most 366 days
+apart). `kind` ∈ `TXT` (tiempo por tiempo), `VAC`, `PERMISO`, `INCAPACIDAD`, `CUMPLEANOS`, `OTRO`. `person_id` →
+`profiles(id)` (`on delete set null`, so a deleted profile keeps the row by `person_name`, 1–120 chars). Rows imported
+from the planning sheet have `source = 'sheet'` and a unique `sheet_key`; rows created in Orion have `source = 'orion'`
+and `sheet_key` null. `orion_edited_at` is set by the client when a person edits a row in Orion. Indexed on
+`(start_date, end_date)` and `(person_id)`; published to `supabase_realtime`.
+
+Server-maintained (trigger `planning_absences_versioning`, BEFORE INSERT/UPDATE): insert → `version = 1`,
+`created_at = updated_at = now()`, `created_by = auth.uid()` (a JWT-less service/SQL insert keeps the value it sent).
+Update → `created_by`/`created_at` are reset to the stored values; `version = old + 1` and `updated_at = now()` only
+when any other column really changed, otherwise both keep their stored values. Client-sent `version`/`updated_at`
+are always ignored. Note that `sheet_synced_at` is a column like any other: a sync that only refreshes it bumps the
+version, so send it only when the row's content changed.
+
+Access: SELECT for staff (`is_staff()`, the whole team); INSERT/UPDATE/DELETE for admins, or for staff on rows with
+`person_id = auth.uid()` (WITH CHECK too: a technician cannot move an absence to another person or detach it). Clients
+read nothing; anon has no grant.
+
+```ts
+// Optimistic save: 0 rows = conflict, deleted or no permission.
+supabase.from('planning_absences').update(patch).eq('id', id).eq('version', expected).select()
+// Sheet sync (admin): one row per sheet note.
+supabase.from('planning_absences').upsert(rows, { onConflict: 'sheet_key' }).select()
+```
+
+Before the migration is applied PostgREST answers `PGRST205` (missing table). Test:
+
+```sh
+PGLITE_MODULE=<scratch>/node_modules/@electric-sql/pglite/dist/index.js node supabase/tests/planning_absences.test.mjs
+```

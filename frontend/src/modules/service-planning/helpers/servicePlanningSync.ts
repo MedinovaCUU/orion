@@ -5,6 +5,8 @@ import { foldText, type SheetActivity } from './planningSheet';
 import { buildRowKey, createPeopleResolver, looseKey } from './planningPeople';
 import { fetchPlanningSheet, planningSheetTabUrl, type PlanningSheetSnapshot } from './planningSheetSource';
 import type { ServiceType } from '../types/servicePlanning.types';
+import { ABSENCE_SHORT, sheetNoteToAbsences, type AbsenceKind } from '../grid/planningAbsences';
+import { mondayOf } from '../grid/planningWeeks';
 
 const PLANNING_SYNC_ALLOWED_NAMES = ['ricardo montanez', 'ricardo montanez miranda'];
 const PLANNING_TIME_ZONE = 'America/Ciudad_Juarez';
@@ -34,11 +36,24 @@ export type ServicePlanningSyncSummary = {
   flagged: PlanningSyncChange[];
   /** Activities edited in Orion after the last sync: the sheet's version is reported, never applied silently. */
   protectedRows: PlanningSyncChange[];
+  /** TXT, vacations… written as notes in the sheet, as dated absences per person. */
+  absences: AbsenceSyncSummary;
   unchanged: number;
   alreadyClosed: number;
   cancelledInSheet: number;
   pastWeeksSkipped: number;
   dryRun: boolean;
+};
+
+export type AbsenceSyncSummary = {
+  available: boolean;
+  added: string[];
+  removed: string[];
+  protectedRows: string[];
+  /** Notes about someone being away that name nobody (not imported). */
+  unrecognised: string[];
+  /** Imported with the name the sheet uses, but nobody in Orion has that profile. */
+  withoutProfile: string[];
 };
 
 type RunPlanningSyncInput = {
@@ -188,6 +203,7 @@ export const syncServicePlanningFromSheet = async ({
     removed: [],
     flagged: [],
     protectedRows: [],
+    absences: { available: true, added: [], removed: [], protectedRows: [], unrecognised: [], withoutProfile: [] },
     unchanged: 0,
     alreadyClosed: 0,
     cancelledInSheet: 0,
@@ -395,5 +411,94 @@ export const syncServicePlanningFromSheet = async ({
     }
   }
 
+  summary.absences = await syncAbsences(snapshot, profiles, today, dryRun, auditName, now);
   return summary;
+};
+
+type ExistingAbsence = {
+  id: string;
+  sheet_key: string | null;
+  person_name: string;
+  kind: AbsenceKind;
+  start_date: string;
+  end_date: string;
+  sheet_synced_at: string | null;
+  orion_edited_at: string | null;
+};
+
+const absenceLabel = (absence: { kind: AbsenceKind; personName: string; startDate: string; endDate: string }) =>
+  `${ABSENCE_SHORT[absence.kind]} · ${absence.personName} · ${absence.startDate === absence.endDate ? absence.startDate : `${absence.startDate} al ${absence.endDate}`}`;
+
+const AWAY_WORDS = /\b(TXT|VAC|VACACIONES|INCAPACIDAD|PERMISO|DESCANSO|CUMPLE\w*|SEMANA SANTA)\b/;
+
+// Notes in the weeks the sheet still lists (current week onward) become absences; ones it no longer has are
+// removed, except those someone edited in Orion afterwards (protected, like activities).
+const syncAbsences = async (
+  snapshot: PlanningSheetSnapshot,
+  profiles: ProfileSummary[],
+  today: string,
+  dryRun: boolean,
+  auditName: string,
+  now: string,
+): Promise<AbsenceSyncSummary> => {
+  const result: AbsenceSyncSummary = { available: true, added: [], removed: [], protectedRows: [], unrecognised: [], withoutProfile: [] };
+  const coveredWeeks = new Set(snapshot.weeks.filter((week) => week.weekEnd >= today).map((week) => week.weekStart));
+  const notes = (snapshot.notes || []).filter((note) => note.week.weekEnd >= today);
+  const candidates = notes.flatMap((note) => {
+    const found = sheetNoteToAbsences(note, profiles);
+    if (!found.length && AWAY_WORDS.test(foldText(note.text))) result.unrecognised.push(`${note.week.weekLabel.toLowerCase()}: ${note.text}`);
+    return found;
+  });
+
+  const { data, error } = await supabase
+    .from('planning_absences')
+    .select('id, sheet_key, person_name, kind, start_date, end_date, sheet_synced_at, orion_edited_at')
+    .eq('source', 'sheet');
+  if (error) {
+    if (/does not exist|schema cache|could not find/i.test(error.message || '') || ['42P01', 'PGRST205'].includes((error as { code?: string }).code || '')) {
+      return { ...result, available: false };
+    }
+    throw new Error(error.message || 'No fue posible leer las ausencias.');
+  }
+  const existing = (data || []) as ExistingAbsence[];
+  const known = new Set(existing.map((row) => row.sheet_key));
+  const wanted = new Set(candidates.map((candidate) => candidate.sheetKey));
+
+  const toAdd = candidates.filter((candidate) => !known.has(candidate.sheetKey));
+  result.added = toAdd.map(absenceLabel);
+  result.withoutProfile = toAdd.filter((candidate) => !candidate.personId).map(absenceLabel);
+
+  const gone = existing.filter((row) => row.sheet_key && !wanted.has(row.sheet_key) && coveredWeeks.has(mondayOf(row.start_date)));
+  const editedInOrion = (row: ExistingAbsence) => Boolean(row.orion_edited_at) && (!row.sheet_synced_at || (row.orion_edited_at as string) > row.sheet_synced_at);
+  const toRemove = gone.filter((row) => !editedInOrion(row));
+  const describeRow = (row: ExistingAbsence) => absenceLabel({ kind: row.kind, personName: row.person_name, startDate: row.start_date, endDate: row.end_date });
+  result.removed = toRemove.map(describeRow);
+  result.protectedRows = gone.filter(editedInOrion).map((row) => `${describeRow(row)} (ya no está en la hoja, pero se editó en Orion)`);
+
+  if (!dryRun) {
+    if (toAdd.length) {
+      const { error: insertError } = await supabase.from('planning_absences').upsert(
+        toAdd.map((candidate) => ({
+          person_id: candidate.personId ?? null,
+          person_name: candidate.personName,
+          kind: candidate.kind,
+          start_date: candidate.startDate,
+          end_date: candidate.endDate,
+          note: candidate.note || null,
+          source: 'sheet',
+          sheet_key: candidate.sheetKey,
+          sheet_synced_at: now,
+          created_by_name: auditName,
+          updated_by_name: auditName,
+        })),
+        { onConflict: 'sheet_key', ignoreDuplicates: true },
+      );
+      if (insertError) throw new Error(insertError.message || 'No fue posible guardar las ausencias de la hoja.');
+    }
+    if (toRemove.length) {
+      const { error: deleteError } = await supabase.from('planning_absences').delete().in('id', toRemove.map((row) => row.id));
+      if (deleteError) throw new Error(deleteError.message || 'No fue posible retirar ausencias.');
+    }
+  }
+  return result;
 };

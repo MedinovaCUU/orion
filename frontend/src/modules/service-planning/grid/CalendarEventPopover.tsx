@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import type { KeyboardEvent as ReactKeyboardEvent } from 'react';
 import { createPortal } from 'react-dom';
 import type { ProfileSummary } from '../../../components/servicesPlanning';
@@ -6,6 +6,7 @@ import { formatPlanningPersonName } from '../helpers/normalizeService';
 import { resolvePerson, TYPE_LABELS, type OptionsSource } from './planningColumns';
 import type { PlanningValues } from './planningRecord';
 import type { ServiceType } from '../types/servicePlanning.types';
+import useAnchoredPopover from './useAnchoredPopover';
 
 // Apple Calendar–style event card: opens next to the day that was double-clicked (or the activity), the
 // first field is focused, Enter saves, Escape cancels, clicking outside keeps what was written.
@@ -26,11 +27,13 @@ export interface EventPopoverProps {
   onCancel: () => void;
   onOpenInTable?: () => void;
   onDelete?: () => void;
+  /** New cards only: switch to recording an absence on the same day. */
+  onSwitchToAbsence?: () => void;
 }
 
 const peopleText = (names: string[]) => names.map((name) => formatPlanningPersonName(name) || name).join(', ');
 
-export default function CalendarEventPopover({ mode, anchor, initial, subtitle, options, profiles, readOnly, footnote, onSave, onCancel, onOpenInTable, onDelete }: EventPopoverProps) {
+export default function CalendarEventPopover({ mode, anchor, initial, subtitle, options, profiles, readOnly, footnote, onSave, onCancel, onOpenInTable, onDelete, onSwitchToAbsence }: EventPopoverProps) {
   const [values, setValues] = useState<PlanningValues>(initial);
   const [engineer, setEngineer] = useState(formatPlanningPersonName(initial.engineer) || initial.engineer);
   const [companions, setCompanions] = useState(peopleText(initial.companions));
@@ -79,21 +82,7 @@ export default function CalendarEventPopover({ mode, anchor, initial, subtitle, 
     onCancel();
   };
 
-  // Next to the anchor like Apple's popover: to the right of the day, or to the left when there is no room.
-  useLayoutEffect(() => {
-    const element = ref.current;
-    if (!element) return;
-    const box = element.getBoundingClientRect();
-    const gap = 10;
-    const right = anchor.right + gap + box.width <= window.innerWidth - 8;
-    const left = right ? anchor.right + gap : Math.max(8, anchor.left - gap - box.width);
-    const top = Math.max(8, Math.min(anchor.top + anchor.height / 2 - 60, window.innerHeight - box.height - 8));
-    element.style.left = `${left}px`;
-    element.style.top = `${top}px`;
-    element.dataset.side = right ? 'right' : 'left';
-    element.style.setProperty('--arrow-top', `${Math.max(18, Math.min(box.height - 18, anchor.top + anchor.height / 2 - top))}px`);
-    element.style.visibility = 'visible';
-  }, [anchor]);
+  useAnchoredPopover(ref, anchor);
 
   useEffect(() => {
     firstField.current?.focus();
@@ -137,6 +126,12 @@ export default function CalendarEventPopover({ mode, anchor, initial, subtitle, 
       style={{ visibility: 'hidden' }}
       onKeyDown={onKeyDown}
     >
+      {onSwitchToAbsence ? (
+        <div className="pgrid-evpop__switch" role="group" aria-label="Qué agregar">
+          <button type="button" className="is-on" aria-pressed="true">Actividad</button>
+          <button type="button" aria-pressed="false" onClick={() => { done.current = true; onSwitchToAbsence(); }}>Ausencia</button>
+        </div>
+      ) : null}
       <div className="pgrid-evpop__head">
         <span className="pgrid-evpop__dot" aria-hidden="true" />
         <input

@@ -7,7 +7,9 @@ import type { ColumnOption, GridColumn, OptionsSource, ParseContext } from './pl
 import { applyPatchToValues, emptyValues, getFieldValue, type FieldValue, type PlanningField, type PlanningValues } from './planningRecord';
 import type { PlanningStore, RowState } from './planningStore';
 import type { PlanningWeek } from './planningWeeks';
-import type { ScheduleConflict } from './scheduleConflicts';
+import { describeConflict, type ScheduleConflict } from './scheduleConflicts';
+import { absenceTitle, ABSENCE_SHORT, describeAbsenceDates, type PlanningAbsence } from './planningAbsences';
+import { formatPlanningPersonName } from '../helpers/normalizeService';
 
 const ROW_HEIGHT = 32;
 const WEEK_HEIGHT = 38;
@@ -53,6 +55,9 @@ interface GridTableProps {
   onRowMenu: (request: GridMenuRequest) => void;
   onSelectionChange?: (recordIds: string[]) => void;
   onNotify: (tone: 'info' | 'error', text: string) => void;
+  /** Absences (TXT, vacations…) overlapping each week, keyed by the week's Monday. */
+  weekAbsences: Map<string, PlanningAbsence[]>;
+  onAbsenceCard: (request: { anchor: DOMRect; week: PlanningWeek; absence?: PlanningAbsence }) => void;
 }
 
 const isEmptyValue = (value: FieldValue) => (Array.isArray(value) ? value.length === 0 : value === '');
@@ -218,7 +223,7 @@ const RowView = memo(function RowView({
             onContextMenu={(event) => onCellContextMenu(event, row.key, colIndex)}
             title={
               scheduleWarning
-                ? scheduleConflicts!.map((entry) => `${entry.person} también tiene ${entry.otherLabel} (${entry.days.map((day) => day.slice(8, 10) + '/' + day.slice(5, 7)).join(', ')})`).join('\n')
+                ? scheduleConflicts!.map(describeConflict).join('\n')
                 : text.length > 24
                   ? text
                   : undefined
@@ -239,7 +244,11 @@ const RowView = memo(function RowView({
             ) : (
               <span className="pgrid-text">{text}</span>
             )}
-            {scheduleWarning && editingCol !== colIndex ? <span className="pgrid-warn" aria-label="Posible empalme de agenda">!</span> : null}
+            {scheduleWarning && editingCol !== colIndex ? (
+              <span className={`pgrid-warn ${scheduleConflicts!.some((entry) => entry.kind === 'absence') ? 'pgrid-warn--away' : ''}`} aria-label={scheduleConflicts!.map(describeConflict).join('. ')}>
+                !
+              </span>
+            ) : null}
           </div>
         );
       })}
@@ -267,6 +276,8 @@ export default function GridTable({
   onRowMenu,
   onSelectionChange,
   onNotify,
+  weekAbsences,
+  onAbsenceCard,
 }: GridTableProps) {
   const scrollRef = useRef<HTMLDivElement>(null);
   const cells = useRef(new Map<string, HTMLDivElement>());
@@ -1027,6 +1038,27 @@ export default function GridTable({
             <strong>{row.week.label}</strong>
             <span className="pgrid-week__count">{row.count === 1 ? '1 actividad' : `${row.count} actividades`}</span>
             {row.current ? <span className="pgrid-week__now">Semana actual</span> : null}
+            {(weekAbsences.get(row.week.start) || []).map((absence) => (
+              <button
+                key={absence.id}
+                type="button"
+                className={`pgrid-week__away pgrid-week__away--${absence.kind.toLowerCase()}`}
+                title={`${absenceTitle(absence)}\nDoble clic para ver o cambiar`}
+                onDoubleClick={(event) => onAbsenceCard({ anchor: event.currentTarget.getBoundingClientRect(), week: row.week, absence })}
+                onKeyDown={(event) => {
+                  if (event.key !== 'Enter') return;
+                  event.preventDefault();
+                  onAbsenceCard({ anchor: event.currentTarget.getBoundingClientRect(), week: row.week, absence });
+                }}
+              >
+                <b>{ABSENCE_SHORT[absence.kind]}</b> {formatPlanningPersonName(absence.personName) || absence.personName} · {describeAbsenceDates(absence)}
+              </button>
+            ))}
+            {canEdit ? (
+              <button type="button" className="pgrid-week__add-away" onClick={(event) => onAbsenceCard({ anchor: event.currentTarget.getBoundingClientRect(), week: row.week })}>
+                + Ausencia
+              </button>
+            ) : null}
           </div>
         </div>,
       );

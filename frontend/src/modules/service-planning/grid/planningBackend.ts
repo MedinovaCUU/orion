@@ -1,3 +1,4 @@
+import type { AbsenceInput, PlanningAbsence } from './planningAbsences';
 import type { PlanningTicketRow, TicketWritePayload } from './planningRecord';
 
 // Everything the grid needs from storage. The Supabase implementation talks to the real tables; tests use an
@@ -22,6 +23,11 @@ export type UpdateResult =
   | { status: 'conflict'; row: PlanningTicketRow }
   | { status: 'deleted' }
   | { status: 'forbidden'; message: string }
+  | { status: 'error'; message: string };
+
+export type AbsenceSaveResult =
+  | { status: 'ok'; absence: PlanningAbsence }
+  | { status: 'conflict'; absence: PlanningAbsence | null }
   | { status: 'error'; message: string };
 
 export interface CustomColumn {
@@ -64,7 +70,7 @@ export interface SavedViewConfig {
 
 export interface PlanningBackend {
   /** Versions are enforced by the database (false while its migration is not applied). */
-  readonly capabilities: { versioning: boolean; history: boolean; realtime: boolean; customColumns: boolean; sharedSettings: boolean };
+  readonly capabilities: { versioning: boolean; history: boolean; realtime: boolean; customColumns: boolean; sharedSettings: boolean; absences: boolean };
   loadAll(): Promise<PlanningTicketRow[]>;
   loadByIds(ids: string[]): Promise<PlanningTicketRow[]>;
   update(id: string, expectedVersion: number | null, payload: TicketWritePayload): Promise<UpdateResult>;
@@ -73,6 +79,12 @@ export interface PlanningBackend {
   history(ticketId: string): Promise<PlanningChange[]>;
   /** Calls back with the ticket ids someone changed; returns the unsubscribe function. */
   subscribe(onChange: (ticketIds: string[]) => void): () => void;
+  listAbsences(): Promise<PlanningAbsence[]>;
+  /** Creates (no id) or updates (id + version) an absence; the update only applies over that version. */
+  saveAbsence(input: AbsenceInput & { id?: string; version?: number; actorName: string }): Promise<AbsenceSaveResult>;
+  deleteAbsence(id: string): Promise<void>;
+  /** Calls back when someone adds, changes or removes an absence. */
+  subscribeAbsences(onChange: () => void): () => void;
   listCustomColumns(): Promise<CustomColumn[]>;
   saveCustomColumn(column: Omit<CustomColumn, 'id' | 'archivedAt'> & { id?: string }): Promise<CustomColumn>;
   archiveCustomColumn(id: string): Promise<void>;

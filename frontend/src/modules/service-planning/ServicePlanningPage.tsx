@@ -396,6 +396,8 @@ export default function ServicePlanningPage({
         summary.removed.length ? plural(summary.removed.length, 'retirada', 'retiradas') : '',
         summary.flagged.length ? `${plural(summary.flagged.length, 'marcada', 'marcadas')} para revisar (ya tenían viaje o reporte)` : '',
         summary.protectedRows.length ? `${plural(summary.protectedRows.length, 'conservada', 'conservadas')} por edición en Orion` : '',
+        summary.absences.added.length ? plural(summary.absences.added.length, 'ausencia nueva', 'ausencias nuevas') : '',
+        summary.absences.removed.length ? plural(summary.absences.removed.length, 'ausencia retirada', 'ausencias retiradas') : '',
       ].filter(Boolean);
       const source = `hoja oficial (${summary.readTabs.join(', ').toLowerCase()})`;
       setPlanningSyncFeedback({

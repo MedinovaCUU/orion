@@ -17,22 +17,36 @@ const server = await createServer({
       resolveId: (id) => (/supabaseClient(\.ts)?$/.test(id) ? MOCK : null),
       load: (id) =>
         id === MOCK
-          ? `const db = globalThis.__tickets;
+          ? `const tables = globalThis.__db;
 const query = (table) => {
-  const state = { filters: [], range: null, op: 'select', payload: null };
+  const rows = tables[table];
+  const state = { filters: [], range: null, op: 'select', payload: null, options: null };
   const api = {
     select() { return api; },
     like(column, pattern) { const needle = pattern.replaceAll('%', ''); state.filters.push((row) => String(row[column] || '').includes(needle)); return api; },
     order() { return api; },
     eq(column, value) { state.filters.push((row) => row[column] === value); return api; },
+    in(column, values) { state.filters.push((row) => values.includes(row[column])); return api; },
     range(from, to) { state.range = [from, to]; return api; },
-    insert(rows) { for (const row of rows) db.push({ id: crypto.randomUUID(), creado_en: new Date().toISOString(), ...row }); return Promise.resolve({ error: null }); },
+    insert(input) { state.op = 'insert'; state.payload = [].concat(input); return api; },
+    upsert(input, options) { state.op = 'upsert'; state.payload = [].concat(input); state.options = options || {}; return api; },
     update(payload) { state.op = 'update'; state.payload = payload; return api; },
     delete() { state.op = 'delete'; return api; },
     then(resolve) {
-      const matches = db.filter((row) => state.filters.every((filter) => filter(row)));
+      if (!rows) return resolve({ data: null, error: { code: 'PGRST205', message: "Could not find the table 'public." + table + "' in the schema cache" } });
+      if (state.op === 'insert') { for (const row of state.payload) rows.push({ id: crypto.randomUUID(), creado_en: new Date().toISOString(), ...row }); return resolve({ data: null, error: null }); }
+      if (state.op === 'upsert') {
+        const key = state.options.onConflict;
+        for (const row of state.payload) {
+          const found = rows.find((entry) => entry[key] === row[key]);
+          if (found && !state.options.ignoreDuplicates) Object.assign(found, row);
+          if (!found) rows.push({ id: crypto.randomUUID(), ...row });
+        }
+        return resolve({ data: null, error: null });
+      }
+      const matches = rows.filter((row) => state.filters.every((filter) => filter(row)));
       if (state.op === 'update') matches.forEach((row) => Object.assign(row, state.payload));
-      if (state.op === 'delete') matches.forEach((row) => db.splice(db.indexOf(row), 1));
+      if (state.op === 'delete') matches.forEach((row) => rows.splice(rows.indexOf(row), 1));
       const data = state.range ? matches.slice(state.range[0], state.range[1] + 1) : matches;
       return resolve({ data, error: null });
     },
@@ -47,6 +61,8 @@ export const supabase = { from: query };`
 
 try {
   globalThis.__tickets = [];
+  globalThis.__absences = [];
+  globalThis.__db = { tickets: globalThis.__tickets, planning_absences: globalThis.__absences };
   const { syncServicePlanningFromSheet } = await server.ssrLoadModule('/src/modules/service-planning/helpers/servicePlanningSync.ts');
   const { buildPlanningSubject, serializePlanningDescription } = await server.ssrLoadModule('/src/modules/service-planning/helpers/normalizeService.ts');
   const { buildRowKey } = await server.ssrLoadModule('/src/modules/service-planning/helpers/planningPeople.ts');
@@ -94,7 +110,12 @@ try {
   const snapshot = {
     title: 'PROGRAMACION SINTETICA', year: 2026, fetchedAt: new Date().toISOString(), tabs: [], readTabs: [week.tab], weeks: [week],
     activities: [activity('Hospital Uno', 'Cambio en la hoja'), activity('Hospital Dos', 'La hoja cambió esto'), activity('Hospital Cinco', 'Nueva')],
-    notes: [], guards: [], warnings: [],
+    notes: [
+      { tab: week.tab, sheetRow: 20, week, text: `${iso(monday).slice(8)} TXT ALFREDO`, kind: 'TXT', daysLabel: iso(monday).slice(8), personText: 'ALFREDO' },
+      { tab: week.tab, sheetRow: 21, week, text: `${iso(monday).slice(8)} AL ${iso(friday).slice(8)} VAC FANTASMA`, kind: 'VAC', daysLabel: `${iso(monday).slice(8)} AL ${iso(friday).slice(8)}`, personText: 'FANTASMA' },
+      { tab: week.tab, sheetRow: 22, week, text: 'LLEVAR REFACCIONES', kind: 'NOTA', daysLabel: '', personText: 'LLEVAR REFACCIONES' },
+    ],
+    guards: [], warnings: [],
   };
   const profiles = [{ id: 'p-a', nombre_completo: 'Alfredo Acevedo', rol: 'tecnico' }];
   const run = (options = {}) => syncServicePlanningFromSheet({ actorName: 'Ricardo Montanez', profiles, snapshot, ...options });
@@ -128,7 +149,36 @@ try {
   const again = await run({ dryRun: true });
   assert.deepEqual(again.protectedRows.map((change) => change.id), ['gone-edited'], 'after taking the sheet version the row follows the sheet again');
 
-  console.log('PASS: preview writes nothing, Orion edits are kept (not overwritten, not deleted, not duplicated), untouched rows follow the sheet, sheet version on request.');
+  // Absences from the sheet notes: TXT of a known person becomes a dated absence; unknown people are reported.
+  globalThis.__absences.splice(0);
+  const absencePreview = await run({ dryRun: true });
+  assert.equal(globalThis.__absences.length, 0, 'the preview writes no absences');
+  assert.deepEqual(absencePreview.absences.added, [`TXT · Alfredo Acevedo · ${iso(monday)}`, `Vacaciones · Fantasma · ${iso(monday)} al ${iso(friday)}`]);
+  assert.deepEqual(absencePreview.absences.withoutProfile, [`Vacaciones · Fantasma · ${iso(monday)} al ${iso(friday)}`], 'a name with no profile is kept as written and flagged');
+  assert.deepEqual(absencePreview.absences.unrecognised, [], 'a plain note is not an absence');
+  await run();
+  assert.equal(globalThis.__absences.length, 2);
+  const txt = globalThis.__absences.find((row) => row.kind === 'TXT');
+  assert.equal(globalThis.__absences.find((row) => row.kind === 'VAC').person_id, null);
+  assert.deepEqual([txt.person_name, txt.person_id, txt.kind, txt.start_date, txt.end_date, txt.source], ['Alfredo Acevedo', 'p-a', 'TXT', iso(monday), iso(monday), 'sheet']);
+  await run();
+  assert.equal(globalThis.__absences.length, 2, 'running again adds nothing');
+  // The sheet drops them: removed. One edited in Orion afterwards is kept.
+  const withoutNotes = { ...snapshot, notes: [] };
+  txt.orion_edited_at = '2099-01-01T00:00:00.000Z';
+  let dropped = await syncServicePlanningFromSheet({ actorName: 'Ricardo Montanez', profiles, snapshot: withoutNotes });
+  assert.deepEqual(globalThis.__absences.map((row) => row.kind), ['TXT'], 'edited in Orion: kept; the other one removed');
+  assert.equal(dropped.absences.protectedRows.length, 1);
+  assert.equal(dropped.absences.removed.length, 1);
+  txt.orion_edited_at = null;
+  dropped = await syncServicePlanningFromSheet({ actorName: 'Ricardo Montanez', profiles, snapshot: withoutNotes });
+  assert.equal(globalThis.__absences.length, 0, 'untouched: follows the sheet');
+  // Without the absences table (migration not applied) the sync still works and says so.
+  delete globalThis.__db.planning_absences;
+  const noTable = await run({ dryRun: true });
+  assert.equal(noTable.absences.available, false);
+
+  console.log('PASS: preview writes nothing, Orion edits are kept (not overwritten, not deleted, not duplicated), untouched rows follow the sheet, sheet version on request; sheet TXT/VAC notes become dated absences (unknown people reported, Orion edits kept, no table tolerated).');
 } finally {
   await server.close();
 }

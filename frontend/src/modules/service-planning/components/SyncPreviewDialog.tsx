@@ -44,7 +44,8 @@ export default function SyncPreviewDialog({
   onClose: () => void;
 }) {
   const [useSheet, setUseSheet] = useState<Set<string>>(new Set());
-  const total = preview ? preview.inserted.length + preview.updated.length + preview.removed.length + preview.flagged.length : 0;
+  const absenceChanges = preview ? preview.absences.added.length + preview.absences.removed.length : 0;
+  const total = preview ? preview.inserted.length + preview.updated.length + preview.removed.length + preview.flagged.length + absenceChanges : 0;
   return createPortal(
     <div className="pgrid-modal" role="presentation">
       <div className="pgrid-modal__box planning-sync" role="dialog" aria-modal="true" aria-label="Sincronizar con la hoja oficial">
@@ -94,7 +95,30 @@ export default function SyncPreviewDialog({
                 </ul>
               </section>
             ) : null}
-            {!total && !preview.protectedRows.length ? <p>Orion ya coincide con la hoja oficial. No hay nada que aplicar.</p> : null}
+            {preview.absences.added.length || preview.absences.removed.length || preview.absences.protectedRows.length || preview.absences.unrecognised.length || preview.absences.withoutProfile.length ? (
+              <section className="planning-sync__group">
+                <h4>
+                  Ausencias (TXT, vacaciones…) <span>{preview.absences.added.length + preview.absences.removed.length}</span>
+                </h4>
+                <ul>
+                  {preview.absences.added.map((text) => <li key={`a-${text}`}>Nueva: {text}</li>)}
+                  {preview.absences.removed.map((text) => <li key={`r-${text}`}>Se retira: {text}</li>)}
+                  {preview.absences.protectedRows.map((text) => <li key={`p-${text}`}>Se conserva: {text}</li>)}
+                  {preview.absences.withoutProfile.map((text) => (
+                    <li key={`w-${text}`}>
+                      Revisar el nombre (no hay perfil en Orion con ese nombre): <small>{text}</small>
+                    </li>
+                  ))}
+                  {preview.absences.unrecognised.map((text) => (
+                    <li key={`u-${text}`}>
+                      Nota sin persona, no se importa: <small>{text}</small>
+                    </li>
+                  ))}
+                </ul>
+              </section>
+            ) : null}
+            {!preview.absences.available ? <p>Las ausencias de la hoja se guardarán cuando se aplique la actualización de base de datos.</p> : null}
+            {!total && !absenceChanges && !preview.protectedRows.length ? <p>Orion ya coincide con la hoja oficial. No hay nada que aplicar.</p> : null}
           </div>
         ) : null}
         <div className="pgrid-modal__actions">

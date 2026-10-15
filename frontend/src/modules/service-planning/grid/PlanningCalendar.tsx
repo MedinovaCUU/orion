@@ -2,7 +2,9 @@ import { useMemo, useState } from 'react';
 import type { DragEvent as ReactDragEvent, KeyboardEvent as ReactKeyboardEvent, MouseEvent as ReactMouseEvent } from 'react';
 import type { ProfileSummary } from '../../../components/servicesPlanning';
 import { formatPlanningPersonName } from '../helpers/normalizeService';
+import AbsencePopover from './AbsencePopover';
 import CalendarEventPopover from './CalendarEventPopover';
+import { absenceTitle, ABSENCE_SHORT, overlaps, type AbsenceInput, type PlanningAbsence } from './planningAbsences';
 import { TYPE_LABELS, type OptionsSource } from './planningColumns';
 import { emptyValues, type PlanningField, type PlanningRecord, type PlanningValues } from './planningRecord';
 import { addDays, fromIsoDate, mondayOf, type PlanningWeek } from './planningWeeks';
@@ -21,8 +23,9 @@ const DRAG_TYPE = 'application/x-orion-activity';
 type Item = { record: PlanningRecord; values: PlanningValues };
 
 type Popover =
-  | { mode: 'new'; anchor: DOMRect; week: PlanningWeek; day: string | null; slot: string }
-  | { mode: 'edit'; anchor: DOMRect; id: string };
+  | { mode: 'new'; kind: 'activity' | 'absence'; anchor: DOMRect; week: PlanningWeek; day: string | null; slot: string }
+  | { mode: 'edit'; anchor: DOMRect; id: string }
+  | { mode: 'edit-absence'; anchor: DOMRect; id: string };
 
 interface CalendarProps {
   month: string;
@@ -39,6 +42,9 @@ interface CalendarProps {
   onDelete: (id: string) => void;
   onOpenInTable: (id: string) => void;
   onNotify: (tone: 'info' | 'error', text: string) => void;
+  absences: PlanningAbsence[];
+  onSaveAbsence: (input: AbsenceInput & { id?: string }) => void;
+  onDeleteAbsence: (id: string) => void;
 }
 
 const longDate = (iso: string) => {
@@ -55,7 +61,7 @@ const changedFields = (before: PlanningValues, after: PlanningValues) => {
   return changes;
 };
 
-export default function PlanningCalendar({ month, weeks, items, today, canEdit, options, profiles, onCreate, onUpdate, onMoveToDay, onMoveToWeek, onDelete, onOpenInTable, onNotify }: CalendarProps) {
+export default function PlanningCalendar({ month, weeks, items, today, canEdit, options, profiles, onCreate, onUpdate, onMoveToDay, onMoveToWeek, onDelete, onOpenInTable, onNotify, absences, onSaveAbsence, onDeleteAbsence }: CalendarProps) {
   const [popover, setPopover] = useState<Popover | null>(null);
   const [selected, setSelected] = useState<string | null>(null);
   const [dragging, setDragging] = useState<string | null>(null);
@@ -79,6 +85,8 @@ export default function PlanningCalendar({ month, weeks, items, today, canEdit, 
   );
   const byId = useMemo(() => new Map(items.map((item) => [item.record.id, item])), [items]);
   const editing = popover?.mode === 'edit' ? byId.get(popover.id) || null : null;
+  const editingAbsence = popover?.mode === 'edit-absence' ? absences.find((absence) => absence.id === popover.id) || null : null;
+  const awayOn = (day: string) => absences.filter((absence) => overlaps(absence, day, day));
 
   const isLocked = (item: Item) => item.record.closed;
 
@@ -88,11 +96,11 @@ export default function PlanningCalendar({ month, weeks, items, today, canEdit, 
       return;
     }
     setSelected(null);
-    setPopover({ mode: 'new', anchor, week, day, slot: day || `undated:${week.start}` });
+    setPopover({ mode: 'new', kind: 'activity', anchor, week, day, slot: day || `undated:${week.start}` });
   };
 
   const onSlotDoubleClick = (event: ReactMouseEvent<HTMLElement>, week: PlanningWeek, day: string | null) => {
-    if ((event.target as HTMLElement).closest('.pgrid-cal__chip')) return;
+    if ((event.target as HTMLElement).closest('.pgrid-cal__chip, .pgrid-cal__away')) return;
     event.preventDefault();
     openNew(event.currentTarget.getBoundingClientRect(), week, day);
   };
@@ -225,6 +233,25 @@ export default function PlanningCalendar({ month, weeks, items, today, canEdit, 
                 {...dragHandlers(day, (id) => onMoveToDay(id, day))}
               >
                 <span className="pgrid-cal__date">{Number(day.slice(8, 10))}</span>
+                {awayOn(day).map((absence) => (
+                  <button
+                    key={`${day}-${absence.id}`}
+                    type="button"
+                    className={`pgrid-cal__away pgrid-cal__away--${absence.kind.toLowerCase()}`}
+                    title={`${absenceTitle(absence)}${canEdit ? '\nDoble clic para ver o cambiar' : ''}`}
+                    onDoubleClick={(event) => {
+                      setSelected(null);
+                      setPopover({ mode: 'edit-absence', anchor: event.currentTarget.getBoundingClientRect(), id: absence.id });
+                    }}
+                    onKeyDown={(event) => {
+                      if (event.key !== 'Enter') return;
+                      event.preventDefault();
+                      setPopover({ mode: 'edit-absence', anchor: event.currentTarget.getBoundingClientRect(), id: absence.id });
+                    }}
+                  >
+                    <b>{ABSENCE_SHORT[absence.kind]}</b> {formatPlanningPersonName(absence.personName) || absence.personName}
+                  </button>
+                ))}
                 {(byDay.get(day) || []).map((item) => chip(item, `${day}-${item.record.id}`))}
                 {ghost(day)}
               </div>
@@ -233,7 +260,46 @@ export default function PlanningCalendar({ month, weeks, items, today, canEdit, 
         );
       })}
 
-      {popover?.mode === 'new' ? (
+      {popover?.mode === 'new' && popover.kind === 'absence' ? (
+        <AbsencePopover
+          key={`absence-${popover.slot}`}
+          mode="new"
+          anchor={popover.anchor}
+          initial={{ personName: '', kind: 'TXT', startDate: popover.day || popover.week.start, endDate: popover.day || popover.week.end, note: '' }}
+          people={options.people}
+          profiles={profiles}
+          onSwitchToActivity={() => setPopover({ ...popover, kind: 'activity' })}
+          onCancel={() => setPopover(null)}
+          onSave={(input) => {
+            setPopover(null);
+            onSaveAbsence(input);
+          }}
+        />
+      ) : null}
+      {editingAbsence && popover?.mode === 'edit-absence' ? (
+        <AbsencePopover
+          key={`absence-${editingAbsence.id}`}
+          mode="edit"
+          anchor={popover.anchor}
+          initial={{ personName: editingAbsence.personName, personId: editingAbsence.personId, kind: editingAbsence.kind, startDate: editingAbsence.startDate, endDate: editingAbsence.endDate, note: editingAbsence.note }}
+          people={options.people}
+          profiles={profiles}
+          readOnly={!canEdit}
+          source={editingAbsence.source}
+          footnote={editingAbsence.updatedByName ? `Última modificación: ${formatPlanningPersonName(editingAbsence.updatedByName) || editingAbsence.updatedByName}` : undefined}
+          onCancel={() => setPopover(null)}
+          onSave={(input) => {
+            setPopover(null);
+            const changed = input.personName !== editingAbsence.personName || input.kind !== editingAbsence.kind || input.startDate !== editingAbsence.startDate || input.endDate !== editingAbsence.endDate || input.note !== editingAbsence.note;
+            if (changed) onSaveAbsence({ ...input, id: editingAbsence.id });
+          }}
+          onDelete={() => {
+            setPopover(null);
+            onDeleteAbsence(editingAbsence.id);
+          }}
+        />
+      ) : null}
+      {popover?.mode === 'new' && popover.kind === 'activity' ? (
         <CalendarEventPopover
           key={`new-${popover.slot}`}
           mode="new"
@@ -242,6 +308,7 @@ export default function PlanningCalendar({ month, weeks, items, today, canEdit, 
           subtitle={popover.day ? longDate(popover.day) : `Semana ${popover.week.label.toLowerCase()} · sin día fijo`}
           options={options}
           profiles={profiles}
+          onSwitchToAbsence={() => setPopover({ ...popover, kind: 'absence' })}
           onCancel={() => setPopover(null)}
           onSave={(values) => {
             const { week } = popover;

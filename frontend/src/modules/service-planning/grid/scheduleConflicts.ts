@@ -1,4 +1,5 @@
 import { formatPlanningPersonName, normalizeText } from '../helpers/normalizeService';
+import { absenceDays, ABSENCE_SHORT, type PlanningAbsence } from './planningAbsences';
 import type { PlanningRecord, PlanningValues } from './planningRecord';
 import { addDays, daysBetween } from './planningWeeks';
 
@@ -15,6 +16,8 @@ export interface ConflictRules {
 export const DEFAULT_CONFLICT_RULES: ConflictRules = { enabled: true, sameLocalityIsConflict: false, includeCompanions: true };
 
 export interface ScheduleConflict {
+  /** Another activity the same days, or an absence (TXT, vacations…) of that person. */
+  kind: 'activity' | 'absence';
   person: string;
   otherId: string;
   otherLabel: string;
@@ -57,6 +60,7 @@ export const activityDays = (record: PlanningRecord, values: PlanningValues): st
 export const findScheduleConflicts = (
   items: Array<{ record: PlanningRecord; values: PlanningValues }>,
   rules: ConflictRules = DEFAULT_CONFLICT_RULES,
+  absences: PlanningAbsence[] = [],
 ): Map<string, ScheduleConflict[]> => {
   const result = new Map<string, ScheduleConflict[]>();
   if (!rules.enabled) return result;
@@ -84,10 +88,35 @@ export const findScheduleConflicts = (
         const shared = [...a.days].filter((day) => b.days.has(day)).sort();
         if (!shared.length) continue;
         const person = displayName.get(key) || key;
-        result.set(a.id, [...(result.get(a.id) || []), { person, otherId: b.id, otherLabel: b.label, days: shared }]);
-        result.set(b.id, [...(result.get(b.id) || []), { person, otherId: a.id, otherLabel: a.label, days: shared }]);
+        result.set(a.id, [...(result.get(a.id) || []), { kind: 'activity', person, otherId: b.id, otherLabel: b.label, days: shared }]);
+        result.set(b.id, [...(result.get(b.id) || []), { kind: 'activity', person, otherId: a.id, otherLabel: a.label, days: shared }]);
+      }
+    }
+  });
+
+  // Someone away (TXT, vacations…) on a day they have a service.
+  const absencesByPerson = new Map<string, PlanningAbsence[]>();
+  absences.forEach((absence) => {
+    const key = normalizeText(absence.personName);
+    absencesByPerson.set(key, [...(absencesByPerson.get(key) || []), absence]);
+  });
+  byPerson.forEach((entries, key) => {
+    const away = absencesByPerson.get(key);
+    if (!away) return;
+    for (const entry of entries) {
+      for (const absence of away) {
+        const shared = absenceDays(absence).filter((day) => entry.days.has(day));
+        if (!shared.length) continue;
+        result.set(entry.id, [...(result.get(entry.id) || []), { kind: 'absence', person: displayName.get(key) || key, otherId: absence.id, otherLabel: ABSENCE_SHORT[absence.kind], days: shared }]);
       }
     }
   });
   return result;
+};
+
+export const describeConflict = (conflict: ScheduleConflict) => {
+  const days = conflict.days.map((day) => `${day.slice(8, 10)}/${day.slice(5, 7)}`).join(', ');
+  return conflict.kind === 'absence'
+    ? `${conflict.person} tiene ${conflict.otherLabel} (${days})`
+    : `${conflict.person} también tiene ${conflict.otherLabel} (${days})`;
 };

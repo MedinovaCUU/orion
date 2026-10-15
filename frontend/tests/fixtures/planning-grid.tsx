@@ -47,7 +47,13 @@ if (params.has('reset') || !localStorage.getItem('pgrid-memory')) {
     const day = String(1 + (index % 28)).padStart(2, '0');
     seed.push(row({ serviceType: index % 3 ? 'preventivo' : 'correctivo', platform: ['BA400', 'BA200', 'A15'][index % 3], locality: `Sitio de prueba ${index + 1}`, engineer: profiles[1 + (index % 4)].nombre_completo || '', observations: `Fila sintética ${index + 1}` }, `2026-10-${day}`));
   }
-  resetMemoryStore(seed);
+  // Synthetic absences: Martha has TXT the day of her service on the 21st; Francisco is on vacation
+  // during his training on the 15th-16th.
+  const absence = (personName: string, personId: string, kind: 'TXT' | 'VAC', startDate: string, endDate: string) => ({
+    id: crypto.randomUUID(), personId, personName, kind, startDate, endDate, note: '', source: 'orion' as const, sheetKey: null,
+    sheetSyncedAt: null, orionEditedAt: null, version: 1, createdByName: 'Prueba', updatedByName: 'Prueba', updatedAt: '2026-10-10T00:00:00.000Z',
+  });
+  resetMemoryStore(seed, [absence('Martha Carbajal', 'p4', 'TXT', '2026-10-21', '2026-10-21'), absence('Francisco Lopez', 'p5', 'VAC', '2026-10-15', '2026-10-16')]);
   if (params.has('reset')) history.replaceState(null, '', location.pathname + location.search.replace(/[?&]reset(=[^&]*)?/, '').replace(/^&/, '?'));
 }
 

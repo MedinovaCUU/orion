@@ -1,11 +1,12 @@
 import type { CustomColumn, GridSettings, PlanningBackend, PlanningChange, SavedView, UpdateResult } from '../../src/modules/service-planning/grid/planningBackend';
+import type { PlanningAbsence } from '../../src/modules/service-planning/grid/planningAbsences';
 import type { PlanningTicketRow, TicketWritePayload } from '../../src/modules/service-planning/grid/planningRecord';
 
 // Test double of the planning tables: same contract as the Supabase backend (version check, history,
 // change notifications to other tabs), stored in localStorage so a reload keeps what was saved.
 
 const KEY = 'pgrid-memory';
-type Store = { rows: PlanningTicketRow[]; history: PlanningChange[]; columns: CustomColumn[]; settings: GridSettings; views: SavedView[]; seq: number };
+type Store = { rows: PlanningTicketRow[]; history: PlanningChange[]; columns: CustomColumn[]; settings: GridSettings; views: SavedView[]; seq: number; absences?: PlanningAbsence[] };
 
 const read = (): Store => {
   try {
@@ -51,14 +52,20 @@ export interface MemoryControls {
   actorName: string;
   externalEdit: (id: string, change: (row: PlanningTicketRow) => PlanningTicketRow, actorName?: string, notify?: boolean) => void;
   rows: () => PlanningTicketRow[];
+  absences: () => PlanningAbsence[];
 }
 
-export const resetMemoryStore = (rows: PlanningTicketRow[]) => write({ rows, history: [], columns: [], settings: {}, views: [], seq: 0 });
+export const resetMemoryStore = (rows: PlanningTicketRow[], absences: PlanningAbsence[] = []) => write({ rows, history: [], columns: [], settings: {}, views: [], seq: 0, absences });
 
 export const createMemoryBackend = (actorName: string): { backend: PlanningBackend; controls: MemoryControls } => {
   const channel = typeof BroadcastChannel !== 'undefined' ? new BroadcastChannel(KEY) : null;
   const listeners = new Set<(ids: string[]) => void>();
-  channel?.addEventListener('message', (event) => listeners.forEach((listener) => listener(event.data as string[])));
+  const absenceListeners = new Set<() => void>();
+  channel?.addEventListener('message', (event) => {
+    if (event.data === 'absences') absenceListeners.forEach((listener) => listener());
+    else listeners.forEach((listener) => listener(event.data as string[]));
+  });
+  const announceAbsences = () => channel?.postMessage('absences');
   const announce = (ids: string[]) => channel?.postMessage(ids);
 
   const log = (store: Store, row: PlanningTicketRow, action: PlanningChange['action'], who: string, field: string | null = null, oldValue: string | null = null, newValue: string | null = null) => {
@@ -83,10 +90,11 @@ export const createMemoryBackend = (actorName: string): { backend: PlanningBacke
       listeners.forEach((listener) => listener([id]));
     },
     rows: () => read().rows,
+    absences: () => read().absences || [],
   };
 
   const backend: PlanningBackend = {
-    capabilities: { versioning: true, history: true, realtime: true, customColumns: true, sharedSettings: true },
+    capabilities: { versioning: true, history: true, realtime: true, customColumns: true, sharedSettings: true, absences: true },
     async loadAll() {
       await delay();
       return read().rows;
@@ -154,6 +162,46 @@ export const createMemoryBackend = (actorName: string): { backend: PlanningBacke
     subscribe(onChange) {
       listeners.add(onChange);
       return () => listeners.delete(onChange);
+    },
+    async listAbsences() {
+      await delay();
+      return read().absences || [];
+    },
+    async saveAbsence(input) {
+      await delay();
+      if (controls.failNext > 0) {
+        controls.failNext -= 1;
+        return { status: 'error', message: 'Sin conexión (prueba)' };
+      }
+      const store = read();
+      const list = store.absences || [];
+      const now = new Date().toISOString();
+      const fields = { personId: input.personId ?? null, personName: input.personName, kind: input.kind, startDate: input.startDate, endDate: input.endDate, note: input.note || '', updatedByName: input.actorName, updatedAt: now, orionEditedAt: now };
+      let saved: PlanningAbsence;
+      if (!input.id) {
+        saved = { id: crypto.randomUUID(), source: 'orion', sheetKey: null, sheetSyncedAt: null, version: 1, createdByName: input.actorName, ...fields };
+        list.push(saved);
+      } else {
+        const index = list.findIndex((entry) => entry.id === input.id);
+        if (index < 0 || (typeof input.version === 'number' && list[index].version !== input.version)) return { status: 'conflict', absence: index < 0 ? null : list[index] };
+        saved = { ...list[index], ...fields, version: list[index].version + 1 };
+        list[index] = saved;
+      }
+      store.absences = list;
+      write(store);
+      announceAbsences();
+      return { status: 'ok', absence: saved };
+    },
+    async deleteAbsence(id) {
+      await delay();
+      const store = read();
+      store.absences = (store.absences || []).filter((entry) => entry.id !== id);
+      write(store);
+      announceAbsences();
+    },
+    subscribeAbsences(onChange) {
+      absenceListeners.add(onChange);
+      return () => absenceListeners.delete(onChange);
     },
     async listCustomColumns() {
       return read().columns;

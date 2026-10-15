@@ -1,4 +1,5 @@
 import type { PlanningBackend } from './planningBackend';
+import type { AbsenceInput, PlanningAbsence } from './planningAbsences';
 import {
   applyPatchToValues,
   buildInsertPayload,
@@ -67,13 +68,16 @@ export interface PlanningSnapshot {
   notices: StoreNotice[];
   remoteChangedIds: Set<string>;
   canUndo: boolean;
+  absences: PlanningAbsence[];
 }
 
 type UndoEntry =
   | { kind: 'edit'; id: string; field: PlanningField; before: FieldValue }
   | { kind: 'insert'; ids: string[] }
   | { kind: 'delete'; rows: Array<{ week: PlanningWeek; values: PlanningValues }> }
-  | { kind: 'move'; id: string; patch: PlanningPatch };
+  | { kind: 'move'; id: string; patch: PlanningPatch }
+  | { kind: 'absence'; restore: AbsenceInput }
+  | { kind: 'absence-created'; id: string };
 
 const SAVE_DELAY_MS = 120;
 const RETRY_DELAYS_MS = [2000, 6000, 15000];
@@ -91,6 +95,7 @@ export class PlanningStore {
     notices: [],
     remoteChangedIds: new Set(),
     canUndo: false,
+    absences: [],
   };
   private listeners = new Set<() => void>();
   private timers = new Map<string, ReturnType<typeof setTimeout>>();
@@ -100,6 +105,9 @@ export class PlanningStore {
   private remoteQueue = new Set<string>();
   private remoteTimer: ReturnType<typeof setTimeout> | null = null;
   private unsubscribe: (() => void) | null = null;
+  private unsubscribeAbsences: (() => void) | null = null;
+  private absenceTimer: ReturnType<typeof setTimeout> | null = null;
+  private tempCounter = 0;
   private changeListeners = new Set<() => void>();
   readonly backend: PlanningBackend;
   private ctx: PlanningContext;
@@ -154,11 +162,89 @@ export class PlanningStore {
       this.set({ loading: false, loadError: error instanceof Error ? error.message : 'No se pudo leer la planeación.' });
     }
     if (!this.unsubscribe) this.unsubscribe = this.backend.subscribe((ids) => this.queueRemote(ids));
+    await this.loadAbsences();
+    if (!this.unsubscribeAbsences) {
+      this.unsubscribeAbsences = this.backend.subscribeAbsences(() => {
+        if (this.absenceTimer) clearTimeout(this.absenceTimer);
+        this.absenceTimer = setTimeout(() => void this.loadAbsences(), 250);
+      });
+    }
+  }
+
+  // ----- absences (TXT, vacations…) -----
+  async loadAbsences() {
+    if (!this.backend.capabilities.absences) return;
+    try {
+      const absences = await this.backend.listAbsences();
+      // Keep the ones being saved right now (temporary ids) until the server answers.
+      const pending = this.snapshot.absences.filter((absence) => absence.id.startsWith('tmp-'));
+      this.set({ absences: [...absences, ...pending] });
+    } catch {
+      // The next change or a reload brings them; the planning still works without them.
+    }
+  }
+
+  async saveAbsence(input: AbsenceInput & { id?: string }, options: { recordUndo?: boolean } = {}) {
+    const previous = input.id ? this.snapshot.absences.find((absence) => absence.id === input.id) || null : null;
+    this.tempCounter += 1;
+    const optimistic: PlanningAbsence = {
+      id: previous?.id || `tmp-${this.tempCounter}`,
+      personId: input.personId ?? null,
+      personName: input.personName,
+      kind: input.kind,
+      startDate: input.startDate,
+      endDate: input.endDate,
+      note: input.note,
+      source: previous?.source || 'orion',
+      sheetKey: previous?.sheetKey || null,
+      sheetSyncedAt: previous?.sheetSyncedAt || null,
+      orionEditedAt: new Date().toISOString(),
+      version: previous?.version || 1,
+      createdByName: previous?.createdByName || this.ctx.actorName,
+      updatedByName: this.ctx.actorName,
+      updatedAt: new Date().toISOString(),
+    };
+    this.set({ absences: [...this.snapshot.absences.filter((absence) => absence.id !== optimistic.id), optimistic] });
+    const result = await this.backend
+      .saveAbsence({ ...input, id: previous?.id, version: previous?.version, actorName: this.ctx.actorName })
+      .catch((error: unknown) => ({ status: 'error' as const, message: error instanceof Error ? error.message : 'Sin conexión' }));
+    if (result.status === 'ok') {
+      this.set({ absences: [...this.snapshot.absences.filter((absence) => absence.id !== optimistic.id), result.absence], lastSavedAt: new Date().toISOString() });
+      if (!previous && options.recordUndo !== false) this.pushUndo({ kind: 'absence-created', id: result.absence.id });
+      return result.absence;
+    }
+    // Back to what the server has; what the user typed goes in the notice so it is not lost.
+    this.set({ absences: this.snapshot.absences.filter((absence) => absence.id !== optimistic.id).concat(previous ? [previous] : []) });
+    const typed = `${input.kind} ${input.personName} ${input.startDate}${input.endDate !== input.startDate ? ` al ${input.endDate}` : ''}`;
+    if (result.status === 'conflict') {
+      this.notify('error', `Otro usuario cambió esa ausencia (o no tienes permiso). No se guardó: ${typed}.`);
+      void this.loadAbsences();
+    } else {
+      this.notify('error', `No se guardó la ausencia (${typed}): ${result.message}`);
+    }
+    return null;
+  }
+
+  async deleteAbsence(id: string, options: { recordUndo?: boolean } = {}) {
+    const previous = this.snapshot.absences.find((absence) => absence.id === id);
+    if (!previous) return;
+    this.set({ absences: this.snapshot.absences.filter((absence) => absence.id !== id) });
+    try {
+      await this.backend.deleteAbsence(id);
+      if (options.recordUndo !== false) this.pushUndo({ kind: 'absence', restore: { personId: previous.personId, personName: previous.personName, kind: previous.kind, startDate: previous.startDate, endDate: previous.endDate, note: previous.note } });
+      this.set({ lastSavedAt: new Date().toISOString() });
+    } catch (error) {
+      this.set({ absences: [...this.snapshot.absences, previous] });
+      this.notify('error', error instanceof Error ? `No se eliminó la ausencia: ${error.message}` : 'No se eliminó la ausencia.');
+    }
   }
 
   dispose() {
     this.unsubscribe?.();
     this.unsubscribe = null;
+    this.unsubscribeAbsences?.();
+    this.unsubscribeAbsences = null;
+    if (this.absenceTimer) clearTimeout(this.absenceTimer);
     this.timers.forEach((timer) => clearTimeout(timer));
     if (this.remoteTimer) clearTimeout(this.remoteTimer);
   }
@@ -549,6 +635,8 @@ export class PlanningStore {
     if (!entry) return;
     if (entry.kind === 'edit') this.edit(entry.id, entry.field, entry.before, { recordUndo: false });
     else if (entry.kind === 'move') this.patch(entry.id, entry.patch);
+    else if (entry.kind === 'absence') await this.saveAbsence(entry.restore, { recordUndo: false });
+    else if (entry.kind === 'absence-created') await this.deleteAbsence(entry.id, { recordUndo: false });
     else if (entry.kind === 'insert') await this.remove(entry.ids, { recordUndo: false });
     else await this.insertValues(entry.rows, [], { recordUndo: false });
   }

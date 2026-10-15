@@ -8,6 +8,7 @@ import {
   type SavedView,
   type UpdateResult,
 } from './planningBackend';
+import type { AbsenceKind, PlanningAbsence } from './planningAbsences';
 import type { PlanningTicketRow, TicketWritePayload } from './planningRecord';
 
 const PAGE_SIZE = 1000;
@@ -53,6 +54,26 @@ const toChange = (row: Record<string, unknown>): PlanningChange => ({
   version: (row.version as number) ?? null,
 });
 
+const ABSENCE_COLUMNS = 'id, person_id, person_name, kind, start_date, end_date, note, source, sheet_key, sheet_synced_at, orion_edited_at, version, created_by_name, updated_by_name, updated_at';
+
+export const toAbsence = (row: Record<string, unknown>): PlanningAbsence => ({
+  id: row.id as string,
+  personId: (row.person_id as string) ?? null,
+  personName: row.person_name as string,
+  kind: row.kind as AbsenceKind,
+  startDate: row.start_date as string,
+  endDate: row.end_date as string,
+  note: (row.note as string) || '',
+  source: (row.source as 'orion' | 'sheet') || 'orion',
+  sheetKey: (row.sheet_key as string) ?? null,
+  sheetSyncedAt: (row.sheet_synced_at as string) ?? null,
+  orionEditedAt: (row.orion_edited_at as string) ?? null,
+  version: (row.version as number) ?? 1,
+  createdByName: (row.created_by_name as string) ?? null,
+  updatedByName: (row.updated_by_name as string) ?? null,
+  updatedAt: (row.updated_at as string) ?? null,
+});
+
 const toColumn = (row: Record<string, unknown>): CustomColumn => ({
   id: row.id as string,
   key: row.key as string,
@@ -67,11 +88,12 @@ const toColumn = (row: Record<string, unknown>): CustomColumn => ({
 
 export const createSupabasePlanningBackend = async (userId: string | null): Promise<PlanningBackend> => {
   // Probe once which parts of the schema exist.
-  const [versionProbe, historyProbe, columnsProbe, settingsProbe] = await Promise.all([
+  const [versionProbe, historyProbe, columnsProbe, settingsProbe, absencesProbe] = await Promise.all([
     supabase.from('tickets').select('planning_version').limit(1),
     supabase.from('planning_changes').select('id').limit(1),
     supabase.from('planning_custom_columns').select('id').limit(1),
     supabase.from('planning_user_settings').select('user_id').limit(1),
+    supabase.from('planning_absences').select('id').limit(1),
   ]);
   const capabilities = {
     versioning: !isMissingSchema(versionProbe.error),
@@ -79,6 +101,7 @@ export const createSupabasePlanningBackend = async (userId: string | null): Prom
     realtime: !isMissingSchema(historyProbe.error),
     customColumns: !isMissingSchema(columnsProbe.error),
     sharedSettings: !isMissingSchema(settingsProbe.error),
+    absences: !isMissingSchema(absencesProbe.error),
   };
   const columns = capabilities.versioning ? `${PLANNING_COLUMNS}, planning_version` : PLANNING_COLUMNS;
 
@@ -158,6 +181,65 @@ export const createSupabasePlanningBackend = async (userId: string | null): Prom
           const ticketId = (payload.new as { ticket_id?: string }).ticket_id;
           if (ticketId) onChange([ticketId]);
         })
+        .subscribe();
+      return () => {
+        void supabase.removeChannel(channel);
+      };
+    },
+
+    async listAbsences() {
+      if (!capabilities.absences) return [];
+      const rows: PlanningAbsence[] = [];
+      for (let from = 0; ; from += PAGE_SIZE) {
+        const { data, error } = await supabase.from('planning_absences').select(ABSENCE_COLUMNS).order('start_date').order('id').range(from, from + PAGE_SIZE - 1);
+        if (error) throw new Error(error.message);
+        rows.push(...(data || []).map((row) => toAbsence(row as Record<string, unknown>)));
+        if (!data || data.length < PAGE_SIZE) return rows;
+      }
+    },
+
+    async saveAbsence(input) {
+      if (!capabilities.absences) return { status: 'error', message: 'Falta actualizar la base de datos para guardar ausencias.' };
+      const now = new Date().toISOString();
+      const row = {
+        person_id: input.personId ?? null,
+        person_name: input.personName,
+        kind: input.kind,
+        start_date: input.startDate,
+        end_date: input.endDate,
+        note: input.note || null,
+        updated_by_name: input.actorName,
+      };
+      if (!input.id) {
+        const { data, error } = await supabase
+          .from('planning_absences')
+          .insert({ ...row, source: 'orion', created_by_name: input.actorName, orion_edited_at: now })
+          .select(ABSENCE_COLUMNS)
+          .single();
+        if (error) return { status: 'error', message: error.message };
+        return { status: 'ok', absence: toAbsence(data as Record<string, unknown>) };
+      }
+      let query = supabase.from('planning_absences').update({ ...row, orion_edited_at: now }).eq('id', input.id);
+      if (typeof input.version === 'number') query = query.eq('version', input.version);
+      const { data, error } = await query.select(ABSENCE_COLUMNS);
+      if (error) return { status: 'error', message: error.message };
+      if (data && data.length === 1) return { status: 'ok', absence: toAbsence(data[0] as Record<string, unknown>) };
+      const { data: current } = await supabase.from('planning_absences').select(ABSENCE_COLUMNS).eq('id', input.id).maybeSingle();
+      return { status: 'conflict', absence: current ? toAbsence(current as Record<string, unknown>) : null };
+    },
+
+    async deleteAbsence(id: string) {
+      const { data, error } = await supabase.from('planning_absences').delete().eq('id', id).select('id');
+      if (error) throw new Error(error.message);
+      // RLS answers a forbidden delete with zero rows, not an error.
+      if (!data?.length) throw new Error('no tienes permiso para eliminarla o ya no existe');
+    },
+
+    subscribeAbsences(onChange) {
+      if (!capabilities.absences) return () => undefined;
+      const channel = supabase
+        .channel(`planning-absences-${Math.random().toString(36).slice(2)}`)
+        .on('postgres_changes', { event: '*', schema: 'public', table: 'planning_absences' }, () => onChange())
         .subscribe();
       return () => {
         void supabase.removeChannel(channel);

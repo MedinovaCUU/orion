@@ -389,6 +389,78 @@ try {
     passed.push('calendario tipo Apple: doble clic para agregar/editar, arrastrar de día y semana, sincronizado con la tabla');
   }
 
+  // 10c. Absences (TXT, vacations…): shown in the table and the calendar, added and changed with a
+  // double-click, and a warning when someone away has a service that day.
+  if (run('absences')) {
+    const page = await open();
+    const other = await open('');
+    const absences = (target = page) => target.evaluate(() => window.__pgrid.absences());
+    const band = (label) => page.locator('.pgrid-week', { hasText: label });
+
+    // Seed: Martha has TXT on the 21st (her service that day), Francisco is on vacation 15-16 (his training).
+    await band('19 AL 23 OCTUBRE').locator('.pgrid-week__away', { hasText: 'Martha Carbajal' }).waitFor();
+    assert.match(await band('12 AL 16 OCTUBRE').locator('.pgrid-week__away').innerText(), /Vacaciones\s+Francisco Lopez · jue 15 a vie 16/);
+    const martha = rowByText(page, 'Hospital Poniente de Prueba').locator('.pgrid-warn--away');
+    await martha.waitFor();
+    assert.match(await martha.getAttribute('aria-label'), /Martha Carbajal tiene TXT \(21\/10\)/);
+    await page.locator('.pgrid-stats', { hasText: '2 con ausencia' }).waitFor();
+
+    // Table: "+ Ausencia" on a week band.
+    await band('26 AL 30 OCTUBRE').getByRole('button', { name: '+ Ausencia' }).click();
+    const card = page.getByRole('dialog', { name: 'Nueva ausencia' });
+    await card.waitFor();
+    await page.keyboard.type('Alfredo Acevedo');
+    await card.getByLabel('Hasta').fill('2026-10-28');
+    await card.getByLabel('Persona').press('Enter');
+    await band('26 AL 30 OCTUBRE').locator('.pgrid-week__away', { hasText: 'TXT Alfredo Acevedo · lun 26 a mié 28' }).waitFor();
+    await page.waitForFunction(() => window.__pgrid.absences().some((entry) => entry.personName === 'Alfredo Acevedo' && entry.startDate === '2026-10-26' && entry.endDate === '2026-10-28' && entry.kind === 'TXT'));
+    // The other user sees it without reloading.
+    await other.locator('.pgrid-week__away', { hasText: 'Alfredo Acevedo' }).waitFor({ timeout: 5000 });
+
+    // Calendar: double-click a day, switch to "Ausencia", Enter.
+    await page.getByRole('button', { name: 'Calendario', exact: true }).click();
+    await page.locator('.pgrid-cal__day[data-day="2026-10-21"] .pgrid-cal__away', { hasText: 'Martha' }).waitFor();
+    const day14 = page.locator('.pgrid-cal__day[data-day="2026-10-14"]');
+    const box = await day14.boundingBox();
+    await day14.dblclick({ position: { x: 12, y: box.height - 6 } });
+    await page.getByRole('dialog', { name: 'Nueva actividad' }).getByRole('button', { name: 'Ausencia' }).click();
+    const awayCard = page.getByRole('dialog', { name: 'Nueva ausencia' });
+    await awayCard.waitFor();
+    await page.screenshot({ path: path.join(SHOTS, '10c-absence-new.png') });
+    await page.keyboard.type('D. Garcia');
+    await page.keyboard.press('Enter');
+    await day14.locator('.pgrid-cal__away', { hasText: 'D. Garcia' }).waitFor();
+    await page.waitForFunction(() => window.__pgrid.absences().some((entry) => entry.personName === 'Diego Garcia Garcia'));
+    let diego = (await absences()).find((entry) => entry.personName === 'Diego Garcia Garcia');
+    assert.deepEqual([diego.kind, diego.startDate, diego.endDate], ['TXT', '2026-10-14', '2026-10-14'], 'short name resolved to the person');
+    // Diego's corrective on Wednesday the 14th now warns.
+    await page.locator('.pgrid-stats', { hasText: '3 con ausencia' }).waitFor();
+
+    // Double-click the absence to change it; clicking outside keeps the change.
+    await day14.locator('.pgrid-cal__away', { hasText: 'D. Garcia' }).dblclick();
+    const editCard = page.getByRole('dialog', { name: 'Ausencia', exact: true });
+    await editCard.getByLabel('Tipo').selectOption('PERMISO');
+    await page.mouse.click(5, 5);
+    await day14.locator('.pgrid-cal__away', { hasText: 'Permiso' }).waitFor();
+    await page.waitForFunction((id) => window.__pgrid.absences().some((entry) => entry.id === id && entry.version === 2), diego.id);
+    diego = (await absences()).find((entry) => entry.id === diego.id);
+    assert.deepEqual([diego.kind, diego.version], ['PERMISO', 2]);
+
+    // Delete and undo.
+    await day14.locator('.pgrid-cal__away', { hasText: 'D. Garcia' }).dblclick();
+    await editCard.getByRole('button', { name: 'Eliminar' }).click();
+    await day14.locator('.pgrid-cal__away').waitFor({ state: 'detached' });
+    await page.waitForFunction(() => !window.__pgrid.absences().some((entry) => entry.personName === 'Diego Garcia Garcia'));
+    await page.getByRole('button', { name: 'Deshacer' }).click();
+    await day14.locator('.pgrid-cal__away', { hasText: 'D. Garcia' }).waitFor();
+    await page.screenshot({ path: path.join(SHOTS, '10c-absences-calendar.png') });
+    await page.getByRole('button', { name: 'Tabla', exact: true }).click();
+    await page.screenshot({ path: path.join(SHOTS, '10c-absences-table.png') });
+    await page.close();
+    await other.close();
+    passed.push('ausencias (TXT, vacaciones): en tabla y calendario, doble clic para agregar/editar, avisos y en vivo');
+  }
+
   // 11. Excel: export the month and import it back (duplicates detected).
   if (run('excel')) {
     const page = await open();

@@ -75,7 +75,28 @@ try {
   const moved = record.movePatch({ ...rec, values: { ...rec.values, scheduledDate: '2026-10-14' } }, weeks.weekFromMonday('2026-11-02'));
   assert.equal(moved.scheduledDate, '2026-11-04', 'Wednesday stays Wednesday');
 
-  console.log('PASS: clipboard round trip, typed dates, weeks across months and years, day text, overlaps with rules, field-precise patches.');
+  // Absences: sheet notes become dated absences inside their week; someone away with a service is flagged.
+  const { sheetNoteToAbsences, describeAbsenceDates } = await server.ssrLoadModule('/src/modules/service-planning/grid/planningAbsences.ts');
+  const sheetWeek = { tab: 'OCTUBRE', rawLabel: '28 AL 02 OCTUBRE', weekLabel: '28 AL 02 OCTUBRE', weekStart: '2026-09-28', weekEnd: '2026-10-02', monthKey: '2026-10' };
+  const people = [{ id: 'm', nombre_completo: 'Ana Ruiz', rol: 'tecnico' }, { id: 'l', nombre_completo: 'Luis Mora', rol: 'tecnico' }];
+  const note = (text, daysLabel, personText) => ({ tab: 'OCTUBRE', sheetRow: 9, week: sheetWeek, text, kind: 'TXT', daysLabel, personText });
+  const across = sheetNoteToAbsences(note('30 AL 01 VAC ANA', '30 AL 01', 'ANA'), people);
+  assert.deepEqual(across.map((entry) => [entry.personName, entry.personId, entry.kind, entry.startDate, entry.endDate]), [['Ana Ruiz', 'm', 'VAC', '2026-09-30', '2026-10-01']], 'a range across months');
+  const split = sheetNoteToAbsences(note('28 Y 02 TXT ANA / LUIS', '28 Y 02', 'ANA / LUIS'), people);
+  assert.deepEqual(split.map((entry) => [entry.personName, entry.startDate, entry.endDate]), [
+    ['Ana Ruiz', '2026-09-28', '2026-09-28'], ['Ana Ruiz', '2026-10-02', '2026-10-02'], ['Luis Mora', '2026-09-28', '2026-09-28'], ['Luis Mora', '2026-10-02', '2026-10-02'],
+  ], 'separate days and several people');
+  assert.equal(new Set(split.map((entry) => entry.sheetKey)).size, 4, 'stable distinct keys');
+  assert.deepEqual(sheetNoteToAbsences(note('TXT LUIS', '', 'LUIS'), people).map((entry) => [entry.startDate, entry.endDate]), [['2026-09-28', '2026-10-02']], 'no days: the work week');
+  assert.deepEqual(sheetNoteToAbsences(note('LLEVAR REFACCIONES', '', 'LLEVAR REFACCIONES'), people), [], 'not an absence');
+  assert.equal(describeAbsenceDates({ startDate: '2026-10-14', endDate: '2026-10-16' }), 'mié 14 a vie 16');
+  const away = [{ id: 'a1', personName: 'Ana', kind: 'TXT', startDate: '2026-10-13', endDate: '2026-10-13' }];
+  const withAway = findScheduleConflicts(items, undefined, away);
+  assert.ok(withAway.get('r1').some((entry) => entry.kind === 'absence' && entry.otherLabel === 'TXT'), 'Ana has TXT the day of her service');
+  assert.ok(withAway.get('r5').some((entry) => entry.kind === 'absence'), 'also as companion');
+  assert.ok(!withAway.has('r4') || !withAway.get('r4').some((entry) => entry.kind === 'absence'), 'activity without a day is not flagged');
+
+  console.log('PASS: clipboard round trip, typed dates, weeks across months and years, day text, overlaps with rules, field-precise patches, sheet notes to absences, absence warnings.');
 } finally {
   await server.close();
 }

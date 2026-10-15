@@ -4,7 +4,9 @@ import { buildPlanningSubject, formatPlanningPersonName, normalizeText } from '.
 import GridTable, { type GridMenuRequest } from './GridTable';
 import { ColumnsPanel, ConfirmDialog, ConflictRulesPanel, FilterPanel, Floating, MenuList, ViewsPanel, WeekPicker, type MenuItem } from './GridMenus';
 import { buildGridRows } from './gridRows';
+import AbsencePopover from './AbsencePopover';
 import HistoryPanel from './HistoryPanel';
+import { ABSENCE_SHORT, overlaps, type AbsenceInput, type PlanningAbsence } from './planningAbsences';
 import ImportDialog, { type ImportItem } from './ImportDialog';
 import PlanningCalendar from './PlanningCalendar';
 import type { CustomColumn, GridSettings, PlanningBackend, SavedView } from './planningBackend';
@@ -83,7 +85,7 @@ export default function PlanningGrid(props: PlanningGridProps) {
     };
   }, [onPersisted, store]);
 
-  const emptySnapshot = useMemo(() => ({ loading: true, loadError: null, records: new Map(), rowStates: new Map(), drafts: [], lastSavedAt: null, notices: [], remoteChangedIds: new Set<string>(), canUndo: false }), []);
+  const emptySnapshot = useMemo(() => ({ loading: true, loadError: null, records: new Map(), rowStates: new Map(), drafts: [], lastSavedAt: null, notices: [], remoteChangedIds: new Set<string>(), canUndo: false, absences: [] }), []);
   const snapshot = useSyncExternalStore(store ? store.subscribe : () => () => undefined, store ? store.getSnapshot : () => emptySnapshot);
 
   // ----- preferences -----
@@ -196,7 +198,20 @@ export default function PlanningGrid(props: PlanningGridProps) {
     [canEdit, collapsed, filters.dateFrom, filters.dateTo, items, month, snapshot.drafts, today],
   );
   const rules: ConflictRules = { ...DEFAULT_CONFLICT_RULES, ...(settings.conflictRules || {}) };
-  const scheduleConflicts = useMemo(() => findScheduleConflicts(allItems, rules), [allItems, rules.enabled, rules.includeCompanions, rules.sameLocalityIsConflict]); // eslint-disable-line react-hooks/exhaustive-deps
+  const absences = snapshot.absences as PlanningAbsence[];
+  const scheduleConflicts = useMemo(() => findScheduleConflicts(allItems, rules, absences), [absences, allItems, rules.enabled, rules.includeCompanions, rules.sameLocalityIsConflict]); // eslint-disable-line react-hooks/exhaustive-deps
+  const weekAbsences = useMemo(() => {
+    const map = new Map<string, PlanningAbsence[]>();
+    rows.forEach((row) => {
+      if (row.kind !== 'week') return;
+      const inWeek = absences
+        .filter((absence) => overlaps(absence, row.week.start, row.week.end))
+        .sort((left, right) => left.startDate.localeCompare(right.startDate) || left.personName.localeCompare(right.personName, 'es'));
+      if (inWeek.length) map.set(row.week.start, inWeek);
+    });
+    return map;
+  }, [absences, rows]);
+  const [absenceCard, setAbsenceCard] = useState<{ anchor: DOMRect; week: PlanningWeek; absence?: PlanningAbsence } | null>(null);
   const optionsSource = useMemo(() => buildOptionsSource(records, profiles, equipments), [equipments, profiles, records]);
   const parseContext = useMemo(() => ({ profiles, referenceDate: `${month}-15` }), [month, profiles]);
 
@@ -205,15 +220,18 @@ export default function PlanningGrid(props: PlanningGridProps) {
     let done = 0;
     let unassigned = 0;
     let conflicted = 0;
+    let away = 0;
     for (const item of scopeItems) {
       if (isDone(item.record, item.values)) done += 1;
       else {
         pending += 1;
         if (!item.values.engineer) unassigned += 1;
       }
-      if (scheduleConflicts.has(item.record.id)) conflicted += 1;
+      const found = scheduleConflicts.get(item.record.id) || [];
+      if (found.some((conflict) => conflict.kind === 'activity')) conflicted += 1;
+      if (found.some((conflict) => conflict.kind === 'absence')) away += 1;
     }
-    return { pending, done, unassigned, conflicted };
+    return { pending, done, unassigned, conflicted, away };
   }, [scheduleConflicts, scopeItems]);
 
   const filterOptions = useMemo(() => {
@@ -343,6 +361,17 @@ export default function PlanningGrid(props: PlanningGridProps) {
     const [id] = await store.insertValues([{ week, values }]);
     if (id) notify('info', `Agregada: ${values.locality}.`);
     return id || null;
+  };
+
+  const saveAbsence = (input: AbsenceInput & { id?: string }) => {
+    if (!store) return;
+    void store.saveAbsence(input).then((saved) => {
+      if (saved) notify('info', `${input.id ? 'Ausencia actualizada' : 'Ausencia agregada'}: ${ABSENCE_SHORT[saved.kind]} de ${formatPlanningPersonName(saved.personName) || saved.personName}.`);
+    });
+  };
+  const deleteAbsence = (id: string) => {
+    if (!store) return;
+    void store.deleteAbsence(id).then(() => notify('info', 'Ausencia eliminada. Usa ↶ para deshacer.'));
   };
 
   const importItems = async (importItemsList: ImportItem[]) => {
@@ -496,6 +525,7 @@ export default function PlanningGrid(props: PlanningGridProps) {
             <span>{indicators.done} realizadas</span>
             {indicators.unassigned ? <button type="button" onClick={() => setFilters((state) => ({ ...state, filters: { ...state.filters, status: ['sin_asignar'] } }))}>{indicators.unassigned} sin ingeniero</button> : null}
             {indicators.conflicted ? <span className="is-warn" title="Misma persona, mismos días, distinto lugar">{indicators.conflicted} con empalme</span> : null}
+            {indicators.away ? <span className="is-warn" title="Alguien asignado tiene TXT, vacaciones u otra ausencia ese día">{indicators.away} con ausencia</span> : null}
           </span>
           <span className={`pgrid-sync pgrid-sync--${syncTone}`} role="status" aria-live="polite">
             <i aria-hidden="true" />
@@ -562,6 +592,9 @@ export default function PlanningGrid(props: PlanningGridProps) {
             onMoveToWeek={moveToWeek}
             onDelete={(id) => (canDelete ? setConfirmDelete([id]) : notify('info', 'Tu usuario no puede eliminar actividades.'))}
             onNotify={notify}
+            absences={absences}
+            onSaveAbsence={saveAbsence}
+            onDeleteAbsence={deleteAbsence}
             onOpenInTable={(id) => {
               setLayout('table');
               setTimeout(() => setFocusRequest({ rowKey: id, nonce: Date.now() }), 30);
@@ -600,6 +633,14 @@ export default function PlanningGrid(props: PlanningGridProps) {
             onRowMenu={(request) => (request.x >= 0 ? setRowMenu(request) : undefined)}
             onSelectionChange={setSelectedIds}
             onNotify={notify}
+            weekAbsences={weekAbsences}
+            onAbsenceCard={(request) => {
+              if (!request.absence && !capabilities?.absences) {
+                notify('info', 'Las ausencias se activan con la actualización de base de datos pendiente.');
+                return;
+              }
+              setAbsenceCard(request);
+            }}
           />
         ) : null}
         {historyRecord && backend ? <HistoryPanel key={historyRecord.id} backend={backend} record={historyRecord} customColumns={customColumns} onClose={() => setHistoryId(null)} /> : null}
@@ -691,6 +732,39 @@ export default function PlanningGrid(props: PlanningGridProps) {
         </Floating>
       ) : null}
 
+      {absenceCard ? (
+        <AbsencePopover
+          key={absenceCard.absence?.id || `new-${absenceCard.week.start}`}
+          mode={absenceCard.absence ? 'edit' : 'new'}
+          anchor={absenceCard.anchor}
+          initial={
+            absenceCard.absence
+              ? { personName: absenceCard.absence.personName, personId: absenceCard.absence.personId, kind: absenceCard.absence.kind, startDate: absenceCard.absence.startDate, endDate: absenceCard.absence.endDate, note: absenceCard.absence.note }
+              : { personName: '', kind: 'TXT', startDate: absenceCard.week.start, endDate: absenceCard.week.start, note: '' }
+          }
+          people={optionsSource.people}
+          profiles={profiles}
+          readOnly={!canEdit}
+          source={absenceCard.absence?.source}
+          onCancel={() => setAbsenceCard(null)}
+          onSave={(input) => {
+            const current = absenceCard.absence;
+            setAbsenceCard(null);
+            if (!current) return saveAbsence(input);
+            const changed = input.personName !== current.personName || input.kind !== current.kind || input.startDate !== current.startDate || input.endDate !== current.endDate || input.note !== current.note;
+            if (changed) saveAbsence({ ...input, id: current.id });
+          }}
+          onDelete={
+            absenceCard.absence
+              ? () => {
+                  const id = absenceCard.absence!.id;
+                  setAbsenceCard(null);
+                  deleteAbsence(id);
+                }
+              : undefined
+          }
+        />
+      ) : null}
       {rowMenu ? (
         <Floating x={rowMenu.x} y={rowMenu.y} onClose={() => setRowMenu(null)} label="Acciones de la actividad">
           <MenuList items={rowMenuItems(rowMenu)} onClose={() => setRowMenu(null)} />
