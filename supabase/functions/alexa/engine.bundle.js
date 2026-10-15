@@ -30017,6 +30017,14 @@ const worstStatus = (statuses) => statuses.reduce((worst, status) => {
 	return worst;
 }, null);
 const unique = (values) => Array.from(new Set(values.filter((value) => Boolean(value))));
+const openMissingData = (events) => {
+	const lastEvaluated = /* @__PURE__ */ new Map();
+	const key = (event) => `${event.testKey}|${event.stage || ""}`;
+	events.forEach((event) => {
+		if (isEvaluated(event)) lastEvaluated.set(key(event), Math.max(lastEvaluated.get(key(event)) ?? -Infinity, timestampValue(event)));
+	});
+	return unique(events.filter((event) => timestampValue(event) > (lastEvaluated.get(key(event)) ?? -Infinity)).flatMap((event) => event.missingData));
+};
 const latestByTimestamp = (items) => [...items].sort((left, right) => (right.lastAt || "").localeCompare(left.lastAt || ""));
 const bplToneFromStatus = (status) => {
 	if (status === "rejected") return "rejected";
@@ -30228,7 +30236,7 @@ const buildBplSerialSummary = (serial, events) => {
 			controlName: latestControl?.controlOrCalibratorName || null,
 			controlLot: latestControl?.lotNumber || null,
 			reagentBarcodes: unique(testEvents.flatMap((event) => [event.consumption?.reagentBarcode1, event.consumption?.reagentBarcode2])),
-			missingData: unique(testEvents.flatMap((event) => event.missingData)),
+			missingData: openMissingData(testEvents),
 			ruleIds: unique(testEvents.flatMap((event) => event.ruleIds)),
 			statusFlips,
 			links,
@@ -30311,7 +30319,7 @@ const buildBplSerialSummary = (serial, events) => {
 		rejectedTests,
 		pendingTests,
 		acceptedTests,
-		missingData: unique(sorted.flatMap((event) => event.missingData)),
+		missingData: openMissingData(sorted),
 		pendingResults: BPL_LINKED_STAGES.reduce((accumulator, stage) => {
 			accumulator[stage] = tests.flatMap((test) => test.links.filter((link) => link.stage === stage && link.state === "pending").map((link) => stage === "quality_control" && link.material ? `${test.testName} (${link.material})` : test.testName));
 			return accumulator;

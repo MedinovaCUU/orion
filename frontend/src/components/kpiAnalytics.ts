@@ -19,6 +19,7 @@ export interface TicketPoint {
   responsibleId: string | null; responsible: string;
   openedAt: number; closedAt: number | null; hours: number | null; target: number | null; outcome: Outcome;
   openedInPeriod: boolean; closedInPeriod: boolean; evaluable: boolean; cancelled: boolean;
+  closureReason: string | null; hasFirstResponse: boolean;
 }
 
 const HOUR = 3600000;
@@ -46,6 +47,7 @@ export function toPoint(row: KpiRecord): TicketPoint | null {
     target: num(row.sla_target_hours), outcome,
     openedInPeriod: row.opened_in_period === true, closedInPeriod: row.closed_in_period === true,
     evaluable: row.sla_evaluable === true, cancelled,
+    closureReason: text(row.closure_reason), hasFirstResponse: row.has_first_response === true,
   };
 }
 export const toPoints = (rows: KpiRecord[]) => rows.map(toPoint).filter((point): point is TicketPoint => point !== null);

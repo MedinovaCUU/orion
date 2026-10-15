@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { Loader } from './OrionLoader';
-import { fetchAllKpiRecords } from './serviceKpiApi';
+import { fetchAllKpiRecords, fetchLateCauses } from './serviceKpiApi';
+import { causeBreakdown, isLate, lateCause, type LateInfo } from './lateCauses';
 import { hidePointPerson } from '../config/presentationPrivacy';
 import {
   bucketLabel, chartsFor, formatCount, num, SERIES_COLORS, STATUS_DANGER, type Drill, type KpiSummary, type KpiView,
@@ -106,6 +107,7 @@ export default function ServiceKpiTimeLab({ view, summary, filters, revision, on
   const [heatMetric, setHeatMetric] = useState<'llegadas' | 'fuera'>('llegadas');
   const [dimension, setDimension] = useState<DimensionKey>('responsable');
   const [selection, setSelection] = useState<(Selection & { key: string }) | null>(null);
+  const [causes, setCauses] = useState<{ key: string; infos: Map<string, LateInfo> | null; error?: string } | null>(null);
   const filtersKey = JSON.stringify(filters);
   const requestKey = `${filtersKey}|${revision}`;
   const cutAt = Date.parse(summary.period.cut_at);
@@ -134,6 +136,20 @@ export default function ServiceKpiTimeLab({ view, summary, filters, revision, on
   const loading = !seen || state.key !== requestKey;
   const error = state.key === requestKey ? state.error : undefined;
   const points = state.points;
+  // Causes of the out-of-time closures: codes, parts wait and failure text, only for the late tickets.
+  const lateIds = useMemo(() => (state.key === requestKey ? points.filter(isLate).map(point => point.id) : null), [points, state.key, requestKey]);
+  useEffect(() => {
+    if (!lateIds) return;
+    let active = true;
+    const key = requestKey;
+    fetchLateCauses(lateIds)
+      .then(rows => { if (active) setCauses({ key, infos: new Map(rows.map(row => [row.ticket_id, row])) }); })
+      .catch(cause => { if (active) setCauses({ key, infos: null, error: (cause as Error).message }); });
+    return () => { active = false; };
+  }, [lateIds, requestKey]);
+  const lateInfos = causes && causes.key === requestKey ? causes.infos : null;
+  const causesReady = Boolean(lateInfos);
+  const causeRows = useMemo(() => (lateInfos ? causeBreakdown(points.filter(isLate), lateInfos) : []), [points, lateInfos]);
   const select = (title: string, list: TicketPoint[]) => {
     if (!list.length) return;
     setSelection({ title, points: list, key: requestKey });
@@ -268,8 +284,14 @@ export default function ServiceKpiTimeLab({ view, summary, filters, revision, on
       grid: { left: 8, right: 10, top: 10, bottom: 52, containLabel: true },
       tooltip: { ...tooltipBase, trigger: 'item', formatter: (event: { value: [number, number, number | '-'] }) => {
         const [hour, day] = event.value; const list = cells[day][hour]; const share = lateShare(list);
-        return `<strong>${WEEKDAYS[day]} · ${hour}:00–${hour + 1}:00</strong><div style="margin-top:4px">${list.length} tickets abiertos</div>`
+        const head = `<strong>${WEEKDAYS[day]} · ${hour}:00–${hour + 1}:00</strong><div style="margin-top:4px">${list.length} tickets abiertos</div>`
           + `<div style="color:${MUTED};font-size:10px">${share.n ? `${share.late} de ${share.n} cierres evaluables fuera del plazo` : 'Sin cierres evaluables'}</div>`;
+        if (heatMetric !== 'fuera' || !share.late) return head;
+        if (!lateInfos) return `${head}<div style="margin-top:6px;color:${MUTED};font-size:10px">Cargando causas…</div>`;
+        const rows = causeBreakdown(list.filter(isLate), lateInfos);
+        return `${head}<div style="margin-top:6px;font-size:10px;color:${MUTED};text-transform:uppercase;letter-spacing:.06em">Por qué quedaron fuera</div>`
+          + rows.slice(0, 5).map(row => `<div style="display:flex;gap:10px;justify-content:space-between"><span>${html(row.label)}</span><b>${Math.round(row.share * 100)} % · ${row.n}</b></div>`).join('')
+          + (rows.length > 5 ? `<div style="color:${MUTED};font-size:10px">y ${rows.length - 5} causas más</div>` : '');
       } },
       xAxis: { type: 'category', data: Array.from({ length: 24 }, (_, hour) => String(hour)), axisLabel: { ...axisLabel, interval: 1 }, axisLine, axisTick: { show: false }, splitArea: { show: false },
         name: 'Hora de apertura', nameLocation: 'middle', nameGap: 22, nameTextStyle: { color: MUTED, fontSize: 10 } },
@@ -280,7 +302,7 @@ export default function ServiceKpiTimeLab({ view, summary, filters, revision, on
       series: [{ type: 'heatmap', data, cursor: 'pointer', itemStyle: { borderColor: '#fff', borderWidth: 2, borderRadius: 3 }, emphasis: { itemStyle: { borderColor: INK, borderWidth: 1 } } }],
     };
     return { cells, peak, option };
-  }, [points, timeZone, heatMetric, minSample]);
+  }, [points, timeZone, heatMetric, minSample, lateInfos]);
   const arrivalHandlers: ChartHandlers = {
     click: event => {
       const value = event.value as [number, number] | undefined;
@@ -371,7 +393,20 @@ export default function ServiceKpiTimeLab({ view, summary, filters, revision, on
         <ChartPanel title="Cuándo llegan los tickets" file="llegadas_semana" option={arrivals.option} handlers={arrivalHandlers} height={300}
           label="Mapa de calor de tickets abiertos por día de la semana y hora del día"
           note={heatMetric === 'llegadas' ? `Aperturas por día y hora (${timeZone}). Clic en una celda para listarlas.` : `% de cierres fuera del plazo según la hora de apertura; vacío con menos de ${minSample} casos.`}
-          controls={() => <Segmented label="Medida del mapa" value={heatMetric} onChange={setHeatMetric} options={[['llegadas', 'Llegadas'], ['fuera', '% fuera']]} />} />
+          controls={() => <Segmented label="Medida del mapa" value={heatMetric} onChange={setHeatMetric} options={[['llegadas', 'Llegadas'], ['fuera', '% fuera']]} />}
+          footer={heatMetric === 'fuera' ? <div className="kpi-lab-causes">
+            <strong>Por qué quedaron fuera del plazo <span>{formatCount(points.filter(isLate).length)} cierres del periodo · pasa el cursor por una celda para verlo por hora</span></strong>
+            {causes?.key === requestKey && causes.error ? <p className="kpi-note">No se pudieron cargar las causas: {causes.error}</p>
+              : !causesReady ? <p className="kpi-note">Cargando causas…</p>
+              : !causeRows.length ? <p className="kpi-note">Sin cierres fuera del plazo en el periodo.</p>
+              : <ul>{causeRows.map(row => <li key={row.key}>
+                <button type="button" onClick={() => select(`Fuera del plazo · ${row.label}`, points.filter(point => isLate(point) && lateCause(point, lateInfos?.get(point.id)).key === row.key))}>
+                  <span>{row.label}{row.byText ? <small>{row.byCode ? `${row.byCode} por código, ${row.byText} por descripción` : 'según la descripción'}</small> : row.byCode ? <small>por código de avería</small> : null}</span>
+                  <i aria-hidden="true"><b style={{ width: `${row.share / causeRows[0].share * 100}%` }} /></i>
+                  <em>{Math.round(row.share * 100)} % · {row.n}</em>
+                </button></li>)}</ul>}
+            <p className="kpi-note">Una causa por ticket: sin respuesta del usuario, sin primera respuesta de soporte (tickets de Orion), espera de piezas, visita agendada o la falla (código de avería si existe; si no, por palabras de la descripción, aproximado).</p>
+          </div> : undefined} />
         <ChartPanel wide title="Cumplimiento del plazo por grupo" file="cumplimiento_grupo" option={compliance.option} handlers={complianceHandlers} height={compliance.height}
           label="Porcentaje de cierres dentro del plazo por grupo, con intervalo de confianza del 95 % y tamaño de muestra"
           note={<>Punto: % dentro del plazo; barra: intervalo 95 %; a la derecha, cierres fuera del plazo de los evaluables. Rojo o verde solo cuando la diferencia con el general es clara; huecos con menos de {minSample} casos.{compliance.hidden ? ` ${compliance.hidden} grupos más pequeños no se muestran.` : ''}</>}
@@ -385,12 +420,13 @@ export default function ServiceKpiTimeLab({ view, summary, filters, revision, on
           <button type="button" className="tc-text-button" onClick={() => setSelection(null)}>Quitar selección</button>
         </header>
         <div className="tc-table-scroll"><table className="tc-table kpi-mini-table">
-          <thead><tr><th>Folio</th><th>Cliente</th><th>Responsable</th><th>Apertura</th><th>Tiempo hasta el cierre</th><th>Plazo</th></tr></thead>
+          <thead><tr><th>Folio</th><th>Cliente</th><th>Responsable</th><th>Apertura</th><th>Tiempo hasta el cierre</th><th>Plazo</th>{sel.points.some(isLate) && <th>Causa</th>}</tr></thead>
           <tbody>{[...sel.points].sort((a, b) => (b.hours ?? -1) - (a.hours ?? -1)).slice(0, 80).map(point => <tr key={point.id} className="is-clickable" tabIndex={0}
             onClick={() => onOpenTicket({ id: point.id, folio: point.folio })} onKeyDown={event => { if (event.key === 'Enter') onOpenTicket({ id: point.id, folio: point.folio }); }}>
             <td><strong>{point.folio}</strong></td><td>{point.client}</td><td>{point.responsible}</td><td>{dateTime(point.openedAt)}</td>
             <td>{point.hours === null ? 'Abierto' : formatSpan(point.hours)}</td>
             <td><span className="kpi-lab-outcome"><i className="kpi-lab-dot" style={{ background: outcomeColors[point.outcome] }} />{outcomeLabels[point.outcome]}</span></td>
+            {sel.points.some(isLate) && <td>{isLate(point) ? (() => { const cause = lateCause(point, lateInfos?.get(point.id)); return <>{lateInfos ? cause.label : 'Cargando…'}{cause.detail && <small>{cause.detail}</small>}</>; })() : <small>—</small>}</td>}
           </tr>)}</tbody>
         </table></div>
         {sel.points.length > 80 && <p className="kpi-note">Se muestran los 80 con mayor tiempo; acota la selección para ver el resto.</p>}

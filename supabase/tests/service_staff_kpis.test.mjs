@@ -66,7 +66,8 @@ for (const name of ['20260924010000_ticket_service_metrics.sql', '20260924020000
   '20261011030000_service_staff_kpis_performance.sql', '20261012010000_servicios_historial_detalle_biosisa.sql',
   '20261012020000_kpi_tickets_historicos_biosisa.sql', '20261012030000_kpi_rendimiento_historicos.sql',
   '20261012040000_kpi_tickets_biosisa_evaluados.sql', '20261012050000_ticket_service_links.sql',
-  '20261013140000_ticket_satisfaction_attire.sql', '20261013140100_kpi_survey_attire.sql', '20261013160000_service_parts_lab.sql', '20261013160100_service_parts_lab_service_model.sql']) {
+  '20261013140000_ticket_satisfaction_attire.sql', '20261013140100_kpi_survey_attire.sql', '20261013160000_service_parts_lab.sql', '20261013160100_service_parts_lab_service_model.sql',
+  '20261015040000_kpi_late_causes.sql']) {
   await db.exec(await migration(name));
 }
 console.log('PASS: migration applies on top of the ticket, routing, satisfaction and visibility migrations');
@@ -522,5 +523,34 @@ await as('e1');
 await assert.rejects(db.query('select get_service_parts_lab($1)', [MAY]), /exclusivos para administradores/);
 await db.exec('reset role');
 console.log('PASS: parts lab: field services only, separate records, sector inference by serial, platform normalization, parts vs reagents, filters, admin only');
+
+// ── Causes of out-of-time closures (time lab) ─────────────────────────────────────────────
+const LT = n => id('7', n);
+await db.exec(`
+insert into catalogo_servicio values ('averia','AX03','AX','Otros','Mantenimiento preventivo agendado');
+insert into tickets(id, asunto, descripcion, estado, creado_en, numero_caso, numero_serie_equipo) values
+ ('${LT(1)}','Lampara en final de vida.','Se instala lampara de uso. [Importado de Biosisa] Ticket Biosisa #1 · Contacto: Persona','cerrado','2026-06-01T16:00:00Z','BIO-9001','SER-A'),
+ ('${LT(2)}','Ticket de soporte Biosisa 9002','[Importado de Biosisa] Ticket Biosisa #9002 · Estado en Biosisa: Cerrado por Falta de Respuesta','cerrado','2026-06-02T16:00:00Z','BIO-9002','SER-B'),
+ ('${LT(3)}','[Soporte Ingeniero] Ruido','Ruido en brazo','pendiente_piezas','2026-06-03T16:00:00Z','OR-9003','SER-C');
+insert into ticket_bitacora(ticket_id, numero_serie_equipo, tipo, detalle, visible_cliente, creado_por, creado_en, codigo_averia) values
+ ('${LT(3)}','SER-C','visita','Visita',false,'${P.e1}','2026-06-04T16:00:00Z','al13'),('${LT(3)}','SER-C','visita','Visita',false,'${P.e1}','2026-06-05T16:00:00Z','AX03');
+insert into servicios_historial(id, ticket_id, no_serie, cda, motivo, tecnico_id, fecha_servicio) values ('${id('8', 1)}','${LT(1)}','SER-A','AL08','MANTTO CORRECTIVO','${P.e1}','2026-06-02');
+insert into ticket_state_history(ticket_id, estado, changed_at) values ('${LT(3)}','pendiente_piezas','2026-06-04T18:00:00Z');
+`);
+await as('admin');
+const lateRows = (await one('select get_ticket_late_causes($1) as r', [[LT(1), LT(2), LT(3), LT(1)]])).r;
+const lateBy = Object.fromEntries(lateRows.map(row => [row.ticket_id, row]));
+assert.equal(lateRows.length, 3, 'one row per ticket');
+assert.deepEqual(lateBy[LT(1)].codes, [{ code: 'AL08', family: 'Electrónica', label: 'Lámpara' }], 'service history code with its catalog family');
+assert.equal(lateBy[LT(1)].text, 'Lampara en final de vida. · Se instala lampara de uso.', 'the Biosisa import footer is not failure text');
+assert.deepEqual([lateBy[LT(2)].codes, lateBy[LT(2)].waited_parts], [[], false]);
+assert.deepEqual(lateBy[LT(3)].codes, [{ code: 'AL13', family: 'Electrónica', label: 'Fuente' }], 'logbook codes are normalized; AX administrative codes are not failures');
+assert.equal(lateBy[LT(3)].waited_parts, true);
+assert.deepEqual((await one('select get_ticket_late_causes($1) as r', [[]])).r, []);
+await assert.rejects(db.query('select get_ticket_late_causes($1)', [Array.from({ length: 3001 }, (_, n) => id('9', n))]), /Demasiados tickets/);
+await as('e1');
+await assert.rejects(db.query('select get_ticket_late_causes($1)', [[LT(1)]]), /exclusivos para administradores/);
+await db.exec('reset role');
+console.log('PASS: late causes: codes from history/logbook/reports/links with catalog family, no AX codes, parts wait, failure text without the import footer, limits, admin only');
 
 await db.close();

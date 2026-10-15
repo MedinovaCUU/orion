@@ -99,6 +99,27 @@ try {
   assert.equal(summary.stages.instrument_photometry_blank.testsAccepted, 1);
   assert.equal(summary.counts.consumption, 2);
   assert.deepEqual(summary.missingData, ['control_lot']);
+
+  // ALBUMIN-MAU (834001902, 9-oct-2026): the blank's consumption records lack the result; the later accepted
+  // result closes them. A newer run after the last result is still waiting for it: «pendiente de recibir».
+  const mau = (id, hour, overrides) => bpl.normalizeBplEvent(row({ id, occurred_at: `2026-10-09T${hour}Z`, test_name: 'ALBUMIN-MAU', ...overrides }));
+  const blankRun = [
+    mau(101, '20:10:37', { event_type: 'bpl_consumption_record', bpl_stage: 'reagent_blank', sample_class: 'BLANK', missing_data_for_acceptance: ['blank_result_value', 'blank_acceptance_limit'] }),
+    mau(102, '20:17:39', { event_type: 'bpl_consumption_record', bpl_stage: 'reagent_blank', sample_class: 'BLANK', missing_data_for_acceptance: ['blank_result_value', 'blank_acceptance_limit'] }),
+    mau(103, '20:30:42', { event_type: 'bpl_analytical_result', bpl_stage: 'reagent_blank', bpl_status: 'accepted', diagnostic_status: 'blank_accepted', sample_class: 'BLANK' }),
+    mau(104, '16:55:39', { event_type: 'bpl_consumption_record', bpl_stage: 'calibration', sample_class: 'CALIB', missing_data_for_acceptance: ['calibration_acceptance_status', 'calibration_curve'] }),
+    mau(105, '17:08:24', { event_type: 'bpl_analytical_result', bpl_stage: 'calibration', bpl_status: 'rejected', diagnostic_status: 'calibration_rejected', sample_class: 'CALIB' }),
+  ];
+  const mauTest = bpl.buildBplSerialSummary(serial, blankRun).tests.find((test) => test.testName === 'ALBUMIN-MAU');
+  assert.deepEqual(mauTest.missingData, [], 'results close the missing data of earlier consumption records of the same stage');
+  assert.equal(mauTest.stages.calibration.effectiveStatus, 'rejected');
+  const newer = [...blankRun, mau(106, '21:00:00', { event_type: 'bpl_consumption_record', bpl_stage: 'reagent_blank', sample_class: 'BLANK', missing_data_for_acceptance: ['blank_result_value'] })];
+  const mauNewer = bpl.buildBplSerialSummary(serial, newer);
+  const mauNewerTest = mauNewer.tests.find((test) => test.testName === 'ALBUMIN-MAU');
+  assert.equal(mauNewerTest.blankResult.state, 'pending', 'a run after the last result is still waiting for its result');
+  assert.deepEqual(mauNewerTest.missingData, [], 'shown as «Resultado del blanco pendiente de recibir», never as the raw code');
+  assert.deepEqual(mauNewer.pendingResults.reagent_blank, ['ALBUMIN-MAU'], 'same rule in the serial summary');
+  assert.deepEqual(mauNewer.missingData, []);
   assert.equal(summary.calibrators[0].lot, 'C-90');
   assert.equal(summary.reagentBarcodes[0].barcode, 'RB-GLU-01');
   const index = bpl.buildBplSerialIndex(rows.map(({ payload, ...rest }) => rest));
@@ -117,7 +138,11 @@ try {
 
   const projection = evidence.buildDriBplProjection(summary, catalog);
   assert.deepEqual([...projection.failedReagentIds].sort(), ['GLU', 'MALB_U']);
-  assert.deepEqual(projection.correctReagentIds, ['ALT_GPT']);
+  // ALT has several catalog entries with the same identity (generic seed ALT_GPT and the BA-200/400 IFU entry
+  // ALANINA_AM); the projection must use the representative the DRI reagent list shows, whatever its id.
+  const altRepresentative = classifier.resolveReagentForTest(catalog, { testName: 'ALT-GPT' });
+  assert.equal(getReagentDisplayCode(altRepresentative), 'ALT');
+  assert.deepEqual(projection.correctReagentIds, [altRepresentative.id]);
   assert.equal(projection.suggestedEventType, 'control_high');
   assert.equal(projection.suggestedFailureDirection, 'high');
   assert.equal(projection.controlLot, 'L-10');
@@ -152,7 +177,7 @@ try {
   assert.equal(form.controlLot, 'MANUAL', 'no pisa capturas manuales');
   assert.equal(form.calibratorLot, 'C-90');
   assert.equal(form.eventType, 'control_high');
-  assert.deepEqual(form.correctReagentIds, ['ALT_GPT']);
+  assert.deepEqual(form.correctReagentIds, [altRepresentative.id]);
   assert.equal(form.observations.includes('[BPL:OLD]'), false);
   assert.match(form.observations, /^Nota previa\.\n\n\[BPL:834001902\]/);
   assert.equal(form.evidenceItems.length, 1);
