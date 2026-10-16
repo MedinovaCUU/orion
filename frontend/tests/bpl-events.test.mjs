@@ -77,24 +77,31 @@ try {
   const summary = bpl.buildBplSerialSummary(serial, events);
   assert.equal(summary.tone, 'rejected');
   assert.equal(summary.events[0].id, '12', 'ordenado del más reciente al más antiguo');
-  assert.deepEqual(summary.rejectedTests, ['ALBUMIN-MAU', 'GLUCOSE']);
-  assert.deepEqual(summary.pendingTests, ['CHOLESTEROL']);
+  // Westgard de Orion: el control de GLUCOSE a +8 DE es una 1-3s sin repetir (alarma, no definitiva), no un rechazo.
+  assert.deepEqual(summary.rejectedTests, ['ALBUMIN-MAU']);
+  assert.deepEqual(summary.pendingTests, ['GLUCOSE', 'CHOLESTEROL']);
   assert.deepEqual(summary.acceptedTests, ['ALT-GPT', 'INSTRUMENTO']);
   const glucose = summary.tests.find((test) => test.testKey === 'GLUCOSE');
-  assert.equal(glucose.effectiveStatus, 'rejected');
-  assert.equal(glucose.stages.quality_control.effectiveStatus, 'rejected', 'el consumo posterior no borra la evaluación');
+  assert.equal(glucose.effectiveStatus, 'pending');
+  assert.equal(glucose.tone, 'alarm');
+  assert.equal(glucose.stages.quality_control.effectiveStatus, 'pending', 'el consumo posterior no borra la evaluación');
   assert.equal(glucose.stages.quality_control.hasUnevaluatedNewer, true);
+  assert.equal(glucose.qcVerdict.verdict.needsRepeat, true);
+  assert.match(glucose.qcVerdict.summary, /Alarma · Nivel 1 \+8\.0 DE \(1-3s\): repetir el control$/);
+  assert.equal(summary.events.find((event) => event.id === '5').monitorStatus, 'rejected');
+  assert.deepEqual(summary.qcNotices.repeat, ['GLUCOSE (nivel 1, 1-3s)']);
   assert.equal(glucose.stages.calibration.effectiveStatus, 'accepted');
   assert.equal(glucose.stages.reagent_blank.effectiveStatus, 'accepted');
   assert.equal(glucose.chainAccepted, false);
-  assert.equal(glucose.statusFlips, 1);
+  assert.equal(glucose.statusFlips, 0);
   assert.equal(glucose.calibratorLot, 'C-77');
   assert.equal(glucose.controlLot, 'L-10');
   assert.deepEqual(glucose.reagentBarcodes, ['RB-GLU-01']);
   const alt = summary.tests.find((test) => test.testKey === 'ALT-GPT');
   assert.equal(alt.chainAccepted, true);
-  assert.equal(summary.stages.quality_control.testsRejected, 1);
-  assert.equal(summary.stages.quality_control.testsPending, 1);
+  assert.equal(summary.stages.quality_control.testsRejected, 0);
+  assert.equal(summary.stages.quality_control.testsPending, 2);
+  assert.equal(summary.stages.quality_control.testsAlarm, 1);
   assert.equal(summary.stages.calibration.testsRejected, 1);
   assert.equal(summary.stages.instrument_photometry_blank.testsAccepted, 1);
   assert.equal(summary.counts.consumption, 2);
@@ -151,7 +158,8 @@ try {
   assert.equal(projection.reagentLot, 'RB-GLU-01');
   assert.equal(projection.eventDate, '2026-10-04');
   assert.deepEqual(projection.evidence.qcRejectedWithAcceptedChain, ['GLUCOSE']);
-  assert.deepEqual(projection.evidence.westgardRules, ['1_3s', '2_2s']);
+  // Reglas de Orion y las que reportó el analizador, con un mismo formato.
+  assert.deepEqual(projection.evidence.westgardRules, ['1-3s', '2-2s']);
   assert.deepEqual(projection.evidence.fullyAcceptedTests, ['ALT-GPT']);
   assert.equal(projection.evidence.stages.photometryBlank.effectiveStatus, 'accepted');
   assert.equal(projection.evidence.stages.calibration.rejectedTests[0], 'ALBUMIN-MAU');
@@ -161,7 +169,7 @@ try {
   assert.equal(projection.reagentMeasurements.GLU.blankAbsorbance, '0.012');
   assert.equal(projection.signalPatch.normalCurvesObserved, undefined);
   assert.match(projection.observationBlock, /^\[BPL:834001902\] Evidencia del monitor BA400 · 12 eventos/);
-  assert.match(projection.observationBlock, /GLUCOSE: QC rechazada/);
+  assert.match(projection.observationBlock, /GLUCOSE: QC fuera de control \(sesión del 3 oct: Alarma · Nivel 1 \+8\.0 DE \(1-3s\): repetir el control\)/);
   assert.equal(projection.evidenceItem.type, 'report');
 
   const baseForm = {
@@ -188,10 +196,10 @@ try {
   const result = engine.runDifferentialDiagnosisEngine(form, catalog);
   const control = result.hypotheses.find((hypothesis) => hypothesis.matchedRuleIds.includes('ba400_control_preanalytical'));
   assert(control, 'hipótesis de control presente');
-  assert(control.evidenceFor.some((line) => line.includes('QC rechazado con blanco y calibración aceptados en GLUCOSE')));
-  assert(control.evidenceFor.some((line) => line.includes('Reglas Westgard sistemáticas (2_2s)')));
+  assert(control.evidenceFor.some((line) => line.includes('QC fuera de control con blanco y calibración aceptados en GLUCOSE')));
+  assert(control.evidenceFor.some((line) => line.includes('Reglas Westgard sistemáticas (2-2s)')));
   const fluidics = result.hypotheses.find((hypothesis) => hypothesis.matchedRuleIds.includes('ba400_fluidics_pipetting'));
-  assert(fluidics.evidenceFor.some((line) => line.includes('error aleatorio (1_3s)')));
+  assert(fluidics.evidenceFor.some((line) => line.includes('error aleatorio (1-3s)')));
   const optical = result.hypotheses.find((hypothesis) => hypothesis.matchedRuleIds.includes('ba400_optical_photometry'));
   assert(!optical || optical.evidenceAgainst.some((line) => line.includes('blanco fotométrico instrumental está aceptado')));
   assert(result.evidenceRows.some((row) => row.id === 'bpl:qc' && row.score === 88));

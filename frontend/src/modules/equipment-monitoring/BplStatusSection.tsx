@@ -14,25 +14,25 @@ import {
   BPL_STAGE_SHORT_LABELS,
   BPL_STATUS_LABELS,
   BPL_TONE_LABELS,
+  bplStageTone,
   bplToneFromStatus,
+  bplToneRank,
   describeBplResultLink,
   formatBplDiagnosticStatus,
   formatBplEventTypeLabel,
   formatBplExecution,
+  formatBplMissingData,
   summarizeBplEventMetrics,
   type BplResultLink,
   type BplEvent,
   type BplSerialSummary,
   type BplStage,
-  type BplStatus,
   type BplTestSnapshot,
   type BplTone,
 } from './bplEvents';
 
 const TEST_PAGE_SIZE = 12;
 const TIMELINE_SIZE = 12;
-
-const STATUS_RANK: Record<BplStatus, number> = { rejected: 4, pending: 3, evidence_observed: 2, accepted: 1 };
 
 // Formateadores a nivel de módulo: la sección se vuelve a dibujar con cada corte y no debe construirlos por tarjeta.
 const DATE_TIME_FORMAT = new Intl.DateTimeFormat('es-MX', { dateStyle: 'medium', timeStyle: 'short' });
@@ -58,20 +58,59 @@ const formatRelativeTime = (value?: string | null) => {
   return RELATIVE_FORMAT.format(Math.round(diffMs / DAY_MS), 'day');
 };
 
-/** Evento que explica el estado vigente de la prueba: la etapa más grave y su última evaluación. */
+/**
+ * Evento que explica el estado vigente de la prueba: la etapa de tono más grave (los controles con su veredicto
+ * Westgard) y su última evaluación.
+ */
 const resolveHeadlineEvent = (test: BplTestSnapshot): { stage: BplStage; event: BplEvent } | null => {
   let best: { stage: BplStage; event: BplEvent; rank: number } | null = null;
   BPL_STAGES.forEach((stage) => {
     const state = test.stages[stage];
     const event = state?.latestEvaluated || state?.latest;
     if (!state || !event || !state.effectiveStatus) return;
-    const rank = STATUS_RANK[state.effectiveStatus];
+    const rank = bplToneRank(bplStageTone(state));
     if (!best || rank > best.rank || (rank === best.rank && (event.timestamp || '') > (best.event.timestamp || ''))) {
       best = { stage, event, rank };
     }
   });
   return best;
 };
+
+const Z_FORMAT = new Intl.NumberFormat('es-MX', { minimumFractionDigits: 1, maximumFractionDigits: 1, signDisplay: 'exceptZero' });
+
+type QcStageVerdict = NonNullable<BplTestSnapshot['qcVerdict']>;
+
+/** Veredicto evaluado de la última sesión (con resultados y media/DE del lote). */
+const evaluatedQcOf = (test: BplTestSnapshot): QcStageVerdict | null => {
+  const qc = test.qcVerdict;
+  return qc && !qc.awaitingResults && !qc.missingTargets ? qc : null;
+};
+
+/** «sesión del 21 sep: Sin hallazgos Westgard · nivel 1 −0.0 DE · nivel 2 −0.4 DE»; un nivel ya nombrado no se repite. */
+const qcSessionText = (qc: QcStageVerdict) =>
+  [
+    qc.summary,
+    ...qc.levels
+      .filter((level) => !(qc.levels.length === 1 && qc.summary.includes(level.label)))
+      .map((level) => `${level.label.toLowerCase()} ${Z_FORMAT.format(level.z)} DE`),
+  ].join(' · ');
+
+/**
+ * Controles de la última sesión cuando el titular de la tarjeta es otra etapa. Sin resultados, los avisos «pendiente
+ * de recibir» ya lo dicen; sin media ni DE, el titular dice que el control está pendiente.
+ */
+const QcSessionNote = ({ qc }: { qc: QcStageVerdict }) => (
+  <small
+    className={qc.tone === 'warning' || qc.tone === 'alarm' || qc.tone === 'rejected' ? 'equipment-monitor__bpl-missing' : undefined}
+    data-testid="bpl-qc-session"
+    data-tone={qc.tone}
+  >
+    {`Controles · ${qcSessionText(qc)}`}
+  </small>
+);
+
+/** Del resultado de control, el titular solo repite valor y límites: la z y las reglas ya van en el veredicto. */
+const QC_VALUE_METRIC = /^(Resultado|Límites|Media) /;
 
 const PIPETTED_LABELS: Record<BplResultLink['stage'], string> = {
   reagent_blank: 'Blanco pipeteado',
@@ -123,6 +162,8 @@ const ResultLinkNote = ({ link, headlineEvent }: { link: BplResultLink; headline
 const stageTone = (summary: BplSerialSummary, stage: BplStage): BplTone => {
   const overview = summary.stages[stage];
   if (overview.testsRejected) return 'rejected';
+  if (overview.testsWarning) return 'warning';
+  if (overview.testsAlarm) return 'alarm';
   if (overview.testsPending) return 'pending';
   if (overview.testsAccepted) return 'accepted';
   if (overview.lastEvent) return 'observed';
@@ -133,8 +174,10 @@ const stageHeadline = (summary: BplSerialSummary, stage: BplStage) => {
   const overview = summary.stages[stage];
   if (!overview.lastEvent) return 'Sin evidencia';
   if (overview.testsRejected) return `${overview.testsRejected} con rechazo`;
-  if (overview.testsPending) return `${overview.testsPending} pendientes`;
-  if (overview.testsAccepted) return `${overview.testsAccepted} aceptadas`;
+  if (overview.testsWarning) return `${overview.testsWarning} con advertencia`;
+  if (overview.testsAlarm) return `${overview.testsAlarm} con alarma`;
+  if (overview.testsPending) return `${overview.testsPending} ${overview.testsPending === 1 ? 'pendiente' : 'pendientes'}`;
+  if (overview.testsAccepted) return `${overview.testsAccepted} ${overview.testsAccepted === 1 ? 'aceptada' : 'aceptadas'}`;
   return 'Solo evidencia observada';
 };
 
@@ -176,10 +219,14 @@ const BplStatusSection = memo(function BplStatusSection({ serial, overview, deta
   const listNames = (names: string[]) => `${names.slice(0, 6).join(', ')}${names.length > 6 ? ` y ${names.length - 6} más` : ''}.`;
   const pendingNotices = summary
     ? [
+        summary.qcNotices.rejected.length ? `Rechazo de control confirmado: ${listNames(summary.qcNotices.rejected)}` : null,
+        summary.qcNotices.repeat.length ? `Repetir control: ${listNames(summary.qcNotices.repeat)}` : null,
+        summary.qcNotices.warning.length ? `Advertencia de control: ${listNames(summary.qcNotices.warning)}` : null,
+        summary.qcNotices.alarm.length ? `Alarma de control: ${listNames(summary.qcNotices.alarm)}` : null,
         ...BPL_LINKED_STAGES.filter((stage) => summary.pendingResults[stage].length).map(
           (stage) => `${BPL_RESULT_PENDING_LABELS[stage]}: ${listNames(summary.pendingResults[stage])}`,
         ),
-        summary.missingData.length ? `Falta para cerrar aceptación: ${listNames(summary.missingData)}` : null,
+        summary.missingData.length ? `Falta para cerrar aceptación: ${listNames(summary.missingData.map(formatBplMissingData))}` : null,
       ].filter((notice): notice is string => Boolean(notice))
     : [];
 
@@ -259,14 +306,23 @@ const BplStatusSection = memo(function BplStatusSection({ serial, overview, deta
             {visibleTests.map((test) => {
               const headline = resolveHeadlineEvent(test);
               const latestCurve = reaction.latestByTest.get(test.testKey) || null;
-              const metrics = headline ? summarizeBplEventMetrics(headline.event).slice(0, 4) : [];
+              const evaluatedQc = evaluatedQcOf(test);
+              // Si el titular es el control de calidad, el veredicto de la sesión va en el titular y no en una línea aparte;
+              // si esa sesión aún no tiene resultados (o no tiene media y DE), el titular lo dice en vez de una sesión anterior.
+              const qcHeadline = headline?.stage === 'quality_control' ? evaluatedQc : null;
+              const qcPendingHeadline = headline?.stage === 'quality_control' && !evaluatedQc ? test.qcVerdict : null;
+              const metrics = headline && !qcPendingHeadline
+                ? qcHeadline
+                  ? summarizeBplEventMetrics(headline.event).filter((part) => QC_VALUE_METRIC.test(part)).slice(0, 2)
+                  : summarizeBplEventMetrics(headline.event).slice(0, 4)
+                : [];
               const lots = [
                 test.calibratorName || test.calibratorLot ? `Calibrador ${[test.calibratorName, test.calibratorLot].filter(Boolean).join(' · ')}` : null,
                 test.controlName || test.controlLot ? `Control ${[test.controlName, test.controlLot].filter(Boolean).join(' · ')}` : null,
                 test.reagentBarcodes.length ? `Reactivo ${test.reagentBarcodes.slice(0, 2).join(' / ')}` : null,
               ].filter(Boolean);
               return (
-                <article key={test.testKey} className="equipment-monitor__bpl-test" data-tone={bplToneFromStatus(test.effectiveStatus)}>
+                <article key={test.testKey} className="equipment-monitor__bpl-test" data-tone={test.tone}>
                   <div className="equipment-monitor__event-head">
                     <strong>{test.testName}</strong>
                     <span>{formatRelativeTime(test.lastEventAt)}</span>
@@ -275,12 +331,14 @@ const BplStatusSection = memo(function BplStatusSection({ serial, overview, deta
                     {BPL_STAGES.filter((stage) => test.stages[stage]).map((stage) => {
                       const state = test.stages[stage]!;
                       const status = state.effectiveStatus || 'evidence_observed';
+                      // Los controles muestran su veredicto Westgard; las demás etapas, su estado.
+                      const stateLabel = state.qc ? state.qc.summary : BPL_STATUS_LABELS[status];
                       return (
                         <span
                           key={stage}
                           className="equipment-monitor__bpl-dot"
-                          data-tone={bplToneFromStatus(status)}
-                          title={`${BPL_STAGE_LABELS[stage]}: ${BPL_STATUS_LABELS[status]}${state.hasUnevaluatedNewer ? ' · hay evidencia nueva sin evaluar' : ''}`}
+                          data-tone={state.qc ? state.qc.tone : bplToneFromStatus(status)}
+                          title={`${BPL_STAGE_LABELS[stage]}: ${stateLabel}${state.hasUnevaluatedNewer ? ' · hay evidencia nueva sin evaluar' : ''}`}
                         >
                           {BPL_STAGE_SHORT_LABELS[stage]}
                           {state.hasUnevaluatedNewer ? <i aria-hidden="true" /> : null}
@@ -289,9 +347,13 @@ const BplStatusSection = memo(function BplStatusSection({ serial, overview, deta
                     })}
                     {test.chainAccepted ? <span className="equipment-monitor__bpl-chain">Cadena aceptada</span> : null}
                   </div>
-                  <p>
+                  <p data-testid="bpl-test-headline">
                     {headline
-                      ? `${BPL_STAGE_LABELS[headline.stage]} · ${headline.event.diagnosticStatus ? formatBplDiagnosticStatus(headline.event.diagnosticStatus) : BPL_STATUS_LABELS[headline.event.status]}`
+                      ? qcHeadline
+                        ? `${BPL_STAGE_LABELS.quality_control} · ${qcSessionText(qcHeadline)}`
+                        : qcPendingHeadline
+                          ? `${BPL_STAGE_LABELS.quality_control} · ${qcPendingHeadline.summary}`
+                          : `${BPL_STAGE_LABELS[headline.stage]} · ${headline.event.diagnosticStatus ? formatBplDiagnosticStatus(headline.event.diagnosticStatus) : BPL_STATUS_LABELS[headline.event.status]}`
                       : 'Sin evaluación registrada'}
                     {metrics.length ? ` · ${metrics.join(' · ')}` : ''}
                   </p>
@@ -299,8 +361,9 @@ const BplStatusSection = memo(function BplStatusSection({ serial, overview, deta
                   {test.links.map((link) => (
                     <ResultLinkNote key={`${link.stage}|${link.materialKey || ''}`} link={link} headlineEvent={headline?.event || null} />
                   ))}
-                  {test.missingData.length ? <small className="equipment-monitor__bpl-missing">Falta: {test.missingData.slice(0, 4).join(', ')}</small> : null}
-                  {test.ruleIds.length ? <small>Reglas {test.ruleIds.slice(0, 4).join(', ')}</small> : null}
+                  {evaluatedQc && !qcHeadline ? <QcSessionNote qc={evaluatedQc} /> : null}
+                  {test.stages.calibration?.note ? <small data-testid="bpl-calibration-note">{test.stages.calibration.note}</small> : null}
+                  {test.missingData.length ? <small className="equipment-monitor__bpl-missing">Falta: {test.missingData.slice(0, 4).map(formatBplMissingData).join(', ')}</small> : null}
                   {latestCurve ? <ReactionSparkline group={latestCurve} onOpenGroup={openReactionGroup} /> : null}
                 </article>
               );

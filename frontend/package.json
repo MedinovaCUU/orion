@@ -24,6 +24,7 @@
     "test:bpl:curves": "node tests/bpl-reaction-curves.test.mjs",
     "test:bpl:blank": "node tests/bpl-blank-results.test.mjs",
     "test:bpl:links": "node tests/bpl-calibration-control-links.test.mjs",
+    "test:bpl:westgard": "node tests/bpl-westgard.test.mjs",
     "test:dri:sources": "node tests/dri-context-sources.test.mjs",
     "test:dri:fixtures": "DRI_FIXTURES_MIN=16 node tests/tools/dri-fixtures-report.cjs",
     "test:sat:parser": "node tests/sat-report-parser.test.mjs",

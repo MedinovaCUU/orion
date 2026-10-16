@@ -178,8 +178,13 @@
   border-color: rgba(var(--mon-risk-rgb), 0.28);
 }
 
-.equipment-monitor__bpl-test[data-tone='pending'] {
+.equipment-monitor__bpl-test[data-tone='pending'],
+.equipment-monitor__bpl-test[data-tone='warning'] {
   border-color: rgba(var(--mon-warn-rgb), 0.42);
+}
+
+.equipment-monitor__bpl-test[data-tone='alarm'] {
+  border-color: rgba(var(--mon-alarm-rgb), 0.5);
 }
 
 .equipment-monitor__bpl-test .equipment-monitor__event-head {
@@ -217,6 +222,11 @@
 .equipment-monitor__bpl-test .equipment-monitor__bpl-missing {
   color: var(--mon-warn-ink);
   font-weight: 600;
+}
+
+/* Línea de controles de la sesión: tinta del veredicto (alarma, advertencia o rechazo). */
+.equipment-monitor__bpl-test [data-testid='bpl-qc-session'].equipment-monitor__bpl-missing {
+  color: var(--tone-ink);
 }
 
 .equipment-monitor__bpl-dots {

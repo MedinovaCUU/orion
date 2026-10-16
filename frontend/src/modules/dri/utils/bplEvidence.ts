@@ -4,6 +4,7 @@ import {
   BPL_LINKED_STAGES,
   BPL_RESULT_PENDING_LABELS,
   formatBplNumber,
+  isBplQcOutOfControl,
   summarizeBplEventMetrics,
   type BplEvent,
   type BplSerialSummary,
@@ -50,26 +51,36 @@ export interface DriBplProjection {
 
 const BPL_OBSERVATION_PATTERN = /\[BPL:[\s\S]*$/m;
 
-const stageEvidence = (overview: BplStageOverview, tests: BplTestSnapshot[], stage: BplStage): DriBplStageEvidence => ({
-  accepted: overview.counts.accepted,
-  rejected: overview.counts.rejected,
-  pending: overview.counts.pending,
-  observed: overview.counts.observed,
-  effectiveStatus:
-    overview.testsRejected > 0
-      ? 'rejected'
-      : overview.testsPending > 0
-        ? 'pending'
-        : overview.testsAccepted > 0
-          ? 'accepted'
-          : overview.lastEvent
-            ? 'evidence_observed'
-            : null,
-  lastAt: overview.lastEvent?.timestamp || null,
-  rejectedTests: tests.filter((test) => test.stages[stage]?.effectiveStatus === 'rejected').map((test) => test.testName),
-  pendingTests: tests.filter((test) => test.stages[stage]?.effectiveStatus === 'pending').map((test) => test.testName),
-  acceptedTests: tests.filter((test) => test.stages[stage]?.effectiveStatus === 'accepted').map((test) => test.testName),
-});
+/**
+ * Resumen de una etapa para el motor. En controles, los que Orion deja fuera de control (advertencia, repetición
+ * pendiente o rechazo Westgard) cuentan como fallidos para el diagnóstico aunque no sean un rechazo definitivo.
+ */
+const stageEvidence = (overview: BplStageOverview, tests: BplTestSnapshot[], stage: BplStage): DriBplStageEvidence => {
+  const failed = (test: BplTestSnapshot) =>
+    test.stages[stage]?.effectiveStatus === 'rejected' || (stage === 'quality_control' && isBplQcOutOfControl(test));
+  const rejectedTests = tests.filter(failed).map((test) => test.testName);
+  const pendingTests = tests.filter((test) => !failed(test) && test.stages[stage]?.effectiveStatus === 'pending').map((test) => test.testName);
+  return {
+    accepted: overview.counts.accepted,
+    rejected: overview.counts.rejected,
+    pending: overview.counts.pending,
+    observed: overview.counts.observed,
+    effectiveStatus:
+      rejectedTests.length > 0
+        ? 'rejected'
+        : pendingTests.length > 0
+          ? 'pending'
+          : overview.testsAccepted > 0
+            ? 'accepted'
+            : overview.lastEvent
+              ? 'evidence_observed'
+              : null,
+    lastAt: overview.lastEvent?.timestamp || null,
+    rejectedTests,
+    pendingTests,
+    acceptedTests: tests.filter((test) => test.stages[stage]?.effectiveStatus === 'accepted').map((test) => test.testName),
+  };
+};
 
 const effectiveStageEvent = (test: BplTestSnapshot, stage: BplStage): BplEvent | null => {
   const state = test.stages[stage];
@@ -128,6 +139,9 @@ export const buildDriBplProjection = (summary: BplSerialSummary, catalog: DriCat
   const qcRejectedWithAcceptedChain: string[] = [];
   const fullyAcceptedTests: string[] = [];
   const intermittentTests: string[] = [];
+  // Controles fuera de control según Orion (advertencia, repetición pendiente o rechazo): fallan para el diagnóstico
+  // aunque en Monitoreo una 1-3s sin repetir sea solo una alarma.
+  const outOfControlTests = new Set(summary.tests.filter(isBplQcOutOfControl).map((test) => test.testName));
 
   summary.tests.forEach((test) => {
     const reagentId = reagentByTest.get(test.testKey) || null;
@@ -217,13 +231,14 @@ export const buildDriBplProjection = (summary: BplSerialSummary, catalog: DriCat
     const qcStatus = test.stages.quality_control?.effectiveStatus || null;
     const calibrationStatus = test.stages.calibration?.effectiveStatus || null;
     const blankStatus = test.stages.reagent_blank?.effectiveStatus || null;
-    if (qcStatus === 'rejected' && calibrationStatus !== 'rejected' && blankStatus !== 'rejected' && (calibrationStatus === 'accepted' || blankStatus === 'accepted')) {
+    const qcFailed = qcStatus === 'rejected' || outOfControlTests.has(test.testName);
+    if (qcFailed && calibrationStatus !== 'rejected' && blankStatus !== 'rejected' && (calibrationStatus === 'accepted' || blankStatus === 'accepted')) {
       qcRejectedWithAcceptedChain.push(test.testName);
     }
     if (test.chainAccepted) fullyAcceptedTests.push(test.testName);
 
     if (!reagentId) return;
-    if (test.effectiveStatus === 'rejected') {
+    if (test.effectiveStatus === 'rejected' || outOfControlTests.has(test.testName)) {
       failedIds.add(reagentId);
     } else if (test.chainAccepted || (qcStatus === 'accepted' && calibrationStatus !== 'rejected' && blankStatus !== 'rejected')) {
       correctIds.add(reagentId);
@@ -281,7 +296,7 @@ export const buildDriBplProjection = (summary: BplSerialSummary, catalog: DriCat
     qualityControl: stageEvidence(summary.stages.quality_control, summary.tests, 'quality_control'),
   };
 
-  const rejectedQc = qcFindings.filter((finding) => finding.status === 'rejected');
+  const rejectedQc = qcFindings.filter((finding) => finding.status === 'rejected' || outOfControlTests.has(finding.testName));
   const worstQc = [...rejectedQc].sort((left, right) => Math.abs(right.zScore || 0) - Math.abs(left.zScore || 0))[0] || null;
   const rejectedBlank = blanks.find((blank) => blank.status === 'rejected' && blank.stage === 'reagent_blank') || null;
   const rejectedCalibration = calibrations.find((calibration) => calibration.status === 'rejected') || null;
@@ -310,7 +325,7 @@ export const buildDriBplProjection = (summary: BplSerialSummary, catalog: DriCat
         ? 'unstable'
         : null;
 
-  const failedTests = summary.tests.filter((test) => test.effectiveStatus === 'rejected');
+  const failedTests = summary.tests.filter((test) => test.effectiveStatus === 'rejected' || outOfControlTests.has(test.testName));
   const primaryTest = failedTests[0] || summary.tests[0] || null;
   const controlSource = worstQc || qcFindings.find((finding) => finding.controlLot) || null;
   const calibratorSource =
@@ -338,6 +353,7 @@ export const buildDriBplProjection = (summary: BplSerialSummary, catalog: DriCat
   const describeTest = (test: BplTestSnapshot) => {
     const parts = (['reagent_blank', 'calibration', 'quality_control'] as const)
       .map((stage) => {
+        if (stage === 'quality_control' && outOfControlTests.has(test.testName) && test.qcVerdict) return `QC fuera de control (${test.qcVerdict.summary})`;
         const event = effectiveStageEvent(test, stage);
         if (!event || event.status !== 'rejected') return null;
         const metrics = summarizeBplEventMetrics(event).slice(0, 3).join(' · ');

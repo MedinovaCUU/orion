@@ -3,18 +3,104 @@
  * (blancos, calibraciones, controles y consumos) y construye el resumen por serie
  * que usan Monitoreo y DRI. El payload llega con nombres distintos según la fuente
  * (CSV de consumo, base Ax00, BLResults.res), por eso la lectura es tolerante.
+ *
+ * El resumen agrupa la evidencia por sesión de trabajo del BA400 y evalúa los controles con las reglas
+ * Westgard de Orion (`bplWestgard.ts`); el estado que publicó el monitor queda en `monitorStatus`.
  */
+
+import {
+  BPL_QC_SEVERITY_LABELS,
+  BPL_WESTGARD_RULE_LABELS,
+  bplQcSeverityOfFindings,
+  bplQcStatusOfFindings,
+  describeBplQcVerdict,
+  evaluateBplWestgard,
+  qcTargetFromRange,
+  type BplQcPoint,
+  type BplQcSessionVerdict,
+  type BplQcSeverity,
+  type BplWestgardEvaluation,
+  type BplWestgardFinding,
+} from './bplWestgard';
+
+export type { BplQcSessionVerdict, BplQcSeverity, BplWestgardFinding } from './bplWestgard';
 
 export const BPL_EVENTS_TABLE = 'ba400_bpl_events';
 
-/** Columnas ligeras para el corte global; el payload solo se pide por serie seleccionada. */
-export const BPL_OVERVIEW_COLUMNS =
-  'occurred_at,detected_at,effective_equipment_serial,event_type,bpl_stage,bpl_status,diagnostic_status,test_name,sample_class,calibration_control_name,calibration_control_lot_number,missing_data_for_acceptance,rule_ids';
+/**
+ * Campos de `payload.database_record` que el corte global necesita para dar el mismo veredicto que el detalle:
+ * sesión y ejecución, valor y rango del control, y aceptación de la calibración.
+ */
+const OVERVIEW_RECORD_FIELDS = [
+  'analyzer_id',
+  'work_session_id',
+  'order_test_id',
+  'rerun_number',
+  'multipoint_number',
+  'order_test_status',
+  'run_number',
+  'runs_group_number',
+  'control_name',
+  'control_lot_number',
+  'result_value',
+  'manual_result',
+  'manual_result_value',
+  'control_min_concentration',
+  'control_max_concentration',
+  'excluded',
+  'validation_status',
+  'accepted_result',
+  'calibration_error',
+  'absorbance_error',
+  'concentration_error',
+  'calibrator_factor',
+  'factor_lower_limit',
+  'factor_upper_limit',
+] as const;
+
+const OVERVIEW_RECORD_PREFIX = 'db_';
+
+/** Valor y límites del control en la raíz del payload (formato de las filas demo y de exportaciones anteriores). */
+const OVERVIEW_ROOT_FIELDS = ['result_value', 'unit', 'target_mean', 'target_sd', 'min_concentration', 'max_concentration'] as const;
+
+const OVERVIEW_ROOT_PREFIX = 'root_';
+
+/** Columnas ligeras para el corte global; el payload completo solo se pide por serie seleccionada. */
+export const BPL_OVERVIEW_COLUMNS = [
+  'occurred_at,occurred_at_raw,detected_at,effective_equipment_serial,event_type,bpl_stage,bpl_status,diagnostic_status,test_name,sample_class,calibration_control_name,calibration_control_lot_number,missing_data_for_acceptance,rule_ids',
+  ...OVERVIEW_RECORD_FIELDS.map((field) => `${OVERVIEW_RECORD_PREFIX}${field}:payload->database_record->>${field}`),
+  ...OVERVIEW_ROOT_FIELDS.map((field) => `${OVERVIEW_ROOT_PREFIX}${field}:payload->>${field}`),
+  `${OVERVIEW_ROOT_PREFIX}limits:payload->limits`,
+  'source_mtime:payload->>source_mtime',
+].join(',');
+
+/** Reconstruye un `database_record` mínimo desde las columnas del corte global (sin payload). */
+const overviewRecordOf = (row: BplEventRow): Record<string, unknown> | null => {
+  const flat = row as unknown as Record<string, unknown>;
+  const record: Record<string, unknown> = {};
+  OVERVIEW_RECORD_FIELDS.forEach((field) => {
+    const value = flat[`${OVERVIEW_RECORD_PREFIX}${field}`];
+    if (value !== null && value !== undefined && value !== '') record[field] = value;
+  });
+  const root: Record<string, unknown> = {};
+  [...OVERVIEW_ROOT_FIELDS, 'limits'].forEach((field) => {
+    const value = flat[`${OVERVIEW_ROOT_PREFIX}${field}`];
+    if (value !== null && value !== undefined && value !== '') root[field] = value;
+  });
+  const sourceMtime = flat.source_mtime;
+  if (!Object.keys(record).length && !Object.keys(root).length && !sourceMtime) return null;
+  return {
+    ...root,
+    ...(Object.keys(record).length ? { database_record: record } : {}),
+    ...(sourceMtime ? { source_mtime: sourceMtime } : {}),
+  };
+};
 
 export type BplStage = 'instrument_photometry_blank' | 'reagent_blank' | 'calibration' | 'quality_control';
 export type BplStatus = 'evidence_observed' | 'accepted' | 'rejected' | 'pending';
 export type BplSampleClass = 'BLANK' | 'CALIB' | 'CTRL';
-export type BplTone = 'rejected' | 'pending' | 'accepted' | 'observed' | 'none';
+/** `alarm` y `warning` solo los produce la evaluación Westgard de los controles. */
+export type BplTone = 'rejected' | 'warning' | 'alarm' | 'pending' | 'accepted' | 'observed' | 'none';
 export type BplControlLevel = 'level_1' | 'level_2' | 'level_3';
 
 export const BPL_STAGES: BplStage[] = ['instrument_photometry_blank', 'reagent_blank', 'calibration', 'quality_control'];
@@ -42,6 +128,8 @@ export const BPL_STATUS_LABELS: Record<BplStatus, string> = {
 
 export const BPL_TONE_LABELS: Record<BplTone, string> = {
   rejected: 'BPL con rechazo',
+  warning: 'BPL con advertencia',
+  alarm: 'BPL con alarma',
   pending: 'BPL pendiente',
   accepted: 'BPL aceptado',
   observed: 'BPL en observación',
@@ -60,6 +148,8 @@ export const BPL_EVENT_TYPE_LABELS: Record<string, string> = {
 export interface BplEventRow {
   id?: number | string | null;
   occurred_at?: string | null;
+  /** Hora local del analizador tal como la escribió (ISO con desfase o «AAAA-MM-DD hh:mm:ss» del CSV). */
+  occurred_at_raw?: string | null;
   detected_at?: string | null;
   effective_equipment_serial?: string | null;
   event_type?: string | null;
@@ -81,6 +171,8 @@ export interface BplQcDetail {
   unit: string | null;
   targetMean: number | null;
   targetSd: number | null;
+  /** `analyzer`: media y DE programadas; `range`: derivadas del mínimo y máximo del lote (media ± 3 DE). */
+  targetSource: 'analyzer' | 'range' | null;
   minLimit: number | null;
   maxLimit: number | null;
   zScore: number | null;
@@ -200,6 +292,30 @@ export interface BplResultLink {
   observedAt: string | null;
 }
 
+/**
+ * Sesión de trabajo del BA400 (una corrida en lote). La clave es el `work_session_id` cuando el analizador lo
+ * publica para ese día; si no, el día local del analizador («sesión del 21 sep»).
+ */
+export interface BplSessionRef {
+  key: string;
+  workSessionId: string | null;
+  day: string | null;
+  label: string;
+}
+
+/** Evaluación Westgard de Orion de un resultado de control. */
+export interface BplEventWestgard {
+  evaluable: boolean;
+  z: number | null;
+  mean: number | null;
+  sd: number | null;
+  targetSource: BplQcDetail['targetSource'];
+  findings: BplWestgardFinding[];
+  severity: BplQcSeverity;
+  /** Validación que dejó el BA400 (OK, WARNING, ERROR, PENDING). */
+  analyzerStatus: string | null;
+}
+
 /** Evento normalizado: una fila de la tabla con payload interpretado por etapa. */
 export interface BplEvent {
   key: string;
@@ -208,7 +324,10 @@ export interface BplEvent {
   rawSerial: string;
   eventType: string;
   stage: BplStage | null;
+  /** En el resumen por serie, los controles traen la evaluación de Orion y las calibraciones no vigentes quedan observadas. */
   status: BplStatus;
+  /** Estado tal como lo publicó el monitor de Windows. */
+  monitorStatus: BplStatus;
   diagnosticStatus: string | null;
   testName: string | null;
   testKey: string;
@@ -221,6 +340,8 @@ export interface BplEvent {
   occurredAt: string | null;
   detectedAt: string | null;
   timestamp: string | null;
+  /** Día local del analizador (AAAA-MM-DD). */
+  localDay: string | null;
   hasPayload: boolean;
   qc: BplQcDetail | null;
   calibration: BplCalibrationDetail | null;
@@ -230,6 +351,15 @@ export interface BplEvent {
   execution: BplExecutionRef | null;
   /** Solo en el resumen por serie: resultado analítico que corresponde a este pipeteo, curva o resultado. */
   links: Partial<Record<BplLinkedStage, BplResultLink>>;
+  /** Solo en el resumen por serie. */
+  session: BplSessionRef | null;
+  /** Solo en el resumen por serie y en resultados de control. */
+  westgard: BplEventWestgard | null;
+  /**
+   * Calibración que el BA400 dejó de usar sin error (otra repetición quedó aceptada): el monitor la publica como
+   * no aceptada, pero no es un rechazo.
+   */
+  superseded: boolean;
 }
 
 export interface BplStageCounts {
@@ -240,6 +370,26 @@ export interface BplStageCounts {
   total: number;
 }
 
+/**
+ * Controles de la sesión más reciente de una prueba: veredicto Westgard de Orion o, si en esa sesión solo hay
+ * pipeteos, resultados pendientes de recibir.
+ */
+export interface BplQcStageVerdict {
+  session: BplSessionRef | null;
+  verdict: BplQcSessionVerdict | null;
+  /** La última sesión con controles solo tiene pipeteos: el resultado aún no llega. */
+  awaitingResults: boolean;
+  /** Hay resultados, pero sin media ni DE del lote para evaluarlos. */
+  missingTargets: boolean;
+  severity: BplQcSeverity;
+  status: BplStatus;
+  tone: BplTone;
+  /** Frase para la tarjeta: veredicto y niveles de la sesión. */
+  summary: string;
+  /** z del último resultado de cada nivel en la sesión. */
+  levels: Array<{ label: string; z: number; value: number }>;
+}
+
 /** Estado vigente de una etapa: la última evaluación manda, salvo evidencia nueva sin evaluar. */
 export interface BplStageState {
   stage: BplStage;
@@ -248,6 +398,10 @@ export interface BplStageState {
   effectiveStatus: BplStatus | null;
   hasUnevaluatedNewer: boolean;
   counts: BplStageCounts;
+  /** Control de calidad: veredicto por sesión. */
+  qc?: BplQcStageVerdict | null;
+  /** Calibración: aclaración cuando la más reciente no quedó vigente. */
+  note?: string | null;
 }
 
 export interface BplTestSnapshot {
@@ -271,6 +425,12 @@ export interface BplTestSnapshot {
   links: BplResultLink[];
   /** Atajo al blanco de reactivo más reciente de la prueba. */
   blankResult: BplResultLink | null;
+  /** Atajo al veredicto de controles de la última sesión. */
+  qcVerdict: BplQcStageVerdict | null;
+  /** Tono de la tarjeta: incluye alarma y advertencia de los controles. */
+  tone: BplTone;
+  /** Sesión de la evidencia más reciente de la prueba. */
+  lastSession: BplSessionRef | null;
 }
 
 export interface BplStageOverview {
@@ -279,8 +439,19 @@ export interface BplStageOverview {
   testsRejected: number;
   testsPending: number;
   testsObserved: number;
+  /** Control de calidad: pruebas cuya última sesión trae advertencia o alarma Westgard. */
+  testsWarning: number;
+  testsAlarm: number;
   lastEvent: BplEvent | null;
   counts: BplStageCounts;
+}
+
+/** Avisos de controles para la serie: «GLUCOSE (nivel 1, 1-3s)». */
+export interface BplQcNotices {
+  repeat: string[];
+  warning: string[];
+  rejected: string[];
+  alarm: string[];
 }
 
 export interface BplSerialSummary {
@@ -295,9 +466,13 @@ export interface BplSerialSummary {
   rejectedTests: string[];
   pendingTests: string[];
   acceptedTests: string[];
+  /** Pruebas que dan el tono de la serie (las rechazadas, con advertencia, con alarma o pendientes). */
+  toneTests: string[];
   missingData: string[];
   /** Por etapa, pruebas (con su control en QC) cuyo último pipeteo aún no tiene resultado analítico. */
   pendingResults: Record<BplLinkedStage, string[]>;
+  /** Controles de la última sesión de cada prueba que piden repetir, traen advertencia, alarma o rechazo. */
+  qcNotices: BplQcNotices;
   calibrators: Array<{ name: string | null; lot: string | null; lastAt: string | null; tests: string[] }>;
   controls: Array<{ name: string | null; lot: string | null; lastAt: string | null; tests: string[] }>;
   reagentBarcodes: Array<{ barcode: string; tests: string[]; lastAt: string | null }>;
@@ -489,19 +664,33 @@ export const inferBplControlLevel = (value?: string | null): BplControlLevel | n
   return null;
 };
 
+/** `westgard_assessment` del monitor es un veredicto («accepted», «pending»…), no una lista de reglas. */
+const WESTGARD_VERDICT_TEXT = /^(accepted?|rejected?|pending|ok|warning|error|aceptad[oa]|rechazad[oa]|pendiente)$/i;
+
 const parseQcDetail = (payload: Record<string, unknown> | null, row: BplEventRow): BplQcDetail | null => {
   if (!payload) return null;
   const limits = pickRecord(payload, ['limits', 'control_limits', 'qc_limits', 'control', 'limites']);
-  const resultValue = pickNumber(payload, ['result_value', 'resultvalue', 'result', 'value', 'concentration', 'conc_value', 'measured_value', 'obtained_value', 'manual_result_value']);
-  const targetMean = pickNumber(limits, ['target_mean', 'target', 'mean', 'media']) ?? pickNumber(payload, ['target_mean', 'target', 'expected_mean', 'mean', 'media', 'target_value']);
-  const targetSd = pickNumber(limits, ['target_sd', 'sd', 'standard_deviation', 'desviacion']) ?? pickNumber(payload, ['target_sd', 'sd', 'standard_deviation', 'desviacion_estandar']);
+  const record = databaseRecordOf(payload);
+  // Resultado capturado a mano en el BA400: manda sobre el leído por el equipo.
+  const manualValue = toBoolean(record?.manual_result) === true ? toFiniteNumber(record?.manual_result_value) : null;
+  const resultValue = manualValue ?? pickNumber(payload, ['result_value', 'resultvalue', 'result', 'value', 'concentration', 'conc_value', 'measured_value', 'obtained_value', 'manual_result_value']);
+  const explicitMean = pickNumber(limits, ['target_mean', 'target', 'mean', 'media']) ?? pickNumber(payload, ['target_mean', 'target', 'expected_mean', 'mean', 'media', 'target_value']);
+  const explicitSd = pickNumber(limits, ['target_sd', 'sd', 'standard_deviation', 'desviacion']) ?? pickNumber(payload, ['target_sd', 'sd', 'standard_deviation', 'desviacion_estandar']);
   const minLimit = pickNumber(limits, ['min_concentration', 'min', 'lower', 'lower_limit', 'low', 'minimo']) ?? pickNumber(payload, ['control_min_concentration', 'min_concentration', 'min_limit', 'lower_limit', 'limit_min', 'min', 'minimo']);
   const maxLimit = pickNumber(limits, ['max_concentration', 'max', 'upper', 'upper_limit', 'high', 'maximo']) ?? pickNumber(payload, ['control_max_concentration', 'max_concentration', 'max_limit', 'upper_limit', 'limit_max', 'max', 'maximo']);
+  // Sin media ni DE programadas, salen del rango del lote: el BA400 lo guarda como media ± 3 DE.
+  const fromRange = explicitMean === null || !explicitSd ? qcTargetFromRange(minLimit, maxLimit) : null;
+  const targetMean = explicitMean ?? fromRange?.mean ?? null;
+  const targetSd = explicitSd || fromRange?.sd || null;
+  const targetSource: BplQcDetail['targetSource'] = explicitMean !== null && explicitSd ? 'analyzer' : fromRange ? 'range' : null;
   const westgard = pickValue(payload, ['westgard_assessment', 'westgard', 'westgard_rules', 'westgard_evaluation']);
   const westgardRecord = toRecord(westgard);
+  const westgardVerdict = typeof westgard === 'string' && WESTGARD_VERDICT_TEXT.test(westgard.trim());
   const westgardRules = westgardRecord
     ? pickList(westgardRecord, ['violated_rules', 'failed_rules', 'triggered_rules', 'rules_violated', 'rules', 'rule_ids', 'violations', 'alarms'])
-    : toStringList(westgard);
+    : westgardVerdict
+      ? []
+      : toStringList(westgard);
   const westgardAssessment = westgardRecord
     ? pickText(westgardRecord, ['status', 'assessment', 'result', 'summary', 'verdict', 'outcome', 'level'])
     : typeof westgard === 'string' && !westgardRules.length
@@ -527,6 +716,7 @@ const parseQcDetail = (payload: Record<string, unknown> | null, row: BplEventRow
     unit: pickText(payload, ['unit', 'measure_unit', 'units', 'unidad']),
     targetMean,
     targetSd,
+    targetSource,
     minLimit,
     maxLimit,
     zScore,
@@ -750,12 +940,28 @@ const toIsoOrNull = (value?: string | null) => {
   return Number.isFinite(time) ? value : null;
 };
 
+/** Zona del analizador cuando la fila no trae su hora local (corte global sin `occurred_at_raw`). */
+const ANALYZER_TIME_ZONE = 'America/Mexico_City';
+
+const DAY_FORMAT = new Intl.DateTimeFormat('en-CA', { timeZone: ANALYZER_TIME_ZONE, year: 'numeric', month: '2-digit', day: '2-digit' });
+
+/** Día local del analizador: el inicio de `occurred_at_raw` («2026-10-09T14:30:42-06:00» o «2026-10-09 14:17:57»). */
+const localDayOf = (raw: string | null | undefined, timestamp: string | null) => {
+  const match = (raw || '').trim().match(/^(\d{4}-\d{2}-\d{2})/);
+  if (match) return match[1];
+  if (!timestamp) return null;
+  const time = new Date(timestamp);
+  return Number.isNaN(time.getTime()) ? null : DAY_FORMAT.format(time);
+};
+
 /** Convierte una fila cruda en evento tipado; nunca lanza, las partes ilegibles quedan en null. */
 export const normalizeBplEvent = (row: BplEventRow): BplEvent | null => {
   const rawSerial = (row.effective_equipment_serial || '').trim();
   const serial = normalizeBplSerial(rawSerial);
   if (!serial) return null;
-  const payload = toRecord(row.payload);
+  const fullPayload = toRecord(row.payload);
+  // Sin payload (corte global) se evalúa con el registro mínimo; `hasPayload` sigue diciendo que falta el detalle.
+  const payload = fullPayload || overviewRecordOf(row);
   const stage = normalizeBplStage(row);
   const status = normalizeBplStatus(row.bpl_status);
   const eventType = (row.event_type || '').trim() || 'bpl_event';
@@ -769,6 +975,9 @@ export const normalizeBplEvent = (row: BplEventRow): BplEvent | null => {
   const isCalibration = stage === 'calibration' && eventType !== 'bpl_consumption_record';
   const isBlank = (stage === 'reagent_blank' || stage === 'instrument_photometry_blank') && eventType !== 'bpl_consumption_record';
   const testKey = normalizeBplTestKey(testName) || (stage === 'instrument_photometry_blank' ? 'INSTRUMENTO' : 'SIN PRUEBA');
+  // El blanco fotométrico no trae hora del analizador: la fecha del archivo BLResults es cuando se hizo.
+  const fileTime = stage === 'instrument_photometry_blank' ? toIsoOrNull(pickText(payload, ['source_mtime'])) : null;
+  const timestamp = occurredAt || fileTime || detectedAt;
   return {
     key: [serial, eventType, occurredAt || detectedAt || '', normalizeBplTestKey(testName), sampleClass || '', lotNumber || '', id || ''].join('|'),
     id,
@@ -777,6 +986,7 @@ export const normalizeBplEvent = (row: BplEventRow): BplEvent | null => {
     eventType,
     stage,
     status,
+    monitorStatus: status,
     diagnosticStatus: (row.diagnostic_status || '').trim() || null,
     testName,
     testKey,
@@ -788,8 +998,9 @@ export const normalizeBplEvent = (row: BplEventRow): BplEvent | null => {
     ruleIds: toStringList(row.rule_ids),
     occurredAt,
     detectedAt,
-    timestamp: occurredAt || detectedAt,
-    hasPayload: Boolean(payload),
+    timestamp,
+    localDay: localDayOf(row.occurred_at_raw, timestamp),
+    hasPayload: Boolean(fullPayload),
     qc: isQc ? parseQcDetail(payload, row) : null,
     calibration: isCalibration ? parseCalibrationDetail(payload) : null,
     blank: isBlank ? parseBlankDetail(payload, stage) : null,
@@ -797,6 +1008,9 @@ export const normalizeBplEvent = (row: BplEventRow): BplEvent | null => {
     analytical: eventType === 'bpl_analytical_result' ? parseAnalyticalDetail(payload) : null,
     execution: parseExecutionRef(payload, serial, testKey, row),
     links: {},
+    session: null,
+    westgard: null,
+    superseded: false,
   };
 };
 
@@ -820,12 +1034,18 @@ const countStatus = (counts: BplStageCounts, status: BplStatus) => {
 
 const isEvaluated = (event: BplEvent) => event.status === 'accepted' || event.status === 'rejected';
 
-/** Los registros de consumo solo documentan que la etapa se ejecutó; no evalúan aceptación. */
+/**
+ * Los registros de consumo solo documentan que la etapa se ejecutó; no evalúan aceptación. Una calibración no
+ * vigente tampoco es «evidencia nueva sin evaluar»: el BA400 ya decidió no usarla.
+ */
 const buildStageState = (stage: BplStage, events: BplEvent[]): BplStageState => {
   const sorted = [...events].sort(compareBplEventsDesc);
   const counts = emptyCounts();
   sorted.forEach((event) => countStatus(counts, event.status));
-  const latest = sorted[0] || null;
+  // Tampoco cuentan los pipeteos cuya ejecución quedó no vigente.
+  const isSupersededEvidence = (event: BplEvent) =>
+    event.superseded || Boolean(stage !== 'instrument_photometry_blank' && event.links[stage]?.state === 'received' && event.links[stage]?.result?.superseded);
+  const latest = sorted.find((event) => !isSupersededEvidence(event)) || sorted[0] || null;
   const latestEvaluated = sorted.find(isEvaluated) || null;
   const effectiveStatus = latest ? (isEvaluated(latest) ? latest.status : latestEvaluated?.status || latest.status) : null;
   return {
@@ -1068,6 +1288,350 @@ const reconcileLinkedResults = (events: BplEvent[]): BplEvent[] => {
   });
 };
 
+// ---------- Sesiones de trabajo del BA400 ----------
+
+const WORK_SESSION_PATTERN = /^(\d{4})(\d{2})(\d{2})\d{2,}$/;
+const DAY_MS = 24 * 60 * 60 * 1000;
+/** Una fila capturada a menos de 2 h de su resultado viene de la sesión en curso, no del histórico del BA400. */
+const LIVE_CAPTURE_MS = 2 * 60 * 60 * 1000;
+
+const workSessionDay = (workSessionId: string | null) => {
+  const match = (workSessionId || '').match(WORK_SESSION_PATTERN);
+  return match ? `${match[1]}-${match[2]}-${match[3]}` : null;
+};
+
+const daysBetween = (from: string, to: string) => Math.round((Date.parse(`${to}T12:00:00Z`) - Date.parse(`${from}T12:00:00Z`)) / DAY_MS);
+
+const SESSION_DAY_LABEL = new Intl.DateTimeFormat('es-MX', { day: 'numeric', month: 'short', timeZone: 'UTC' });
+
+const sessionLabelOf = (workSessionId: string | null, day: string | null) =>
+  workSessionId ? `sesión ${workSessionId}` : day ? `sesión del ${SESSION_DAY_LABEL.format(new Date(`${day}T12:00:00Z`))}` : 'sesión sin fecha';
+
+interface WorkSessionCandidate {
+  id: string;
+  day: string;
+  days: Set<string>;
+  live: boolean;
+  first: number;
+  last: number;
+}
+
+/**
+ * Asigna cada evento a la sesión de trabajo del BA400. El `work_session_id` de un resultado solo cuenta si es del
+ * mismo día del resultado (o del anterior, pasada la medianoche): el histórico del BA400 guarda blancos y
+ * calibraciones con la sesión en que los archivó. Si un día tiene varias sesiones, cuentan las capturadas en vivo.
+ * Los pipeteos y controles, que no traen sesión, van a la sesión de su día más cercana en el tiempo; sin ninguna,
+ * el día es la sesión.
+ */
+/** La sesión que trae el resultado es suya solo si es del mismo día (o del anterior, pasada la medianoche). */
+const ownWorkSessionOf = (event: BplEvent) => {
+  const workSessionId = event.execution?.workSessionId || null;
+  const day = workSessionDay(workSessionId);
+  if (!workSessionId || !day || !event.localDay || !timestampValue(event)) return null;
+  const gap = daysBetween(day, event.localDay);
+  return gap >= 0 && gap <= 1 ? { workSessionId, day } : null;
+};
+
+const assignBplSessions = (events: BplEvent[]): BplEvent[] => {
+  const candidates = new Map<string, WorkSessionCandidate>();
+  events.forEach((event) => {
+    const own = ownWorkSessionOf(event);
+    if (!own || !event.localDay) return;
+    const { workSessionId, day } = own;
+    const at = timestampValue(event);
+    const candidate = candidates.get(workSessionId) || { id: workSessionId, day, days: new Set<string>(), live: false, first: at, last: at };
+    candidate.days.add(event.localDay);
+    candidate.first = Math.min(candidate.first, at);
+    candidate.last = Math.max(candidate.last, at);
+    if (event.detectedAt && Math.abs(detectedValue(event) - at) <= LIVE_CAPTURE_MS) candidate.live = true;
+    candidates.set(workSessionId, candidate);
+  });
+  const byDay = new Map<string, WorkSessionCandidate[]>();
+  candidates.forEach((candidate) => byDay.set(candidate.day, [...(byDay.get(candidate.day) || []), candidate]));
+  const trusted = new Map<string, WorkSessionCandidate>();
+  byDay.forEach((list) => {
+    const live = list.filter((candidate) => candidate.live);
+    (live.length ? live : list.length === 1 ? list : []).forEach((candidate) => trusted.set(candidate.id, candidate));
+  });
+  const trustedByDay = new Map<string, WorkSessionCandidate[]>();
+  trusted.forEach((candidate) => candidate.days.forEach((day) => trustedByDay.set(day, [...(trustedByDay.get(day) || []), candidate])));
+  const refOf = (candidate: WorkSessionCandidate): BplSessionRef => ({ key: candidate.id, workSessionId: candidate.id, day: candidate.day, label: sessionLabelOf(candidate.id, candidate.day) });
+  const distance = (candidate: WorkSessionCandidate, at: number) => (at < candidate.first ? candidate.first - at : at > candidate.last ? at - candidate.last : 0);
+
+  return events.map((event) => {
+    const ownId = ownWorkSessionOf(event)?.workSessionId;
+    const own = ownId ? trusted.get(ownId) : undefined;
+    if (own) return { ...event, session: refOf(own) };
+    const at = timestampValue(event);
+    const nearest = (event.localDay ? trustedByDay.get(event.localDay) || [] : [])
+      .slice()
+      .sort((left, right) => distance(left, at) - distance(right, at))[0];
+    const session: BplSessionRef = nearest
+      ? refOf(nearest)
+      : { key: `day:${event.localDay || 'sin-fecha'}`, workSessionId: null, day: event.localDay, label: sessionLabelOf(null, event.localDay) };
+    return { ...event, session };
+  });
+};
+
+// ---------- Calibraciones vigentes ----------
+
+const isCalibrationResult = (event: BplEvent) => event.eventType === 'bpl_analytical_result' && event.sampleClass === 'CALIB';
+
+const calibrationFactorOutOfLimits = (event: BplEvent) => {
+  const calibration = event.calibration;
+  if (!calibration || calibration.factor === null) return false;
+  return (
+    (calibration.factorLowerLimit !== null && calibration.factor < calibration.factorLowerLimit) ||
+    (calibration.factorUpperLimit !== null && calibration.factor > calibration.factorUpperLimit)
+  );
+};
+
+/** No aceptada por el BA400, pero sin error: validación OK y factor dentro de sus límites (si los hay). */
+const isSupersededCalibration = (event: BplEvent) =>
+  event.analytical?.accepted === false &&
+  (event.analytical.validationStatus || '').trim().toUpperCase() === 'OK' &&
+  !event.analytical.errors.length &&
+  !calibrationFactorOutOfLimits(event);
+
+/**
+ * El BA400 deja aceptada una sola repetición por orden de calibración: al repetir (o al elegir otra repetición) la
+ * anterior pasa a «no aceptada» con validación OK. Eso no es un rechazo: la ejecución queda no vigente, y el estado
+ * de la etapa lo da la calibración que sí quedó aceptada. Cuenta la última captura de cada ejecución.
+ */
+const reclassifyCalibrations = (events: BplEvent[]): BplEvent[] => {
+  const latestByExecution = new Map<string, BplEvent>();
+  events.forEach((event) => {
+    const key = event.execution?.key;
+    if (!isCalibrationResult(event) || !key) return;
+    const current = latestByExecution.get(key);
+    if (!current || detectedValue(event) > detectedValue(current) || (detectedValue(event) === detectedValue(current) && timestampValue(event) >= timestampValue(current))) {
+      latestByExecution.set(key, event);
+    }
+  });
+  const superseded = new Set(Array.from(latestByExecution.entries()).filter(([, latest]) => isSupersededCalibration(latest)).map(([key]) => key));
+  if (!superseded.size) return events;
+  return events.map((event) =>
+    isCalibrationResult(event) && event.execution?.key && superseded.has(event.execution.key)
+      ? { ...event, status: 'evidence_observed' as const, superseded: true, diagnosticStatus: 'calibration_superseded' }
+      : event,
+  );
+};
+
+const NOTE_TIME_FORMAT = new Intl.DateTimeFormat('es-MX', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit', hour12: false, timeZone: ANALYZER_TIME_ZONE });
+
+const noteTime = (event: BplEvent) => (event.timestamp ? NOTE_TIME_FORMAT.format(new Date(event.timestamp)) : 'sin hora');
+
+/** Aclaración de la etapa cuando la calibración más reciente no quedó vigente. */
+const calibrationNoteOf = (testEvents: BplEvent[]) => {
+  const results = testEvents.filter(isCalibrationResult).sort(compareBplEventsDesc);
+  if (!results.length) return { note: null, noneInUse: false };
+  const newest = results[0];
+  const inUse = results.find((event) => event.status === 'accepted');
+  const rejected = results.find((event) => event.status === 'rejected');
+  if (newest.superseded && inUse && timestampValue(newest) > timestampValue(inUse)) {
+    const factor = inUse.calibration?.factor ?? inUse.analytical?.calibratorFactor ?? null;
+    return {
+      note: `La calibración del ${noteTime(newest)} no quedó vigente; sigue en uso la del ${noteTime(inUse)}${factor !== null ? ` (factor ${formatBplNumber(factor, 4)})` : ''}`,
+      noneInUse: false,
+    };
+  }
+  if (!inUse && !rejected && results.every((event) => event.superseded)) {
+    return { note: 'El BA400 no dejó vigente ninguna de estas calibraciones (sin error de validación)', noneInUse: true };
+  }
+  return { note: null, noneInUse: false };
+};
+
+// ---------- Control de calidad (Westgard de Orion) ----------
+
+const isQcResult = (event: BplEvent) => event.eventType === 'bpl_quality_control_result';
+
+const qcExecutionKey = (event: BplEvent) => event.execution?.key || `event|${event.key}`;
+
+const qcLevelLabel = (event: BplEvent) => {
+  const level = event.qc?.controlLevel;
+  if (level === 'level_1') return 'Nivel 1';
+  if (level === 'level_2') return 'Nivel 2';
+  if (level === 'level_3') return 'Nivel 3';
+  return event.controlOrCalibratorName || 'Control';
+};
+
+/** «1_3s», «r4s» o «R-4s» del analizador o de Orion se muestran igual: «1-3s», «R-4s». */
+export const normalizeWestgardRuleName = (rule: string) => {
+  const compact = rule.trim().replace(/^westgard[\s_-]*/i, '').replace(/_/g, '-');
+  return /^r-?4s$/i.test(compact) ? 'R-4s' : compact;
+};
+
+const qcDiagnosticOf = (findings: BplWestgardFinding[], status: BplStatus) => {
+  if (status === 'rejected') return 'quality_control_rejected';
+  if (findings.some((finding) => finding.needsRepeat)) return 'quality_control_repeat';
+  const severity = bplQcSeverityOfFindings(findings);
+  if (severity === 'advertencia') return 'quality_control_warning';
+  if (severity === 'alarma') return 'quality_control_alarm';
+  if (severity === 'alerta_ligera') return 'quality_control_light_alert';
+  return 'quality_control_accepted';
+};
+
+const roundZ = (value: number) => Math.round(value * 100) / 100;
+
+/**
+ * Evalúa los controles de la serie con las reglas de Orion. Cada corrida de control (control + lote + corrida)
+ * cuenta una vez, con su última captura; el resultado toma el estado de las reglas en las que participa y el
+ * que publicó el monitor queda en `monitorStatus`.
+ */
+const applyBplWestgard = (events: BplEvent[]): { events: BplEvent[]; evaluation: BplWestgardEvaluation } => {
+  const latestByExecution = new Map<string, BplEvent>();
+  events.forEach((event) => {
+    if (!isQcResult(event)) return;
+    // Un control de otro analizador no forma parte de la historia de esta serie.
+    if (event.execution?.analyzerId && normalizeBplSerial(event.execution.analyzerId) !== event.serial) return;
+    const key = qcExecutionKey(event);
+    const current = latestByExecution.get(key);
+    if (!current || detectedValue(event) >= detectedValue(current)) latestByExecution.set(key, event);
+  });
+  const points: BplQcPoint[] = [];
+  latestByExecution.forEach((event, key) => {
+    const qc = event.qc;
+    const at = timestampValue(event);
+    if (!qc || qc.resultValue === null || qc.targetMean === null || !qc.targetSd || qc.excluded === true || !at) return;
+    points.push({
+      key,
+      testKey: event.testKey,
+      materialKey: materialKeyOf(event.controlOrCalibratorName, event.lotNumber) || qcLevelLabel(event),
+      levelLabel: qcLevelLabel(event),
+      value: qc.resultValue,
+      mean: qc.targetMean,
+      sd: qc.targetSd,
+      z: (qc.resultValue - qc.targetMean) / qc.targetSd,
+      at,
+      day: event.localDay || '',
+      sessionKey: event.session?.key || `day:${event.localDay || 'sin-fecha'}`,
+    });
+  });
+  const evaluation = evaluateBplWestgard(points);
+  const pointByKey = new Map(points.map((point) => [point.key, point] as const));
+  const evaluated = events.map((event): BplEvent => {
+    if (!isQcResult(event) || !event.qc) return event;
+    if (event.execution?.analyzerId && normalizeBplSerial(event.execution.analyzerId) !== event.serial) return event;
+    const key = qcExecutionKey(event);
+    const point = pointByKey.get(key);
+    if (!point) {
+      const excluded = event.qc.excluded === true;
+      return {
+        ...event,
+        status: excluded ? 'evidence_observed' : 'pending',
+        diagnosticStatus: excluded ? 'quality_control_observed' : 'quality_control_pending',
+        westgard: { evaluable: false, z: null, mean: event.qc.targetMean, sd: event.qc.targetSd, targetSource: event.qc.targetSource, findings: [], severity: 'normal', analyzerStatus: event.qc.validationStatus },
+      };
+    }
+    const findings = evaluation.findingsByPoint.get(key) || [];
+    const status = bplQcStatusOfFindings(findings);
+    const rules = Array.from(new Set([...findings.map((finding) => finding.rule.replace(/-niveles$/, '')), ...event.qc.westgardRules].map(normalizeWestgardRuleName)));
+    return {
+      ...event,
+      status,
+      diagnosticStatus: qcDiagnosticOf(findings, status),
+      qc: { ...event.qc, zScore: roundZ(point.z), westgardRules: rules },
+      westgard: {
+        evaluable: true,
+        z: roundZ(point.z),
+        mean: point.mean,
+        sd: point.sd,
+        targetSource: event.qc.targetSource,
+        findings,
+        severity: bplQcSeverityOfFindings(findings),
+        analyzerStatus: event.qc.validationStatus,
+      },
+    };
+  });
+  return { events: evaluated, evaluation };
+};
+
+const qcToneOf = (status: BplStatus, severity: BplQcSeverity, needsRepeat: boolean): BplTone => {
+  if (status === 'rejected') return 'rejected';
+  if (severity === 'advertencia') return 'warning';
+  if (needsRepeat || severity === 'alarma') return 'alarm';
+  if (status === 'pending') return 'pending';
+  return 'accepted';
+};
+
+/**
+ * Controles de la sesión más reciente de la prueba (con resultados o solo pipeteos). Con resultados manda el
+ * veredicto Westgard de esa sesión; si solo hay pipeteos, el control está pendiente de recibir.
+ */
+const buildQcStageVerdict = (
+  testKey: string,
+  qcEvents: BplEvent[],
+  evaluation: BplWestgardEvaluation,
+): { verdict: BplQcStageVerdict; representative: BplEvent | null; hasUnevaluatedNewer: boolean } | null => {
+  if (!qcEvents.length) return null;
+  const sorted = [...qcEvents].sort(compareBplEventsDesc);
+  const session = sorted[0].session;
+  const sessionKey = session?.key || null;
+  const sessionEvents = sorted.filter((event) => (event.session?.key || null) === sessionKey);
+  const results = sessionEvents.filter(isQcResult);
+  // Sin valor ni rango del control (filas sin payload ni registro mínimo) no hay qué evaluar: manda el monitor.
+  if (results.length && !results.some((event) => event.qc)) return null;
+  const sessionVerdict = sessionKey ? evaluation.sessions.get(`${testKey}|${sessionKey}`) || null : null;
+  const awaitingResults = results.length === 0;
+  const missingTargets = !awaitingResults && !sessionVerdict;
+  const status: BplStatus = awaitingResults || missingTargets ? 'pending' : sessionVerdict!.status;
+  const severity = sessionVerdict?.severity || 'normal';
+  const needsRepeat = Boolean(sessionVerdict?.needsRepeat);
+  const latestByMaterial = new Map<string, BplQcPoint>();
+  (sessionVerdict?.points || []).forEach((point) => latestByMaterial.set(point.materialKey, point));
+  const levels = Array.from(latestByMaterial.values())
+    .sort((left, right) => left.levelLabel.localeCompare(right.levelLabel, 'es-MX'))
+    .map((point) => ({ label: point.levelLabel, z: roundZ(point.z), value: point.value }));
+  const label = session?.label || 'Última sesión';
+  const summary = awaitingResults
+    ? `${label}: resultado de control pendiente de recibir`
+    : missingTargets
+      ? `${label}: control sin media ni DE del lote para evaluar`
+      : `${label}: ${describeBplQcVerdict(sessionVerdict!)}`;
+  const representative =
+    (sessionVerdict?.representativeKey && results.find((event) => qcExecutionKey(event) === sessionVerdict.representativeKey)) || results[0] || null;
+  const newestResult = results[0] || null;
+  return {
+    verdict: {
+      session,
+      verdict: sessionVerdict,
+      awaitingResults,
+      missingTargets,
+      severity,
+      status,
+      tone: awaitingResults || missingTargets ? 'pending' : qcToneOf(status, severity, needsRepeat),
+      summary,
+      levels,
+    },
+    representative,
+    hasUnevaluatedNewer: Boolean(newestResult && sorted[0] !== newestResult && timestampValue(sorted[0]) > timestampValue(newestResult)),
+  };
+};
+
+/** Fuera de control en la última sesión con resultados: advertencia, repetición pendiente o rechazo. */
+export const isBplQcOutOfControl = (test: Pick<BplTestSnapshot, 'qcVerdict'>) => Boolean(test.qcVerdict?.verdict && test.qcVerdict.verdict.status !== 'accepted');
+
+const TONE_RANK: Record<BplTone, number> = { rejected: 6, warning: 5, alarm: 4, pending: 3, observed: 2, accepted: 1, none: 0 };
+
+export const bplToneRank = (tone: BplTone) => TONE_RANK[tone];
+
+/** Tono de una etapa de la prueba: los controles usan su veredicto Westgard. */
+export const bplStageTone = (state: BplStageState | undefined): BplTone =>
+  state?.qc ? state.qc.tone : bplToneFromStatus(state?.effectiveStatus || null);
+
+const worstTone = (tones: BplTone[]) => tones.reduce<BplTone>((worst, tone) => (TONE_RANK[tone] > TONE_RANK[worst] ? tone : worst), 'none');
+
+/** «GLUCOSE (nivel 1 y nivel 2, 1-3s)» para los avisos de la serie: niveles y reglas de los hallazgos elegidos. */
+const qcNoticeOf = (testName: string, verdict: BplQcSessionVerdict | null, pick: (finding: BplWestgardFinding) => boolean) => {
+  if (!verdict) return null;
+  const picked = verdict.findings.filter(pick);
+  if (!picked.length) return null;
+  const levelByKey = new Map(verdict.points.map((point) => [point.key, point.levelLabel.toLowerCase()] as const));
+  const levels = unique(picked.flatMap((finding) => finding.pointKeys.map((key) => levelByKey.get(key))));
+  const rules = unique(picked.map((finding) => BPL_WESTGARD_RULE_LABELS[finding.rule]));
+  return `${testName} (${[levels.join(' y '), rules.join(', ')].filter(Boolean).join(', ')})`;
+};
+
 /** Último vínculo por etapa (por control y lote en QC); `testEvents` viene del más reciente al más antiguo. */
 const latestLinksOf = (testEvents: BplEvent[]) => {
   const slots = new Map<string, BplResultLink>();
@@ -1085,7 +1649,9 @@ const latestLinksOf = (testEvents: BplEvent[]) => {
 };
 
 export const buildBplSerialSummary = (serial: string, events: BplEvent[]): BplSerialSummary => {
-  const sorted = reconcileLinkedResults(events.filter((event) => !isBplReactionCurveEvent(event))).sort(compareBplEventsDesc);
+  const sessioned = assignBplSessions(events.filter((event) => !isBplReactionCurveEvent(event)));
+  const { events: assessed, evaluation } = applyBplWestgard(reclassifyCalibrations(sessioned));
+  const sorted = reconcileLinkedResults(assessed).sort(compareBplEventsDesc);
   const byTest = new Map<string, BplEvent[]>();
   sorted.forEach((event) => {
     const bucket = byTest.get(event.testKey) || [];
@@ -1099,7 +1665,26 @@ export const buildBplSerialSummary = (serial: string, events: BplEvent[]): BplSe
       const stageEvents = testEvents.filter((event) => event.stage === stage);
       if (stageEvents.length) stages[stage] = buildStageState(stage, stageEvents);
     });
+    // Control de calidad: manda el veredicto Westgard de la última sesión, no el último resultado suelto.
+    const qcStage = stages.quality_control;
+    const qc = qcStage ? buildQcStageVerdict(testKey, testEvents.filter((event) => event.stage === 'quality_control'), evaluation) : null;
+    if (qcStage && qc) {
+      stages.quality_control = {
+        ...qcStage,
+        effectiveStatus: qc.verdict.status,
+        latestEvaluated: qc.representative || qcStage.latestEvaluated,
+        hasUnevaluatedNewer: qc.hasUnevaluatedNewer,
+        qc: qc.verdict,
+      };
+    }
+    // Calibración: la vigente manda; si la más reciente no quedó vigente, se aclara.
+    const calibrationStage = stages.calibration;
+    if (calibrationStage) {
+      const { note, noneInUse } = calibrationNoteOf(testEvents);
+      stages.calibration = { ...calibrationStage, note, effectiveStatus: noneInUse ? 'pending' : calibrationStage.effectiveStatus };
+    }
     const stageStatuses = BPL_STAGES.map((stage) => stages[stage]?.effectiveStatus);
+    const stageTones = BPL_STAGES.map((stage) => bplStageTone(stages[stage]));
     const chainStages: BplStage[] = ['reagent_blank', 'calibration', 'quality_control'];
     const chainAccepted =
       chainStages.some((stage) => stages[stage]) &&
@@ -1130,10 +1715,15 @@ export const buildBplSerialSummary = (serial: string, events: BplEvent[]): BplSe
       statusFlips,
       links,
       blankResult: links.find((link) => link.stage === 'reagent_blank') || null,
+      qcVerdict: stages.quality_control?.qc || null,
+      tone: worstTone(stageTones),
+      lastSession: testEvents[0]?.session || null,
     };
   });
 
   tests.sort((left, right) => {
+    const toneDiff = TONE_RANK[right.tone] - TONE_RANK[left.tone];
+    if (toneDiff !== 0) return toneDiff;
     const rankDiff = (right.effectiveStatus ? STATUS_RANK[right.effectiveStatus] : 0) - (left.effectiveStatus ? STATUS_RANK[left.effectiveStatus] : 0);
     if (rankDiff !== 0) return rankDiff;
     const timeDiff = (right.lastEventAt || '').localeCompare(left.lastEventAt || '');
@@ -1145,17 +1735,34 @@ export const buildBplSerialSummary = (serial: string, events: BplEvent[]): BplSe
     const counts = emptyCounts();
     sorted.filter((event) => event.stage === stage).forEach((event) => countStatus(counts, event.status));
     const statuses = tests.map((test) => test.stages[stage]?.effectiveStatus).filter(Boolean) as BplStatus[];
+    const qcTones = stage === 'quality_control' ? tests.map((test) => test.qcVerdict?.tone).filter(Boolean) : [];
     accumulator[stage] = {
       stage,
       testsAccepted: statuses.filter((status) => status === 'accepted').length,
       testsRejected: statuses.filter((status) => status === 'rejected').length,
       testsPending: statuses.filter((status) => status === 'pending').length,
       testsObserved: statuses.filter((status) => status === 'evidence_observed').length,
+      testsWarning: qcTones.filter((tone) => tone === 'warning').length,
+      testsAlarm: qcTones.filter((tone) => tone === 'alarm').length,
       lastEvent: sorted.find((event) => event.stage === stage) || null,
       counts,
     };
     return accumulator;
   }, {} as Record<BplStage, BplStageOverview>);
+
+  const qcNotices: BplQcNotices = { repeat: [], warning: [], rejected: [], alarm: [] };
+  tests.forEach((test) => {
+    const verdict = test.qcVerdict?.verdict || null;
+    if (!verdict) return;
+    const add = (list: string[], pick: (finding: BplWestgardFinding) => boolean) => {
+      const notice = qcNoticeOf(test.testName, verdict, pick);
+      if (notice) list.push(notice);
+    };
+    if (verdict.status === 'rejected') add(qcNotices.rejected, (finding) => finding.severity === 'rechazo');
+    else if (verdict.needsRepeat) add(qcNotices.repeat, (finding) => finding.needsRepeat);
+    else if (verdict.severity === 'advertencia') add(qcNotices.warning, (finding) => finding.severity === 'advertencia');
+    else if (verdict.severity === 'alarma') add(qcNotices.alarm, (finding) => finding.severity === 'alarma');
+  });
 
   const counts = { ...emptyCounts(), consumption: 0 };
   sorted.forEach((event) => {
@@ -1191,7 +1798,7 @@ export const buildBplSerialSummary = (serial: string, events: BplEvent[]): BplSe
   const rejectedTests = tests.filter((test) => test.effectiveStatus === 'rejected').map((test) => test.testName);
   const pendingTests = tests.filter((test) => test.effectiveStatus === 'pending').map((test) => test.testName);
   const acceptedTests = tests.filter((test) => test.effectiveStatus === 'accepted').map((test) => test.testName);
-  const tone = bplToneFromStatus(worstStatus(tests.map((test) => test.effectiveStatus)));
+  const tone = worstTone(tests.map((test) => test.tone));
 
   return {
     serial,
@@ -1205,6 +1812,7 @@ export const buildBplSerialSummary = (serial: string, events: BplEvent[]): BplSe
     rejectedTests,
     pendingTests,
     acceptedTests,
+    toneTests: ['rejected', 'warning', 'alarm', 'pending'].includes(tone) ? tests.filter((test) => test.tone === tone).map((test) => test.testName) : [],
     missingData: openMissingData(sorted),
     pendingResults: BPL_LINKED_STAGES.reduce<Record<BplLinkedStage, string[]>>((accumulator, stage) => {
       accumulator[stage] = tests.flatMap((test) =>
@@ -1214,6 +1822,7 @@ export const buildBplSerialSummary = (serial: string, events: BplEvent[]): BplSe
       );
       return accumulator;
     }, {} as Record<BplLinkedStage, string[]>),
+    qcNotices,
     calibrators: groupLots('calibration'),
     controls: groupLots('quality_control'),
     reagentBarcodes: latestByTimestamp(Array.from(barcodeMap.values())),
@@ -1253,17 +1862,42 @@ const DIAGNOSTIC_SUFFIX_LABELS: Array<[RegExp, string]> = [
   [/missing(_data)?$/, 'con datos faltantes'],
   [/out_of_range$|out_of_limits$/, 'fuera de límites'],
   [/warning$/, 'con advertencia'],
+  [/superseded$/, 'no vigente'],
+  [/repeat$/, 'por repetir'],
+  [/light_alert$/, 'con alerta ligera'],
+  [/alarm$/, 'con alarma'],
 ];
 
 /** Traduce `diagnostic_status` (por ejemplo `calibration_rejected`) a una frase operativa. */
 export const formatBplDiagnosticStatus = (value?: string | null) => {
   const normalized = (value || '').trim().toLowerCase();
   if (!normalized) return 'Sin diagnóstico';
+  // Diagnóstico de los pipeteos del CSV de consumo: el resultado llega en otra fila.
+  if (normalized === 'pending_analytical_acceptance') return 'Pipeteo registrado, resultado pendiente';
+  // Blanco fotométrico: el monitor no tiene un límite contra el cual evaluarlo.
+  if (normalized === 'pending_limit_configuration') return 'Sin límite configurado para evaluarlo';
   const prefix = DIAGNOSTIC_PREFIX_LABELS.find(([pattern]) => pattern.test(normalized))?.[1];
   const suffix = DIAGNOSTIC_SUFFIX_LABELS.find(([pattern]) => pattern.test(normalized))?.[1];
   if (prefix && suffix) return `${prefix} ${suffix}`;
   return normalized.replace(/_/g, ' ').replace(/^\w/, (letter) => letter.toUpperCase());
 };
+
+/** Lo que el monitor declara faltante, en palabras; un código desconocido se muestra tal cual. */
+const BPL_MISSING_DATA_LABELS: Record<string, string> = {
+  photometry_blank_acceptance_limit: 'límite de aceptación del blanco fotométrico',
+  westgard_rules: 'reglas Westgard programadas',
+  calibration_curve_points: 'puntos de la curva de calibración',
+  reaction_curve_points: 'puntos de la curva de reacción',
+  blank_result_value: 'valor del blanco',
+  blank_acceptance_limit: 'límite del blanco',
+  calibration_acceptance_status: 'aceptación de la calibración',
+  calibration_curve: 'curva de calibración',
+  control_result_value: 'valor del control',
+  control_limits: 'límites del control',
+  westgard_assessment: 'evaluación Westgard',
+};
+
+export const formatBplMissingData = (code: string) => BPL_MISSING_DATA_LABELS[code.trim().toLowerCase()] || code;
 
 export const formatBplEventTypeLabel = (eventType: string) =>
   BPL_EVENT_TYPE_LABELS[eventType] || eventType.replace(/^bpl_/, '').replace(/_/g, ' ');
@@ -1314,7 +1948,8 @@ export const describeBplResultLink = (link: BplResultLink) => {
   if (link.stage === 'calibration') {
     if (!result?.hasPayload) return 'Resultado de calibración recibido';
     const factor = result.calibration?.factor ?? result.analytical?.calibratorFactor ?? null;
-    return `${CALIBRATION_STATUS_LABELS[result.status]}${factor !== null ? ` · factor ${formatBplNumber(factor, 4)}` : ''}`;
+    const label = result.superseded ? 'Calibración no vigente' : CALIBRATION_STATUS_LABELS[result.status];
+    return `${label}${factor !== null ? ` · factor ${formatBplNumber(factor, 4)}` : ''}`;
   }
   const qc = result?.qc;
   if (!qc || qc.resultValue === null) return 'Resultado de control recibido';
@@ -1334,7 +1969,10 @@ export const summarizeBplEventMetrics = (event: BplEvent): string[] => {
     if (event.qc.minLimit !== null && event.qc.maxLimit !== null) parts.push(`Límites ${formatBplNumber(event.qc.minLimit, 3)} a ${formatBplNumber(event.qc.maxLimit, 3)}`);
     else if (event.qc.targetMean !== null) parts.push(`Media ${formatBplNumber(event.qc.targetMean, 3)}${event.qc.targetSd !== null ? ` ± ${formatBplNumber(event.qc.targetSd, 3)}` : ''}`);
     if (event.qc.zScore !== null) parts.push(`Z ${formatBplNumber(event.qc.zScore, 2)}`);
-    if (event.qc.westgardRules.length) parts.push(`Westgard ${event.qc.westgardRules.join(', ')}`);
+    // Evaluado por Orion: gravedad y reglas propias; si no, lo que reportó el analizador.
+    if (event.westgard?.findings.length) {
+      parts.push(`${BPL_QC_SEVERITY_LABELS[event.westgard.severity]} ${unique(event.westgard.findings.map((finding) => BPL_WESTGARD_RULE_LABELS[finding.rule])).join(', ')}`);
+    } else if (event.qc.westgardRules.length) parts.push(`Westgard ${event.qc.westgardRules.join(', ')}`);
     else if (event.qc.westgardAssessment) parts.push(`Westgard ${event.qc.westgardAssessment}`);
     if (event.qc.alarms.length) parts.push(`Alarmas ${event.qc.alarms.join(', ')}`);
   }

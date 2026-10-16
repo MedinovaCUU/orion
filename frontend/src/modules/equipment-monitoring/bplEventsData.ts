@@ -22,13 +22,22 @@ const DAY_MS = 24 * 60 * 60 * 1000;
 
 const sinceIso = (days: number) => new Date(Date.now() - days * DAY_MS).toISOString();
 
+/**
+ * Ventana por hora del analizador; el blanco fotométrico no trae `occurred_at` (solo la fecha del archivo) y entra
+ * por su captura. Valores entre comillas: la sintaxis de PostgREST reserva comas y paréntesis.
+ */
+const sinceFilter = (days: number) => {
+  const since = sinceIso(days);
+  return `occurred_at.gte."${since}",and(occurred_at.is.null,detected_at.gte."${since}")`;
+};
+
 export interface BplOverviewLoadResult {
   rows: BplEventRow[];
   error: string | null;
 }
 
 /**
- * Corte global sin payload para colorear el catálogo de equipos.
+ * Corte global con el registro mínimo de cada resultado (sin payload) para colorear el catálogo de equipos.
  * La ventana limita filas, no es paginación completa: un equipo muy activo
  * puede tener más historia de la que cabe aquí, pero su estado vigente sí entra.
  */
@@ -37,7 +46,7 @@ export async function loadBplOverview({ sinceDays = 90, limit = 5000 }: { sinceD
     .from(BPL_EVENTS_TABLE)
     .select(BPL_OVERVIEW_COLUMNS)
     .neq('event_type', BPL_REACTION_CURVE_EVENT_TYPE)
-    .gte('occurred_at', sinceIso(sinceDays))
+    .or(sinceFilter(sinceDays))
     .order('occurred_at', { ascending: false })
     .range(0, Math.max(0, limit - 1));
 
@@ -76,7 +85,7 @@ export async function loadBplSerialEvents(
     .select('*')
     .neq('event_type', BPL_REACTION_CURVE_EVENT_TYPE)
     .in('effective_equipment_serial', candidates)
-    .gte('occurred_at', sinceIso(sinceDays))
+    .or(sinceFilter(sinceDays))
     .order('occurred_at', { ascending: false })
     .range(0, Math.max(0, limit - 1));
 

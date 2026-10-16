@@ -32,7 +32,8 @@ const PriorityRow = memo(function PriorityRow({
       {equipment.bpl && equipment.bpl.tone !== 'none' ? (
         <span className="equipment-priority__bpl" data-tone={equipment.bpl.tone}>
           {BPL_TONE_LABELS[equipment.bpl.tone]}
-          {equipment.bpl.rejectedTests.length ? ` · ${equipment.bpl.rejectedTests.slice(0, 3).join(', ')}` : ''}
+          {/* Rechazo, advertencia o alarma: las pruebas que lo provocan. */}
+          {equipment.bpl.tone !== 'pending' && equipment.bpl.toneTests.length ? ` · ${equipment.bpl.toneTests.slice(0, 3).join(', ')}` : ''}
         </span>
       ) : null}
       <small>

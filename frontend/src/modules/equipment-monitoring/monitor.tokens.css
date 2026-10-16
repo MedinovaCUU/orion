@@ -14,6 +14,9 @@
   --mon-risk-ink: #8c2731;
   --mon-warn-rgb: 255, 196, 94;
   --mon-warn-ink: #8b5d17;
+  /* Alarma Westgard de un control (1-2s, 1-3s, R-4s sin confirmar): amarillo, por debajo de la advertencia ámbar. */
+  --mon-alarm-rgb: 233, 205, 64;
+  --mon-alarm-ink: #6f5d0a;
   --mon-graphite-rgb: 124, 136, 149;
   --mon-graphite-ink: var(--text-secondary, #5d6674);
   /* tinta */
@@ -85,6 +88,11 @@
 .equipment-globe [data-tone='warning'] {
   --tone-rgb: var(--mon-warn-rgb);
   --tone-ink: var(--mon-warn-ink);
+}
+
+.equipment-monitor [data-tone='alarm'] {
+  --tone-rgb: var(--mon-alarm-rgb);
+  --tone-ink: var(--mon-alarm-ink);
 }
 
 .equipment-monitor [data-tone='fatal'],

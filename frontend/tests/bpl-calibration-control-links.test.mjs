@@ -27,7 +27,8 @@ try {
       payload: { limit_assessment: 'within_control_range', westgard_assessment: 'pending', database_record: { analyzer_id: analyzer, test_name: test, control_name: name, control_lot_number: lot, run_number: run, runs_group_number: 1, result_value: value, measure_unit: 'MGDL', control_min_concentration: min, control_max_concentration: max, validation_status: 'PENDING', closed_result: false } },
     });
 
-  // Calibración ALBUMIN-MAU 2026-09-28 (repetición 2): tres pipeteos, dos réplicas y un rechazo publicado después.
+  // Calibración ALBUMIN-MAU 2026-09-28 (repetición 2): tres pipeteos, dos réplicas y, 33 min después, la repetición deja de
+  // estar aceptada con validación OK. No es un rechazo: el BA400 dejó de usarla (en el caso real volvió a la repetición 1).
   const calibration = bpl.buildBplSerialSummary(serial, [
     consumption(139, '2026-09-28T22:55:21Z', 'ALBUMIN-MAU', 'CALIB', 'CAL MAU 058', '058', 'URI'),
     consumption(140, '2026-09-28T22:55:30Z', 'ALBUMIN-MAU', 'CALIB', 'CAL MAU 058', '058', 'URI'),
@@ -39,11 +40,14 @@ try {
   const mau = calibration.tests.find((test) => test.testKey === 'ALBUMIN-MAU');
   const calibrationLink = mau.links.find((link) => link.stage === 'calibration');
   assert.equal(calibrationLink.state, 'received');
-  assert.equal(calibrationLink.result.id, '147', 'misma hora del analizador: manda la publicación más reciente (rechazo)');
-  assert.equal(bpl.describeBplResultLink(calibrationLink), 'Calibración rechazada · factor 392.9958');
+  assert.equal(calibrationLink.result.id, '147', 'misma hora del analizador: manda la publicación más reciente');
+  assert.equal(calibrationLink.result.superseded, true);
+  assert.equal(bpl.describeBplResultLink(calibrationLink), 'Calibración no vigente · factor 392.9958');
   assert.equal(bpl.formatBplExecution(calibrationLink.execution), 'sesión 2026092801 · orden 97 · repetición 2');
   assert.equal(calibrationLink.material, 'CAL MAU 058 · lote 058');
-  assert.equal(mau.stages.calibration.effectiveStatus, 'rejected');
+  // Sin otra calibración aceptada en la ventana: pendiente, no rechazada.
+  assert.equal(mau.stages.calibration.effectiveStatus, 'pending');
+  assert.equal(mau.stages.calibration.note, 'El BA400 no dejó vigente ninguna de estas calibraciones (sin error de validación)');
   assert.deepEqual(mau.missingData, [], 'el consumo del calibrador no se reporta como «Falta: calibration_curve»');
   assert.deepEqual(calibration.missingData, []);
   assert.deepEqual(calibration.pendingResults.calibration, []);
@@ -51,7 +55,7 @@ try {
     assert.equal(event.links.calibration.result.id, '147', `pipeteo ${event.id} vinculado a la ejecución`);
     assert.deepEqual(event.missingData, []);
   });
-  assert.equal(bpl.summarizeBplEventMetrics(calibration.events.find((event) => event.id === '141'))[0], 'Calibración rechazada · factor 392.9958');
+  assert.equal(bpl.summarizeBplEventMetrics(calibration.events.find((event) => event.id === '141'))[0], 'Calibración no vigente · factor 392.9958');
 
   // CHOLESTEROL 2026-05-29: el pipeteo de las 16:34 no tuvo resultado; el de las 17:35 sí (10 min). 71 min es otra corrida.
   const cholesterol = bpl.buildBplSerialSummary(serial, [

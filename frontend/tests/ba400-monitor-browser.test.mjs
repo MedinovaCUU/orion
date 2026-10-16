@@ -95,7 +95,12 @@ try {
   assert.equal(await bplSection.locator('.equipment-monitor__bpl-test').count(), 3);
   const bplText = await bplSection.innerText();
   assert.match(bplText, /BPL con rechazo/i);
-  assert.match(bplText, /GLUCOSE[\s\S]*Control de calidad · Control de calidad rechazado · Resultado 140 mg\/dL · Límites 80 a 120 · Z 8 · Westgard 1_3s/);
+  // Westgard de Orion: la 1-3s de GLUCOSE se repitió y la repetición la confirma (rechazo). Con el control como titular,
+  // el veredicto de la sesión va en el titular (sin línea aparte).
+  const glucoseHeadline = bplSection.locator('.equipment-monitor__bpl-test').filter({ hasText: 'GLUCOSE' }).locator('[data-testid="bpl-test-headline"]');
+  assert.match(await glucoseHeadline.innerText(), /^Control de calidad · sesión del .+: Rechazo confirmado · Nivel 1 \+8\.0 DE \(1-3s\): la repetición lo confirma · Resultado 140 mg\/dL · Límites 80 a 120$/);
+  assert.equal(await bplSection.locator('.equipment-monitor__bpl-test').filter({ hasText: 'GLUCOSE' }).locator('[data-testid="bpl-qc-session"]').count(), 0);
+  assert.match(bplText, /Rechazo de control confirmado: GLUCOSE \(nivel 1, 1-3s\)\./);
   assert.match(bplText, /Calibrador CAL BIO · C-77 · Control CONTROL LEVEL I · L-10/);
   assert.match(bplText, /CHOLESTEROL[\s\S]*Falta: control_lot/);
   assert.match(bplText, /Falta para cerrar aceptación: control_lot/);
@@ -114,7 +119,7 @@ try {
   assert.equal(await page.locator('.equipment-priority__bpl[data-tone="rejected"]').count(), 1);
   assert.match(await page.locator('.equipment-priority__bpl[data-tone="rejected"]').innerText(), /BPL con rechazo · GLUCOSE/i);
   await bplSection.locator('.equipment-monitor__bpl-timeline summary').click();
-  assert.equal(await bplSection.locator('.equipment-monitor__bpl-timeline li').count(), 10, 'las curvas no entran en la cronología BPL');
+  assert.equal(await bplSection.locator('.equipment-monitor__bpl-timeline li').count(), 11, 'las curvas no entran en la cronología BPL (10 filas BPL + la repetición del control)');
   // Curvas de reacción: miniatura en la tarjeta, visor con réplicas, métricas, tooltip y tabla contraída.
   const glucoseCard = bplSection.locator('.equipment-monitor__bpl-test').filter({ hasText: 'GLUCOSE' });
   await glucoseCard.locator('[data-testid="reaction-sparkline"]').waitFor({ timeout: 30000 });

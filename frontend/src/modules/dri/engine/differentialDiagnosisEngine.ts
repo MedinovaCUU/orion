@@ -167,7 +167,7 @@ const summarizeBplEvidenceForEngine = (bpl: DriBplEvidenceSummary | null) => ({
 const buildBplEvidenceRows = (bpl: DriBplEvidenceSummary | null): DriEvidenceRow[] => {
   if (!bpl) return [];
   const rows: DriEvidenceRow[] = [];
-  const pushStage = (id: string, title: string, stage: DriBplStageEvidence, category: string) => {
+  const pushStage = (id: string, title: string, stage: DriBplStageEvidence, category: string, failedLabel = 'Rechazadas en el equipo') => {
     if (!stage.lastAt) return;
     const rejected = stage.rejectedTests.length;
     const pending = stage.pendingTests.length;
@@ -180,7 +180,7 @@ const buildBplEvidenceRows = (bpl: DriBplEvidenceSummary | null): DriEvidenceRow
       correctCoverage: accepted ? 1 : 0,
       score: rejected ? 88 : pending ? 40 : 12,
       evidenceFor: rejected
-        ? `Rechazadas en el equipo: ${stage.rejectedTests.join(', ')}.`
+        ? `${failedLabel}: ${stage.rejectedTests.join(', ')}.`
         : pending
           ? `Pendientes de aceptación: ${stage.pendingTests.join(', ')}.`
           : 'Sin rechazos vigentes en el monitor BPL.',
@@ -191,7 +191,8 @@ const buildBplEvidenceRows = (bpl: DriBplEvidenceSummary | null): DriEvidenceRow
   pushStage('photometry', 'Blanco fotométrico instrumental', bpl.stages.photometryBlank, 'blank');
   pushStage('reagent-blank', 'Blancos de reactivo', bpl.stages.reagentBlank, 'blank');
   pushStage('calibration', 'Curvas de calibración', bpl.stages.calibration, 'calibration');
-  pushStage('qc', 'Controles de calidad', bpl.stages.qualityControl, 'control');
+  // Controles: rechazo confirmado o fuera de control según las reglas Westgard de Orion.
+  pushStage('qc', 'Controles de calidad', bpl.stages.qualityControl, 'control', 'Fuera de control en el equipo');
   if (bpl.westgardRules.length) {
     rows.push({
       id: 'bpl:westgard',
@@ -975,7 +976,7 @@ export function runDifferentialDiagnosisEngine(form: DriCaseFormState, catalog: 
       positive.push({ label: 'El tipo de evento es compatible con control/calibrador/preanalítico.', points: 16 });
     }
     if (bplSignals.qcChainTests.length) {
-      positive.push({ label: `QC rechazado con blanco y calibración aceptados en ${bplSignals.qcChainTests.slice(0, 5).join(', ')}: la desviación apunta a control, lote o preanalítica.`, points: 22 });
+      positive.push({ label: `QC fuera de control con blanco y calibración aceptados en ${bplSignals.qcChainTests.slice(0, 5).join(', ')}: la desviación apunta a control, lote o preanalítica.`, points: 22 });
     }
     if (bplSignals.calibrationRejectedCount > 0 && bplSignals.reagentBlankRejectedCount === 0) {
       positive.push({ label: 'Calibraciones rechazadas con blancos aceptados en el monitor BPL: revisar calibrador y lote antes del hardware.', points: 12 });
